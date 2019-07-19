@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 
 import store from 'state/store';
 import App from 'ui/App';
-import ApiManager from 'ui/ApiManager';
+import ApiManager from 'app-init/ApiManager';
 import 'sass/index.scss';
 
 ReactDOM.render(

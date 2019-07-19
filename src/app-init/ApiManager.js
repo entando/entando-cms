@@ -23,7 +23,7 @@ class ApiManager extends Component {
 
   componentDidMount() {
     const { store } = this.props;
-    config(store, () => {}, () => {});
+    config(store);
 
     const { dispatch, getState } = store;
 
@@ -52,7 +52,8 @@ class ApiManager extends Component {
     const state = getState();
     const username = getUsername(state);
     const token = getToken(state);
-    return !!username && !!token;
+
+    return username && token;
   }
 
   announceMockMode() {
