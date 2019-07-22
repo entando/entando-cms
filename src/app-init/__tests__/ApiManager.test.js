@@ -5,7 +5,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import {
-  config,
   setApi,
   loginUser,
   useMocks,
@@ -22,11 +21,9 @@ configure({ adapter: new Adapter() });
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-const createMockStore = (state = {}) => {
-  const store = mockStore(state);
-  config(store);
-  return store;
-};
+const createMockStore = (state = {}) => (
+  mockStore(state)
+);
 
 process.env.NODE_ENV = 'development';
 
