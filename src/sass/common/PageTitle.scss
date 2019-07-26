@@ -1,0 +1,16 @@
+.PageTitle {
+  &__header {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  &__icon {
+    margin-left: 2.8rem;
+    cursor: pointer;
+  }
+}
