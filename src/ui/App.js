@@ -38,7 +38,11 @@ class App extends Component {
 
 App.propTypes = {
   setupLanguage: PropTypes.func.isRequired,
-  lang: PropTypes.string.isRequired,
+  lang: PropTypes.string,
+};
+
+App.defaultProps = {
+  lang: 'en',
 };
 
 export default App;

@@ -2,6 +2,7 @@ export default {
   locale: 'en',
   messages: {
     'cms.title': 'CMS',
+    'cms.label.delete': 'Delete',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Content List',

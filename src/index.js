@@ -17,7 +17,7 @@ ReactDOM.render(
   <Router>
     <Provider store={store}>
       <ApiManager store={store}>
-        <AppContainer lang="it" />
+        <AppContainer />
       </ApiManager>
     </Provider>
   </Router>,
