@@ -14,13 +14,6 @@ import { addErrors, addToast, TOAST_WARNING } from '@entando/messages';
 import { login } from 'api/login';
 
 class ApiManager extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      devMode: process.env.NODE_ENV === 'development',
-    };
-  }
-
   componentDidMount() {
     const { store } = this.props;
     config(store);
@@ -39,7 +32,7 @@ class ApiManager extends Component {
 
     if (mockMode) this.announceMockMode();
 
-    const { devMode } = this.state;
+    const devMode = process.env.NODE_ENV === 'development';
 
     if (devMode && !mockMode && !this.isUserLogged()) {
       this.performAutoLogin();

@@ -1,6 +1,6 @@
 import { makeRequest, METHODS } from '@entando/apimanager';
 
-// eslint-disable-next-line
+// eslint-disable-next-line import/prefer-default-export
 export const login = (username, password) => makeRequest({
   uri: '/api/oauth/token',
   method: METHODS.POST,
