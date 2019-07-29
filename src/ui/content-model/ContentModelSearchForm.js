@@ -31,7 +31,7 @@ class ContentModelSearchFormBody extends Component {
       valueName: {
         id: 'cms.contentmodel.searchFilter.valueName',
         defaultMessage: 'Name',
-      }
+      },
     });
   }
 

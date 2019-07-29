@@ -32,13 +32,14 @@ const RenderSearchFormInput = ({
 RenderSearchFormInput.propTypes = {
   input: PropTypes.shape({}),
   meta: PropTypes.shape({}),
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   onClear: PropTypes.func,
 };
 
 RenderSearchFormInput.defaultProps = {
   input: {},
   meta: {},
+  placeholder: 'Search',
   onClear: () => {},
 };
 

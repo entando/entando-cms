@@ -5,18 +5,18 @@ import ContentModelListItem from 'ui/content-model/ContentModelListItem';
 const mockData = [
   {
     id: 10012,
-    contentType: "Generic Content",
-    descr: "Hero Unit + Picture",
+    contentType: 'Generic Content',
+    descr: 'Hero Unit + Picture',
   },
   {
     id: 10013,
-    contentType: "Generic Content",
-    descr: "Lists - Picture",
+    contentType: 'Generic Content',
+    descr: 'Lists - Picture',
   },
   {
     id: 10002,
-    contentType: "News",
-    descr: "Full - Default",
+    contentType: 'News',
+    descr: 'Full - Default',
   },
 ];
 
