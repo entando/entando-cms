@@ -1,20 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
   Row,
   Col,
   CardGrid,
   Breadcrumb,
-  Button,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
-import ContentModelList from 'ui/content-model/ContentModelList';
+import AddContentModelFormContainer from 'ui/content-model/AddContentModelFormContainer';
 
-const ContentModelListPage = () => (
+const AddContentModelPage = () => (
   <CMSShell>
     <CardGrid>
       <Row>
@@ -26,34 +23,24 @@ const ContentModelListPage = () => (
             <BreadcrumbItem active>
               <FormattedMessage id="cms.contentmodel.title" defaultMessage="Content Models" />
             </BreadcrumbItem>
+            <BreadcrumbItem active>
+              <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add" />
+            </BreadcrumbItem>
           </Breadcrumb>
         </Col>
       </Row>
       <Row>
-        <Col xs={4}>
-          <PageTitle titleId="cms.contentmodel.title" helpId="cms.contentmodel.titletip" />
-        </Col>
-      </Row>
-      <Row className="ContentModelList__filter">
-        <Col xs={9}>
-          <ContentModelSearchForm />
-        </Col>
-        <Col xs={1} />
-        <Col xs={2}>
-          <Link to="/cms/content-models/add">
-            <Button className="ContentModelList__addbutton">
-              <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Model" />
-            </Button>
-          </Link>
+        <Col xs={12}>
+          <PageTitle titleId="cms.contentmodel.add.label" helpId="cms.contentmodel.titletip" />
         </Col>
       </Row>
       <Row>
         <Col xs={12}>
-          <ContentModelList />
+          <AddContentModelFormContainer />
         </Col>
       </Row>
     </CardGrid>
   </CMSShell>
 );
 
-export default ContentModelListPage;
+export default AddContentModelPage;
