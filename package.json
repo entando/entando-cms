@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
+    "history": "^4.9.0",
+    "prop-types": "^15.6.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-patternfly": "^1.0.0",
+    "react-intl": "^2.8.0",
     "react-redux": "^7.0.1",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
     "redux-form": "^8.2.0",
+    "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0"
   },
@@ -17,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "coverage": "react-scripts test --coverage"
   },
   "husky": {
     "hooks": {
@@ -86,12 +92,19 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
     "eslint-config-airbnb": "^17.1.0",
     "husky": "^1.3.1",
     "node-sass": "^4.11.0",
-    "redux-mock-store": "^1.5.3",
     "sass-lint": "^1.12.1"
+  },
+  "peerDependencies": {
+    "@entando/apimanager": "^3.0.2",
+    "@entando/messages": "^1.0.4",
+    "@entando/menu": "^1.1.3",
+    "lodash": "^4.17.10",
+    "react-patternfly": "^1.0.0",
+    "react-router-dom": "^5.0.0",
+    "patternfly": "^3.45.0",
+    "patternfly-react": "^1.19.1"
   }
 }
