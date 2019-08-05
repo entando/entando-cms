@@ -25,6 +25,7 @@ export default {
     'cms.contentmodel.form.codePlaceholder': 'Codice',
     'cms.contentmodel.form.codeHelp': 'Puoi inserire caratteri, lettere maiuscole e minuscole, numeri, ed il carattere speciale _',
     'cms.contentmodel.form.htmlmodel': 'Modello HTML',
+    'cms.contentmodel.form.editassistant': 'Assistente per la Modifica in Linea',
     'cms.contentmodel.form.stylesheet': 'Foglio di Stile',
     'validateForm.elements': 'inserire un valore tipo \'key1=value1,key2=value2,key3=value3\'',
     'validateForm.element': 'inserire un valore tipo \'lable1,lable2,lable3\'',

@@ -25,6 +25,7 @@ export default {
     'cms.contentmodel.form.codePlaceholder': 'Code',
     'cms.contentmodel.form.codeHelp': 'You can insert characters uppercase and lowercase letters, numbers and special characters _',
     'cms.contentmodel.form.htmlmodel': 'HTML Model',
+    'cms.contentmodel.form.editassistant': 'Inline Editing Assistant', 
     'cms.contentmodel.form.stylesheet': 'Style Sheet',
     'validateForm.elements': 'Insert a configuration like \'key1=value1,key2=value2,key3=value3\'',
     'validateForm.element': 'Insert a configuration like \'lable1,lable2,lable3\'',
