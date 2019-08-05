@@ -1,14 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import {Provider} from "react-redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-import store from "state/store";
-import App from "ui/App";
-import "sass/index.scss";
+import store from 'state/store';
+import App from 'ui/App';
+import ApiManager from 'app-init/ApiManager';
+import 'sass/index.scss';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
+  <Router>
+    <Provider store={store}>
+      <ApiManager store={store}>
+        <App />
+      </ApiManager>
+    </Provider>
+  </Router>,
+  document.getElementById('root'),
 );
