@@ -12,6 +12,19 @@ const contentModelMsgs = defineMessages({
   },
 });
 
+export const mapStateToProps = () => ({
+  contentTypes: [
+    {
+      id: 10013,
+      contentType: 'Generic Content',
+    },
+    {
+      id: 10002,
+      contentType: 'News',
+    },
+  ],
+});
+
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onSubmit: (values) => {
     dispatch(addToast(
@@ -25,5 +38,9 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   },
 });
 
-const AddContentModelFormContainer = connect(null, mapDispatchToProps)(AddContentModelForm);
+const AddContentModelFormContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddContentModelForm);
+
 export default withRouter(injectIntl(AddContentModelFormContainer));

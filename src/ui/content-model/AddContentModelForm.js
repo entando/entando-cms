@@ -7,7 +7,12 @@ import {
   Button,
   Modal,
 } from 'patternfly-react';
-import { FormattedMessage, FormattedHTMLMessage, intlShape, defineMessages } from 'react-intl';
+import {
+  FormattedMessage,
+  FormattedHTMLMessage,
+  intlShape,
+  defineMessages,
+} from 'react-intl';
 import { required, code, maxLength } from '@entando/utils';
 
 import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
@@ -59,6 +64,7 @@ class AddContentModelFormBody extends Component {
       submitting,
       intl,
       mode,
+      contentTypes,
     } = this.props;
     const { modalOpened } = this.state;
     return (
@@ -110,16 +116,7 @@ class AddContentModelFormBody extends Component {
                 component={RenderDropdownTypeaheadInput}
                 name="contentType"
                 label={<FormLabel labelId="cms.contentmodel.list.contentTypeHeader" helpId="cms.contentmodel.form.codeHelp" required />}
-                options={[
-                  {
-                    id: 10013,
-                    contentType: 'Generic Content',
-                  },
-                  {
-                    id: 10002,
-                    contentType: 'News',
-                  },
-                ]}
+                options={contentTypes}
                 labelKey="contentType"
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
@@ -177,6 +174,7 @@ class AddContentModelFormBody extends Component {
 AddContentModelFormBody.propTypes = {
   intl: intlShape.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   mode: PropTypes.string,
