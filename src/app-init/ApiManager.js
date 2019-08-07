@@ -14,7 +14,7 @@ import { addErrors, addToast, TOAST_WARNING } from '@entando/messages';
 import { login } from 'api/login';
 
 class ApiManager extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { store } = this.props;
     config(store);
 
