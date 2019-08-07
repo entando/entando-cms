@@ -7,13 +7,14 @@ import {
   Button,
   Modal,
 } from 'patternfly-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage, intlShape, defineMessages } from 'react-intl';
 import { required, code, maxLength } from '@entando/utils';
 
 import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
 import RenderContentModelInput from 'ui/common/form/RenderContentModelInput';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
+import DraggableDialog from 'ui/common/DraggableDialog';
 
 
 const EDIT_MODE = 'edit';
@@ -21,6 +22,17 @@ const NEW_MODE = 'new';
 
 const maxLength50 = maxLength(50);
 const maxLength70 = maxLength(70);
+
+const messages = defineMessages({
+  chooseContentType: {
+    id: 'cms.label.select',
+    defaultMessage: 'Please select',
+  },
+  htmlModelAppend: {
+    id: 'cms.contentmodel.form.presscontext',
+    defaultMessage: 'CTRL + Space',
+  },
+});
 
 class AddContentModelFormBody extends Component {
   constructor(props) {
@@ -45,39 +57,30 @@ class AddContentModelFormBody extends Component {
       handleSubmit,
       invalid,
       submitting,
+      intl,
       mode,
     } = this.props;
     const { modalOpened } = this.state;
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
-        <Modal show={modalOpened} onHide={this.handleModalClose}>
+        <Modal
+          dialogComponentClass={DraggableDialog}
+          className="AddContentModelForm__editassistmodal"
+          show={modalOpened}
+          onHide={this.handleModalClose}
+          backdrop={false}
+          enforceFocus={false}
+        >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">
               <FormattedMessage id="cms.contentmodel.form.editassistant" defaultMessage="Help Assistant" />
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <>
-              Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels
-              <br />
-              <br />
-              <ol>
-                <li> Open a <strong>TAG</strong> like div p span... </li>
-                <li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li>
-                <li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li>
-                <li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li>
-                <li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li>
-                <li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li>
-              </ol>
-              Result should look like this:
-              <br />
-              <br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;>
-              <br />$content.TITLE.text
-              <br />CLOSE TAG
-            </>
+            <FormattedHTMLMessage id="cms.contentmodel.form.editassist.dialog" />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleModalClose}>Close</Button>
+            <Button onClick={this.handleModalClose}><FormattedMessage id="cms.label.close" defaultMessage="close" /></Button>
           </Modal.Footer>
         </Modal>
         <Row>
@@ -118,7 +121,8 @@ class AddContentModelFormBody extends Component {
                   },
                 ]}
                 labelKey="contentType"
-                placeholder="Choose Content Type..."
+                placeholder={intl.formatMessage(messages.chooseContentType)}
+                validate={[required]}
               />
             </fieldset>
           </Col>
@@ -130,9 +134,9 @@ class AddContentModelFormBody extends Component {
                 <>
                   <Button className="AddContentModelForm__editassistbtn" onClick={this.handleModalOpen}><FormattedMessage id="cms.contentmodel.form.editassistant" defaultMessage="Help Assistant" /></Button>
                   <p>
-                    Content Assist is <strong>ON</strong><br />
-                    Help About Attributes Type is <strong>OFF</strong><br />
-                    If you want to change the status, you should set them in Admin Configuration Area
+                    <FormattedHTMLMessage id="cms.contentmodel.form.htmlmodel.statusassist" /><br />
+                    <FormattedHTMLMessage id="cms.contentmodel.form.htmlmodel.statusattrhelp" /><br />
+                    <FormattedMessage id="cms.contentmodel.form.htmlmodel.statusadminconf" />
                   </p>
                 </>
               )}
@@ -140,6 +144,7 @@ class AddContentModelFormBody extends Component {
               cols="50"
               rows="8"
               className="form-control"
+              append={intl.formatMessage(messages.htmlModelAppend)}
               validate={[required]}
             />
           </Col>
@@ -170,6 +175,7 @@ class AddContentModelFormBody extends Component {
 }
 
 AddContentModelFormBody.propTypes = {
+  intl: intlShape.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,

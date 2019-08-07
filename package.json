@@ -11,6 +11,7 @@
     "react-ace": "^7.0.2",
     "react-bootstrap-typeahead": "^3.4.6",
     "react-dom": "^16.8.6",
+    "react-draggable": "^3.3.0",
     "react-intl": "^2.8.0",
     "react-redux": "^7.0.1",
     "react-scripts": "2.1.8",

@@ -1,12 +1,76 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
+import ace from 'brace'; // eslint-disable-line import/no-extraneous-dependencies
 import { Col, ControlLabel } from 'patternfly-react';
 
 /* eslint-disable import/no-extraneous-dependencies */
 import 'brace/mode/html';
-import 'brace/theme/github';
-/* eslint-disable import/no-extraneous-dependencies */
+import 'brace/theme/tomorrow';
+import 'brace/snippets/html';
+import 'brace/ext/language_tools';
+/* eslint-enable import/no-extraneous-dependencies */
+
+const langTools = ace.acequire('ace/ext/language_tools');
+
+const contentModelCompleter = {
+  getCompletions: (editor, session, pos, prefix, callback) => {
+    const wordList = [
+      {
+        caption: '#foreach',
+        value: `#foreach ($item in $<LIST>)
+  <DO with $item>
+#end`,
+        meta: 'Content Model Snippet',
+      },
+      {
+        caption: '#if #else #end',
+        value: `#if (<TRUE>)
+  <DO>
+#else
+  <DOANOTHER>
+#end`,
+        meta: 'Content Model Snippet',
+      },
+      {
+        caption: '#if',
+        value: `#if (<TRUE>)
+  <DO>
+#end`,
+        meta: 'Content Model Snippet',
+      },
+      {
+        caption: '#set',
+        value: '#set ($<VAR> = <VALUE>)',
+        meta: 'Content Model Snippet',
+      },
+      {
+        caption: '$content',
+        value: '$content',
+        meta: 'Content Object',
+      },
+      {
+        caption: '$i18n',
+        value: '$i18n',
+        meta: 'I18n Object',
+      },
+      {
+        caption: '$info',
+        value: '$info',
+        score: 10000,
+        meta: 'Info Object',
+      },
+    ];
+    callback(null, wordList.map(word => ({ ...word, score: 10000 })));
+  },
+};
+
+langTools.addCompleter(contentModelCompleter);
+
+const aceOnBlur = onBlur => (_event, editor) => {
+  const value = editor.getValue();
+  onBlur(value);
+};
 
 const RenderContentModelInput = ({
   input, meta: { touched, error }, label, help,
@@ -25,13 +89,22 @@ const RenderContentModelInput = ({
     <Col xs={inputSize || 12 - labelSize}>
       {prepend}
       <AceEditor
-        {...input}
         mode="html"
-        theme="github"
+        theme="tomorrow"
         width="100%"
         showPrintMargin={false}
-        editorProps={{ $blockScrolling: true }}
+        editorProps={{
+          $blockScrolling: Infinity,
+        }}
         style={{ border: '1px solid #ddd' }}
+        enableBasicAutocompletion
+        enableLiveAutocompletion
+        enableSnippets
+        name={input.name}
+        onBlur={aceOnBlur(input.onBlur)}
+        onChange={input.onChange}
+        onFocus={input.onFocus}
+        value={input.value}
       />
       {append && <span className="AppendedLabel">{append}</span>}
       {touched && ((error && <span className="help-block">{error}</span>))}
@@ -44,8 +117,6 @@ RenderContentModelInput.propTypes = {
   label: PropTypes.node,
   meta: PropTypes.shape({}),
   help: PropTypes.node,
-  disabled: PropTypes.bool,
-  type: PropTypes.string,
   labelSize: PropTypes.number,
   inputSize: PropTypes.number,
   prepend: PropTypes.node,
@@ -58,8 +129,6 @@ RenderContentModelInput.defaultProps = {
   label: '',
   meta: {},
   help: null,
-  disabled: false,
-  type: 'text',
   labelSize: 2,
   inputSize: null,
   append: '',
