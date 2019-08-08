@@ -20,7 +20,7 @@ const AddContentModelPage = () => (
             <BreadcrumbItem active>
               <FormattedMessage id="cms.title" defaultMessage="CMS" />
             </BreadcrumbItem>
-            <BreadcrumbItem active>
+            <BreadcrumbItem to="/cms/content-models">
               <FormattedMessage id="cms.contentmodel.title" defaultMessage="Content Models" />
             </BreadcrumbItem>
             <BreadcrumbItem active>

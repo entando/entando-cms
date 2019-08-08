@@ -41,7 +41,7 @@ class RenderDropdownTypeaheadInput extends Component {
         }
         <Col xs={inputSize || 12 - labelSize}>
           <DropdownButton
-            title={input.value[labelKey] || placeholder}
+            title={(input.value && input.value[labelKey]) || placeholder}
             id={input.name}
             className="DropdownTypeahead__dropdownbutton"
             onClick={this.typeaheadFocus}
@@ -86,7 +86,7 @@ RenderDropdownTypeaheadInput.propTypes = {
 
 RenderDropdownTypeaheadInput.defaultProps = {
   input: {},
-  label: 'Select...',
+  label: <span>Select...</span>,
   labelKey: 'label',
   meta: {},
   placeholder: 'Select...',

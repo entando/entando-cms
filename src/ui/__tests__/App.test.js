@@ -17,6 +17,7 @@ const props = {
 
 const STATE = {
   locale: 'en',
+  messages: [],
 };
 
 configEnzymeAdapter();
