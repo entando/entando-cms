@@ -18,6 +18,7 @@ const props = {
 const STATE = {
   locale: 'en',
   messages: [],
+  contentModel: { list: [] },
 };
 
 configEnzymeAdapter();

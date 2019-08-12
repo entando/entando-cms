@@ -12,7 +12,7 @@ import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
-import ContentModelList from 'ui/content-model/ContentModelList';
+import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
 
 const ContentModelListPage = () => (
   <CMSShell>
@@ -49,7 +49,7 @@ const ContentModelListPage = () => (
       </Row>
       <Row>
         <Col xs={12}>
-          <ContentModelList />
+          <ContentModelListContainer />
         </Col>
       </Row>
     </CardGrid>
