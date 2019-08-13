@@ -49,6 +49,11 @@ class AddContentModelFormBody extends Component {
     this.handleModalClose = this.handleModalClose.bind(this);
   }
 
+  componentDidMount() {
+    const { onDidMount } = this.props;
+    onDidMount();
+  }
+
   handleModalOpen() {
     this.setState({ modalOpened: true });
   }
@@ -117,7 +122,7 @@ class AddContentModelFormBody extends Component {
                 name="contentType"
                 label={<FormLabel labelId="cms.contentmodel.list.contentTypeHeader" helpId="cms.contentmodel.form.codeHelp" required />}
                 options={contentTypes}
-                labelKey="contentType"
+                labelKey="name"
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
               />
@@ -176,6 +181,7 @@ AddContentModelFormBody.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,
+  onDidMount: PropTypes.func.isRequired,
   submitting: PropTypes.bool,
   mode: PropTypes.string,
 };

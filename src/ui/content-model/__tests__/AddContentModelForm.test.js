@@ -12,6 +12,7 @@ import AddContentModelForm from 'ui/content-model/AddContentModelForm';
 configEnzymeAdapter();
 
 const PROPS = {
+  onDidMount: jest.fn(),
   handleSubmit: jest.fn(),
   contentTypes: [
     { contentType: 'Hello' },
@@ -27,6 +28,10 @@ describe('content-model/AddContentModelForm', () => {
 
   it('renders without crashing', () => {
     expect(component.exists()).toEqual(true);
+  });
+
+  it('called onDidMount', () => {
+    expect(PROPS.onDidMount).toHaveBeenCalled();
   });
 
   it('contains the modal', () => {
