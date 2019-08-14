@@ -17,3 +17,11 @@ export const getContentModels = (page = { page: 1, pageSize: 10 }, params = '') 
     page,
   )
 );
+
+export const postContentModel = contModelObject => makeRequest({
+  uri: contentModelsPath,
+  body: contModelObject,
+  method: METHODS.POST,
+  mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
+  useAuthentication: true,
+});

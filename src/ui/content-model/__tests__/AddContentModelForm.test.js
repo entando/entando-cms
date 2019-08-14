@@ -41,11 +41,11 @@ describe('content-model/AddContentModelForm', () => {
     expect(openModalBtn.exists()).toBe(true);
   });
 
-  it('contains the code, name, contentType, and stylesheet field', () => {
-    const field1 = component.find('Field[name="code"]');
+  it('contains the id, descr, contentType, and stylesheet field', () => {
+    const field1 = component.find('Field[name="id"]');
     const props1 = field1.at(0).props();
 
-    const field2 = component.find('Field[name="name"]');
+    const field2 = component.find('Field[name="descr"]');
     const props2 = field2.at(0).props();
 
     const field3 = component.find('Field[name="contentType"]');
@@ -65,7 +65,7 @@ describe('content-model/AddContentModelForm', () => {
   });
 
   it('contains the model field', () => {
-    const element = component.find('Field[name="model"]');
+    const element = component.find('Field[name="contentShape"]');
     expect(element.exists()).toBe(true);
     const props = element.at(0).props();
     expect(props).toHaveProperty('component', RenderContentModelInput);

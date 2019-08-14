@@ -4,6 +4,7 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
+import { sendPostContentModel } from 'state/content-model/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 
 import AddContentModelForm from 'ui/content-model/AddContentModelForm';
@@ -21,16 +22,23 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => dispatch(fetchContentTypeListPaged()),
-  onSubmit: (values) => {
-    dispatch(addToast(
-      intl.formatMessage(
-        contentModelMsgs.saved,
-        { modelname: values.name },
-      ),
-      TOAST_SUCCESS,
-    ));
-    history.push('/cms/content-models');
-  },
+  onSubmit: values => (
+    dispatch(sendPostContentModel({
+      ...values,
+      contentType: values.contentType.code,
+    })).then((res) => {
+      if (res) {
+        dispatch(addToast(
+          intl.formatMessage(
+            contentModelMsgs.saved,
+            { modelname: values.descr },
+          ),
+          TOAST_SUCCESS,
+        ));
+        history.push('/cms/content-models');
+      }
+    })
+  ),
 });
 
 const AddContentModelFormContainer = connect(
