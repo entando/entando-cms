@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Routes from 'app-init/Routes';
+import { Route } from 'react-router-dom';
 import {
   configEnzymeAdapter,
   mockRenderWithStore,
@@ -42,6 +42,6 @@ describe('App', () => {
 
   it('has <IntlProviderContainer> and <Routes> component instances', () => {
     expect(component.find(IntlProviderContainer).exists()).toBe(true);
-    expect(component.find(Routes).exists()).toBe(true);
+    expect(component.find(Route).exists()).toBe(true);
   });
 });
