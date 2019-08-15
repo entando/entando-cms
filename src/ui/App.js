@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
-import {
-  ROUTE_CMS,
-  ROUTE_CMS_CONTENTMODEL_LIST,
-} from 'app-init/routes';
-
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
+
+const ROUTE_CMS = '/cms';
+const ROUTE_CMS_CONTENTMODEL_LIST = '/cms/content-models';
 
 const routesDir = [
   {
