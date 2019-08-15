@@ -1,6 +1,7 @@
 import { createMockStore, mockApi } from 'testutils/helpers';
 import { setContentModelList, fetchContentModelListPaged, sendPostContentModel } from 'state/content-model/actions';
 import { SET_CONTENT_MODELS } from 'state/content-model/types';
+import { TOGGLE_LOADING } from 'state/loading/types';
 import { GET_CONTENT_MODELS_RESPONSE_OK } from 'testutils/mocks/contentModel';
 import { getContentModels, postContentModel } from 'api/contentModels';
 
@@ -31,8 +32,10 @@ describe('contentModel thunks', () => {
   it('fetchContentModelListPaged', (done) => {
     store.dispatch(fetchContentModelListPaged()).then(() => {
       const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', SET_CONTENT_MODELS);
-      expect(actions[0].payload.list).toEqual(['a', 'b']);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[0].payload.id).toEqual('contentModelList');
+      expect(actions[1]).toHaveProperty('type', SET_CONTENT_MODELS);
+      expect(actions[1].payload.list).toEqual(['a', 'b']);
       done();
     }).catch(done.fail);
   });
@@ -41,7 +44,8 @@ describe('contentModel thunks', () => {
     store.dispatch(fetchContentModelListPaged()).then(() => {
       expect(getContentModels).toHaveBeenCalled();
       const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
       done();
     }).catch(done.fail);
   });

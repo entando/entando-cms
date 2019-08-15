@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { sendPostContentModel } from 'state/content-model/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
+import { ROUTE_CMS_CONTENTMODEL_LIST } from 'app-init/routes';
 
 import AddContentModelForm from 'ui/content-model/AddContentModelForm';
 
@@ -35,7 +36,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
           ),
           TOAST_SUCCESS,
         ));
-        history.push('/cms/content-models');
+        history.push(ROUTE_CMS_CONTENTMODEL_LIST);
       }
     })
   ),
