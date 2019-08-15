@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router-dom';
 
+import Routes from 'app-init/Routes';
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
-import ContentModelListPage from 'ui/content-model/ContentModelListPage';
-
-const routesDir = [
-  {
-    path: '/cms/content-models',
-    component: ContentModelListPage,
-  },
-];
 
 class App extends Component {
   componentDidMount() {
@@ -19,18 +11,9 @@ class App extends Component {
   }
 
   render() {
-    const routes = routesDir.map(route => (
-      <Route exact key={route.path} {...route} />
-    ));
-
-    const defaultRedirect = () => <Redirect to="/cms/content-models" />;
-
     return (
       <IntlProviderContainer>
-        <>
-          <Route exact path="/" component={defaultRedirect} />
-          {routes}
-        </>
+        <Routes />
       </IntlProviderContainer>
     );
   }

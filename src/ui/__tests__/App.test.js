@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Route } from 'react-router-dom';
+import Routes from 'app-init/Routes';
 import {
   configEnzymeAdapter,
   mockRenderWithStore,
@@ -16,6 +16,7 @@ const props = {
 };
 
 const STATE = {
+  loading: {},
   locale: 'en',
   contentModel: { list: [] },
 };
@@ -39,8 +40,8 @@ describe('App', () => {
     expect(props.setupLanguage).toHaveBeenCalledWith('en');
   });
 
-  it('has <IntlProviderContainer> and <Route> component instances', () => {
+  it('has <IntlProviderContainer> and <Routes> component instances', () => {
     expect(component.find(IntlProviderContainer).exists()).toBe(true);
-    expect(component.find(Route).exists()).toBe(true);
+    expect(component.find(Routes).exists()).toBe(true);
   });
 });

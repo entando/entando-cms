@@ -4,6 +4,7 @@ import {
 } from 'state/content-model/types';
 
 import { getContentModels } from 'api/contentModels';
+import { toggleLoading } from 'state/loading/actions';
 
 export const setContentModelList = list => ({
   type: SET_CONTENT_MODELS,
@@ -11,6 +12,7 @@ export const setContentModelList = list => ({
 });
 
 export const fetchContentModelListPaged = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('contentModelList'));
   getContentModels(page, params).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
@@ -18,6 +20,7 @@ export const fetchContentModelListPaged = (page = { page: 1, pageSize: 10 }, par
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
       }
+      dispatch(toggleLoading('contentModelList'));
       resolve();
     });
   }).catch(() => {});

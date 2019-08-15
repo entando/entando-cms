@@ -4,6 +4,7 @@ const state = {
   contentModel: {
     list: [],
   },
+  loading: {},
 };
 
 describe('content-model/ContentModelListContainer', () => {

@@ -13,7 +13,10 @@ import ContentModelListContainer from 'ui/content-model/ContentModelListContaine
 
 configEnzymeAdapter();
 
-const initState = { contentModel: { list: [] } };
+const initState = {
+  loading: {},
+  contentModel: { list: [] },
+};
 
 let component;
 

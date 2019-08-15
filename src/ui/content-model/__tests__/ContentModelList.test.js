@@ -24,12 +24,8 @@ describe('content-model/ContentModelList', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('is a table', () => {
-    expect(component.is('table')).toBe(true);
-  });
-
   it('has class ContentModelList__table', () => {
-    expect(component.hasClass('ContentModelList__table')).toBe(true);
+    expect(component.find('.ContentModelList__table').exists()).toBe(true);
   });
 
   it('called onDidMount and load rows same length with contentModels', () => {

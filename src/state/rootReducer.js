@@ -4,6 +4,7 @@ import { reducer as form } from 'redux-form';
 
 import locale from 'state/locale/reducer';
 import contentModel from 'state/content-model/reducer';
+import loading from 'state/loading/reducer';
 import messages from 'state/messages/reducer';
 
 export default combineReducers({
@@ -11,6 +12,7 @@ export default combineReducers({
   contentModel,
   currentUser,
   form,
+  loading,
   locale,
   messages,
 });
