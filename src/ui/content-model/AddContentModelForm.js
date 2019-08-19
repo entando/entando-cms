@@ -194,6 +194,7 @@ AddContentModelFormBody.defaultProps = {
 
 const AddContentModelForm = reduxForm({
   form: 'contentmodelform',
+  enableReinitialize: true,
 })(AddContentModelFormBody);
 
 export default AddContentModelForm;

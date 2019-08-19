@@ -6,3 +6,8 @@ export const getContentModelList = createSelector(
   getContentModelState,
   contentModel => contentModel.list,
 );
+
+export const getContentModelOpened = createSelector(
+  getContentModelState,
+  contentModel => contentModel.opened,
+);
