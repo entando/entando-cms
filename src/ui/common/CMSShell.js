@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {
   BrandMenu,
   FirstLevelMenuItem,
+  LinkMenuItem,
 } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
-import LinkMenuItem from 'ui/common/menu-item/LinkMenuItem';
 
 const BRAND_LOGO = <img src="/images/entando-logo.svg" alt="" />;
 

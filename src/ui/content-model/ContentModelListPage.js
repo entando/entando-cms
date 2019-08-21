@@ -12,7 +12,8 @@ import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
-import ContentModelList from 'ui/content-model/ContentModelList';
+import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
+import { ROUTE_CMS_CONTENTMODEL_ADD } from 'app-init/routes';
 
 const ContentModelListPage = () => (
   <CMSShell>
@@ -40,7 +41,7 @@ const ContentModelListPage = () => (
         </Col>
         <Col xs={1} />
         <Col xs={2}>
-          <Link to="/cms/content-models/add">
+          <Link to={ROUTE_CMS_CONTENTMODEL_ADD}>
             <Button className="ContentModelList__addbutton">
               <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Model" />
             </Button>
@@ -49,7 +50,7 @@ const ContentModelListPage = () => (
       </Row>
       <Row>
         <Col xs={12}>
-          <ContentModelList />
+          <ContentModelListContainer />
         </Col>
       </Row>
     </CardGrid>

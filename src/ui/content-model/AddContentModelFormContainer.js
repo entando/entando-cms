@@ -3,6 +3,11 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
+import { fetchContentTypeListPaged } from 'state/content-type/actions';
+import { sendPostContentModel } from 'state/content-model/actions';
+import { getContentTypeList } from 'state/content-type/selectors';
+import { ROUTE_CMS_CONTENTMODEL_LIST } from 'app-init/routes';
+
 import AddContentModelForm from 'ui/content-model/AddContentModelForm';
 
 const contentModelMsgs = defineMessages({
@@ -12,30 +17,29 @@ const contentModelMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = () => ({
-  contentTypes: [
-    {
-      id: 10013,
-      contentType: 'Generic Content',
-    },
-    {
-      id: 10002,
-      contentType: 'News',
-    },
-  ],
+export const mapStateToProps = state => ({
+  contentTypes: getContentTypeList(state),
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
-  onSubmit: (values) => {
-    dispatch(addToast(
-      intl.formatMessage(
-        contentModelMsgs.saved,
-        { modelname: values.name },
-      ),
-      TOAST_SUCCESS,
-    ));
-    history.push('/cms/content-models');
-  },
+  onDidMount: () => dispatch(fetchContentTypeListPaged()),
+  onSubmit: values => (
+    dispatch(sendPostContentModel({
+      ...values,
+      contentType: values.contentType.code,
+    })).then((res) => {
+      if (res) {
+        dispatch(addToast(
+          intl.formatMessage(
+            contentModelMsgs.saved,
+            { modelname: values.descr },
+          ),
+          TOAST_SUCCESS,
+        ));
+        history.push(ROUTE_CMS_CONTENTMODEL_LIST);
+      }
+    })
+  ),
 });
 
 const AddContentModelFormContainer = connect(

@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
 import ContentListPage from 'ui/content/list/ContentListPage';
+import {
+  ROUTE_CMS,
+  ROUTE_CMS_CONTENTMODEL_LIST,
+  ROUTE_CMS_CONTENTMODEL_ADD,
+} from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
@@ -17,13 +22,20 @@ const routesDir = [
   },
   {
     path: '/cms/content-models',
+    path: ROUTE_CMS_CONTENTMODEL_LIST,
     component: ContentModelListPage,
   },
   {
-    path: '/cms/content-models/add',
+    path: ROUTE_CMS_CONTENTMODEL_ADD,
     component: AddContentModelPage,
   },
 ];
+
+const routes = routesDir.map(route => (
+  <Route exact key={route.path} {...route} />
+));
+
+const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
 
 class App extends Component {
   componentDidMount() {
@@ -43,6 +55,7 @@ class App extends Component {
         <>
           <ToastsContainer />
           <Route exact path="/" component={defaultRedirect} />
+          <Route exact path={ROUTE_CMS} component={defaultRedirect} />
           {routes}
         </>
       </IntlProviderContainer>

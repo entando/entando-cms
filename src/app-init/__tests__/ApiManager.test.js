@@ -43,6 +43,7 @@ jest.mock('api/login', () => ({
 
 jest.spyOn(ApiManager.prototype, 'isUserLogged');
 jest.spyOn(ApiManager.prototype, 'announceMockMode');
+jest.spyOn(ApiManager.prototype, 'performAutoLogin');
 
 let store;
 let component;
@@ -66,6 +67,7 @@ describe('ApiManager', () => {
     expect(getUsername).toHaveBeenCalled();
     expect(getToken).toHaveBeenCalled();
     expect(ApiManager.prototype.isUserLogged).toHaveBeenCalled();
+    expect(ApiManager.prototype.performAutoLogin).toHaveBeenCalled();
     expect(login).toHaveBeenCalledWith('admin', 'adminadmin');
     expect(loginUser).toHaveBeenCalledWith('admin', 'oioioi');
   });

@@ -76,7 +76,7 @@ const RenderContentModelInput = ({
   input, meta: { touched, error }, label, help,
   labelSize, inputSize, append, prepend, alignClass,
 }) => (
-  <div className={(touched && error) ? 'DropdownTypeahead form-group has-error' : 'DropdownTypeahead form-group'}>
+  <div className={(touched && error) ? 'form-group has-error' : 'form-group'}>
     {
       labelSize > 0 ? (
         <Col xs={labelSize} className={alignClass}>
@@ -126,7 +126,7 @@ RenderContentModelInput.propTypes = {
 
 RenderContentModelInput.defaultProps = {
   input: {},
-  label: '',
+  label: <span />,
   meta: {},
   help: null,
   labelSize: 2,

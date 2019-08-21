@@ -16,7 +16,10 @@ const props = {
 };
 
 const STATE = {
+  loading: {},
   locale: 'en',
+  messages: [],
+  contentModel: { list: [] },
 };
 
 configEnzymeAdapter();
@@ -38,7 +41,7 @@ describe('App', () => {
     expect(props.setupLanguage).toHaveBeenCalledWith('en');
   });
 
-  it('has <IntlProviderContainer> and <Route> component instances', () => {
+  it('has <IntlProviderContainer> and <Routes> component instances', () => {
     expect(component.find(IntlProviderContainer).exists()).toBe(true);
     expect(component.find(Route).exists()).toBe(true);
   });

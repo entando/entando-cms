@@ -1,29 +1,47 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
-import { configEnzymeAdapter } from 'testutils/helpers';
+import {
+  configEnzymeAdapter,
+  mockRenderWithIntl,
+  mockRenderWithRouter,
+  createMockHistory,
+} from 'testutils/helpers';
 
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
-import ContentModelList from 'ui/content-model/ContentModelList';
+import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
 
 configEnzymeAdapter();
+
+const initState = {
+  loading: {},
+  contentModel: { list: [] },
+};
 
 let component;
 
 describe('content-model/ContentModelListPage', () => {
   beforeEach(() => {
-    component = shallow(<ContentModelListPage />);
+    component = mount(
+      mockRenderWithRouter(
+        mockRenderWithIntl(
+          <ContentModelListPage />,
+          initState,
+        ),
+        createMockHistory(),
+      ),
+    );
   });
 
   it('renders without crashing', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('is CMSShell', () => {
-    expect(component.is('CMSShell')).toBe(true);
+  it('has CMSShell', () => {
+    expect(component.find('CMSShell').exists()).toBe(true);
   });
 
-  it('contains ContentModelList', () => {
-    expect(component.find(ContentModelList).exists()).toBe(true);
+  it('contains ContentModelListContainer', () => {
+    expect(component.find(ContentModelListContainer).exists()).toBe(true);
   });
 });

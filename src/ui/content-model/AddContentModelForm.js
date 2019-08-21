@@ -49,6 +49,11 @@ class AddContentModelFormBody extends Component {
     this.handleModalClose = this.handleModalClose.bind(this);
   }
 
+  componentDidMount() {
+    const { onDidMount } = this.props;
+    onDidMount();
+  }
+
   handleModalOpen() {
     this.setState({ modalOpened: true });
   }
@@ -99,7 +104,7 @@ class AddContentModelFormBody extends Component {
               </legend>
               <Field
                 component={RenderTextInput}
-                name="code"
+                name="id"
                 label={
                   <FormLabel labelId="cms.contentmodel.form.code" helpId="cms.contentmodel.form.codeHelp" required />
                 }
@@ -108,7 +113,7 @@ class AddContentModelFormBody extends Component {
               />
               <Field
                 component={RenderTextInput}
-                name="name"
+                name="descr"
                 label={<FormLabel labelId="cms.label.name" helpId="cms.contentmodel.form.codeHelp" required />}
                 validate={[required, maxLength70]}
               />
@@ -117,7 +122,7 @@ class AddContentModelFormBody extends Component {
                 name="contentType"
                 label={<FormLabel labelId="cms.contentmodel.list.contentTypeHeader" helpId="cms.contentmodel.form.codeHelp" required />}
                 options={contentTypes}
-                labelKey="contentType"
+                labelKey="name"
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
               />
@@ -125,7 +130,7 @@ class AddContentModelFormBody extends Component {
           </Col>
           <Col xs={12}>
             <Field
-              name="model"
+              name="contentShape"
               label={<FormLabel labelId="cms.contentmodel.form.htmlmodel" helpId="cms.contentmodel.form.codeHelp" required />}
               prepend={(
                 <>
@@ -176,6 +181,7 @@ AddContentModelFormBody.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,
+  onDidMount: PropTypes.func.isRequired,
   submitting: PropTypes.bool,
   mode: PropTypes.string,
 };
