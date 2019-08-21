@@ -14,6 +14,7 @@ import {
   postContentModel,
   getContentModel,
   putContentModel,
+  deleteContentModel,
 } from 'api/contentModels';
 import { toggleLoading } from 'state/loading/actions';
 
@@ -75,6 +76,21 @@ export const fetchContentModel = id => dispatch => new Promise(resolve => (
 
 export const sendPutContentModel = contModelObject => dispatch => new Promise(resolve => (
   putContentModel(contModelObject).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        resolve(json.payload);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+        dispatch(clearErrors());
+        resolve();
+      }
+    });
+  }).catch(() => {})
+));
+
+export const sendDeleteContentModel = id => dispatch => new Promise(resolve => (
+  deleteContentModel(id).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         resolve(json.payload);

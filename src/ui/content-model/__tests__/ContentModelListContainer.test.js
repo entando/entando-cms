@@ -14,7 +14,8 @@ describe('content-model/ContentModelListContainer', () => {
   });
 
   it('maps dispatch property', () => {
-    const props = mapDispatchToProps({});
+    const props = mapDispatchToProps({}, { intl: {} });
     expect(props).toHaveProperty('onDidMount');
+    expect(props).toHaveProperty('onConfirmDelete');
   });
 });

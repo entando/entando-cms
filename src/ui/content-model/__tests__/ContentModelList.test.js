@@ -28,6 +28,10 @@ describe('content-model/ContentModelList', () => {
     expect(component.find('.ContentModelList__table').exists()).toBe(true);
   });
 
+  it('has class ContentModelList__table', () => {
+    expect(component.find('Modal').exists()).toBe(true);
+  });
+
   it('called onDidMount and load rows same length with contentModels', () => {
     expect(props.onDidMount).toHaveBeenCalled();
     expect(component.find('ContentModelListItem')).toHaveLength(contentModels.length);
