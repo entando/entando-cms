@@ -1,0 +1,22 @@
+export default {
+  locale: 'it',
+  messages: {
+    'cms.title': 'CMS',
+    'cms.label.delete': 'Elimina',
+    'cms.menu.dashboard': 'Dashboard',
+    'cms.menu.cms': 'CMS',
+    'cms.menu.contentlist': 'Contenuti',
+    'cms.menu.contenttypes': 'Tipi di Contenuto',
+    'cms.menu.contentmodels': 'Modelli di Contenuto',
+    'cms.menu.contentsettings': 'Impostazione Contenuti',
+    'cms.contentmodel.title': 'Modelli di Contenuto',
+    'cms.contentmodel.titletip': 'Puoi creare un modello di contenuto qui',
+    'cms.contentmodel.searchPlaceholder': 'Cerca Modello di Contenuto',
+    'cms.contentmodel.searchFilter.label': 'Cercato da',
+    'cms.contentmodel.searchFilter.valueName': 'Nome',
+    'cms.contentmodel.addbuttonlabel': 'Aggiungere',
+    'cms.contentmodel.list.contentTypeHeader': 'Tipo di contenuto',
+    'cms.contentmodel.list.contentModelNameHeader': 'Nome Modello di Contenuto',
+    'cms.contentmodel.list.actionsHeader': 'Azioni',
+  },
+};

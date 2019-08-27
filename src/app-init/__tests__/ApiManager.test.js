@@ -1,9 +1,6 @@
 import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 
-import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
 import {
   setApi,
   loginUser,
@@ -12,18 +9,13 @@ import {
   getToken,
 } from '@entando/apimanager';
 import { addToast } from '@entando/messages';
+
+import { createMockStore, configEnzymeAdapter } from 'testutils/helpers';
 import { login } from 'api/login';
 
 import ApiManager from 'app-init/ApiManager';
 
-configure({ adapter: new Adapter() });
-
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
-
-const createMockStore = (state = {}) => (
-  mockStore(state)
-);
+configEnzymeAdapter();
 
 process.env.NODE_ENV = 'development';
 
@@ -51,6 +43,7 @@ jest.mock('api/login', () => ({
 
 jest.spyOn(ApiManager.prototype, 'isUserLogged');
 jest.spyOn(ApiManager.prototype, 'announceMockMode');
+jest.spyOn(ApiManager.prototype, 'performAutoLogin');
 
 let store;
 let component;
@@ -74,6 +67,7 @@ describe('ApiManager', () => {
     expect(getUsername).toHaveBeenCalled();
     expect(getToken).toHaveBeenCalled();
     expect(ApiManager.prototype.isUserLogged).toHaveBeenCalled();
+    expect(ApiManager.prototype.performAutoLogin).toHaveBeenCalled();
     expect(login).toHaveBeenCalledWith('admin', 'adminadmin');
     expect(loginUser).toHaveBeenCalledWith('admin', 'oioioi');
   });

@@ -1,0 +1,58 @@
+.CMSShell {
+  margin-bottom: 20px;
+
+  // sass-lint:disable class-name-format
+  .breadcrumb {
+    margin-bottom: 0;
+    border-bottom: 1px solid $color-pf-black-300;
+  }
+  // sass-lint:enable class-name-format
+
+  &__page-title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid $color-pf-black-300;
+    font-weight: bold;
+  }
+}
+
+.BrandMenu__navbar-brand.navbar-brand { // sass-lint:disable-line force-element-nesting class-name-format
+  img {
+    display: inline-block;
+    height: 15px;
+    margin: 2px auto;
+    vertical-align: top;
+  }
+}
+
+.FirstLevelMenuItem {
+  span .fa { // sass-lint:disable-line force-element-nesting class-name-format
+    padding-right: 8px;
+  }
+}
+
+.LinkMenuItem {
+  span .fa { // sass-lint:disable-line force-element-nesting class-name-format
+    padding-right: 8px;
+  }
+}
+
+.HomePageLink {
+  &__icon {
+    padding-right: 4px;
+  }
+
+  &__link {
+    color: $color-pf-white;
+    text-decoration: none;
+  }
+
+  &__link:hover {
+    color: $color-pf-white;
+    text-decoration: none;
+  }
+
+  &__link:visited {
+    color: $color-pf-white;
+    text-decoration: none;
+  }
+}

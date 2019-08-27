@@ -1,0 +1,120 @@
+
+@import "~patternfly/dist/sass/patternfly/variables";
+
+// breakpoints
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-lg-min: 1200px;
+
+// other colors
+$color-widget-title-bg-color: #e0e0db;
+$color-rating-filter-text-hover: #c45500;
+$color-rating-selected: #dff3fe;
+$color-rating-filter-star-empty: #979797;
+$color-rating-filter-star-filled: #f1c857;
+$color-icon-gray: #939597;
+$color-dark-grey: #4D5258;
+$color-light-blue: #39A5DC;
+$color-black: #000000;
+$color-white: #ffffff;
+$color-sidebar-filter-bg-grey: #E7E7E7;
+$color-sidebar-filter-border-grey: #DEDEDE;
+$color-de-component-date: #00B9F7;
+$colod-de-component-text-grey: #828282;
+$color-de-component-tab-bar-bg-grey: #D8D8D8;
+$color-de-component-dark-grey: #4F4F4F;
+$color-de-component-installed-button: #3F9C35;
+$color-de-component-installed-button-border: #E0E0E0;
+$color-de-component-inprogress-button: #f1c857;
+$color-de-component-failed-button: #c45500;
+$color-de-list-icon-active: #363636;
+$color-de-list-icon: #BBBBBB;
+$color-de-component-border: #C3C3C3;
+
+//FontAwesome icons
+$fa-check: "\f00c";
+$fa-exclamation: "\f12a";
+$fa-spinner: "\f110";
+$fa-ban: "\f05e";
+$fa-sitemap: "\f0e8";
+$fa-angle-right: "\f105";
+$fa-angle-double-left: "\f100";
+$fa-angle-double-right: "\f101";
+$fa-times: "\f00d";
+$fa-check-square: "\f14a";
+$fa-check-square-o: "\f046";
+$fa-square: "\f0c8";
+$fa-square-o: "\f096";
+
+// Bootstrap custom styles
+// sass-lint:disable class-name-format
+.btn-entando-apply,
+.btn-entando-apply:hover,
+.btn-entando-apply:focus {
+  border-color: $color-pf-blue;
+  background: $color-pf-black-200;
+  color: $color-pf-blue;
+  font-weight: normal;
+}
+
+.btn-entando-apply:hover,
+.btn-entando-apply:focus {
+  background: $color-pf-black-100;
+}
+
+.btn-transparent {
+  border: 0;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+
+  &:hover,
+  &:active {
+    color: $color-pf-blue-300;
+  }
+
+  &:hover,
+  &:active,
+  &:disabled {
+    background: transparent !important; // sass-lint:disable-line no-important
+  }
+}
+
+.CodeMirror {
+  border: 1px solid $color-pf-black-400;
+}
+
+.has-error {
+  .CodeMirror,
+  &.CodeMirror {
+    border: 1px solid $color-pf-red;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px $color-pf-red-100;
+  }
+}
+
+.no-gutter {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.no-gutter > [class*="col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+// Use this on wrapper elements to make children's heights equal.
+.equal {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+// use this when removing body scrolls if you want to focus certain scroll event on an element
+.no-scroll {
+  overflow: hidden;
+}
+
+// sass-lint:enable class-name-format

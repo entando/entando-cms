@@ -14,9 +14,17 @@ import { addErrors, addToast, TOAST_WARNING } from '@entando/messages';
 import { login } from 'api/login';
 
 class ApiManager extends Component {
-  componentDidMount() {
-    const { store } = this.props;
-    config(store);
+  constructor(props) {
+    super(props);
+    this.performAutoLogin = this.performAutoLogin.bind(this);
+    this.initApiManager(props);
+  }
+
+  initApiManager(props) {
+    const { store } = props;
+    const loggedIn = this.reloadWithDelay;
+    const loggedOut = this.performAutoLogin;
+    config(store, loggedIn, loggedOut);
 
     const { dispatch, getState } = store;
 
@@ -37,6 +45,14 @@ class ApiManager extends Component {
     if (devMode && !mockMode && !this.isUserLogged()) {
       this.performAutoLogin();
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  reloadWithDelay() {
+    setTimeout(
+      () => window.location.reload(),
+      500,
+    );
   }
 
   isUserLogged() {
