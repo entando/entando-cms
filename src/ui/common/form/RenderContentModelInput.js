@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
-import ace from 'brace'; // eslint-disable-line import/no-extraneous-dependencies
+import ace from 'brace';
 import { Col, ControlLabel } from 'patternfly-react';
 
-/* eslint-disable import/no-extraneous-dependencies */
 import 'brace/mode/html';
 import 'brace/theme/tomorrow';
 import 'brace/snippets/html';
 import 'brace/ext/language_tools';
-/* eslint-enable import/no-extraneous-dependencies */
 
 const langTools = ace.acequire('ace/ext/language_tools');
 
