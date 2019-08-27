@@ -5,15 +5,23 @@ import { Route, Redirect } from 'react-router-dom';
 import {
   ROUTE_CMS,
   ROUTE_CMS_CONTENTMODEL_LIST,
+  ROUTE_CMS_CONTENTMODEL_ADD,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
+import AddContentModelPage from 'ui/content-model/AddContentModelPage';
+
+import ToastsContainer from 'ui/toast/ToastsContainer';
 
 const routesDir = [
   {
     path: ROUTE_CMS_CONTENTMODEL_LIST,
     component: ContentModelListPage,
+  },
+  {
+    path: ROUTE_CMS_CONTENTMODEL_ADD,
+    component: AddContentModelPage,
   },
 ];
 
@@ -33,6 +41,7 @@ class App extends Component {
     return (
       <IntlProviderContainer>
         <>
+          <ToastsContainer />
           <Route exact path="/" component={defaultRedirect} />
           <Route exact path={ROUTE_CMS} component={defaultRedirect} />
           {routes}

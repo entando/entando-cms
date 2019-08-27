@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "brace": "^0.11.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "history": "^4.9.0",
     "prop-types": "^15.6.0",
     "react": "^16.8.6",
+    "react-ace": "^7.0.2",
+    "react-bootstrap-typeahead": "^3.4.6",
     "react-dom": "^16.8.6",
+    "react-draggable": "^3.3.0",
     "react-intl": "^2.8.0",
     "react-redux": "^7.0.1",
     "react-scripts": "2.1.8",
@@ -102,10 +106,12 @@
     "@entando/apimanager": "^3.0.2",
     "@entando/messages": "^1.0.4",
     "@entando/menu": "^2.0.0",
+    "@entando/utils": "^2.0.0",
     "lodash": "^4.17.10",
     "react-patternfly": "^1.0.0",
     "react-router-dom": "^5.0.0",
     "patternfly": "^3.45.0",
-    "patternfly-react": "^1.19.1"
+    "patternfly-react": "^1.19.1",
+    "react-bootstrap": "^0.32.1"
   }
 }

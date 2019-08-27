@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Row,
   Col,
@@ -12,6 +13,7 @@ import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
 import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
+import { ROUTE_CMS_CONTENTMODEL_ADD } from 'app-init/routes';
 
 const ContentModelListPage = () => (
   <CMSShell>
@@ -39,9 +41,11 @@ const ContentModelListPage = () => (
         </Col>
         <Col xs={1} />
         <Col xs={2}>
-          <Button className="ContentModelList__addbutton">
-            <FormattedMessage id="cms.contentmodel.addbuttonlabel" defaultMessage="Add Content Model" />
-          </Button>
+          <Link to={ROUTE_CMS_CONTENTMODEL_ADD}>
+            <Button className="ContentModelList__addbutton">
+              <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Model" />
+            </Button>
+          </Link>
         </Col>
       </Row>
       <Row>

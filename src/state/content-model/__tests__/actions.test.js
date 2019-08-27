@@ -1,9 +1,9 @@
 import { createMockStore, mockApi } from 'testutils/helpers';
-import { setContentModelList, fetchContentModelListPaged } from 'state/content-model/actions';
+import { setContentModelList, fetchContentModelListPaged, sendPostContentModel } from 'state/content-model/actions';
 import { SET_CONTENT_MODELS } from 'state/content-model/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { GET_CONTENT_MODELS_RESPONSE_OK } from 'testutils/mocks/contentModel';
-import { getContentModels } from 'api/contentModels';
+import { getContentModels, postContentModel } from 'api/contentModels';
 
 const list = GET_CONTENT_MODELS_RESPONSE_OK;
 
@@ -16,6 +16,7 @@ const CONTMODEL_SET_PARAMS = {
 
 jest.mock('api/contentModels', () => ({
   getContentModels: jest.fn(mockApi({ payload: ['a', 'b'] })),
+  postContentModel: jest.fn(res => mockApi({ payload: res })()),
 }));
 
 it('test setContentModelList action', () => {
@@ -45,6 +46,24 @@ describe('contentModel thunks', () => {
       const actions = store.getActions();
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      done();
+    }).catch(done.fail);
+  });
+  it('sendPostContentModel', (done) => {
+    const tosend = { a: 1, contentType: 'YO' };
+    store.dispatch(sendPostContentModel(tosend)).then((res) => {
+      expect(postContentModel).toHaveBeenCalledWith(tosend);
+      expect(res).toEqual(tosend);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendPostContentModel error', (done) => {
+    postContentModel.mockImplementationOnce(mockApi({ errors: true }));
+    const tosend = { a: 1, contentType: 'YO' };
+    store.dispatch(sendPostContentModel(tosend)).then((res) => {
+      expect(postContentModel).toHaveBeenCalledWith(tosend);
+      expect(res).toEqual(undefined);
       done();
     }).catch(done.fail);
   });

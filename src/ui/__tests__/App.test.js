@@ -18,6 +18,7 @@ const props = {
 const STATE = {
   loading: {},
   locale: 'en',
+  messages: [],
   contentModel: { list: [] },
 };
 
