@@ -4,6 +4,17 @@ This project contains the `App Builder` screens for the CMS app of entando.
 
 ---
 
+# Configuration example
+
+Put following config into `.env.local` file to configure your app for local development:
+```
+NODE_PATH=src/
+REACT_APP_DOMAIN=http://localhost:8080/pwa-provider
+REACT_APP_USE_MOCKS=false
+REACT_APP_CLIENT_ID=appbuilder
+REACT_APP_CLIENT_SECRET=appbuilder_secret
+```
+
 # Integration with app-builder
 
 The screens won't be currently integrated within app builder until the integration story has been completed.

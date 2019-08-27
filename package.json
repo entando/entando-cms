@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "brace": "^0.11.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "history": "^4.9.0",
@@ -110,6 +111,7 @@
     "react-patternfly": "^1.0.0",
     "react-router-dom": "^5.0.0",
     "patternfly": "^3.45.0",
-    "patternfly-react": "^1.19.1"
+    "patternfly-react": "^1.19.1",
+    "react-bootstrap": "^0.32.1"
   }
 }
