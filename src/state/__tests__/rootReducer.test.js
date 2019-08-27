@@ -5,7 +5,7 @@ const state = reducer();
 describe('root reducer store', () => {
   it('contains the correct number of states', () => {
     expect(state).toBeInstanceOf(Object);
-    expect(Object.keys(state)).toHaveLength(8);
+    expect(Object.keys(state)).toHaveLength(9);
   });
 
   it('contains the redux form state', () => {

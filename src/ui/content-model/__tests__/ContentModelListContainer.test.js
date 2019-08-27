@@ -16,6 +16,6 @@ describe('content-model/ContentModelListContainer', () => {
   it('maps dispatch property', () => {
     const props = mapDispatchToProps({}, { intl: {} });
     expect(props).toHaveProperty('onDidMount');
-    expect(props).toHaveProperty('onConfirmDelete');
+    expect(props).toHaveProperty('onClickDelete');
   });
 });

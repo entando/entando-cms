@@ -49,6 +49,6 @@ export const putContentModel = contModelObject => makeRequest({
 export const deleteContentModel = id => makeRequest({
   uri: `${contentModelsPath}/${id}`,
   method: METHODS.DELETE,
-  mockResponse: { code: '<contenTModelId>' },
+  mockResponse: { code: '<contentModelId>' },
   useAuthentication: true,
 });

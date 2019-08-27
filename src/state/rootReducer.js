@@ -7,6 +7,7 @@ import { messages } from '@entando/messages';
 import contentModel from 'state/content-model/reducer';
 import contentType from 'state/content-type/reducer';
 import loading from 'state/loading/reducer';
+import modal from 'state/modal/reducer';
 
 export default combineReducers({
   api,
@@ -17,4 +18,5 @@ export default combineReducers({
   loading,
   locale,
   messages,
+  modal,
 });

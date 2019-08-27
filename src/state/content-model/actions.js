@@ -94,6 +94,7 @@ export const sendDeleteContentModel = id => dispatch => new Promise(resolve => (
     response.json().then((json) => {
       if (response.ok) {
         resolve(json.payload);
+        dispatch(fetchContentModelListPaged());
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
         json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));

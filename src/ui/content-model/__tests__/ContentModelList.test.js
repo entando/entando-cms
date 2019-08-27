@@ -11,6 +11,7 @@ configEnzymeAdapter();
 const props = {
   contentModels,
   onDidMount: jest.fn(),
+  onClickDelete: () => {},
 };
 
 let component;
@@ -26,10 +27,6 @@ describe('content-model/ContentModelList', () => {
 
   it('has class ContentModelList__table', () => {
     expect(component.find('.ContentModelList__table').exists()).toBe(true);
-  });
-
-  it('has class ContentModelList__table', () => {
-    expect(component.find('Modal').exists()).toBe(true);
   });
 
   it('called onDidMount and load rows same length with contentModels', () => {

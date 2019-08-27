@@ -83,7 +83,7 @@ describe('api/contentModels', () => {
     expect(makeRequest).toHaveBeenCalledWith({
       uri: '/api/plugins/cms/contentmodels/1',
       method: 'DELETE',
-      mockResponse: { code: '<contenTModelId>' },
+      mockResponse: { code: '<contentModelId>' },
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);
