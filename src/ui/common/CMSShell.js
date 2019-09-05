@@ -6,6 +6,10 @@ import {
   LinkMenuItem,
 } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
+import {
+  ROUTE_CMS_CONTENTMODEL_LIST,
+  ROUTE_CMS_CONTENTTYPE_LIST,
+} from 'app-init/routes';
 
 const BRAND_LOGO = <img src="/images/entando-logo.svg" alt="" />;
 
@@ -29,12 +33,12 @@ const CMSShell = ({ className, children }) => (
         <LinkMenuItem
           id="menu-content-type"
           label={<FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />}
-          to="/cms/content-list"
+          to={ROUTE_CMS_CONTENTTYPE_LIST}
         />
         <LinkMenuItem
           id="menu-content-model"
           label={<FormattedMessage id="cms.menu.contentmodels" defaultMessage="Content Models" />}
-          to="/cms/content-models"
+          to={ROUTE_CMS_CONTENTMODEL_LIST}
         />
         <LinkMenuItem
           id="menu-content-settings"

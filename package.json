@@ -29,11 +29,6 @@
     "eject": "react-scripts eject",
     "coverage": "react-scripts test --coverage"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage"
-    }
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -112,6 +107,8 @@
     "react-router-dom": "^5.0.0",
     "patternfly": "^3.45.0",
     "patternfly-react": "^1.19.1",
-    "react-bootstrap": "^0.32.1"
+    "react-bootstrap": "^0.32.1",
+    "moment": "^2.22.1",
+    "react-datepicker": "^1.4.1"
   }
 }
