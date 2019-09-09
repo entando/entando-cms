@@ -39,7 +39,7 @@ import {
 } from 'state/content-type/const';
 
 export class EditAttributeFormBody extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { onWillMount } = this.props;
     onWillMount(this.props);
   }

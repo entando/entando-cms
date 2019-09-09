@@ -31,7 +31,7 @@ import MonolistAttributeForm from 'ui/common/form/MonolistAttributeForm';
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state),
   attributeCode: params.attributeCode,
-  dataTypeCode: params.entityCode,
+  contentTypeCode: params.entityCode,
   isIndexable: formValueSelector('monoListAttribute')(state, 'nestedAttribute.indexable'),
   type: formValueSelector('monoListAttribute')(state, 'nestedAttribute.type'),
   selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
@@ -42,7 +42,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 
 
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
-  onWillMount: ({ attributeCode, dataTypeCode, mode }) => {
+  onWillMount: ({ attributeCode, contentTypeCode, mode }) => {
     dispatch(clearErrors());
     if (mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(fetchContentTypeAttribute(
@@ -51,7 +51,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
           history.push(
             routeConverter(
               ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
-              { entityCode: dataTypeCode, attributeCode },
+              { entityCode: contentTypeCode, attributeCode },
             ),
           )
         ),
@@ -59,13 +59,13 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
         'monoListAttribute',
       ));
     } else {
-      dispatch(fetchAttributeFromContentType('monoListAttribute', dataTypeCode, attributeCode));
+      dispatch(fetchAttributeFromContentType('monoListAttribute', contentTypeCode, attributeCode));
     }
   },
   onSubmit: (values) => {
     dispatch(sendPutAttributeFromContentTypeMonolist(values, params.entityCode, history));
   },
-  onAddAttribute: ({ dataTypeCode, type }) => {
+  onAddAttribute: ({ contentTypeCode, type }) => {
     dispatch(setActionMode(MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE));
     dispatch(fetchContentTypeAttribute(
       type,
@@ -73,7 +73,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
         history.push(
           routeConverter(
             ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode: dataTypeCode },
+            { entityCode: contentTypeCode },
           ),
         )
       ),

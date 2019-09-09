@@ -32,7 +32,7 @@ import {
 } from 'state/content-type/const';
 
 export class AttributeFormBody extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { onWillMount } = this.props;
     onWillMount();
   }

@@ -1,6 +1,7 @@
 import { makeRequest, METHODS } from '@entando/apimanager';
 import {
   GET_CONTENT_TYPES_RESPONSE_OK,
+  CONTENT_TYPES_DELETE_OK,
   CONTENT_TYPES_ATTRIBUTES,
   CONTENT_TYPE_ATTRIBUTE,
   ATTRIBUTE_CONTENT_TYPES_DELETE_OK,
@@ -27,6 +28,30 @@ export const getContentType = contentTypeCode => makeRequest({
   uri: `${contentTypePath}/${contentTypeCode}`,
   method: METHODS.GET,
   mockResponse: GET_CONTENT_TYPES_RESPONSE_OK[0],
+  useAuthentication: true,
+});
+
+export const postContentType = contentTypeObject => makeRequest({
+  uri: contentTypePath,
+  body: contentTypeObject,
+  method: METHODS.POST,
+  mockResponse: GET_CONTENT_TYPES_RESPONSE_OK[0],
+  useAuthentication: true,
+});
+
+export const putContentType = contentTypeObject => makeRequest({
+  uri: contentTypePath,
+  body: contentTypeObject,
+  method: METHODS.PUT,
+  mockResponse: GET_CONTENT_TYPES_RESPONSE_OK[0],
+  useAuthentication: true,
+});
+
+export const deleteContentType = contentTypeCode => makeRequest({
+  uri: `${contentTypePath}/${contentTypeCode}`,
+  body: contentTypeCode,
+  method: METHODS.DELETE,
+  mockResponse: CONTENT_TYPES_DELETE_OK,
   useAuthentication: true,
 });
 

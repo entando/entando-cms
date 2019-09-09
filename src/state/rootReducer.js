@@ -8,6 +8,7 @@ import contentModel from 'state/content-model/reducer';
 import contentType from 'state/content-type/reducer';
 import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
+import pagination from 'state/pagination/reducer';
 
 export default combineReducers({
   api,
@@ -19,4 +20,5 @@ export default combineReducers({
   locale,
   messages,
   modal,
+  pagination,
 });

@@ -42,7 +42,7 @@ const NO_INFO_ATTRIBUTE = [
 ];
 
 export class MonolistAttributeFormBody extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { onWillMount, ...allprops } = this.props;
     onWillMount(allprops);
   }

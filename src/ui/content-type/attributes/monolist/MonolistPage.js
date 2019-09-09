@@ -21,7 +21,7 @@ import {
 import { TYPE_COMPOSITE, TYPE_MONOLIST } from 'state/content-type/const';
 
 class MonolistPage extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { onWillMount, ...otherProps } = this.props;
     onWillMount(otherProps);
   }

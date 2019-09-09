@@ -12,13 +12,15 @@ class RenderDatePickerInput extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
-    this.props.onWillMount();
+  componentDidMount() {
+    const { onWillMount, ...otherProps } = this.props;
+    onWillMount(otherProps);
   }
 
   handleChange(date) {
-    const value = !isNull(date) ? date.format(this.props.dateFormat) : '';
-    this.props.input.onChange(value);
+    const { dateFormat, input } = this.props;
+    const value = !isNull(date) ? date.format(dateFormat) : '';
+    input.onChange(value);
   }
 
   render() {
@@ -27,7 +29,7 @@ class RenderDatePickerInput extends Component {
     } = this.props;
 
     return (
-      <div className="form-group" >
+      <div className="form-group">
         <label htmlFor={name} className="col-xs-2 control-label">
           {label} {help}
         </label>
@@ -35,7 +37,7 @@ class RenderDatePickerInput extends Component {
           <DatePicker
             {...input}
             placeholder={placeholder}
-            selected={input.value ? moment(input.value, this.props.dateFormat) : null}
+            selected={input.value ? moment(input.value, dateFormat) : null}
             onChange={this.handleChange}
             disabledKeyboardNavigation
             locale={locale}

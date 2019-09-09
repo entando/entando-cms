@@ -1,7 +1,13 @@
 import { METHODS } from '@entando/apimanager';
-import { addErrors } from '@entando/messages';
+import {
+  addErrors,
+  addToast,
+  clearErrors,
+  TOAST_ERROR,
+} from '@entando/messages';
 import moment from 'moment';
 import { isUndefined } from 'lodash';
+import { setPage } from 'state/pagination/actions';
 import {
   SET_CONTENT_TYPES,
   REMOVE_CONTENT_TYPE,
@@ -55,6 +61,9 @@ import {
 import {
   getContentTypes,
   getContentType,
+  postContentType,
+  putContentType,
+  deleteContentType,
   getContentTypeAttributes,
   getContentTypeAttribute,
   getAttributeFromContentType,
@@ -162,11 +171,13 @@ export const setNewAttributeComposite = attributeData => ({
   },
 });
 
+// thunks
 export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
   getContentTypes(page, params).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setContentTypeList(json.payload));
+        dispatch(setPage(json.metaData));
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
       }
@@ -191,7 +202,50 @@ export const fetchContentType = contentTypeCode => dispatch => (
   })
 );
 
-// thunk
+export const sendPostContentType = contentTypeObject => dispatch => (
+  new Promise((resolve) => {
+    postContentType(contentTypeObject).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    }).catch(() => {});
+  })
+);
+
+export const sendPutContentType = contentTypeObject => dispatch => new Promise(resolve => (
+  putContentType(contentTypeObject).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+    });
+  }).catch(() => {})
+));
+
+export const sendDeleteContentType = contentTypeCode => dispatch => new Promise(resolve => (
+  deleteContentType(contentTypeCode).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(removeContentType(contentTypeCode));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+    });
+  }).catch(() => {})
+));
+
 export const fetchContentTypeAttributes = (page = { page: 1, pageSize: 0 }, params = '') => (dispatch, getState) => (
   new Promise((resolve) => {
     dispatch(toggleLoading('contentTypeAttr'));
@@ -283,6 +337,7 @@ export const fetchAttributeFromContentType = (
   attributeCode,
 ) => (dispatch, getState) => (
   new Promise((resolve) => {
+    console.log(contentTypeCode, attributeCode);
     getAttributeFromContentType(contentTypeCode, attributeCode).then((response) => {
       response.json().then((json) => {
         if (response.ok) {
@@ -487,7 +542,6 @@ export const handlerAttributeFromContentType = (
   history,
 ) => (dispatch, getState) => {
   let payload = getPayloadFromTypeAttribute(values, allowedRoles);
-  console.log(action, values, allowedRoles, mode, entityCode, payload);
   const isMonolistComposite = payload.type === TYPE_MONOLIST
   && payload.nestedAttribute.type === TYPE_COMPOSITE;
 

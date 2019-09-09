@@ -84,6 +84,8 @@ export const GET_CONTENT_TYPES_RESPONSE_OK = [
   },
 ];
 
+export const CONTENT_TYPES_DELETE_OK = { code: '<contentTypeCode>' };
+
 export const CONTENT_TYPES_ATTRIBUTES = [
   'Enumerator',
   'Monotext',

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-// import { sendDeleteAttributeFromDataType } from 'state/data-types/actions';
+import { sendDeleteAttributeFromContentType } from 'state/content-type/actions';
 import DeleteAttributeModal from 'ui/content-type/attributes/DeleteAttributeModal';
 
 export const mapStateToProps = state => ({
@@ -9,8 +9,8 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onConfirmDelete: () => {
-    // dispatch(sendDeleteAttributeFromDataType(code));
+  onConfirmDelete: (code) => {
+    dispatch(sendDeleteAttributeFromContentType(code));
     dispatch(setVisibleModal(''));
   },
 });

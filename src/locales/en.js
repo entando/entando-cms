@@ -90,6 +90,7 @@ export default {
     'cms.contenttype.form.filter': 'Filter',
     'cms.contenttype.form.actions': 'Actions',
     'cms.contenttype.form.filterList': 'Can be used as a filter in lists',
+    'cms.contenttype.alert.created': 'Content type created successfully',
     'cms.contenttype.attribute.edit.title': 'Edit attribute',
     'cms.contenttype.enumeratorStaticItems': 'Elements',
     'cms.contenttype.enumeratorStaticItems.help': 'Insert a configuration like \'lable1,lable2,lable3\'',

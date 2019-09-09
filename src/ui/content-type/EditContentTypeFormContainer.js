@@ -6,6 +6,7 @@ import {
   fetchContentTypeAttributes,
   fetchContentType,
   fetchContentTypeAttribute,
+  sendPutContentType,
   sendMoveAttributeUp,
   sendMoveAttributeDown,
 } from 'state/content-type/actions';
@@ -17,7 +18,11 @@ import AddContentTypeForm from 'ui/content-type/AddContentTypeForm';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/content-type/attributes/DeleteAttributeModal';
-import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT } from 'app-init/routes';
+import {
+  ROUTE_CMS_CONTENTTYPE_LIST,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
+} from 'app-init/routes';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: 'edit',
@@ -34,14 +39,14 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(fetchContentType(contentTypeCode));
     dispatch(fetchContentTypeAttributes());
   },
-  onAddAttribute: ({ attributeCode, entityCode }) => {
+  onAddAttribute: ({ attributeCode, contentTypeCode }) => {
     dispatch(fetchContentTypeAttribute(
       attributeCode,
       () => (
         history.push(
           routeConverter(
             ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode },
+            { entityCode: contentTypeCode },
           ),
         )
       ),
@@ -58,8 +63,12 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(setVisibleModal(MODAL_ID));
     dispatch(setInfo({ type: 'attribute', code }));
   },
-  onSubmit: () => {
-    // dispatch(sendPutDataType(values));
+  onSubmit: (values) => {
+    dispatch(sendPutContentType(values)).then((res) => {
+      if (res) {
+        history.push(ROUTE_CMS_CONTENTTYPE_LIST);
+      }
+    });
   },
 
 });
