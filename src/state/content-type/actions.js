@@ -4,12 +4,14 @@ import {
   addToast,
   clearErrors,
   TOAST_ERROR,
+  TOAST_SUCCESS,
 } from '@entando/messages';
 import moment from 'moment';
 import { isUndefined } from 'lodash';
 import { setPage } from 'state/pagination/actions';
 import {
   SET_CONTENT_TYPES,
+  SET_CONTENT_TYPE_REFERENCE_STATUS,
   REMOVE_CONTENT_TYPE,
   SET_SELECTED_CONTENT_TYPE,
   SET_ATTRIBUTES,
@@ -61,7 +63,10 @@ import {
 import {
   getContentTypes,
   getContentType,
+  getContentTypesStatus,
   postContentType,
+  postContentTypesStatus,
+  postRefreshContentType,
   putContentType,
   deleteContentType,
   getContentTypeAttributes,
@@ -90,6 +95,13 @@ export const setSelectedContentType = contentType => ({
   type: SET_SELECTED_CONTENT_TYPE,
   payload: {
     contentType,
+  },
+});
+
+export const setContentTypeReferenceStatus = contentTypeStatus => ({
+  type: SET_CONTENT_TYPE_REFERENCE_STATUS,
+  payload: {
+    contentTypeStatus,
   },
 });
 
@@ -219,6 +231,51 @@ export const sendPostContentType = contentTypeObject => dispatch => (
   })
 );
 
+export const fetchContentTypeReferenceStatus = () => dispatch => new Promise((resolve) => {
+  getContentTypesStatus().then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setContentTypeReferenceStatus(json.payload));
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+      }
+      resolve();
+    });
+  }).catch(() => {});
+});
+
+export const sendPostContentTypeReferenceStatus = contentTypesCodes => dispatch => (
+  new Promise((resolve) => {
+    postContentTypesStatus({ contentTypesCodes }).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          resolve();
+        }
+      });
+    }).catch(() => {});
+  })
+);
+
+export const sendPostRefreshContentType = contentTypeCode => dispatch => (
+  new Promise((resolve) => {
+    postRefreshContentType(contentTypeCode).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(addToast(json.payload.status, TOAST_SUCCESS));
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        resolve();
+      });
+    });
+  })
+);
+
 export const sendPutContentType = contentTypeObject => dispatch => new Promise(resolve => (
   putContentType(contentTypeObject).then((response) => {
     response.json().then((json) => {
@@ -337,7 +394,6 @@ export const fetchAttributeFromContentType = (
   attributeCode,
 ) => (dispatch, getState) => (
   new Promise((resolve) => {
-    console.log(contentTypeCode, attributeCode);
     getAttributeFromContentType(contentTypeCode, attributeCode).then((response) => {
       response.json().then((json) => {
         if (response.ok) {

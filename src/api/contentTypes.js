@@ -4,6 +4,7 @@ import {
   CONTENT_TYPES_DELETE_OK,
   CONTENT_TYPES_ATTRIBUTES,
   CONTENT_TYPE_ATTRIBUTE,
+  CONTENT_TYPE_RELOAD_REFERENCES_STATUS,
   ATTRIBUTE_CONTENT_TYPES_DELETE_OK,
   ATTRIBUTE_MOVE_UP,
   ATTRIBUTE_MOVE_DOWN,
@@ -17,7 +18,6 @@ export const getContentTypes = (page = { page: 1, pageSize: 10 }, params = '') =
       uri: `${contentTypePath}${params}`,
       method: METHODS.GET,
       mockResponse: GET_CONTENT_TYPES_RESPONSE_OK,
-      contentType: 'application/json',
       useAuthentication: true,
     },
     page,
@@ -52,6 +52,33 @@ export const deleteContentType = contentTypeCode => makeRequest({
   body: contentTypeCode,
   method: METHODS.DELETE,
   mockResponse: CONTENT_TYPES_DELETE_OK,
+  useAuthentication: true,
+});
+
+export const getContentTypesStatus = () => (
+  makeRequest({
+    uri: `${contentTypePath}Status`,
+    method: METHODS.GET,
+    mockResponse: CONTENT_TYPE_RELOAD_REFERENCES_STATUS,
+    useAuthentication: true,
+  })
+);
+
+export const postContentTypesStatus = contentTypeCodes => (
+  makeRequest({
+    uri: `${contentTypePath}Status`,
+    method: METHODS.POST,
+    body: contentTypeCodes,
+    mockResponse: CONTENT_TYPE_RELOAD_REFERENCES_STATUS,
+    useAuthentication: true,
+  })
+);
+
+export const postRefreshContentType = contentTypeCode => makeRequest({
+  uri: `${contentTypePath}/refresh/${contentTypeCode}`,
+  method: METHODS.POST,
+  body: { contentTypeCode },
+  mockResponse: { contentTypeCode },
   useAuthentication: true,
 });
 

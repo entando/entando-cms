@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
+import ContentTypeReferenceStatusContainer from 'ui/content-type/ContentTypeReferenceStatusContainer';
 import DeleteContentTypeModalContainer from 'ui/content-type/DeleteContentTypeModalContainer';
 import ContentTypeListItem from 'ui/content-type/ContentTypeListItem';
+
+const perPageOptions = [5, 10, 15, 25, 50];
 
 class ContentTypeList extends Component {
   constructor(props) {
@@ -33,6 +36,7 @@ class ContentTypeList extends Component {
       contentTypes,
       loading,
       onClickDelete,
+      onClickReload,
       page,
       pageSize,
       totalItems,
@@ -41,15 +45,21 @@ class ContentTypeList extends Component {
     const pagination = {
       page,
       perPage: pageSize,
-      perPageOptions: [5, 10, 15, 25, 50],
+      perPageOptions,
     };
     const renderRow = contentTypes
       .map(item => (
-        <ContentTypeListItem key={item.code} onDelete={onClickDelete} {...item} />
+        <ContentTypeListItem
+          key={item.code}
+          onDelete={onClickDelete}
+          onReload={onClickReload}
+          {...item}
+        />
       ));
     return (
       <div className="ContentTypeList__wrap">
         <Spinner loading={!!loading}>
+          <ContentTypeReferenceStatusContainer />
           <table className="table table-striped table-bordered table-hover ContentTypeList__table">
             <thead>
               <tr>
@@ -84,7 +94,7 @@ ContentTypeList.propTypes = {
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
-  onConfirmDelete: PropTypes.func.isRequired,
+  onClickReload: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,

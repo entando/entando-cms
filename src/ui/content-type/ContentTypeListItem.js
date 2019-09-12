@@ -17,11 +17,17 @@ class ContentTypeListItem extends Component {
   constructor(props) {
     super(props);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickReload = this.onClickReload.bind(this);
   }
 
   onClickDelete() {
     const { onDelete, name, code } = this.props;
     onDelete({ name, code });
+  }
+
+  onClickReload() {
+    const { onReload, code } = this.props;
+    onReload(code);
   }
 
   render() {
@@ -55,6 +61,12 @@ class ContentTypeListItem extends Component {
               className="ContentTypeList__menu-item-edit"
             />
             <MenuItem
+              className="ContentTypeList__menu-item-reload"
+              onClick={this.onClickReload}
+            >
+              <FormattedMessage id="cms.label.reload" defaultMessage="Refresh" />
+            </MenuItem>
+            <MenuItem
               className="ContentTypeList__menu-item-delete"
               onClick={this.onClickDelete}
             >
@@ -74,6 +86,7 @@ ContentTypeListItem.propTypes = {
   code: PropTypes.string.isRequired,
   status: PropTypes.oneOf(['0', '1', '2']).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onReload: PropTypes.func.isRequired,
 };
 
 export default injectIntl(ContentTypeListItem);

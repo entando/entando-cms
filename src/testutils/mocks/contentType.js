@@ -84,6 +84,28 @@ export const GET_CONTENT_TYPES_RESPONSE_OK = [
   },
 ];
 
+export const CONTENT_TYPES_OK_PAGE = {
+  payload: [
+    {
+      name: 'contentType1',
+      code: 'ABC',
+      status: '0',
+    },
+    {
+      name: 'contentType2',
+      code: 'DEF',
+      status: '0',
+    },
+  ],
+  errors: [],
+  metaData: {
+    page: 1,
+    pageSize: 10,
+    lastPage: 2,
+    totalItems: 20,
+  },
+};
+
 export const CONTENT_TYPES_DELETE_OK = { code: '<contentTypeCode>' };
 
 export const CONTENT_TYPES_ATTRIBUTES = [
@@ -123,6 +145,25 @@ export const CONTENT_TYPE_ATTRIBUTE = {
   }],
 };
 
+export const CONTENT_TYPE_REFERENCES_STATUS = {
+  ready: [
+    'AAA',
+    'BBB',
+  ],
+  toRefresh: [
+    'CCC',
+  ],
+  refreshing: [],
+};
+
+export const CONTENT_TYPE_RELOAD_REFERENCES_STATUS = {
+  result: 'success',
+  dataTypeCodes: {
+    AAA: 0,
+    BBB: 1,
+  },
+};
+
 export const ATTRIBUTE_CONTENT_TYPES_DELETE_OK = {
   contentTypeCode: 'contentTypeCode',
   attributeCode: 'attributeCode',
@@ -138,4 +179,160 @@ export const ATTRIBUTE_MOVE_DOWN = {
   attributeCode: 'title',
   dataTypeCode: 'DTT',
   movement: 'DOWN',
+};
+
+export const ATTRIBUTE_COMPOSITE = {
+  code: 'Indirizzo',
+  type: 'Composite',
+  name: 'Indirizzo',
+  roles: [],
+  disablingCodes: [],
+  mandatory: false,
+  listFilter: false,
+  indexable: false,
+  enumeratorStaticItems: null,
+  enumeratorStaticItemsSeparator: null,
+  enumeratorExtractorBean: null,
+  validationRules: VALIDATION_RULES_DEFAULT,
+  nestedAttribute: null,
+  compositeAttributes: [{
+    code: 'Via',
+    type: 'Text',
+    name: 'Via',
+    roles: [],
+    disablingCodes: [],
+    mandatory: false,
+    listFilter: false,
+    indexable: false,
+    enumeratorStaticItems: null,
+    enumeratorStaticItemsSeparator: null,
+    enumeratorExtractorBean: null,
+    validationRules: VALIDATION_RULES_DEFAULT,
+    nestedAttribute: null,
+    compositeAttributes: null,
+  }, {
+    code: 'Civico',
+    type: 'Text',
+    name: 'Civico',
+    roles: [],
+    disablingCodes: [],
+    mandatory: true,
+    listFilter: false,
+    indexable: false,
+    enumeratorStaticItems: null,
+    enumeratorStaticItemsSeparator: null,
+    enumeratorExtractorBean: null,
+    validationRules: VALIDATION_RULES_DEFAULT,
+    nestedAttribute: null,
+    compositeAttributes: null,
+  }, {
+    type: 'Text',
+    code: 'strada',
+    name: 'strada',
+    roles: [],
+    nestedAttribute: {
+      code: 'strada',
+      enumeratorStaticItems: 'default',
+      enumeratorStaticItemsSeparator: ',',
+    },
+  }],
+};
+export const ATTRIBUTE_MONOLIST_COMPOSITE = {
+  code: 'mlstc',
+  type: 'Monolist',
+  name: 'Monolist Composite',
+  roles: [],
+  disablingCodes: [],
+  mandatory: true,
+  listFilter: false,
+  indexable: false,
+  enumeratorStaticItems: null,
+  enumeratorStaticItemsSeparator: null,
+  enumeratorExtractorBean: null,
+  validationRules: VALIDATION_RULES_DEFAULT,
+  nestedAttribute: {
+    code: 'mlstc',
+    type: 'Composite',
+    name: null,
+    roles: [],
+    disablingCodes: [],
+    mandatory: false,
+    listFilter: false,
+    indexable: false,
+    enumeratorStaticItems: null,
+    enumeratorStaticItemsSeparator: null,
+    enumeratorExtractorBean: null,
+    validationRules: VALIDATION_RULES_DEFAULT,
+    nestedAttribute: null,
+    compositeAttributes: [{
+      code: 'testo',
+      type: 'Text',
+      name: 'testo',
+      roles: [],
+      disablingCodes: [],
+      mandatory: true,
+      listFilter: false,
+      indexable: false,
+      enumeratorStaticItems: null,
+      enumeratorStaticItemsSeparator: null,
+      enumeratorExtractorBean: null,
+      validationRules: {
+        ...VALIDATION_RULES_DEFAULT,
+        minLength: 1,
+        maxLength: 10,
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    }, {
+      code: 'number',
+      type: 'Number',
+      name: 'number',
+      roles: [],
+      disablingCodes: [],
+      mandatory: false,
+      listFilter: false,
+      indexable: false,
+      enumeratorStaticItems: null,
+      enumeratorStaticItemsSeparator: null,
+      enumeratorExtractorBean: null,
+      validationRules: VALIDATION_RULES_DEFAULT,
+      nestedAttribute: null,
+      compositeAttributes: null,
+    }, {
+      code: 'data',
+      type: 'Date',
+      name: 'data',
+      roles: [],
+      disablingCodes: [],
+      mandatory: false,
+      listFilter: false,
+      indexable: false,
+      enumeratorStaticItems: null,
+      enumeratorStaticItemsSeparator: null,
+      enumeratorExtractorBean: null,
+      validationRules: {
+        ...VALIDATION_RULES_DEFAULT,
+        rangeStartDate: '2018-06-09 00:00:00',
+        rangeEndDate: '2018-08-04 00:00:00',
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    }, {
+      code: 'CAG',
+      type: 'Text',
+      name: 'Cagliari',
+      roles: [],
+      disablingCodes: [],
+      mandatory: false,
+      listFilter: false,
+      indexable: false,
+      enumeratorStaticItems: null,
+      enumeratorStaticItemsSeparator: null,
+      enumeratorExtractorBean: null,
+      validationRules: VALIDATION_RULES_DEFAULT,
+      nestedAttribute: null,
+      compositeAttributes: null,
+    }],
+  },
+  compositeAttributes: null,
 };

@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
 import { getContentTypeList } from 'state/content-type/selectors';
-import { fetchContentTypeListPaged } from 'state/content-type/actions';
+import {
+  fetchContentTypeListPaged,
+  sendPostRefreshContentType,
+} from 'state/content-type/actions';
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
@@ -22,7 +25,9 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setVisibleModal(MODAL_ID));
     dispatch(setInfo(item));
   },
-  onConfirmDelete: () => {},
+  onClickReload: (code) => {
+    dispatch(sendPostRefreshContentType(code));
+  },
 });
 
 const ContentTypeListContainer = connect(mapStateToProps, mapDispatchToProps)(ContentTypeList);

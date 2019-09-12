@@ -4,6 +4,7 @@ import {
   SET_CONTENT_TYPES,
   REMOVE_CONTENT_TYPE,
   SET_ATTRIBUTES,
+  SET_CONTENT_TYPE_REFERENCE_STATUS,
   SET_SELECTED_ATTRIBUTE,
   REMOVE_ATTRIBUTE,
   SET_SELECTED_CONTENT_TYPE,
@@ -19,12 +20,12 @@ import {
 
 import { swapItems } from 'helpers/arrayUtils';
 
-const toMap = array => array.reduce((acc, contentType) => {
+export const toMap = array => array.reduce((acc, contentType) => {
   acc[contentType.code] = contentType;
   return acc;
 }, {});
 
-const toIdList = array => array.map(contentType => contentType.code);
+export const toIdList = array => array.map(contentType => contentType.code);
 
 
 export const list = (state = [], action = {}) => {
@@ -145,6 +146,14 @@ export const selectedAttribute = (state = {}, action = {}) => {
     default: return state;
   }
 };
+export const status = (state = [], action = {}) => {
+  switch (action.type) {
+    case SET_CONTENT_TYPE_REFERENCE_STATUS: {
+      return action.payload.contentTypeStatus;
+    }
+    default: return state;
+  }
+};
 
 export default combineReducers({
   list,
@@ -153,5 +162,8 @@ export default combineReducers({
   attributes: combineReducers({
     list: attributeList,
     selected: selectedAttribute,
+  }),
+  references: combineReducers({
+    status,
   }),
 });
