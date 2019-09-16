@@ -38,7 +38,7 @@ const messages = defineMessages({
 const defaultOwnerGroup = 'free';
 
 class EditContentFormBody extends React.Component {
-  // eslint-disable-next-line
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
   }

@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 export const EDIT_CONTENT_OPENED_OK = {
   ownerGroupDisabled: false,
   currentUser: undefined,

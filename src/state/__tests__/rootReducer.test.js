@@ -15,4 +15,12 @@ describe('root reducer store', () => {
   it('contains the messages state', () => {
     expect(state).toHaveProperty('messages');
   });
+
+  it('contains the editForm state', () => {
+    expect(state).toHaveProperty('editContent');
+  });
+
+  it('contains the categories state', () => {
+    expect(state).toHaveProperty('categories');
+  });
 });

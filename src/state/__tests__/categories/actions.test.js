@@ -56,7 +56,6 @@ describe('state/categories/actions', () => {
 
   beforeEach(() => {
     store = mockStore(INITIAL_STATE);
-    // const history = createMockHistory();
   });
 
   it('checks if joining content to a category works correctly', () => {

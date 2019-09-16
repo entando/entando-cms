@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const WORK_MODE_ADD = 'work-mode-add';
 export const WORK_MODE_EDIT = 'work-mode-edit';
 export const SET_CONTENT_ENTRY = 'edit-content/set-content-entry';

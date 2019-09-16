@@ -1,4 +1,3 @@
-// import 'test/enzyme-init';
 import {
   getCategoryTree,
   getCategory,

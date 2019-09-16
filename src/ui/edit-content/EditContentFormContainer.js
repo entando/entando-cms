@@ -33,8 +33,7 @@ export const mapStateToProps = state => ({
   selectedCategories: formValueSelector('editcontentform')(state, 'contentCategory'),
 });
 
-// eslint-disable-next-line
-export const mapDispatchToProps = (dispatch, { intl, history }) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: () => {
     dispatch(setWorkMode(WORK_MODE_EDIT));
     dispatch(fetchContent());

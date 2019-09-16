@@ -1,8 +1,5 @@
-
 import React from 'react';
 import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
-
-// import 'test/enzyme-init';
 import { shallow, mount } from 'enzyme';
 import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
 
@@ -41,14 +38,6 @@ describe('MultiSelectRenderer', () => {
 
   describe('when nothing is selected', () => {
     beforeEach(() => {
-      // component = shallow((
-      //   <MultiSelectRenderer
-      //     fields={FIELDS}
-      //     options={OPTIONS}
-      //     valueKey="code"
-      //     labelKey="description"
-      //   />
-      // ));
       component = shallowWithIntl(
         <MultiSelectRenderer
           fields={FIELDS}
@@ -88,9 +77,6 @@ describe('MultiSelectRenderer', () => {
         />
       )));
     });
-    // it('renders ad many <option> as the provided array, plus one', () => {
-    //   expect(component.find('option')).toHaveLength(OPTIONS.length + 1);
-    // });
     it('uses options[][valueKey] to define the <option> value', () => {
       const options = component.find('option');
       options.forEach((option, i) => {
@@ -101,16 +87,6 @@ describe('MultiSelectRenderer', () => {
         }
       });
     });
-    // it('uses options[][labelKey] to define the <option> text', () => {
-    //   const options = component.find('option');
-    //   options.forEach((option, i) => {
-    //     if (i === 0) {
-    //       expect(option.text()).toBe(EMPTY_TEXT_LABEL_ID);
-    //     } else {
-    //       expect(option.text()).toBe(OPTIONS[i - 1].description);
-    //     }
-    //   });
-    // });
   });
 
   xdescribe('when something is selected', () => {
@@ -145,21 +121,5 @@ describe('MultiSelectRenderer', () => {
         />
       ));
     });
-
-    // it('and no value is selected, it does not select any value', () => {
-    //   component.instance().select = { value: '' };
-    //   component.find('button.MultiSelectRenderer__add-btn').simulate('click');
-    //   expect(FIELDS.push).not.toHaveBeenCalled();
-    // });
-    // it('and a value is selected, it pushes the value', () => {
-    //   component.instance().select = { value: 'opt1' };
-    //   component.find('button.MultiSelectRenderer__add-btn').simulate('click');
-    //   expect(FIELDS.push).toHaveBeenCalledWith(OPTIONS[0].code);
-    // });
-    // it('and an already selected value is selected, it does not select any value', () => {
-    //   component.instance().select = { value: 'opt2' };
-    //   component.find('button.MultiSelectRenderer__add-btn').simulate('click');
-    //   expect(FIELDS.push).not.toHaveBeenCalled();
-    // });
   });
 });

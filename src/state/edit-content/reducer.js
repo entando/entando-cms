@@ -48,14 +48,12 @@ const reducer = (state = defaultState, action = {}) => {
         ...state,
         groups: action.payload.groups || [],
       };
-    case JOIN_CATEGORY:
-      // eslint-disable-next-line
+    case JOIN_CATEGORY: {
       const { category: newCategory } = action.payload;
-      // eslint-disable-next-line
       const currentJoinedCategories = state.joinedCategories;
-      // eslint-disable-next-line
-      const alreadyAdded =
-        currentJoinedCategories.filter(category => category.code === newCategory.code).length > 0;
+      const alreadyAdded = currentJoinedCategories.filter(
+        category => category.code === newCategory.code,
+      ).length > 0;
       if (!alreadyAdded) {
         return {
           ...state,
@@ -63,14 +61,14 @@ const reducer = (state = defaultState, action = {}) => {
         };
       }
       return state;
-    case UNJOIN_CATEGORY:
-      // eslint-disable-next-line
+    }
+    case UNJOIN_CATEGORY: {
       const { categoryCode } = action.payload;
       return {
         ...state,
         joinedCategories: state.joinedCategories.filter(category => category.code !== categoryCode),
       };
-
+    }
     default:
       return state;
   }

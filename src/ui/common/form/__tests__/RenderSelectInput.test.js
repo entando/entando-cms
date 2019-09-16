@@ -1,4 +1,3 @@
-// import 'test/enzyme-init';
 import { configEnzymeAdapter } from 'testutils/helpers';
 import React from 'react';
 import { shallow } from 'enzyme';

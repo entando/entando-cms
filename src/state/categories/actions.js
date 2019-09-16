@@ -81,12 +81,12 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE, recursive) => async 
       const response = await fetchCategoryChildren(categoryCode)(dispatch);
       categoryTree = response.payload;
       if (recursive) {
-        // eslint-disable-next-line
-        categoryTree.map(cat => {
+        categoryTree.map((cat) => {
           if (cat.children && cat.children.length > 0) {
-            // eslint-disable-next-line
+            // eslint-disable-next-line no-use-before-define
             return dispatch(handleExpandCategory(cat.code, true));
           }
+          return null;
         });
       }
     }
@@ -96,7 +96,6 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE, recursive) => async 
   }
 };
 
-// eslint-disable-next-line
 export const handleExpandCategory = (categoryCode = ROOT_CODE, recursive, expansion) => (
   dispatch,
   getState,
@@ -118,12 +117,12 @@ export const handleExpandCategory = (categoryCode = ROOT_CODE, recursive, expans
 
 function recursivelyExpandCategories(categories, dispatch, mode) {
   if (categories.length === 0 || typeof categories[0] === 'string') return;
-  // eslint-disable-next-line
-  categories.map(cat => {
+  categories.map((cat) => {
     dispatch(toggleCategoryExpanded(cat.code, mode));
     if (!cat.isEmpty) {
-      recursivelyExpandCategories(cat.children);
+      return recursivelyExpandCategories(cat.children);
     }
+    return null;
   });
 }
 

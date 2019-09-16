@@ -24,7 +24,7 @@ export const fetchContent = params => dispatch => new Promise((resolve) => {
         resolve();
       });
     })
-    .catch(() => {});
+    .catch(() => { });
 });
 
 export const setOwnerGroupDisable = disabled => ({
@@ -54,21 +54,22 @@ export const fetchGroups = params => dispatch => new Promise((resolve) => {
         resolve();
       });
     })
-    .catch(() => {});
+    .catch(() => { });
 });
 
-// eslint-disable-next-line
-export const sendPostAddContent = contModelObject => dispatch => new Promise(resolve => postAddContent(contModelObject)
-  .then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        resolve(json.payload);
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-        dispatch(clearErrors());
-        resolve();
-      }
-    });
-  })
-  .catch(() => {}));
+export const sendPostAddContent = contModelObject => dispatch => new Promise(
+  resolve => postAddContent(contModelObject)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => { }),
+);

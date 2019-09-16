@@ -290,17 +290,6 @@ describe('state/categories/selectors', () => {
     });
   });
 
-  // describe('Get Category by code', () => {
-  //   let targetcategory;
-  //   beforeEach(() => {
-  //     targetcategory = getCategoryByCode(MOCK_STATE);
-  //   });
-
-  //   it('return all available categories', () => {
-  //     expect(allCategories.length).toBe(5);
-  //   });
-  // });
-
   describe('selected category', () => {
     it('getSelected(state)', () => {
       const selected = getSelected(MOCK_STATE);

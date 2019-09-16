@@ -64,9 +64,19 @@ const getDepth = (categories, categoryCode) => {
 };
 
 export const getCategoryTree = createSelector(
-  [getCategoriesMap, getChildrenMap, getStatusMap, getTitlesMap, getLocale],
-  // eslint-disable-next-line max-len
-  (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(categoryChildren)
+  [
+    getCategoriesMap,
+    getChildrenMap,
+    getStatusMap,
+    getTitlesMap,
+    getLocale],
+  (
+    categories,
+    categoryChildren,
+    categoriesStatus,
+    categoriesTitles,
+    locale,
+  ) => getCategoriesOrder(categoryChildren)
     .filter(categoryCode => isVisible(categoryCode, categories, categoriesStatus))
     .map(categoryCode => ({
       ...categories[categoryCode],
@@ -80,9 +90,17 @@ export const getCategoryTree = createSelector(
 );
 
 export const getAllCategories = createSelector(
-  [getCategoriesMap, getChildrenMap, getStatusMap, getTitlesMap, getLocale],
-  // eslint-disable-next-line max-len
-  (categories, categoryChildren, categoriesStatus) => getCategoriesOrder(categoryChildren).map(categoryCode => ({
+  [
+    getCategoriesMap,
+    getChildrenMap,
+    getStatusMap,
+    getTitlesMap,
+    getLocale],
+  (
+    categories,
+    categoryChildren,
+    categoriesStatus,
+  ) => getCategoriesOrder(categoryChildren).map(categoryCode => ({
     ...categories[categoryCode],
     ...CATEGORY_STATUS_DEFAULTS,
     ...categoriesStatus[categoryCode],
@@ -91,19 +109,3 @@ export const getAllCategories = createSelector(
     isEmpty: !(categoryChildren[categoryCode] && categoryChildren[categoryCode].length),
   })),
 );
-
-// export const getCategoryByCode = targetCategoryCode => createSelector(
-//   [getCategoriesMap, getChildrenMap, getStatusMap, getTitlesMap, getLocale],
-// eslint-disable-next-line max-len
-//   (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(categoryChildren)
-//     .filter(categoryCode => categoryCode === targetCategoryCode)
-//     .map(categoryCode => ({
-//       ...categories[categoryCode],
-//       ...CATEGORY_STATUS_DEFAULTS,
-//       ...categoriesStatus[categoryCode],
-//       depth: getDepth(categories, categoryCode),
-//       children: categoryChildren[categoryCode],
-//       isEmpty: !(categoryChildren[categoryCode] && categoryChildren[categoryCode].length),
-//       title: categoriesTitles[categoryCode][locale],
-//     })),
-// );

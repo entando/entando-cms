@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-
 import { Button, Label } from 'patternfly-react';
 
-import TreeNodeFolderIcon from 'ui/common/tree-node/TreeNodeFolderIcon';
-import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
-import RowSpinner from 'ui/common/RowSpinner';
+import CategoryTreeSelectorRow from 'ui/categories/common/CategoryTreeSelectorRow';
 
 class CategoryTreeSelector extends Component {
   renderTags() {
@@ -32,77 +29,19 @@ class CategoryTreeSelector extends Component {
     });
   }
 
-  renderRows() {
+  render() {
     const {
+      input,
       language,
       categories,
+      onExpandAll,
+      onCollapseAll,
       onJoinCategory,
       onExpandCategory,
-      input: { onChange, value },
+      joinedCategories,
+      onUnjoinCategory,
     } = this.props;
 
-    return categories.map((category, i) => {
-      const onClickExpand = () => {
-        if (!category.isEmpty) {
-          onExpandCategory(category.code);
-        }
-      };
-      const onClickSelect = () => onChange(category.code);
-
-      const className = ['CategoryTreeSelector__column-td'];
-      if (category.isEmpty) {
-        className.push('CategoryTreeSelector__column-td--empty');
-      }
-      // higlight selected code
-      if (category.code === value) {
-        className.push('info');
-      }
-
-      return (
-        <tr key={category.code} className="CategoryTreeSelector__row">
-          <td className={className.join(' ').trim()}>
-            <span
-              role="button"
-              tabIndex={i}
-              className="CategoryTreeSelector__expand-area"
-              style={{ paddingLeft: category.depth * 24 }}
-              onClick={onClickExpand}
-              onKeyDown={onClickExpand}
-            >
-              <TreeNodeExpandedIcon expanded={category.expanded} />
-            </span>
-            <span
-              className="CategoryTreeSelector__select-area"
-              role="button"
-              tabIndex={i}
-              onClick={onClickSelect}
-              onKeyDown={onClickSelect}
-            >
-              <TreeNodeFolderIcon empty={category.isEmpty} />
-              <span className="CategoryTreeSelector__category-name">
-                {category.titles[language]}
-              </span>
-              <RowSpinner loading={!!category.loading} />
-            </span>
-          </td>
-          <td className="text-center">
-            {category.depth !== 0 ? (
-              <span
-                className="icon fa fa-plus CategoryTreeSelector__join-mark"
-                role="button"
-                tabIndex={i}
-                onClick={() => onJoinCategory(category.code)}
-                onKeyDown={() => onJoinCategory(category.code)}
-              />
-            ) : null}
-          </td>
-        </tr>
-      );
-    });
-  }
-
-  render() {
-    const { onExpandAll, onCollapseAll, joinedCategories } = this.props;
     return (
       <div>
         <table className="CategoryTreeSelector table table-bordered table-hover table-treegrid">
@@ -121,7 +60,7 @@ class CategoryTreeSelector extends Component {
                     className="fa fa-plus-square-o CategoryTreeSelector__action-icon"
                     aria-hidden="true"
                   />
-                  Expand All
+                  <FormattedMessage id="cms.categories.expandAll" />
                 </span>
                 <span
                   className="CategoryTreeSelector__action"
@@ -134,19 +73,29 @@ class CategoryTreeSelector extends Component {
                     className="fa fa-minus-square-o CategoryTreeSelector__action-icon"
                     aria-hidden="true"
                   />
-                  Collapse All
+                  <FormattedMessage id="cms.categories.collapseAll" />
                 </span>
               </th>
               <th className="text-center" style={{ width: '4%' }}>
-                Join
+                <FormattedMessage id="cms.join" />
               </th>
             </tr>
           </thead>
-          <tbody>{this.renderRows()}</tbody>
+          <tbody>
+            <CategoryTreeSelectorRow
+              language={language}
+              categories={categories}
+              onExpandCategory={onExpandCategory}
+              onJoinCategory={onJoinCategory}
+              onUnjoinCategory={onUnjoinCategory}
+              input={input}
+            />
+          </tbody>
         </table>
         <br />
         <div>
-          {joinedCategories && joinedCategories.length > 0 ? <h4>Content Category List</h4> : null}
+          {joinedCategories && joinedCategories.length > 0
+            ? <h4><FormattedMessage id="cms.contents.edit.contentCategoryList" /></h4> : null}
           <ul className="CategoryTreeSelector__tag-container list-inline">{this.renderTags()}</ul>
         </div>
       </div>
@@ -176,11 +125,11 @@ CategoryTreeSelector.propTypes = {
 
 CategoryTreeSelector.defaultProps = {
   categories: [],
-  onExpandCategory: () => {},
-  onExpandAll: () => {},
-  onCollapseAll: () => {},
-  onJoinCategory: () => {},
-  onUnjoinCategory: () => {},
+  onExpandCategory: () => { },
+  onExpandAll: () => { },
+  onCollapseAll: () => { },
+  onJoinCategory: () => { },
+  onUnjoinCategory: () => { },
   joinedCategories: [],
 };
 
