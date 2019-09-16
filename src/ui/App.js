@@ -6,11 +6,13 @@ import {
   ROUTE_CMS,
   ROUTE_CMS_CONTENTMODEL_LIST,
   ROUTE_CMS_CONTENTMODEL_ADD,
+  ROUTE_CMS_EDIT_CONTENT,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
 import AddContentModelPage from 'ui/content-model/AddContentModelPage';
+import AddContentPage from 'ui/add-content/AddContentPage';
 
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
@@ -23,13 +25,16 @@ const routesDir = [
     path: ROUTE_CMS_CONTENTMODEL_ADD,
     component: AddContentModelPage,
   },
+  {
+    path: null,
+    component: AddContentPage,
+  },
 ];
 
-const routes = routesDir.map(route => (
-  <Route exact key={route.path} {...route} />
-));
+const routes = routesDir.map(route => <Route exact key={route.path} {...route} />);
 
-const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
+// const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
+const defaultRedirect = () => <Redirect to={`${ROUTE_CMS_EDIT_CONTENT}`} />;
 
 class App extends Component {
   componentDidMount() {

@@ -1,0 +1,23 @@
+.SectionTitle {
+  width: 100%;
+  margin-bottom: 20px;
+  border-bottom: 1px solid $light-color-separator;
+  font-size: 18px;
+  line-height: inherit;
+
+  &__tip {
+    margin-top: 10px;
+    float: right;
+    color: $dark-color-separator;
+    font-size: 12px;
+    text-align: end;
+  }
+}
+
+.SectionTitle__tip {
+  margin-top: 10px;
+  float: right;
+  color: $dark-color-separator;
+  font-size: 12px;
+  text-align: end;
+}
