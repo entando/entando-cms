@@ -57,10 +57,7 @@ export const wrapApiCall = apiFunc => (...args) => async (dispatch) => {
 export const fetchCategoryNode = wrapApiCall(getCategory);
 export const fetchCategoryChildren = wrapApiCall(getCategoryTree);
 
-export const fetchCategoryTree = (categoryCode = ROOT_CODE, recursive) => async (
-  dispatch,
-  getState,
-) => {
+export const fetchCategoryTree = (categoryCode = ROOT_CODE) => async (dispatch, getState) => {
   let categoryTree;
   try {
     if (categoryCode === ROOT_CODE) {
@@ -71,7 +68,7 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE, recursive) => async 
       ]);
       dispatch(setCategoryLoaded(categoryCode));
       const categoryStatus = getStatusMap(getState())[categoryCode];
-      const toExpand = !categoryStatus || !categoryStatus.expanded;
+      const toExpand = (!categoryStatus || !categoryStatus.expanded);
       if (toExpand) {
         dispatch(toggleCategoryExpanded(categoryCode, true));
       }
@@ -80,32 +77,23 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE, recursive) => async 
     } else {
       const response = await fetchCategoryChildren(categoryCode)(dispatch);
       categoryTree = response.payload;
-      if (recursive) {
-        categoryTree.map((cat) => {
-          if (cat.children && cat.children.length > 0) {
-            // eslint-disable-next-line no-use-before-define
-            return dispatch(handleExpandCategory(cat.code, true));
-          }
-          return null;
-        });
-      }
     }
+
     dispatch(setCategories(categoryTree));
   } catch (e) {
     // do nothing
   }
 };
 
-export const handleExpandCategory = (categoryCode = ROOT_CODE, recursive, expansion) => (
-  dispatch,
-  getState,
+export const handleExpandCategory = (categoryCode = ROOT_CODE) => (
+  dispatch, getState,
 ) => new Promise((resolve) => {
   const categoryStatus = getStatusMap(getState())[categoryCode];
-  const toExpand = expansion != null ? expansion : !categoryStatus || !categoryStatus.expanded;
-  const toLoad = toExpand && (!categoryStatus || !categoryStatus.loaded);
+  const toExpand = (!categoryStatus || !categoryStatus.expanded);
+  const toLoad = (toExpand && (!categoryStatus || !categoryStatus.loaded));
   if (toLoad) {
     dispatch(setCategoryLoading(categoryCode));
-    dispatch(fetchCategoryTree(categoryCode, recursive)).then(() => {
+    dispatch(fetchCategoryTree(categoryCode)).then(() => {
       dispatch(toggleCategoryExpanded(categoryCode, true));
       dispatch(setCategoryLoaded(categoryCode));
     });
@@ -114,28 +102,6 @@ export const handleExpandCategory = (categoryCode = ROOT_CODE, recursive, expans
   }
   resolve();
 });
-
-function recursivelyExpandCategories(categories, dispatch, mode) {
-  if (categories.length === 0 || typeof categories[0] === 'string') return;
-  categories.map((cat) => {
-    dispatch(toggleCategoryExpanded(cat.code, mode));
-    if (!cat.isEmpty) {
-      return recursivelyExpandCategories(cat.children);
-    }
-    return null;
-  });
-}
-
-export const onExpandAll = () => (dispatch, getState) => {
-  const categoryTree = getAllCategories(getState());
-  recursivelyExpandCategories(categoryTree, dispatch, true);
-  categoryTree.map(category => dispatch(handleExpandCategory(category.code, true, true)));
-};
-
-export const onCollapseAll = () => (dispatch, getState) => {
-  const categoryTree = getAllCategories(getState());
-  recursivelyExpandCategories(categoryTree, dispatch, false);
-};
 
 export const onJoinCategory = category => ({
   type: JOIN_CATEGORY,

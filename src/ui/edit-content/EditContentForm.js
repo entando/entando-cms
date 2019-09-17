@@ -38,11 +38,6 @@ const messages = defineMessages({
 const defaultOwnerGroup = 'free';
 
 class EditContentFormBody extends React.Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { initialize, onDidMount } = this.props;
     initialize({ ownerGroup: defaultOwnerGroup });

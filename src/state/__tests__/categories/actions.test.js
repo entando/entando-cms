@@ -3,8 +3,6 @@ import thunk from 'redux-thunk';
 import { mockApi } from 'testutils/helpers';
 import {
   wrapApiCall,
-  onExpandAll,
-  onCollapseAll,
   setCategories,
   setCategoryLoaded,
   fetchCategoryTree,
@@ -32,8 +30,6 @@ const CATEGORY_CODE = 'category_code';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-
-const TOTAL_CATEGORIES = 10;
 
 const INITIAL_STATE = {
   categories: {
@@ -112,26 +108,6 @@ describe('state/categories/actions', () => {
           done();
         })
         .catch(done.fail);
-    });
-
-    it('it should recursively fetch all of the categories', (done) => {
-      store = mockStore(STATE_NORMALIZED);
-      store.dispatch(onExpandAll());
-      const actions = store.getActions();
-      expect(actions).toHaveLength(TOTAL_CATEGORIES);
-      expect(actions[0]).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
-      expect(actions[0].payload).toHaveProperty('expanded', true);
-      done();
-    });
-
-    it('it should recursively collapse all the categories', (done) => {
-      store = mockStore(STATE_NORMALIZED);
-      store.dispatch(onCollapseAll());
-      const actions = store.getActions();
-      expect(actions).toHaveLength(5);
-      expect(actions[0]).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
-      expect(actions[0].payload).toHaveProperty('expanded', false);
-      done();
     });
 
     it('when loading root category, should download the root and its children', (done) => {

@@ -9,7 +9,6 @@ class MultiSelectRenderer extends Component {
   constructor(props) {
     super(props);
     this.pushField = this.pushField.bind(this);
-    this.renderTags = this.renderTags.bind(this);
     this.select = null;
   }
 
@@ -24,27 +23,9 @@ class MultiSelectRenderer extends Component {
     }
   }
 
-  renderTags() {
-    const {
-      selectedValues, fields, labelKey, valueKey, options,
-    } = this.props;
-    return selectedValues.map((value, i) => (
-      <Label key={value} bsStyle="primary" className="MultiSelectRenderer__tag">
-        {options.length ? options.find(opt => opt[valueKey] === value)[labelKey] : ''}
-        <Button
-          bsStyle="link"
-          className="MultiSelectRenderer__remove-tag-btn"
-          onClick={() => fields.remove(i)}
-        >
-          <i className="fa fa-times" />
-        </Button>
-      </Label>
-    ));
-  }
-
   render() {
     const {
-      options, selectedValues, labelKey, valueKey, emptyOptionTextId, intl,
+      options, selectedValues, labelKey, valueKey, emptyOptionTextId, intl, fields,
     } = this.props;
     const filteredOptions = options
       .filter(opt => !selectedValues.includes(opt[valueKey]))
@@ -68,6 +49,19 @@ class MultiSelectRenderer extends Component {
       );
     }
 
+    const renderedTags = selectedValues.map((value, i) => (
+      <Label key={value} bsStyle="primary" className="MultiSelectRenderer__tag">
+        {options.length ? options.find(opt => opt[valueKey] === value)[labelKey] : ''}
+        <Button
+          bsStyle="link"
+          className="MultiSelectRenderer__remove-tag-btn"
+          onClick={() => fields.remove(i)}
+        >
+          <i className="fa fa-times" />
+        </Button>
+      </Label>
+    ));
+
     return (
       <div className="MultiSelectRenderer">
         <InputGroup>
@@ -90,7 +84,7 @@ class MultiSelectRenderer extends Component {
           </span>
         </InputGroup>
         <br />
-        {this.renderTags()}
+        {renderedTags}
       </div>
     );
   }

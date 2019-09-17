@@ -3,8 +3,6 @@ import CategoryTreeSelector from 'ui/categories/common/CategoryTreeSelector';
 
 import {
   handleExpandCategory,
-  onExpandAll,
-  onCollapseAll,
   handleJoinCategory,
   onUnjoinCategory,
 } from 'state/categories/actions';
@@ -18,8 +16,6 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = dispatch => ({
   onExpandCategory: categoryCode => dispatch(handleExpandCategory(categoryCode)),
-  onExpandAll: () => dispatch(onExpandAll()),
-  onCollapseAll: () => dispatch(onCollapseAll()),
   onJoinCategory: categoryCode => dispatch(handleJoinCategory(categoryCode)),
   onUnjoinCategory: categoryCode => dispatch(onUnjoinCategory(categoryCode)),
 });
