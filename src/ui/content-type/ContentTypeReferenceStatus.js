@@ -30,9 +30,13 @@ class ContentTypeReferenceStatus extends Component {
           id="cms.contenttype.reference.reload"
           values={{
             link: (
-              <a role="presentation" onClick={this.onClickReload}>
+              <button
+                type="button"
+                className="ContentTypeReferenceStatus__clickhere"
+                onClick={this.onClickReload}
+              >
                 <FormattedMessage id="cms.label.here" />
-              </a>
+              </button>
             ),
           }}
         />
@@ -48,7 +52,7 @@ ContentTypeReferenceStatus.propTypes = {
   status: PropTypes.shape({
     status: PropTypes.string,
     type: PropTypes.string,
-    dataTypesCodes: PropTypes.arrayOf(PropTypes.string),
+    contentTypesCodes: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 

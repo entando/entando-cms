@@ -12,7 +12,7 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: () => dispatch(fetchContentTypeReferenceStatus()),
-  onReload: dataTypesCodes => dispatch(sendPostContentTypeReferenceStatus(dataTypesCodes))
+  onReload: contentTypesCodes => dispatch(sendPostContentTypeReferenceStatus(contentTypesCodes))
     .then((res) => {
       if (res) {
         history.push(ROUTE_CMS_CONTENTTYPE_LIST);

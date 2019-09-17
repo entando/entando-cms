@@ -1,4 +1,5 @@
 import reducer from 'state/content-type/reducer';
+import { cloneDeep } from 'lodash';
 import {
   setContentTypeList,
   removeContentType,
@@ -8,6 +9,12 @@ import {
   setContentTypeAttributes,
   setSelectedAttribute,
   setContentTypeReferenceStatus,
+  moveAttributeUpSync,
+  moveAttributeDownSync,
+  setActionMode,
+  removeAttributeFromComposite,
+  moveAttributeFromComposite,
+  setNewAttributeComposite,
 } from 'state/content-type/actions';
 import {
   GET_CONTENT_TYPE_RESPONSE_OK,
@@ -15,6 +22,7 @@ import {
   CONTENT_TYPES_ATTRIBUTES,
   CONTENT_TYPE_ATTRIBUTE,
   CONTENT_TYPE_REFERENCES_STATUS,
+  ATTRIBUTE_MONOLIST_COMPOSITE,
 } from 'testutils/mocks/contentType';
 
 const contentTypesList = ['ABC', 'DEF'];
@@ -32,7 +40,7 @@ describe('state/content-type/reducer', () => {
     expect(typeof state).toBe('object');
   });
 
-  describe('after action SET_DATA_TYPES', () => {
+  describe('after action SET_CONTENT_TYPES', () => {
     beforeEach(() => {
       newState = reducer(state, setContentTypeList(CONTENT_TYPES_OK_PAGE.payload));
     });
@@ -63,7 +71,7 @@ describe('state/content-type/reducer', () => {
     });
   });
 
-  describe('after action SET_SELECTED_DATA_TYPE', () => {
+  describe('after action SET_SELECTED_CONTENT_TYPE', () => {
     beforeEach(() => {
       newState = reducer(state, setSelectedContentType(GET_CONTENT_TYPE_RESPONSE_OK));
     });
@@ -71,6 +79,124 @@ describe('state/content-type/reducer', () => {
     it('should define the selected payload', () => {
       expect(newState).toHaveProperty('selected');
       expect(newState.selected).toBe(GET_CONTENT_TYPE_RESPONSE_OK);
+    });
+  });
+
+  describe('after action MOVE_ATTRIBUTE_UP', () => {
+    beforeEach(() => {
+      newState = reducer({
+        selected: {
+          code: 'AAA',
+          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+        },
+      }, moveAttributeUpSync({ entityCode: 'AAA', attributeCode: 'attrCode1', attributeIndex: 1 }));
+    });
+
+    it('should define the selected payload', () => {
+      expect(newState.selected.attributes[0].code).toBe('attrCode1');
+    });
+  });
+
+  describe('after action MOVE_ATTRIBUTE_DOWN', () => {
+    beforeEach(() => {
+      newState = reducer({
+        selected: {
+          code: 'AAA',
+          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+        },
+      }, moveAttributeDownSync({ entityCode: 'AAA', attributeCode: 'attrCode', attributeIndex: 0 }));
+    });
+
+    it('should define the selected payload', () => {
+      expect(newState.selected.attributes[1].code).toBe('attrCode');
+    });
+  });
+
+  describe('after action SET_ACTION_MODE', () => {
+    beforeEach(() => {
+      newState = reducer({
+        selected: {
+          code: 'AAA',
+          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+        },
+      }, setActionMode('hello'));
+    });
+
+    it('should define the selected payload', () => {
+      expect(newState).toHaveProperty('selected');
+      expect(newState.selected.actionMode).toBe('hello');
+    });
+  });
+
+  describe('after action REMOVE_ATTRIBUTE_FROM_COMPOSITE', () => {
+    let STATE_HERE;
+    beforeEach(() => {
+      STATE_HERE = {
+        selected: {
+          code: 'AAA',
+          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+          attributeSelected: cloneDeep(ATTRIBUTE_MONOLIST_COMPOSITE),
+        },
+      };
+    });
+
+    it('should remove attribute properly for monolist composite', () => {
+      newState = reducer(STATE_HERE, removeAttributeFromComposite('testo', true));
+      expect(newState).toHaveProperty('selected');
+      expect(newState.selected).toHaveProperty('attributeSelected');
+      expect(newState.selected.attributeSelected.nestedAttribute.compositeAttributes[0].code).toBe('number');
+    });
+
+    it('should remove attribute properly for non-composite monolist', () => {
+      STATE_HERE.selected.attributeSelected.compositeAttributes = cloneDeep(
+        STATE_HERE.selected.attributeSelected.nestedAttribute.compositeAttributes,
+      );
+      newState = reducer(STATE_HERE, removeAttributeFromComposite('number', false));
+      expect(newState.selected.attributeSelected.compositeAttributes[1].code).toBe('data');
+    });
+  });
+
+  describe('after action MOVE_ATTRIBUTE_FROM_COMPOSITE', () => {
+    let STATE_HERE;
+    beforeEach(() => {
+      STATE_HERE = {
+        selected: {
+          code: 'AAA',
+          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+          attributeSelected: cloneDeep(ATTRIBUTE_MONOLIST_COMPOSITE),
+        },
+      };
+    });
+
+    it('should move attribute properly for monolist composite', () => {
+      newState = reducer(STATE_HERE, moveAttributeFromComposite(0, 1, true));
+      expect(newState).toHaveProperty('selected');
+      expect(newState.selected).toHaveProperty('attributeSelected');
+      expect(newState.selected.attributeSelected.nestedAttribute.compositeAttributes[0].code).toBe('number');
+    });
+
+    it('should move attribute properly for non-composite monolist', () => {
+      STATE_HERE.selected.attributeSelected.compositeAttributes = cloneDeep(
+        STATE_HERE.selected.attributeSelected.nestedAttribute.compositeAttributes,
+      );
+      newState = reducer(STATE_HERE, moveAttributeFromComposite(2, 0, false));
+      expect(newState.selected.attributeSelected.compositeAttributes[2].code).toBe('testo');
+    });
+  });
+
+  describe('after action SET_NEW_ATTRIBUTE_COMPOSITE', () => {
+    let STATE_HERE;
+    beforeEach(() => {
+      STATE_HERE = {
+        selected: {},
+      };
+    });
+
+    it('should set newAttributeComposite', () => {
+      newState = reducer(STATE_HERE, setNewAttributeComposite({ name: 'moi' }));
+      expect(newState).toHaveProperty('selected');
+      expect(newState.selected).toHaveProperty('newAttributeComposite');
+      expect(newState.selected.newAttributeComposite).toEqual({ name: 'moi' });
     });
   });
 
@@ -113,7 +239,7 @@ describe('state/content-type/reducer', () => {
     });
   });
 
-  describe('after action SET_DATA_TYPE_REFERENCE_STATUS', () => {
+  describe('after action SET_CONTENT_TYPE_REFERENCE_STATUS', () => {
     beforeEach(() => {
       newState = reducer(state, setContentTypeReferenceStatus(CONTENT_TYPE_REFERENCES_STATUS));
     });

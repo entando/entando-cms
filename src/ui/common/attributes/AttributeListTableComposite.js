@@ -52,7 +52,7 @@ const AttributeListTableComposite = (props) => {
         <span className="input-group-btn">
           <Button
             type="button"
-            className="pull-right DataTypeForm__add"
+            className="pull-right ContentTypeForm__add"
             bsStyle="primary"
             onClick={() => onAddAttribute(props)}
             disabled={invalid || submitting}

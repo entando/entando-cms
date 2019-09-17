@@ -112,6 +112,8 @@ export const CONTENT_TYPES_ATTRIBUTES = [
   'Enumerator',
   'Monotext',
   'Text',
+  'List',
+  'Monolist',
 ];
 
 export const CONTENT_TYPE_ATTRIBUTE = {
@@ -158,7 +160,7 @@ export const CONTENT_TYPE_REFERENCES_STATUS = {
 
 export const CONTENT_TYPE_RELOAD_REFERENCES_STATUS = {
   result: 'success',
-  dataTypeCodes: {
+  contentTypeCodes: {
     AAA: 0,
     BBB: 1,
   },
@@ -171,13 +173,13 @@ export const ATTRIBUTE_CONTENT_TYPES_DELETE_OK = {
 
 export const ATTRIBUTE_MOVE_UP = {
   attributeCode: 'title',
-  dataTypeCode: 'DTT',
+  contentTypeCode: 'DTT',
   movement: 'UP',
 };
 
 export const ATTRIBUTE_MOVE_DOWN = {
   attributeCode: 'title',
-  dataTypeCode: 'DTT',
+  contentTypeCode: 'DTT',
   movement: 'DOWN',
 };
 

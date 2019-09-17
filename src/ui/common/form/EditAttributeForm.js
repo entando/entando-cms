@@ -200,7 +200,7 @@ EditAttributeFormBody.propTypes = {
   onWillMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  dataTypeAttributeCode: PropTypes.string,
+  contentTypeAttributeCode: PropTypes.string,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   selectedAttributeType: PropTypes.string,
@@ -222,7 +222,7 @@ EditAttributeFormBody.propTypes = {
 EditAttributeFormBody.defaultProps = {
   invalid: false,
   submitting: false,
-  dataTypeAttributeCode: '',
+  contentTypeAttributeCode: '',
   selectedAttributeType: '',
   selectedAttributeTypeForAddComposite: '',
   indexable: false,

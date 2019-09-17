@@ -441,9 +441,9 @@ describe('state/content-type/actions ', () => {
       it('fetchContentTypeListPaged calls fetchContentTypeListPaged and setPage actions', (done) => {
         store.dispatch(fetchContentTypeListPaged()).then(() => {
           const actions = store.getActions();
-          expect(actions).toHaveLength(2);
-          expect(actions[0].type).toEqual(SET_CONTENT_TYPES);
-          expect(actions[1].type).toEqual(SET_PAGE);
+          expect(actions).toHaveLength(4);
+          expect(actions[1].type).toEqual(SET_CONTENT_TYPES);
+          expect(actions[2].type).toEqual(SET_PAGE);
           done();
         }).catch(done.fail);
       });
@@ -452,7 +452,7 @@ describe('state/content-type/actions ', () => {
         getContentTypes.mockImplementationOnce(mockApi({ payload: CONTENT_TYPES_MOCK }));
         store.dispatch(fetchContentTypeListPaged()).then(() => {
           const actions = store.getActions();
-          const actionPayload = actions[0].payload;
+          const actionPayload = actions[1].payload;
           expect(actionPayload.list).toHaveLength(2);
           const ContentType = actionPayload.list[0];
           expect(ContentType).toHaveProperty('name', 'contentType1');
@@ -466,8 +466,8 @@ describe('state/content-type/actions ', () => {
         getContentTypes.mockImplementationOnce(mockApi({ errors: true }));
         store.dispatch(fetchContentTypeListPaged()).then(() => {
           const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+          expect(actions).toHaveLength(3);
+          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
           done();
         }).catch(done.fail);
       });
@@ -485,6 +485,46 @@ describe('state/content-type/actions ', () => {
           expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', '@@redux-form/INITIALIZE');
           expect(actions[1]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE);
+          done();
+        }).catch(done.fail);
+      });
+
+      it('fetchAttributeFromContentType with type date', (done) => {
+        const rangeStartDate = new Date();
+        rangeStartDate.setDate(rangeStartDate.getDate() - 1);
+        const rangeEndDate = new Date();
+        rangeEndDate.setDate(rangeEndDate.getDate() + 1);
+        const equalDate = new Date();
+        const ATTRIBUTE_TYPE_DATE = {
+          code: 'mlstc',
+          type: 'Date',
+          name: 'Just a date',
+          roles: [{ code: 'aw' }, { code: 'wa' }],
+          disablingCodes: [],
+          mandatory: true,
+          listFilter: false,
+          indexable: false,
+          enumeratorStaticItems: null,
+          enumeratorStaticItemsSeparator: null,
+          enumeratorExtractorBean: null,
+          validationRules: {
+            rangeStartDate,
+            rangeEndDate,
+            equalDate,
+            rangeStartDateAttribute: rangeStartDate,
+            rangeEndDateAttribute: rangeEndDate,
+            equalDateAttribute: equalDate,
+          },
+        };
+        getAttributeFromContentType.mockImplementationOnce(
+          mockApi({ payload: ATTRIBUTE_TYPE_DATE }),
+        );
+        store.dispatch(fetchAttributeFromContentType('attribute', 'AAA', 'mlstc')).then(() => {
+          const actions = store.getActions();
+          expect(actions).toHaveLength(2);
+          expect(actions[1]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE);
+          expect(actions[1].payload.attribute.type).toEqual('Date');
+          expect(actions[1].payload.attribute.code).toEqual('mlstc');
           done();
         }).catch(done.fail);
       });
@@ -787,6 +827,44 @@ describe('state/content-type/actions ', () => {
           expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
           expect(postAttributeFromContentType).toHaveBeenCalled();
           done();
+        });
+
+        it('action POST with type date', () => {
+          const rangeStartDate = '2018-06-15 00:00:00';
+          const rangeEndDate = '2019-10-15 00:00:00';
+          const equalDate = '2019-09-17 00:00:00';
+          const ATTRIBUTE_TYPE_DATE = {
+            code: 'mlstc',
+            type: 'Date',
+            name: 'Just a date',
+            joinRoles: [{ code: 'roleCode1' }],
+            disablingCodes: [],
+            mandatory: true,
+            listFilter: false,
+            indexable: false,
+            enumeratorStaticItems: null,
+            enumeratorStaticItemsSeparator: null,
+            enumeratorExtractorBean: null,
+            validationRules: {
+              rangeStartDate,
+              rangeEndDate,
+              equalDate,
+              rangeStartDateAttribute: rangeStartDate,
+              rangeEndDateAttribute: rangeEndDate,
+              equalDateAttribute: equalDate,
+            },
+          };
+          postAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          store.dispatch(handlerAttributeFromContentType(
+            METHODS.POST,
+            ATTRIBUTE_TYPE_DATE,
+            allowedRoles,
+          ));
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
+          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
+          expect(postAttributeFromContentType).toHaveBeenCalled();
         });
 
         it('action add sub attribute to Composite attribute', (done) => {

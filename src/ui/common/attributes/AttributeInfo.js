@@ -47,7 +47,7 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
         <fieldset className="no-padding">
           <legend>
             <FormattedMessage id="cms.label.info" />
-            <div className="DataTypeForm__required-fields text-right">
+            <div className="ContentTypeForm__required-fields text-right">
             * <FormattedMessage id="cms.label.fieldsRequired" />
             </div>
           </legend>

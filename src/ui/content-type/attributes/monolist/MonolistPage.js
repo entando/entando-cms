@@ -28,7 +28,7 @@ class MonolistPage extends Component {
 
   render() {
     const {
-      attributeCode, dataTypeCode, selectedAttribute, entityCode, type,
+      attributeCode, contentTypeCode, selectedAttribute, entityCode, type,
     } = this.props;
     const titleId = selectedAttribute === '' ? 'cms.label.edit' : `cms.contenttype.label.edit.${selectedAttribute}`;
     return (
@@ -45,7 +45,7 @@ class MonolistPage extends Component {
                 </BreadcrumbItem>
                 <BreadcrumbItem>
                   <FormattedMessage id="cms.label.edit" />:
-                  &nbsp;{dataTypeCode}
+                  &nbsp;{contentTypeCode}
                 </BreadcrumbItem>
                 {
                   type === TYPE_COMPOSITE ? (
@@ -92,7 +92,7 @@ class MonolistPage extends Component {
 
 MonolistPage.propTypes = {
   onWillMount: PropTypes.func,
-  dataTypeCode: PropTypes.string,
+  contentTypeCode: PropTypes.string,
   attributeCode: PropTypes.string,
   selectedAttribute: PropTypes.string,
   entityCode: PropTypes.string,
@@ -102,7 +102,7 @@ MonolistPage.propTypes = {
 
 MonolistPage.defaultProps = {
   onWillMount: () => {},
-  dataTypeCode: '',
+  contentTypeCode: '',
   attributeCode: '',
   selectedAttribute: '',
   entityCode: '',

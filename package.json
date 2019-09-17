@@ -29,6 +29,11 @@
     "eject": "react-scripts eject",
     "coverage": "react-scripts test --coverage"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage"
+    }
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -79,7 +84,18 @@
             ".jsx"
           ]
         }
-      ]
+      ],
+      "jsx-a11y/label-has-associated-control": [ 2, {
+        "controlComponents": ["Field"],
+        "depth": 3
+      }],
+      "jsx-a11y/label-has-for": [ 2, {
+          "components": [ "Label" ],
+          "required": {
+              "every": [ "nesting", "id" ]
+          },
+          "allowChildren": true
+      }]
     }
   },
   "eslintIgnore": [

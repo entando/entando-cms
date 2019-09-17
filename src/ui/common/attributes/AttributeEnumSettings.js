@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  defineMessages,
+  injectIntl,
+  intlShape,
+} from 'react-intl';
 import { Row, Col } from 'patternfly-react';
 import { Field } from 'redux-form';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
-import { required, formattedText } from '@entando/utils';
+import { required } from '@entando/utils';
 import { MODE_EDIT, MODE_ADD } from 'state/content-type/const';
 
 export const element = value => (
@@ -14,13 +19,21 @@ export const element = value => (
     ? <FormattedMessage id="validateForm.element" /> : undefined
 );
 
-const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode }) => {
+const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode, intl }) => {
   const selectAllowedOptions = enumeratorExtractorBeans.map(item => (
     {
       value: item,
       text: item,
     }
   ));
+
+  const msgs = defineMessages({
+    enumStaticItemsHelp: {
+      id: 'cms.contenttype.enumeratorStaticItems.help',
+      defaultMessage: 'Help',
+    },
+  });
+
   return (
     <Row>
       <Col xs={12}>
@@ -34,7 +47,7 @@ const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode }) => {
             label={
               <FormLabel labelId="cms.contenttype.enumeratorStaticItems" required />
             }
-            placeholder={formattedText('cms.contenttype.enumeratorStaticItems.help')}
+            placeholder={intl.formatMessage(msgs.enumStaticItemsHelp)}
             validate={[required, element]}
           />
           <Field
@@ -74,6 +87,7 @@ const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode }) => {
 };
 
 AttributeEnumSettings.propTypes = {
+  intl: intlShape.isRequired,
   enumeratorExtractorBeans: PropTypes.arrayOf(PropTypes.string),
   mode: PropTypes.oneOf([MODE_ADD, MODE_EDIT]),
 };
@@ -83,4 +97,4 @@ AttributeEnumSettings.defaultProps = {
   mode: MODE_ADD,
 };
 
-export default AttributeEnumSettings;
+export default injectIntl(AttributeEnumSettings);

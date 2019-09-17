@@ -28,7 +28,7 @@ import { TYPE_COMPOSITE, MODE_ADD } from 'state/content-type/const';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state) || 'add',
-  dataTypeAttributeCode: params.entityCode,
+  contentTypeAttributeCode: params.entityCode,
   joinAllowedOptions: formValueSelector('addAttribute')(state, 'joinRoles') || [],
   selectedAttributeType: getContentTypeSelectedAttribute(state),
   attributesList: getContentTypeAttributesIdList(state),

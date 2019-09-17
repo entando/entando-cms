@@ -11,9 +11,9 @@ const initialState = {
 };
 
 const isPageValid = (page, lastPage) => {
-  if (!isInteger(page) ||
-    page < 1 ||
-    page > lastPage
+  if (!isInteger(page)
+    || page < 1
+    || page > lastPage
   ) {
     return false;
   }
@@ -37,10 +37,10 @@ const isLastPageValid = (lastPage) => {
 };
 
 const isPayloadValid = (payload) => {
-  if (!isPageValid(payload.page, payload.lastPage) ||
-    !isPageSizeValid(payload.pageSize) ||
-    !isLastPageValid(payload.lastPage) ||
-    !isTotalItemsValid(payload.totalItems)
+  if (!isPageValid(payload.page, payload.lastPage)
+    || !isPageSizeValid(payload.pageSize)
+    || !isLastPageValid(payload.lastPage)
+    || !isTotalItemsValid(payload.totalItems)
   ) {
     return false;
   }
@@ -59,9 +59,9 @@ const castValues = page => (
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_PAGE: {
-      return isPayloadValid(action.payload.page) ?
-        { ...state, [action.payload.namespace]: castValues(action.payload.page) } :
-        state;
+      return isPayloadValid(action.payload.page)
+        ? { ...state, [action.payload.namespace]: castValues(action.payload.page) }
+        : state;
     }
     default: return state;
   }

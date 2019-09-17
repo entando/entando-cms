@@ -185,6 +185,7 @@ export const setNewAttributeComposite = attributeData => ({
 
 // thunks
 export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('contentTypeList'));
   getContentTypes(page, params).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
@@ -193,6 +194,7 @@ export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, para
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
       }
+      dispatch(toggleLoading('contentTypeList'));
       resolve();
     });
   }).catch(() => {});

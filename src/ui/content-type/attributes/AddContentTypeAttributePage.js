@@ -14,7 +14,7 @@ import ErrorsAlertContainer from 'ui/common/form/ErrorsAlertContainer';
 import AddAttributeFormContainer from 'ui/content-type/attributes/AddAttributeFormContainer';
 import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 
-const AddDataTypeAttributePage = () => (
+const AddContentTypeAttributePage = () => (
   <CMSShell className="AttributePage">
     <CardGrid fluid>
       <Row>
@@ -54,4 +54,4 @@ const AddDataTypeAttributePage = () => (
   </CMSShell>
 );
 
-export default AddDataTypeAttributePage;
+export default AddContentTypeAttributePage;
