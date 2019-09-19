@@ -20,6 +20,21 @@ const STATE = {
   locale: 'en',
   messages: [],
   contentModel: { list: [] },
+  editContent: {
+    ownerGroupDisabled: {
+      disabled: false,
+    },
+    language: 'EN',
+    groups: [],
+    content: {},
+  },
+  categories: {
+    list: [],
+    map: [],
+    childrenMap: [],
+    statusMap: [],
+    titlesMap: [],
+  },
 };
 
 configEnzymeAdapter();

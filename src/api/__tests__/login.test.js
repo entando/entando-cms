@@ -21,7 +21,7 @@ describe('api/login', () => {
       mockResponse: {},
       contentType: 'application/x-www-form-urlencoded',
       headers: {
-        Authorization: 'Basic dW5kZWZpbmVkOnVuZGVmaW5lZA==',
+        Authorization: 'Basic YXBwYnVpbGRlcjphcHBidWlsZGVyX3NlY3JldA==',
       },
       body: {
         username: 'gianni',
