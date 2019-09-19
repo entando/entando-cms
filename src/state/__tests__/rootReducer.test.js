@@ -5,7 +5,7 @@ const state = reducer();
 describe('root reducer store', () => {
   it('contains the correct number of states', () => {
     expect(state).toBeInstanceOf(Object);
-    expect(Object.keys(state)).toHaveLength(9);
+    expect(Object.keys(state)).toHaveLength(11);
   });
 
   it('contains the redux form state', () => {
@@ -14,5 +14,13 @@ describe('root reducer store', () => {
 
   it('contains the messages state', () => {
     expect(state).toHaveProperty('messages');
+  });
+
+  it('contains the editForm state', () => {
+    expect(state).toHaveProperty('editContent');
+  });
+
+  it('contains the categories state', () => {
+    expect(state).toHaveProperty('categories');
   });
 });

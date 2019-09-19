@@ -3,9 +3,7 @@ import thunk from 'redux-thunk';
 
 import rootReducer from 'state/rootReducer';
 
-const composeParams = [
-  applyMiddleware(thunk),
-];
+const composeParams = [applyMiddleware(thunk)];
 
 /* eslint-disable */
 if (window.__REDUX_DEVTOOLS_EXTENSION__) {
@@ -13,9 +11,6 @@ if (window.__REDUX_DEVTOOLS_EXTENSION__) {
 }
 /* eslint-enable */
 
-const store = createStore(
-  rootReducer,
-  compose(...composeParams),
-);
+const store = createStore(rootReducer, compose(...composeParams));
 
 export default store;

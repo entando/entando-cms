@@ -23,11 +23,11 @@ describe('state/modal/selectors', () => {
 
   it('verify getVisibleModal selector', () => {
     const selected = getVisibleModal(TEST_STATE);
-    expect(selected).toEqual('modalId');
+    expect(selected).toEqual(TEST_STATE.modal.visibleModal);
   });
 
   it('verify getInfo selector', () => {
     const selected = getInfo(TEST_STATE);
-    expect(selected).toHaveProperty('code', 'entity_code');
+    expect(selected).toHaveProperty('code', MODAL_INFO.code);
   });
 });

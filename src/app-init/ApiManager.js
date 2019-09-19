@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  config,
-  setApi,
-  useMocks,
-  getUsername,
-  getToken,
-  loginUser,
+  config, setApi, useMocks, getUsername, getToken, loginUser,
 } from '@entando/apimanager';
 
 import { addErrors, addToast, TOAST_WARNING } from '@entando/messages';
@@ -49,10 +44,7 @@ class ApiManager extends Component {
 
   // eslint-disable-next-line class-methods-use-this
   reloadWithDelay() {
-    setTimeout(
-      () => window.location.reload(),
-      500,
-    );
+    setTimeout(() => window.location.reload(), 500);
   }
 
   isUserLogged() {
@@ -61,7 +53,6 @@ class ApiManager extends Component {
     const state = getState();
     const username = getUsername(state);
     const token = getToken(state);
-
     return username && token;
   }
 
@@ -76,11 +67,11 @@ class ApiManager extends Component {
     const { dispatch } = store;
     const username = 'admin';
     const password = 'adminadmin';
-    login(username, password).then(response => response.json())
+    login(username, password)
+      .then(response => response.json())
       .then(json => dispatch(loginUser(username, json.access_token)))
       .catch(e => dispatch(addErrors([e.message])));
   }
-
 
   render() {
     const { children } = this.props;
@@ -93,10 +84,7 @@ ApiManager.propTypes = {
     dispatch: PropTypes.func.isRequired,
     getState: PropTypes.func.isRequired,
   }).isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
 };
 
 export default ApiManager;

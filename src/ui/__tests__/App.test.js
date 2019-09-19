@@ -21,6 +21,21 @@ const STATE = {
   messages: [],
   contentModel: { list: [] },
   modal: { visibleModal: '', info: {} },
+  editContent: {
+    ownerGroupDisabled: {
+      disabled: false,
+    },
+    language: 'EN',
+    groups: [],
+    content: {},
+  },
+  categories: {
+    list: [],
+    map: [],
+    childrenMap: [],
+    statusMap: [],
+    titlesMap: [],
+  },
 };
 
 configEnzymeAdapter();
