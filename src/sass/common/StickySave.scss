@@ -1,0 +1,30 @@
+.StickySave {
+
+  &__row {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #d1d1d1;
+  }
+
+  &__column {
+    margin-bottom: 10px;
+  }
+
+  &__select {
+    display: inline;
+    width: auto;
+    margin-left: 20px;
+  }
+
+  &__saveText { //sass-lint:disable-line class-name-format
+    margin-right: 20px;
+  }
+
+  &__actionButton { //sass-lint:disable-line class-name-format
+    margin-right: 4px;
+
+    &--last { //sass-lint:disable-line class-name-format
+      margin-right: 0 px;
+      margin-left: 16px;
+    }
+  }
+}

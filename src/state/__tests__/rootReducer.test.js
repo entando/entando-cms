@@ -5,7 +5,7 @@ const state = reducer();
 describe('root reducer store', () => {
   it('contains the correct number of states', () => {
     expect(state).toBeInstanceOf(Object);
-    expect(Object.keys(state)).toHaveLength(10);
+    expect(Object.keys(state)).toHaveLength(12);
   });
 
   it('contains the apimanager state', () => {
@@ -46,5 +46,13 @@ describe('root reducer store', () => {
 
   it('contains the pagination state', () => {
     expect(state).toHaveProperty('pagination');
+  });
+
+  it('contains the editForm state', () => {
+    expect(state).toHaveProperty('editContent');
+  });
+
+  it('contains the categories state', () => {
+    expect(state).toHaveProperty('categories');
   });
 });

@@ -6,6 +6,7 @@ import {
   ROUTE_CMS,
   ROUTE_CMS_CONTENTMODEL_LIST,
   ROUTE_CMS_CONTENTMODEL_ADD,
+  ROUTE_CMS_ADD_CONTENT,
   ROUTE_CMS_CONTENTMODEL_EDIT,
   ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTTYPE_ADD,
@@ -18,6 +19,7 @@ import {
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
 import AddContentModelPage from 'ui/content-model/AddContentModelPage';
+import AddContentPage from 'ui/add-content/AddContentPage';
 import EditContentModelPage from 'ui/content-model/EditContentModelPage';
 import ContentTypeListPage from 'ui/content-type/ContentTypeListPage';
 import AddContentTypePage from 'ui/content-type/AddContentTypePage';
@@ -36,6 +38,10 @@ const routesDir = [
   {
     path: ROUTE_CMS_CONTENTMODEL_ADD,
     component: AddContentModelPage,
+  },
+  {
+    path: ROUTE_CMS_ADD_CONTENT,
+    component: AddContentPage,
   },
   {
     path: ROUTE_CMS_CONTENTMODEL_EDIT,
@@ -67,9 +73,7 @@ const routesDir = [
   },
 ];
 
-const routes = routesDir.map(route => (
-  <Route exact key={route.path} {...route} />
-));
+const routes = routesDir.map(route => <Route exact key={route.path} {...route} />);
 
 const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
 

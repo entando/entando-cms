@@ -3,6 +3,7 @@
 @import "patternfly";
 @import "common/CMSShell";
 @import "common/PageTitle";
+@import "common/SectionTitle";
 @import "common/form/FormLabel";
 @import "common/form/SearchForm";
 @import "common/attributes/AttributeCheckIcon";
@@ -13,3 +14,10 @@
 @import "content-type/ContentTypeList";
 @import "content-type/ContentTypeReferenceStatus";
 @import "content-type/ContentTypeForm";
+@import "edit-content/EditContentForm.scss";
+@import "common/RenderVersionText.scss";
+@import "common/StickySave.scss";
+@import "common/MultiSelectRenderer.scss";
+@import "categories/common/CategoryTreeSelector.scss";
+@import "categories/list/CategoryTree.scss";
+@import "categories/detail/DetailCategoryTable.scss";
