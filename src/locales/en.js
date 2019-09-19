@@ -53,9 +53,11 @@ export default {
     'cms.contentmodel.list.infoDeleted': '{modelname} removed',
     'cms.contentmodel.form.code': 'Code',
     'cms.contentmodel.form.codePlaceholder': 'Code',
-    'cms.contentmodel.form.codeHelp':
-      'You can insert characters uppercase and lowercase letters, numbers and special characters _',
+    'cms.contentmodel.form.codeHelp': 'You can insert up to 10 numbers',
+    'cms.contentmodel.form.nameHelp': 'You can insert up to 50 characters including upper and lowercase letters, numbers and special characters',
+    'cms.contentmodel.form.contentTypeHelp': 'Choose one of your existing content types to use for your content model',
     'cms.contentmodel.form.htmlmodel': 'HTML Model',
+    'cms.contentmodel.form.htmlmodelHelp': 'This will be your HTML content structure using your content elements provided by given content type',
     'cms.contentmodel.form.htmlmodel.statusassist': 'Content Assist is <strong>ON</strong>',
     'cms.contentmodel.form.htmlmodel.statusattrhelp':
       'Help About Attributes Type is <strong>OFF</strong>',
@@ -64,8 +66,8 @@ export default {
     'cms.contentmodel.form.saved': 'Content Model "{modelname}" saved',
     'cms.contentmodel.form.editassistant': 'Inline Editing Assistant',
     'cms.contentmodel.form.stylesheet': 'Style Sheet',
-    'cms.contentmodel.form.editassist.dialog':
-      'Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels<br /><br /><ol><li> Open a <strong>TAG</strong> like div p span... </li><li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li><li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li><li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li><li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li><li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li></ol>Result should look like this:<br /><br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;><br />$content.TITLE.text<br />CLOSE TAG',
+    'cms.contentmodel.form.stylesheetHelp': 'Provide a stylesheet file to be used with your HTML model',
+    'cms.contentmodel.form.editassist.dialog': 'Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels<br /><br /><ol><li> Open a <strong>TAG</strong> like div p span... </li><li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li><li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li><li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li><li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li><li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li></ol>Result should look like this:<br /><br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;><br />$content.TITLE.text<br />CLOSE TAG',
     'cms.contentmodel.form.presscontext': '(press ctrl + space to open content assist menu)',
     'cms.contentmodel.delete.messageprompt': 'Are you sure you want to remove <strong>{id} ({descr})</strong>?',
     'cms.contenttype.title': 'Content Types',
