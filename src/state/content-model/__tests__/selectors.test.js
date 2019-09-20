@@ -14,7 +14,6 @@ it('verify getContentModelList selector', () => {
 it('verify getContentModelOpened selector', () => {
   const opened = getContentModelOpened(TEST_STATE);
   expect(opened).toBeDefined();
-  const keys = Object.keys(opened);
-  expect(keys).toHaveLength(2);
-  expect(keys).toEqual(['name', 'id']);
+  expect(opened).toHaveProperty('name', 'ciao');
+  expect(opened).toHaveProperty('id', 1);
 });

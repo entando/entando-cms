@@ -7,6 +7,7 @@ import {
   postContentModel,
   getContentModel,
   putContentModel,
+  deleteContentModel,
 } from 'api/contentModels';
 import { makeRequest } from '@entando/apimanager';
 import { GET_CONTENT_MODELS_RESPONSE_OK } from 'testutils/mocks/contentModel';
@@ -16,7 +17,12 @@ configEnzymeAdapter();
 jest.unmock('api/contentModels');
 jest.mock('@entando/apimanager', () => ({
   makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
-  METHODS: { GET: 'GET', POST: 'POST', PUT: 'PUT' },
+  METHODS: {
+    GET: 'GET',
+    POST: 'POST',
+    PUT: 'PUT',
+    DELETE: 'DELETE',
+  },
 }));
 
 describe('api/contentModels', () => {
@@ -67,6 +73,17 @@ describe('api/contentModels', () => {
       body,
       method: 'PUT',
       mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteContentModel returns a promise with correct params', () => {
+    const response = deleteContentModel(1);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentmodels/1',
+      method: 'DELETE',
+      mockResponse: { code: '<contentModelId>' },
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);

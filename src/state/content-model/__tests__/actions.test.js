@@ -6,6 +6,7 @@ import {
   fetchContentModel,
   sendPostContentModel,
   sendPutContentModel,
+  sendDeleteContentModel,
 } from 'state/content-model/actions';
 import { SET_CONTENT_MODELS, SET_CONTENT_MODEL_OPENED } from 'state/content-model/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
@@ -15,6 +16,7 @@ import {
   postContentModel,
   getContentModel,
   putContentModel,
+  deleteContentModel,
 } from 'api/contentModels';
 
 const list = GET_CONTENT_MODELS_RESPONSE_OK;
@@ -31,6 +33,7 @@ jest.mock('api/contentModels', () => ({
   postContentModel: jest.fn(res => mockApi({ payload: res })()),
   getContentModel: jest.fn(id => mockApi({ payload: { id, a: 'b' } })()),
   putContentModel: jest.fn(res => mockApi({ payload: res })()),
+  deleteContentModel: jest.fn(id => mockApi({ payload: { id } })()),
 }));
 
 it('test setContentModelList action', () => {
@@ -123,6 +126,24 @@ describe('contentModel thunks', () => {
     const tosend = { id: 1, contentType: 'YO' };
     store.dispatch(sendPutContentModel(tosend)).then((res) => {
       expect(putContentModel).toHaveBeenCalledWith(tosend);
+      expect(res).toEqual(undefined);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendDeleteContentModel', (done) => {
+    const tosend = 1;
+    store.dispatch(sendDeleteContentModel(tosend)).then((res) => {
+      expect(deleteContentModel).toHaveBeenCalledWith(tosend);
+      expect(res).toEqual({ id: tosend });
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendDeleteContentModel error', (done) => {
+    deleteContentModel.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(sendDeleteContentModel(1)).then((res) => {
+      expect(deleteContentModel).toHaveBeenCalledWith(1);
       expect(res).toEqual(undefined);
       done();
     }).catch(done.fail);

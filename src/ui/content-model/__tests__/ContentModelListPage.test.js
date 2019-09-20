@@ -16,6 +16,7 @@ configEnzymeAdapter();
 const initState = {
   loading: {},
   contentModel: { list: [] },
+  modal: { visibleModal: '', info: {} },
 };
 
 let component;

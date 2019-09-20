@@ -8,6 +8,7 @@ import contentModel from 'state/content-model/reducer';
 import contentType from 'state/content-type/reducer';
 import editContent from 'state/edit-content/reducer';
 import loading from 'state/loading/reducer';
+import modal from 'state/modal/reducer';
 import categories from 'state/categories/reducer';
 
 export default combineReducers({
@@ -20,5 +21,6 @@ export default combineReducers({
   loading,
   locale,
   messages,
+  modal,
   categories,
 });

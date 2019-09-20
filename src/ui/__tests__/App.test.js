@@ -20,6 +20,7 @@ const STATE = {
   locale: 'en',
   messages: [],
   contentModel: { list: [] },
+  modal: { visibleModal: '', info: {} },
   editContent: {
     ownerGroupDisabled: {
       disabled: false,

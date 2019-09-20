@@ -40,7 +40,7 @@
       "!<rootDir>/node_modules/",
       "!src/serviceWorker.js",
       "!src/state/store.js",
-      "!src/testutils/*.js",
+      "!src/testutils/**/*.js",
       "!src/ui/**/*.js",
       "!src/index.js"
     ],
