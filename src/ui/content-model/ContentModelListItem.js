@@ -13,8 +13,8 @@ class ContentModelListItem extends Component {
   }
 
   onClickDelete() {
-    const { onDelete, id, descr } = this.props;
-    onDelete({ id, descr });
+    const { onDelete } = this.props;
+    onDelete(this.props);
   }
 
   render() {

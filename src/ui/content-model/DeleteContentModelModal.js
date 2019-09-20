@@ -40,15 +40,15 @@ const DeleteContentModelModal = ({
 DeleteContentModelModal.propTypes = {
   onConfirmDelete: PropTypes.func.isRequired,
   info: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     descr: PropTypes.string,
   }),
 };
 
 DeleteContentModelModal.defaultProps = {
   info: {
-    code: '',
-    name: '',
+    id: '',
+    descr: '',
   },
 };
 
