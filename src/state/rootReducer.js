@@ -8,16 +8,22 @@ import contents from 'state/contents/reducer';
 import { messages } from '@entando/messages';
 import contentModel from 'state/content-model/reducer';
 import contentType from 'state/content-type/reducer';
+import editContent from 'state/edit-content/reducer';
 import loading from 'state/loading/reducer';
+import modal from 'state/modal/reducer';
+import categories from 'state/categories/reducer';
 
 export default combineReducers({
   api,
+  contents,
   contentModel,
   contentType,
   currentUser,
+  editContent,
   form,
   loading,
   locale,
   messages,
-  contents,
+  modal,
+  categories,
 });

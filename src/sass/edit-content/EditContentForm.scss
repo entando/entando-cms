@@ -1,0 +1,27 @@
+.EditContentForm {
+  margin-top: 20px;
+
+  &__content {
+    min-height: calc(100vh - 350px);
+    @media only screen and (max-width: 992px) {
+      min-height: calc(100vh - 375px);
+    }
+    @media only screen and (max-width: 767px) {
+      min-height: calc(100vh - 395px);
+    }
+    @media only screen and (max-width: 618px) {
+      min-height: calc(100vh - 435px);
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    padding: 0 20px;
+
+    & {
+      .control-label { //sass-lint:disable-line class-name-format
+        float: left;
+        text-align: left;
+      }
+    }
+  }
+}

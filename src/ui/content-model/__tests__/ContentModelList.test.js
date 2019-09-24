@@ -11,6 +11,7 @@ configEnzymeAdapter();
 const props = {
   contentModels,
   onDidMount: jest.fn(),
+  onClickDelete: () => {},
 };
 
 let component;

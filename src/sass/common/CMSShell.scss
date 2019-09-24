@@ -56,3 +56,9 @@
     text-decoration: none;
   }
 }
+
+.FormGroupSeparator {
+  border-bottom: 1px solid $color-rating-filter-star-empty;
+  color: $dark-color-separator;
+  font-size: 12px;
+}

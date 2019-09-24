@@ -25,3 +25,30 @@ export const postContentModel = contModelObject => makeRequest({
   mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
   useAuthentication: true,
 });
+
+export const getContentModel = id => (
+  makeRequest(
+    {
+      uri: `${contentModelsPath}/${id}`,
+      method: METHODS.GET,
+      mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
+      contentType: 'application/json',
+      useAuthentication: true,
+    },
+  )
+);
+
+export const putContentModel = contModelObject => makeRequest({
+  uri: `${contentModelsPath}/${contModelObject.id}`,
+  body: contModelObject,
+  method: METHODS.PUT,
+  mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
+  useAuthentication: true,
+});
+
+export const deleteContentModel = id => makeRequest({
+  uri: `${contentModelsPath}/${id}`,
+  method: METHODS.DELETE,
+  mockResponse: { code: '<contentModelId>' },
+  useAuthentication: true,
+});

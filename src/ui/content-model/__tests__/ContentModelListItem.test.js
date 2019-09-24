@@ -12,6 +12,7 @@ const props = {
   id: 10012,
   contentType: 'Generic Content',
   descr: 'Hero Unit + Picture',
+  onDelete: () => {},
 };
 
 let component;

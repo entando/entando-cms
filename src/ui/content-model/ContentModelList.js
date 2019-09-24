@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Spinner } from 'patternfly-react';
 import ContentModelListItem from 'ui/content-model/ContentModelListItem';
+import DeleteContentModelModalContainer from 'ui/content-model/DeleteContentModelModalContainer';
 
 class ContentModelList extends Component {
   componentDidMount() {
@@ -11,10 +12,10 @@ class ContentModelList extends Component {
   }
 
   render() {
-    const { contentModels, loading } = this.props;
+    const { contentModels, loading, onClickDelete } = this.props;
     const renderRow = contentModels
       .map(item => (
-        <ContentModelListItem key={item.id} {...item} />
+        <ContentModelListItem key={item.id} onDelete={onClickDelete} {...item} />
       ));
     return (
       <div className="ContentModelList__wrap">
@@ -31,6 +32,7 @@ class ContentModelList extends Component {
               {renderRow}
             </tbody>
           </table>
+          <DeleteContentModelModalContainer />
         </Spinner>
       </div>
     );
@@ -43,6 +45,7 @@ ContentModelList.propTypes = {
   ).isRequired,
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
 };
 
 ContentModelList.defaultProps = {
