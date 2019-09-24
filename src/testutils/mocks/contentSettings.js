@@ -22,3 +22,8 @@ export const CONTENT_SETTINGS_REFRESH_OK = {
   errors: [],
   metaData: {},
 };
+
+export const CONTENT_SETTINGS_EDITOR_OK = {
+  label: 'CKEditor',
+  key: 'fckeditor',
+};

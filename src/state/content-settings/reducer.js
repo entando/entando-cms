@@ -1,4 +1,4 @@
-import { SET_CONTENT_SETTINGS } from 'state/content-settings/types';
+import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS } from 'state/content-settings/types';
 
 const reducer = (state = {}, action = {}) => {
   switch (action.type) {
@@ -6,6 +6,11 @@ const reducer = (state = {}, action = {}) => {
       return {
         ...state,
         ...action.payload,
+      };
+    case SET_EDITOR_SETTINGS:
+      return {
+        ...state,
+        editor: action.payload,
       };
     default:
       return state;
