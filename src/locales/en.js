@@ -53,6 +53,10 @@ export default {
     'cms.contentmodel.form.editassist.dialog': 'Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels<br /><br /><ol><li> Open a <strong>TAG</strong> like div p span... </li><li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li><li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li><li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li><li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li><li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li></ol>Result should look like this:<br /><br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;><br />$content.TITLE.text<br />CLOSE TAG',
     'cms.contentmodel.form.presscontext': '(press ctrl + space to open content assist menu)',
     'cms.contentmodel.delete.messageprompt': 'Are you sure you want to remove <strong>{id} ({descr})</strong>?',
+    'cms.contentsettings.title': 'Content Settings',
+    'cms.contentsettings.titletip': 'General settings for CMS related.',
+    'cms.contentsettings.label.reloadreferences': 'Reload the references',
+    'cms.contentsettings.label.reloadindexes': 'Reload the indexes',
     /* Edit Content starts HERE */
     'cms.new': 'New',
     'cms.save': 'Save',
