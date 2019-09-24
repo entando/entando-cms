@@ -25,7 +25,6 @@ const routesDir = [
     component: ContentListPage,
   },
   {
-    path: '/cms/content-models',
     path: ROUTE_CMS_CONTENTMODEL_LIST,
     component: ContentModelListPage,
   },
@@ -54,12 +53,6 @@ class App extends Component {
   }
 
   render() {
-    const routes = routesDir.map(route => (
-      <Route exact key={route.path} {...route} />
-    ));
-
-    const defaultRedirect = () => <Redirect to="/cms/content-list" />;
-
     return (
       <IntlProviderContainer>
         <>

@@ -12,7 +12,7 @@ export const mapStateToProps = state => (
 
 export const mapDispatchToProps = dispatch => ({
   onWillMount: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(fetchContents(page));
+    dispatch(fetchContents(page, 'status=published'));
   },
 });
 

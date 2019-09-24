@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import ContentListItem from 'ui/content/list/ContentListItem';
 
 
 class ContentList extends Component {
   componentWillMount() {
-    this.props.onWillMount();
+    const { onWillMount } = this.props;
+    onWillMount();
   }
+
   render() {
-    console.log(this.props);
     const { contents } = this.props;
     const renderRow = contents
       .map(item => (
@@ -29,6 +31,12 @@ class ContentList extends Component {
       </table>
     );
   }
+}
+
+ContentList.propTypes = {
+  onWillMount: PropTypes.func.isRequired,
+  contents: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
 
 export default ContentList;

@@ -36,6 +36,9 @@ const STATE = {
     statusMap: [],
     titlesMap: [],
   },
+  contents: {
+    list: [],
+  },
 };
 
 configEnzymeAdapter();

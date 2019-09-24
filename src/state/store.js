@@ -14,6 +14,3 @@ if (window.__REDUX_DEVTOOLS_EXTENSION__) {
 const store = createStore(rootReducer, compose(...composeParams));
 
 export default store;
-
-
-
