@@ -1,5 +1,8 @@
 export const CONTENT_SETTINGS_OK = {
-  indexesLastReload: null,
+  indexesLastReload: {
+    date: 1569393692905,
+    result: 1,
+  },
   indexesStatus: 0,
   referencesStatus: 0,
   metadata: {
