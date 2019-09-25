@@ -10,6 +10,7 @@ import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentSettingsGeneralContainer from 'ui/content-settings/ContentSettingsGeneralContainer';
+import ContentSettingsCropRatiosContainer from 'ui/content-settings/ContentSettingsCropRatiosContainer';
 
 const ContentSettingsPage = () => (
   <CMSShell>
@@ -34,6 +35,7 @@ const ContentSettingsPage = () => (
       <Row>
         <Col xs={12}>
           <ContentSettingsGeneralContainer />
+          <ContentSettingsCropRatiosContainer />
         </Col>
       </Row>
     </CardGrid>
