@@ -12,6 +12,7 @@ export const getSelected = state => get(state.categories, 'selected', {});
 export const getSelectedRefs = state => get(state.categories, 'selected.references', {});
 export const getReferenceKeyList = state => get(state.categories, 'selected.referenceKeyList', []);
 export const getReferenceMap = state => get(state.categories, 'selected.referenceMap', {});
+export const getJoinedCategoriesCodes = state => state.editContent.joinedCategories;
 
 const CATEGORY_STATUS_DEFAULTS = {
   expanded: false,
@@ -108,4 +109,9 @@ export const getAllCategories = createSelector(
     children: categoryChildren[categoryCode],
     isEmpty: !(categoryChildren[categoryCode] && categoryChildren[categoryCode].length),
   })),
+);
+
+export const getJoinedCategoriesByCodes = createSelector(
+  [getAllCategories, getJoinedCategoriesCodes],
+  (categories, codes) => categories.filter(c => codes.includes(c.code)),
 );

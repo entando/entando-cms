@@ -7,3 +7,4 @@ export const SET_GROUPS = 'edit-content/set-groups';
 export const JOIN_CATEGORY = 'edit-content/join-category';
 export const UNJOIN_CATEGORY = 'edit-content/unjoin-category';
 export const GET_LANGUAGE = 'edit-content/get-language';
+export const SET_JOINED_CATEGORIES = 'edit-content/set-joined-categories';

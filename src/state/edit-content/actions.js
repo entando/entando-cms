@@ -1,10 +1,11 @@
 import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
 } from '@entando/messages';
+import { initialize } from 'redux-form';
 
 import { getContent, getGroups, postAddContent } from 'api/editContent';
 import {
-  SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, SET_WORK_MODE,
+  SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, SET_WORK_MODE, SET_JOINED_CATEGORIES,
 } from './types';
 
 export const setContentEntry = content => ({
@@ -12,12 +13,27 @@ export const setContentEntry = content => ({
   payload: { content },
 });
 
+export const setJoinedCategories = categories => ({
+  type: SET_JOINED_CATEGORIES,
+  payload: { joinedCategories: categories },
+});
+
 export const fetchContent = params => dispatch => new Promise((resolve) => {
   getContent(params)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          dispatch(setContentEntry(json.payload));
+          const content = json.payload[11] || [];
+          // @TODO unable to fetch single content due to bug EN6-103
+          // change [0] when issue is resolved
+          dispatch(setContentEntry(content));
+          dispatch(setJoinedCategories(content.categories));
+          const { mainGroup, groups, description } = content;
+          dispatch(initialize('editcontentform', {
+            ownerGroup: mainGroup,
+            joinGroups: groups,
+            contentDescription: description,
+          }));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
         }

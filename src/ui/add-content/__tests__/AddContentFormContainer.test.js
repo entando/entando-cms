@@ -1,7 +1,7 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
-import { mapStateToProps, mapDispatchToProps } from 'ui/edit-content/EditContentFormContainer';
-import { EDIT_CONTENT_OPENED_OK } from 'testutils/mocks/editContent';
+import { mapStateToProps, mapDispatchToProps } from 'ui/add-content/AddContentFormContainer';
+import { ADD_CONTENT_OPENED_OK } from 'testutils/mocks/editContent';
 
 const TEST_STATE = {
   editContent: {
@@ -9,7 +9,7 @@ const TEST_STATE = {
       disabled: false,
     },
     language: 'en',
-    workMode: 'work-mode-edit',
+    workMode: 'work-mode-add',
     content: {
       contentType: 'NEWS',
       version: '0.0',
@@ -23,15 +23,11 @@ const TEST_STATE = {
   },
 };
 
-const TEST_OWN_PROPS = {
-  match: { params: { id: 1 } },
-};
-
 configEnzymeAdapter();
 
-describe('EditContentFormContainer connection to redux', () => {
-  it('maps editContent properties from state to EditContentForm', () => {
-    expect(mapStateToProps(TEST_STATE, TEST_OWN_PROPS)).toEqual(EDIT_CONTENT_OPENED_OK);
+describe('AddContentFormContainer connection to redux', () => {
+  it('maps editContent properties from state to AddContentForm', () => {
+    expect(mapStateToProps(TEST_STATE)).toEqual(ADD_CONTENT_OPENED_OK);
   });
 
   it('verify that onDidMount and onSetOwnerGroupDisable are defined and called in mapDispatchToProps', () => {

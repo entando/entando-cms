@@ -6,6 +6,7 @@ import {
   SET_GROUPS,
   JOIN_CATEGORY,
   UNJOIN_CATEGORY,
+  SET_JOINED_CATEGORIES,
 } from 'state/edit-content/types';
 
 const defaultState = {
@@ -14,15 +15,8 @@ const defaultState = {
   },
   language: 'en',
   workMode: WORK_MODE_ADD,
-  content: {
-    contentType: 'NEWS',
-    version: '0.0',
-  },
-  contentType: 'NEWS',
-  groups: [
-    { code: 'adminstrators', name: 'Administrators' },
-    { code: 'freeAccess', name: 'Free Access' },
-  ],
+  contentType: '',
+  groups: [],
   joinedCategories: [],
 };
 
@@ -38,21 +32,22 @@ const reducer = (state = defaultState, action = {}) => {
         ...state,
         workMode: action.payload,
       };
-    case SET_CONTENT_ENTRY:
-      return {
-        ...state,
-        content: action.payload,
-      };
     case SET_GROUPS:
       return {
         ...state,
         groups: action.payload.groups || [],
       };
+    case SET_JOINED_CATEGORIES: {
+      return {
+        ...state,
+        joinedCategories: action.payload.joinedCategories || [],
+      };
+    }
     case JOIN_CATEGORY: {
       const { category: newCategory } = action.payload;
       const currentJoinedCategories = state.joinedCategories;
       const alreadyAdded = currentJoinedCategories.filter(
-        category => category.code === newCategory.code,
+        category => category === newCategory,
       ).length > 0;
       if (!alreadyAdded) {
         return {
@@ -66,7 +61,14 @@ const reducer = (state = defaultState, action = {}) => {
       const { categoryCode } = action.payload;
       return {
         ...state,
-        joinedCategories: state.joinedCategories.filter(category => category.code !== categoryCode),
+        joinedCategories: state.joinedCategories.filter(category => category !== categoryCode),
+      };
+    }
+    case SET_CONTENT_ENTRY: {
+      const { content } = action.payload;
+      return {
+        ...state,
+        content,
       };
     }
     default:
