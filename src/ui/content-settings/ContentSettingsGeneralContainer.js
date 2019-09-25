@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import moment from 'moment';
 import {
   getIndexesStatus,
   getReferencesStatus,
@@ -16,11 +17,25 @@ import ContentSettingsGeneral from 'ui/content-settings/ContentSettingsGeneral';
 
 export const mapStateToProps = (state) => {
   const loads = getLoading(state);
+
+  const indexesLastReload = getIndexesLastReload(state);
+  let indexesLastReloadProps = {
+    indexesLastReloadDate: null,
+    indexesLastReloadResult: false,
+  };
+  if (indexesLastReload) {
+    const mstamp = moment.unix(indexesLastReload.date / 1000);
+    indexesLastReloadProps = {
+      indexesLastReloadDate: mstamp.format('DD/MM/YYYY kk:mm'),
+      indexesLastReloadResult: indexesLastReload.result === 1,
+    };
+  }
+
   return {
+    ...indexesLastReloadProps,
     indexesStatus: getIndexesStatus(state),
     referenceStatus: getReferencesStatus(state),
     editorSettings: getEditorSettings(state),
-    indexesLastReload: getIndexesLastReload(state),
     isReloadingReferences: loads.reloadReferences,
     isReloadingIndexes: loads.reloadIndexes,
     isEditorChanging: loads.putEditorSettings,

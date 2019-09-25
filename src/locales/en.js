@@ -64,6 +64,8 @@ export default {
     'cms.contentsettings.label.reloadstatus.0': 'Ready',
     'cms.contentsettings.label.reloadstatus.1': 'Reloading',
     'cms.contentsettings.label.reloadstatus.2': 'Error',
+    'cms.contentsettings.label.reloadstatus.remark.success': 'The operation went successful last {date}',
+    'cms.contentsettings.label.reloadstatus.remark.failed': 'The operation failed last {date}',
     /* Edit Content starts HERE */
     'cms.new': 'New',
     'cms.save': 'Save',

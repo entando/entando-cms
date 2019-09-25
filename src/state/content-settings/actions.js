@@ -64,12 +64,14 @@ export const sendPostReloadIndexes = () => dispatch => (
     dispatch(toggleLoading('reloadIndexes'));
     postReloadIndexes().then((response) => {
       response.json().then((json) => {
-        if (!response.ok) {
+        dispatch(toggleLoading('reloadIndexes'));
+        if (response.ok) {
+          dispatch(fetchContentSettings());
+        } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
         }
-        dispatch(toggleLoading('reloadIndexes'));
         resolve();
       });
     });

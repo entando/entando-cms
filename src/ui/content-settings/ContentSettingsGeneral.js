@@ -42,6 +42,8 @@ class ContentSettingsGeneral extends Component {
       intl,
       referenceStatus,
       indexesStatus,
+      indexesLastReloadDate,
+      indexesLastReloadResult,
       editorSettings,
       onEditorChange,
       onReloadReferences,
@@ -69,6 +71,14 @@ class ContentSettingsGeneral extends Component {
     const reloading = intl.formatMessage(messages.reloading);
 
     const reloadStatusId = 'cms.contentsettings.label.reloadstatus';
+
+    let lastReloadRemarkId = '';
+    if (indexesLastReloadDate) {
+      lastReloadRemarkId = `${reloadStatusId}.remark.${(
+        indexesLastReloadResult ? 'success' : 'failed'
+      )}`;
+    }
+
     const statuses = defineMessages({
       reference: {
         id: `${reloadStatusId}.${referenceStatus}`,
@@ -131,6 +141,19 @@ class ContentSettingsGeneral extends Component {
             )}
           </Col>
         </Row>
+        {lastReloadRemarkId ? (
+          <Row>
+            <Col xs={12} sm={2} />
+            <Col xs={12} sm={10}>
+              <div className="ContentSettingsGeneral__last-reload-remark">
+                <FormattedMessage
+                  id={lastReloadRemarkId}
+                  values={{ date: indexesLastReloadDate }}
+                />
+              </div>
+            </Col>
+          </Row>
+        ) : ''}
         <br />
         {generateEditorSwitch()}
       </div>
@@ -146,6 +169,8 @@ ContentSettingsGeneral.propTypes = {
     key: PropTypes.string,
   }),
   indexesStatus: PropTypes.number,
+  indexesLastReloadDate: PropTypes.string,
+  indexesLastReloadResult: PropTypes.bool,
   referenceStatus: PropTypes.number,
   onReloadReferences: PropTypes.func.isRequired,
   onReloadIndexes: PropTypes.func.isRequired,
@@ -159,6 +184,8 @@ ContentSettingsGeneral.defaultProps = {
   indexesStatus: 1,
   referenceStatus: 1,
   editorSettings: { label: '', key: '' },
+  indexesLastReloadDate: '',
+  indexesLastReloadResult: PropTypes.bool,
   isReloadingReferences: false,
   isReloadingIndexes: false,
   isEditorChanging: false,

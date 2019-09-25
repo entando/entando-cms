@@ -56,6 +56,8 @@ export default {
     'cms.contentsettings.label.reloadstatus.0': 'Pronta',
     'cms.contentsettings.label.reloadstatus.1': 'Ricarico',
     'cms.contentsettings.label.reloadstatus.2': 'Errore',
+    'cms.contentsettings.label.reloadstatus.remark.success': 'L\'ultimo ricaricamento, in data {date}, ha avuto esisto positivo.',
+    'cms.contentsettings.label.reloadstatus.remark.failed': 'L\'ultimo ricaricamento, in data {date}, ha avuto esisto negativo',
     'cms.new': '',
     'cms.save': '',
     'cms.cancel': '',
