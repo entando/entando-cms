@@ -24,6 +24,8 @@ export const setEditorSettings = payload => ({
   payload,
 });
 
+// thunks
+
 export const fetchContentSettings = () => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('getSettings'));
   getContentSettings().then((response) => {
