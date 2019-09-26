@@ -73,3 +73,7 @@ export const mockRenderWithIntl = (ui, state = {}) => {
     )
   );
 };
+
+export const findByTestId = (wrapper, testId) => (
+  wrapper.find(`[data-test-id="${testId}"]`)
+);
