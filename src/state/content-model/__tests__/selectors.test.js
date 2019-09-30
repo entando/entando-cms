@@ -3,7 +3,13 @@ import {
   getContentModelOpened,
 } from 'state/content-model/selectors';
 
-const TEST_STATE = { contentModel: { list: ['hello', 'world'], opened: { name: 'ciao', id: 1 } } };
+const TEST_STATE = {
+  apps: {
+    cms: {
+      contentModel: { list: ['hello', 'world'], opened: { name: 'ciao', id: 1 } },
+    },
+  },
+};
 
 it('verify getContentModelList selector', () => {
   const state = getContentModelList(TEST_STATE);
