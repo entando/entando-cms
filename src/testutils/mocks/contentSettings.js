@@ -30,3 +30,11 @@ export const CONTENT_SETTINGS_EDITOR_OK = {
   label: 'CKEditor',
   key: 'fckeditor',
 };
+
+export const CONTENT_SETTINGS_METADATA_OK = {
+  newKey: ['newMapping'],
+  legend: [],
+  alt: [],
+  description: [],
+  title: [],
+};

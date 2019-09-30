@@ -10,6 +10,8 @@ import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentSettingsGeneralContainer from 'ui/content-settings/ContentSettingsGeneralContainer';
+import ContentSettingsMetadataListContainer from 'ui/content-settings/metadata/ContentSettingsMetadataListContainer';
+import AddContentSettingsMetadataContainer from 'ui/content-settings/metadata/AddContentSettingsMetadataContainer';
 
 const ContentSettingsPage = () => (
   <CMSShell>
@@ -34,6 +36,8 @@ const ContentSettingsPage = () => (
       <Row>
         <Col xs={12}>
           <ContentSettingsGeneralContainer />
+          <ContentSettingsMetadataListContainer />
+          <AddContentSettingsMetadataContainer />
         </Col>
       </Row>
     </CardGrid>

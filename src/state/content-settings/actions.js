@@ -1,9 +1,15 @@
-import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS } from 'state/content-settings/types';
+import {
+  SET_CONTENT_SETTINGS,
+  SET_EDITOR_SETTINGS,
+  SET_METADATA_MAPPING,
+} from 'state/content-settings/types';
 import {
   getContentSettings,
   postReloadReferences,
   postReloadIndexes,
   putEditorSettings,
+  postMetadataMap,
+  deleteMetadataMap,
 } from 'api/contentSettings';
 import { toggleLoading } from 'state/loading/actions';
 import {
@@ -21,6 +27,11 @@ export const setContentSettings = payload => ({
 
 export const setEditorSettings = payload => ({
   type: SET_EDITOR_SETTINGS,
+  payload,
+});
+
+export const setMetadataMapping = payload => ({
+  type: SET_METADATA_MAPPING,
   payload,
 });
 
@@ -92,6 +103,39 @@ export const sendPutEditorSettings = editor => dispatch => new Promise((resolve)
         resolve();
       }
       dispatch(toggleLoading('putEditorSettings'));
+    });
+  }).catch(() => {});
+});
+
+export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('postMetadataMap'));
+  console.log('tosave', key, mapping);
+  postMetadataMap({ key, mapping }).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setMetadataMapping(json.payload));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+      dispatch(toggleLoading('postMetadataMap'));
+    });
+  }).catch(() => {});
+});
+
+export const sendDeleteMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('deleteMetadataMap'));
+  deleteMetadataMap({ key, mapping }).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setMetadataMapping(json.payload));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+      dispatch(toggleLoading('deleteMetadataMap'));
     });
   }).catch(() => {});
 });
