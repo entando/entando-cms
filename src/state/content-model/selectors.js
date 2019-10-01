@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const getContentModelState = state => state.contentModel;
+export const getContentModelState = state => state.apps.cms.contentModel;
 
 export const getContentModelList = createSelector(
   getContentModelState,

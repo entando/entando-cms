@@ -15,7 +15,11 @@ configEnzymeAdapter();
 
 const initState = {
   loading: {},
-  contentSettings: {},
+  apps: {
+    cms: {
+      contentSettings: {},
+    },
+  },
 };
 
 let component;

@@ -27,150 +27,162 @@ const LOCALE_MOCK = 'en';
 jest.mock('state/locale/selectors', () => ({ getLocale: () => 'en' }));
 
 const MOCK_STATE = {
-  categories: {
-    list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
-    map: {
-      home: HOME_PAYLOAD,
-      mycategory1: MYCATEGORY1_PAYLOAD,
-      mycategory2: MYCATEGORY2_PAYLOAD,
-      mycategory3: MYCATEGORY3_PAYLOAD,
-    },
-    childrenMap: {
-      home: HOME_PAYLOAD.children,
-      mycategory1: MYCATEGORY1_PAYLOAD.children,
-      mycategory2: MYCATEGORY2_PAYLOAD.children,
-      mycategory3: MYCATEGORY3_PAYLOAD.children,
-    },
-    titlesMap: {
-      home: HOME_PAYLOAD.titles,
-      mycategory1: MYCATEGORY1_PAYLOAD.titles,
-      mycategory2: MYCATEGORY2_PAYLOAD.titles,
-      mycategory3: MYCATEGORY3_PAYLOAD.titles,
-    },
-    statusMap: {
-      home: { expanded: true, loading: false, loaded: true },
-      mycategory1: {},
-      mycategory2: {},
-      mycategory3: {},
-    },
-    selected: {
-      ...MYCATEGORY1_PAYLOAD,
-      references: {
-        jpcollaborationIdeaManager: false,
-        DataObjectManager: false,
-        jacmsResourceManager: false,
-        jacmsContentManager: false,
-      },
-      referenceKeyList: [
-        'jpcollaborationIdeaManager',
-        'DataObjectManager',
-        'jacmsResourceManager',
-        'jacmsContentManager',
-      ],
-      referenceMap: {
-        jpcollaborationIdeaManager: [],
-        DataObjectManager: DATA_OBJECT_REFERENCES,
-        jacmsResourceManager: RESOURCE_REFERENCES,
-        jacmsContentManager: CONTENT_REFERENCES,
+  apps: {
+    cms: {
+      categories: {
+        list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
+        map: {
+          home: HOME_PAYLOAD,
+          mycategory1: MYCATEGORY1_PAYLOAD,
+          mycategory2: MYCATEGORY2_PAYLOAD,
+          mycategory3: MYCATEGORY3_PAYLOAD,
+        },
+        childrenMap: {
+          home: HOME_PAYLOAD.children,
+          mycategory1: MYCATEGORY1_PAYLOAD.children,
+          mycategory2: MYCATEGORY2_PAYLOAD.children,
+          mycategory3: MYCATEGORY3_PAYLOAD.children,
+        },
+        titlesMap: {
+          home: HOME_PAYLOAD.titles,
+          mycategory1: MYCATEGORY1_PAYLOAD.titles,
+          mycategory2: MYCATEGORY2_PAYLOAD.titles,
+          mycategory3: MYCATEGORY3_PAYLOAD.titles,
+        },
+        statusMap: {
+          home: { expanded: true, loading: false, loaded: true },
+          mycategory1: {},
+          mycategory2: {},
+          mycategory3: {},
+        },
+        selected: {
+          ...MYCATEGORY1_PAYLOAD,
+          references: {
+            jpcollaborationIdeaManager: false,
+            DataObjectManager: false,
+            jacmsResourceManager: false,
+            jacmsContentManager: false,
+          },
+          referenceKeyList: [
+            'jpcollaborationIdeaManager',
+            'DataObjectManager',
+            'jacmsResourceManager',
+            'jacmsContentManager',
+          ],
+          referenceMap: {
+            jpcollaborationIdeaManager: [],
+            DataObjectManager: DATA_OBJECT_REFERENCES,
+            jacmsResourceManager: RESOURCE_REFERENCES,
+            jacmsContentManager: CONTENT_REFERENCES,
+          },
+        },
       },
     },
   },
 };
 
 const MOCK_STATE_2 = {
-  categories: {
-    list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
-    map: {
-      home: HOME_PAYLOAD,
-      mycategory1: MYCATEGORY1_PAYLOAD,
-      mycategory2: MYCATEGORY2_PAYLOAD,
-      mycategory3: MYCATEGORY3_PAYLOAD,
-    },
-    childrenMap: {
-      home: HOME_PAYLOAD.children,
-      mycategory1: MYCATEGORY1_PAYLOAD.children,
-      mycategory2: MYCATEGORY2_PAYLOAD.children,
-      mycategory3: MYCATEGORY3_PAYLOAD.children,
-    },
-    titlesMap: {
-      home: HOME_PAYLOAD.titles,
-      mycategory1: MYCATEGORY1_PAYLOAD.titles,
-      mycategory2: MYCATEGORY2_PAYLOAD.titles,
-      mycategory3: MYCATEGORY3_PAYLOAD.titles,
-    },
-    statusMap: {
-      home: { expanded: false, loading: false, loaded: true },
-      mycategory1: {},
-      mycategory2: {},
-      mycategory3: {},
-    },
-    selected: {
-      ...MYCATEGORY1_PAYLOAD,
-      references: {
-        jpcollaborationIdeaManager: false,
-        DataObjectManager: false,
-        jacmsResourceManager: false,
-        jacmsContentManager: false,
-      },
-      referenceKeyList: [
-        'jpcollaborationIdeaManager',
-        'DataObjectManager',
-        'jacmsResourceManager',
-        'jacmsContentManager',
-      ],
-      referenceMap: {
-        jpcollaborationIdeaManager: [],
-        DataObjectManager: DATA_OBJECT_REFERENCES,
-        jacmsResourceManager: RESOURCE_REFERENCES,
-        jacmsContentManager: CONTENT_REFERENCES,
+  apps: {
+    cms: {
+      categories: {
+        list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
+        map: {
+          home: HOME_PAYLOAD,
+          mycategory1: MYCATEGORY1_PAYLOAD,
+          mycategory2: MYCATEGORY2_PAYLOAD,
+          mycategory3: MYCATEGORY3_PAYLOAD,
+        },
+        childrenMap: {
+          home: HOME_PAYLOAD.children,
+          mycategory1: MYCATEGORY1_PAYLOAD.children,
+          mycategory2: MYCATEGORY2_PAYLOAD.children,
+          mycategory3: MYCATEGORY3_PAYLOAD.children,
+        },
+        titlesMap: {
+          home: HOME_PAYLOAD.titles,
+          mycategory1: MYCATEGORY1_PAYLOAD.titles,
+          mycategory2: MYCATEGORY2_PAYLOAD.titles,
+          mycategory3: MYCATEGORY3_PAYLOAD.titles,
+        },
+        statusMap: {
+          home: { expanded: false, loading: false, loaded: true },
+          mycategory1: {},
+          mycategory2: {},
+          mycategory3: {},
+        },
+        selected: {
+          ...MYCATEGORY1_PAYLOAD,
+          references: {
+            jpcollaborationIdeaManager: false,
+            DataObjectManager: false,
+            jacmsResourceManager: false,
+            jacmsContentManager: false,
+          },
+          referenceKeyList: [
+            'jpcollaborationIdeaManager',
+            'DataObjectManager',
+            'jacmsResourceManager',
+            'jacmsContentManager',
+          ],
+          referenceMap: {
+            jpcollaborationIdeaManager: [],
+            DataObjectManager: DATA_OBJECT_REFERENCES,
+            jacmsResourceManager: RESOURCE_REFERENCES,
+            jacmsContentManager: CONTENT_REFERENCES,
+          },
+        },
       },
     },
   },
 };
 
 const MOCK_STATE_3 = {
-  categories: {
-    list: ['home', 'mycategory1', 'mycategory3'],
-    map: {
-      home: HOME_PAYLOAD,
-      mycategory1: MYCATEGORY1_PAYLOAD,
-      mycategory3: MYCATEGORY3_PAYLOAD,
-    },
-    childrenMap: {
-      home: HOME_PAYLOAD.children,
-      mycategory1: MYCATEGORY1_PAYLOAD.children,
-      mycategory2: MYCATEGORY2_PAYLOAD.children,
-      mycategory3: MYCATEGORY3_PAYLOAD.children,
-    },
-    titlesMap: {
-      home: HOME_PAYLOAD.titles,
-      mycategory1: MYCATEGORY1_PAYLOAD.titles,
-      mycategory3: MYCATEGORY3_PAYLOAD.titles,
-    },
-    statusMap: {
-      home: { expanded: true, loading: false, loaded: true },
-      mycategory1: {},
-      mycategory3: {},
-    },
-    selected: {
-      ...MYCATEGORY1_PAYLOAD,
-      references: {
-        jpcollaborationIdeaManager: false,
-        DataObjectManager: false,
-        jacmsResourceManager: false,
-        jacmsContentManager: false,
-      },
-      referenceKeyList: [
-        'jpcollaborationIdeaManager',
-        'DataObjectManager',
-        'jacmsResourceManager',
-        'jacmsContentManager',
-      ],
-      referenceMap: {
-        jpcollaborationIdeaManager: [],
-        DataObjectManager: DATA_OBJECT_REFERENCES,
-        jacmsResourceManager: RESOURCE_REFERENCES,
-        jacmsContentManager: CONTENT_REFERENCES,
+  apps: {
+    cms: {
+      categories: {
+        list: ['home', 'mycategory1', 'mycategory3'],
+        map: {
+          home: HOME_PAYLOAD,
+          mycategory1: MYCATEGORY1_PAYLOAD,
+          mycategory3: MYCATEGORY3_PAYLOAD,
+        },
+        childrenMap: {
+          home: HOME_PAYLOAD.children,
+          mycategory1: MYCATEGORY1_PAYLOAD.children,
+          mycategory2: MYCATEGORY2_PAYLOAD.children,
+          mycategory3: MYCATEGORY3_PAYLOAD.children,
+        },
+        titlesMap: {
+          home: HOME_PAYLOAD.titles,
+          mycategory1: MYCATEGORY1_PAYLOAD.titles,
+          mycategory3: MYCATEGORY3_PAYLOAD.titles,
+        },
+        statusMap: {
+          home: { expanded: true, loading: false, loaded: true },
+          mycategory1: {},
+          mycategory3: {},
+        },
+        selected: {
+          ...MYCATEGORY1_PAYLOAD,
+          references: {
+            jpcollaborationIdeaManager: false,
+            DataObjectManager: false,
+            jacmsResourceManager: false,
+            jacmsContentManager: false,
+          },
+          referenceKeyList: [
+            'jpcollaborationIdeaManager',
+            'DataObjectManager',
+            'jacmsResourceManager',
+            'jacmsContentManager',
+          ],
+          referenceMap: {
+            jpcollaborationIdeaManager: [],
+            DataObjectManager: DATA_OBJECT_REFERENCES,
+            jacmsResourceManager: RESOURCE_REFERENCES,
+            jacmsContentManager: CONTENT_REFERENCES,
+          },
+        },
       },
     },
   },
@@ -179,7 +191,7 @@ const MOCK_STATE_3 = {
 describe('state/categories/selectors', () => {
   it('getCategories(state) returns the categories object', () => {
     const selected = getCategories(MOCK_STATE);
-    expect(selected).toBe(MOCK_STATE.categories);
+    expect(selected).toBe(MOCK_STATE.apps.cms.categories);
   });
 
   it('verify getGroupsIdList selector', () => {
@@ -190,22 +202,22 @@ describe('state/categories/selectors', () => {
 
   it('getCategoriesMap(state) returns the categories map', () => {
     const selected = getCategoriesMap(MOCK_STATE);
-    expect(selected).toBe(MOCK_STATE.categories.map);
+    expect(selected).toBe(MOCK_STATE.apps.cms.categories.map);
   });
 
   it('getChildrenMap(state) returns the categories object', () => {
     const selected = getChildrenMap(MOCK_STATE);
-    expect(selected).toBe(MOCK_STATE.categories.childrenMap);
+    expect(selected).toBe(MOCK_STATE.apps.cms.categories.childrenMap);
   });
 
   it('getTitlesMap(state) returns the categories object', () => {
     const selected = getTitlesMap(MOCK_STATE);
-    expect(selected).toBe(MOCK_STATE.categories.titlesMap);
+    expect(selected).toBe(MOCK_STATE.apps.cms.categories.titlesMap);
   });
 
   it('getStatusMap(state) returns the categories object', () => {
     const selected = getStatusMap(MOCK_STATE);
-    expect(selected).toBe(MOCK_STATE.categories.statusMap);
+    expect(selected).toBe(MOCK_STATE.apps.cms.categories.statusMap);
   });
 
   describe('getPageTreePages(state)', () => {
@@ -293,18 +305,18 @@ describe('state/categories/selectors', () => {
   describe('selected category', () => {
     it('getSelected(state)', () => {
       const selected = getSelected(MOCK_STATE);
-      expect(selected).toBe(MOCK_STATE.categories.selected);
+      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected);
     });
 
     it('getSelectedRefs(state)', () => {
       const selected = getSelectedRefs(MOCK_STATE);
-      expect(selected).toBe(MOCK_STATE.categories.selected.references);
+      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.references);
     });
 
     it('getReferenceKeyList(state)', () => {
       const selected = getReferenceKeyList(MOCK_STATE);
       expect(selected).toHaveLength(4);
-      expect(selected).toBe(MOCK_STATE.categories.selected.referenceKeyList);
+      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.referenceKeyList);
     });
 
     it('getReferenceMap(state)', () => {
@@ -313,7 +325,7 @@ describe('state/categories/selectors', () => {
       expect(selected).toHaveProperty('DataObjectManager');
       expect(selected).toHaveProperty('jacmsResourceManager');
       expect(selected).toHaveProperty('jacmsContentManager');
-      expect(selected).toBe(MOCK_STATE.categories.selected.referenceMap);
+      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.referenceMap);
     });
   });
 });

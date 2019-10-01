@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const getSettingsState = state => state.contentSettings;
+export const getSettingsState = state => state.apps.cms.contentSettings;
 
 export const getIndexesStatus = createSelector(
   getSettingsState,
