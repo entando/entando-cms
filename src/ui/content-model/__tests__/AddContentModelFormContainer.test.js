@@ -1,8 +1,12 @@
 import { mapStateToProps, mapDispatchToProps } from 'ui/content-model/AddContentModelFormContainer';
 
 const state = {
-  contentType: {
-    list: [],
+  apps: {
+    cms: {
+      contentType: {
+        list: [],
+      },
+    },
   },
 };
 

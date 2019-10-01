@@ -82,31 +82,35 @@ export const CATEGORY_TREE = {
 };
 
 export const STATE_NORMALIZED = {
-  categories: {
-    list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
-    map: {
-      home: HOME_PAYLOAD,
-      mycategory1: MYCATEGORY1_PAYLOAD,
-      mycategory2: MYCATEGORY2_PAYLOAD,
-      mycategory3: MYCATEGORY3_PAYLOAD,
-    },
-    childrenMap: {
-      home: HOME_PAYLOAD.children,
-      mycategory1: MYCATEGORY1_PAYLOAD.children,
-      mycategory2: MYCATEGORY2_PAYLOAD.children,
-      mycategory3: MYCATEGORY3_PAYLOAD.children,
-    },
-    titlesMap: {
-      home: HOME_PAYLOAD.titles,
-      mycategory1: MYCATEGORY1_PAYLOAD.titles,
-      mycategory2: MYCATEGORY2_PAYLOAD.titles,
-      mycategory3: MYCATEGORY3_PAYLOAD.titles,
-    },
-    statusMap: {
-      home: { expanded: true, loading: false, loaded: true },
-      mycategory1: {},
-      mycategory2: {},
-      mycategory3: {},
+  apps: {
+    cms: {
+      categories: {
+        list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
+        map: {
+          home: HOME_PAYLOAD,
+          mycategory1: MYCATEGORY1_PAYLOAD,
+          mycategory2: MYCATEGORY2_PAYLOAD,
+          mycategory3: MYCATEGORY3_PAYLOAD,
+        },
+        childrenMap: {
+          home: HOME_PAYLOAD.children,
+          mycategory1: MYCATEGORY1_PAYLOAD.children,
+          mycategory2: MYCATEGORY2_PAYLOAD.children,
+          mycategory3: MYCATEGORY3_PAYLOAD.children,
+        },
+        titlesMap: {
+          home: HOME_PAYLOAD.titles,
+          mycategory1: MYCATEGORY1_PAYLOAD.titles,
+          mycategory2: MYCATEGORY2_PAYLOAD.titles,
+          mycategory3: MYCATEGORY3_PAYLOAD.titles,
+        },
+        statusMap: {
+          home: { expanded: true, loading: false, loaded: true },
+          mycategory1: {},
+          mycategory2: {},
+          mycategory3: {},
+        },
+      },
     },
   },
   loading: { categories: false },
