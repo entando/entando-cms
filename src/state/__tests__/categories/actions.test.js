@@ -32,13 +32,17 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 const INITIAL_STATE = {
-  categories: {
-    list: [],
-    map: {},
-    childrenMap: {},
-    titlesMap: {},
-    statusMap: {},
-    selected: null,
+  apps: {
+    cms: {
+      categories: {
+        list: [],
+        map: {},
+        childrenMap: {},
+        titlesMap: {},
+        statusMap: {},
+        selected: null,
+      },
+    },
   },
 };
 
@@ -112,7 +116,11 @@ describe('state/categories/actions', () => {
 
     it('when loading root category, should download the root and its children', (done) => {
       store = mockStore({
-        categories: { statusMap: { home: { expandend: false, loaded: false } } },
+        apps: {
+          cms: {
+            categories: { statusMap: { home: { expandend: false, loaded: false } } },
+          },
+        },
       });
       store
         .dispatch(handleExpandCategory('home'))

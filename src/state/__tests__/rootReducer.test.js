@@ -5,7 +5,13 @@ const state = reducer();
 describe('root reducer store', () => {
   it('contains the correct number of states', () => {
     expect(state).toBeInstanceOf(Object);
-    expect(Object.keys(state)).toHaveLength(12);
+    expect(Object.keys(state)).toHaveLength(9);
+  });
+
+  it('contains the apps & cms state', () => {
+    expect(state).toHaveProperty('apps');
+    expect(state.apps).toHaveProperty('cms');
+    expect(Object.keys(state.apps.cms)).toHaveLength(4);
   });
 
   it('contains the apimanager state', () => {
@@ -13,11 +19,11 @@ describe('root reducer store', () => {
   });
 
   it('contains the contentModel state', () => {
-    expect(state).toHaveProperty('contentModel');
+    expect(state.apps.cms).toHaveProperty('contentModel');
   });
 
   it('contains the contentType state', () => {
-    expect(state).toHaveProperty('contentType');
+    expect(state.apps.cms).toHaveProperty('contentType');
   });
 
   it('contains the currentUser state', () => {
@@ -49,10 +55,10 @@ describe('root reducer store', () => {
   });
 
   it('contains the editForm state', () => {
-    expect(state).toHaveProperty('editContent');
+    expect(state.apps.cms).toHaveProperty('editContent');
   });
 
   it('contains the categories state', () => {
-    expect(state).toHaveProperty('categories');
+    expect(state.apps.cms).toHaveProperty('categories');
   });
 });

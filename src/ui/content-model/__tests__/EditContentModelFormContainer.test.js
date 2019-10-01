@@ -22,15 +22,19 @@ const list = toIdList(contType);
 const map = toMap(contType);
 
 const state = {
-  contentType: {
-    map,
-    list,
-  },
-  contentModel: {
-    opened: {
-      id: 1,
-      contentType: 'WEh',
-      descr: 'b',
+  apps: {
+    cms: {
+      contentType: {
+        map,
+        list,
+      },
+      contentModel: {
+        opened: {
+          id: 1,
+          contentType: 'WEh',
+          descr: 'b',
+        },
+      },
     },
   },
 };

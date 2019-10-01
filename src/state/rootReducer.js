@@ -12,17 +12,21 @@ import modal from 'state/modal/reducer';
 import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
 
-export default combineReducers({
-  api,
+const cms = combineReducers({
   contentModel,
   contentType,
-  currentUser,
   editContent,
+  categories,
+});
+
+export default combineReducers({
+  apps: combineReducers({ cms }),
+  api,
+  currentUser,
   form,
   loading,
   locale,
   messages,
   modal,
   pagination,
-  categories,
 });

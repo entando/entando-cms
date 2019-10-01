@@ -51,7 +51,7 @@ describe('contentModel thunks', () => {
   let store;
   beforeEach(() => {
     jest.unmock('api/contentModels');
-    store = createMockStore({ contentModel: { list: [], opened: {} } });
+    store = createMockStore({ apps: { cms: { contentModel: { list: [], opened: {} } } } });
   });
   it('fetchContentModelListPaged', (done) => {
     store.dispatch(fetchContentModelListPaged()).then(() => {

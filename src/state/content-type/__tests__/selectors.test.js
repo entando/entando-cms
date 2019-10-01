@@ -37,85 +37,105 @@ import {
 } from 'state/content-type/selectors';
 
 const TEST_STATE = {
-  contentType: {
-    list: ['ABC', 'DEF'],
-    map: {
-      ABC: {
-        name: 'contentType1',
-        code: 'ABC',
-        status: '0',
+  apps: {
+    cms: {
+      contentType: {
+        list: ['ABC', 'DEF'],
+        map: {
+          ABC: {
+            name: 'contentType1',
+            code: 'ABC',
+            status: '0',
+          },
+          DEF: {
+            name: 'contentType2',
+            code: 'DEF',
+            status: '0',
+          },
+        },
+        attributes: {
+          selected: '',
+        },
+        references: {
+          status: CONTENT_TYPE_REFERENCES_STATUS,
+        },
       },
-      DEF: {
-        name: 'contentType2',
-        code: 'DEF',
-        status: '0',
-      },
-    },
-    attributes: {
-      selected: '',
-    },
-    references: {
-      status: CONTENT_TYPE_REFERENCES_STATUS,
     },
   },
   pagination: CONTENT_TYPES_OK_PAGE.metaData,
 };
 
 const TEST_STATE_HAS_BLANKSELECTED = {
-  contentType: {
-    list: GET_CONTENT_TYPES_RESPONSE_OK,
-    selected: {},
-    attributes: {
-      list: CONTENT_TYPES_ATTRIBUTES,
-      selected: CONTENT_TYPE_ATTRIBUTE,
+  apps: {
+    cms: {
+      contentType: {
+        list: GET_CONTENT_TYPES_RESPONSE_OK,
+        selected: {},
+        attributes: {
+          list: CONTENT_TYPES_ATTRIBUTES,
+          selected: CONTENT_TYPE_ATTRIBUTE,
+        },
+      },
     },
   },
 };
 
 const STATE_ATTRIBUTES = {
-  contentType: {
-    selected: {
-      attributes: 'ey',
-      attributeSelected: {
-        type: 'A',
-        nestedAttribute: {
-          type: 'B',
+  apps: {
+    cms: {
+      contentType: {
+        selected: {
+          attributes: 'ey',
+          attributeSelected: {
+            type: 'A',
+            nestedAttribute: {
+              type: 'B',
+            },
+            validationRules: [4],
+          },
+          actionMode: 'wa',
         },
-        validationRules: [4],
-      },
-      actionMode: 'wa',
-    },
-    attributes: {
-      list: [],
-      selected: {
-        code: 'lecode',
-        attributeSelected: {},
-        listAttribute: [1],
-        searchableOptionSupported: [2],
-        indexableOptionSupported: [3],
-        allowedRoles: [4],
-        allowedDisablingCodes: [5],
+        attributes: {
+          list: [],
+          selected: {
+            code: 'lecode',
+            attributeSelected: {},
+            listAttribute: [1],
+            searchableOptionSupported: [2],
+            indexableOptionSupported: [3],
+            allowedRoles: [4],
+            allowedDisablingCodes: [5],
+          },
+        },
       },
     },
   },
 };
 
 const STATE_ATTRIBUTES_MONOLIST = {
-  contentType: {
-    selected: {
-      attributes: 'ey',
-      attributeSelected: ATTRIBUTE_MONOLIST_COMPOSITE,
+  apps: {
+    cms: {
+      contentType: {
+        selected: {
+          attributes: 'ey',
+          attributeSelected: ATTRIBUTE_MONOLIST_COMPOSITE,
+        },
+      },
     },
   },
 };
 
 const STATE_ATTRIBUTES_NO_LIST = {
-  contentType: {
-    selected: {
-      attributeSelected: {},
-    },
-    attributes: {
-      selected: {},
+  apps: {
+    cms: {
+      contentType: {
+        selected: {
+          attributeSelected: {},
+        },
+        attributes: {
+          selected: {},
+        },
+      },
     },
   },
 };
@@ -123,15 +143,15 @@ const STATE_ATTRIBUTES_NO_LIST = {
 describe('state/content-type/selectors', () => {
   it('getContentTypeState(state) returns the content-type object', () => {
     const selected = getContentTypeState(TEST_STATE);
-    expect(selected).toBe(TEST_STATE.contentType);
+    expect(selected).toBe(TEST_STATE.apps.cms.contentType);
   });
 
   it('verify getContentTypeIdList selector', () => {
-    expect(getContentTypeIdList(TEST_STATE)).toEqual(TEST_STATE.contentType.list);
+    expect(getContentTypeIdList(TEST_STATE)).toEqual(TEST_STATE.apps.cms.contentType.list);
   });
 
   it('verify getContentTypeMap selector', () => {
-    expect(getContentTypeMap(TEST_STATE)).toEqual(TEST_STATE.contentType.map);
+    expect(getContentTypeMap(TEST_STATE)).toEqual(TEST_STATE.apps.cms.contentType.map);
   });
 
   it('verify getContentTypeList selector', () => {
@@ -141,7 +161,7 @@ describe('state/content-type/selectors', () => {
   it('verify getContentTypeSelectedAttribute selector', () => {
     expect(
       getContentTypeSelectedAttribute(STATE_ATTRIBUTES),
-    ).toEqual(STATE_ATTRIBUTES.contentType.attributes.selected);
+    ).toEqual(STATE_ATTRIBUTES.apps.cms.contentType.attributes.selected);
   });
 
   it('verify getContentTypeSelectedAttributeIsList selector', () => {
@@ -173,15 +193,19 @@ describe('state/content-type/selectors', () => {
       type: 'warning', status: 'toRefresh', contentTypeCodes: ['CCC'], count: 1,
     });
     const anotherState = {
-      contentType: {
-        references: {
-          status: {
-            ready: [
-              'AAA',
-              'BBB',
-            ],
-            toRefresh: [],
-            refreshing: [],
+      apps: {
+        cms: {
+          contentType: {
+            references: {
+              status: {
+                ready: [
+                  'AAA',
+                  'BBB',
+                ],
+                toRefresh: [],
+                refreshing: [],
+              },
+            },
           },
         },
       },
@@ -200,7 +224,8 @@ describe('state/content-type/selectors', () => {
   });
 
   it('verify getSelectedContentType selector is defined', () => {
-    expect(getSelectedContentType({ contentType: { selected: {} } })).toBeDefined();
+    const STATE_HERE = { apps: { cms: { contentType: { selected: {} } } } };
+    expect(getSelectedContentType(STATE_HERE)).toBeDefined();
   });
 
   it('verify getContentTypeAttributes selector is defined', () => {
@@ -217,7 +242,7 @@ describe('state/content-type/selectors', () => {
 
   it('verify getContentTypeAttributesIdList returning list except selected attribute', () => {
     const LIST_SELECTED = { ...TEST_STATE_HAS_BLANKSELECTED };
-    LIST_SELECTED.contentType.attributes.selected = { code: 'List' };
+    LIST_SELECTED.apps.cms.contentType.attributes.selected = { code: 'List' };
     expect(getContentTypeAttributesIdList(LIST_SELECTED)).toEqual([
       'Enumerator',
       'Monotext',
@@ -254,18 +279,22 @@ describe('state/content-type/selectors', () => {
       getSelectedCompositeAttributes(STATE_ATTRIBUTES_MONOLIST)[0],
     ).toEqual(ATTRIBUTE_MONOLIST_COMPOSITE.nestedAttribute.compositeAttributes[0]);
     const noCompAttr = {
-      contentType: {
-        selected: {
-          attributes: 'ey',
-          attributeSelected: {
-            code: 'mlstc',
-            type: 'Monolist',
-            name: 'Monolist Composite',
-            nestedAttribute: {
-              code: 'mlstc',
-              type: 'Text',
-              nestedAttribute: null,
-              compositeAttributes: null,
+      apps: {
+        cms: {
+          contentType: {
+            selected: {
+              attributes: 'ey',
+              attributeSelected: {
+                code: 'mlstc',
+                type: 'Monolist',
+                name: 'Monolist Composite',
+                nestedAttribute: {
+                  code: 'mlstc',
+                  type: 'Text',
+                  nestedAttribute: null,
+                  compositeAttributes: null,
+                },
+              },
             },
           },
         },
@@ -276,12 +305,16 @@ describe('state/content-type/selectors', () => {
 
   it('test #2 on verifying getContentTypeAttributesIdList returning list except selected attribute', () => {
     const LIST_SELECTED2 = {
-      contentType: {
-        list: GET_CONTENT_TYPES_RESPONSE_OK,
-        selected: {},
-        attributes: {
-          list: CONTENT_TYPES_ATTRIBUTES,
-          selected: { code: 'Monolist' },
+      apps: {
+        cms: {
+          contentType: {
+            list: GET_CONTENT_TYPES_RESPONSE_OK,
+            selected: {},
+            attributes: {
+              list: CONTENT_TYPES_ATTRIBUTES,
+              selected: { code: 'Monolist' },
+            },
+          },
         },
       },
     };
@@ -295,10 +328,14 @@ describe('state/content-type/selectors', () => {
 
   it('verify getMonolistAttributeType', () => {
     const LIST_SELECTED3 = {
-      contentType: {
-        list: GET_CONTENT_TYPES_RESPONSE_OK,
-        selected: {
-          attributeSelected: ATTRIBUTE_MONOLIST_COMPOSITE,
+      apps: {
+        cms: {
+          contentType: {
+            list: GET_CONTENT_TYPES_RESPONSE_OK,
+            selected: {
+              attributeSelected: ATTRIBUTE_MONOLIST_COMPOSITE,
+            },
+          },
         },
       },
     };
@@ -306,18 +343,22 @@ describe('state/content-type/selectors', () => {
     expect(res).toEqual('Composite');
 
     const LIST_SELECTED4 = {
-      contentType: {
-        list: [],
-        selected: {
-          attributeSelected: {
-            code: 'mlstc',
-            type: 'Monolist',
-            name: 'Monolist Composite',
-            nestedAttribute: {
-              code: 'mlstc',
-              type: '',
-              nestedAttribute: {},
-              compositeAttributes: null,
+      apps: {
+        cms: {
+          contentType: {
+            list: [],
+            selected: {
+              attributeSelected: {
+                code: 'mlstc',
+                type: 'Monolist',
+                name: 'Monolist Composite',
+                nestedAttribute: {
+                  code: 'mlstc',
+                  type: '',
+                  nestedAttribute: {},
+                  compositeAttributes: null,
+                },
+              },
             },
           },
         },
@@ -335,9 +376,13 @@ describe('state/content-type/selectors', () => {
 
   it('verify getNewAttributeComposite', () => {
     const LIST_SELECTED4 = {
-      contentType: {
-        list: GET_CONTENT_TYPES_RESPONSE_OK,
-        selected: { newAttributeComposite: 'boi' },
+      apps: {
+        cms: {
+          contentType: {
+            list: GET_CONTENT_TYPES_RESPONSE_OK,
+            selected: { newAttributeComposite: 'boi' },
+          },
+        },
       },
     };
     const res = getNewAttributeComposite(LIST_SELECTED4);

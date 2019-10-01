@@ -4,22 +4,26 @@ import { mapStateToProps, mapDispatchToProps } from 'ui/edit-content/EditContent
 import { EDIT_CONTENT_OPENED_OK } from 'testutils/mocks/editContent';
 
 const TEST_STATE = {
-  editContent: {
-    ownerGroupDisabled: {
-      disabled: false,
+  apps: {
+    cms: {
+      editContent: {
+        ownerGroupDisabled: {
+          disabled: false,
+        },
+        language: 'en',
+        workMode: 'work-mode-add',
+        content: {
+          contentType: 'NEWS',
+          version: '0.0',
+        },
+        groups: [
+          { code: 'adminstrators', name: 'Administrators' },
+          { code: 'freeAccess', name: 'Free Access' },
+        ],
+        selectedCategories: undefined,
+        selectedJoinGroups: undefined,
+      },
     },
-    language: 'en',
-    workMode: 'work-mode-add',
-    content: {
-      contentType: 'NEWS',
-      version: '0.0',
-    },
-    groups: [
-      { code: 'adminstrators', name: 'Administrators' },
-      { code: 'freeAccess', name: 'Free Access' },
-    ],
-    selectedCategories: undefined,
-    selectedJoinGroups: undefined,
   },
 };
 
