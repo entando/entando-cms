@@ -4,6 +4,7 @@ import {
   setWorkMode,
   setOwnerGroupDisable,
   setContentEntry,
+  setJoinedCategories,
 } from 'state/edit-content/actions';
 import { WORK_MODE_ADD } from 'state/edit-content/types';
 import { onJoinCategory, onUnjoinCategory } from 'state/categories/actions';
@@ -29,6 +30,16 @@ describe('state/edit-content/reducer', () => {
       expect(state.groups).toHaveLength(0);
     });
   });
+  describe('after action setJoinedCategories', () => {
+    let state;
+    beforeEach(() => {
+      state = reducer({ joinedCategories: [] }, setJoinedCategories(['home']));
+    });
+    it('joined categories should be changed', () => {
+      expect(state).toHaveProperty('joinedCategories');
+      expect(state.joinedCategories).toEqual(['home']);
+    });
+  });
   describe('after action SET_WORK_MODE', () => {
     let state;
     beforeEach(() => {
@@ -44,7 +55,7 @@ describe('state/edit-content/reducer', () => {
     beforeEach(() => {
       state = reducer({ ownerGroupDisabled: false }, setOwnerGroupDisable(true));
     });
-    it('owner group should become disabld', () => {
+    it('owner group should become disabled', () => {
       expect(state).toHaveProperty('ownerGroupDisabled');
       expect(state.ownerGroupDisabled).toEqual({ disabled: true });
     });
@@ -56,38 +67,38 @@ describe('state/edit-content/reducer', () => {
     });
     it('Content should be changed', () => {
       expect(state).toHaveProperty('content');
-      expect(state.content).toEqual({ content });
+      expect(state.content).toEqual(content);
     });
   });
   describe('after action JOIN_CATEGORY', () => {
     let state;
     beforeEach(() => {
-      state = reducer({ joinedCategories: [{ code: 'OFFICE' }] }, onJoinCategory({ code: 'NEWS' }));
+      state = reducer({ joinedCategories: ['OFFICE'] }, onJoinCategory('NEWS'));
     });
     it('Joined categories array should be changed', () => {
       expect(state).toHaveProperty('joinedCategories');
-      expect(state.joinedCategories).toEqual([{ code: 'OFFICE' }, { code: 'NEWS' }]);
+      expect(state.joinedCategories).toEqual(['OFFICE', 'NEWS']);
     });
     it('Should not add already added category', () => {
       state = reducer(
-        { joinedCategories: [{ code: 'OFFICE' }] },
-        onJoinCategory({ code: 'OFFICE' }),
+        { joinedCategories: ['OFFICE'] },
+        onJoinCategory('OFFICE'),
       );
       expect(state).toHaveProperty('joinedCategories');
-      expect(state.joinedCategories).toEqual([{ code: 'OFFICE' }]);
+      expect(state.joinedCategories).toEqual(['OFFICE']);
     });
   });
   describe('after action UNJOIN_CATEGORY', () => {
     let state;
     beforeEach(() => {
       state = reducer(
-        { joinedCategories: [{ code: 'NEWS' }, { code: 'OFFICE' }] },
+        { joinedCategories: ['NEWS', 'OFFICE'] },
         onUnjoinCategory('NEWS'),
       );
     });
     it('Joined categories array should be changed', () => {
       expect(state).toHaveProperty('joinedCategories');
-      expect(state.joinedCategories).toEqual([{ code: 'OFFICE' }]);
+      expect(state.joinedCategories).toEqual(['OFFICE']);
     });
   });
 });

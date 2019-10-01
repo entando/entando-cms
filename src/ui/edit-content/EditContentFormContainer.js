@@ -19,24 +19,26 @@ import {
   getWorkMode,
   getGroups,
   getLanguage,
+  getJoinedCategories,
 } from 'state/edit-content/selectors';
 import { WORK_MODE_EDIT } from 'state/edit-content/types';
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state, { match: { params } }) => ({
   workMode: getWorkMode(state),
   language: getLanguage(state),
   content: getContent(state),
   groups: getGroups(state),
   currentUser: getCurrentUser(state),
+  contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
-  selectedCategories: formValueSelector('editcontentform')(state, 'contentCategory'),
+  selectedCategories: getJoinedCategories(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: () => {
     dispatch(setWorkMode(WORK_MODE_EDIT));
-    dispatch(fetchContent());
+    dispatch(fetchContent('?status=published'));
     dispatch(fetchGroups());
     dispatch(fetchCategoryTree());
   },

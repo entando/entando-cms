@@ -33,7 +33,7 @@ const SET_GROUPS_PARAMS = {
 };
 
 jest.mock('api/editContent', () => ({
-  getContent: jest.fn(mockApi({ payload: ['a', 'b'] })),
+  getContent: jest.fn(mockApi({ payload: { content: { categories: ['home'] } } })),
   getGroups: jest.fn(mockApi({ payload: ['a', 'b'] })),
   postAddContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
 }));
@@ -53,7 +53,6 @@ it('test setGroups action', () => {
 describe('editContent thunks', () => {
   let store;
   beforeEach(() => {
-    jest.unmock('api/editContent');
     store = createMockStore({ editContent: { content: {} } });
   });
   it('fetchContent', (done) => {
@@ -62,7 +61,7 @@ describe('editContent thunks', () => {
       .then(() => {
         const actions = store.getActions();
         expect(actions[0]).toHaveProperty('type', SET_CONTENT_ENTRY);
-        expect(actions[0].payload.content).toEqual(['a', 'b']);
+        expect(actions[0].payload.content).toEqual([]);
         done();
       })
       .catch(done.fail);
