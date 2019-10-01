@@ -3,7 +3,11 @@ import { CONTENT_SETTINGS_OK as C_OK } from 'testutils/mocks/contentSettings';
 
 const state = {
   loading: {},
-  contentSettings: C_OK,
+  apps: {
+    cms: {
+      contentSettings: C_OK,
+    },
+  },
 };
 
 describe('content-settings/ContentSettingsGeneralContainer', () => {
