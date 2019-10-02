@@ -36,8 +36,8 @@ const ContentSettingsPage = () => (
       <Row>
         <Col xs={12}>
           <ContentSettingsGeneralContainer />
-          <ContentSettingsMetadataListContainer />
           <AddContentSettingsMetadataContainer />
+          <ContentSettingsMetadataListContainer />
         </Col>
       </Row>
     </CardGrid>

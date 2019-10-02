@@ -109,7 +109,6 @@ export const sendPutEditorSettings = editor => dispatch => new Promise((resolve)
 
 export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('postMetadataMap'));
-  console.log('tosave', key, mapping);
   postMetadataMap({ key, mapping }).then((response) => {
     response.json().then((json) => {
       if (response.ok) {

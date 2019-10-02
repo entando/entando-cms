@@ -13,30 +13,35 @@ const ContentSettingsMetadataBody = ({
   handleSubmit,
 }) => (
   <>
-    <form onSubmit={handleSubmit}>
+    <h3 className="ContentSettingsMetadata__heading">
+      <FormattedMessage id="cms.contentsettings.label.resourcemap" defaultMessage="Metadata Mapping" />
+    </h3>
+    <form onSubmit={handleSubmit} className="ContentSettingsMetadata__form">
       <Row>
-        <Col xs={12} md={2}>
-          <FormattedMessage id="cms.contentsettings.form.addmetadata" defaultMessage="Add Metadata" />
+        <Col xs={12} md={2} className="text-right ContentSettingsMetadata__label-emphasize">
+          <FormLabel labelId="cms.contentsettings.form.addmetadata" helpId="cms.contentsettings.form.help" />
         </Col>
         <Col xs={12} md={4}>
           <Field
             component={RenderTextInput}
             name="key"
+            labelSize={3}
             label={
               <FormLabel labelId="cms.contentsettings.form.key" required />
             }
           />
         </Col>
-        <Col xs={12} md={4}>
+        <Col xs={12} md={5}>
           <Field
             component={RenderTextInput}
             name="mapping"
+            labelSize={2}
             label={
               <FormLabel labelId="cms.contentsettings.form.mapping" />
             }
           />
         </Col>
-        <Col xs={12} md={2}>
+        <Col xs={12} md={1} className="text-right">
           <Button
             type="submit"
             bsStyle="primary"
