@@ -11,7 +11,7 @@ const CategoryTreeSelector = ({
   categories,
   onJoinCategory,
   onExpandCategory,
-  joinedCategories,
+  getJoinedCategoriesByCodes: joinedCategories,
   onUnjoinCategory,
 }) => {
   const contentCategoriesText = joinedCategories && joinedCategories.length > 0
@@ -40,6 +40,7 @@ const CategoryTreeSelector = ({
   const categoryRows = categories.map((category, i) => (
     <CategoryTreeSelectorRow
       category={category}
+      key={category.code}
       i={i}
       language={language}
       onExpandCategory={onExpandCategory}
@@ -83,7 +84,7 @@ CategoryTreeSelector.propTypes = {
 
   language: PropTypes.string.isRequired,
 
-  joinedCategories: PropTypes.arrayOf(PropTypes.shape({})),
+  getJoinedCategoriesByCodes: PropTypes.arrayOf(PropTypes.shape({})),
 
   input: PropTypes.shape({
     value: PropTypes.string.isRequired,
@@ -93,10 +94,10 @@ CategoryTreeSelector.propTypes = {
 
 CategoryTreeSelector.defaultProps = {
   categories: [],
+  getJoinedCategoriesByCodes: [],
   onExpandCategory: () => { },
   onJoinCategory: () => { },
   onUnjoinCategory: () => { },
-  joinedCategories: [],
 };
 
 export default CategoryTreeSelector;

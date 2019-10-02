@@ -7,6 +7,7 @@ import {
   ROUTE_CMS_CONTENTMODEL_LIST,
   ROUTE_CMS_CONTENTMODEL_ADD,
   ROUTE_CMS_ADD_CONTENT,
+  ROUTE_CMS_EDIT_CONTENT,
   ROUTE_CMS_CONTENTMODEL_EDIT,
   ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTTYPE_ADD,
@@ -20,6 +21,7 @@ import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
 import AddContentModelPage from 'ui/content-model/AddContentModelPage';
 import AddContentPage from 'ui/add-content/AddContentPage';
+import EditContentPage from 'ui/edit-content/EditContentPage';
 import EditContentModelPage from 'ui/content-model/EditContentModelPage';
 import ContentTypeListPage from 'ui/content-type/ContentTypeListPage';
 import AddContentTypePage from 'ui/content-type/AddContentTypePage';
@@ -70,6 +72,10 @@ const routesDir = [
   {
     path: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
     component: MonolistPageContainer,
+  },
+  {
+    path: ROUTE_CMS_EDIT_CONTENT,
+    component: EditContentPage,
   },
 ];
 
