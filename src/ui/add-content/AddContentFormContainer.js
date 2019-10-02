@@ -41,7 +41,7 @@ export const mapStateToProps = state => ({
   currentUser: getCurrentUser(state),
   ownerGroupDisabled: getOwnerGroupDisabled(state),
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
-  selectedCategories: formValueSelector('editcontentform')(state, 'contentCategory'),
+  selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({

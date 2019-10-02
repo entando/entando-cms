@@ -2,7 +2,8 @@ export const EDIT_CONTENT_OPENED_OK = {
   ownerGroupDisabled: false,
   currentUser: undefined,
   language: 'en',
-  workMode: 'work-mode-add',
+  workMode: 'work-mode-edit',
+  contentId: 1,
   content: {
     contentType: 'NEWS',
     version: '0.0',
@@ -11,6 +12,20 @@ export const EDIT_CONTENT_OPENED_OK = {
     { code: 'adminstrators', name: 'Administrators' },
     { code: 'freeAccess', name: 'Free Access' },
   ],
+  selectedCategories: undefined,
+  selectedJoinGroups: undefined,
+};
+
+export const ADD_CONTENT_OPENED_OK = {
+  ownerGroupDisabled: false,
+  currentUser: undefined,
+  language: 'en',
+  workMode: 'work-mode-add',
+  groups: [
+    { code: 'adminstrators', name: 'Administrators' },
+    { code: 'freeAccess', name: 'Free Access' },
+  ],
+  contentType: undefined,
   selectedCategories: undefined,
   selectedJoinGroups: undefined,
 };

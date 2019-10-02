@@ -7,11 +7,8 @@ const TEST_STATE = {
   apps: {
     cms: {
       editContent: {
-        ownerGroupDisabled: {
-          disabled: false,
-        },
         language: 'en',
-        workMode: 'work-mode-add',
+        workMode: 'work-mode-edit',
         content: {
           contentType: 'NEWS',
           version: '0.0',
@@ -27,11 +24,15 @@ const TEST_STATE = {
   },
 };
 
+const TEST_OWN_PROPS = {
+  match: { params: { id: 1 } },
+};
+
 configEnzymeAdapter();
 
 describe('EditContentFormContainer connection to redux', () => {
   it('maps editContent properties from state to EditContentForm', () => {
-    expect(mapStateToProps(TEST_STATE)).toEqual(EDIT_CONTENT_OPENED_OK);
+    expect(mapStateToProps(TEST_STATE, TEST_OWN_PROPS)).toEqual(EDIT_CONTENT_OPENED_OK);
   });
 
   it('verify that onDidMount and onSetOwnerGroupDisable are defined and called in mapDispatchToProps', () => {
