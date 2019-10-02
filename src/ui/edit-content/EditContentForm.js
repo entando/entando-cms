@@ -7,6 +7,7 @@ import {
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { required } from '@entando/utils';
 
+import StickySave from 'ui/common/StickySave';
 import SectionTitle from 'ui/common/SectionTitle';
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -14,7 +15,8 @@ import RenderVersionText from 'ui/common/form/RenderVersionText';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
 import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorContainer';
-import StickySave from 'ui/common/StickySave';
+
+import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
 
 const messages = defineMessages({
   contentDesctiption: {
@@ -39,8 +41,10 @@ const defaultOwnerGroup = 'free';
 
 class EditContentFormBody extends React.Component {
   componentDidMount() {
-    const { initialize, onDidMount } = this.props;
-    initialize({ ownerGroup: defaultOwnerGroup });
+    const { initialize, onDidMount, workMode } = this.props;
+    if (workMode === WORK_MODE_ADD) {
+      initialize({ ownerGroup: defaultOwnerGroup });
+    }
     onDidMount();
   }
 
@@ -50,16 +54,21 @@ class EditContentFormBody extends React.Component {
       groups,
       content,
       language,
+      workMode,
       handleSubmit,
       selectedJoinGroups,
       ownerGroupDisabled,
       onSetOwnerGroupDisable,
       currentUser: { username: currentUserName },
     } = this.props;
-
-    const { version, creatorUserName, modifierUserName } = content || {};
+    const {
+      version,
+      lastModified,
+      firstEditor: creatorUserName,
+      lastEditor: modifierUserName,
+    } = content || {};
     const { contentType: newContentsType } = this.props;
-    const contentType = content.contentType || newContentsType;
+    const contentType = content.typeDescription || newContentsType;
     const groupsWithEmptyOption = [...groups];
 
     return (
@@ -124,7 +133,7 @@ class EditContentFormBody extends React.Component {
                     name="ownerGroup"
                     defaultValue="df"
                     append={
-                      !ownerGroupDisabled ? (
+                      !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
                         <button
                           type="button"
                           onClick={() => onSetOwnerGroupDisable(true)}
@@ -146,8 +155,8 @@ class EditContentFormBody extends React.Component {
                     optionValue="code"
                     optionDisplayName="name"
                     validate={[required]}
-                    defaultValueCode="freeAccess"
-                    disabled={ownerGroupDisabled}
+                    defaultValueCode="free"
+                    disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -175,14 +184,14 @@ class EditContentFormBody extends React.Component {
             <SectionTitle nameId="cms.contents.edit.categories" />
             <fieldset className="no-padding">
               <FormGroup>
-                <ControlLabel htmlFor="contentCategory" className="col-xs-2">
+                <ControlLabel htmlFor="contentCategories" className="col-xs-2">
                   <FormLabel labelId="cms.contents.edit.categories" />
                 </ControlLabel>
                 <Col xs={10}>
                   <Field
                     component={CategoryTreeContainer}
                     language={language}
-                    name="contentCategory"
+                    name="contentCategories"
                     treeNameId="cms.contents.edit.categories.categoriesTree"
                   />
                 </Col>
@@ -194,7 +203,7 @@ class EditContentFormBody extends React.Component {
           </Row>
         </div>
         <Row>
-          <StickySave intl={intl} />
+          <StickySave intl={intl} lastAutoSaveTime={lastModified} />
         </Row>
       </form>
     );
@@ -202,6 +211,7 @@ class EditContentFormBody extends React.Component {
 }
 EditContentFormBody.propTypes = {
   intl: intlShape.isRequired,
+  workMode: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,
   content: PropTypes.shape({}),
   contentType: PropTypes.string,
@@ -213,7 +223,7 @@ EditContentFormBody.propTypes = {
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  selectedJoinGroups: PropTypes.arrayOf(PropTypes.string.isRequired),
+  selectedJoinGroups: PropTypes.arrayOf(PropTypes.string),
   handleSubmit: PropTypes.func.isRequired,
   initialize: PropTypes.func.isRequired,
   onDidMount: PropTypes.func.isRequired,
@@ -230,6 +240,8 @@ EditContentFormBody.defaultProps = {
 
 const EditContentForm = reduxForm({
   form: 'editcontentform',
+  enableReinitialize: true,
+  // keepDirtyOnReinitialize: true,
 })(EditContentFormBody);
 
 export default EditContentForm;

@@ -1,6 +1,6 @@
 import { getContentTypeList } from 'state/content-type/selectors';
 
-const TEST_STATE = { contentType: { list: ['hello', 'world'] } };
+const TEST_STATE = { apps: { cms: { contentType: { list: ['hello', 'world'] } } } };
 
 it('verify getContentTypeList selector', () => {
   const state = getContentTypeList(TEST_STATE);

@@ -49,7 +49,7 @@ describe('api/editContent', () => {
     it('returns a promise for getContent', () => {
       const response = getContent();
       expect(makeRequest).toHaveBeenCalledWith({
-        uri: '/api/plugins/cms/contents/',
+        uri: '/api/plugins/cms/contents',
         method: 'GET',
         mockResponse: GET_CONTENT_RESPONSE_OK,
         contentType: 'application/json',

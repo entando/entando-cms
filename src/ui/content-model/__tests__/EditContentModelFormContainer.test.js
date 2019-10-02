@@ -1,23 +1,27 @@
 import { mapStateToProps, mapDispatchToProps } from 'ui/content-model/EditContentModelFormContainer';
 
 const state = {
-  contentType: {
-    list: [
-      {
-        code: 'WEh',
-        name: 'yo',
+  apps: {
+    cms: {
+      contentType: {
+        list: [
+          {
+            code: 'WEh',
+            name: 'yo',
+          },
+          {
+            code: 'MOO',
+            name: 'to',
+          },
+        ],
       },
-      {
-        code: 'MOO',
-        name: 'to',
+      contentModel: {
+        opened: {
+          id: 1,
+          contentType: 'WEh',
+          descr: 'b',
+        },
       },
-    ],
-  },
-  contentModel: {
-    opened: {
-      id: 1,
-      contentType: 'WEh',
-      descr: 'b',
     },
   },
 };

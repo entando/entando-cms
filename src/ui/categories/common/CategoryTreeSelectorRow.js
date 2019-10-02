@@ -38,7 +38,6 @@ const CategoryTreeSelectorRow = ({
       onKeyDown={() => onJoinCategory(category.code)}
     />
   ) : null;
-
   return (
     <tr key={category.code} className="CategoryTreeSelector__row">
       <td className={className.join(' ').trim()}>

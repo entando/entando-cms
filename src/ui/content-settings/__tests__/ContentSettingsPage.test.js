@@ -8,8 +8,8 @@ import {
   createMockHistory,
 } from 'testutils/helpers';
 
-import ContentModelListPage from 'ui/content-model/ContentModelListPage';
-import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
+import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
+import ContentSettingsGeneralContainer from 'ui/content-settings/ContentSettingsGeneralContainer';
 
 configEnzymeAdapter();
 
@@ -17,20 +17,19 @@ const initState = {
   loading: {},
   apps: {
     cms: {
-      contentModel: { list: [] },
+      contentSettings: {},
     },
   },
-  modal: { visibleModal: '', info: {} },
 };
 
 let component;
 
-describe('content-model/ContentModelListPage', () => {
+describe('content-settings/ContentSettingsPage', () => {
   beforeEach(() => {
     component = mount(
       mockRenderWithRouter(
         mockRenderWithIntl(
-          <ContentModelListPage />,
+          <ContentSettingsPage />,
           initState,
         ),
         createMockHistory(),
@@ -46,7 +45,7 @@ describe('content-model/ContentModelListPage', () => {
     expect(component.find('CMSShell').exists()).toBe(true);
   });
 
-  it('contains ContentModelListContainer', () => {
-    expect(component.find(ContentModelListContainer).exists()).toBe(true);
+  it('contains ContentSettingsGeneralContainer', () => {
+    expect(component.find(ContentSettingsGeneralContainer).exists()).toBe(true);
   });
 });
