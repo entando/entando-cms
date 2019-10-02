@@ -7,6 +7,7 @@ import {
   ROUTE_CMS_CONTENTMODEL_LIST,
   ROUTE_CMS_CONTENTMODEL_ADD,
   ROUTE_CMS_ADD_CONTENT,
+  ROUTE_CMS_EDIT_CONTENT,
   ROUTE_CMS_CONTENTMODEL_EDIT,
   ROUTE_CMS_CONTENT_SETTINGS,
 } from 'app-init/routes';
@@ -15,6 +16,7 @@ import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import ContentModelListPage from 'ui/content-model/ContentModelListPage';
 import AddContentModelPage from 'ui/content-model/AddContentModelPage';
 import AddContentPage from 'ui/add-content/AddContentPage';
+import EditContentPage from 'ui/edit-content/EditContentPage';
 import EditContentModelPage from 'ui/content-model/EditContentModelPage';
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 
@@ -36,6 +38,10 @@ const routesDir = [
   {
     path: ROUTE_CMS_CONTENTMODEL_EDIT,
     component: EditContentModelPage,
+  },
+  {
+    path: ROUTE_CMS_EDIT_CONTENT,
+    component: EditContentPage,
   },
   {
     path: ROUTE_CMS_CONTENT_SETTINGS,
