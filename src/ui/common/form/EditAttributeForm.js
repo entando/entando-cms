@@ -40,8 +40,8 @@ import {
 
 export class EditAttributeFormBody extends Component {
   componentDidMount() {
-    const { onWillMount } = this.props;
-    onWillMount(this.props);
+    const { onDidMount } = this.props;
+    onDidMount(this.props);
   }
 
   render() {
@@ -56,6 +56,8 @@ export class EditAttributeFormBody extends Component {
     const attributeType = isModeAddAttributeComposite
       ? selectedAttributeTypeForAddComposite.code
       : selectedAttributeType;
+
+    const labelsubmit = !isComposite ? 'cms.label.continue' : 'cms.label.save';
 
     const renderAttributeInfo = () => (
       isComposite
@@ -185,9 +187,7 @@ export class EditAttributeFormBody extends Component {
               bsStyle="primary"
               disabled={invalid || submitting}
             >
-              {
-              !isComposite ? <FormattedMessage id="cms.label.continue" /> : <FormattedMessage id="cms.label.save" />
-              }
+              <FormattedMessage id={labelsubmit} />
             </Button>
           </Col>
         </Row>
@@ -197,7 +197,7 @@ export class EditAttributeFormBody extends Component {
 }
 
 EditAttributeFormBody.propTypes = {
-  onWillMount: PropTypes.func.isRequired,
+  onDidMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   contentTypeAttributeCode: PropTypes.string,

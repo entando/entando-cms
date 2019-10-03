@@ -13,8 +13,8 @@ class RenderDatePickerInput extends Component {
   }
 
   componentDidMount() {
-    const { onWillMount, ...otherProps } = this.props;
-    onWillMount(otherProps);
+    const { onDidMount, ...otherProps } = this.props;
+    onDidMount(otherProps);
   }
 
   handleChange(date) {
@@ -27,6 +27,8 @@ class RenderDatePickerInput extends Component {
     const {
       input, name, label, help, locale, dateFormat, placeholder, meta: { touched, error },
     } = this.props;
+
+    const errorblock = touched ? error : '';
 
     return (
       <div className="form-group">
@@ -46,7 +48,7 @@ class RenderDatePickerInput extends Component {
             calendarClassName="RenderDatePickerInput__calendar"
           />
           <div className="help-block help-block-error">
-            {touched ? error : ''}
+            {errorblock}
           </div>
         </Col>
       </div>
@@ -55,7 +57,7 @@ class RenderDatePickerInput extends Component {
 }
 
 RenderDatePickerInput.propTypes = {
-  onWillMount: PropTypes.func,
+  onDidMount: PropTypes.func,
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
@@ -74,7 +76,7 @@ RenderDatePickerInput.propTypes = {
 };
 
 RenderDatePickerInput.defaultProps = {
-  onWillMount: () => {},
+  onDidMount: () => {},
   name: '',
   placeholder: '',
   label: '',

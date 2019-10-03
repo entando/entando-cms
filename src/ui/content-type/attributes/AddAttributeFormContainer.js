@@ -41,7 +41,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 });
 
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
-  onWillMount: () => {
+  onDidMount: () => {
     dispatch(clearErrors());
     dispatch(fetchContentTypeAttributes());
   },

@@ -54,9 +54,9 @@ describe('EditContentTypeFormContainer', () => {
       props = mapDispatchToProps(dispatchMock, { history });
     });
 
-    it('maps the "onWillMount" prop a "fetchContentType" and "fetchContentTypeAttributes" dispatch', () => {
-      expect(props.onWillMount).toBeDefined();
-      props.onWillMount('contenttypeCode_code');
+    it('maps the "onDidMount" prop a "fetchContentType" and "fetchContentTypeAttributes" dispatch', () => {
+      expect(props.onDidMount).toBeDefined();
+      props.onDidMount('contenttypeCode_code');
       expect(dispatchMock).toHaveBeenCalledWith('fetchContentType_result');
       expect(dispatchMock).toHaveBeenCalledWith('fetchContentTypeAttributes_result');
     });

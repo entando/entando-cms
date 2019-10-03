@@ -20,7 +20,7 @@ const msgs = defineMessages({
 });
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
-  onWillMount: () => {
+  onDidMount: () => {
     dispatch(fetchContentTypeAttributes());
   },
   onSubmit: (values) => {

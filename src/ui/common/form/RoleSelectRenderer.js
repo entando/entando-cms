@@ -12,7 +12,6 @@ class RoleSelectRenderer extends Component {
   constructor(props) {
     super(props);
     this.pushField = this.pushField.bind(this);
-    this.renderTags = this.renderTags.bind(this);
     this.select = null;
   }
 
@@ -29,35 +28,9 @@ class RoleSelectRenderer extends Component {
     }
   }
 
-  renderTags() {
-    const {
-      selectedValues, fields, labelKey, valueKey, options,
-    } = this.props;
-    return selectedValues.map((value, i) => (
-      <div key={value}>
-        <h3><FormattedMessage id="cms.contenttype.labelrole.assigned" /></h3>
-        <hr />
-        <Col xs={4}>
-          <p>
-            {options.find(opt => opt[valueKey] === value)[labelKey]}
-          </p>
-        </Col>
-        <Col xs={8}>
-          <Button
-            bsStyle="danger"
-            className="btn btn-danger RoleSelectRenderer__remove--btn"
-            onClick={() => fields.remove(i)}
-          >
-            <FormattedMessage id="cms.label.delete" />
-          </Button>
-        </Col>
-      </div>
-    ));
-  }
-
   render() {
     const {
-      options, selectedValues, labelKey, valueKey, emptyOptionTextId, intl,
+      options, selectedValues, labelKey, valueKey, emptyOptionTextId, intl, fields,
     } = this.props;
 
     const filteredOptions = options
@@ -82,6 +55,29 @@ class RoleSelectRenderer extends Component {
       ));
     }
 
+    const renderTags = (
+      selectedValues.map((value, i) => (
+        <div key={value}>
+          <h3><FormattedMessage id="cms.contenttype.labelrole.assigned" /></h3>
+          <hr />
+          <Col xs={4}>
+            <p>
+              {options.find(opt => opt[valueKey] === value)[labelKey]}
+            </p>
+          </Col>
+          <Col xs={8}>
+            <Button
+              bsStyle="danger"
+              className="btn btn-danger RoleSelectRenderer__remove--btn"
+              onClick={() => fields.remove(i)}
+            >
+              <FormattedMessage id="cms.label.delete" />
+            </Button>
+          </Col>
+        </div>
+      ))
+    );
+
     return (
       <div className="RoleSelectRenderer">
         <InputGroup>
@@ -99,7 +95,7 @@ class RoleSelectRenderer extends Component {
           </span>
         </InputGroup>
         <br />
-        { this.renderTags() }
+        {renderTags}
       </div>
     );
   }

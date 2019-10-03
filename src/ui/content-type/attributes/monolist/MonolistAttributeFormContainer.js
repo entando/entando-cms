@@ -42,7 +42,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 
 
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
-  onWillMount: ({ attributeCode, contentTypeCode, mode }) => {
+  onDidMount: ({ attributeCode, contentTypeCode, mode }) => {
     dispatch(clearErrors());
     if (mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(fetchContentTypeAttribute(

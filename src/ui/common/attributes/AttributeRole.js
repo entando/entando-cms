@@ -7,9 +7,9 @@ import { FieldArray } from 'redux-form';
 import RoleSelectRenderer from 'ui/common/form/RoleSelectRenderer';
 
 class AttributeRole extends Component {
-  componentWillMount() {
-    const { onWillMount, ...allprops } = this.props;
-    onWillMount(allprops);
+  componentDidMount() {
+    const { onDidMount, ...allprops } = this.props;
+    onDidMount(allprops);
   }
 
   render() {
@@ -69,7 +69,7 @@ class AttributeRole extends Component {
 }
 
 AttributeRole.propTypes = {
-  onWillMount: PropTypes.func,
+  onDidMount: PropTypes.func,
   allowedRoles: PropTypes.arrayOf(PropTypes.shape({
     code: PropTypes.string,
     descr: PropTypes.string,
@@ -78,7 +78,7 @@ AttributeRole.propTypes = {
 };
 
 AttributeRole.defaultProps = {
-  onWillMount: () => {},
+  onDidMount: () => {},
   allowedRoles: [],
   joinAllowedOptions: [],
 };

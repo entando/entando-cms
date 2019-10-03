@@ -22,8 +22,8 @@ import { TYPE_COMPOSITE, TYPE_MONOLIST } from 'state/content-type/const';
 
 class MonolistPage extends Component {
   componentDidMount() {
-    const { onWillMount, ...otherProps } = this.props;
-    onWillMount(otherProps);
+    const { onDidMount, ...otherProps } = this.props;
+    onDidMount(otherProps);
   }
 
   render() {
@@ -31,6 +31,26 @@ class MonolistPage extends Component {
       attributeCode, contentTypeCode, selectedAttribute, entityCode, type,
     } = this.props;
     const titleId = selectedAttribute === '' ? 'cms.label.edit' : `cms.contenttype.label.edit.${selectedAttribute}`;
+
+    const nextBreadCrumbs = type === TYPE_COMPOSITE ? (
+      <BreadcrumbItem>
+        <FormattedMessage id="cms.contenttype.label.edit.attribute" />
+        {attributeCode}
+      </BreadcrumbItem>
+    ) : (
+      <BreadcrumbItem
+        to={routeConverter(
+          ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
+          { entityCode, attributeCode },
+        )}
+      >
+        <FormattedMessage id="cms.contenttype.label.edit.attribute" />
+        {attributeCode}
+      </BreadcrumbItem>
+    );
+
+    const lastBreadcrumbLabel = type === TYPE_COMPOSITE ? TYPE_MONOLIST : selectedAttribute;
+
     return (
       <CMSShell className="MonolistPage">
         <CardGrid>
@@ -47,26 +67,9 @@ class MonolistPage extends Component {
                   <FormattedMessage id="cms.label.edit" />:
                   &nbsp;{contentTypeCode}
                 </BreadcrumbItem>
-                {
-                  type === TYPE_COMPOSITE ? (
-                    <BreadcrumbItem>
-                      <FormattedMessage id="cms.contenttype.label.edit.attribute" />
-                      {attributeCode}
-                    </BreadcrumbItem>
-                  ) : (
-                    <BreadcrumbItem
-                      to={routeConverter(
-                        ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
-                        { entityCode, attributeCode },
-                      )}
-                    >
-                      <FormattedMessage id="cms.contenttype.label.edit.attribute" />
-                      {attributeCode}
-                    </BreadcrumbItem>
-                  )
-                }
+                {nextBreadCrumbs}
                 <BreadcrumbItem active>
-                  {type === TYPE_COMPOSITE ? TYPE_MONOLIST : selectedAttribute}
+                  {lastBreadcrumbLabel}
                 </BreadcrumbItem>
               </Breadcrumb>
             </Col>
@@ -91,7 +94,7 @@ class MonolistPage extends Component {
 }
 
 MonolistPage.propTypes = {
-  onWillMount: PropTypes.func,
+  onDidMount: PropTypes.func,
   contentTypeCode: PropTypes.string,
   attributeCode: PropTypes.string,
   selectedAttribute: PropTypes.string,
@@ -101,7 +104,7 @@ MonolistPage.propTypes = {
 };
 
 MonolistPage.defaultProps = {
-  onWillMount: () => {},
+  onDidMount: () => {},
   contentTypeCode: '',
   attributeCode: '',
   selectedAttribute: '',

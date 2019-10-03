@@ -29,8 +29,8 @@ const maxLength50 = maxLength(50);
 
 export class AddContentTypeFormBody extends Component {
   componentDidMount() {
-    const { onWillMount } = this.props;
-    onWillMount(this.props);
+    const { onDidMount } = this.props;
+    onDidMount(this.props);
   }
 
   render() {
@@ -153,7 +153,7 @@ export class AddContentTypeFormBody extends Component {
 }
 
 AddContentTypeFormBody.propTypes = {
-  onWillMount: PropTypes.func,
+  onDidMount: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onAddAttribute: PropTypes.func,
@@ -165,7 +165,7 @@ AddContentTypeFormBody.propTypes = {
 };
 
 AddContentTypeFormBody.defaultProps = {
-  onWillMount: () => {},
+  onDidMount: () => {},
   onAddAttribute: () => {},
   invalid: false,
   submitting: false,

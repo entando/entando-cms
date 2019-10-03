@@ -20,7 +20,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onWillMount: ({ attributeCode, contentTypeCode, mode }) => {
+  onDidMount: ({ attributeCode, contentTypeCode, mode }) => {
     if (mode !== MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(fetchAttributeFromContentType('monoListAttribute', contentTypeCode, attributeCode));
     }

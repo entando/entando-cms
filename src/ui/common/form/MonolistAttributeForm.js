@@ -43,8 +43,8 @@ const NO_INFO_ATTRIBUTE = [
 
 export class MonolistAttributeFormBody extends Component {
   componentDidMount() {
-    const { onWillMount, ...allprops } = this.props;
-    onWillMount(allprops);
+    const { onDidMount, ...allprops } = this.props;
+    onDidMount(allprops);
   }
 
   render() {
@@ -190,7 +190,7 @@ export class MonolistAttributeFormBody extends Component {
 }
 
 MonolistAttributeFormBody.propTypes = {
-  onWillMount: PropTypes.func.isRequired,
+  onDidMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onAddAttribute: PropTypes.func,
