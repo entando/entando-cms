@@ -3,6 +3,7 @@ import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_CROP_RATIOS_OK,
 } from 'testutils/mocks/contentSettings';
 
 const settingsPath = '/api/plugins/cms/contentSettings';
@@ -42,6 +43,16 @@ export const putEditorSettings = editorObject => (
     body: editorObject,
     method: METHODS.PUT,
     mockResponse: CONTENT_SETTINGS_EDITOR_OK,
+    useAuthentication: true,
+  })
+);
+
+export const postCropRatio = params => (
+  makeRequest({
+    uri: `${settingsPath}/cropRatios`,
+    body: params,
+    method: METHODS.POST,
+    mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
     useAuthentication: true,
   })
 );

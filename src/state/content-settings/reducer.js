@@ -1,6 +1,14 @@
-import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS } from 'state/content-settings/types';
+import {
+  SET_CONTENT_SETTINGS,
+  SET_EDITOR_SETTINGS,
+  SET_CROP_RATIOS,
+} from 'state/content-settings/types';
 
-const reducer = (state = {}, action = {}) => {
+const initialState = {
+  cropRatios: [],
+};
+
+const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_CONTENT_SETTINGS:
       return {
@@ -11,6 +19,11 @@ const reducer = (state = {}, action = {}) => {
       return {
         ...state,
         editor: action.payload,
+      };
+    case SET_CROP_RATIOS:
+      return {
+        ...state,
+        cropRatios: action.payload,
       };
     default:
       return state;

@@ -30,3 +30,11 @@ export const CONTENT_SETTINGS_EDITOR_OK = {
   label: 'CKEditor',
   key: 'fckeditor',
 };
+
+export const CONTENT_SETTINGS_CROP_RATIOS_OK = {
+  payload: [
+    '4:9',
+  ],
+  metaData: {},
+  errors: [],
+};

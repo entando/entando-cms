@@ -6,8 +6,13 @@ import {
   sendPostReloadReferences,
   sendPostReloadIndexes,
   sendPutEditorSettings,
+  addCropRatio,
 } from 'state/content-settings/actions';
-import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS } from 'state/content-settings/types';
+import {
+  SET_CONTENT_SETTINGS,
+  SET_EDITOR_SETTINGS,
+  SET_CROP_RATIOS,
+} from 'state/content-settings/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
   CONTENT_SETTINGS_OK,
@@ -18,6 +23,7 @@ import {
   postReloadReferences,
   postReloadIndexes,
   putEditorSettings,
+  postCropRatio,
 } from 'api/contentSettings';
 
 const contSettings = CONTENT_SETTINGS_OK;
@@ -54,6 +60,7 @@ jest.mock('api/contentSettings', () => ({
   postReloadReferences: jest.fn(mockApi({ payload: '' })),
   postReloadIndexes: jest.fn(mockApi({ payload: '' })),
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
+  postCropRatio: jest.fn(mockApi({})),
 }));
 
 it('test setContentSettings action', () => {
@@ -181,6 +188,19 @@ describe('contentSettings thunks', () => {
       expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('addCropRatio', (done) => {
+    const params = { ratio: '4:9' };
+    store.dispatch(addCropRatio(params.ratio)).then(() => {
+      expect(postCropRatio).toHaveBeenCalledWith(params);
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_CROP_RATIOS);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);

@@ -7,12 +7,14 @@ import {
   postReloadIndexes,
   postReloadReferences,
   putEditorSettings,
+  postCropRatio,
 } from 'api/contentSettings';
 import { makeRequest } from '@entando/apimanager';
 import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_CROP_RATIOS_OK,
 } from 'testutils/mocks/contentSettings';
 
 configEnzymeAdapter();
@@ -71,6 +73,19 @@ describe('api/contentSettings', () => {
       method: 'PUT',
       body: param,
       mockResponse: CONTENT_SETTINGS_EDITOR_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('postCropRatio returns a promise with correct params', () => {
+    const params = { ratio: '4:9' };
+    const response = postCropRatio(params);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/cropRatios',
+      method: 'POST',
+      body: params,
+      mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);

@@ -1,9 +1,14 @@
-import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS } from 'state/content-settings/types';
+import {
+  SET_CONTENT_SETTINGS,
+  SET_EDITOR_SETTINGS,
+  SET_CROP_RATIOS,
+} from 'state/content-settings/types';
 import {
   getContentSettings,
   postReloadReferences,
   postReloadIndexes,
   putEditorSettings,
+  postCropRatio,
 } from 'api/contentSettings';
 import { toggleLoading } from 'state/loading/actions';
 import {
@@ -21,6 +26,11 @@ export const setContentSettings = payload => ({
 
 export const setEditorSettings = payload => ({
   type: SET_EDITOR_SETTINGS,
+  payload,
+});
+
+export const setCropRatios = payload => ({
+  type: SET_CROP_RATIOS,
   payload,
 });
 
@@ -92,6 +102,25 @@ export const sendPutEditorSettings = editor => dispatch => new Promise((resolve)
         resolve();
       }
       dispatch(toggleLoading('putEditorSettings'));
+    });
+  }).catch(() => {});
+});
+
+export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('addCropRatio'));
+
+  const params = { ratio: cropRatio };
+  postCropRatio(params).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setCropRatios(json.payload));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+
+      dispatch(toggleLoading('addCropRatio'));
     });
   }).catch(() => {});
 });
