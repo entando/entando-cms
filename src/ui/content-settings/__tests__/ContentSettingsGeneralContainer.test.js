@@ -13,6 +13,8 @@ const state = {
 describe('content-settings/ContentSettingsGeneralContainer', () => {
   it('maps stateprops property', () => {
     const props = mapStateToProps(state);
+    expect(props).toHaveProperty('indexesLastReloadDate');
+    expect(props).toHaveProperty('indexesLastReloadResult');
     expect(props).toHaveProperty('indexesStatus', C_OK.indexesStatus);
     expect(props).toHaveProperty('referenceStatus', C_OK.referencesStatus);
     expect(props).toHaveProperty('editorSettings', C_OK.editor);
