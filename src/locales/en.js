@@ -14,6 +14,7 @@ export default {
     'cms.label.none': 'None',
     'cms.label.add': 'Add',
     'cms.label.info': 'Info',
+    'cms.label.errors': 'Errors',
     'cms.label.chooseoption': 'Choose an option',
     'cms.label.fieldsRequired': 'Required Fields',
     'cms.label.select': 'Choose...',

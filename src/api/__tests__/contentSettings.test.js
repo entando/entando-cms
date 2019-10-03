@@ -13,6 +13,7 @@ import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_METADATA_OK,
 } from 'testutils/mocks/contentSettings';
 
 configEnzymeAdapter();
@@ -71,6 +72,32 @@ describe('api/contentSettings', () => {
       method: 'PUT',
       body: param,
       mockResponse: CONTENT_SETTINGS_EDITOR_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('postMetadataMap returns a promise with correct params', () => {
+    const param = { key: 1 };
+    const response = putEditorSettings(param);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/metadata',
+      method: 'POST',
+      body: param,
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteMetadataMap returns a promise with correct params', () => {
+    const param = { key: 1 };
+    const response = putEditorSettings(param);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/metadata',
+      method: 'DELETE',
+      body: param,
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);

@@ -19,6 +19,7 @@ const TEST_STATE = {
         ],
         selectedCategories: undefined,
         selectedJoinGroups: undefined,
+        ownerGroupDisabled: { disabled: false },
       },
     },
   },
