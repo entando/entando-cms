@@ -1,6 +1,9 @@
-import { configEnzymeAdapter } from 'testutils/helpers';
+import {
+  configEnzymeAdapter,
+  mockRenderWithIntl,
+} from 'testutils/helpers';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 
 configEnzymeAdapter();
@@ -16,13 +19,15 @@ const SELECT_OPTIONS = [
 describe('RenderSelectInput', () => {
   let selectInput;
   beforeEach(() => {
-    selectInput = shallow(
-      <RenderSelectInput
-        options={SELECT_OPTIONS}
-        labelId={LABEL_ID}
-        fieldName={FIELD_NAME}
-        mandatory
-      />,
+    selectInput = mount(
+      mockRenderWithIntl(
+        <RenderSelectInput
+          options={SELECT_OPTIONS}
+          labelId={LABEL_ID}
+          fieldName={FIELD_NAME}
+          mandatory
+        />,
+      ),
     );
   });
 

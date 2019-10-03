@@ -9,6 +9,7 @@ import contentType from 'state/content-type/reducer';
 import editContent from 'state/edit-content/reducer';
 import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
+import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
 import contentSettings from 'state/content-settings/reducer';
 
@@ -29,4 +30,5 @@ export default combineReducers({
   locale,
   messages,
   modal,
+  pagination,
 });

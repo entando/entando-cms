@@ -102,7 +102,18 @@
             ".jsx"
           ]
         }
-      ]
+      ],
+      "jsx-a11y/label-has-associated-control": [ 2, {
+        "controlComponents": ["Field"],
+        "depth": 3
+      }],
+      "jsx-a11y/label-has-for": [ 2, {
+          "components": [ "Label" ],
+          "required": {
+              "every": [ "nesting", "id" ]
+          },
+          "allowChildren": true
+      }]
     }
   },
   "eslintIgnore": [
@@ -135,6 +146,8 @@
     "patternfly": "^3.45.0",
     "patternfly-react": "^1.19.1",
     "react-bootstrap": "^0.32.1",
-    "moment": "^2.22.1"
+    "moment": "^2.22.1",
+    "react-datepicker": "^1.4.1",
+    "flux-standard-action": "^2.0.1"
   }
 }
