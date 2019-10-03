@@ -15,6 +15,7 @@ import {
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
+  ROUTE_CMS_CONTENT_SETTINGS,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
@@ -29,6 +30,7 @@ import EditContentTypePage from 'ui/content-type/EditContentTypePage';
 import AddContentTypeAttributePage from 'ui/content-type/attributes/AddContentTypeAttributePage';
 import EditContentTypeAttributePage from 'ui/content-type/attributes/EditContentTypeAttributePage';
 import MonolistPageContainer from 'ui/content-type/attributes/monolist/MonolistPageContainer';
+import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
@@ -76,6 +78,10 @@ const routesDir = [
   {
     path: ROUTE_CMS_EDIT_CONTENT,
     component: EditContentPage,
+  },
+  {
+    path: ROUTE_CMS_CONTENT_SETTINGS,
+    component: ContentSettingsPage,
   },
 ];
 

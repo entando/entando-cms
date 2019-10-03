@@ -11,7 +11,7 @@ describe('root reducer store', () => {
   it('contains the apps & cms state', () => {
     expect(state).toHaveProperty('apps');
     expect(state.apps).toHaveProperty('cms');
-    expect(Object.keys(state.apps.cms)).toHaveLength(4);
+    expect(Object.keys(state.apps.cms)).toHaveLength(5);
   });
 
   it('contains the apimanager state', () => {
@@ -60,5 +60,9 @@ describe('root reducer store', () => {
 
   it('contains the categories state', () => {
     expect(state.apps.cms).toHaveProperty('categories');
+  });
+
+  it('contains the content settings state', () => {
+    expect(state.apps.cms).toHaveProperty('contentSettings');
   });
 });

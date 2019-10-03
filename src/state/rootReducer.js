@@ -11,12 +11,14 @@ import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
 import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
+import contentSettings from 'state/content-settings/reducer';
 
 const cms = combineReducers({
   contentModel,
   contentType,
   editContent,
   categories,
+  contentSettings,
 });
 
 export default combineReducers({
