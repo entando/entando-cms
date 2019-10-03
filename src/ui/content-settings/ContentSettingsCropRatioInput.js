@@ -55,6 +55,24 @@ class ContentSettingsCropRatioInput extends Component {
     const { isNew } = this.props;
     const { value } = this.state;
 
+    const renderedBtn = isNew ? (
+      <Button
+        data-test-id="content-settings-crop-ratio-input-add"
+        bsStyle="primary"
+        onClick={this.handleAddClick}
+      >
+        Add
+      </Button>
+    ) : (
+      <Button
+        data-test-id="content-settings-crop-ratio-input-delete"
+        bsStyle="danger"
+        onClick={this.handleDeleteClick}
+      >
+        <Icon type="pf" name="delete" />
+      </Button>
+    );
+
     return (
       <Form inline>
         <FormGroup>
@@ -65,23 +83,7 @@ class ContentSettingsCropRatioInput extends Component {
             onChange={this.handleInputChange}
           />
         </FormGroup>
-        {isNew ? (
-          <Button
-            data-test-id="content-settings-crop-ratio-input-add"
-            bsStyle="primary"
-            onClick={this.handleAddClick}
-          >
-            Add
-          </Button>
-        ) : (
-          <Button
-            data-test-id="content-settings-crop-ratio-input-delete"
-            bsStyle="danger"
-            onClick={this.handleDeleteClick}
-          >
-            <Icon type="pf" name="delete" />
-          </Button>
-        )}
+        {renderedBtn}
       </Form>
     );
   }
