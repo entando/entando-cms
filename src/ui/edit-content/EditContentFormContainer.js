@@ -43,7 +43,10 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchCategoryTree());
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
-  onSubmit: values => dispatch(console.log('Posting Editting of a form', values)),
+  onSubmit: (values) => {
+    // eslint-disable-next-line no-console
+    dispatch(console.log('Posting Editting of a form', values));
+  },
 });
 
 const EditContentContainer = connect(
