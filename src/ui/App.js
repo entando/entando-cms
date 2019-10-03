@@ -34,7 +34,13 @@ import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
+const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
+
 const routesDir = [
+  {
+    path: ROUTE_CMS,
+    component: defaultRedirect,
+  },
   {
     path: ROUTE_CMS_CONTENTMODEL_LIST,
     component: ContentModelListPage,
@@ -87,8 +93,6 @@ const routesDir = [
 
 export const routes = routesDir.map(route => <Route exact key={route.path} {...route} />);
 
-const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
-
 class App extends Component {
   componentDidMount() {
     const { setupLanguage, lang } = this.props;
@@ -100,8 +104,6 @@ class App extends Component {
       <IntlProviderContainer>
         <>
           <ToastsContainer />
-          <Route exact path="/" component={defaultRedirect} />
-          <Route exact path={ROUTE_CMS} component={defaultRedirect} />
           {routes}
         </>
       </IntlProviderContainer>
