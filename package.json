@@ -134,6 +134,7 @@
     "react-router-dom": "^5.0.0",
     "patternfly": "^3.45.0",
     "patternfly-react": "^1.19.1",
-    "react-bootstrap": "^0.32.1"
+    "react-bootstrap": "^0.32.1",
+    "moment": "^2.22.1"
   }
 }

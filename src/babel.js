@@ -6,6 +6,7 @@ import editContent from 'state/edit-content/reducer';
 import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
 import categories from 'state/categories/reducer';
+import contentSettings from 'state/content-settings/reducer';
 
 export const state = {
   locale,
@@ -15,6 +16,7 @@ export const state = {
   loading,
   modal,
   categories,
+  contentSettings,
 };
 
 export { routes } from 'ui/App';

@@ -27,4 +27,8 @@ describe('root reducer store', () => {
   it('contains the categories state', () => {
     expect(state.apps.cms).toHaveProperty('categories');
   });
+
+  it('contains the content settings state', () => {
+    expect(state.apps.cms).toHaveProperty('contentSettings');
+  });
 });
