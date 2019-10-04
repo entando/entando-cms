@@ -35,8 +35,9 @@ class ContentSettingsCropRatioInput extends Component {
   }
 
   getValidationState() {
+    const { isNew } = this.props;
     const { value } = this.state;
-    if (value.length > 0) {
+    if (isNew && value.length > 0) {
       const isRatio = /^\d+[:]\d+$/.test(value);
       if (isRatio) return 'success';
       return 'error';
@@ -88,7 +89,7 @@ class ContentSettingsCropRatioInput extends Component {
       <Form inline>
         <FormGroup
           className="ContentSettingsCropRatioInput__form-group"
-          validationState={isNew && this.getValidationState()}
+          validationState={this.getValidationState()}
         >
           <FormControl
             data-test-id="content-settings-crop-ratio-input-field"
