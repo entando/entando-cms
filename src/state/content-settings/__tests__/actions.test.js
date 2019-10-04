@@ -205,4 +205,16 @@ describe('contentSettings thunks', () => {
       done();
     }).catch(done.fail);
   });
+
+  it('addCropRatio error', (done) => {
+    postCropRatio.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(addCropRatio()).then(() => {
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
 });
