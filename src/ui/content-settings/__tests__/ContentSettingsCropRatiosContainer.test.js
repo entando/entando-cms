@@ -15,11 +15,15 @@ jest.mock(
 );
 
 const initialState = {
-  contentSettings: {
-    cropRatios: [
-      '4:9',
-      '16:9',
-    ],
+  apps: {
+    cms: {
+      contentSettings: {
+        cropRatios: [
+          '4:9',
+          '16:9',
+        ],
+      },
+    },
   },
 };
 
@@ -28,7 +32,6 @@ const store = configureMockStore([thunk])(initialState);
 const actionList = [
   'onAdd',
   'onDelete',
-  'onSave',
 ];
 
 describe('ContentSettingsCropRatiosContainer', () => {

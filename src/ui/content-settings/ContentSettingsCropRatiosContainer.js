@@ -1,9 +1,16 @@
 import { connect } from 'react-redux';
 
+import {
+  getCropRatios,
+} from 'state/content-settings/selectors';
+import {
+  addCropRatio,
+  removeCropRatio,
+} from 'state/content-settings/actions';
 import ContentSettingsCropRatios from 'ui/content-settings/ContentSettingsCropRatios';
 
-const mapStateToProps = ({ contentSettings: { cropRatios } }) => ({
-  cropRatios,
+const mapStateToProps = state => ({
+  cropRatios: getCropRatios(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -11,10 +18,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addCropRatio(cropRatio));
   },
   onDelete: (cropRatio) => {
-    dispatch(deleteCropRatio(cropRatio));
-  },
-  onSave: (cropRatios) => {
-    dispatch(saveCropRatios(cropRatios));
+    dispatch(removeCropRatio(cropRatio));
   },
 });
 
