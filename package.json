@@ -98,17 +98,30 @@
           ]
         }
       ],
-      "jsx-a11y/label-has-associated-control": [ 2, {
-        "controlComponents": ["Field"],
-        "depth": 3
-      }],
-      "jsx-a11y/label-has-for": [ 2, {
-          "components": [ "Label" ],
+      "jsx-a11y/label-has-associated-control": [
+        2,
+        {
+          "controlComponents": [
+            "Field"
+          ],
+          "depth": 3
+        }
+      ],
+      "jsx-a11y/label-has-for": [
+        2,
+        {
+          "components": [
+            "Label"
+          ],
           "required": {
-              "every": [ "nesting", "id" ]
+            "every": [
+              "nesting",
+              "id"
+            ]
           },
           "allowChildren": true
-      }]
+        }
+      ]
     }
   },
   "eslintIgnore": [
