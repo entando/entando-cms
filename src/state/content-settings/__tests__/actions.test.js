@@ -7,6 +7,7 @@ import {
   sendPostReloadIndexes,
   sendPutEditorSettings,
   addCropRatio,
+  removeCropRatio,
 } from 'state/content-settings/actions';
 import {
   SET_CONTENT_SETTINGS,
@@ -24,6 +25,7 @@ import {
   postReloadIndexes,
   putEditorSettings,
   postCropRatio,
+  deleteCropRatio,
 } from 'api/contentSettings';
 
 const contSettings = CONTENT_SETTINGS_OK;
@@ -61,6 +63,7 @@ jest.mock('api/contentSettings', () => ({
   postReloadIndexes: jest.fn(mockApi({ payload: '' })),
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
   postCropRatio: jest.fn(mockApi({})),
+  deleteCropRatio: jest.fn(mockApi({})),
 }));
 
 it('test setContentSettings action', () => {
@@ -209,6 +212,31 @@ describe('contentSettings thunks', () => {
   it('addCropRatio error', (done) => {
     postCropRatio.mockImplementationOnce(mockApi({ errors: true }));
     store.dispatch(addCropRatio()).then(() => {
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('removeCropRatio', (done) => {
+    const params = { ratio: '4:9' };
+    store.dispatch(removeCropRatio(params.ratio)).then(() => {
+      expect(deleteCropRatio).toHaveBeenCalledWith(params);
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_CROP_RATIOS);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('removeCropRatio error', (done) => {
+    deleteCropRatio.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(removeCropRatio()).then(() => {
       const actions = store.getActions();
       expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);

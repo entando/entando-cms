@@ -9,6 +9,7 @@ import {
   postReloadIndexes,
   putEditorSettings,
   postCropRatio,
+  deleteCropRatio,
 } from 'api/contentSettings';
 import { toggleLoading } from 'state/loading/actions';
 import {
@@ -121,6 +122,25 @@ export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
       }
 
       dispatch(toggleLoading('addCropRatio'));
+    });
+  }).catch(() => {});
+});
+
+export const removeCropRatio = cropRatio => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('removeCropRatio'));
+
+  const params = { ratio: cropRatio };
+  deleteCropRatio(params).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setCropRatios(json.payload));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+
+      dispatch(toggleLoading('removeCropRatio'));
     });
   }).catch(() => {});
 });

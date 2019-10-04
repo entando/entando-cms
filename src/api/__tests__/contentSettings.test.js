@@ -8,6 +8,7 @@ import {
   postReloadReferences,
   putEditorSettings,
   postCropRatio,
+  deleteCropRatio,
 } from 'api/contentSettings';
 import { makeRequest } from '@entando/apimanager';
 import {
@@ -26,6 +27,7 @@ jest.mock('@entando/apimanager', () => ({
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
+    DELETE: 'DELETE',
   },
 }));
 
@@ -84,6 +86,19 @@ describe('api/contentSettings', () => {
     expect(makeRequest).toHaveBeenCalledWith({
       uri: '/api/plugins/cms/contentSettings/cropRatios',
       method: 'POST',
+      body: params,
+      mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteCropRatio returns a promise with correct params', () => {
+    const params = { ratio: '4:9' };
+    const response = deleteCropRatio(params);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/cropRatios',
+      method: 'DELETE',
       body: params,
       mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
       useAuthentication: true,

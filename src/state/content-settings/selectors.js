@@ -21,3 +21,8 @@ export const getEditorSettings = createSelector(
   getSettingsState,
   settings => settings.editor,
 );
+
+export const getCropRatios = createSelector(
+  getSettingsState,
+  settings => settings.cropRatios,
+);
