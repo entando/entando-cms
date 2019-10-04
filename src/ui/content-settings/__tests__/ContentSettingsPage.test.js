@@ -10,6 +10,7 @@ import {
 
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 import ContentSettingsGeneralContainer from 'ui/content-settings/ContentSettingsGeneralContainer';
+import ContentSettingsCropRatiosContainer from 'ui/content-settings/ContentSettingsCropRatiosContainer';
 
 configEnzymeAdapter();
 
@@ -17,7 +18,9 @@ const initState = {
   loading: {},
   apps: {
     cms: {
-      contentSettings: {},
+      contentSettings: {
+        cropRatios: [],
+      },
     },
   },
 };
@@ -47,5 +50,9 @@ describe('content-settings/ContentSettingsPage', () => {
 
   it('contains ContentSettingsGeneralContainer', () => {
     expect(component.find(ContentSettingsGeneralContainer).exists()).toBe(true);
+  });
+
+  it('contains ContentSettingsCropRatiosContainer', () => {
+    expect(component.find(ContentSettingsCropRatiosContainer).exists()).toBe(true);
   });
 });
