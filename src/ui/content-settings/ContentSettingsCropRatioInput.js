@@ -34,6 +34,17 @@ class ContentSettingsCropRatioInput extends Component {
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
 
+  getValidationState() {
+    const { value } = this.state;
+    if (value.length > 0) {
+      const isRatio = /^\d+[:]\d+$/.test(value);
+      if (isRatio) return 'success';
+      return 'error';
+    }
+
+    return null;
+  }
+
   handleInputChange(e) {
     this.setState({
       value: e.target.value,
@@ -75,7 +86,7 @@ class ContentSettingsCropRatioInput extends Component {
 
     return (
       <Form inline>
-        <FormGroup>
+        <FormGroup validationState={isNew && this.getValidationState()}>
           <FormControl
             data-test-id="content-settings-crop-ratio-input-field"
             type="text"
