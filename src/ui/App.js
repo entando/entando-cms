@@ -32,6 +32,7 @@ import EditContentTypeAttributePage from 'ui/content-type/attributes/EditContent
 import MonolistPageContainer from 'ui/content-type/attributes/monolist/MonolistPageContainer';
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 
+import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
 const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
@@ -104,7 +105,7 @@ class App extends Component {
       <IntlProviderContainer>
         <>
           <ToastsContainer />
-          {routes}
+          <CMSShell>{routes}</CMSShell>
         </>
       </IntlProviderContainer>
     );

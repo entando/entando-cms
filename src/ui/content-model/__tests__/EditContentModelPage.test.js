@@ -19,8 +19,8 @@ describe('ui/content-model/EditContentModelPage', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('is CMSShell', () => {
-    expect(component.is('CMSShell')).toBe(true);
+  it('is CardGrid', () => {
+    expect(component.is('CardGrid')).toBe(true);
   });
 
   it('contains AddContentModelFormContainer', () => {
