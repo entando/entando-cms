@@ -66,6 +66,8 @@ export default {
     'cms.contentsettings.label.reloadstatus.2': 'Error',
     'cms.contentsettings.label.reloadstatus.remark.success': 'The operation went successful last {date}',
     'cms.contentsettings.label.reloadstatus.remark.failed': 'The operation failed last {date}',
+    'cms.contentsettings.cropratios.heading': 'Settings Image Crop Dimensions',
+    'cms.contentsettings.cropratios.form.title': 'Add Crop Dimension',
     /* Edit Content starts HERE */
     'cms.new': 'New',
     'cms.save': 'Save',

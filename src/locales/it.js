@@ -58,6 +58,8 @@ export default {
     'cms.contentsettings.label.reloadstatus.2': 'Errore',
     'cms.contentsettings.label.reloadstatus.remark.success': 'L\'ultimo ricaricamento, in data {date}, ha avuto esisto positivo.',
     'cms.contentsettings.label.reloadstatus.remark.failed': 'L\'ultimo ricaricamento, in data {date}, ha avuto esisto negativo',
+    'cms.contentsettings.cropratios.heading': 'Impostazioni Dimensioni di ritaglio immagine',
+    'cms.contentsettings.cropratios.form.title': 'Aggiungi dimensione di ritaglio',
     'cms.new': '',
     'cms.save': '',
     'cms.cancel': '',

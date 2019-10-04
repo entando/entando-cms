@@ -4,6 +4,7 @@ import {
   Row,
   Col,
 } from 'patternfly-react';
+import { FormattedMessage } from 'react-intl';
 
 import RatioInput from 'ui/content-settings/ContentSettingsCropRatioInput';
 
@@ -13,17 +14,22 @@ const propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-// TODO: use intl messages
 const ContentSettingsCropRatios = ({ cropRatios, onAdd, onDelete }) => (
   <div>
     <h3 data-test-id="content-settings-crop-ratios-heading">
-      Settings Image Crop Dimensions
+      <FormattedMessage
+        id="cms.contentsettings.cropratios.heading"
+        defaultMessage="Settings Image Crop Dimensions"
+      />
     </h3>
     <hr />
     <Row>
       <Col>
         <h5 data-test-id="content-settings-crop-ratios-form-title">
-          Add Crop Dimension
+          <FormattedMessage
+            id="cms.contentsettings.cropratios.form.title"
+            defaultMessage="Add Crop Dimension"
+          />
         </h5>
       </Col>
     </Row>
