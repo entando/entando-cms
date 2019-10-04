@@ -1,38 +1,55 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Row,
   Col,
-  Button,
 } from 'patternfly-react';
 
-// TODO: use intl messages for Add and Save buttons
-const ContentSettingsCropRatios = () => (
+import RatioInput from 'ui/content-settings/ContentSettingsCropRatioInput';
+
+const propTypes = {
+  cropRatios: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+// TODO: use intl messages
+const ContentSettingsCropRatios = ({ cropRatios, onAdd, onDelete }) => (
   <div>
-    <h2 data-test-id="content-settings-crop-ratios-heading">
+    <h3 data-test-id="content-settings-crop-ratios-heading">
       Settings Image Crop Dimensions
-    </h2>
+    </h3>
+    <hr />
     <Row>
-      <Col xs={12} sm={5} smOffset={2}>
-        <Button
-          data-test-id="content-settings-crop-ratios-form-add"
-          bsStyle="primary"
-        >
-          Add
-        </Button>
+      <Col>
+        <h5 data-test-id="content-settings-crop-ratios-form-title">
+          Add Crop Dimension
+        </h5>
       </Col>
     </Row>
-    <br />
+    {cropRatios.map(cropRatio => (
+      <Row key={cropRatio}>
+        <Col xs={12} sm={5} smOffset={2}>
+          <RatioInput
+            data-test-id="content-settings-crop-ratios-form-input"
+            value={cropRatio}
+            onDelete={() => onDelete(cropRatio)}
+          />
+        </Col>
+      </Row>
+    ))}
     <Row>
       <Col xs={12} sm={5} smOffset={2}>
-        <Button
-          data-test-id="content-settings-crop-ratios-form-save"
-          bsStyle="primary"
-        >
-          Save
-        </Button>
+        <RatioInput
+          data-test-id="content-settings-crop-ratios-form-input"
+          isNew
+          onAdd={onAdd}
+        />
       </Col>
     </Row>
   </div>
 );
+
+ContentSettingsCropRatios.propTypes = propTypes;
 
 export default ContentSettingsCropRatios;
