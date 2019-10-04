@@ -9,6 +9,12 @@ import {
   ROUTE_CMS_ADD_CONTENT,
   ROUTE_CMS_EDIT_CONTENT,
   ROUTE_CMS_CONTENTMODEL_EDIT,
+  ROUTE_CMS_CONTENTTYPE_LIST,
+  ROUTE_CMS_CONTENTTYPE_ADD,
+  ROUTE_CMS_CONTENTTYPE_EDIT,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
   ROUTE_CMS_CONTENT_SETTINGS,
 } from 'app-init/routes';
 
@@ -18,11 +24,24 @@ import AddContentModelPage from 'ui/content-model/AddContentModelPage';
 import AddContentPage from 'ui/add-content/AddContentPage';
 import EditContentPage from 'ui/edit-content/EditContentPage';
 import EditContentModelPage from 'ui/content-model/EditContentModelPage';
+import ContentTypeListPage from 'ui/content-type/ContentTypeListPage';
+import AddContentTypePage from 'ui/content-type/AddContentTypePage';
+import EditContentTypePage from 'ui/content-type/EditContentTypePage';
+import AddContentTypeAttributePage from 'ui/content-type/attributes/AddContentTypeAttributePage';
+import EditContentTypeAttributePage from 'ui/content-type/attributes/EditContentTypeAttributePage';
+import MonolistPageContainer from 'ui/content-type/attributes/monolist/MonolistPageContainer';
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 
+import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
+const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
+
 const routesDir = [
+  {
+    path: ROUTE_CMS,
+    component: defaultRedirect,
+  },
   {
     path: ROUTE_CMS_CONTENTMODEL_LIST,
     component: ContentModelListPage,
@@ -40,6 +59,30 @@ const routesDir = [
     component: EditContentModelPage,
   },
   {
+    path: ROUTE_CMS_CONTENTTYPE_LIST,
+    component: ContentTypeListPage,
+  },
+  {
+    path: ROUTE_CMS_CONTENTTYPE_ADD,
+    component: AddContentTypePage,
+  },
+  {
+    path: ROUTE_CMS_CONTENTTYPE_EDIT,
+    component: EditContentTypePage,
+  },
+  {
+    path: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
+    component: AddContentTypeAttributePage,
+  },
+  {
+    path: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
+    component: EditContentTypeAttributePage,
+  },
+  {
+    path: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
+    component: MonolistPageContainer,
+  },
+  {
     path: ROUTE_CMS_EDIT_CONTENT,
     component: EditContentPage,
   },
@@ -50,8 +93,6 @@ const routesDir = [
 ];
 
 export const routes = routesDir.map(route => <Route exact key={route.path} {...route} />);
-
-const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
 
 class App extends Component {
   componentDidMount() {
@@ -64,9 +105,7 @@ class App extends Component {
       <IntlProviderContainer>
         <>
           <ToastsContainer />
-          <Route exact path="/" component={defaultRedirect} />
-          <Route exact path={ROUTE_CMS} component={defaultRedirect} />
-          {routes}
+          <CMSShell>{routes}</CMSShell>
         </>
       </IntlProviderContainer>
     );

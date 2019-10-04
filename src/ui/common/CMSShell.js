@@ -7,6 +7,8 @@ import {
 } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
 
+import LinkMenu from 'ui/common/LinkMenu';
+
 const BRAND_LOGO = <img src="/images/entando-logo.svg" alt="" />;
 
 const CMSShell = ({ className, children }) => (
@@ -21,26 +23,7 @@ const CMSShell = ({ className, children }) => (
         id="menu-cms"
         label={<FormattedMessage id="cms.menu.cms" defaultMessage="CMS" />}
       >
-        <LinkMenuItem
-          id="menu-content-list"
-          label={<FormattedMessage id="cms.menu.contentlist" defaultMessage="Content List" />}
-          to="/cms/content-list"
-        />
-        <LinkMenuItem
-          id="menu-content-type"
-          label={<FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />}
-          to="/cms/content-list"
-        />
-        <LinkMenuItem
-          id="menu-content-model"
-          label={<FormattedMessage id="cms.menu.contentmodels" defaultMessage="Content Models" />}
-          to="/cms/content-models"
-        />
-        <LinkMenuItem
-          id="menu-content-settings"
-          label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
-          to="/cms/content-settings"
-        />
+        <LinkMenu />
       </FirstLevelMenuItem>
     </BrandMenu>
     {children}

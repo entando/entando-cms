@@ -6,9 +6,14 @@
 @import "common/SectionTitle";
 @import "common/form/FormLabel";
 @import "common/form/SearchForm";
+@import "common/attributes/AttributeCheckIcon";
+@import "common/attributes/AttributeListTable";
 @import "common/form/DropdownTypeahead";
 @import "content-model/ContentModelList";
 @import "content-model/AddContentModelForm";
+@import "content-type/ContentTypeList";
+@import "content-type/ContentTypeReferenceStatus";
+@import "content-type/ContentTypeForm";
 @import "content-settings/ContentSettingsGeneral";
 @import "content-settings/ContentSettingsCropRatios";
 @import "content-settings/ContentSettingsCropRatioInput";

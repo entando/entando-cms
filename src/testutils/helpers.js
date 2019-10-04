@@ -8,6 +8,8 @@ import { configure } from 'enzyme';
 import { Provider as StateProvider } from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
+import { reduxForm } from 'redux-form';
+
 
 export const configEnzymeAdapter = () => {
   configure({ adapter: new Adapter() });
@@ -42,7 +44,7 @@ export const mockApi = ({
 
 export const createMockHistory = () => createMemoryHistory({ initialEntries: ['/'] });
 
-export const mockRenderWithRouter = (ui, history) => (
+export const mockRenderWithRouter = (ui, history = createMockHistory()) => (
   <Router history={history}>{ui}</Router>
 );
 
@@ -63,7 +65,6 @@ export const mockRenderWithStore = (ui, state = {}) => {
   return <StateProvider store={STORE}>{ui}</StateProvider>;
 };
 
-
 export const mockRenderWithIntl = (ui, state = {}) => {
   const STATE = { ...state, locale: 'en' };
   return (
@@ -76,4 +77,8 @@ export const mockRenderWithIntl = (ui, state = {}) => {
 
 export const findByTestId = (wrapper, testId) => (
   wrapper.find(`[data-test-id="${testId}"]`)
+);
+
+export const addReduxForm = (def, formName = 'form') => (
+  reduxForm({ form: formName })(def)
 );
