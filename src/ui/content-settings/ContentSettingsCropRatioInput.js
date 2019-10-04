@@ -86,7 +86,10 @@ class ContentSettingsCropRatioInput extends Component {
 
     return (
       <Form inline>
-        <FormGroup validationState={isNew && this.getValidationState()}>
+        <FormGroup
+          className="ContentSettingsCropRatioInput__form-group"
+          validationState={isNew && this.getValidationState()}
+        >
           <FormControl
             data-test-id="content-settings-crop-ratio-input-field"
             type="text"

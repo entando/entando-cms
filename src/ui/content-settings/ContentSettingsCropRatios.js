@@ -15,8 +15,11 @@ const propTypes = {
 };
 
 const ContentSettingsCropRatios = ({ cropRatios, onAdd, onDelete }) => (
-  <div>
-    <h3 data-test-id="content-settings-crop-ratios-heading">
+  <div className="ContentSettingsCropRatios">
+    <h3
+      data-test-id="content-settings-crop-ratios-heading"
+      className="ContentSettingsCropRatios__heading"
+    >
       <FormattedMessage
         id="cms.contentsettings.cropratios.heading"
         defaultMessage="Settings Image Crop Dimensions"
@@ -25,7 +28,10 @@ const ContentSettingsCropRatios = ({ cropRatios, onAdd, onDelete }) => (
     <hr />
     <Row>
       <Col>
-        <h5 data-test-id="content-settings-crop-ratios-form-title">
+        <h5
+          data-test-id="content-settings-crop-ratios-form-title"
+          className="ContentSettingsCropRatios__form-title"
+        >
           <FormattedMessage
             id="cms.contentsettings.cropratios.form.title"
             defaultMessage="Add Crop Dimension"
