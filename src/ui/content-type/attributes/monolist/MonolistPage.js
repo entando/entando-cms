@@ -10,7 +10,6 @@ import {
 import { routeConverter } from '@entando/utils';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
 import MonolistAttributeFormContainer from 'ui/content-type/attributes/monolist/MonolistAttributeFormContainer';
 import {
@@ -52,43 +51,41 @@ class MonolistPage extends Component {
     const lastBreadcrumbLabel = type === TYPE_COMPOSITE ? TYPE_MONOLIST : selectedAttribute;
 
     return (
-      <CMSShell className="MonolistPage">
-        <CardGrid>
-          <Row>
-            <Col xs={12}>
-              <Breadcrumb>
-                <BreadcrumbItem active>
-                  <FormattedMessage id="cms.title" />
-                </BreadcrumbItem>
-                <BreadcrumbItem to={ROUTE_CMS_CONTENTTYPE_LIST}>
-                  <FormattedMessage id="cms.contenttype.title" />
-                </BreadcrumbItem>
-                <BreadcrumbItem>
-                  <FormattedMessage id="cms.label.edit" />:
-                  &nbsp;{contentTypeCode}
-                </BreadcrumbItem>
-                {nextBreadCrumbs}
-                <BreadcrumbItem active>
-                  {lastBreadcrumbLabel}
-                </BreadcrumbItem>
-              </Breadcrumb>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              <PageTitle
-                titleId={titleId}
-                helpId="cms.contentType.helpattributes.label"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              <MonolistAttributeFormContainer />
-            </Col>
-          </Row>
-        </CardGrid>
-      </CMSShell>
+      <CardGrid>
+        <Row>
+          <Col xs={12}>
+            <Breadcrumb>
+              <BreadcrumbItem active>
+                <FormattedMessage id="cms.title" />
+              </BreadcrumbItem>
+              <BreadcrumbItem to={ROUTE_CMS_CONTENTTYPE_LIST}>
+                <FormattedMessage id="cms.contenttype.title" />
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <FormattedMessage id="cms.label.edit" />:
+                &nbsp;{contentTypeCode}
+              </BreadcrumbItem>
+              {nextBreadCrumbs}
+              <BreadcrumbItem active>
+                {lastBreadcrumbLabel}
+              </BreadcrumbItem>
+            </Breadcrumb>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <PageTitle
+              titleId={titleId}
+              helpId="cms.contentType.helpattributes.label"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <MonolistAttributeFormContainer />
+          </Col>
+        </Row>
+      </CardGrid>
     );
   }
 }
