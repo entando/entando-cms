@@ -74,7 +74,7 @@ export default {
     'cms.contentmodel.form.presscontext': '(press ctrl + space to open content assist menu)',
     'cms.contentmodel.delete.messageprompt': 'Are you sure you want to remove <strong>{id} ({descr})</strong>?',
     'cms.contenttype.title': 'Content Types',
-    'cms.contenttype.titletip': 'You can create content type here',
+    'cms.contenttype.titletip': 'The Content Types section let the administrator add new content types or edit those already existing.',
     'cms.contenttype.add.label': 'Add Content Type',
     'cms.contenttype.edit.label': 'Edit Content Type',
     'cms.contenttype.list.contentTypeNameHeader': 'Name',

@@ -71,7 +71,7 @@ export default {
     'cms.contentmodel.form.presscontext': '(premi ctrl + spazio per aprire il menu di assistenza ai contenuti)',
     'cms.contentmodel.delete.messageprompt': 'Sei sicuro di voler rimuovere <strong>{id} ({descr})</strong>?',
     'cms.contenttype.title': 'Tipi di Contenuto',
-    'cms.contenttype.titletip': 'Puoi creare un tipi di contenuto qui',
+    'cms.contenttype.titletip': 'La sezione Tipi di contenuto consente all\'amministratore di aggiungere nuovi tipi di contenuto o modificare quelli già esistentiPuoi creare un tipi di contenuto qui.',
     'cms.contenttype.add.label': 'Aggiungere',
     'cms.contenttype.edit.label': 'Modificare',
     'cms.contenttype.list.contentTypeNameHeader': 'Nome',
