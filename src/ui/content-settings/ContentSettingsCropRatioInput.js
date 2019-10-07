@@ -54,9 +54,7 @@ class ContentSettingsCropRatioInput extends Component {
   }
 
   handleAddClick() {
-    const { onAdd } = this.props;
-    const { value } = this.state;
-    onAdd(value);
+    this.handleSubmit();
   }
 
   handleDeleteClick() {
@@ -65,12 +63,16 @@ class ContentSettingsCropRatioInput extends Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     if (this.getValidationState() === 'success') {
       const { onAdd } = this.props;
       const { value } = this.state;
       onAdd(value);
+
+      this.setState({
+        value: '',
+      });
     }
   }
 

@@ -19,6 +19,11 @@ describe('ContentSettingsCropRatioInput', () => {
 
   describe('when new', () => {
     const mockOnAddCallback = jest.fn();
+
+    afterEach(() => {
+      mockOnAddCallback.mockClear();
+    });
+
     const wrapper = shallow(<RatioInput isNew onAdd={mockOnAddCallback} />);
 
     it('should have an add button', () => {
@@ -29,7 +34,7 @@ describe('ContentSettingsCropRatioInput', () => {
       expect(findByTestId(wrapper, deleteBtnTestId).length).toBe(0);
     });
 
-    it('should call onAdd prop with inputted value after clicking the add button', () => {
+    it('should call onAdd prop with valid inputted value after clicking the add button', () => {
       const value = '4:9';
       const changeEvent = {
         target: {
@@ -44,6 +49,23 @@ describe('ContentSettingsCropRatioInput', () => {
       addBtn.simulate('click');
 
       expect(mockOnAddCallback).toHaveBeenCalledWith(value);
+    });
+
+    it('should not call onAdd prop with invalid value after clicking the add button', () => {
+      const value = 'this is an invalid value';
+      const changeEvent = {
+        target: {
+          value,
+        },
+      };
+
+      const inputField = findByTestId(wrapper, inputTestId);
+      inputField.simulate('change', changeEvent);
+
+      const addBtn = findByTestId(wrapper, addBtnTestId);
+      addBtn.simulate('click');
+
+      expect(mockOnAddCallback).toHaveBeenCalledTimes(0);
     });
   });
 
