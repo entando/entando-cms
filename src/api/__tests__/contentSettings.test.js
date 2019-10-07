@@ -7,6 +7,8 @@ import {
   postReloadIndexes,
   postReloadReferences,
   putEditorSettings,
+  postMetadataMap,
+  deleteMetadataMap,
 } from 'api/contentSettings';
 import { makeRequest } from '@entando/apimanager';
 import {
@@ -25,6 +27,7 @@ jest.mock('@entando/apimanager', () => ({
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
+    DELETE: 'DELETE',
   },
 }));
 
@@ -79,7 +82,7 @@ describe('api/contentSettings', () => {
 
   it('postMetadataMap returns a promise with correct params', () => {
     const param = { key: 1 };
-    const response = putEditorSettings(param);
+    const response = postMetadataMap(param);
     expect(makeRequest).toHaveBeenCalledWith({
       uri: '/api/plugins/cms/contentSettings/metadata',
       method: 'POST',
@@ -92,7 +95,7 @@ describe('api/contentSettings', () => {
 
   it('deleteMetadataMap returns a promise with correct params', () => {
     const param = { key: 1 };
-    const response = putEditorSettings(param);
+    const response = deleteMetadataMap(param);
     expect(makeRequest).toHaveBeenCalledWith({
       uri: '/api/plugins/cms/contentSettings/metadata',
       method: 'DELETE',

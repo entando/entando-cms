@@ -2,12 +2,15 @@ import { createMockStore, mockApi } from 'testutils/helpers';
 import {
   setContentSettings,
   setEditorSettings,
+  setMetadataMapping,
   fetchContentSettings,
   sendPostReloadReferences,
   sendPostReloadIndexes,
   sendPutEditorSettings,
+  sendPostMetadataMap,
+  sendDeleteMetadataMap,
 } from 'state/content-settings/actions';
-import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS } from 'state/content-settings/types';
+import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS, SET_METADATA_MAPPING } from 'state/content-settings/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
   CONTENT_SETTINGS_OK,
@@ -18,6 +21,8 @@ import {
   postReloadReferences,
   postReloadIndexes,
   putEditorSettings,
+  postMetadataMap,
+  deleteMetadataMap,
 } from 'api/contentSettings';
 
 const contSettings = CONTENT_SETTINGS_OK;
@@ -54,6 +59,23 @@ jest.mock('api/contentSettings', () => ({
   postReloadReferences: jest.fn(mockApi({ payload: '' })),
   postReloadIndexes: jest.fn(mockApi({ payload: '' })),
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
+  postMetadataMap: jest.fn(({ key, mapping }) => mockApi({ 
+    payload: {
+      [key]: mapping,
+      legend: [],
+      alt: [],
+      description: [],
+      title: [],
+    },
+  })()),
+  deleteMetadataMap: jest.fn(() => mockApi({
+    payload: {
+      legend: [],
+      alt: [],
+      description: [],
+      title: [],
+    },
+  })()),
 }));
 
 it('test setContentSettings action', () => {
@@ -64,6 +86,14 @@ it('test setEditorSettings action', () => {
   const payload = { key: 'ao' };
   expect(setEditorSettings(payload)).toEqual({
     type: SET_EDITOR_SETTINGS,
+    payload,
+  });
+});
+
+it('test setMetadataMapping action', () => {
+  const payload = { key: 'oa' };
+  expect(setMetadataMapping(payload)).toEqual({
+    type: SET_METADATA_MAPPING,
     payload,
   });
 });
@@ -180,6 +210,56 @@ describe('contentSettings thunks', () => {
       const actions = store.getActions();
       expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendPostMetadataMap', (done) => {
+    store.dispatch(sendPostMetadataMap('key', 1)).then(() => {
+      expect(postMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 1 });
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[2].payload.id).toEqual('postMetadataMap');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendPostMetadataMap error', (done) => {
+    postMetadataMap.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(sendPostMetadataMap('key', 2)).then(() => {
+      expect(postMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 2 });
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[0].payload.id).toEqual('postMetadataMap');
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendDeleteMetadataMap', (done) => {
+    store.dispatch(sendDeleteMetadataMap('key', 3)).then(() => {
+      expect(deleteMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 3 });
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[2].payload.id).toEqual('deleteMetadataMap');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendDeleteMetadataMap error', (done) => {
+    deleteMetadataMap.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(sendDeleteMetadataMap('key', 4)).then(() => {
+      expect(deleteMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 4 });
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[0].payload.id).toEqual('deleteMetadataMap');
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
       done();

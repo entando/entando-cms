@@ -28,7 +28,6 @@ class ContentSettingsMetadataListBody extends Component {
     const { handleSubmit, metadatas } = this.props;
     return (
       <>
-        <DeleteContentMetadataModalContainer />
         <form onSubmit={handleSubmit}>
           {metadatas.map(meta => (
             <Row className="ContentSettingsMetadata__list-row" key={meta.key}>
@@ -64,6 +63,7 @@ class ContentSettingsMetadataListBody extends Component {
             </Row>
           ))}
         </form>
+        <DeleteContentMetadataModalContainer />
       </>
     );
   }

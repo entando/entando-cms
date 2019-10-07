@@ -20,7 +20,6 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, { intl }) => ({
   onSubmit: (values) => {
-    console.log(values);
     const { key, mapping } = values;
     dispatch(sendPostMetadataMap(key, mapping)).then((res) => {
       if (res) {
