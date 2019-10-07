@@ -32,6 +32,7 @@ class ContentSettingsCropRatioInput extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getValidationState() {
@@ -63,6 +64,16 @@ class ContentSettingsCropRatioInput extends Component {
     onDelete();
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+
+    if (this.getValidationState() === 'success') {
+      const { onAdd } = this.props;
+      const { value } = this.state;
+      onAdd(value);
+    }
+  }
+
   render() {
     const { isNew } = this.props;
     const { value } = this.state;
@@ -86,7 +97,10 @@ class ContentSettingsCropRatioInput extends Component {
     );
 
     return (
-      <Form inline>
+      <Form
+        inline
+        onSubmit={this.handleSubmit}
+      >
         <FormGroup
           className="ContentSettingsCropRatioInput__form-group"
           validationState={this.getValidationState()}
