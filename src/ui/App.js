@@ -37,7 +37,7 @@ import ToastsContainer from 'ui/toast/ToastsContainer';
 
 const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
 
-const routesDir = [
+export const routesDir = [
   {
     path: ROUTE_CMS,
     component: defaultRedirect,
