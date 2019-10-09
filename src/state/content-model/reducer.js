@@ -1,11 +1,13 @@
 import {
   SET_CONTENT_MODELS,
   SET_CONTENT_MODEL_OPENED,
+  SET_CONTENT_MODEL_FILTER,
 } from 'state/content-model/types';
 
 const defaultState = {
   list: [],
   opened: {},
+  filters: {},
 };
 
 const reducer = (state = defaultState, action = {}) => {
@@ -19,6 +21,11 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         opened: action.payload,
+      };
+    case SET_CONTENT_MODEL_FILTER:
+      return {
+        ...state,
+        filters: action.payload,
       };
     default:
       return state;

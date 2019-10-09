@@ -11,3 +11,8 @@ export const getContentModelOpened = createSelector(
   getContentModelState,
   contentModel => contentModel.opened,
 );
+
+export const getContentModelFilters = createSelector(
+  getContentModelState,
+  contentModel => contentModel.filters,
+);

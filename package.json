@@ -47,11 +47,6 @@
     "babel": "babel --presets @babel/preset-react src -d dist",
     "prepublish": "npm run babel"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage"
-    }
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
