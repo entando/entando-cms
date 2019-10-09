@@ -1,56 +1,72 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { configEnzymeAdapter, createMockHistory, mockRenderWithRouter } from 'testutils/helpers';
 import { Route } from 'react-router-dom';
-import { state, routes } from 'babel';
+import { LinkMenuItem } from '@entando/menu';
+import cms from 'babel';
 
 configEnzymeAdapter();
 
-describe('babel state as export', () => {
-  it('contains the correct number of states', () => {
-    expect(state).toBeInstanceOf(Object);
-    expect(Object.keys(state)).toHaveLength(8);
+describe('exports cms', () => {
+  it('is an object', () => {
+    expect(cms).toBeInstanceOf(Object);
   });
 
-  it('contains the locale state', () => {
-    expect(state).toHaveProperty('locale');
+  describe('the id key', () => {
+    it('is cms', () => {
+      expect(cms).toHaveProperty('id', 'cms');
+    });
   });
 
-  it('contains the contentModel state', () => {
-    expect(state).toHaveProperty('contentModel');
+  describe('the state key', () => {
+    const { state } = cms;
+
+    it('contains the correct number of states', () => {
+      expect(state).toBeInstanceOf(Function);
+    });
   });
 
-  it('contains the contentType state', () => {
-    expect(state).toHaveProperty('contentType');
+  describe('the routes key', () => {
+    const history = createMockHistory();
+    const component = mount(
+      mockRenderWithRouter(<>{cms.routes}</>, history),
+    );
+    it('contains <Route> elements', () => {
+      expect(component.find(Route).exists()).toBe(true);
+    });
   });
 
-  it('contains the editContent state', () => {
-    expect(state).toHaveProperty('editContent');
+  describe('the routesDir key', () => {
+    it('is an array of routes definitions in object form', () => {
+      const { routesDir } = cms;
+      expect(Array.isArray(routesDir)).toBe(true);
+      expect(routesDir).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: expect.any(String),
+            component: expect.any(Function),
+          }),
+        ]),
+      );
+    });
   });
 
-  it('contains the loading state', () => {
-    expect(state).toHaveProperty('loading');
+  describe('the menu key', () => {
+    const Menu = cms.menu;
+    const component = shallow(<Menu />);
+
+    it('contains <LinkMenuItem> elements', () => {
+      expect(component.find(LinkMenuItem).exists()).toBe(true);
+    });
   });
 
-  it('contains the modal state', () => {
-    expect(state).toHaveProperty('modal');
-  });
+  describe('the locales key', () => {
+    it('contains the english locale', () => {
+      expect(cms.locales).toHaveProperty('en');
+    });
 
-  it('contains the categories state', () => {
-    expect(state).toHaveProperty('categories');
-  });
-
-  it('contains the contentSettings state', () => {
-    expect(state).toHaveProperty('contentSettings');
-  });
-});
-
-describe('babel routes as export', () => {
-  const history = createMockHistory();
-  const component = mount(
-    mockRenderWithRouter(<>{routes}</>, history),
-  );
-  it('test if exports are <Route>', () => {
-    expect(component.find(Route).exists()).toBe(true);
+    it('contains the italian locale', () => {
+      expect(cms.locales).toHaveProperty('it');
+    });
   });
 });
