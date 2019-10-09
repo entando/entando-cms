@@ -2,12 +2,14 @@ import {
   SET_CONTENT_MODELS,
   SET_CONTENT_MODEL_OPENED,
   SET_CONTENT_MODEL_FILTER,
+  SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
 } from 'state/content-model/types';
 
 const defaultState = {
   list: [],
   opened: {},
   filters: {},
+  search: '',
 };
 
 const reducer = (state = defaultState, action = {}) => {
@@ -26,6 +28,11 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         filters: action.payload,
+      };
+    case SET_CONTENT_MODEL_SEARCH_ATTRIBUTE:
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;

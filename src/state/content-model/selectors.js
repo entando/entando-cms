@@ -16,3 +16,8 @@ export const getContentModelFilters = createSelector(
   getContentModelState,
   contentModel => contentModel.filters,
 );
+
+export const getContentModelSearchAttribute = createSelector(
+  getContentModelState,
+  contentModel => contentModel.search,
+);

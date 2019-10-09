@@ -10,6 +10,7 @@ import {
   SET_CONTENT_MODELS,
   SET_CONTENT_MODEL_OPENED,
   SET_CONTENT_MODEL_FILTER,
+  SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
 } from 'state/content-model/types';
 
 import {
@@ -19,7 +20,7 @@ import {
   putContentModel,
   deleteContentModel,
 } from 'api/contentModels';
-import { getContentModelFilters } from 'state/content-model/selectors';
+import { getContentModelFilters, getContentModelSearchAttribute } from 'state/content-model/selectors';
 import { toggleLoading } from 'state/loading/actions';
 
 export const setContentModelList = list => ({
@@ -34,6 +35,11 @@ export const setContentModel = payload => ({
 
 export const setSearchFilter = payload => ({
   type: SET_CONTENT_MODEL_FILTER,
+  payload,
+});
+
+export const setSearchAttribute = payload => ({
+  type: SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
   payload,
 });
 
@@ -65,9 +71,15 @@ export const fetchContentModelListPaged = (
 };
 
 const applyContentModelFilter = (
-  filter,
+  keyword,
+  field = 'descr',
   paginationMetadata = pageDefault,
+  operator = FILTER_OPERATORS.LIKE,
 ) => (dispatch) => {
+  const filter = {
+    formValues: { [field]: keyword },
+    operators: { [field]: operator },
+  };
   dispatch(setSearchFilter(filter));
   return dispatch(fetchContentModelListPaged(paginationMetadata));
 };
@@ -75,18 +87,13 @@ const applyContentModelFilter = (
 export const filterContentModelBySearch = (
   keyword,
   paginationMetadata = pageDefault,
-  field = 'descr',
-  operator = FILTER_OPERATORS.LIKE,
-) => {
-  const filter = {
-    formValues: { [field]: keyword },
-    operators: { [field]: operator },
-  };
-  return applyContentModelFilter(filter, paginationMetadata);
+) => (dispatch, getState) => {
+  const field = getContentModelSearchAttribute(getState());
+  return dispatch(applyContentModelFilter(keyword, field, paginationMetadata));
 };
 
 export const fetchContentModelsByContentType = (contentType, paginationMetadata = pageDefault) => (
-  filterContentModelBySearch(contentType, paginationMetadata, 'contentType', FILTER_OPERATORS.EQUAL)
+  applyContentModelFilter(contentType, 'contentType', paginationMetadata, FILTER_OPERATORS.EQUAL)
 );
 
 export const sendPostContentModel = contModelObject => dispatch => new Promise(resolve => (
