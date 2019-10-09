@@ -59,7 +59,9 @@
     ]
   },
   "sass": {
-    "includePaths": ["node_modules/"]
+    "includePaths": [
+      "node_modules/"
+    ]
   },
   "jest": {
     "collectCoverageFrom": [
@@ -136,7 +138,9 @@
           "allowChildren": true
         }
       ],
-      "import/no-extraneous-dependencies": [0]
+      "import/no-extraneous-dependencies": [
+        0
+      ]
     }
   },
   "eslintIgnore": [
@@ -161,6 +165,7 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "history": "^4.9.0",
+    "patternfly": "^3.45.0",
     "prop-types": "^15.6.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -180,7 +185,6 @@
     "@entando/utils": "^2.0.0",
     "lodash": "^4.17.10",
     "react-router-dom": "^5.0.0",
-    "patternfly": "^3.45.0",
     "patternfly-react": "^1.19.1",
     "react-bootstrap": "^0.32.1",
     "moment": "^2.22.1",
