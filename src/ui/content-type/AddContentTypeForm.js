@@ -99,6 +99,37 @@ export class AddContentTypeFormBody extends Component {
       return '';
     };
 
+    const renderMetadataSection = () => {
+      if (isEdit) {
+        return (
+          <div>
+            <legend>
+              <FormattedMessage id="cms.label.metadata" />
+            </legend>
+            <Field
+              component={RenderSelectInput}
+              options={[]}
+              defaultOptionId="cms.label.select"
+              label={
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModel" />
+              }
+              name="defaultContentModel"
+            />
+            <Field
+              component={RenderSelectInput}
+              options={[]}
+              defaultOptionId="cms.label.select"
+              label={
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModelLists" />
+              }
+              name="defaultContentModelLists"
+            />
+          </div>
+        );
+      }
+      return '';
+    };
+
     return (
       <form onSubmit={handleSubmit} className="form-horizontal ContentTypeForm">
         <Row>
@@ -128,6 +159,7 @@ export class AddContentTypeFormBody extends Component {
                  }
                 validate={[required, maxLength50]}
               />
+              {renderMetadataSection()}
               {renderSelectOption()}
               {renderAttributeTable()}
             </fieldset>
