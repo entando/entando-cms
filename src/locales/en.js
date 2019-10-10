@@ -97,6 +97,7 @@ export default {
     'cms.contenttype.form.code': 'Code',
     'cms.contenttype.form.codeHelp': 'You can insert characters uppercase and lowercase letters, numbers and special characters _',
     'cms.contenttype.attribute.codeHelp': 'You must insert 3 uppercase characters',
+    'cms.contenttype.attribute.label.listOf': 'List of',
     'cms.contenttype.form.name': 'Name',
     'cms.contenttype.form.role': 'Role',
     'cms.contenttype.form.roles': 'Roles',

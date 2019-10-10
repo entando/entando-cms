@@ -94,6 +94,7 @@ export default {
     'cms.contenttype.form.code': 'Codice',
     'cms.contenttype.form.codeHelp': 'Puoi inserire caratteri, lettere maiuscole e minuscole, numeri, ed il carattere speciale _',
     'cms.contenttype.attribute.codeHelp': 'Il codice è valido solo se composto da 3 lettere maiuscole',
+    'cms.contenttype.attribute.label.listOf': 'Lista di',
     'cms.contenttype.form.name': 'Nome',
     'cms.contenttype.form.role': 'Ruolo',
     'cms.contenttype.form.roles': 'Ruoli',

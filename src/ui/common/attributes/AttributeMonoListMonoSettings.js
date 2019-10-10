@@ -27,7 +27,7 @@ const AttributeMonoListMonoSettings = ({ attributesList }) => {
               options={selectAttribute}
               defaultOptionId="cms.label.chooseoption"
               label={
-                <FormLabel labelId="cms.label.list" required />
+                <FormLabel labelId="cms.contenttype.attribute.label.listOf" required />
               }
               name="type"
               validate={[required]}
