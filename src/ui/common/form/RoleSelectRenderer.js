@@ -37,7 +37,7 @@ class RoleSelectRenderer extends Component {
       .filter(opt => !selectedValues.includes(opt[valueKey]))
       .map(item => (
         <option key={`opt-${item[valueKey]}`} value={item[valueKey]}>
-          {item[labelKey]}
+          {item[valueKey]} - {item[labelKey]}
         </option>
       ));
 
