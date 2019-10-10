@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 import { getContentModelList, getContentModelFilters } from 'state/content-model/selectors';
-import { fetchContentModelListPaged } from 'state/content-model/actions';
+import {
+  pageDefault,
+  setListFilterProps,
+  fetchContentModelListPaged,
+} from 'state/content-model/actions';
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
@@ -18,7 +22,11 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchList: (page = { page: 1, pageSize: 10 }) => (
+  onDidMount: () => {
+    dispatch(setListFilterProps({}));
+    dispatch(fetchContentModelListPaged(pageDefault));
+  },
+  fetchList: (page = pageDefault) => (
     dispatch(fetchContentModelListPaged(page))
   ),
   onClickDelete: (item) => {

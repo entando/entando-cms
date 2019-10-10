@@ -16,8 +16,8 @@ class ContentModelList extends Component {
   }
 
   componentDidMount() {
-    const { fetchList } = this.props;
-    fetchList();
+    const { onDidMount } = this.props;
+    onDidMount();
   }
 
   changePage(page) {
@@ -84,6 +84,7 @@ ContentModelList.propTypes = {
     PropTypes.shape({}),
   ).isRequired,
   loading: PropTypes.bool,
+  onDidMount: PropTypes.func.isRequired,
   fetchList: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,

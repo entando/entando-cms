@@ -11,6 +11,7 @@ import {
   SET_CONTENT_MODEL_OPENED,
   SET_CONTENT_MODEL_FILTER,
   SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
+  SET_CONTENT_MODEL_SEARCH_KEYWORD,
 } from 'state/content-model/types';
 
 import {
@@ -20,7 +21,7 @@ import {
   putContentModel,
   deleteContentModel,
 } from 'api/contentModels';
-import { getContentModelFilters, getContentModelSearchAttribute } from 'state/content-model/selectors';
+import { getContentModelFilterProps, getContentModelSearchAttribute } from 'state/content-model/selectors';
 import { toggleLoading } from 'state/loading/actions';
 
 export const setContentModelList = list => ({
@@ -33,7 +34,7 @@ export const setContentModel = payload => ({
   payload,
 });
 
-export const setSearchFilter = payload => ({
+export const setListFilterProps = payload => ({
   type: SET_CONTENT_MODEL_FILTER,
   payload,
 });
@@ -43,7 +44,12 @@ export const setSearchAttribute = payload => ({
   payload,
 });
 
-const pageDefault = { page: 1, pageSize: 10 };
+export const setSearchKeyword = payload => ({
+  type: SET_CONTENT_MODEL_SEARCH_KEYWORD,
+  payload,
+});
+
+export const pageDefault = { page: 1, pageSize: 10 };
 
 // thunks
 
@@ -66,7 +72,7 @@ export const fetchContentModelList = (page = pageDefault, params = '') => dispat
 export const fetchContentModelListPaged = (
   paginationMetadata = pageDefault,
 ) => (dispatch, getState) => {
-  const filters = getContentModelFilters(getState());
+  const filters = getContentModelFilterProps(getState());
   return dispatch(fetchContentModelList(paginationMetadata, convertToQueryString(filters)));
 };
 
@@ -76,11 +82,15 @@ const applyContentModelFilter = (
   paginationMetadata = pageDefault,
   operator = FILTER_OPERATORS.LIKE,
 ) => (dispatch) => {
-  const filter = {
-    formValues: { [field]: keyword },
-    operators: { [field]: operator },
-  };
-  dispatch(setSearchFilter(filter));
+  let filter = {};
+  if (keyword) {
+    filter = {
+      formValues: { [field]: keyword },
+      operators: { [field]: operator },
+    };
+  }
+  dispatch(setSearchKeyword(keyword));
+  dispatch(setListFilterProps(filter));
   return dispatch(fetchContentModelListPaged(paginationMetadata));
 };
 

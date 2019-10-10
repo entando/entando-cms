@@ -3,6 +3,10 @@
     padding-top: 24px;
   }
 
+  &__table {
+    margin-bottom: 0;
+  }
+
   &__searchform {
 
     .container-fluid .row > div { // sass-lint:disable-line force-element-nesting class-name-format

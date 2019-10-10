@@ -3,40 +3,65 @@ import {
   SET_CONTENT_MODEL_OPENED,
   SET_CONTENT_MODEL_FILTER,
   SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
+  SET_CONTENT_MODEL_SEARCH_KEYWORD,
 } from 'state/content-model/types';
+import { combineReducers } from 'redux';
 
-const defaultState = {
-  list: [],
-  opened: {},
-  filters: {},
-  search: '',
-};
-
-const reducer = (state = defaultState, action = {}) => {
+const list = (state = [], action = {}) => {
   switch (action.type) {
     case SET_CONTENT_MODELS:
-      return {
-        ...state,
-        list: action.payload.list,
-      };
+      return [
+        ...action.payload.list,
+      ];
+    default:
+      return state;
+  }
+};
+
+const opened = (state = {}, action = {}) => {
+  switch (action.type) {
     case SET_CONTENT_MODEL_OPENED:
       return {
         ...state,
         opened: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+const defaultFilterState = {
+  filterProps: {},
+  attribute: '',
+  keyword: '',
+};
+
+const filters = (state = defaultFilterState, action = {}) => {
+  switch (action.type) {
     case SET_CONTENT_MODEL_FILTER:
       return {
         ...state,
-        filters: action.payload,
+        filterProps: action.payload,
       };
     case SET_CONTENT_MODEL_SEARCH_ATTRIBUTE:
       return {
         ...state,
-        search: action.payload,
+        attribute: action.payload,
+      };
+    case SET_CONTENT_MODEL_SEARCH_KEYWORD:
+      return {
+        ...state,
+        keyword: action.payload,
       };
     default:
       return state;
   }
 };
+
+const reducer = combineReducers({
+  list,
+  opened,
+  filters,
+});
 
 export default reducer;
