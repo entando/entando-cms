@@ -39,7 +39,7 @@ export const getMetadataMappingList = createSelector(
 export const getMetadataMappingFormData = createSelector(
   getMetadataMapping,
   metadatas => reduce(metadatas, (acc, value, key) => {
-    acc[`meta${key}`] = value.join(',');
+    acc[key] = value.join(',');
     return acc;
   }, {}),
 );

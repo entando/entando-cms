@@ -20,7 +20,7 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, { intl }) => ({
   onConfirmDelete: (contMeta) => {
-    dispatch(sendDeleteMetadataMap(contMeta.key, contMeta.metadata)).then((res) => {
+    dispatch(sendDeleteMetadataMap(contMeta.key)).then((res) => {
       if (res) {
         dispatch(addToast(
           intl.formatMessage(

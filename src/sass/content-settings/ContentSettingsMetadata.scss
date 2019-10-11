@@ -22,6 +22,18 @@
     padding-top: 34px;
   }
 
+  &__list-input-area {
+    position: relative;
+  }
+
+  &__list-input-right-placeholder {
+    position: absolute;
+    right: 50px;
+    bottom: 3px;
+    color: $color-icon-gray;
+    font-style: oblique;
+  }
+
   &__list-cell-del {
     padding-top: 30px;
   }

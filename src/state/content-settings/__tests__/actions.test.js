@@ -8,6 +8,8 @@ import {
   sendPostReloadIndexes,
   sendPutEditorSettings,
   sendPostMetadataMap,
+  sendPutMetadataMap,
+  checkAndPutMetadataMap,
   sendDeleteMetadataMap,
 } from 'state/content-settings/actions';
 import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS, SET_METADATA_MAPPING } from 'state/content-settings/types';
@@ -22,6 +24,7 @@ import {
   postReloadIndexes,
   putEditorSettings,
   postMetadataMap,
+  putMetadataMap,
   deleteMetadataMap,
 } from 'api/contentSettings';
 
@@ -59,10 +62,18 @@ jest.mock('api/contentSettings', () => ({
   postReloadReferences: jest.fn(mockApi({ payload: '' })),
   postReloadIndexes: jest.fn(mockApi({ payload: '' })),
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
-  postMetadataMap: jest.fn(({ key, mapping }) => mockApi({ 
+  postMetadataMap: jest.fn(({ key, mapping }) => mockApi({
     payload: {
       [key]: mapping,
       legend: [],
+      alt: [],
+      description: [],
+      title: [],
+    },
+  })()),
+  putMetadataMap: jest.fn((key, mapping) => mockApi({
+    payload: {
+      [key]: mapping,
       alt: [],
       description: [],
       title: [],
@@ -101,7 +112,16 @@ it('test setMetadataMapping action', () => {
 describe('contentSettings thunks', () => {
   let store;
   beforeEach(() => {
-    store = createMockStore({ settings: {} });
+    store = createMockStore({
+      loading: { legend: '' },
+      apps: {
+        cms: {
+          contentSettings: {
+            metadata: {},
+          },
+        },
+      },
+    });
   });
   it('fetchContentSettings', (done) => {
     store.dispatch(fetchContentSettings()).then(() => {
@@ -241,9 +261,58 @@ describe('contentSettings thunks', () => {
     }).catch(done.fail);
   });
 
+  it('sendPutMetadataMap', (done) => {
+    const key = 'key';
+    const mapping = 1;
+    store.dispatch(sendPutMetadataMap(key, mapping)).then(() => {
+      expect(putMetadataMap).toHaveBeenCalledWith(key, mapping);
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', SET_METADATA_MAPPING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('sendPutMetadataMap error', (done) => {
+    const key = 'key';
+    const mapping = 2;
+    putMetadataMap.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(sendPutMetadataMap(key, mapping)).then(() => {
+      expect(putMetadataMap).toHaveBeenCalledWith(key, mapping);
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('checkAndPutMetadataMap', (done) => {
+    const values = { legend: 'awt, two' };
+    store.dispatch(checkAndPutMetadataMap(values)).then(() => {
+      expect(putMetadataMap).toHaveBeenCalledWith('legend', 'awt, two');
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[2].payload.id).toEqual('legend');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('checkAndPutMetadataMap error', (done) => {
+    const values = { legend: 'awt, three' };
+    putMetadataMap.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(checkAndPutMetadataMap(values)).then(() => {
+      expect(putMetadataMap).toHaveBeenCalledWith('legend', 'awt, three');
+      const actions = store.getActions();
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
   it('sendDeleteMetadataMap', (done) => {
-    store.dispatch(sendDeleteMetadataMap('key', 3)).then(() => {
-      expect(deleteMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 3 });
+    store.dispatch(sendDeleteMetadataMap('key')).then(() => {
+      expect(deleteMetadataMap).toHaveBeenCalledWith('key');
       const actions = store.getActions();
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
@@ -255,8 +324,8 @@ describe('contentSettings thunks', () => {
 
   it('sendDeleteMetadataMap error', (done) => {
     deleteMetadataMap.mockImplementationOnce(mockApi({ errors: true }));
-    store.dispatch(sendDeleteMetadataMap('key', 4)).then(() => {
-      expect(deleteMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 4 });
+    store.dispatch(sendDeleteMetadataMap('key')).then(() => {
+      expect(deleteMetadataMap).toHaveBeenCalledWith('key');
       const actions = store.getActions();
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[0].payload.id).toEqual('deleteMetadataMap');

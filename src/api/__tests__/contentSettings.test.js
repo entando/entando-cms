@@ -8,6 +8,7 @@ import {
   postReloadReferences,
   putEditorSettings,
   postMetadataMap,
+  putMetadataMap,
   deleteMetadataMap,
 } from 'api/contentSettings';
 import { makeRequest } from '@entando/apimanager';
@@ -81,7 +82,7 @@ describe('api/contentSettings', () => {
   });
 
   it('postMetadataMap returns a promise with correct params', () => {
-    const param = { key: 1 };
+    const param = 1;
     const response = postMetadataMap(param);
     expect(makeRequest).toHaveBeenCalledWith({
       uri: '/api/plugins/cms/contentSettings/metadata',
@@ -93,13 +94,26 @@ describe('api/contentSettings', () => {
     expect(response).toBeInstanceOf(Promise);
   });
 
-  it('deleteMetadataMap returns a promise with correct params', () => {
-    const param = { key: 1 };
-    const response = deleteMetadataMap(param);
+  it('putMetadataMap returns a promise with correct params', () => {
+    const key = 'wa';
+    const mapping = 'kanda';
+    const response = putMetadataMap(key, mapping);
     expect(makeRequest).toHaveBeenCalledWith({
-      uri: '/api/plugins/cms/contentSettings/metadata',
+      uri: `/api/plugins/cms/contentSettings/metadata/${key}`,
+      method: 'PUT',
+      body: { mapping },
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteMetadataMap returns a promise with correct params', () => {
+    const mapping = 1;
+    const response = deleteMetadataMap(mapping);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: `/api/plugins/cms/contentSettings/metadata/${mapping}`,
       method: 'DELETE',
-      body: param,
       mockResponse: CONTENT_SETTINGS_METADATA_OK,
       useAuthentication: true,
     });

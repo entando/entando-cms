@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import {
-  CONTENT_SETTINGS_OK_MAPPED as metadatas,
+  CONTENT_SETTINGS_OK_MAPPED as metadata,
   CONTENT_SETTINGS_OK_FORMED as initialValues,
 } from 'testutils/mocks/contentSettings';
 
@@ -16,7 +16,13 @@ import ContentSettingsMetadataList from 'ui/content-settings/metadata/ContentSet
 configEnzymeAdapter();
 
 const PROPS = {
-  metadatas,
+  metadata,
+  loadings: {
+    legend: '',
+    alt: '',
+    description: '',
+    title: '',
+  },
   initialValues,
   handleSubmit: jest.fn(),
   onPromptDelete: jest.fn(),
@@ -39,16 +45,16 @@ describe('content-settings/metadata/ContentSettingsMetadataList', () => {
   });
 
   it('contains the meta textfields', () => {
-    const field1 = component.find('Field[name="metalegend"]');
+    const field1 = component.find('Field[name="legend"]');
     const props1 = field1.at(0).props();
 
-    const field2 = component.find('Field[name="metaalt"]');
+    const field2 = component.find('Field[name="alt"]');
     const props2 = field2.at(0).props();
 
-    const field3 = component.find('Field[name="metadescription"]');
+    const field3 = component.find('Field[name="description"]');
     const props3 = field3.at(0).props();
 
-    const field4 = component.find('Field[name="metatitle"]');
+    const field4 = component.find('Field[name="title"]');
     const props4 = field4.at(0).props();
 
     expect(field1.exists()).toBe(true);

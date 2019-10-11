@@ -9,8 +9,10 @@ import {
   postReloadIndexes,
   putEditorSettings,
   postMetadataMap,
+  putMetadataMap,
   deleteMetadataMap,
 } from 'api/contentSettings';
+import { getMetadataMappingFormData } from 'state/content-settings/selectors';
 import { toggleLoading } from 'state/loading/actions';
 import {
   addErrors,
@@ -123,9 +125,41 @@ export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((re
   }).catch(() => {});
 });
 
-export const sendDeleteMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
+export const sendPutMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
+  putMetadataMap(key, mapping).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setMetadataMapping(json.payload));
+        resolve({ key, json });
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve({ key });
+      }
+    });
+  }).catch(() => {});
+});
+
+export const checkAndPutMetadataMap = values => (dispatch, getState) => new Promise((resolve) => {
+  const prevValues = getMetadataMappingFormData(getState());
+  const proms = [];
+  Object.entries(values).forEach(([key, mapping]) => {
+    if (prevValues[key] !== mapping) {
+      dispatch(toggleLoading(key));
+      proms.push(
+        dispatch(sendPutMetadataMap(key, mapping))
+          .then((res) => {
+            dispatch(toggleLoading(res.key));
+            return res.json || null;
+          }),
+      );
+    }
+  });
+  Promise.all(proms).then(payloads => resolve(payloads));
+});
+
+export const sendDeleteMetadataMap = key => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('deleteMetadataMap'));
-  deleteMetadataMap({ key, mapping }).then((response) => {
+  deleteMetadataMap(key).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setMetadataMapping(json.payload));

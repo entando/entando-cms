@@ -28,10 +28,10 @@ export const CONTENT_SETTINGS_OK_MAPPED = [
 ];
 
 export const CONTENT_SETTINGS_OK_FORMED = {
-  metalegend: '',
-  metaalt: '',
-  metadescription: '',
-  metatitle: '',
+  legend: '',
+  alt: '',
+  description: '',
+  title: '',
 };
 
 export const CONTENT_SETTINGS_REFRESH_OK = {

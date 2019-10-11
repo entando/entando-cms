@@ -13,6 +13,7 @@ jest.mock('state/modal/actions', () => ({
 }));
 
 const state = {
+  loading: {},
   apps: {
     cms: {
       contentSettings: C_OK,
@@ -23,7 +24,8 @@ const state = {
 describe('content-settings/metadata/ContentSettingsMetadataListContainer', () => {
   it('maps stateprops property', () => {
     const props = mapStateToProps(state);
-    expect(props).toHaveProperty('metadatas', maplist);
+    expect(props).toHaveProperty('metadata', maplist);
+    expect(props).toHaveProperty('loadings');
     expect(props).toHaveProperty('initialValues', mapform);
   });
 
