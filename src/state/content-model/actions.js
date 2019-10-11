@@ -12,12 +12,14 @@ import {
   SET_CONTENT_MODEL_FILTER,
   SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
   SET_CONTENT_MODEL_SEARCH_KEYWORD,
+  SET_CONTENT_MODEL_DICTIONARY,
 } from 'state/content-model/types';
 
 import {
   getContentModels,
   postContentModel,
   getContentModel,
+  getContentModelDictionary,
   putContentModel,
   deleteContentModel,
 } from 'api/contentModels';
@@ -46,6 +48,11 @@ export const setSearchAttribute = payload => ({
 
 export const setSearchKeyword = payload => ({
   type: SET_CONTENT_MODEL_SEARCH_KEYWORD,
+  payload,
+});
+
+export const setContentModelDictionary = payload => ({
+  type: SET_CONTENT_MODEL_DICTIONARY,
   payload,
 });
 
@@ -126,6 +133,22 @@ export const fetchContentModel = id => dispatch => new Promise(resolve => (
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setContentModel(json.payload));
+        resolve(json.payload);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+        dispatch(clearErrors());
+        resolve();
+      }
+    });
+  }).catch(() => {})
+));
+
+export const fetchContentModelDictionary = () => dispatch => new Promise(resolve => (
+  getContentModelDictionary().then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setContentModelDictionary(json.payload));
         resolve(json.payload);
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));

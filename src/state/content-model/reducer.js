@@ -4,6 +4,7 @@ import {
   SET_CONTENT_MODEL_FILTER,
   SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
   SET_CONTENT_MODEL_SEARCH_KEYWORD,
+  SET_CONTENT_MODEL_DICTIONARY,
 } from 'state/content-model/types';
 import { combineReducers } from 'redux';
 
@@ -13,6 +14,29 @@ const list = (state = [], action = {}) => {
       return [
         ...action.payload.list,
       ];
+    default:
+      return state;
+  }
+};
+
+const defaultDictState = {
+  map: {},
+  list: [],
+};
+
+const toListCodes = items => Object.entries(items).map(([key, value]) => ({
+  code: key,
+  methods: value,
+}));
+
+const dictionary = (state = defaultDictState, action = {}) => {
+  switch (action.type) {
+    case SET_CONTENT_MODEL_DICTIONARY:
+      return {
+        ...state,
+        list: toListCodes(action.payload),
+        map: action.payload,
+      };
     default:
       return state;
   }
@@ -62,6 +86,7 @@ const reducer = combineReducers({
   list,
   opened,
   filters,
+  dictionary,
 });
 
 export default reducer;

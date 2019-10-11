@@ -70,6 +70,7 @@ class AddContentModelFormBody extends Component {
       intl,
       mode,
       contentTypes,
+      dictionary,
     } = this.props;
     const { modalOpened } = this.state;
     return (
@@ -145,6 +146,7 @@ class AddContentModelFormBody extends Component {
               component={RenderContentModelInput}
               cols="50"
               rows="8"
+              dictionary={dictionary}
               className="form-control"
               append={intl.formatMessage(messages.htmlModelAppend)}
               validate={[required]}
@@ -178,6 +180,7 @@ class AddContentModelFormBody extends Component {
 
 AddContentModelFormBody.propTypes = {
   intl: intlShape.isRequired,
+  dictionary: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,

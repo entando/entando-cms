@@ -31,3 +31,13 @@ export const getContentModelSearchKeyword = createSelector(
   getContentModelFilters,
   filters => filters.keyword,
 );
+
+export const getContentModelDictionary = createSelector(
+  getContentModelState,
+  contentModel => contentModel.dictionary,
+);
+
+export const getContentModelDictionaryList = createSelector(
+  getContentModelDictionary,
+  dictionary => dictionary.list,
+);
