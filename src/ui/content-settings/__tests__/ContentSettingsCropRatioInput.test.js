@@ -71,8 +71,15 @@ describe('ContentSettingsCropRatioInput', () => {
 
   describe('when not new', () => {
     const mockOnDeleteCallback = jest.fn();
+    const mockOnSaveCallback = jest.fn();
     const value = '4:9';
-    const wrapper = shallow(<RatioInput value={value} onDelete={mockOnDeleteCallback} />);
+    const wrapper = shallow(
+      <RatioInput
+        value={value}
+        onDelete={mockOnDeleteCallback}
+        onSave={mockOnSaveCallback}
+      />,
+    );
 
     it('should have a value derived from props', () => {
       expect(findByTestId(wrapper, inputTestId).props().value).toBe(value);
@@ -92,6 +99,21 @@ describe('ContentSettingsCropRatioInput', () => {
       deleteBtn.simulate('click');
 
       expect(mockOnDeleteCallback).toHaveBeenCalled();
+    });
+
+    it('should call onSave prop with new value when input loses focus', () => {
+      const newValue = '16:9';
+      const changeEvent = {
+        target: {
+          value: newValue,
+        },
+      };
+
+      const inputField = findByTestId(wrapper, inputTestId);
+      inputField.simulate('change', changeEvent);
+      inputField.simulate('blur');
+
+      expect(mockOnSaveCallback).toHaveBeenCalledWith(newValue);
     });
   });
 });

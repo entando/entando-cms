@@ -13,6 +13,7 @@ const propTypes = {
   isNew: PropTypes.bool,
   onAdd: PropTypes.func,
   onDelete: PropTypes.func,
+  onSave: PropTypes.func,
 };
 
 const defaultProps = {
@@ -20,6 +21,7 @@ const defaultProps = {
   isNew: false,
   onAdd: () => {},
   onDelete: () => {},
+  onSave: () => {},
 };
 
 class ContentSettingsCropRatioInput extends Component {
@@ -30,15 +32,16 @@ class ContentSettingsCropRatioInput extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputBlur = this.handleInputBlur.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getValidationState() {
-    const { isNew } = this.props;
+    const { value: initialValue } = this.props;
     const { value } = this.state;
-    if (isNew && value.length > 0) {
+    if ((value.length > 0 || initialValue.length > 0) && value !== initialValue) {
       const isRatio = /^\d+[:]\d+$/.test(value);
       if (isRatio) return 'success';
       return 'error';
@@ -53,6 +56,14 @@ class ContentSettingsCropRatioInput extends Component {
     });
   }
 
+  handleInputBlur() {
+    if (this.getValidationState() === 'success') {
+      const { onSave } = this.props;
+      const { value } = this.state;
+      onSave(value);
+    }
+  }
+
   handleAddClick() {
     this.handleSubmit();
   }
@@ -65,7 +76,8 @@ class ContentSettingsCropRatioInput extends Component {
   handleSubmit(e) {
     if (e) e.preventDefault();
 
-    if (this.getValidationState() === 'success') {
+    const { isNew } = this.props;
+    if (isNew && this.getValidationState() === 'success') {
       const { onAdd } = this.props;
       const { value } = this.state;
       onAdd(value);
@@ -112,6 +124,7 @@ class ContentSettingsCropRatioInput extends Component {
             type="text"
             value={value}
             onChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
           />
         </FormGroup>
         {renderedBtn}
