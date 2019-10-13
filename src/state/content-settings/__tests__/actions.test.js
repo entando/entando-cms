@@ -14,6 +14,7 @@ import {
   SET_EDITOR_SETTINGS,
   SET_CROP_RATIOS,
 } from 'state/content-settings/types';
+import { getCropRatios } from 'state/content-settings/selectors';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
   CONTENT_SETTINGS_OK,
@@ -64,6 +65,10 @@ jest.mock('api/contentSettings', () => ({
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
   postCropRatio: jest.fn(mockApi({})),
   deleteCropRatio: jest.fn(mockApi({})),
+}));
+
+jest.mock('state/content-settings/selectors', () => ({
+  getCropRatios: jest.fn(() => ['4:9']),
 }));
 
 it('test setContentSettings action', () => {

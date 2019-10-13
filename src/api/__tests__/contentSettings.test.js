@@ -97,9 +97,8 @@ describe('api/contentSettings', () => {
     const params = { ratio: '4:9' };
     const response = deleteCropRatio(params);
     expect(makeRequest).toHaveBeenCalledWith({
-      uri: '/api/plugins/cms/contentSettings/cropRatios',
+      uri: `/api/plugins/cms/contentSettings/cropRatios/${params.ratio}`,
       method: 'DELETE',
-      body: params,
       mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
       useAuthentication: true,
     });

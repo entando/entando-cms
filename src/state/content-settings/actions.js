@@ -11,6 +11,7 @@ import {
   postCropRatio,
   deleteCropRatio,
 } from 'api/contentSettings';
+import { getCropRatios } from 'state/content-settings/selectors';
 import { toggleLoading } from 'state/loading/actions';
 import {
   addErrors,
@@ -126,15 +127,16 @@ export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
   }).catch(() => {});
 });
 
-export const removeCropRatio = cropRatio => dispatch => new Promise((resolve) => {
+export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise((resolve) => {
   dispatch(toggleLoading('removeCropRatio'));
 
   const params = { ratio: cropRatio };
   deleteCropRatio(params).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
-        dispatch(setCropRatios(json.payload));
-        resolve(json);
+        const cropRatios = getCropRatios(getState());
+        dispatch(setCropRatios(cropRatios.filter(ratio => ratio !== cropRatio)));
+        resolve();
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
         resolve();
