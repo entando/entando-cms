@@ -19,11 +19,13 @@ const cropRatios = [
 describe('ContentSettingsCropRatios', () => {
   const mockOnAddCallback = jest.fn();
   const mockOnDeleteCallback = jest.fn();
+  const mockOnUpdateCallback = jest.fn();
   const wrapper = shallow(
     <ContentSettingsCropRatios
       cropRatios={cropRatios}
       onAdd={mockOnAddCallback}
       onDelete={mockOnDeleteCallback}
+      onUpdate={mockOnUpdateCallback}
     />,
   );
 
@@ -49,7 +51,6 @@ describe('ContentSettingsCropRatios', () => {
     it('should call onAdd prop when crop ratio input\'s onAdd is called', () => {
       const ratioInputs = findByTestId(wrapper, ratioInputTestId);
       const newRatioInput = ratioInputs.last();
-
       newRatioInput.props().onAdd();
 
       expect(mockOnAddCallback).toHaveBeenCalled();
@@ -57,10 +58,16 @@ describe('ContentSettingsCropRatios', () => {
 
     it('should call onDelete prop when crop ratio input\'s onDelete is called', () => {
       const ratioInput = findByTestId(wrapper, ratioInputTestId).at(0);
-
       ratioInput.props().onDelete();
 
       expect(mockOnDeleteCallback).toHaveBeenCalled();
+    });
+
+    it('should call onUpdate prop when crop ratio input\'s onSave is called', () => {
+      const ratioInput = findByTestId(wrapper, ratioInputTestId).at(0);
+      ratioInput.props().onSave();
+
+      expect(mockOnUpdateCallback).toHaveBeenCalled();
     });
   });
 });

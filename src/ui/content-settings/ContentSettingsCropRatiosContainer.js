@@ -6,6 +6,7 @@ import {
 import {
   addCropRatio,
   removeCropRatio,
+  updateCropRatio,
 } from 'state/content-settings/actions';
 import ContentSettingsCropRatios from 'ui/content-settings/ContentSettingsCropRatios';
 
@@ -19,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onDelete: (cropRatio) => {
     dispatch(removeCropRatio(cropRatio));
+  },
+  onUpdate: (cropRatio, newValue) => {
+    dispatch(updateCropRatio(cropRatio, newValue));
   },
 });
 

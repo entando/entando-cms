@@ -10,6 +10,7 @@ import {
   putEditorSettings,
   postCropRatio,
   deleteCropRatio,
+  putCropRatio,
 } from 'api/contentSettings';
 import { getCropRatios } from 'state/content-settings/selectors';
 import { toggleLoading } from 'state/loading/actions';
@@ -143,6 +144,24 @@ export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise(
       }
 
       dispatch(toggleLoading('removeCropRatio'));
+    });
+  }).catch(() => {});
+});
+
+export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('updateCropRatio'));
+
+  putCropRatio(cropRatio, newValue).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setCropRatios(json.payload));
+        resolve();
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+
+      dispatch(toggleLoading('updateCropRatio'));
     });
   }).catch(() => {});
 });

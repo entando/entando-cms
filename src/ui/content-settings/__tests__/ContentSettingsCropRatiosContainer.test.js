@@ -32,6 +32,7 @@ const store = configureMockStore([thunk])(initialState);
 const actionList = [
   'onAdd',
   'onDelete',
+  'onUpdate',
 ];
 
 describe('ContentSettingsCropRatiosContainer', () => {

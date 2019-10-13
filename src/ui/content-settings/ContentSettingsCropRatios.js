@@ -12,9 +12,12 @@ const propTypes = {
   cropRatios: PropTypes.arrayOf(PropTypes.string).isRequired,
   onAdd: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
-const ContentSettingsCropRatios = ({ cropRatios, onAdd, onDelete }) => (
+const ContentSettingsCropRatios = ({
+  cropRatios, onAdd, onDelete, onUpdate,
+}) => (
   <div className="ContentSettingsCropRatios">
     <h3
       data-test-id="content-settings-crop-ratios-heading"
@@ -46,6 +49,7 @@ const ContentSettingsCropRatios = ({ cropRatios, onAdd, onDelete }) => (
             data-test-id="content-settings-crop-ratios-form-input"
             value={cropRatio}
             onDelete={() => onDelete(cropRatio)}
+            onSave={newValue => onUpdate(cropRatio, newValue)}
           />
         </Col>
       </Row>

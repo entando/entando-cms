@@ -65,3 +65,13 @@ export const deleteCropRatio = params => (
     useAuthentication: true,
   })
 );
+
+export const putCropRatio = (cropRatio, newValue) => (
+  makeRequest({
+    uri: `${settingsPath}/cropRatios/${cropRatio}`,
+    method: METHODS.PUT,
+    body: { ratio: newValue },
+    mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
+    useAuthentication: true,
+  })
+);

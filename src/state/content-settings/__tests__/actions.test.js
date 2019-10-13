@@ -8,6 +8,7 @@ import {
   sendPutEditorSettings,
   addCropRatio,
   removeCropRatio,
+  updateCropRatio,
 } from 'state/content-settings/actions';
 import {
   SET_CONTENT_SETTINGS,
@@ -27,6 +28,7 @@ import {
   putEditorSettings,
   postCropRatio,
   deleteCropRatio,
+  putCropRatio,
 } from 'api/contentSettings';
 
 const contSettings = CONTENT_SETTINGS_OK;
@@ -65,6 +67,7 @@ jest.mock('api/contentSettings', () => ({
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
   postCropRatio: jest.fn(mockApi({})),
   deleteCropRatio: jest.fn(mockApi({})),
+  putCropRatio: jest.fn(mockApi({})),
 }));
 
 jest.mock('state/content-settings/selectors', () => ({
@@ -242,6 +245,32 @@ describe('contentSettings thunks', () => {
   it('removeCropRatio error', (done) => {
     deleteCropRatio.mockImplementationOnce(mockApi({ errors: true }));
     store.dispatch(removeCropRatio()).then(() => {
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('updateCropRatio', (done) => {
+    const cropRatio = '4:9';
+    const newValue = '5:3';
+    store.dispatch(updateCropRatio(cropRatio, newValue)).then(() => {
+      expect(putCropRatio).toHaveBeenCalledWith(cropRatio, newValue);
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_CROP_RATIOS);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
+  it('updateCropRatio error', (done) => {
+    putCropRatio.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(updateCropRatio()).then(() => {
       const actions = store.getActions();
       expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
