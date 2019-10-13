@@ -71,7 +71,7 @@ jest.mock('api/contentSettings', () => ({
 }));
 
 jest.mock('state/content-settings/selectors', () => ({
-  getCropRatios: jest.fn(() => ['4:9']),
+  getCropRatios: jest.fn(),
 }));
 
 it('test setContentSettings action', () => {
@@ -230,6 +230,7 @@ describe('contentSettings thunks', () => {
   });
 
   it('removeCropRatio', (done) => {
+    getCropRatios.mockImplementation(() => ['4:9', '16:9']);
     const params = { ratio: '4:9' };
     store.dispatch(removeCropRatio(params.ratio)).then(() => {
       expect(deleteCropRatio).toHaveBeenCalledWith(params);
