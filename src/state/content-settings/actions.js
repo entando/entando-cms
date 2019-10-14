@@ -118,7 +118,9 @@ export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
         dispatch(setCropRatios(json.payload));
         resolve(json);
       } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
+        const errorMsgs = json.errors.map(err => err.message);
+        dispatch(addErrors(errorMsgs));
+        errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
         resolve();
       }
 
@@ -127,39 +129,47 @@ export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
   }).catch(() => {});
 });
 
-export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise((resolve) => {
-  dispatch(toggleLoading('removeCropRatio'));
+export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise(
+  (resolve) => {
+    dispatch(toggleLoading('removeCropRatio'));
 
-  deleteCropRatio(cropRatio).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        const cropRatios = getCropRatios(getState());
-        dispatch(setCropRatios(cropRatios.filter(ratio => ratio !== cropRatio)));
-        resolve();
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        resolve();
-      }
+    deleteCropRatio(cropRatio).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          const cropRatios = getCropRatios(getState());
+          dispatch(setCropRatios(cropRatios.filter(ratio => ratio !== cropRatio)));
+          resolve(json);
+        } else {
+          const errorMsgs = json.errors.map(err => err.message);
+          dispatch(addErrors(errorMsgs));
+          errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
+          resolve();
+        }
 
-      dispatch(toggleLoading('removeCropRatio'));
-    });
-  }).catch(() => {});
-});
+        dispatch(toggleLoading('removeCropRatio'));
+      });
+    }).catch(() => {});
+  },
+);
 
-export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise((resolve) => {
-  dispatch(toggleLoading('updateCropRatio'));
+export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise(
+  (resolve) => {
+    dispatch(toggleLoading('updateCropRatio'));
 
-  putCropRatio(cropRatio, newValue).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setCropRatios(json.payload));
-        resolve();
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        resolve();
-      }
+    putCropRatio(cropRatio, newValue).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setCropRatios(json.payload));
+          resolve(json);
+        } else {
+          const errorMsgs = json.errors.map(err => err.message);
+          dispatch(addErrors(errorMsgs));
+          errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
+          resolve();
+        }
 
-      dispatch(toggleLoading('updateCropRatio'));
-    });
-  }).catch(() => {});
-});
+        dispatch(toggleLoading('updateCropRatio'));
+      });
+    }).catch();
+  },
+);

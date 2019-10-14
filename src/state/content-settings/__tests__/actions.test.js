@@ -221,10 +221,11 @@ describe('contentSettings thunks', () => {
     postCropRatio.mockImplementationOnce(mockApi({ errors: true }));
     store.dispatch(addCropRatio()).then(() => {
       const actions = store.getActions();
-      expect(actions).toHaveLength(3);
+      expect(actions).toHaveLength(4);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
-      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+      expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);
   });
@@ -247,10 +248,11 @@ describe('contentSettings thunks', () => {
     deleteCropRatio.mockImplementationOnce(mockApi({ errors: true }));
     store.dispatch(removeCropRatio()).then(() => {
       const actions = store.getActions();
-      expect(actions).toHaveLength(3);
+      expect(actions).toHaveLength(4);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
-      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+      expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);
   });
@@ -273,10 +275,11 @@ describe('contentSettings thunks', () => {
     putCropRatio.mockImplementationOnce(mockApi({ errors: true }));
     store.dispatch(updateCropRatio()).then(() => {
       const actions = store.getActions();
-      expect(actions).toHaveLength(3);
+      expect(actions).toHaveLength(4);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
-      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+      expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);
   });
