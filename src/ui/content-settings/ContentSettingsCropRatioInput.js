@@ -7,6 +7,7 @@ import {
   Button,
   Icon,
 } from 'patternfly-react';
+import { FormattedMessage } from 'react-intl';
 
 const propTypes = {
   value: PropTypes.string,
@@ -98,7 +99,7 @@ class ContentSettingsCropRatioInput extends Component {
         bsStyle="primary"
         onClick={this.handleAddClick}
       >
-        Add
+        <FormattedMessage id="cms.label.add" defaultMessage="Add" />
       </Button>
     ) : (
       <Button
