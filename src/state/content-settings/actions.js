@@ -112,8 +112,7 @@ export const sendPutEditorSettings = editor => dispatch => new Promise((resolve)
 export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('addCropRatio'));
 
-  const params = { ratio: cropRatio };
-  postCropRatio(params).then((response) => {
+  postCropRatio(cropRatio).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setCropRatios(json.payload));
@@ -131,8 +130,7 @@ export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
 export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise((resolve) => {
   dispatch(toggleLoading('removeCropRatio'));
 
-  const params = { ratio: cropRatio };
-  deleteCropRatio(params).then((response) => {
+  deleteCropRatio(cropRatio).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         const cropRatios = getCropRatios(getState());

@@ -47,19 +47,19 @@ export const putEditorSettings = editorObject => (
   })
 );
 
-export const postCropRatio = params => (
+export const postCropRatio = cropRatio => (
   makeRequest({
     uri: `${settingsPath}/cropRatios`,
-    body: params,
+    body: { ratio: cropRatio },
     method: METHODS.POST,
     mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
     useAuthentication: true,
   })
 );
 
-export const deleteCropRatio = params => (
+export const deleteCropRatio = cropRatio => (
   makeRequest({
-    uri: `${settingsPath}/cropRatios/${params.ratio}`,
+    uri: `${settingsPath}/cropRatios/${cropRatio}`,
     method: METHODS.DELETE,
     mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
     useAuthentication: true,

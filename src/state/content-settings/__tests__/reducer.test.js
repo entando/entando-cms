@@ -28,7 +28,6 @@ describe('state/content-settings/reducer', () => {
   it('after action SET_CROP_RATIOS', () => {
     const cropRatios = ['4:9', '16:9'];
     const state = reducer({}, setCropRatios(cropRatios));
-
     expect(state).toHaveProperty('cropRatios', cropRatios);
   });
 });

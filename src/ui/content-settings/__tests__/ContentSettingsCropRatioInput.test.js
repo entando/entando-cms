@@ -13,7 +13,6 @@ describe('ContentSettingsCropRatioInput', () => {
 
   it('should have an input field', () => {
     const wrapper = shallow(<RatioInput />);
-
     expect(findByTestId(wrapper, inputTestId).length).toBe(1);
   });
 
@@ -41,7 +40,6 @@ describe('ContentSettingsCropRatioInput', () => {
           value,
         },
       };
-
       const inputField = findByTestId(wrapper, inputTestId);
       inputField.simulate('change', changeEvent);
 
@@ -58,7 +56,6 @@ describe('ContentSettingsCropRatioInput', () => {
           value,
         },
       };
-
       const inputField = findByTestId(wrapper, inputTestId);
       inputField.simulate('change', changeEvent);
 
@@ -95,7 +92,6 @@ describe('ContentSettingsCropRatioInput', () => {
 
     it('should call onDelete prop after clicking the delete button', () => {
       const deleteBtn = findByTestId(wrapper, deleteBtnTestId);
-
       deleteBtn.simulate('click');
 
       expect(mockOnDeleteCallback).toHaveBeenCalled();
@@ -108,7 +104,6 @@ describe('ContentSettingsCropRatioInput', () => {
           value: newValue,
         },
       };
-
       const inputField = findByTestId(wrapper, inputTestId);
       inputField.simulate('change', changeEvent);
       inputField.simulate('blur');

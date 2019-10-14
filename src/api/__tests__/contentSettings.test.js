@@ -81,12 +81,12 @@ describe('api/contentSettings', () => {
   });
 
   it('postCropRatio returns a promise with correct params', () => {
-    const params = { ratio: '4:9' };
-    const response = postCropRatio(params);
+    const cropRatio = '4:9';
+    const response = postCropRatio(cropRatio);
     expect(makeRequest).toHaveBeenCalledWith({
       uri: '/api/plugins/cms/contentSettings/cropRatios',
       method: 'POST',
-      body: params,
+      body: { ratio: cropRatio },
       mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
       useAuthentication: true,
     });
@@ -94,10 +94,10 @@ describe('api/contentSettings', () => {
   });
 
   it('deleteCropRatio returns a promise with correct params', () => {
-    const params = { ratio: '4:9' };
-    const response = deleteCropRatio(params);
+    const cropRatio = '4:9';
+    const response = deleteCropRatio(cropRatio);
     expect(makeRequest).toHaveBeenCalledWith({
-      uri: `/api/plugins/cms/contentSettings/cropRatios/${params.ratio}`,
+      uri: `/api/plugins/cms/contentSettings/cropRatios/${cropRatio}`,
       method: 'DELETE',
       mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
       useAuthentication: true,

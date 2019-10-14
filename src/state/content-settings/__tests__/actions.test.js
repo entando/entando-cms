@@ -205,9 +205,9 @@ describe('contentSettings thunks', () => {
   });
 
   it('addCropRatio', (done) => {
-    const params = { ratio: '4:9' };
-    store.dispatch(addCropRatio(params.ratio)).then(() => {
-      expect(postCropRatio).toHaveBeenCalledWith(params);
+    const cropRatio = '4:9';
+    store.dispatch(addCropRatio(cropRatio)).then(() => {
+      expect(postCropRatio).toHaveBeenCalledWith(cropRatio);
       const actions = store.getActions();
       expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
@@ -231,9 +231,9 @@ describe('contentSettings thunks', () => {
 
   it('removeCropRatio', (done) => {
     getCropRatios.mockImplementation(() => ['4:9', '16:9']);
-    const params = { ratio: '4:9' };
-    store.dispatch(removeCropRatio(params.ratio)).then(() => {
-      expect(deleteCropRatio).toHaveBeenCalledWith(params);
+    const cropRatio = '4:9';
+    store.dispatch(removeCropRatio(cropRatio)).then(() => {
+      expect(deleteCropRatio).toHaveBeenCalledWith(cropRatio);
       const actions = store.getActions();
       expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);

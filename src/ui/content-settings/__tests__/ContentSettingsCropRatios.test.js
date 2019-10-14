@@ -33,14 +33,12 @@ describe('ContentSettingsCropRatios', () => {
 
   it('should have a heading', () => {
     const testId = 'content-settings-crop-ratios-heading';
-
     expect(findByTestId(wrapper, testId).length).toBe(1);
   });
 
   describe('form', () => {
     it('should have a title', () => {
       const testId = 'content-settings-crop-ratios-form-title';
-
       expect(findByTestId(wrapper, testId).length).toBe(1);
     });
 
