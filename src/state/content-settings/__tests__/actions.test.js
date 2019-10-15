@@ -240,6 +240,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(sendPostMetadataMap('key', 1)).then(() => {
       expect(postMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 1 });
       const actions = store.getActions();
+      expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
@@ -253,6 +254,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(sendPostMetadataMap('key', 2)).then(() => {
       expect(postMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 2 });
       const actions = store.getActions();
+      expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[0].payload.id).toEqual('postMetadataMap');
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
@@ -267,6 +269,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(sendPutMetadataMap(key, mapping)).then(() => {
       expect(putMetadataMap).toHaveBeenCalledWith(key, mapping);
       const actions = store.getActions();
+      expect(actions).toHaveLength(1);
       expect(actions[0]).toHaveProperty('type', SET_METADATA_MAPPING);
       done();
     }).catch(done.fail);
@@ -279,6 +282,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(sendPutMetadataMap(key, mapping)).then(() => {
       expect(putMetadataMap).toHaveBeenCalledWith(key, mapping);
       const actions = store.getActions();
+      expect(actions).toHaveLength(1);
       expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
       done();
     }).catch(done.fail);
@@ -289,6 +293,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(checkAndPutMetadataMap(values)).then(() => {
       expect(putMetadataMap).toHaveBeenCalledWith('legend', 'awt, two');
       const actions = store.getActions();
+      expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
@@ -303,6 +308,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(checkAndPutMetadataMap(values)).then(() => {
       expect(putMetadataMap).toHaveBeenCalledWith('legend', 'awt, three');
       const actions = store.getActions();
+      expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
@@ -314,6 +320,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(sendDeleteMetadataMap('key')).then(() => {
       expect(deleteMetadataMap).toHaveBeenCalledWith('key');
       const actions = store.getActions();
+      expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
@@ -327,6 +334,7 @@ describe('contentSettings thunks', () => {
     store.dispatch(sendDeleteMetadataMap('key')).then(() => {
       expect(deleteMetadataMap).toHaveBeenCalledWith('key');
       const actions = store.getActions();
+      expect(actions).toHaveLength(3);
       expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[0].payload.id).toEqual('deleteMetadataMap');
       expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
