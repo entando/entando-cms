@@ -14,6 +14,7 @@ const RenderTextInput = ({
   help,
   disabled,
   type,
+  ...others
 }) => (
   <div className={touched && error ? 'form-group has-error' : 'form-group'}>
     {labelSize > 0 ? (
@@ -33,6 +34,7 @@ const RenderTextInput = ({
         placeholder={placeholder}
         className="form-control RenderTextInput"
         disabled={disabled}
+        {...others}
       />
       {append && <span className="AppendedLabel">{append}</span>}
       {touched && (error && <span className="help-block">{error}</span>)}

@@ -10,14 +10,23 @@ import {
 
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 import ContentSettingsGeneralContainer from 'ui/content-settings/ContentSettingsGeneralContainer';
+import ContentSettingsCropRatiosContainer from 'ui/content-settings/ContentSettingsCropRatiosContainer';
+import AddContentSettingsMetadataContainer from 'ui/content-settings/metadata/AddContentSettingsMetadataContainer';
+import ContentSettingsMetadataListContainer from 'ui/content-settings/metadata/ContentSettingsMetadataListContainer';
 
 configEnzymeAdapter();
 
 const initState = {
   loading: {},
+  modal: { visibleModal: '', info: {} },
+  messages: {
+    errors: [],
+  },
   apps: {
     cms: {
-      contentSettings: {},
+      contentSettings: {
+        cropRatios: [],
+      },
     },
   },
 };
@@ -47,5 +56,17 @@ describe('content-settings/ContentSettingsPage', () => {
 
   it('contains ContentSettingsGeneralContainer', () => {
     expect(component.find(ContentSettingsGeneralContainer).exists()).toBe(true);
+  });
+
+  it('contains ContentSettingsCropRatiosContainer', () => {
+    expect(component.find(ContentSettingsCropRatiosContainer).exists()).toBe(true);
+  });
+
+  it('contains AddContentSettingsMetadataContainer', () => {
+    expect(component.find(AddContentSettingsMetadataContainer).exists()).toBe(true);
+  });
+
+  it('contains ContentSettingsMetadataListContainer', () => {
+    expect(component.find(ContentSettingsMetadataListContainer).exists()).toBe(true);
   });
 });

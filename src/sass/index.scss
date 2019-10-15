@@ -16,6 +16,9 @@
 @import "content-type/ContentTypeForm";
 @import "content-type/AttributesDateSettings";
 @import "content-settings/ContentSettingsGeneral";
+@import "content-settings/ContentSettingsCropRatios";
+@import "content-settings/ContentSettingsCropRatioInput";
+@import "content-settings/ContentSettingsMetadata";
 @import "edit-content/EditContentForm.scss";
 @import "common/RenderVersionText.scss";
 @import "common/StickySave.scss";
