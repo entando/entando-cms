@@ -1,9 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, render } from 'enzyme';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 
-import { configEnzymeAdapter } from 'testutils/helpers';
+import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
 import ContentSettingsCropRatiosContainer from 'ui/content-settings/ContentSettingsCropRatiosContainer';
 import ContentSettingsCropRatios from 'ui/content-settings/ContentSettingsCropRatios';
 
@@ -37,9 +37,12 @@ const actionList = [
 
 describe('ContentSettingsCropRatiosContainer', () => {
   it('should render ContentSettingsCropRatios with correct props', () => {
-    shallow(
-      <ContentSettingsCropRatiosContainer store={store} />,
-    ).dive().dive();
+    render(
+      mockRenderWithIntl(
+        <ContentSettingsCropRatiosContainer />,
+        initialState,
+      ),
+    );
 
     expect(ContentSettingsCropRatios).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -50,6 +53,7 @@ describe('ContentSettingsCropRatiosContainer', () => {
         }), {}),
       }),
       {},
+      expect.any(Object),
     );
   });
 });
