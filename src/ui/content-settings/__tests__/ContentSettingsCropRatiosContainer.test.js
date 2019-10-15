@@ -1,7 +1,5 @@
 import React from 'react';
-import { shallow, render } from 'enzyme';
-import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { render } from 'enzyme';
 
 import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
 import ContentSettingsCropRatiosContainer from 'ui/content-settings/ContentSettingsCropRatiosContainer';
@@ -26,8 +24,6 @@ const initialState = {
     },
   },
 };
-
-const store = configureMockStore([thunk])(initialState);
 
 const actionList = [
   'onAdd',
