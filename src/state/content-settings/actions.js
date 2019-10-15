@@ -2,6 +2,7 @@ import {
   SET_CONTENT_SETTINGS,
   SET_EDITOR_SETTINGS,
   SET_CROP_RATIOS,
+  SET_METADATA_MAPPING,
 } from 'state/content-settings/types';
 import {
   getContentSettings,
@@ -11,8 +12,11 @@ import {
   postCropRatio,
   deleteCropRatio,
   putCropRatio,
+  postMetadataMap,
+  putMetadataMap,
+  deleteMetadataMap,
 } from 'api/contentSettings';
-import { getCropRatios } from 'state/content-settings/selectors';
+import { getCropRatios, getMetadataMappingFormData } from 'state/content-settings/selectors';
 import { toggleLoading } from 'state/loading/actions';
 import {
   addErrors,
@@ -34,6 +38,11 @@ export const setEditorSettings = payload => ({
 
 export const setCropRatios = payload => ({
   type: SET_CROP_RATIOS,
+  payload,
+});
+
+export const setMetadataMapping = payload => ({
+  type: SET_METADATA_MAPPING,
   payload,
 });
 
@@ -129,6 +138,22 @@ export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
   }).catch(() => {});
 });
 
+export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('postMetadataMap'));
+  postMetadataMap({ key, mapping }).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setMetadataMapping(json.payload));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+      dispatch(toggleLoading('postMetadataMap'));
+    });
+  }).catch(() => {});
+});
+
 export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise(
   (resolve) => {
     dispatch(toggleLoading('removeCropRatio'));
@@ -173,3 +198,51 @@ export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise(
     }).catch();
   },
 );
+
+export const sendPutMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
+  putMetadataMap(key, mapping).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setMetadataMapping(json.payload));
+        resolve({ key, json });
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve({ key });
+      }
+    });
+  }).catch(() => {});
+});
+
+export const checkAndPutMetadataMap = values => (dispatch, getState) => new Promise((resolve) => {
+  const prevValues = getMetadataMappingFormData(getState());
+  const proms = [];
+  Object.entries(values).forEach(([key, mapping]) => {
+    if (prevValues[key] !== mapping) {
+      dispatch(toggleLoading(key));
+      proms.push(
+        dispatch(sendPutMetadataMap(key, mapping))
+          .then((res) => {
+            dispatch(toggleLoading(res.key));
+            return res.json || null;
+          }),
+      );
+    }
+  });
+  Promise.all(proms).then(payloads => resolve(payloads));
+});
+
+export const sendDeleteMetadataMap = key => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('deleteMetadataMap'));
+  deleteMetadataMap(key).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setMetadataMapping(json.payload));
+        resolve(json);
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        resolve();
+      }
+      dispatch(toggleLoading('deleteMetadataMap'));
+    });
+  }).catch(() => {});
+});

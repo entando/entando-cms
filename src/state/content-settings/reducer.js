@@ -2,6 +2,7 @@ import {
   SET_CONTENT_SETTINGS,
   SET_EDITOR_SETTINGS,
   SET_CROP_RATIOS,
+  SET_METADATA_MAPPING,
 } from 'state/content-settings/types';
 
 const initialState = {
@@ -24,6 +25,11 @@ const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         cropRatios: action.payload,
+      };
+    case SET_METADATA_MAPPING:
+      return {
+        ...state,
+        metadata: action.payload,
       };
     default:
       return state;

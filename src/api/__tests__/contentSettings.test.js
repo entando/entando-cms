@@ -9,6 +9,9 @@ import {
   putEditorSettings,
   postCropRatio,
   deleteCropRatio,
+  postMetadataMap,
+  putMetadataMap,
+  deleteMetadataMap,
 } from 'api/contentSettings';
 import { makeRequest } from '@entando/apimanager';
 import {
@@ -16,6 +19,7 @@ import {
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
   CONTENT_SETTINGS_CROP_RATIOS_OK,
+  CONTENT_SETTINGS_METADATA_OK,
 } from 'testutils/mocks/contentSettings';
 
 configEnzymeAdapter();
@@ -93,6 +97,19 @@ describe('api/contentSettings', () => {
     expect(response).toBeInstanceOf(Promise);
   });
 
+  it('postMetadataMap returns a promise with correct params', () => {
+    const param = 1;
+    const response = postMetadataMap(param);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/metadata',
+      method: 'POST',
+      body: param,
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
   it('deleteCropRatio returns a promise with correct params', () => {
     const cropRatio = '4:9';
     const response = deleteCropRatio(cropRatio);
@@ -100,6 +117,32 @@ describe('api/contentSettings', () => {
       uri: `/api/plugins/cms/contentSettings/cropRatios/${cropRatio}`,
       method: 'DELETE',
       mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('putMetadataMap returns a promise with correct params', () => {
+    const key = 'wa';
+    const mapping = 'kanda';
+    const response = putMetadataMap(key, mapping);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: `/api/plugins/cms/contentSettings/metadata/${key}`,
+      method: 'PUT',
+      body: { mapping },
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteMetadataMap returns a promise with correct params', () => {
+    const mapping = 1;
+    const response = deleteMetadataMap(mapping);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: `/api/plugins/cms/contentSettings/metadata/${mapping}`,
+      method: 'DELETE',
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);
