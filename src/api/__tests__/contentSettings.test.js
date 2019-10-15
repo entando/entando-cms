@@ -7,12 +7,16 @@ import {
   postReloadIndexes,
   postReloadReferences,
   putEditorSettings,
+  postMetadataMap,
+  putMetadataMap,
+  deleteMetadataMap,
 } from 'api/contentSettings';
 import { makeRequest } from '@entando/apimanager';
 import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_METADATA_OK,
 } from 'testutils/mocks/contentSettings';
 
 configEnzymeAdapter();
@@ -24,6 +28,7 @@ jest.mock('@entando/apimanager', () => ({
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
+    DELETE: 'DELETE',
   },
 }));
 
@@ -71,6 +76,45 @@ describe('api/contentSettings', () => {
       method: 'PUT',
       body: param,
       mockResponse: CONTENT_SETTINGS_EDITOR_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('postMetadataMap returns a promise with correct params', () => {
+    const param = 1;
+    const response = postMetadataMap(param);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/metadata',
+      method: 'POST',
+      body: param,
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('putMetadataMap returns a promise with correct params', () => {
+    const key = 'wa';
+    const mapping = 'kanda';
+    const response = putMetadataMap(key, mapping);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: `/api/plugins/cms/contentSettings/metadata/${key}`,
+      method: 'PUT',
+      body: { mapping },
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteMetadataMap returns a promise with correct params', () => {
+    const mapping = 1;
+    const response = deleteMetadataMap(mapping);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: `/api/plugins/cms/contentSettings/metadata/${mapping}`,
+      method: 'DELETE',
+      mockResponse: CONTENT_SETTINGS_METADATA_OK,
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);

@@ -3,6 +3,7 @@ import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_METADATA_OK,
 } from 'testutils/mocks/contentSettings';
 
 const settingsPath = '/api/plugins/cms/contentSettings';
@@ -42,6 +43,35 @@ export const putEditorSettings = editorObject => (
     body: editorObject,
     method: METHODS.PUT,
     mockResponse: CONTENT_SETTINGS_EDITOR_OK,
+    useAuthentication: true,
+  })
+);
+
+export const postMetadataMap = metadata => (
+  makeRequest({
+    uri: `${settingsPath}/metadata`,
+    body: metadata,
+    method: METHODS.POST,
+    mockResponse: CONTENT_SETTINGS_METADATA_OK,
+    useAuthentication: true,
+  })
+);
+
+export const putMetadataMap = (key, mapping) => (
+  makeRequest({
+    uri: `${settingsPath}/metadata/${key}`,
+    body: { mapping },
+    method: METHODS.PUT,
+    mockResponse: CONTENT_SETTINGS_METADATA_OK,
+    useAuthentication: true,
+  })
+);
+
+export const deleteMetadataMap = metakey => (
+  makeRequest({
+    uri: `${settingsPath}/metadata/${metakey}`,
+    method: METHODS.DELETE,
+    mockResponse: CONTENT_SETTINGS_METADATA_OK,
     useAuthentication: true,
   })
 );
