@@ -7,6 +7,8 @@ import {
   postReloadIndexes,
   postReloadReferences,
   putEditorSettings,
+  postCropRatio,
+  deleteCropRatio,
   postMetadataMap,
   putMetadataMap,
   deleteMetadataMap,
@@ -16,6 +18,7 @@ import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_CROP_RATIOS_OK,
   CONTENT_SETTINGS_METADATA_OK,
 } from 'testutils/mocks/contentSettings';
 
@@ -81,6 +84,19 @@ describe('api/contentSettings', () => {
     expect(response).toBeInstanceOf(Promise);
   });
 
+  it('postCropRatio returns a promise with correct params', () => {
+    const cropRatio = '4:9';
+    const response = postCropRatio(cropRatio);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: '/api/plugins/cms/contentSettings/cropRatios',
+      method: 'POST',
+      body: { ratio: cropRatio },
+      mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
   it('postMetadataMap returns a promise with correct params', () => {
     const param = 1;
     const response = postMetadataMap(param);
@@ -89,6 +105,18 @@ describe('api/contentSettings', () => {
       method: 'POST',
       body: param,
       mockResponse: CONTENT_SETTINGS_METADATA_OK,
+      useAuthentication: true,
+    });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('deleteCropRatio returns a promise with correct params', () => {
+    const cropRatio = '4:9';
+    const response = deleteCropRatio(cropRatio);
+    expect(makeRequest).toHaveBeenCalledWith({
+      uri: `/api/plugins/cms/contentSettings/cropRatios/${cropRatio}`,
+      method: 'DELETE',
+      mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
       useAuthentication: true,
     });
     expect(response).toBeInstanceOf(Promise);

@@ -23,6 +23,11 @@ export const getEditorSettings = createSelector(
   settings => settings.editor,
 );
 
+export const getCropRatios = createSelector(
+  getSettingsState,
+  settings => settings.cropRatios,
+);
+
 export const getMetadataMapping = createSelector(
   getSettingsState,
   settings => settings.metadata || {},

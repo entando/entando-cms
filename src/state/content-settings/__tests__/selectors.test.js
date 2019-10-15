@@ -4,6 +4,7 @@ import {
   getReferencesStatus,
   getIndexesLastReload,
   getEditorSettings,
+  getCropRatios,
 } from 'state/content-settings/selectors';
 import { CONTENT_SETTINGS_OK } from 'testutils/mocks/contentSettings';
 
@@ -43,4 +44,10 @@ it('verify getEditorSettings selector', () => {
   const state = getEditorSettings(TEST_STATE);
   expect(state).toBeDefined();
   expect(state).toEqual(CONTENT_SETTINGS_OK.editor);
+});
+
+it('verify getCropRatios selector', () => {
+  const state = getCropRatios(TEST_STATE);
+  expect(state).toBeDefined();
+  expect(state).toEqual(CONTENT_SETTINGS_OK.cropRatios);
 });

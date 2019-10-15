@@ -1,6 +1,7 @@
 import {
   SET_CONTENT_SETTINGS,
   SET_EDITOR_SETTINGS,
+  SET_CROP_RATIOS,
   SET_METADATA_MAPPING,
 } from 'state/content-settings/types';
 import {
@@ -8,11 +9,14 @@ import {
   postReloadReferences,
   postReloadIndexes,
   putEditorSettings,
+  postCropRatio,
+  deleteCropRatio,
+  putCropRatio,
   postMetadataMap,
   putMetadataMap,
   deleteMetadataMap,
 } from 'api/contentSettings';
-import { getMetadataMappingFormData } from 'state/content-settings/selectors';
+import { getCropRatios, getMetadataMappingFormData } from 'state/content-settings/selectors';
 import { toggleLoading } from 'state/loading/actions';
 import {
   addErrors,
@@ -29,6 +33,11 @@ export const setContentSettings = payload => ({
 
 export const setEditorSettings = payload => ({
   type: SET_EDITOR_SETTINGS,
+  payload,
+});
+
+export const setCropRatios = payload => ({
+  type: SET_CROP_RATIOS,
   payload,
 });
 
@@ -109,6 +118,26 @@ export const sendPutEditorSettings = editor => dispatch => new Promise((resolve)
   }).catch(() => {});
 });
 
+export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('addCropRatio'));
+
+  postCropRatio(cropRatio).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setCropRatios(json.payload));
+        resolve(json);
+      } else {
+        const errorMsgs = json.errors.map(err => err.message);
+        dispatch(addErrors(errorMsgs));
+        errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
+        resolve();
+      }
+
+      dispatch(toggleLoading('addCropRatio'));
+    });
+  }).catch(() => {});
+});
+
 export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('postMetadataMap'));
   postMetadataMap({ key, mapping }).then((response) => {
@@ -124,6 +153,51 @@ export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((re
     });
   }).catch(() => {});
 });
+
+export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise(
+  (resolve) => {
+    dispatch(toggleLoading('removeCropRatio'));
+
+    deleteCropRatio(cropRatio).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          const cropRatios = getCropRatios(getState());
+          dispatch(setCropRatios(cropRatios.filter(ratio => ratio !== cropRatio)));
+          resolve(json);
+        } else {
+          const errorMsgs = json.errors.map(err => err.message);
+          dispatch(addErrors(errorMsgs));
+          errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
+          resolve();
+        }
+
+        dispatch(toggleLoading('removeCropRatio'));
+      });
+    }).catch(() => {});
+  },
+);
+
+export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise(
+  (resolve) => {
+    dispatch(toggleLoading('updateCropRatio'));
+
+    putCropRatio(cropRatio, newValue).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setCropRatios(json.payload));
+          resolve(json);
+        } else {
+          const errorMsgs = json.errors.map(err => err.message);
+          dispatch(addErrors(errorMsgs));
+          errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
+          resolve();
+        }
+
+        dispatch(toggleLoading('updateCropRatio'));
+      });
+    }).catch();
+  },
+);
 
 export const sendPutMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
   putMetadataMap(key, mapping).then((response) => {

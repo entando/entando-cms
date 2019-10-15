@@ -45,6 +45,14 @@ export const CONTENT_SETTINGS_EDITOR_OK = {
   key: 'fckeditor',
 };
 
+export const CONTENT_SETTINGS_CROP_RATIOS_OK = {
+  payload: [
+    '4:9',
+  ],
+  metaData: {},
+  errors: [],
+};
+
 export const CONTENT_SETTINGS_METADATA_OK = {
   newKey: ['newMapping'],
   legend: [],

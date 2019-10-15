@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentSettingsGeneralContainer from 'ui/content-settings/ContentSettingsGeneralContainer';
+import ContentSettingsCropRatiosContainer from 'ui/content-settings/ContentSettingsCropRatiosContainer';
 import ContentSettingsMetadataListContainer from 'ui/content-settings/metadata/ContentSettingsMetadataListContainer';
 import AddContentSettingsMetadataContainer from 'ui/content-settings/metadata/AddContentSettingsMetadataContainer';
 
@@ -36,6 +37,7 @@ const ContentSettingsPage = () => (
         <ContentSettingsGeneralContainer />
         <AddContentSettingsMetadataContainer />
         <ContentSettingsMetadataListContainer />
+        <ContentSettingsCropRatiosContainer />
       </Col>
     </Row>
   </CardGrid>

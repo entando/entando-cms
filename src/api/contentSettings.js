@@ -3,6 +3,7 @@ import {
   CONTENT_SETTINGS_OK,
   CONTENT_SETTINGS_REFRESH_OK,
   CONTENT_SETTINGS_EDITOR_OK,
+  CONTENT_SETTINGS_CROP_RATIOS_OK,
   CONTENT_SETTINGS_METADATA_OK,
 } from 'testutils/mocks/contentSettings';
 
@@ -47,6 +48,16 @@ export const putEditorSettings = editorObject => (
   })
 );
 
+export const postCropRatio = cropRatio => (
+  makeRequest({
+    uri: `${settingsPath}/cropRatios`,
+    body: { ratio: cropRatio },
+    method: METHODS.POST,
+    mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
+    useAuthentication: true,
+  })
+);
+
 export const postMetadataMap = metadata => (
   makeRequest({
     uri: `${settingsPath}/metadata`,
@@ -57,12 +68,31 @@ export const postMetadataMap = metadata => (
   })
 );
 
+export const deleteCropRatio = cropRatio => (
+  makeRequest({
+    uri: `${settingsPath}/cropRatios/${cropRatio}`,
+    method: METHODS.DELETE,
+    mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
+    useAuthentication: true,
+  })
+);
+
 export const putMetadataMap = (key, mapping) => (
   makeRequest({
     uri: `${settingsPath}/metadata/${key}`,
     body: { mapping },
     method: METHODS.PUT,
     mockResponse: CONTENT_SETTINGS_METADATA_OK,
+    useAuthentication: true,
+  })
+);
+
+export const putCropRatio = (cropRatio, newValue) => (
+  makeRequest({
+    uri: `${settingsPath}/cropRatios/${cropRatio}`,
+    method: METHODS.PUT,
+    body: { ratio: newValue },
+    mockResponse: CONTENT_SETTINGS_CROP_RATIOS_OK,
     useAuthentication: true,
   })
 );

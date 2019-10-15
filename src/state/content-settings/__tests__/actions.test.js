@@ -7,12 +7,21 @@ import {
   sendPostReloadReferences,
   sendPostReloadIndexes,
   sendPutEditorSettings,
+  addCropRatio,
+  removeCropRatio,
+  updateCropRatio,
   sendPostMetadataMap,
   sendPutMetadataMap,
   checkAndPutMetadataMap,
   sendDeleteMetadataMap,
 } from 'state/content-settings/actions';
-import { SET_CONTENT_SETTINGS, SET_EDITOR_SETTINGS, SET_METADATA_MAPPING } from 'state/content-settings/types';
+import {
+  SET_CONTENT_SETTINGS,
+  SET_EDITOR_SETTINGS,
+  SET_CROP_RATIOS,
+  SET_METADATA_MAPPING,
+} from 'state/content-settings/types';
+import * as selectors from 'state/content-settings/selectors';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
   CONTENT_SETTINGS_OK,
@@ -23,6 +32,9 @@ import {
   postReloadReferences,
   postReloadIndexes,
   putEditorSettings,
+  postCropRatio,
+  deleteCropRatio,
+  putCropRatio,
   postMetadataMap,
   putMetadataMap,
   deleteMetadataMap,
@@ -62,6 +74,9 @@ jest.mock('api/contentSettings', () => ({
   postReloadReferences: jest.fn(mockApi({ payload: '' })),
   postReloadIndexes: jest.fn(mockApi({ payload: '' })),
   putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
+  postCropRatio: jest.fn(mockApi({})),
+  deleteCropRatio: jest.fn(mockApi({})),
+  putCropRatio: jest.fn(mockApi({})),
   postMetadataMap: jest.fn(({ key, mapping }) => mockApi({
     payload: {
       [key]: mapping,
@@ -88,6 +103,8 @@ jest.mock('api/contentSettings', () => ({
     },
   })()),
 }));
+
+selectors.getCropRatios = jest.fn();
 
 it('test setContentSettings action', () => {
   expect(setContentSettings(contSettings)).toEqual(CONTMODEL_SET_PARAMS);
@@ -236,6 +253,19 @@ describe('contentSettings thunks', () => {
     }).catch(done.fail);
   });
 
+  it('addCropRatio', (done) => {
+    const cropRatio = '4:9';
+    store.dispatch(addCropRatio(cropRatio)).then(() => {
+      expect(postCropRatio).toHaveBeenCalledWith(cropRatio);
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_CROP_RATIOS);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
   it('sendPostMetadataMap', (done) => {
     store.dispatch(sendPostMetadataMap('key', 1)).then(() => {
       expect(postMetadataMap).toHaveBeenCalledWith({ key: 'key', mapping: 1 });
@@ -245,6 +275,19 @@ describe('contentSettings thunks', () => {
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[2].payload.id).toEqual('postMetadataMap');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('addCropRatio error', (done) => {
+    postCropRatio.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(addCropRatio()).then(() => {
+      const actions = store.getActions();
+      expect(actions).toHaveLength(4);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+      expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);
   });
@@ -288,6 +331,20 @@ describe('contentSettings thunks', () => {
     }).catch(done.fail);
   });
 
+  it('removeCropRatio', (done) => {
+    selectors.getCropRatios.mockImplementation(() => ['4:9', '16:9']);
+    const cropRatio = '4:9';
+    store.dispatch(removeCropRatio(cropRatio)).then(() => {
+      expect(deleteCropRatio).toHaveBeenCalledWith(cropRatio);
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_CROP_RATIOS);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
   it('checkAndPutMetadataMap', (done) => {
     const values = { legend: 'awt, two' };
     store.dispatch(checkAndPutMetadataMap(values)).then(() => {
@@ -298,6 +355,19 @@ describe('contentSettings thunks', () => {
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[2].payload.id).toEqual('legend');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('removeCropRatio error', (done) => {
+    deleteCropRatio.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(removeCropRatio()).then(() => {
+      const actions = store.getActions();
+      expect(actions).toHaveLength(4);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+      expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);
   });
@@ -316,6 +386,20 @@ describe('contentSettings thunks', () => {
     }).catch(done.fail);
   });
 
+  it('updateCropRatio', (done) => {
+    const cropRatio = '4:9';
+    const newValue = '5:3';
+    store.dispatch(updateCropRatio(cropRatio, newValue)).then(() => {
+      expect(putCropRatio).toHaveBeenCalledWith(cropRatio, newValue);
+      const actions = store.getActions();
+      expect(actions).toHaveLength(3);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', SET_CROP_RATIOS);
+      expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+      done();
+    }).catch(done.fail);
+  });
+
   it('sendDeleteMetadataMap', (done) => {
     store.dispatch(sendDeleteMetadataMap('key')).then(() => {
       expect(deleteMetadataMap).toHaveBeenCalledWith('key');
@@ -325,6 +409,19 @@ describe('contentSettings thunks', () => {
       expect(actions[1]).toHaveProperty('type', SET_METADATA_MAPPING);
       expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
       expect(actions[2].payload.id).toEqual('deleteMetadataMap');
+      done();
+    }).catch(done.fail);
+  });
+
+  it('updateCropRatio error', (done) => {
+    putCropRatio.mockImplementationOnce(mockApi({ errors: true }));
+    store.dispatch(updateCropRatio()).then(() => {
+      const actions = store.getActions();
+      expect(actions).toHaveLength(4);
+      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+      expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
       done();
     }).catch(done.fail);
   });
