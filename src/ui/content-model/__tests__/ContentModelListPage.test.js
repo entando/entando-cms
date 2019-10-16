@@ -15,7 +15,11 @@ configEnzymeAdapter();
 
 const initState = {
   loading: {},
-  contentModel: { list: [] },
+  apps: {
+    cms: {
+      contentModel: { list: [] },
+    },
+  },
   modal: { visibleModal: '', info: {} },
 };
 
@@ -35,8 +39,8 @@ describe('content-model/ContentModelListPage', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('has CMSShell', () => {
-    expect(component.find('CMSShell').exists()).toBe(true);
+  it('has CardGrid', () => {
+    expect(component.find('CardGrid').exists()).toBe(true);
   });
 
   it('contains ContentModelListContainer', () => {

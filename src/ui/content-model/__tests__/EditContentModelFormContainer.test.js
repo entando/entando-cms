@@ -3,24 +3,42 @@ import {
   mapDispatchToProps,
 } from 'ui/content-model/EditContentModelFormContainer';
 
-const state = {
-  contentType: {
-    list: [
-      {
-        code: 'WEh',
-        name: 'yo',
-      },
-      {
-        code: 'MOO',
-        name: 'to',
-      },
-    ],
+const toMap = (array) =>
+  array.reduce((acc, contentType) => {
+    acc[contentType.code] = contentType;
+    return acc;
+  }, {});
+
+const toIdList = (array) => array.map((contentType) => contentType.code);
+
+const contType = [
+  {
+    code: 'WEh',
+    name: 'yo',
   },
-  contentModel: {
-    opened: {
-      id: 1,
-      contentType: 'WEh',
-      descr: 'b',
+  {
+    code: 'MOO',
+    name: 'to',
+  },
+];
+
+const list = toIdList(contType);
+const map = toMap(contType);
+
+const state = {
+  apps: {
+    cms: {
+      contentType: {
+        map,
+        list,
+      },
+      contentModel: {
+        opened: {
+          id: 1,
+          contentType: 'WEh',
+          descr: 'b',
+        },
+      },
     },
   },
 };

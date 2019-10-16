@@ -42,7 +42,7 @@ class ApiManager extends Component {
 
   // eslint-disable-next-line class-methods-use-this
   reloadWithDelay() {
-    setTimeout(() => window.location.reload(), 500);
+    setTimeout(() => window.location.reload(), 3000);
   }
 
   isUserLogged() {

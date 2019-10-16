@@ -9,20 +9,29 @@ import contentType from 'state/content-type/reducer';
 import editContent from 'state/edit-content/reducer';
 import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
+import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
 import assets from 'state/assets/reducer';
+import contentSettings from 'state/content-settings/reducer';
 
-export default combineReducers({
-  api,
+export const cms = combineReducers({
   contentModel,
   contentType,
-  currentUser,
   editContent,
+  categories,
+  assets,
+  contentSettings,
+});
+
+export default combineReducers({
+  apps: combineReducers({ cms }),
+  api,
+  currentUser,
   form,
   loading,
   locale,
   messages,
   modal,
   categories,
-  assets,
+  pagination,
 });

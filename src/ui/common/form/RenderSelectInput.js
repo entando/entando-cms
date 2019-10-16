@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
-import { formattedText } from '@entando/utils';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 const RenderSelectInput = ({
   input,
@@ -18,13 +18,19 @@ const RenderSelectInput = ({
   size,
   inputSize,
   disabled,
-  append,
+  intl,
 }) => {
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
-  const defaultOption = defaultOptionId ? (
-    <option value="">{formattedText(defaultOptionId)}</option>
-  ) : null;
+  let defaultOption = null;
+  if (defaultOptionId) {
+    const defMsg = defineMessages({
+      defaultOptionId: {
+        id: defaultOptionId,
+      },
+    });
+    defaultOption = <option value="">{intl.formatMessage(defMsg.defaultOptionId)}</option>;
+  }
 
   const optionsList = optionReducer
     ? optionReducer(options)
@@ -35,33 +41,32 @@ const RenderSelectInput = ({
       ));
 
   const errorBox = touched && error ? <span className="help-block">{error}</span> : null;
+
   return (
     <div className={containerClasses}>
-      <Col sm={labelSize} className={alignClass} xs={12}>
+      <Col xs={labelSize} className={alignClass}>
         <ControlLabel htmlFor={input.name}>
           {label} {help}
         </ControlLabel>
       </Col>
-      <Col sm={inputSize || 12 - labelSize} xs={12}>
-        <div className={append ? 'input-group' : ''}>
-          <select
-            {...input}
-            size={size}
-            className="form-control RenderSelectInput"
-            disabled={disabled}
-          >
-            {defaultOption}
-            {optionsList}
-          </select>
-          {append && <span className="input-group-btn">{append}</span>}
-          {errorBox}
-        </div>
+      <Col xs={inputSize || 12 - labelSize}>
+        <select
+          {...input}
+          size={size}
+          className="form-control RenderSelectInput"
+          disabled={disabled}
+        >
+          {defaultOption}
+          {optionsList}
+        </select>
+        {errorBox}
       </Col>
     </div>
   );
 };
 
 RenderSelectInput.propTypes = {
+  intl: intlShape.isRequired,
   input: PropTypes.shape({}),
   meta: PropTypes.shape({
     touched: PropTypes.bool,
@@ -84,7 +89,6 @@ RenderSelectInput.propTypes = {
   size: PropTypes.number,
   inputSize: PropTypes.number,
   disabled: PropTypes.bool,
-  append: PropTypes.node,
 };
 
 RenderSelectInput.defaultProps = {
@@ -96,7 +100,6 @@ RenderSelectInput.defaultProps = {
   defaultOptionId: '',
   options: [],
   label: null,
-  append: null,
   labelSize: 2,
   alignClass: 'text-right',
   help: null,
@@ -107,4 +110,4 @@ RenderSelectInput.defaultProps = {
   inputSize: null,
   disabled: false,
 };
-export default RenderSelectInput;
+export default injectIntl(RenderSelectInput);

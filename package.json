@@ -1,6 +1,6 @@
 {
   "name": "@entando/cms",
-  "version": "0.1.0",
+  "version": "0.2.10",
   "license": "LGPL-2.1",
   "description": "entando CMS app",
   "keywords": [
@@ -12,7 +12,8 @@
   "files": [
     "dist",
     "!src",
-    "!public"
+    "!public",
+    "!node_modules"
   ],
   "main": "dist/babel.js",
   "publishConfig": {
@@ -20,23 +21,9 @@
   },
   "dependencies": {
     "brace": "^0.11.1",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
-    "history": "^4.9.0",
-    "prop-types": "^15.6.0",
-    "react": "^16.8.6",
     "react-ace": "^7.0.2",
     "react-bootstrap-typeahead": "^3.4.6",
-    "react-dom": "^16.8.6",
-    "react-draggable": "^3.3.0",
-    "react-intl": "^2.8.0",
-    "react-redux": "^7.0.1",
-    "react-scripts": "2.1.8",
-    "redux": "^4.0.1",
-    "redux-form": "^8.2.0",
-    "redux-mock-store": "^1.5.3",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
+    "react-draggable": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,13 +31,37 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "coverage": "react-scripts test --coverage",
-    "babel": "babel --presets @babel/preset-react src -d dist",
+    "babel": "babel src -d dist && node-sass --output-style compressed src/sass/index.scss -o dist/css",
     "prepublish": "npm run babel"
   },
   "husky": {
     "hooks": {
       "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage"
     }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "ignore": [
+      "/**/__tests__"
+    ],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src/"
+          ]
+        }
+      ]
+    ]
+  },
+  "sass": {
+    "includePaths": [
+      "node_modules/"
+    ]
   },
   "jest": {
     "collectCoverageFrom": [
@@ -110,6 +121,33 @@
             ".jsx"
           ]
         }
+      ],
+      "jsx-a11y/label-has-associated-control": [
+        2,
+        {
+          "controlComponents": [
+            "Field"
+          ],
+          "depth": 3
+        }
+      ],
+      "jsx-a11y/label-has-for": [
+        2,
+        {
+          "components": [
+            "Label"
+          ],
+          "required": {
+            "every": [
+              "nesting",
+              "id"
+            ]
+          },
+          "allowChildren": true
+        }
+      ],
+      "import/no-extraneous-dependencies": [
+        0
       ]
     }
   },
@@ -125,15 +163,31 @@
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
+    "babel-plugin-module-resolver": "^3.2.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
     "husky": "^1.3.1",
     "node-sass": "^4.11.0",
     "prettier": "^1.18.2",
-    "sass-lint": "^1.12.1"
+    "sass-lint": "^1.12.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
+    "history": "^4.9.0",
+    "patternfly": "^3.45.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-intl": "^2.8.0",
+    "react-redux": "^7.0.1",
+    "react-scripts": "2.1.8",
+    "redux": "^4.0.1",
+    "redux-form": "^8.2.0",
+    "redux-mock-store": "^1.5.3",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
   },
   "peerDependencies": {
     "@entando/apimanager": "^3.0.2",
@@ -141,10 +195,11 @@
     "@entando/menu": "^2.0.0",
     "@entando/utils": "^2.0.0",
     "lodash": "^4.17.10",
-    "react-patternfly": "^1.0.0",
     "react-router-dom": "^5.0.0",
-    "patternfly": "^3.45.0",
     "patternfly-react": "^1.19.1",
-    "react-bootstrap": "^0.32.1"
+    "react-bootstrap": "^0.32.1",
+    "moment": "^2.22.1",
+    "react-datepicker": "^1.4.1",
+    "flux-standard-action": "^2.0.1"
   }
 }

@@ -1,20 +1,19 @@
-// state
-import locale from 'state/locale/reducer';
-import contentModel from 'state/content-model/reducer';
-import contentType from 'state/content-type/reducer';
-import editContent from 'state/edit-content/reducer';
-import loading from 'state/loading/reducer';
-import modal from 'state/modal/reducer';
-import categories from 'state/categories/reducer';
+import menu from 'ui/common/LinkMenu';
+import { cms as state } from 'state/rootReducer';
+import { routes, routesDir } from 'ui/App';
+import en from 'locales/en';
+import it from 'locales/it';
 
-export const state = {
-  locale,
-  contentModel,
-  contentType,
-  editContent,
-  loading,
-  modal,
-  categories,
+const cms = {
+  id: 'cms',
+  menu,
+  state,
+  routes,
+  routesDir,
+  locales: {
+    en,
+    it,
+  },
 };
 
-export { routes } from 'ui/App';
+export default cms;

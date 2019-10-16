@@ -7,6 +7,7 @@ const FormLabel = ({
   labelId,
   langLabelId,
   helpId,
+  helpValues,
   required,
   langLabelText,
   helpText,
@@ -37,7 +38,7 @@ const FormLabel = ({
         defaultMessage: 'No tooltip found.',
       },
     });
-    fieldHelpId = <FieldLevelHelp content={intl.formatMessage(msg.helpId)} />;
+    fieldHelpId = <FieldLevelHelp content={intl.formatMessage(msg.helpId, helpValues)} />;
   }
 
   const fieldHelpText = helpText ? <FieldLevelHelp content={helpText} /> : null;
@@ -64,6 +65,7 @@ FormLabel.propTypes = {
   langLabelId: PropTypes.string,
   helpId: PropTypes.string,
   helpText: PropTypes.string,
+  helpValues: PropTypes.shape({}),
   required: PropTypes.bool,
 };
 
@@ -74,6 +76,7 @@ FormLabel.defaultProps = {
   langLabelText: '',
   helpId: '',
   helpText: '',
+  helpValues: {},
   required: false,
 };
 export default injectIntl(FormLabel);

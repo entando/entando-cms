@@ -19,22 +19,26 @@ const STATE = {
   loading: {},
   locale: 'en',
   messages: [],
-  contentModel: { list: [] },
   modal: { visibleModal: '', info: {} },
-  editContent: {
-    ownerGroupDisabled: {
-      disabled: false,
+  apps: {
+    cms: {
+      contentModel: { list: [] },
+      editContent: {
+        ownerGroupDisabled: {
+          disabled: false,
+        },
+        language: 'EN',
+        groups: [],
+        content: {},
+      },
+      categories: {
+        list: [],
+        map: [],
+        childrenMap: [],
+        statusMap: [],
+        titlesMap: [],
+      },
     },
-    language: 'EN',
-    groups: [],
-    content: {},
-  },
-  categories: {
-    list: [],
-    map: [],
-    childrenMap: [],
-    statusMap: [],
-    titlesMap: [],
   },
 };
 
