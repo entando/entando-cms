@@ -76,7 +76,8 @@
       "eslint:recommended",
       "plugin:react/recommended",
       "airbnb",
-      "prettier"
+      "prettier",
+      "prettier/react"
     ],
     "plugins": [
       "prettier"
@@ -108,12 +109,6 @@
             ".js",
             ".jsx"
           ]
-        }
-      ],
-      "react/jsx-wrap-multilines": [
-        "error",
-        {
-          "logical": "ignore"
         }
       ]
     }

@@ -18,16 +18,18 @@ const getCategoryTreeMockResponse = (categoryCode) => {
   }
 };
 
-export const getCategoryTree = categoryCode => makeRequest({
-  uri: `/api/categories${categoryCode ? `?parentCode=${categoryCode}` : ''}`,
-  method: METHODS.GET,
-  mockResponse: getCategoryTreeMockResponse(categoryCode),
-  useAuthentication: true,
-});
+export const getCategoryTree = (categoryCode) =>
+  makeRequest({
+    uri: `/api/categories${categoryCode ? `?parentCode=${categoryCode}` : ''}`,
+    method: METHODS.GET,
+    mockResponse: getCategoryTreeMockResponse(categoryCode),
+    useAuthentication: true,
+  });
 
-export const getCategory = categoryCode => makeRequest({
-  uri: `/api/categories/${categoryCode}`,
-  method: METHODS.GET,
-  mockResponse: CATEGORY_TREE.home,
-  useAuthentication: true,
-});
+export const getCategory = (categoryCode) =>
+  makeRequest({
+    uri: `/api/categories/${categoryCode}`,
+    method: METHODS.GET,
+    mockResponse: CATEGORY_TREE.home,
+    useAuthentication: true,
+  });

@@ -14,7 +14,9 @@ describe('ui/common/PageTitle', () => {
   });
 
   it('renders the help icon if helpId is provided', () => {
-    const component = shallow(<PageTitle titleId="cms.contentmodel.title" helpId="cms.contentmodel.titletip" />);
+    const component = shallow(
+      <PageTitle titleId="cms.contentmodel.title" helpId="cms.contentmodel.titletip" />,
+    );
     expect(component.find('OverlayTrigger').exists()).toBe(true);
   });
 

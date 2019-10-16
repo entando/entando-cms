@@ -3,28 +3,27 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { OverlayTrigger, Popover } from 'patternfly-react';
 
-const helpIcon = (helpId, position) => (helpId ? (
-  <span className={position || null}>
-    <OverlayTrigger
-      overlay={(
-        <Popover id={helpId}>
-          <p>
-            <FormattedMessage id={helpId} defaultMessage="You can see tips here." />
-          </p>
-        </Popover>
-)}
-      placement="left"
-      trigger={['click']}
-      rootClose
-    >
-      <i className="PageTitle__icon fa pficon-help" />
-    </OverlayTrigger>
-  </span>
-) : null);
+const helpIcon = (helpId, position) =>
+  helpId ? (
+    <span className={position || null}>
+      <OverlayTrigger
+        overlay={
+          <Popover id={helpId}>
+            <p>
+              <FormattedMessage id={helpId} defaultMessage="You can see tips here." />
+            </p>
+          </Popover>
+        }
+        placement="left"
+        trigger={['click']}
+        rootClose
+      >
+        <i className="PageTitle__icon fa pficon-help" />
+      </OverlayTrigger>
+    </span>
+  ) : null;
 
-const PageTitle = ({
-  titleId, helpId, titleParam, position, noHeaderMargin, largeTitle,
-}) => (
+const PageTitle = ({ titleId, helpId, titleParam, position, noHeaderMargin, largeTitle }) => (
   <div className="PageTitle">
     <div
       className="PageTitle__header"

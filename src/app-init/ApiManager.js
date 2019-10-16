@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  config, setApi, useMocks, getUsername, getToken, loginUser,
-} from '@entando/apimanager';
+import { config, setApi, useMocks, getUsername, getToken, loginUser } from '@entando/apimanager';
 
 import { addErrors, addToast, TOAST_WARNING } from '@entando/messages';
 
@@ -68,9 +66,9 @@ class ApiManager extends Component {
     const username = 'admin';
     const password = 'adminadmin';
     login(username, password)
-      .then(response => response.json())
-      .then(json => dispatch(loginUser(username, json.access_token)))
-      .catch(e => dispatch(addErrors([e.message])));
+      .then((response) => response.json())
+      .then((json) => dispatch(loginUser(username, json.access_token)))
+      .catch((e) => dispatch(addErrors([e.message])));
   }
 
   render() {

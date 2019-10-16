@@ -1,6 +1,4 @@
-import {
-  SET_CONTENT_TYPES,
-} from 'state/content-type/types';
+import { SET_CONTENT_TYPES } from 'state/content-type/types';
 
 const defaultState = {
   list: [],

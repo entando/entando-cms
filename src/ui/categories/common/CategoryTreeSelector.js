@@ -14,8 +14,12 @@ const CategoryTreeSelector = ({
   getJoinedCategoriesByCodes: joinedCategories,
   onUnjoinCategory,
 }) => {
-  const contentCategoriesText = joinedCategories && joinedCategories.length > 0
-    ? <h4><FormattedMessage id="cms.contents.edit.contentCategoryList" /></h4> : null;
+  const contentCategoriesText =
+    joinedCategories && joinedCategories.length > 0 ? (
+      <h4>
+        <FormattedMessage id="cms.contents.edit.contentCategoryList" />
+      </h4>
+    ) : null;
 
   const renderedTags = joinedCategories.map((value, i) => {
     const countSlashes = (value.fullTitles[language].match(/\//g) || []).length;
@@ -63,9 +67,7 @@ const CategoryTreeSelector = ({
             </th>
           </tr>
         </thead>
-        <tbody>
-          {categoryRows}
-        </tbody>
+        <tbody>{categoryRows}</tbody>
       </table>
       <br />
       <div>
@@ -95,9 +97,9 @@ CategoryTreeSelector.propTypes = {
 CategoryTreeSelector.defaultProps = {
   categories: [],
   getJoinedCategoriesByCodes: [],
-  onExpandCategory: () => { },
-  onJoinCategory: () => { },
-  onUnjoinCategory: () => { },
+  onExpandCategory: () => {},
+  onJoinCategory: () => {},
+  onUnjoinCategory: () => {},
 };
 
 export default CategoryTreeSelector;

@@ -4,7 +4,7 @@ import { GET_CONTENT_TYPES_RESPONSE_OK } from 'testutils/mocks/contentType';
 const contentTypePath = '/api/plugins/cms/contentTypes';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getContentTypes = (page = { page: 1, pageSize: 10 }, params = '') => (
+export const getContentTypes = (page = { page: 1, pageSize: 10 }, params = '') =>
   makeRequest(
     {
       uri: `${contentTypePath}${params}`,
@@ -14,5 +14,4 @@ export const getContentTypes = (page = { page: 1, pageSize: 10 }, params = '') =
       useAuthentication: true,
     },
     page,
-  )
-);
+  );

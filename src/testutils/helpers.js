@@ -13,38 +13,26 @@ export const configEnzymeAdapter = () => {
   configure({ adapter: new Adapter() });
 };
 
-export const mockApi = ({
-  errors, payload, metaData, codeStatus = 500,
-}) => {
-  const statusCode = (errors === true)
-    || (Array.isArray(errors) && errors.length) ? codeStatus : 200;
+export const mockApi = ({ errors, payload, metaData, codeStatus = 500 }) => {
+  const statusCode = errors === true || (Array.isArray(errors) && errors.length) ? codeStatus : 200;
   const response = {
     errors: errors === true ? [{ code: 1, message: 'Error!' }] : errors || [],
     payload: payload || {},
     metaData: metaData || [],
   };
-  return () => new Promise(resolve => (
-    resolve(new Response(
-      new Blob(
-        [
-          JSON.stringify(
-            response,
-            null,
-            2,
-          ),
-        ],
-        { type: 'application/json' },
+  return () =>
+    new Promise((resolve) =>
+      resolve(
+        new Response(new Blob([JSON.stringify(response, null, 2)], { type: 'application/json' }), {
+          status: statusCode,
+        }),
       ),
-      { status: statusCode },
-    ))
-  ));
+    );
 };
 
 export const createMockHistory = () => createMemoryHistory({ initialEntries: ['/'] });
 
-export const mockRenderWithRouter = (ui, history) => (
-  <Router history={history}>{ui}</Router>
-);
+export const mockRenderWithRouter = (ui, history) => <Router history={history}>{ui}</Router>;
 
 export const createMockStore = (state = {}) => {
   const middlewares = [thunk];
@@ -63,13 +51,7 @@ export const mockRenderWithStore = (ui, state = {}) => {
   return <StateProvider store={STORE}>{ui}</StateProvider>;
 };
 
-
 export const mockRenderWithIntl = (ui, state = {}) => {
   const STATE = { ...state, locale: 'en' };
-  return (
-    mockRenderWithStore(
-      <IntlProviderContainer>{ui}</IntlProviderContainer>,
-      STATE,
-    )
-  );
+  return mockRenderWithStore(<IntlProviderContainer>{ui}</IntlProviderContainer>, STATE);
 };

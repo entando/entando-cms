@@ -13,7 +13,11 @@ const CHILD = 'Page title';
 describe('ui/common/BreadcrumbItem', () => {
   let component;
   beforeEach(() => {
-    component = shallow(<BreadcrumbItem route="homePage" to="/home">{CHILD}</BreadcrumbItem>);
+    component = shallow(
+      <BreadcrumbItem route="homePage" to="/home">
+        {CHILD}
+      </BreadcrumbItem>,
+    );
   });
 
   it('renders without crashing', () => {

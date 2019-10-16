@@ -1,7 +1,4 @@
-import {
-  SET_CONTENT_MODELS,
-  SET_CONTENT_MODEL_OPENED,
-} from 'state/content-model/types';
+import { SET_CONTENT_MODELS, SET_CONTENT_MODEL_OPENED } from 'state/content-model/types';
 
 const defaultState = {
   list: [],

@@ -6,12 +6,12 @@ import { setVisibleModal, setInfo } from 'state/modal/actions';
 import ContentModelList from 'ui/content-model/ContentModelList';
 import { MODAL_ID } from 'ui/content-model/DeleteContentModelModal';
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   contentModels: getContentModelList(state),
   loading: getLoading(state).contentModelList,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   onDidMount: () => dispatch(fetchContentModelListPaged()),
   onClickDelete: (item) => {
     dispatch(setVisibleModal(MODAL_ID));
@@ -19,6 +19,9 @@ export const mapDispatchToProps = dispatch => ({
   },
 });
 
-const ContentModelListContainer = connect(mapStateToProps, mapDispatchToProps)(ContentModelList);
+const ContentModelListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ContentModelList);
 
 export default ContentModelListContainer;

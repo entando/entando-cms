@@ -1,18 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  defineMessages,
-  injectIntl,
-  intlShape,
-  FormattedMessage,
-} from 'react-intl';
+import { defineMessages, injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { FieldLevelHelp } from 'patternfly-react';
 
 const FormLabel = ({
-  labelId, langLabelId, helpId, required, langLabelText, helpText, labelText, intl,
+  labelId,
+  langLabelId,
+  helpId,
+  required,
+  langLabelText,
+  helpText,
+  labelText,
+  intl,
 }) => {
   const requiredIcon = required ? (
-    <sup><i className="fa fa-asterisk required-icon FormLabel__required-icon" /></sup>
+    <sup>
+      <i className="fa fa-asterisk required-icon FormLabel__required-icon" />
+    </sup>
   ) : null;
 
   const langLabel = langLabelId ? (
@@ -22,9 +26,7 @@ const FormLabel = ({
   ) : null;
 
   const langLabelWithText = langLabelText ? (
-    <span className="label FormLabel__language-label">
-      {langLabelText}
-    </span>
+    <span className="label FormLabel__language-label">{langLabelText}</span>
   ) : null;
 
   let fieldHelpId = null;
@@ -35,20 +37,14 @@ const FormLabel = ({
         defaultMessage: 'No tooltip found.',
       },
     });
-    fieldHelpId = <FieldLevelHelp content={intl.formatMessage((msg.helpId))} />;
+    fieldHelpId = <FieldLevelHelp content={intl.formatMessage(msg.helpId)} />;
   }
 
-
-  const fieldHelpText = helpText ? (
-    <FieldLevelHelp content={helpText} />
-  ) : null;
+  const fieldHelpText = helpText ? <FieldLevelHelp content={helpText} /> : null;
 
   const fieldHelp = helpId ? fieldHelpId : fieldHelpText;
 
-  const label = labelId ? (
-    <FormattedMessage id={labelId} />
-  ) : labelText;
-
+  const label = labelId ? <FormattedMessage id={labelId} /> : labelText;
 
   return (
     <span className="FormLabel">

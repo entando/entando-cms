@@ -14,8 +14,10 @@ const dispatchMock = jest.fn();
 describe('GenericModalContainer', () => {
   describe('mapStateToProps', () => {
     it('maps visibleModal property from state', () => {
-      expect(mapStateToProps(TEST_STATE))
-        .toHaveProperty('visibleModal', MODAL_VISIBILITY.visibleModal);
+      expect(mapStateToProps(TEST_STATE)).toHaveProperty(
+        'visibleModal',
+        MODAL_VISIBILITY.visibleModal,
+      );
     });
   });
 

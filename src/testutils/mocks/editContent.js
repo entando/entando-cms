@@ -33,8 +33,7 @@ export const ADD_CONTENT_OPENED_OK = {
 export const GET_CONTENT_RESPONSE_OK = {
   payload: [],
   errors: [],
-  metaData: {
-  },
+  metaData: {},
 };
 
 export const GET_CATEGORY_BY_CODE_OK = {

@@ -80,10 +80,7 @@ describe('state/edit-content/reducer', () => {
       expect(state.joinedCategories).toEqual(['OFFICE', 'NEWS']);
     });
     it('Should not add already added category', () => {
-      state = reducer(
-        { joinedCategories: ['OFFICE'] },
-        onJoinCategory('OFFICE'),
-      );
+      state = reducer({ joinedCategories: ['OFFICE'] }, onJoinCategory('OFFICE'));
       expect(state).toHaveProperty('joinedCategories');
       expect(state.joinedCategories).toEqual(['OFFICE']);
     });
@@ -91,10 +88,7 @@ describe('state/edit-content/reducer', () => {
   describe('after action UNJOIN_CATEGORY', () => {
     let state;
     beforeEach(() => {
-      state = reducer(
-        { joinedCategories: ['NEWS', 'OFFICE'] },
-        onUnjoinCategory('NEWS'),
-      );
+      state = reducer({ joinedCategories: ['NEWS', 'OFFICE'] }, onUnjoinCategory('NEWS'));
     });
     it('Joined categories array should be changed', () => {
       expect(state).toHaveProperty('joinedCategories');

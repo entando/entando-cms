@@ -1,7 +1,4 @@
-import {
-  getContentModelList,
-  getContentModelOpened,
-} from 'state/content-model/selectors';
+import { getContentModelList, getContentModelOpened } from 'state/content-model/selectors';
 
 const TEST_STATE = { contentModel: { list: ['hello', 'world'], opened: { name: 'ciao', id: 1 } } };
 

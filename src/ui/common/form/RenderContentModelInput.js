@@ -59,31 +59,38 @@ const contentModelCompleter = {
         meta: 'Info Object',
       },
     ];
-    callback(null, wordList.map(word => ({ ...word, score: 10000 })));
+    callback(null, wordList.map((word) => ({ ...word, score: 10000 })));
   },
 };
 
 langTools.addCompleter(contentModelCompleter);
 
-const aceOnBlur = onBlur => (_event, editor) => {
+const aceOnBlur = (onBlur) => (_event, editor) => {
   const value = editor.getValue();
   onBlur(value);
 };
 
 const RenderContentModelInput = ({
-  input, meta: { touched, error }, label, help,
-  labelSize, inputSize, append, prepend, alignClass,
+  input,
+  meta: { touched, error },
+  label,
+  help,
+  labelSize,
+  inputSize,
+  append,
+  prepend,
+  alignClass,
 }) => (
-  <div className={(touched && error) ? 'form-group has-error' : 'form-group'}>
-    {
-      labelSize > 0 ? (
-        <Col xs={labelSize} className={alignClass}>
-          <ControlLabel htmlFor={input.name}>
-            {label} {help}
-          </ControlLabel>
-        </Col>
-      ) : ''
-    }
+  <div className={touched && error ? 'form-group has-error' : 'form-group'}>
+    {labelSize > 0 ? (
+      <Col xs={labelSize} className={alignClass}>
+        <ControlLabel htmlFor={input.name}>
+          {label} {help}
+        </ControlLabel>
+      </Col>
+    ) : (
+      ''
+    )}
     <Col xs={inputSize || 12 - labelSize}>
       {prepend}
       <AceEditor
@@ -105,7 +112,7 @@ const RenderContentModelInput = ({
         value={input.value}
       />
       {append && <span className="AppendedLabel">{append}</span>}
-      {touched && ((error && <span className="help-block">{error}</span>))}
+      {touched && (error && <span className="help-block">{error}</span>)}
     </Col>
   </div>
 );

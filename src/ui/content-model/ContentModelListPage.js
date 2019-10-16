@@ -1,12 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  CardGrid,
-  Breadcrumb,
-  Button,
-} from 'patternfly-react';
+import { Row, Col, CardGrid, Breadcrumb, Button } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';
@@ -43,7 +37,10 @@ const ContentModelListPage = () => (
         <Col xs={2}>
           <Link to={ROUTE_CMS_CONTENTMODEL_ADD}>
             <Button className="ContentModelList__addbutton">
-              <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Model" />
+              <FormattedMessage
+                id="cms.contentmodel.add.label"
+                defaultMessage="Add Content Model"
+              />
             </Button>
           </Link>
         </Col>

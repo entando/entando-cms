@@ -17,29 +17,29 @@ const contentModelMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   contentTypes: getContentTypeList(state),
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => dispatch(fetchContentTypeListPaged()),
-  onSubmit: values => (
-    dispatch(sendPostContentModel({
-      ...values,
-      contentType: values.contentType.code,
-    })).then((res) => {
+  onSubmit: (values) =>
+    dispatch(
+      sendPostContentModel({
+        ...values,
+        contentType: values.contentType.code,
+      }),
+    ).then((res) => {
       if (res) {
-        dispatch(addToast(
-          intl.formatMessage(
-            contentModelMsgs.saved,
-            { modelname: values.descr },
+        dispatch(
+          addToast(
+            intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
+            TOAST_SUCCESS,
           ),
-          TOAST_SUCCESS,
-        ));
+        );
         history.push(ROUTE_CMS_CONTENTMODEL_LIST);
       }
-    })
-  ),
+    }),
 });
 
 const AddContentModelFormContainer = connect(

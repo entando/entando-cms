@@ -14,7 +14,7 @@ const contentModelMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   info: getInfo(state),
 });
 
@@ -22,13 +22,12 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
   onConfirmDelete: (contModel) => {
     dispatch(sendDeleteContentModel(contModel.id)).then((res) => {
       if (res) {
-        dispatch(addToast(
-          intl.formatMessage(
-            contentModelMsgs.removed,
-            { modelname: contModel.descr },
+        dispatch(
+          addToast(
+            intl.formatMessage(contentModelMsgs.removed, { modelname: contModel.descr }),
+            TOAST_SUCCESS,
           ),
-          TOAST_SUCCESS,
-        ));
+        );
       }
     });
     dispatch(setVisibleModal(''));

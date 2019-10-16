@@ -49,7 +49,7 @@ const routesDir = [
   },
 ];
 
-export const routes = routesDir.map(route => <Route exact key={route.path} {...route} />);
+export const routes = routesDir.map((route) => <Route exact key={route.path} {...route} />);
 
 const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
 

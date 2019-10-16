@@ -25,10 +25,7 @@ describe('content-model/ContentModelListPage', () => {
   beforeEach(() => {
     component = mount(
       mockRenderWithRouter(
-        mockRenderWithIntl(
-          <ContentModelListPage />,
-          initState,
-        ),
+        mockRenderWithIntl(<ContentModelListPage />, initState),
         createMockHistory(),
       ),
     );

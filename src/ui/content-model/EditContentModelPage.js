@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Row,
-  Col,
-  CardGrid,
-  Breadcrumb,
-} from 'patternfly-react';
+import { Row, Col, CardGrid, Breadcrumb } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 import CMSShell from 'ui/common/CMSShell';
 import PageTitle from 'ui/common/PageTitle';

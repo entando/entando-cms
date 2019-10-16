@@ -7,7 +7,8 @@ const reducer = (state = {}, action = {}) => {
       return { ...state, [id]: !state[id] };
     }
 
-    default: return state;
+    default:
+      return state;
   }
 };
 

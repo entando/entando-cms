@@ -6,12 +6,13 @@ import {
   TOGGLE_CATEGORY_EXPANDED,
 } from 'state/categories/types';
 
-const toMap = (array, propKey) => array.reduce((acc, category) => {
-  acc[category.code] = propKey ? category[propKey] : category;
-  return acc;
-}, {});
+const toMap = (array, propKey) =>
+  array.reduce((acc, category) => {
+    acc[category.code] = propKey ? category[propKey] : category;
+    return acc;
+  }, {});
 
-export const toIdList = array => array.map(category => category.code);
+export const toIdList = (array) => array.map((category) => category.code);
 
 export const list = (state = [], action = {}) => {
   switch (action.type) {
@@ -70,9 +71,10 @@ const statusMap = (state = {}, action = {}) => {
   switch (action.type) {
     case TOGGLE_CATEGORY_EXPANDED: {
       const { categoryCode, expanded: toExpand } = action.payload;
-      const expanded = toExpand !== null && toExpand !== undefined
-        ? toExpand
-        : !(state[categoryCode] && state[categoryCode].expanded);
+      const expanded =
+        toExpand !== null && toExpand !== undefined
+          ? toExpand
+          : !(state[categoryCode] && state[categoryCode].expanded);
       return {
         ...state,
         [categoryCode]: { ...state[categoryCode], expanded },

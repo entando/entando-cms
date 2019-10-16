@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import {
-  Row,
-  Col,
-  Button,
-  Modal,
-} from 'patternfly-react';
-import {
-  FormattedMessage,
-  FormattedHTMLMessage,
-  intlShape,
-  defineMessages,
-} from 'react-intl';
+import { Row, Col, Button, Modal } from 'patternfly-react';
+import { FormattedMessage, FormattedHTMLMessage, intlShape, defineMessages } from 'react-intl';
 import { required, code, maxLength } from '@entando/utils';
 
 import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
@@ -20,7 +10,6 @@ import RenderContentModelInput from 'ui/common/form/RenderContentModelInput';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import DraggableDialog from 'ui/common/DraggableDialog';
-
 
 const EDIT_MODE = 'edit';
 const NEW_MODE = 'new';
@@ -63,14 +52,7 @@ class AddContentModelFormBody extends Component {
   }
 
   render() {
-    const {
-      handleSubmit,
-      invalid,
-      submitting,
-      intl,
-      mode,
-      contentTypes,
-    } = this.props;
+    const { handleSubmit, invalid, submitting, intl, mode, contentTypes } = this.props;
     const { modalOpened } = this.state;
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -84,14 +66,19 @@ class AddContentModelFormBody extends Component {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">
-              <FormattedMessage id="cms.contentmodel.form.editassistant" defaultMessage="Help Assistant" />
+              <FormattedMessage
+                id="cms.contentmodel.form.editassistant"
+                defaultMessage="Help Assistant"
+              />
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <FormattedHTMLMessage id="cms.contentmodel.form.editassist.dialog" />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleModalClose}><FormattedMessage id="cms.label.close" defaultMessage="close" /></Button>
+            <Button onClick={this.handleModalClose}>
+              <FormattedMessage id="cms.label.close" defaultMessage="close" />
+            </Button>
           </Modal.Footer>
         </Modal>
         <Row>
@@ -106,7 +93,11 @@ class AddContentModelFormBody extends Component {
                 component={RenderTextInput}
                 name="id"
                 label={
-                  <FormLabel labelId="cms.contentmodel.form.code" helpId="cms.contentmodel.form.codeHelp" required />
+                  <FormLabel
+                    labelId="cms.contentmodel.form.code"
+                    helpId="cms.contentmodel.form.codeHelp"
+                    required
+                  />
                 }
                 validate={[required, code, maxLength50]}
                 disabled={mode === EDIT_MODE}
@@ -114,13 +105,25 @@ class AddContentModelFormBody extends Component {
               <Field
                 component={RenderTextInput}
                 name="descr"
-                label={<FormLabel labelId="cms.label.name" helpId="cms.contentmodel.form.nameHelp" required />}
+                label={
+                  <FormLabel
+                    labelId="cms.label.name"
+                    helpId="cms.contentmodel.form.nameHelp"
+                    required
+                  />
+                }
                 validate={[required, maxLength70]}
               />
               <Field
                 component={RenderDropdownTypeaheadInput}
                 name="contentType"
-                label={<FormLabel labelId="cms.contentmodel.list.contentTypeHeader" helpId="cms.contentmodel.form.contentTypeHelp" required />}
+                label={
+                  <FormLabel
+                    labelId="cms.contentmodel.list.contentTypeHeader"
+                    helpId="cms.contentmodel.form.contentTypeHelp"
+                    required
+                  />
+                }
                 options={contentTypes}
                 labelKey="name"
                 placeholder={intl.formatMessage(messages.chooseContentType)}
@@ -131,17 +134,33 @@ class AddContentModelFormBody extends Component {
           <Col xs={12}>
             <Field
               name="contentShape"
-              label={<FormLabel labelId="cms.contentmodel.form.htmlmodel" helpId="cms.contentmodel.form.htmlmodelHelp" required />}
-              prepend={(
+              label={
+                <FormLabel
+                  labelId="cms.contentmodel.form.htmlmodel"
+                  helpId="cms.contentmodel.form.htmlmodelHelp"
+                  required
+                />
+              }
+              prepend={
                 <>
-                  <Button className="AddContentModelForm__editassistbtn" onClick={this.handleModalOpen}><FormattedMessage id="cms.contentmodel.form.editassistant" defaultMessage="Help Assistant" /></Button>
+                  <Button
+                    className="AddContentModelForm__editassistbtn"
+                    onClick={this.handleModalOpen}
+                  >
+                    <FormattedMessage
+                      id="cms.contentmodel.form.editassistant"
+                      defaultMessage="Help Assistant"
+                    />
+                  </Button>
                   <p>
-                    <FormattedHTMLMessage id="cms.contentmodel.form.htmlmodel.statusassist" /><br />
-                    <FormattedHTMLMessage id="cms.contentmodel.form.htmlmodel.statusattrhelp" /><br />
+                    <FormattedHTMLMessage id="cms.contentmodel.form.htmlmodel.statusassist" />
+                    <br />
+                    <FormattedHTMLMessage id="cms.contentmodel.form.htmlmodel.statusattrhelp" />
+                    <br />
                     <FormattedMessage id="cms.contentmodel.form.htmlmodel.statusadminconf" />
                   </p>
                 </>
-              )}
+              }
               component={RenderContentModelInput}
               cols="50"
               rows="8"
@@ -154,7 +173,12 @@ class AddContentModelFormBody extends Component {
             <Field
               component={RenderTextInput}
               name="stylesheet"
-              label={<FormLabel labelId="cms.contentmodel.form.stylesheet" helpId="cms.contentmodel.form.stylesheetHelp" />}
+              label={
+                <FormLabel
+                  labelId="cms.contentmodel.form.stylesheet"
+                  helpId="cms.contentmodel.form.stylesheetHelp"
+                />
+              }
             />
           </Col>
         </Row>

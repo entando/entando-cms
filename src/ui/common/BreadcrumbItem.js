@@ -12,18 +12,10 @@ const BreadcrumbItem = (props) => {
   if (active) {
     liClassName += ' active';
   } else if (to !== '') {
-    linkElement = (
-      <Link {...omit(props, ['active'])}>
-        { children }
-      </Link>
-    );
+    linkElement = <Link {...omit(props, ['active'])}>{children}</Link>;
   }
 
-  return (
-    <li className={liClassName}>
-      {linkElement}
-    </li>
-  );
+  return <li className={liClassName}>{linkElement}</li>;
 };
 
 BreadcrumbItem.propTypes = {

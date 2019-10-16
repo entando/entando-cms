@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  BrandMenu,
-  FirstLevelMenuItem,
-  LinkMenuItem,
-} from '@entando/menu';
+import { BrandMenu, FirstLevelMenuItem, LinkMenuItem } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
 
 const BRAND_LOGO = <img src="/images/entando-logo.svg" alt="" />;
@@ -38,7 +34,9 @@ const CMSShell = ({ className, children }) => (
         />
         <LinkMenuItem
           id="menu-content-settings"
-          label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
+          label={
+            <FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />
+          }
           to="/cms/content-settings"
         />
       </FirstLevelMenuItem>

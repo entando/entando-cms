@@ -9,7 +9,6 @@ configEnzymeAdapter();
 
 const component = shallow(<Toasts onDismiss={() => {}} />);
 
-
 describe('Toasts', () => {
   it('renders without crashing', () => {
     expect(component.exists()).toBe(true);

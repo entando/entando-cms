@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Row,
-  Col,
-  Grid,
-  Button,
-  DropdownButton,
-  MenuItem,
-  Label,
-  Icon,
-} from 'patternfly-react';
+import { Row, Col, Grid, Button, DropdownButton, MenuItem, Label, Icon } from 'patternfly-react';
 import { Field, reduxForm } from 'redux-form';
-import {
-  defineMessages,
-  injectIntl,
-  intlShape,
-  FormattedMessage,
-} from 'react-intl';
+import { defineMessages, injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import RenderSearchFormInput from 'ui/common/form/RenderSearchFormInput';
 
 class ContentModelSearchFormBody extends Component {
@@ -49,9 +35,16 @@ class ContentModelSearchFormBody extends Component {
           <Row>
             <Col xs={3} className="ContentModelList__filter-searchby">
               <Label className="ContentModelList__filter-searchby-label">
-                <FormattedMessage id="cms.contentmodel.searchFilter.label" defaultMessage="Search By" />
+                <FormattedMessage
+                  id="cms.contentmodel.searchFilter.label"
+                  defaultMessage="Search By"
+                />
               </Label>
-              <DropdownButton title={intl.formatMessage(this.messages.valueName)} id="" className="ContentModelList__filter-searchby-dropdown">
+              <DropdownButton
+                title={intl.formatMessage(this.messages.valueName)}
+                id=""
+                className="ContentModelList__filter-searchby-dropdown"
+              >
                 <MenuItem eventKey="1" active>
                   <FormattedMessage id="cms.contentmodel.searchFilter.valueName" />
                 </MenuItem>
@@ -65,10 +58,7 @@ class ContentModelSearchFormBody extends Component {
               />
             </Col>
             <Col xs={1}>
-              <Button
-                className="SearchForm__button"
-                type="submit"
-              >
+              <Button className="SearchForm__button" type="submit">
                 <Icon name="search" />
               </Button>
             </Col>

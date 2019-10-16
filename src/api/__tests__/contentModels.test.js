@@ -1,6 +1,4 @@
-import {
-  configEnzymeAdapter,
-} from 'testutils/helpers';
+import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
   getContentModels,
@@ -16,7 +14,7 @@ configEnzymeAdapter();
 
 jest.unmock('api/contentModels');
 jest.mock('@entando/apimanager', () => ({
-  makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
+  makeRequest: jest.fn(() => new Promise((resolve) => resolve({}))),
   METHODS: {
     GET: 'GET',
     POST: 'POST',
@@ -28,15 +26,17 @@ jest.mock('@entando/apimanager', () => ({
 describe('api/contentModels', () => {
   it('getContentModels returns a promise with correct params', () => {
     const response = getContentModels();
-    expect(makeRequest).toHaveBeenCalledWith({
-      uri: '/api/plugins/cms/contentmodels',
-      method: 'GET',
-      mockResponse: GET_CONTENT_MODELS_RESPONSE_OK,
-      contentType: 'application/json',
-      useAuthentication: true,
-      errors: expect.any(Function),
-    },
-    { page: 1, pageSize: 10 });
+    expect(makeRequest).toHaveBeenCalledWith(
+      {
+        uri: '/api/plugins/cms/contentmodels',
+        method: 'GET',
+        mockResponse: GET_CONTENT_MODELS_RESPONSE_OK,
+        contentType: 'application/json',
+        useAuthentication: true,
+        errors: expect.any(Function),
+      },
+      { page: 1, pageSize: 10 },
+    );
     expect(response).toBeInstanceOf(Promise);
   });
 
