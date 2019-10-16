@@ -1,0 +1,164 @@
+.AssetsList {
+  &__wrap {
+    margin-top: 3.4rem;
+
+    @media screen and (max-width: 991px) {
+      margin-bottom: 5.5rem;
+    }
+  }
+
+  &__sort {
+    margin-top: .5rem;
+    float: right;
+  }
+
+  &__files-header {
+    border-bottom: 1px solid $color-ultra-grey-border;
+  }
+
+  &__file-type {
+    display: inline-block;
+    min-width: 60px;
+    margin: 0 10px;
+    padding-bottom: 10px;
+    transition: border-color .5s ease-out;
+    border-bottom: 1px solid $color-white;
+    color: $color-thin-light-grey;
+    font-family: "Open Sans";
+    font-size: 14px;
+    line-height: 19px;
+
+    &--selected {
+      border-bottom: 2px solid $color-mid-blue;
+      color: $color-mid-blue;
+    }
+
+    &:hover {
+      border-bottom: 2px solid $color-mid-blue;
+      color: $color-mid-blue;
+    }
+  }
+
+  &__view-options {
+    float: right;
+  }
+
+  &__view-option {
+    margin: 8px;
+    font-size: 15px;
+
+    &--selected {
+      color: $color-mid-grey;
+    }
+  }
+
+  &__filter-container {
+    display: flex;
+    padding-right: 20px;
+
+    div {
+      input {
+        width: 80px;
+      }
+    }
+  }
+
+  &__files-container {
+    margin-top: -20px;
+    border-left: 1px solid $color-vertical-grey;
+
+    &--mobile {
+      border-left: 0;
+    }
+
+    .table { // sass-lint:disable-line class-name-format
+      margin-bottom: 0;
+    }
+  }
+
+  &__filter-info {
+    margin-bottom: 5px;
+    margin-left: 15px;
+    @media (max-width: 991px) {
+      margin-bottom: 25px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    padding-top: 20px;
+  }
+
+  &__tree-container {
+    overflow: scroll;
+  }
+
+  &__footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  &__nothing-found {
+    margin-left: 20px;
+  }
+
+  &__ca {
+    margin-left: 10px;
+    color: $color-light-blue;
+    font-family: "Open Sans";
+    cursor: pointer;
+  }
+
+  &__toolbar-results {
+    // display: inline;
+    border-top: 0;
+  }
+
+  &__filters-label {
+    margin-right: 15px;
+    color: $color-thin-light-grey;
+    font-family: "Open Sans";
+    font-weight: 300;
+  }
+
+  &__items-count {
+    margin-right: 20px;
+    color: $color-thin-light-grey;
+    font-family: "Open Sans";
+    font-weight: bold;
+  }
+
+  &__item-file {
+    padding-left: 13px;
+    font-size: 2rem;
+
+    @media (max-width: 991px) {
+      font-size: 20rem;
+    }
+  }
+
+  &__item {
+    td:nth-child(odd) {
+      padding-top: 10px;
+    }
+
+    td:nth-child(even) {
+      padding-top: 10px;
+    }
+
+    td:first-child {
+      padding: 7px 20px 10px 5px;
+    }
+
+    td:last-child {
+      padding-top: 10px;
+      text-align: center;
+
+      .AssetsList__item-actions {
+        margin-left: 0;
+      }
+    }
+  }
+}

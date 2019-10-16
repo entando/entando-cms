@@ -1,11 +1,6 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
-import {
-  getGroups,
-  getContent,
-  getCategories,
-  postAddContent,
-} from 'api/editContent';
+import { getGroups, getContent, getCategories, postAddContent } from 'api/editContent';
 import { makeRequest } from '@entando/apimanager';
 import { GET_GROUPS_RESPONSE_OK, GET_CATEGORIES_RESPONSE_OK } from 'testutils/mocks/contentType';
 import { GET_CONTENT_RESPONSE_OK, POST_CONTENT_ADD_RESPONSE_OK } from 'testutils/mocks/editContent';
@@ -14,7 +9,7 @@ configEnzymeAdapter();
 
 jest.unmock('api/editContent');
 jest.mock('@entando/apimanager', () => ({
-  makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
+  makeRequest: jest.fn(() => new Promise((resolve) => resolve({}))),
   METHODS: { GET: 'GET', POST: 'POST' },
 }));
 

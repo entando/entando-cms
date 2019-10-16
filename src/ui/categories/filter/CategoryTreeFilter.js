@@ -1,0 +1,114 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
+import { Button } from 'patternfly-react';
+
+import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
+import CategoryTreeFileItem from 'ui/categories/filter/CategoryTreeFilterItem';
+
+class CategoryTreeFilter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      treeExpanded: true,
+    };
+    this.onExpandTree = this.onExpandTree.bind(this);
+  }
+
+  onExpandTree() {
+    const { onExpandCategory } = this.props;
+    const { treeExpanded } = this.state;
+    this.setState({
+      treeExpanded: !treeExpanded,
+    });
+    onExpandCategory('home');
+  }
+
+  onApply() {
+    const { onApplyFilteredSearch, filteringCategories, assetType, paginationOptions } = this.props;
+    const { perPage } = paginationOptions;
+    // @TODO needs support for multiple categories filtering
+    const fetchParams = `?type=${assetType}${`&page=${1}&pageSize=${perPage}`}${
+      filteringCategories.length !== 0
+        ? `&filters[0].attribute=categories&filters[0].value=${filteringCategories[0].code}`
+        : ''
+    }`;
+    onApplyFilteredSearch(filteringCategories, fetchParams);
+  }
+
+  render() {
+    const {
+      mobile,
+      language,
+      categories,
+      onExpandCategory,
+      filteringCategories,
+      onCheckCategory,
+    } = this.props;
+
+    const { treeExpanded } = this.state;
+
+    const categoriesWithoutRoot = categories.filter((c) => c.code !== 'home');
+
+    const categoryRows = categoriesWithoutRoot.map((category, i) => (
+      <CategoryTreeFileItem
+        category={category}
+        checked={filteringCategories.filter((fc) => fc.code === category.code).length > 0}
+        key={category.code}
+        i={i}
+        language={language}
+        onExpandCategory={onExpandCategory}
+        onCheckCategory={onCheckCategory}
+      />
+    ));
+
+    return (
+      <div>
+        <table className="CategoryTreeFilter">
+          <thead>
+            <tr>
+              <th
+                className="CategoryTreeFilter__head"
+                role="button"
+                onClick={this.onExpandTree}
+                onKeyDown={this.onExpandTree}
+              >
+                <TreeNodeExpandedIcon expanded={treeExpanded} />
+                <span className="CategoryTreeFilter__title">
+                  <FormattedMessage id="cms.assets.list.categories" />
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>{categoryRows}</tbody>
+        </table>
+        {mobile ? null : <div className="CategoryTreeFilter__separator" />}
+        <Button className="CategoryTreeFilter__apply-button" onClick={() => this.onApply()}>
+          <FormattedMessage id="cms.assets.list.apply" />
+        </Button>
+        <br />
+      </div>
+    );
+  }
+}
+
+CategoryTreeFilter.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.shape({})),
+  onExpandCategory: PropTypes.func,
+  paginationOptions: PropTypes.shape({}).isRequired,
+  onCheckCategory: PropTypes.func,
+  language: PropTypes.string.isRequired,
+  onApplyFilteredSearch: PropTypes.func.isRequired,
+  filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  assetType: PropTypes.string.isRequired,
+  mobile: PropTypes.bool,
+};
+
+CategoryTreeFilter.defaultProps = {
+  categories: [],
+  onExpandCategory: () => {},
+  onCheckCategory: () => {},
+  mobile: false,
+};
+
+export default CategoryTreeFilter;

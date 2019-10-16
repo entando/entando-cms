@@ -28,20 +28,26 @@ describe('contentType thunks', () => {
     store = createMockStore({ contentType: { list: [] } });
   });
   it('fetchContentModelListPaged', (done) => {
-    store.dispatch(fetchContentTypeListPaged()).then(() => {
-      const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', SET_CONTENT_TYPES);
-      expect(actions[0].payload.list).toEqual(['a', 'b']);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(fetchContentTypeListPaged())
+      .then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toHaveProperty('type', SET_CONTENT_TYPES);
+        expect(actions[0].payload.list).toEqual(['a', 'b']);
+        done();
+      })
+      .catch(done.fail);
   });
   it('fetchContentModelListPaged error', (done) => {
     getContentTypes.mockImplementationOnce(mockApi({ errors: true }));
-    store.dispatch(fetchContentTypeListPaged()).then(() => {
-      expect(getContentTypes).toHaveBeenCalled();
-      const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(fetchContentTypeListPaged())
+      .then(() => {
+        expect(getContentTypes).toHaveBeenCalled();
+        const actions = store.getActions();
+        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+        done();
+      })
+      .catch(done.fail);
   });
 });

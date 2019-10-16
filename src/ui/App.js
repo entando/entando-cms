@@ -9,6 +9,7 @@ import {
   ROUTE_CMS_ADD_CONTENT,
   ROUTE_CMS_EDIT_CONTENT,
   ROUTE_CMS_CONTENTMODEL_EDIT,
+  ROUTE_CMS_ASSETS_LIST,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
@@ -17,6 +18,7 @@ import AddContentModelPage from 'ui/content-model/AddContentModelPage';
 import AddContentPage from 'ui/add-content/AddContentPage';
 import EditContentPage from 'ui/edit-content/EditContentPage';
 import EditContentModelPage from 'ui/content-model/EditContentModelPage';
+import AssetsListPage from 'ui/assets/AssetsListPage';
 
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
@@ -40,6 +42,10 @@ const routesDir = [
   {
     path: ROUTE_CMS_EDIT_CONTENT,
     component: EditContentPage,
+  },
+  {
+    path: ROUTE_CMS_ASSETS_LIST,
+    component: AssetsListPage,
   },
 ];
 

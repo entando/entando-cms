@@ -37,10 +37,13 @@ export default {
     'cms.contentmodel.form.code': 'Code',
     'cms.contentmodel.form.codePlaceholder': 'Code',
     'cms.contentmodel.form.codeHelp': 'You can insert up to 10 numbers',
-    'cms.contentmodel.form.nameHelp': 'You can insert up to 50 characters including upper and lowercase letters, numbers and special characters',
-    'cms.contentmodel.form.contentTypeHelp': 'Choose one of your existing content types to use for your content model',
+    'cms.contentmodel.form.nameHelp':
+      'You can insert up to 50 characters including upper and lowercase letters, numbers and special characters',
+    'cms.contentmodel.form.contentTypeHelp':
+      'Choose one of your existing content types to use for your content model',
     'cms.contentmodel.form.htmlmodel': 'HTML Model',
-    'cms.contentmodel.form.htmlmodelHelp': 'This will be your HTML content structure using your content elements provided by given content type',
+    'cms.contentmodel.form.htmlmodelHelp':
+      'This will be your HTML content structure using your content elements provided by given content type',
     'cms.contentmodel.form.htmlmodel.statusassist': 'Content Assist is <strong>ON</strong>',
     'cms.contentmodel.form.htmlmodel.statusattrhelp':
       'Help About Attributes Type is <strong>OFF</strong>',
@@ -49,10 +52,13 @@ export default {
     'cms.contentmodel.form.saved': 'Content Model "{modelname}" saved',
     'cms.contentmodel.form.editassistant': 'Inline Editing Assistant',
     'cms.contentmodel.form.stylesheet': 'Style Sheet',
-    'cms.contentmodel.form.stylesheetHelp': 'Provide a stylesheet file to be used with your HTML model',
-    'cms.contentmodel.form.editassist.dialog': 'Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels<br /><br /><ol><li> Open a <strong>TAG</strong> like div p span... </li><li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li><li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li><li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li><li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li><li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li></ol>Result should look like this:<br /><br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;><br />$content.TITLE.text<br />CLOSE TAG',
+    'cms.contentmodel.form.stylesheetHelp':
+      'Provide a stylesheet file to be used with your HTML model',
+    'cms.contentmodel.form.editassist.dialog':
+      'Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels<br /><br /><ol><li> Open a <strong>TAG</strong> like div p span... </li><li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li><li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li><li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li><li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li><li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li></ol>Result should look like this:<br /><br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;><br />$content.TITLE.text<br />CLOSE TAG',
     'cms.contentmodel.form.presscontext': '(press ctrl + space to open content assist menu)',
-    'cms.contentmodel.delete.messageprompt': 'Are you sure you want to remove <strong>{id} ({descr})</strong>?',
+    'cms.contentmodel.delete.messageprompt':
+      'Are you sure you want to remove <strong>{id} ({descr})</strong>?',
     /* Edit Content starts HERE */
     'cms.new': 'New',
     'cms.save': 'Save',
@@ -93,6 +99,30 @@ export default {
       'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.edit.contentAttributes': 'Content Attributes',
     /* Edit Content ends HERE */
+    /* Digital Assets starts here */
+    'cms.assets.title': 'Digital Assets',
+    'cms.assets.tip':
+      'The DIGITAL ASSETS section lets you manage existing resources, images and attachements, access resources list, add or delete resources.  Images and attachments can be uploaded to a digital assets archive and used in content.',
+    'cms.assets.list.preview': 'Preview',
+    'cms.assets.list.name': 'Name',
+    'cms.assets.list.type': 'Type',
+    'cms.assets.list.apply': 'Apply',
+    'cms.assets.list.uploadedBy': 'Uploaded By',
+    'cms.assets.list.uploadedAt': 'Uploaded At',
+    'cms.assets.list.group': 'Group',
+    'cms.assets.list.categories': 'Categories',
+    'cms.assets.list.used': 'Used',
+    'cms.assets.list.actions': 'Actions',
+    'cms.assets.list.all': 'All',
+    'cms.assets.list.image': 'Images',
+    'cms.assets.list.file': 'Attachements',
+    'cms.assets.list.filterBy': 'Filter by',
+    'cms.assets.list.activeFilters': 'Active Filters',
+    'cms.assets.list.clearAll': 'Clear All',
+    'cms.assets.list.nothingFound': 'No items found',
+    'cms.assets.list.of': 'of',
+    'cms.assets.list.items': 'items',
+    /* Digital Assets ends here */
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Code must be 3 uppercase letters',

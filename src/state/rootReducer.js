@@ -10,6 +10,7 @@ import editContent from 'state/edit-content/reducer';
 import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
 import categories from 'state/categories/reducer';
+import assets from 'state/assets/reducer';
 
 export default combineReducers({
   api,
@@ -23,4 +24,5 @@ export default combineReducers({
   messages,
   modal,
   categories,
+  assets,
 });
