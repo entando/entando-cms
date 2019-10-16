@@ -8,7 +8,7 @@ configEnzymeAdapter();
 
 jest.unmock('api/assets');
 jest.mock('@entando/apimanager', () => ({
-  makeRequest: jest.fn(() => new Promise((resolve) => resolve({}))),
+  makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   METHODS: { GET: 'GET', POST: 'POST' },
 }));
 

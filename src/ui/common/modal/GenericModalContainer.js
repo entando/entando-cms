@@ -3,11 +3,11 @@ import { setVisibleModal } from 'state/modal/actions';
 import { getVisibleModal } from 'state/modal/selectors';
 import GenericModal from 'ui/common/modal/GenericModal';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   visibleModal: getVisibleModal(state),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onCloseModal: () => dispatch(setVisibleModal('')),
 });
 

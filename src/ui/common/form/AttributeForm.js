@@ -53,18 +53,16 @@ export class AttributeFormBody extends Component {
     const isComposite = mode === MODE_ADD_COMPOSITE;
     const isEditComposite = mode === MODE_EDIT_COMPOSITE;
     const isAddAttributeComposite = mode === MODE_ADD_ATTRIBUTE_COMPOSITE;
-    const labelsubmit =
-      isEditComposite || isAddAttributeComposite ? 'cms.label.save' : 'cms.label.continue';
+    const labelsubmit = isEditComposite || isAddAttributeComposite ? 'cms.label.save' : 'cms.label.continue';
 
-    const renderAttributeInfo = () =>
-      isComposite ? (
-        <AttributeInfoComposite />
-      ) : (
-        <AttributeInfo
-          isSearchable={selectedAttributeType.searchableOptionSupported}
-          isIndexable={selectedAttributeType.indexableOptionSupported}
-        />
-      );
+    const renderAttributeInfo = () => (isComposite ? (
+      <AttributeInfoComposite />
+    ) : (
+      <AttributeInfo
+        isSearchable={selectedAttributeType.searchableOptionSupported}
+        isIndexable={selectedAttributeType.indexableOptionSupported}
+      />
+    ));
 
     const renderAttributeRole = () => (!isComposite ? <AttributeRole {...this.props} /> : null);
 
@@ -130,16 +128,15 @@ export class AttributeFormBody extends Component {
       }
     };
 
-    const renderOgnlValidation = () =>
-      !isComposite ? (
-        <FormSection name="validationRules">
-          <AttributeOgnlValidation />
-        </FormSection>
-      ) : null;
+    const renderOgnlValidation = () => (!isComposite ? (
+      <FormSection name="validationRules">
+        <AttributeOgnlValidation />
+      </FormSection>
+    ) : null);
 
     return (
       <form
-        onSubmit={handleSubmit((values) => onSubmit(values, allowedRoles, mode))}
+        onSubmit={handleSubmit(values => onSubmit(values, allowedRoles, mode))}
         className="form-horizontal"
       >
         <Row>

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
-import { InputGroup, Button, Row, Col } from 'patternfly-react';
+import {
+  InputGroup, Button, Row, Col,
+} from 'patternfly-react';
 
 import { required, maxLength } from '@entando/utils';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -11,8 +13,7 @@ import FormLabel from 'ui/common/form/FormLabel';
 import AttributeListTable from 'ui/common/attributes/AttributeListTable';
 import DeleteAttributeModalContainer from 'ui/content-type/attributes/DeleteAttributeModalContainer';
 
-const uppercaseThreeLetters = (value) =>
-  value && !/[A-Z]$/g.test(value) ? <FormattedMessage id="validateForm.element.code" /> : undefined;
+const uppercaseThreeLetters = value => (value && !/[A-Z]$/g.test(value) ? <FormattedMessage id="validateForm.element.code" /> : undefined);
 
 const maxLength3 = maxLength(3);
 
@@ -37,7 +38,7 @@ export class AddContentTypeFormBody extends Component {
 
     const isEdit = mode === 'edit';
 
-    const selectOptions = attributesType.map((item) => ({
+    const selectOptions = attributesType.map(item => ({
       value: item,
       text: item,
     }));
@@ -102,26 +103,26 @@ export class AddContentTypeFormBody extends Component {
                 component={RenderTextInput}
                 className="ContentTypeForm__input-code"
                 name="code"
-                label={
+                label={(
                   <FormLabel
                     labelId="cms.contenttype.form.code"
                     helpId="validateForm.element.code"
                     required
                   />
-                }
+)}
                 validate={[required, uppercaseThreeLetters, maxLength3]}
                 disabled={isEdit}
               />
               <Field
                 component={RenderTextInput}
                 name="name"
-                label={
+                label={(
                   <FormLabel
                     labelId="cms.contenttype.form.name"
                     helpId="validateForm.name.help"
                     required
                   />
-                }
+)}
                 validate={[required, maxLength50]}
               />
               {renderSelectOption()}

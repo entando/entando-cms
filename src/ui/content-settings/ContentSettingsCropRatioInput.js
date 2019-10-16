@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormGroup, FormControl, Button, Icon } from 'patternfly-react';
+import {
+  Form, FormGroup, FormControl, Button, Icon,
+} from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
 const propTypes = {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape, defineMessages } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape, defineMessages,
+} from 'react-intl';
 import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { routeConverter } from '@entando/utils';
@@ -26,7 +28,9 @@ class ContentTypeListItem extends Component {
   }
 
   render() {
-    const { name, code, status, intl } = this.props;
+    const {
+      name, code, status, intl,
+    } = this.props;
 
     const msgs = defineMessages({
       statusTitle: {

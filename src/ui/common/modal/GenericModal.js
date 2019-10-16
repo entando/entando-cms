@@ -18,7 +18,7 @@ const GenericModal = ({
       <Button bsStyle="default" className="btn-cancel" onClick={onCloseModal}>
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      {buttons.map((button) => (
+      {buttons.map(button => (
         <Button {...button.props} key={button.props.id} />
       ))}
     </Modal.Footer>

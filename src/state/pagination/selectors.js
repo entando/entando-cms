@@ -4,22 +4,22 @@ export const getPagination = (state, namespace = 'global') => state.pagination[n
 
 export const getCurrentPage = createSelector(
   getPagination,
-  (pagination) => pagination.page,
+  pagination => pagination.page,
 );
 
 export const getLastPage = createSelector(
   getPagination,
-  (pagination) => pagination.lastPage,
+  pagination => pagination.lastPage,
 );
 
 export const getPageSize = createSelector(
   getPagination,
-  (pagination) => pagination.pageSize,
+  pagination => pagination.pageSize,
 );
 
 export const getTotalItems = createSelector(
   getPagination,
-  (pagination) => pagination.totalItems,
+  pagination => pagination.totalItems,
 );
 
 export const isLastPage = createSelector(
@@ -30,7 +30,7 @@ export const isLastPage = createSelector(
 
 export const isFirstPage = createSelector(
   getCurrentPage,
-  (page) => page === 1,
+  page => page === 1,
 );
 
 export const getNextPage = createSelector(

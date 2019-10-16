@@ -21,7 +21,7 @@ const cropRatioSuccessMsgs = defineMessages({
   },
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   cropRatios: getCropRatios(state),
 });
 

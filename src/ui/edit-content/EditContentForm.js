@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
-import { Row, Col, FormGroup, ControlLabel } from 'patternfly-react';
+import {
+  Row, Col, FormGroup, ControlLabel,
+} from 'patternfly-react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { required } from '@entando/utils';
 
@@ -59,8 +61,9 @@ class EditContentFormBody extends React.Component {
       onSetOwnerGroupDisable,
       currentUser: { username: currentUserName },
     } = this.props;
-    const { version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName } =
-      content || {};
+    const {
+      version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
+    } = content || {};
     const { contentType: newContentsType } = this.props;
     const contentType = content.typeDescription || newContentsType;
     const groupsWithEmptyOption = [...groups];
@@ -105,12 +108,12 @@ class EditContentFormBody extends React.Component {
                   <Field
                     component={RenderTextInput}
                     name="contentDescription"
-                    label={
+                    label={(
                       <FormLabel
                         labelId="cms.contents.edit.contentDescription.label"
                         helpId="cms.contents.edit.contentDescription.tooltip"
                       />
-                    }
+)}
                     placeholder={intl.formatMessage(messages.contentDesctiption)}
                   />
                 </Col>
@@ -137,13 +140,13 @@ class EditContentFormBody extends React.Component {
                         </button>
                       ) : null
                     }
-                    label={
+                    label={(
                       <FormLabel
                         labelId="cms.contents.edit.groups.ownerGroup.label"
                         helpId="cms.contents.edit.groups.ownerGroup.tooltip"
                         required
                       />
-                    }
+)}
                     labelSize={2}
                     options={groupsWithEmptyOption}
                     optionValue="code"

@@ -59,13 +59,13 @@ const contentModelCompleter = {
         meta: 'Info Object',
       },
     ];
-    callback(null, wordList.map((word) => ({ ...word, score: 10000 })));
+    callback(null, wordList.map(word => ({ ...word, score: 10000 })));
   },
 };
 
 langTools.addCompleter(contentModelCompleter);
 
-const aceOnBlur = (onBlur) => (_event, editor) => {
+const aceOnBlur = onBlur => (_event, editor) => {
   const value = editor.getValue();
   onBlur(value);
 };

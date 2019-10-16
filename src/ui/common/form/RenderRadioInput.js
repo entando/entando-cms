@@ -6,7 +6,7 @@ import { Col, ControlLabel } from 'patternfly-react';
 const buttonToolbar = (input, toggleElement, defaultValue) => (
   <ButtonToolbar className="RenderRadioInput">
     <ToggleButtonGroup type="radio" {...input} value={input.value ? input.value : defaultValue}>
-      {toggleElement.map((item) => (
+      {toggleElement.map(item => (
         <ToggleButton key={item.id} value={item.id} className="RenderRadioInput__toggle-btn">
           {item.label}
         </ToggleButton>

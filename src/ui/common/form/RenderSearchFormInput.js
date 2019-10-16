@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'patternfly-react';
 
-const RenderSearchFormInput = ({ input, meta, onClear, placeholder, ...others }) => (
+const RenderSearchFormInput = ({
+  input, meta, onClear, placeholder, ...others
+}) => (
   <div className="SearchForm__textbox">
     <input
       {...input}

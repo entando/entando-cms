@@ -22,7 +22,7 @@ import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import AssetsList from 'ui/assets/AssetsList';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   assets: getAssetsList(state),
   language: getLanguage(state),
   filteringCategories: getFilteringCategories(state),
@@ -34,7 +34,7 @@ export const mapStateToProps = (state) => ({
   paginationOptions: getPaginationOptions(state),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: (params) => {
     dispatch(fetchAssets(params));
     dispatch(fetchCategoryTree());

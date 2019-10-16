@@ -3,19 +3,18 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Alert } from 'patternfly-react';
 
-const ErrorsAlert = ({ messages, onDismiss }) =>
-  messages.length ? (
-    <Alert onDismiss={onDismiss}>
-      <strong>
-        <FormattedMessage id="cms.label.errors" />
-      </strong>
-      <ul>
-        {messages.map((msg) => (
-          <li key={msg}>{msg}</li>
-        ))}
-      </ul>
-    </Alert>
-  ) : null;
+const ErrorsAlert = ({ messages, onDismiss }) => (messages.length ? (
+  <Alert onDismiss={onDismiss}>
+    <strong>
+      <FormattedMessage id="cms.label.errors" />
+    </strong>
+    <ul>
+      {messages.map(msg => (
+        <li key={msg}>{msg}</li>
+      ))}
+    </ul>
+  </Alert>
+) : null);
 
 ErrorsAlert.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.string).isRequired,

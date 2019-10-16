@@ -47,7 +47,7 @@ class ContentTypeList extends Component {
       perPage: pageSize,
       perPageOptions,
     };
-    const renderRow = contentTypes.map((item) => (
+    const renderRow = contentTypes.map(item => (
       <ContentTypeListItem
         key={item.code}
         onDelete={onClickDelete}

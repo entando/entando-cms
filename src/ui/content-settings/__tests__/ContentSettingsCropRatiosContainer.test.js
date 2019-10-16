@@ -7,9 +7,7 @@ import ContentSettingsCropRatios from 'ui/content-settings/ContentSettingsCropRa
 
 configEnzymeAdapter();
 
-jest.mock('ui/content-settings/ContentSettingsCropRatios', () =>
-  jest.fn(() => <div>ContentSettingsCropRatios</div>),
-);
+jest.mock('ui/content-settings/ContentSettingsCropRatios', () => jest.fn(() => <div>ContentSettingsCropRatios</div>));
 
 const initialState = {
   apps: {

@@ -8,7 +8,7 @@ import { getContentTypeAttributesIdList } from 'state/content-type/selectors';
 import AddContentTypeForm from 'ui/content-type/AddContentTypeForm';
 import { ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   attributesType: getContentTypeAttributesIdList(state),
 });
 

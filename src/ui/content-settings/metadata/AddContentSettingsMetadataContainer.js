@@ -14,7 +14,7 @@ const metadataMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   loading: getLoading(state).contentSettings,
 });
 

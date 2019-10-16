@@ -25,7 +25,9 @@ class CategoryTreeFilter extends React.Component {
   }
 
   onApply() {
-    const { onApplyFilteredSearch, filteringCategories, assetType, paginationOptions } = this.props;
+    const {
+      onApplyFilteredSearch, filteringCategories, assetType, paginationOptions,
+    } = this.props;
     const { perPage } = paginationOptions;
     // @TODO needs support for multiple categories filtering
     const fetchParams = `?type=${assetType}${`&page=${1}&pageSize=${perPage}`}${
@@ -48,12 +50,12 @@ class CategoryTreeFilter extends React.Component {
 
     const { treeExpanded } = this.state;
 
-    const categoriesWithoutRoot = categories.filter((c) => c.code !== 'home');
+    const categoriesWithoutRoot = categories.filter(c => c.code !== 'home');
 
     const categoryRows = categoriesWithoutRoot.map((category, i) => (
       <CategoryTreeFileItem
         category={category}
-        checked={filteringCategories.filter((fc) => fc.code === category.code).length > 0}
+        checked={filteringCategories.filter(fc => fc.code === category.code).length > 0}
         key={category.code}
         i={i}
         language={language}

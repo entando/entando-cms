@@ -6,7 +6,7 @@ import { CONTENT_SETTINGS_OK as C_OK } from 'testutils/mocks/contentSettings';
 import { sendPostMetadataMap } from 'state/content-settings/actions';
 
 jest.mock('state/content-settings/actions', () => ({
-  sendPostMetadataMap: jest.fn((a) => new Promise((resolve) => resolve(a))),
+  sendPostMetadataMap: jest.fn(a => new Promise(resolve => resolve(a))),
 }));
 
 const state = {
@@ -25,7 +25,7 @@ describe('content-settings/metadata/AddContentSettingsMetadataContainer', () => 
   });
 
   it('maps dispatch property', () => {
-    const dispatchMock = jest.fn((r) => r);
+    const dispatchMock = jest.fn(r => r);
     const intl = {
       formatMessage: jest.fn(),
     };

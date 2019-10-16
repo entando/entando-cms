@@ -1,6 +1,8 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CardGrid, Row, Col, Breadcrumb } from 'patternfly-react';
+import {
+  CardGrid, Row, Col, Breadcrumb,
+} from 'patternfly-react';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import PageTitle from 'ui/common/PageTitle';

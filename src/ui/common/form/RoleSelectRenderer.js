@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { InputGroup, Button, Col } from 'patternfly-react';
-import { FormattedMessage, injectIntl, intlShape, defineMessages } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape, defineMessages,
+} from 'react-intl';
 
 class RoleSelectRenderer extends Component {
   constructor(props) {
@@ -33,8 +35,8 @@ class RoleSelectRenderer extends Component {
     } = this.props;
 
     const filteredOptions = options
-      .filter((opt) => !selectedValues.includes(opt[valueKey]))
-      .map((item) => (
+      .filter(opt => !selectedValues.includes(opt[valueKey]))
+      .map(item => (
         <option key={`opt-${item[valueKey]}`} value={item[valueKey]}>
           {item[labelKey]}
         </option>
@@ -61,7 +63,7 @@ class RoleSelectRenderer extends Component {
         </h3>
         <hr />
         <Col xs={4}>
-          <p>{options.find((opt) => opt[valueKey] === value)[labelKey]}</p>
+          <p>{options.find(opt => opt[valueKey] === value)[labelKey]}</p>
         </Col>
         <Col xs={8}>
           <Button

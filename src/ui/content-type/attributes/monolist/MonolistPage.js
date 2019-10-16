@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { CardGrid, Row, Col, Breadcrumb } from 'patternfly-react';
+import {
+  CardGrid, Row, Col, Breadcrumb,
+} from 'patternfly-react';
 import { routeConverter } from '@entando/utils';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
@@ -18,26 +20,26 @@ class MonolistPage extends Component {
   }
 
   render() {
-    const { attributeCode, contentTypeCode, selectedAttribute, entityCode, type } = this.props;
-    const titleId =
-      selectedAttribute === ''
-        ? 'cms.label.edit'
-        : `cms.contenttype.label.edit.${selectedAttribute}`;
+    const {
+      attributeCode, contentTypeCode, selectedAttribute, entityCode, type,
+    } = this.props;
+    const titleId = selectedAttribute === ''
+      ? 'cms.label.edit'
+      : `cms.contenttype.label.edit.${selectedAttribute}`;
 
-    const nextBreadCrumbs =
-      type === TYPE_COMPOSITE ? (
-        <BreadcrumbItem>
-          <FormattedMessage id="cms.contenttype.label.edit.attribute" />
-          {attributeCode}
-        </BreadcrumbItem>
-      ) : (
-        <BreadcrumbItem
-          to={routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT, { entityCode, attributeCode })}
-        >
-          <FormattedMessage id="cms.contenttype.label.edit.attribute" />
-          {attributeCode}
-        </BreadcrumbItem>
-      );
+    const nextBreadCrumbs = type === TYPE_COMPOSITE ? (
+      <BreadcrumbItem>
+        <FormattedMessage id="cms.contenttype.label.edit.attribute" />
+        {attributeCode}
+      </BreadcrumbItem>
+    ) : (
+      <BreadcrumbItem
+        to={routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT, { entityCode, attributeCode })}
+      >
+        <FormattedMessage id="cms.contenttype.label.edit.attribute" />
+        {attributeCode}
+      </BreadcrumbItem>
+    );
 
     const lastBreadcrumbLabel = type === TYPE_COMPOSITE ? TYPE_MONOLIST : selectedAttribute;
 

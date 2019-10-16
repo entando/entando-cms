@@ -1,38 +1,38 @@
 import { createSelector } from 'reselect';
 
-export const getEditContentState = (state) => state.apps.cms.editContent;
+export const getEditContentState = state => state.apps.cms.editContent;
 
 export const getOwnerGroupDisabled = createSelector(
   getEditContentState,
-  (editContent) => editContent.ownerGroupDisabled.disabled,
+  editContent => editContent.ownerGroupDisabled.disabled,
 );
 
 export const getContent = createSelector(
   getEditContentState,
-  (editContent) => editContent.content,
+  editContent => editContent.content,
 );
 
 export const getWorkMode = createSelector(
   getEditContentState,
-  (editContent) => editContent.workMode,
+  editContent => editContent.workMode,
 );
 
 export const getGroups = createSelector(
   getEditContentState,
-  (editContent) => editContent.groups,
+  editContent => editContent.groups,
 );
 
 export const getJoinedCategories = createSelector(
   getEditContentState,
-  (editContent) => editContent.joinedCategories,
+  editContent => editContent.joinedCategories,
 );
 
 export const getLanguage = createSelector(
   getEditContentState,
-  (editContent) => editContent.language,
+  editContent => editContent.language,
 );
 
 export const getNewContentsType = createSelector(
   getEditContentState,
-  (editContent) => editContent.contentType,
+  editContent => editContent.contentType,
 );

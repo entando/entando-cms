@@ -33,7 +33,7 @@ describe('content-settings/metadata/ContentSettingsMetadataListContainer', () =>
   });
 
   it('maps dispatch property', () => {
-    const dispatchMock = jest.fn((r) => r);
+    const dispatchMock = jest.fn(r => r);
     const props = mapDispatchToProps(dispatchMock);
     expect(props).toHaveProperty('onSubmit');
     expect(props).toHaveProperty('onPromptDelete');

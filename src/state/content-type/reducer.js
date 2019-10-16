@@ -19,13 +19,12 @@ import {
 
 import { swapItems } from 'helpers/arrayUtils';
 
-export const toMap = (array) =>
-  array.reduce((acc, contentType) => {
-    acc[contentType.code] = contentType;
-    return acc;
-  }, {});
+export const toMap = array => array.reduce((acc, contentType) => {
+  acc[contentType.code] = contentType;
+  return acc;
+}, {});
 
-export const toIdList = (array) => array.map((contentType) => contentType.code);
+export const toIdList = array => array.map(contentType => contentType.code);
 
 export const list = (state = [], action = {}) => {
   switch (action.type) {
@@ -34,7 +33,7 @@ export const list = (state = [], action = {}) => {
     }
     case REMOVE_CONTENT_TYPE: {
       const { contentTypeCode } = action.payload;
-      return state.filter((item) => item !== contentTypeCode);
+      return state.filter(item => item !== contentTypeCode);
     }
     default:
       return state;
@@ -85,7 +84,7 @@ export const selectedContentType = (state = {}, action = {}) => {
     }
     case REMOVE_ATTRIBUTE: {
       const { attributeCode } = action.payload;
-      const attributes = state.attributes.filter((f) => f.code !== attributeCode);
+      const attributes = state.attributes.filter(f => f.code !== attributeCode);
       return { ...state, attributes };
     }
     case SET_ACTION_MODE: {
@@ -96,7 +95,7 @@ export const selectedContentType = (state = {}, action = {}) => {
       const { compositeAttributes } = isMonolistComposite
         ? state.attributeSelected.nestedAttribute
         : state.attributeSelected;
-      const newComposite = compositeAttributes.filter((f) => f.code !== attributeCode);
+      const newComposite = compositeAttributes.filter(f => f.code !== attributeCode);
       const newState = cloneDeep(state);
       if (isMonolistComposite) {
         set(newState, 'attributeSelected.nestedAttribute.compositeAttributes', newComposite);

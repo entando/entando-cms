@@ -15,7 +15,7 @@ class AttributeRole extends Component {
   render() {
     const { joinAllowedOptions, allowedRoles } = this.props;
 
-    const selectAllowedOptions = allowedRoles.map((item) => ({
+    const selectAllowedOptions = allowedRoles.map(item => ({
       value: item.code,
       text: item.descr,
     }));

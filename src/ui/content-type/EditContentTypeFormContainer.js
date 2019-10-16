@@ -40,11 +40,9 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
   },
   onAddAttribute: ({ attributeCode, contentTypeCode }) => {
     dispatch(
-      fetchContentTypeAttribute(attributeCode, () =>
-        history.push(
-          routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
-        ),
-      ),
+      fetchContentTypeAttribute(attributeCode, () => history.push(
+        routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
+      )),
     );
   },
 

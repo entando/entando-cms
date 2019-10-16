@@ -6,14 +6,14 @@ import { setCategoryFilter } from 'state/assets/actions';
 import { getCategoryTree } from 'state/categories/selectors';
 import { getPaginationOptions } from 'state/assets/selectors';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   categories: getCategoryTree(state),
   paginationOptions: getPaginationOptions(state),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
-  onExpandCategory: (categoryCode) => dispatch(handleExpandCategory(categoryCode)),
-  onCheckCategory: (category) => dispatch(setCategoryFilter(category)),
+export const mapDispatchToProps = dispatch => ({
+  onExpandCategory: categoryCode => dispatch(handleExpandCategory(categoryCode)),
+  onCheckCategory: category => dispatch(setCategoryFilter(category)),
 });
 
 const CategoryTreeFilterContainer = connect(

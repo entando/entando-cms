@@ -32,8 +32,8 @@ class MultiSelectRenderer extends Component {
       fields,
     } = this.props;
     const filteredOptions = options
-      .filter((opt) => !selectedValues.includes(opt[valueKey]))
-      .map((item) => (
+      .filter(opt => !selectedValues.includes(opt[valueKey]))
+      .map(item => (
         <option key={`opt-${item[valueKey]}`} value={item[valueKey]}>
           {item[labelKey]}
         </option>
@@ -55,7 +55,7 @@ class MultiSelectRenderer extends Component {
 
     const renderedTags = selectedValues.map((value, i) => (
       <Label key={value} bsStyle="primary" className="MultiSelectRenderer__tag">
-        {options.length ? options.find((opt) => opt[valueKey] === value)[labelKey] : ''}
+        {options.length ? options.find(opt => opt[valueKey] === value)[labelKey] : ''}
         <Button
           bsStyle="link"
           className="MultiSelectRenderer__remove-tag-btn"

@@ -8,16 +8,15 @@ const AssetsListGridView = ({ assets }) => {
     const { versions } = asset;
     const fileType = versions == null ? 'file' : 'image';
     // console.log(versions[3]);
-    const previewRender =
-      fileType === 'image' ? (
-        <img
-          src={`http://localhost:8080${versions[3].path}`}
-          alt="Preview"
-          className="AssetsListGridView__image"
-        />
-      ) : (
-        <div className="fa fa-file-text AssetsList__item-file" />
-      );
+    const previewRender = fileType === 'image' ? (
+      <img
+        src={`http://localhost:8080${versions[3].path}`}
+        alt="Preview"
+        className="AssetsListGridView__image"
+      />
+    ) : (
+      <div className="fa fa-file-text AssetsList__item-file" />
+    );
     return (
       <div className="AssetsListGridView__item" key={asset.id}>
         <div className="AssetsListGridView__header">

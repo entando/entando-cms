@@ -5,7 +5,7 @@ import { MYCATEGORY1_PAYLOAD } from 'testutils/mocks/categories';
 const CATEGORY_CODE = MYCATEGORY1_PAYLOAD.code;
 jest.unmock('api/categories');
 jest.mock('@entando/apimanager', () => ({
-  makeRequest: jest.fn(() => new Promise((resolve) => resolve({}))),
+  makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   METHODS: require.requireActual('@entando/apimanager').METHODS,
 }));
 

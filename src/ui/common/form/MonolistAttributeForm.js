@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, FormSection, Field } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Button, Row, Col, FormGroup, Alert } from 'patternfly-react';
+import {
+  Button, Row, Col, FormGroup, Alert,
+} from 'patternfly-react';
 import AttributeOgnlValidation from 'ui/common/attributes/AttributeOgnlValidation';
 import AttributeHypeLongMonoTextSettings from 'ui/common/attributes/AttributeHypeLongMonoTextSettings';
 import AttributeEnumMapSettings from 'ui/common/attributes/AttributeEnumMapSettings';
@@ -147,12 +149,11 @@ export class MonolistAttributeFormBody extends Component {
       }
     };
 
-    const renderOgnlValidation = () =>
-      !isMonoListComposite ? (
-        <FormSection name="validationRules">
-          <AttributeOgnlValidation />
-        </FormSection>
-      ) : null;
+    const renderOgnlValidation = () => (!isMonoListComposite ? (
+      <FormSection name="validationRules">
+        <AttributeOgnlValidation />
+      </FormSection>
+    ) : null);
 
     return (
       <div className="MonoListAttributeForm">

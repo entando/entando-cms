@@ -105,7 +105,7 @@ describe('state/assets/actions', () => {
       store
         .dispatch(fetchAssets())
         .then(() => {
-          const actionTypes = store.getActions().map((action) => action.type);
+          const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(4);
           expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
           expect(actionTypes.includes(SET_ASSETS)).toBe(true);
@@ -120,7 +120,7 @@ describe('state/assets/actions', () => {
         assets: { assets: [] },
       });
       store.dispatch(fetchAssets()).then(() => {
-        const actions = store.getActions().map((action) => action.type);
+        const actions = store.getActions().map(action => action.type);
         expect(actions).toHaveLength(3);
         expect(actions.includes(TOGGLE_LOADING)).toBe(true);
         expect(actions[1]).toEqual(ADD_ERRORS);

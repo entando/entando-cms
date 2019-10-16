@@ -5,7 +5,7 @@ import { ToastNotificationList, TimedToastNotification } from 'patternfly-react'
 const Toasts = ({ toasts, onDismiss }) => {
   const notifications = Object.keys(toasts)
     .reverse()
-    .map((key) => (
+    .map(key => (
       <TimedToastNotification
         key={key}
         type={toasts[key].type}

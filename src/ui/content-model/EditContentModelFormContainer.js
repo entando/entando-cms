@@ -26,7 +26,7 @@ export const mapStateToProps = (state) => {
     mode: 'edit',
     initialValues: {
       ...formvals,
-      contentType: contentTypes.find((ctype) => ctype.code === formvals.contentType),
+      contentType: contentTypes.find(ctype => ctype.code === formvals.contentType),
     },
   };
 };
@@ -36,23 +36,22 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(fetchContentModel(params.id));
     dispatch(fetchContentTypeListPaged());
   },
-  onSubmit: (values) =>
-    dispatch(
-      sendPutContentModel({
-        ...values,
-        contentType: values.contentType.code,
-      }),
-    ).then((res) => {
-      if (res) {
-        dispatch(
-          addToast(
-            intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
-            TOAST_SUCCESS,
-          ),
-        );
-        history.push(ROUTE_CMS_CONTENTMODEL_LIST);
-      }
+  onSubmit: values => dispatch(
+    sendPutContentModel({
+      ...values,
+      contentType: values.contentType.code,
     }),
+  ).then((res) => {
+    if (res) {
+      dispatch(
+        addToast(
+          intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
+          TOAST_SUCCESS,
+        ),
+      );
+      history.push(ROUTE_CMS_CONTENTMODEL_LIST);
+    }
+  }),
 });
 
 const EditContentModelFormContainer = connect(

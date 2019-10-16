@@ -50,13 +50,12 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
       dispatch(
         fetchContentTypeAttribute(
           TYPE_COMPOSITE,
-          () =>
-            history.push(
-              routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
-                entityCode: contentTypeCode,
-                attributeCode,
-              }),
-            ),
+          () => history.push(
+            routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
+              entityCode: contentTypeCode,
+              attributeCode,
+            }),
+          ),
           '',
           'monoListAttribute',
         ),
@@ -73,10 +72,9 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(
       fetchContentTypeAttribute(
         type,
-        () =>
-          history.push(
-            routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
-          ),
+        () => history.push(
+          routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
+        ),
         type,
         'addAttribute',
       ),

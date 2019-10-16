@@ -34,11 +34,11 @@ const RenderSelectInput = ({
 
   const optionsList = optionReducer
     ? optionReducer(options)
-    : options.map((item) => (
-        <option key={item[optionValue]} value={item[optionValue]}>
-          {item[optionDisplayName]}
-        </option>
-      ));
+    : options.map(item => (
+      <option key={item[optionValue]} value={item[optionValue]}>
+        {item[optionDisplayName]}
+      </option>
+    ));
 
   const errorBox = touched && error ? <span className="help-block">{error}</span> : null;
 

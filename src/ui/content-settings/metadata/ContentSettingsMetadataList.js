@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Row, Col, Button, Icon } from 'patternfly-react';
+import {
+  Row, Col, Button, Icon,
+} from 'patternfly-react';
 import DeleteContentMetadataModalContainer from 'ui/content-settings/metadata/DeleteContentMetadataModalContainer';
 import { reduxForm, Field } from 'redux-form';
 
@@ -32,7 +34,7 @@ class ContentSettingsMetadataListBody extends Component {
     return (
       <>
         <form onSubmit={handleSubmit}>
-          {metadata.map((meta) => (
+          {metadata.map(meta => (
             <Row className="ContentSettingsMetadata__list-row" key={meta.key}>
               <Col xs={12} md={2} className="text-right ContentSettingsMetadata__list-label-padded">
                 {`'${meta.key}' Metadata`}
@@ -45,13 +47,13 @@ class ContentSettingsMetadataListBody extends Component {
                   name={meta.key}
                   alignClass="text-left"
                   onKeyUp={this.onFieldKeyUp}
-                  label={
+                  label={(
                     <FormLabel
                       labelId="cms.contentsettings.form.metadatamapping"
                       helpId="cms.contentsettings.form.metadatamapping.help"
                       helpValues={{ key: meta.key }}
                     />
-                  }
+)}
                 />
                 <span className="ContentSettingsMetadata__list-input-right-placeholder">
                   <FormattedMessage

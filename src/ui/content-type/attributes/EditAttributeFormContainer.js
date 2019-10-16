@@ -32,9 +32,9 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   attributeCode: params.attributeCode,
   contentTypeAttributeCode: params.entityCode,
   joinAllowedOptions:
-    formValueSelector('attribute')(state, 'joinRoles') ||
-    formValueSelector('attribute')(state, 'joinAllowedOptions') ||
-    [],
+    formValueSelector('attribute')(state, 'joinRoles')
+    || formValueSelector('attribute')(state, 'joinAllowedOptions')
+    || [],
   selectedAttributeType: getSelectedAttributeType(state),
   selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
   attributesList: getContentTypeAttributesIdList(state),
@@ -67,12 +67,11 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(
       fetchContentTypeAttribute(
         attributeCode,
-        () =>
-          history.push(
-            routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
-              entityCode: contentTypeAttributeCode,
-            }),
-          ),
+        () => history.push(
+          routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
+            entityCode: contentTypeAttributeCode,
+          }),
+        ),
         selectedAttributeType,
         'attribute',
       ),

@@ -33,7 +33,7 @@ const contentModelMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   workMode: getWorkMode(state),
   language: getLanguage(state),
   contentType: getNewContentsType(state),
@@ -50,24 +50,23 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(fetchGroups());
     dispatch(fetchCategoryTree());
   },
-  onSetOwnerGroupDisable: (disabled) => dispatch(setOwnerGroupDisable(disabled)),
-  onSubmit: (values) =>
-    dispatch(
-      sendPostAddContent({
-        ...values,
-        content: values.editContent,
-      }),
-    ).then((res) => {
-      if (res) {
-        dispatch(
-          addToast(
-            intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
-            TOAST_SUCCESS,
-          ),
-        );
-        history.push(ROUTE_CMS_CONTENTMODEL_LIST);
-      }
+  onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
+  onSubmit: values => dispatch(
+    sendPostAddContent({
+      ...values,
+      content: values.editContent,
     }),
+  ).then((res) => {
+    if (res) {
+      dispatch(
+        addToast(
+          intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
+          TOAST_SUCCESS,
+        ),
+      );
+      history.push(ROUTE_CMS_CONTENTMODEL_LIST);
+    }
+  }),
 });
 
 const EditContentContainer = connect(

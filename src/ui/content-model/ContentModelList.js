@@ -13,7 +13,7 @@ class ContentModelList extends Component {
 
   render() {
     const { contentModels, loading, onClickDelete } = this.props;
-    const renderRow = contentModels.map((item) => (
+    const renderRow = contentModels.map(item => (
       <ContentModelListItem key={item.id} onDelete={onClickDelete} {...item} />
     ));
     return (

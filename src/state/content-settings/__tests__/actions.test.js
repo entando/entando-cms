@@ -71,41 +71,35 @@ jest.mock('api/contentSettings', () => ({
   ),
   postReloadReferences: jest.fn(mockApi({ payload: '' })),
   postReloadIndexes: jest.fn(mockApi({ payload: '' })),
-  putEditorSettings: jest.fn((key) => mockApi({ payload: key })()),
+  putEditorSettings: jest.fn(key => mockApi({ payload: key })()),
   postCropRatio: jest.fn(mockApi({})),
   deleteCropRatio: jest.fn(mockApi({})),
   putCropRatio: jest.fn(mockApi({})),
-  postMetadataMap: jest.fn(({ key, mapping }) =>
-    mockApi({
-      payload: {
-        [key]: mapping,
-        legend: [],
-        alt: [],
-        description: [],
-        title: [],
-      },
-    })(),
-  ),
-  putMetadataMap: jest.fn((key, mapping) =>
-    mockApi({
-      payload: {
-        [key]: mapping,
-        alt: [],
-        description: [],
-        title: [],
-      },
-    })(),
-  ),
-  deleteMetadataMap: jest.fn(() =>
-    mockApi({
-      payload: {
-        legend: [],
-        alt: [],
-        description: [],
-        title: [],
-      },
-    })(),
-  ),
+  postMetadataMap: jest.fn(({ key, mapping }) => mockApi({
+    payload: {
+      [key]: mapping,
+      legend: [],
+      alt: [],
+      description: [],
+      title: [],
+    },
+  })()),
+  putMetadataMap: jest.fn((key, mapping) => mockApi({
+    payload: {
+      [key]: mapping,
+      alt: [],
+      description: [],
+      title: [],
+    },
+  })()),
+  deleteMetadataMap: jest.fn(() => mockApi({
+    payload: {
+      legend: [],
+      alt: [],
+      description: [],
+      title: [],
+    },
+  })()),
 }));
 
 selectors.getCropRatios = jest.fn();

@@ -14,12 +14,11 @@ const CategoryTreeSelector = ({
   getJoinedCategoriesByCodes: joinedCategories,
   onUnjoinCategory,
 }) => {
-  const contentCategoriesText =
-    joinedCategories && joinedCategories.length > 0 ? (
-      <h4>
-        <FormattedMessage id="cms.contents.edit.contentCategoryList" />
-      </h4>
-    ) : null;
+  const contentCategoriesText = joinedCategories && joinedCategories.length > 0 ? (
+    <h4>
+      <FormattedMessage id="cms.contents.edit.contentCategoryList" />
+    </h4>
+  ) : null;
 
   const renderedTags = joinedCategories.map((value, i) => {
     const countSlashes = (value.fullTitles[language].match(/\//g) || []).length;

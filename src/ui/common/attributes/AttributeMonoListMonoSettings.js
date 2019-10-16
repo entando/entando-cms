@@ -9,7 +9,7 @@ import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
 
 const AttributeMonoListMonoSettings = ({ attributesList }) => {
-  const selectAttribute = attributesList.map((item) => ({
+  const selectAttribute = attributesList.map(item => ({
     value: item,
     text: item,
   }));

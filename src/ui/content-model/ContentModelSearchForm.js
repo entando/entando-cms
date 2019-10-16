@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Grid, Button, DropdownButton, MenuItem, Label, Icon } from 'patternfly-react';
+import {
+  Row, Col, Grid, Button, DropdownButton, MenuItem, Label, Icon,
+} from 'patternfly-react';
 import { Field, reduxForm } from 'redux-form';
-import { defineMessages, injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import {
+  defineMessages, injectIntl, intlShape, FormattedMessage,
+} from 'react-intl';
 import RenderSearchFormInput from 'ui/common/form/RenderSearchFormInput';
 
 class ContentModelSearchFormBody extends Component {

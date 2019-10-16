@@ -86,12 +86,7 @@
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
-      "airbnb",
-      "prettier",
-      "prettier/react"
-    ],
-    "plugins": [
-      "prettier"
+      "airbnb"
     ],
     "env": {
       "browser": true,
@@ -109,9 +104,6 @@
       }
     },
     "rules": {
-      "prettier/prettier": [
-        "error"
-      ],
       "react/jsx-one-expression-per-line": 0,
       "react/jsx-filename-extension": [
         1,

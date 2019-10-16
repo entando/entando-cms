@@ -3,11 +3,11 @@ import { getErrors, clearErrors } from '@entando/messages';
 
 import ErrorsAlert from 'ui/common/form/ErrorsAlert';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   messages: getErrors(state),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onDismiss: () => dispatch(clearErrors()),
 });
 

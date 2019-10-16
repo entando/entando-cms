@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { setLanguage } from 'state/locale/actions';
 import App from 'ui/App';
 
-export const mapDispatchToProps = (dispatch) => ({
-  setupLanguage: (lang) => dispatch(setLanguage(lang)),
+export const mapDispatchToProps = dispatch => ({
+  setupLanguage: lang => dispatch(setLanguage(lang)),
 });
 
 const AppContainer = connect(

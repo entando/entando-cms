@@ -1,43 +1,43 @@
 import { createSelector } from 'reselect';
 
-export const getAssetsState = (state) => state.assets;
+export const getAssetsState = state => state.assets;
 
 export const getAssetsList = createSelector(
   getAssetsState,
-  (assets) => assets.assets,
+  assets => assets.assets,
 );
 
 export const getFilteringCategories = createSelector(
   getAssetsState,
-  (assets) => assets.filteringCategories,
+  assets => assets.filteringCategories,
 );
 
 export const getLanguage = createSelector(
   getAssetsState,
-  (assets) => assets.language,
+  assets => assets.language,
 );
 
 export const getFileType = createSelector(
   getAssetsState,
-  (assets) => assets.fileType,
+  assets => assets.fileType,
 );
 
 export const getAssetsView = createSelector(
   getAssetsState,
-  (assets) => assets.assetsView,
+  assets => assets.assetsView,
 );
 
 export const getSort = createSelector(
   getAssetsState,
-  (assets) => assets.sort,
+  assets => assets.sort,
 );
 
 export const getPaginationOptions = createSelector(
   getAssetsState,
-  (assets) => assets.paginationOptions,
+  assets => assets.paginationOptions,
 );
 
 export const getActiveFilters = createSelector(
   getAssetsState,
-  (assets) => assets.activeFilters,
+  assets => assets.activeFilters,
 );

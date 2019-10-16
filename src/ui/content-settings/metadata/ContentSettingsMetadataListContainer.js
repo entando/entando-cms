@@ -25,7 +25,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onSubmit: (values) => {
     dispatch(checkAndPutMetadataMap(values));
   },

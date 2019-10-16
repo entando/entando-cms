@@ -18,7 +18,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   selectedAttribute: formValueSelector('monoListAttribute')(state, 'type'),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: ({ attributeCode, contentTypeCode, mode }) => {
     if (mode !== MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(fetchAttributeFromContentType('monoListAttribute', contentTypeCode, attributeCode));

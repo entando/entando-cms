@@ -29,16 +29,15 @@ const CategoryTreeSelectorRow = ({
     className.push('info');
   }
 
-  const joinMark =
-    category.depth !== 0 ? (
-      <span
-        className="icon fa fa-plus CategoryTreeSelector__join-mark"
-        role="button"
-        tabIndex={i}
-        onClick={() => onJoinCategory(category.code)}
-        onKeyDown={() => onJoinCategory(category.code)}
-      />
-    ) : null;
+  const joinMark = category.depth !== 0 ? (
+    <span
+      className="icon fa fa-plus CategoryTreeSelector__join-mark"
+      role="button"
+      tabIndex={i}
+      onClick={() => onJoinCategory(category.code)}
+      onKeyDown={() => onJoinCategory(category.code)}
+    />
+  ) : null;
   return (
     <tr key={category.code} className="CategoryTreeSelector__row">
       <td className={className.join(' ').trim()}>

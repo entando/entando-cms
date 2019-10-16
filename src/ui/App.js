@@ -98,7 +98,7 @@ export const routesDir = [
   },
 ];
 
-export const routes = routesDir.map((route) => <Route exact key={route.path} {...route} />);
+export const routes = routesDir.map(route => <Route exact key={route.path} {...route} />);
 
 class App extends Component {
   componentDidMount() {

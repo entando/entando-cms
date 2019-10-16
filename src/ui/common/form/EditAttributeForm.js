@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, FormSection } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Button, Row, Col, Alert } from 'patternfly-react';
+import {
+  Button, Row, Col, Alert,
+} from 'patternfly-react';
 import AttributeInfo from 'ui/common/attributes/AttributeInfo';
 import AttributeInfoComposite from 'ui/common/attributes/AttributeInfoComposite';
 import AttributeRole from 'ui/common/attributes/AttributeRole';
@@ -64,12 +66,11 @@ export class EditAttributeFormBody extends Component {
 
     const labelsubmit = !isComposite ? 'cms.label.continue' : 'cms.label.save';
 
-    const renderAttributeInfo = () =>
-      isComposite ? (
-        <AttributeInfoComposite />
-      ) : (
-        <AttributeInfo isSearchable={isSearchable} isIndexable={isIndexable} mode={mode} />
-      );
+    const renderAttributeInfo = () => (isComposite ? (
+      <AttributeInfoComposite />
+    ) : (
+      <AttributeInfo isSearchable={isSearchable} isIndexable={isIndexable} mode={mode} />
+    ));
 
     const renderSelectedAttribute = () => {
       switch (attributeType) {
@@ -129,12 +130,11 @@ export class EditAttributeFormBody extends Component {
 
     const renderAttributeRole = () => (!isComposite ? <AttributeRole {...this.props} /> : null);
 
-    const renderOgnlValidation = () =>
-      !isComposite ? (
-        <FormSection name="validationRules">
-          <AttributeOgnlValidation />
-        </FormSection>
-      ) : null;
+    const renderOgnlValidation = () => (!isComposite ? (
+      <FormSection name="validationRules">
+        <AttributeOgnlValidation />
+      </FormSection>
+    ) : null);
 
     const header = () => {
       switch (selectedAttributeType) {
@@ -161,7 +161,7 @@ export class EditAttributeFormBody extends Component {
 
     return (
       <form
-        onSubmit={handleSubmit((values) => onSubmit(values, allowedRoles, mode))}
+        onSubmit={handleSubmit(values => onSubmit(values, allowedRoles, mode))}
         className="form-horizontal"
       >
         <Row>

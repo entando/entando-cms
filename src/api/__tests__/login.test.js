@@ -8,7 +8,7 @@ configure({ adapter: new Adapter() });
 
 jest.unmock('api/login');
 jest.mock('@entando/apimanager', () => ({
-  makeRequest: jest.fn(() => new Promise((resolve) => resolve({}))),
+  makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   METHODS: { POST: 'POST' },
 }));
 

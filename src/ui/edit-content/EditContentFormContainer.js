@@ -35,14 +35,14 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   selectedCategories: getJoinedCategories(state),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: () => {
     dispatch(setWorkMode(WORK_MODE_EDIT));
     dispatch(fetchContent('?status=published'));
     dispatch(fetchGroups());
     dispatch(fetchCategoryTree());
   },
-  onSetOwnerGroupDisable: (disabled) => dispatch(setOwnerGroupDisable(disabled)),
+  onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onSubmit: (values) => {
     // eslint-disable-next-line no-console
     dispatch(console.log('Posting Editting of a form', values));

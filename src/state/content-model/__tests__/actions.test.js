@@ -30,10 +30,10 @@ const CONTMODEL_SET_PARAMS = {
 
 jest.mock('api/contentModels', () => ({
   getContentModels: jest.fn(mockApi({ payload: ['a', 'b'] })),
-  postContentModel: jest.fn((res) => mockApi({ payload: res })()),
-  getContentModel: jest.fn((id) => mockApi({ payload: { id, a: 'b' } })()),
-  putContentModel: jest.fn((res) => mockApi({ payload: res })()),
-  deleteContentModel: jest.fn((id) => mockApi({ payload: { id } })()),
+  postContentModel: jest.fn(res => mockApi({ payload: res })()),
+  getContentModel: jest.fn(id => mockApi({ payload: { id, a: 'b' } })()),
+  putContentModel: jest.fn(res => mockApi({ payload: res })()),
+  deleteContentModel: jest.fn(id => mockApi({ payload: { id } })()),
 }));
 
 it('test setContentModelList action', () => {

@@ -1,7 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { setApi, loginUser, useMocks, getUsername, getToken } from '@entando/apimanager';
+import {
+  setApi, loginUser, useMocks, getUsername, getToken,
+} from '@entando/apimanager';
 import { addToast } from '@entando/messages';
 
 import { createMockStore, configEnzymeAdapter } from 'testutils/helpers';
@@ -19,7 +21,7 @@ jest.mock('@entando/messages', () => ({
 }));
 
 jest.mock('@entando/apimanager', () => ({
-  makeRequest: jest.fn(() => new Promise((resolve) => resolve({}))),
+  makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   setApi: jest.fn(() => ({ type: 'api/set-api', payload: { api: 'a' } })),
   config: require.requireActual('@entando/apimanager').config,
   METHODS: { POST: 'POST' },
@@ -31,7 +33,7 @@ jest.mock('@entando/apimanager', () => ({
 
 jest.mock('api/login', () => ({
   login: jest.fn(
-    () => new Promise((resolve) => resolve({ json: () => ({ access_token: 'oioioi' }) })),
+    () => new Promise(resolve => resolve({ json: () => ({ access_token: 'oioioi' }) })),
   ),
 }));
 

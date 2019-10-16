@@ -60,13 +60,13 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
           <Field
             component={RenderTextInput}
             name="code"
-            label={
+            label={(
               <FormLabel
                 labelId="cms.contenttype.form.code"
                 helpId="cms.contenttype.form.codeHelp"
                 required
               />
-            }
+)}
             validate={[required, maxLength10]}
             disabled={mode === MODE_EDIT}
           />

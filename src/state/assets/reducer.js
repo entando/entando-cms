@@ -30,11 +30,11 @@ const reducer = (state = defaultState, action = {}) => {
       const { filteringCategories } = state;
       let newFilters = filteringCategories.slice(0);
       const category = action.payload;
-      const contains = newFilters.filter((cat) => cat.code === category.code).length !== 0;
+      const contains = newFilters.filter(cat => cat.code === category.code).length !== 0;
       if (!contains) {
         newFilters.push(category);
       } else {
-        newFilters = newFilters.filter((c) => c.code !== category.code);
+        newFilters = newFilters.filter(c => c.code !== category.code);
       }
       return {
         ...state,
@@ -60,7 +60,7 @@ const reducer = (state = defaultState, action = {}) => {
       const { activeFilters } = state;
       return {
         ...state,
-        activeFilters: activeFilters.filter((f) => f.code !== filter.code),
+        activeFilters: activeFilters.filter(f => f.code !== filter.code),
       };
     }
     case FILE_TYPE_CHANGE: {

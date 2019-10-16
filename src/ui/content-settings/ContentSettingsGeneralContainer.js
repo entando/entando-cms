@@ -43,11 +43,11 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: () => dispatch(fetchContentSettings()),
   onReloadReferences: () => dispatch(sendPostReloadReferences()),
   onReloadIndexes: () => dispatch(sendPostReloadIndexes()),
-  onEditorChange: (key) => dispatch(sendPutEditorSettings({ key })),
+  onEditorChange: key => dispatch(sendPutEditorSettings({ key })),
 });
 
 const ContentSettingsGeneralContainer = connect(

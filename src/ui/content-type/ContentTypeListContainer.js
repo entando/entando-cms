@@ -8,7 +8,7 @@ import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/sel
 import ContentTypeList from 'ui/content-type/ContentTypeList';
 import { MODAL_ID } from 'ui/content-type/DeleteContentTypeModal';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   contentTypes: getContentTypeList(state),
   loading: getLoading(state).contentTypeList,
   page: getCurrentPage(state),
@@ -16,7 +16,7 @@ export const mapStateToProps = (state) => ({
   pageSize: getPageSize(state),
 });
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => dispatch(fetchContentTypeListPaged(page)),
   onClickDelete: (item) => {
     dispatch(setVisibleModal(MODAL_ID));

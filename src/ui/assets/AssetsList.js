@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, defineMessages, intlShape, injectIntl } from 'react-intl';
+import {
+  FormattedMessage, defineMessages, intlShape, injectIntl,
+} from 'react-intl';
 import {
   Spinner,
   Grid,
@@ -99,7 +101,9 @@ class AssetsListBody extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { sort, refetchAssets, fileType, paginationOptions } = this.props;
+    const {
+      sort, refetchAssets, fileType, paginationOptions,
+    } = this.props;
     if (prevProps.sort.name !== sort.name || prevProps.sort.direction !== sort.direction) {
       const { page, perPage } = paginationOptions;
       const fetchParams = `?type=${fileType}${
@@ -133,7 +137,9 @@ class AssetsListBody extends Component {
   }
 
   onPerPageSelect(value) {
-    const { onChangePaginationOptions, paginationOptions, fileType, refetchAssets } = this.props;
+    const {
+      onChangePaginationOptions, paginationOptions, fileType, refetchAssets,
+    } = this.props;
     paginationOptions.perPage = value;
     onChangePaginationOptions(paginationOptions);
     const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${value}`}`;
@@ -159,7 +165,9 @@ class AssetsListBody extends Component {
   }
 
   handleRemoveActiveFilter(item) {
-    const { onRemoveActiveFilter, fileType, paginationOptions, refetchAssets } = this.props;
+    const {
+      onRemoveActiveFilter, fileType, paginationOptions, refetchAssets,
+    } = this.props;
     const { perPage } = paginationOptions;
     onRemoveActiveFilter(item);
     const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${perPage}`}`;
@@ -167,7 +175,9 @@ class AssetsListBody extends Component {
   }
 
   removeAllActiveFilters() {
-    const { onRemoveAllActiveFilters, fileType, paginationOptions, refetchAssets } = this.props;
+    const {
+      onRemoveAllActiveFilters, fileType, paginationOptions, refetchAssets,
+    } = this.props;
     const { perPage } = paginationOptions;
     onRemoveAllActiveFilters();
     const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${perPage}`}`;
@@ -191,7 +201,9 @@ class AssetsListBody extends Component {
       activeFilters,
     } = this.props;
     const { mobile } = this.state;
-    const { lastPage, totalItems, perPage, page } = paginationOptions;
+    const {
+      lastPage, totalItems, perPage, page,
+    } = paginationOptions;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
     const renderHeader = headers.map((item, i) => (
@@ -242,7 +254,7 @@ class AssetsListBody extends Component {
           <FormattedMessage id="cms.assets.list.activeFilters" />:
         </Filter.ActiveLabel>
         <Filter.List>
-          {activeFilters.map((item) => (
+          {activeFilters.map(item => (
             <Filter.Item
               key={item.code}
               onRemove={() => this.handleRemoveActiveFilter(item)}
@@ -266,7 +278,7 @@ class AssetsListBody extends Component {
         )}
       </Toolbar.Results>
     );
-    const assetsListItems = assets.map((asset) => <AssetsListItem key={asset.id} asset={asset} />);
+    const assetsListItems = assets.map(asset => <AssetsListItem key={asset.id} asset={asset} />);
     const tableContent = (
       <table className="table table-bordered table-hover AssetsList__table">
         <thead>

@@ -125,7 +125,7 @@ describe('state/categories/actions', () => {
       store
         .dispatch(handleExpandCategory('home'))
         .then(() => {
-          const actionTypes = store.getActions().map((action) => action.type);
+          const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(2);
           expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
           expect(actionTypes.includes(SET_CATEGORY_LOADING)).toBe(true);

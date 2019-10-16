@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape, defineMessages } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape, defineMessages,
+} from 'react-intl';
 import { CKEDITOR_OPTION_NODE } from 'state/content-settings/const';
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
-import { Row, Col, Button, Icon } from 'patternfly-react';
+import {
+  Row, Col, Button, Icon,
+} from 'patternfly-react';
 
 const messages = defineMessages({
   none: {

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
+import {
+  FormattedMessage, defineMessages, injectIntl, intlShape,
+} from 'react-intl';
 import { Row, Col } from 'patternfly-react';
 import { Field } from 'redux-form';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -8,15 +10,14 @@ import FormLabel from 'ui/common/form/FormLabel';
 import { required } from '@entando/utils';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 
-export const elements = (value) =>
-  value && !/^(\w+)=([^\s]+)$/i.test(value) ? (
-    <FormattedMessage id="validateForm.elements" />
-  ) : (
-    undefined
-  );
+export const elements = value => (value && !/^(\w+)=([^\s]+)$/i.test(value) ? (
+  <FormattedMessage id="validateForm.elements" />
+) : (
+  undefined
+));
 
 const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => {
-  const selectAllowedOptions = enumeratorMapExtractorBeans.map((item) => ({
+  const selectAllowedOptions = enumeratorMapExtractorBeans.map(item => ({
     value: item.code,
     text: item.descr,
   }));

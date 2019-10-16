@@ -7,7 +7,7 @@ import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 
 import DeleteContentTypeModal from 'ui/content-type/DeleteContentTypeModal';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   info: getInfo(state),
 });
 

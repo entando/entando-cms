@@ -14,7 +14,7 @@ const contentModelMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   info: getInfo(state),
 });
 

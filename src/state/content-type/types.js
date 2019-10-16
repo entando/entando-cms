@@ -3,8 +3,7 @@ export const REMOVE_CONTENT_TYPE = 'content-type/remove-content-type';
 export const REMOVE_ATTRIBUTE = 'content-type/remove-attribute';
 export const SET_ATTRIBUTES = 'content-type/set-attributes';
 export const SET_SELECTED_CONTENT_TYPE = 'content-type/set-selected-content-type';
-export const SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE =
-  'content-type/set-selected-attribute-for-content-type';
+export const SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE = 'content-type/set-selected-attribute-for-content-type';
 export const SET_SELECTED_ATTRIBUTE = 'content-type/set-selected-attribute';
 export const MOVE_ATTRIBUTE_UP = 'content-type/move-attribute-up';
 export const MOVE_ATTRIBUTE_DOWN = 'content-type/move-attribute-down';
