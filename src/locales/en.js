@@ -176,7 +176,6 @@ export default {
     'cms.contentsettings.form.metadatamapping.help':
       "Comma delimited list of relationships between the metadata resource and the '{key}' parameter in the association of image resource to content attribute",
     'cms.contentsettings.metadata.infoDeleted': '{name} removed',
-    /* Edit Content starts HERE */
     'cms.new': 'New',
     'cms.save': 'Save',
     'cms.cancel': 'Cancel',
@@ -215,8 +214,6 @@ export default {
     'cms.contents.edit.titletip':
       'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.edit.contentAttributes': 'Content Attributes',
-    /* Edit Content ends HERE */
-    /* Digital Assets starts here */
     'cms.assets.title': 'Digital Assets',
     'cms.assets.tip':
       'The DIGITAL ASSETS section lets you manage existing resources, images and attachements, access resources list, add or delete resources.  Images and attachments can be uploaded to a digital assets archive and used in content.',
@@ -239,7 +236,6 @@ export default {
     'cms.assets.list.nothingFound': 'No items found',
     'cms.assets.list.of': 'of',
     'cms.assets.list.items': 'items',
-    /* Digital Assets ends here */
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Code must be 3 uppercase letters',
