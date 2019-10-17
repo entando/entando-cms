@@ -195,6 +195,7 @@ export default {
     'validateForm.widgetCode':
       '{name} Contains invalid characters. Only alphanumeric characters and the underscore _ are allowed',
     'validateForm.passwordNotMatch': "Confirm value doesn't match with Password value",
+    'validateForm.code.max10digits': 'Code contains invalid characters or has reached maximum requirements. Only 10 or less numeric characters are allowed.',
     'validateForm.code':
       "Code contains invalid characters. Only alphanumeric characters and the underscore '_' are allowed.",
     'validateForm.name.help': 'You can insert max 50 characters uppercase and lowercase letters, including numbers and special characters',

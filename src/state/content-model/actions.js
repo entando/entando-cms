@@ -5,7 +5,9 @@ import {
   clearErrors,
   TOAST_ERROR,
 } from '@entando/messages';
+import { initialize } from 'redux-form';
 import { setPage } from 'state/pagination/actions';
+import { getContentTypeList } from 'state/content-type/selectors';
 import {
   SET_CONTENT_MODELS,
   SET_CONTENT_MODEL_OPENED,
@@ -128,11 +130,16 @@ export const sendPostContentModel = contModelObject => dispatch => new Promise(r
   }).catch(() => {})
 ));
 
-export const fetchContentModel = id => dispatch => new Promise(resolve => (
+export const fetchContentModel = id => (dispatch, getState) => new Promise(resolve => (
   getContentModel(id).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setContentModel(json.payload));
+        const contentTypes = getContentTypeList(getState());
+        dispatch(initialize('contentmodelform', {
+          ...json.payload,
+          contentType: contentTypes.find(ctype => ctype.code === json.payload.contentType),
+        }));
         resolve(json.payload);
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));

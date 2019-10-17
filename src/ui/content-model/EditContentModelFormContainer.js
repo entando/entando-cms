@@ -4,9 +4,9 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
-import { sendPutContentModel, fetchContentModel } from 'state/content-model/actions';
+import { fetchContentModelDictionary, sendPutContentModel, fetchContentModel } from 'state/content-model/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
-import { getContentModelOpened } from 'state/content-model/selectors';
+import { getContentModelOpened, getContentModelDictionaryList } from 'state/content-model/selectors';
 import { ROUTE_CMS_CONTENTMODEL_LIST } from 'app-init/routes';
 
 import AddContentModelForm from 'ui/content-model/AddContentModelForm';
@@ -24,6 +24,7 @@ export const mapStateToProps = (state) => {
   return {
     contentTypes,
     mode: 'edit',
+    dictionary: getContentModelDictionaryList(state),
     initialValues: {
       ...formvals,
       contentType: contentTypes.find(ctype => ctype.code === formvals.contentType),
@@ -33,8 +34,10 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onDidMount: () => {
-    dispatch(fetchContentModel(params.id));
-    dispatch(fetchContentTypeListPaged());
+    dispatch(fetchContentModelDictionary());
+    dispatch(fetchContentTypeListPaged()).then(() => (
+      dispatch(fetchContentModel(params.id))
+    ));
   },
   onSubmit: values => (
     dispatch(sendPutContentModel({

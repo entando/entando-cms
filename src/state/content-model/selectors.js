@@ -39,5 +39,13 @@ export const getContentModelDictionary = createSelector(
 
 export const getContentModelDictionaryList = createSelector(
   getContentModelDictionary,
-  dictionary => dictionary.list,
+  dictionary => dictionary.list.map(object => ({
+    ...object,
+    methods: object.methods ? Object.entries(object.methods).map(([key, m]) => (
+      [key.replace(/"/g, '\''), m]
+    )).reduce((acc, [key, m]) => {
+      acc[key] = m;
+      return acc;
+    }, {}) : null,
+  })),
 );

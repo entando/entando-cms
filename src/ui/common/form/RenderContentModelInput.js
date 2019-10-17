@@ -12,8 +12,10 @@ import 'brace/ext/language_tools';
 const langTools = ace.acequire('ace/ext/language_tools');
 
 const aceOnBlur = onBlur => (_event, editor) => {
-  const value = editor.getValue();
-  onBlur(value);
+  if (editor) {
+    const value = editor.getValue();
+    onBlur(value);
+  }
 };
 
 class RenderContentModelInput extends Component {
@@ -21,107 +23,31 @@ class RenderContentModelInput extends Component {
     super(props);
     this.state = {
       dictionaryLoaded: false,
-      dictionary: [],
-      dictList: [],
-      dictMapped: {},
-      regLastToken: '',
     };
   }
 
   componentDidUpdate(prevProps) {
-    const { dictionary: _dict } = this.props;
-    if (_dict.length !== prevProps.dictionary.length) {
-      this.populateDictState();
+    const { dictionary } = this.props;
+    const { dictionaryLoaded } = this.state;
+    if (!dictionaryLoaded && dictionary.length !== prevProps.dictionary.length) {
       this.initCompleter();
     }
   }
 
-  populateDictState() {
-    const { dictionary: _dict } = this.props;
-    const dictMapped = _dict.reduce((acc, curr) => {
-      acc[curr.code] = curr.methods;
-      return acc;
-    }, {});
-
-    const dictionary = _dict.map(word => ({
-      caption: word.code,
-      value: word.code,
-      score: 10000,
-      meta: `${word.code} Object`,
-    }))
-
-    this.setState({
-      dictionaryLoaded: true,
-      dictionary,
-      dictMapped,
-      dictList: [...dictionary],
-    });
-  }
-
-  createCommands(editor) {
-    editor.commands.addCommand({
-      name: 'dotCommand1',
-      bindKey: { win: '.', mac: '.' },
-      exec: () => {
-        const { dictMapped: mapped } = this.state;
-        const cpos = editor.selection.getCursor();
-        const sess = editor.session;
-
-        const curLine = (sess.getDocument().getLine(cpos.row)).trim();
-        const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
-        const curCmd = curTokens[0];
-        if (!curCmd) return;
-        const lastToken = curTokens[curTokens.length - 1];
-
-        editor.insert('.');
-        if (lastToken in mapped) {
-          this.setState({ regLastToken: lastToken });
-          console.log(Object.entries(mapped[lastToken]));
-          const dictList = Object.entries(mapped[lastToken]).map(([key]) => ({
-            caption: key,
-            value: key,
-            score: 10001,
-            meta: `${lastToken} Object`,
-          }));
-          this.setState({ dictList });
-        }
-      },
-    });
-    editor.commands.on('afterExec', (e) => {
-      if (e.command.name === 'dotCommand1') {
-        editor.execCommand('startAutocomplete');
-      }
-    });
-  }
-
   initCompleter() {
-    let cmdwritten = false;
+    const { dictionaryLoaded } = this.state;
     const contentModelCompleter = {
       getCompletions: (editor, session, pos, prefix, callback) => {
-        if (!cmdwritten) {
-          cmdwritten = true;
-          this.createCommands(editor);
+        if (!dictionaryLoaded) {
+          const { onInitCommands } = this.props;
+          onInitCommands(editor);
         }
-        console.log('call', this.state.dictList);
-        callback(null, this.state.dictList.map((word) => {
-          const { regLastToken } = this.state;
-          if (regLastToken) {
-            word.completer = {
-              insertMatch: (editor, data) => {
-                const insertedValue = data.value;
-                console.log(insertedValue, this.state.dictMapped[regLastToken]);
-                if (insertedValue in this.state.dictMapped[regLastToken]) {
-                  this.setState({ regLastToken: '', dictList: [...this.state.dictionary] });
-                }
-                editor.completer.insertMatch({value: insertedValue});
-              },
-            };
-          }
-          return word;
-        }));
+        const { dictionary } = this.props;
+        callback(null, dictionary);
       },
     };
     langTools.addCompleter(contentModelCompleter);
+    this.setState({ dictionaryLoaded: true });
   }
 
   render() {
@@ -151,6 +77,9 @@ class RenderContentModelInput extends Component {
               showPrintMargin={false}
               editorProps={{
                 $blockScrolling: Infinity,
+              }}
+              setOptions={{
+                useWorker: false,
               }}
               style={{ border: '1px solid #ddd' }}
               enableBasicAutocompletion
@@ -182,6 +111,7 @@ RenderContentModelInput.propTypes = {
   prepend: PropTypes.node,
   append: PropTypes.string,
   alignClass: PropTypes.string,
+  onInitCommands: PropTypes.func,
 };
 
 RenderContentModelInput.defaultProps = {
@@ -194,6 +124,7 @@ RenderContentModelInput.defaultProps = {
   append: '',
   prepend: '',
   alignClass: 'text-right',
+  onInitCommands: () => {},
 };
 
 export default RenderContentModelInput;
