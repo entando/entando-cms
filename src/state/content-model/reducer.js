@@ -5,6 +5,8 @@ import {
   SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
   SET_CONTENT_MODEL_SEARCH_KEYWORD,
   SET_CONTENT_MODEL_DICTIONARY,
+  CLEAR_CONTENT_MODEL_DICTIONARY,
+  CLEAR_CONTENT_MODEL_OPENED,
 } from 'state/content-model/types';
 import { combineReducers } from 'redux';
 
@@ -37,6 +39,8 @@ const dictionary = (state = defaultDictState, action = {}) => {
         list: toListCodes(action.payload),
         map: action.payload,
       };
+    case CLEAR_CONTENT_MODEL_DICTIONARY:
+      return defaultDictState;
     default:
       return state;
   }
@@ -46,9 +50,10 @@ const opened = (state = {}, action = {}) => {
   switch (action.type) {
     case SET_CONTENT_MODEL_OPENED:
       return {
-        ...state,
-        opened: action.payload,
+        ...action.payload,
       };
+    case CLEAR_CONTENT_MODEL_OPENED:
+      return {};
     default:
       return state;
   }

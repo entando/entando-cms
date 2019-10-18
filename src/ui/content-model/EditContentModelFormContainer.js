@@ -4,7 +4,13 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
-import { fetchContentModelDictionary, sendPutContentModel, fetchContentModel } from 'state/content-model/actions';
+import {
+  fetchContentModelDictionary,
+  sendPutContentModel,
+  fetchContentModel,
+  clearContentModel,
+  clearContentModelDictionary,
+} from 'state/content-model/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getContentModelOpened, getContentModelDictionaryList } from 'state/content-model/selectors';
 import { ROUTE_CMS_CONTENTMODEL_LIST } from 'app-init/routes';
@@ -38,6 +44,10 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(fetchContentTypeListPaged()).then(() => (
       dispatch(fetchContentModel(params.id))
     ));
+  },
+  onDidUnmount: () => {
+    dispatch(clearContentModel());
+    dispatch(clearContentModelDictionary());
   },
   onSubmit: values => (
     dispatch(sendPutContentModel({

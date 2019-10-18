@@ -14,10 +14,17 @@ configEnzymeAdapter();
 const PROPS = {
   onDidMount: jest.fn(),
   handleSubmit: jest.fn(),
+  onDidUnmount: () => {},
   contentTypes: [
-    { contentType: 'Hello' },
-    { contentType: 'World' },
+    { code: 'Hello' },
+    { code: 'World' },
   ],
+  dictionary: [{
+    caption: 'echos',
+    value: 'chos',
+    score: 10000,
+    meta: 'chos Object',
+  }],
 };
 
 describe('content-model/AddContentModelForm', () => {

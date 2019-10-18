@@ -11,6 +11,10 @@ configEnzymeAdapter();
 const props = {
   contentModels,
   onDidMount: jest.fn(),
+  fetchList: () => {},
+  page: 1,
+  pageSize: 10,
+  totalItems: 10,
   onClickDelete: () => {},
 };
 

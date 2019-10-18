@@ -10,7 +10,17 @@ import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
 configEnzymeAdapter();
 
 const PROPS = {
+  onDidMount: jest.fn(),
   handleSubmit: jest.fn(),
+  selectOptions: [{
+    label: 'Yo',
+    value: 'yo',
+  }],
+  selectedAttribute: {
+    label: 'Yo',
+    value: 'yo',
+  },
+  onChangeSearchType: () => {},
 };
 
 describe('ui/content-model/ContentModelSearchForm', () => {
@@ -18,8 +28,9 @@ describe('ui/content-model/ContentModelSearchForm', () => {
     mockRenderWithIntl(<ContentModelSearchForm {...PROPS} />),
   );
 
-  it('renders without crashing', () => {
+  it('renders without crashing and called onDidMount', () => {
     expect(component.exists()).toEqual(true);
+    expect(PROPS.onDidMount).toHaveBeenCalled();
   });
 
   it('contains the dropdown field', () => {

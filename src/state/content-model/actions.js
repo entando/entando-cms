@@ -11,10 +11,12 @@ import { getContentTypeList } from 'state/content-type/selectors';
 import {
   SET_CONTENT_MODELS,
   SET_CONTENT_MODEL_OPENED,
+  CLEAR_CONTENT_MODEL_OPENED,
   SET_CONTENT_MODEL_FILTER,
   SET_CONTENT_MODEL_SEARCH_ATTRIBUTE,
   SET_CONTENT_MODEL_SEARCH_KEYWORD,
   SET_CONTENT_MODEL_DICTIONARY,
+  CLEAR_CONTENT_MODEL_DICTIONARY,
 } from 'state/content-model/types';
 
 import {
@@ -38,6 +40,10 @@ export const setContentModel = payload => ({
   payload,
 });
 
+export const clearContentModel = () => ({
+  type: CLEAR_CONTENT_MODEL_OPENED,
+});
+
 export const setListFilterProps = payload => ({
   type: SET_CONTENT_MODEL_FILTER,
   payload,
@@ -56,6 +62,10 @@ export const setSearchKeyword = payload => ({
 export const setContentModelDictionary = payload => ({
   type: SET_CONTENT_MODEL_DICTIONARY,
   payload,
+});
+
+export const clearContentModelDictionary = () => ({
+  type: CLEAR_CONTENT_MODEL_DICTIONARY,
 });
 
 export const pageDefault = { page: 1, pageSize: 10 };

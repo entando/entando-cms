@@ -6,6 +6,11 @@ const state = {
       contentType: {
         list: [],
       },
+      contentModel: {
+        dictionary: {
+          list: [],
+        },
+      },
     },
   },
 };

@@ -4,7 +4,12 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 import { getContentModelDictionaryList } from 'state/content-model/selectors';
-import { fetchContentModelDictionary, sendPostContentModel } from 'state/content-model/actions';
+import {
+  fetchContentModelDictionary,
+  sendPostContentModel,
+  clearContentModel,
+  clearContentModelDictionary,
+} from 'state/content-model/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { ROUTE_CMS_CONTENTMODEL_LIST } from 'app-init/routes';
@@ -27,6 +32,10 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => {
     dispatch(fetchContentModelDictionary());
     dispatch(fetchContentTypeListPaged());
+  },
+  onDidUnmount: () => {
+    dispatch(clearContentModel());
+    dispatch(clearContentModelDictionary());
   },
   onSubmit: values => (
     dispatch(sendPostContentModel({

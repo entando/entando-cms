@@ -74,6 +74,11 @@ class AddContentModelFormBody extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { onDidUnmount } = this.props;
+    onDidUnmount();
+  }
+
   populateDictState() {
     const { dictionary: _dict } = this.props;
     const dictMapped = _dict.reduce((acc, curr) => {
@@ -292,6 +297,7 @@ AddContentModelFormBody.propTypes = {
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
+  onDidUnmount: PropTypes.func.isRequired,
   submitting: PropTypes.bool,
   mode: PropTypes.string,
 };
