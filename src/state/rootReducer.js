@@ -13,7 +13,7 @@ import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
 import contentSettings from 'state/content-settings/reducer';
 
-const cms = combineReducers({
+export const cms = combineReducers({
   contentModel,
   contentType,
   editContent,

@@ -20,6 +20,20 @@ export const CONTENT_SETTINGS_OK = {
   },
 };
 
+export const CONTENT_SETTINGS_OK_MAPPED = [
+  { key: 'legend', metadata: [] },
+  { key: 'alt', metadata: [] },
+  { key: 'description', metadata: [] },
+  { key: 'title', metadata: [] },
+];
+
+export const CONTENT_SETTINGS_OK_FORMED = {
+  legend: '',
+  alt: '',
+  description: '',
+  title: '',
+};
+
 export const CONTENT_SETTINGS_REFRESH_OK = {
   payload: '',
   errors: [],
@@ -29,4 +43,20 @@ export const CONTENT_SETTINGS_REFRESH_OK = {
 export const CONTENT_SETTINGS_EDITOR_OK = {
   label: 'CKEditor',
   key: 'fckeditor',
+};
+
+export const CONTENT_SETTINGS_CROP_RATIOS_OK = {
+  payload: [
+    '4:9',
+  ],
+  metaData: {},
+  errors: [],
+};
+
+export const CONTENT_SETTINGS_METADATA_OK = {
+  newKey: ['newMapping'],
+  legend: [],
+  alt: [],
+  description: [],
+  title: [],
 };
