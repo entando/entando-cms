@@ -18,6 +18,16 @@ export const getContentModels = (page = { page: 1, pageSize: 10 }, params = '') 
   )
 );
 
+export const getContentModelDictionary = () => (
+  makeRequest({
+    uri: `${contentModelsPath}/dictionary`,
+    method: METHODS.GET,
+    mockResponse: GET_CONTENT_MODELS_RESPONSE_OK,
+    useAuthentication: true,
+    errors: () => [],
+  })
+);
+
 export const postContentModel = contModelObject => makeRequest({
   uri: contentModelsPath,
   body: contModelObject,

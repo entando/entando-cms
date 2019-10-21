@@ -16,6 +16,12 @@ describe('ui/common/form/RenderContentModelInput', () => {
       onFocus: jest.fn(),
     },
     id: 'model',
+    dictionary: [{
+      caption: 'echos',
+      value: 'chos',
+      score: 10000,
+      meta: 'chos Object',
+    }],
   };
 
   const component = mount(<RenderContentModelInput {...props} />);
@@ -24,9 +30,8 @@ describe('ui/common/form/RenderContentModelInput', () => {
     expect(component.exists()).toEqual(true);
   });
 
-  it('checks AceEditor and its props', () => {
+  it('AceEditor will not exist until dictionary comes in', () => {
     const el = component.find(AceEditor);
-    expect(el.exists()).toEqual(true);
-    expect(el.prop('name')).toEqual(props.input.name);
+    expect(el.exists()).toEqual(false);
   });
 });

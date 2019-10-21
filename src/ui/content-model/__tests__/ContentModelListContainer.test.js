@@ -9,6 +9,14 @@ const state = {
     },
   },
   loading: {},
+  pagination: {
+    global: {
+      page: 1,
+      pageSize: 10,
+      lastPage: 1,
+      totalItems: 0,
+    },
+  },
 };
 
 describe('content-model/ContentModelListContainer', () => {

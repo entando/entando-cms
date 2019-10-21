@@ -2,14 +2,17 @@
   &__heading {
     font-weight: 300;
   }
+
   &__form-title {
-    font-weight: bold;
     margin-left: 28px;
+    font-weight: bold;
   }
+
   & > hr {
-    border-color: #363636;
+    border-color: $color-de-list-icon-active;
   }
-  & > .row {
+
+  &__row {
     margin-top: 12px;
     margin-bottom: 12px;
   }
