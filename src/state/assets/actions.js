@@ -7,8 +7,8 @@ import {
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
   APPLY_SORT,
-  CHANGE_PAGINATION,
 } from 'state/assets/types';
+import { setPage } from 'state/pagination/actions';
 
 import { toggleLoading } from 'state/loading/actions';
 
@@ -49,11 +49,6 @@ export const applySort = sortName => ({
   payload: sortName,
 });
 
-export const changePagination = paginationOptions => ({
-  type: CHANGE_PAGINATION,
-  payload: paginationOptions,
-});
-
 export const fetchAssets = params => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('assets'));
   getAssets(params)
@@ -61,17 +56,7 @@ export const fetchAssets = params => dispatch => new Promise((resolve) => {
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setAssets(json.payload));
-          const {
-            page, pageSize, lastPage, totalItems,
-          } = json.metaData;
-          const paginationOptions = {
-            page,
-            perPage: pageSize,
-            totalItems,
-            lastPage,
-            perPageOptions: [5, 10, 15, 25, 50],
-          };
-          dispatch(changePagination(paginationOptions));
+          dispatch(setPage(json.metaData));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
         }

@@ -6,7 +6,6 @@ import {
   getAssetsView,
   getFileType,
   getSort,
-  getPaginationOptions,
   getActiveFilters,
 } from 'state/assets/selectors';
 import {
@@ -16,8 +15,10 @@ import {
   changeFileType,
   changeAssetsView,
   applySort,
-  changePagination,
 } from 'state/assets/actions';
+import {
+  getLastPage, getPageSize, getTotalItems, getCurrentPage,
+} from 'state/pagination/selectors';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import AssetsList from 'ui/assets/AssetsList';
@@ -31,7 +32,10 @@ export const mapStateToProps = state => ({
   fileType: getFileType(state),
   loading: getLoading(state).assets,
   sort: getSort(state),
-  paginationOptions: getPaginationOptions(state),
+  lastPage: getLastPage(state),
+  pageSize: getPageSize(state),
+  totalItems: getTotalItems(state),
+  page: getCurrentPage(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -57,9 +61,6 @@ export const mapDispatchToProps = dispatch => ({
   },
   onApplySort: (sortName) => {
     dispatch(applySort(sortName));
-  },
-  onChangePaginationOptions: (paginationOptions) => {
-    dispatch(changePagination(paginationOptions));
   },
   onRemoveAllActiveFilters: () => {
     dispatch(setActiveFilters([]));

@@ -86,14 +86,14 @@ class AssetsListBody extends Component {
         defaultMessage: 'Filter by',
       },
     });
-    this.onPageInput = this.onPageInput.bind(this);
     this.onPerPageSelect = this.onPerPageSelect.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
-    const { onDidMount, fileType, paginationOptions } = this.props;
-    const { page, perPage } = paginationOptions;
+    const {
+      onDidMount, fileType, page, pageSize: perPage,
+    } = this.props;
     const urlParams = `?type=${fileType}&page=${page}&pageSize=${perPage}`;
     onDidMount(urlParams);
     this.updateWindowDimensions();
@@ -102,10 +102,9 @@ class AssetsListBody extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      sort, refetchAssets, fileType, paginationOptions,
+      sort, refetchAssets, fileType, page, pageSize: perPage,
     } = this.props;
     if (prevProps.sort.name !== sort.name || prevProps.sort.direction !== sort.direction) {
-      const { page, perPage } = paginationOptions;
       const fetchParams = `?type=${fileType}${
         sort
           ? `&sort=${sort.name}&direction=${sort.direction}&page=${page}&pageSize=${perPage}`
@@ -120,39 +119,29 @@ class AssetsListBody extends Component {
   }
 
   onFileTypeChange(fileType) {
-    const { onChangeFileType, refetchAssets, paginationOptions } = this.props;
-    const { page, perPage } = paginationOptions;
+    const {
+      onChangeFileType, refetchAssets, page, pageSize: perPage,
+    } = this.props;
     const fetchParams = `?type=${fileType}${`&page=${page}&pageSize=${perPage}`}`;
     onChangeFileType(fileType);
     refetchAssets(fetchParams);
   }
 
   onPageChange(newPage) {
-    const { fileType, paginationOptions, refetchAssets } = this.props;
-    const { perPage, lastPage } = paginationOptions;
+    const {
+      fileType, pageSize: perPage, lastPage, refetchAssets,
+    } = this.props;
     if (newPage < 1 || newPage > lastPage) return 0;
-    paginationOptions.page = newPage;
     const fetchParams = `?type=${fileType}${`&page=${newPage}&pageSize=${perPage}`}`;
     return refetchAssets(fetchParams);
   }
 
   onPerPageSelect(value) {
     const {
-      onChangePaginationOptions, paginationOptions, fileType, refetchAssets,
+      fileType, refetchAssets,
     } = this.props;
-    paginationOptions.perPage = value;
-    onChangePaginationOptions(paginationOptions);
     const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${value}`}`;
     refetchAssets(fetchParams);
-  }
-
-  onPageInput(input) {
-    const { onChangePaginationOptions, paginationOptions } = this.props;
-    let { value } = input.target;
-    // eslint-disable-next-line no-restricted-globals
-    value = isNaN(value) || value === '' ? 1 : parseInt(value, 10);
-    paginationOptions.page = value;
-    onChangePaginationOptions(paginationOptions);
   }
 
   updateWindowDimensions() {
@@ -166,9 +155,8 @@ class AssetsListBody extends Component {
 
   handleRemoveActiveFilter(item) {
     const {
-      onRemoveActiveFilter, fileType, paginationOptions, refetchAssets,
+      onRemoveActiveFilter, fileType, pageSize: perPage, refetchAssets,
     } = this.props;
-    const { perPage } = paginationOptions;
     onRemoveActiveFilter(item);
     const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${perPage}`}`;
     refetchAssets(fetchParams);
@@ -176,9 +164,8 @@ class AssetsListBody extends Component {
 
   removeAllActiveFilters() {
     const {
-      onRemoveAllActiveFilters, fileType, paginationOptions, refetchAssets,
+      onRemoveAllActiveFilters, fileType, pageSize: perPage, refetchAssets,
     } = this.props;
-    const { perPage } = paginationOptions;
     onRemoveAllActiveFilters();
     const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${perPage}`}`;
     refetchAssets(fetchParams);
@@ -197,13 +184,19 @@ class AssetsListBody extends Component {
       onApplyFilteredSearch,
       onChangeAssetsView,
       onApplySort,
-      paginationOptions,
       activeFilters,
+      lastPage,
+      totalItems,
+      pageSize: perPage,
+      page,
+      perPageOptions,
     } = this.props;
+    const pagination = {
+      page,
+      perPage,
+      perPageOptions,
+    };
     const { mobile } = this.state;
-    const {
-      lastPage, totalItems, perPage, page,
-    } = paginationOptions;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
     const renderHeader = headers.map((item, i) => (
@@ -351,7 +344,6 @@ class AssetsListBody extends Component {
         {mobile ? (
           <Row>
             <Col xs={12} className="AssetsList__files-container--mobile no-padding">
-              {/* <div className="AssetsList__filter-info">{renderAppliedFilters}</div> */}
               {bodyContent}
             </Col>
           </Row>
@@ -366,8 +358,8 @@ class AssetsListBody extends Component {
             <Grid>
               <PaginationRow
                 viewType={PAGINATION_VIEW_TYPES[0]}
-                pageInputValue={paginationOptions.page}
-                pagination={paginationOptions}
+                pageInputValue={page}
+                pagination={pagination}
                 amountOfPages={lastPage}
                 pageSizeDropUp
                 itemCount={totalItems}
@@ -375,9 +367,9 @@ class AssetsListBody extends Component {
                 itemsEnd={itemsEnd}
                 onPerPageSelect={this.onPerPageSelect}
                 onFirstPage={() => this.onPageChange(1)}
-                onPreviousPage={() => this.onPageChange(paginationOptions.page - 1)}
-                onPageInput={this.onPageInput}
-                onNextPage={() => this.onPageChange(paginationOptions.page + 1)}
+                onPreviousPage={() => this.onPageChange(page - 1)}
+                // onPageInput={this.onPageInput}
+                onNextPage={() => this.onPageChange(page + 1)}
                 onLastPage={() => this.onPageChange(lastPage)}
               />
             </Grid>
@@ -393,7 +385,6 @@ AssetsListBody.propTypes = {
   loading: PropTypes.bool,
   assetsView: PropTypes.string.isRequired,
   fileType: PropTypes.string.isRequired,
-  paginationOptions: PropTypes.shape({}).isRequired,
   sort: PropTypes.shape({
     name: PropTypes.string,
     direction: PropTypes.string,
@@ -410,7 +401,11 @@ AssetsListBody.propTypes = {
   onChangeAssetsView: PropTypes.func.isRequired,
   onRemoveAllActiveFilters: PropTypes.func.isRequired,
   onChangeFileType: PropTypes.func.isRequired,
-  onChangePaginationOptions: PropTypes.func.isRequired,
+  lastPage: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  perPageOptions: PropTypes.arrayOf(PropTypes.number),
 };
 
 AssetsListBody.defaultProps = {
@@ -419,6 +414,7 @@ AssetsListBody.defaultProps = {
   filteringCategories: [],
   activeFilters: [],
   sort: {},
+  perPageOptions: [5, 10, 15, 25, 50],
 };
 
 export default injectIntl(AssetsListBody);
