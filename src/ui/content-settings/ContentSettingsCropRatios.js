@@ -40,7 +40,7 @@ const ContentSettingsCropRatios = ({
       </Col>
     </Row>
     {cropRatios.map(cropRatio => (
-      <Row key={cropRatio}>
+      <Row key={cropRatio} className="ContentSettingsCropRatios__row">
         <Col xs={12} sm={5} smOffset={2}>
           <RatioInput
             data-test-id="content-settings-crop-ratios-form-input"

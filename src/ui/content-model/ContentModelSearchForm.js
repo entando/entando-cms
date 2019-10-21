@@ -25,6 +25,11 @@ class ContentModelSearchFormBody extends Component {
     });
   }
 
+  componentDidMount() {
+    const { onDidMount } = this.props;
+    onDidMount();
+  }
+
   clearSearch() {
     const { reset, submit, searchTerm } = this.props;
     reset();
@@ -32,7 +37,13 @@ class ContentModelSearchFormBody extends Component {
   }
 
   render() {
-    const { intl, handleSubmit } = this.props;
+    const {
+      intl,
+      handleSubmit,
+      selectOptions,
+      onChangeSearchType,
+      selectedAttribute,
+    } = this.props;
     return (
       <form className="ContentModelList__searchform" onSubmit={handleSubmit}>
         <Grid fluid>
@@ -45,19 +56,21 @@ class ContentModelSearchFormBody extends Component {
                 />
               </Label>
               <DropdownButton
-                title={intl.formatMessage(this.messages.valueName)}
-                id=""
+                title={selectedAttribute.label}
+                id="attribute"
+                onSelect={onChangeSearchType}
                 className="ContentModelList__filter-searchby-dropdown"
               >
-                <MenuItem eventKey="1" active>
-                  <FormattedMessage id="cms.contentmodel.searchFilter.valueName" />
-                </MenuItem>
+                {selectOptions.map((option, idx) => (
+                  <MenuItem key={option.value} eventKey={idx + 1}>{option.label}</MenuItem>
+                ))}
               </DropdownButton>
             </Col>
             <Col xs={8}>
               <Field
                 name="keyword"
                 component={RenderSearchFormInput}
+                onClear={this.clearSearch}
                 placeholder={intl.formatMessage(this.messages.searchPlaceholder)}
               />
             </Col>
@@ -75,10 +88,17 @@ class ContentModelSearchFormBody extends Component {
 
 ContentModelSearchFormBody.propTypes = {
   intl: intlShape.isRequired,
+  onDidMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   searchTerm: PropTypes.string,
+  selectOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onChangeSearchType: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  selectedAttribute: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
 };
 
 ContentModelSearchFormBody.defaultProps = {

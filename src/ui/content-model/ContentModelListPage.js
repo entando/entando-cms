@@ -6,7 +6,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
+import ContentModelSearchFormContainer from 'ui/content-model/ContentModelSearchFormContainer';
 import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
 import { ROUTE_CMS_CONTENTMODEL_ADD } from 'app-init/routes';
 
@@ -31,7 +31,7 @@ const ContentModelListPage = () => (
     </Row>
     <Row className="ContentModelList__filter">
       <Col xs={9}>
-        <ContentModelSearchForm />
+        <ContentModelSearchFormContainer />
       </Col>
       <Col xs={1} />
       <Col xs={2}>
