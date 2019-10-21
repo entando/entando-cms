@@ -10,16 +10,20 @@ import {
 } from 'state/assets/selectors';
 
 const TEST_STATE = {
-  assets: {
-    sort: {},
-    assets: ['a', 'b'],
-    language: 'en',
-    filteringCategories: [],
-    activeFilters: [],
-    assetsView: 'list',
-    fileType: 'image',
-    paginationOptions: {
-      page: 1,
+  apps: {
+    cms: {
+      assets: {
+        sort: {},
+        assets: ['a', 'b'],
+        language: 'en',
+        filteringCategories: [],
+        activeFilters: [],
+        assetsView: 'list',
+        fileType: 'image',
+        paginationOptions: {
+          page: 1,
+        },
+      },
     },
   },
 };

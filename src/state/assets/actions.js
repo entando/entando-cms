@@ -1,7 +1,7 @@
 import { addErrors } from '@entando/messages';
 import {
   SET_ASSETS,
-  SET_CATEGORY_FILTER,
+  SET_ASSET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
   FILE_TYPE_CHANGE,
@@ -14,8 +14,8 @@ import { toggleLoading } from 'state/loading/actions';
 
 import { getAssets } from 'api/assets';
 
-export const setCategoryFilter = category => ({
-  type: SET_CATEGORY_FILTER,
+export const setAssetCategoryFilter = category => ({
+  type: SET_ASSET_CATEGORY_FILTER,
   payload: category,
 });
 

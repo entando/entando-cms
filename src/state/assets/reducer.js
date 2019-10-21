@@ -1,6 +1,6 @@
 import {
   SET_ASSETS,
-  SET_CATEGORY_FILTER,
+  SET_ASSET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
   FILE_TYPE_CHANGE,
@@ -26,7 +26,7 @@ const defaultState = {
 
 const reducer = (state = defaultState, action = {}) => {
   switch (action.type) {
-    case SET_CATEGORY_FILTER: {
+    case SET_ASSET_CATEGORY_FILTER: {
       const { filteringCategories } = state;
       let newFilters = filteringCategories.slice(0);
       const category = action.payload;

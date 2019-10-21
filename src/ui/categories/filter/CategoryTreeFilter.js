@@ -46,12 +46,13 @@ class CategoryTreeFilter extends React.Component {
       onExpandCategory,
       filteringCategories,
       onCheckCategory,
+      minimal,
+      filterSubject,
     } = this.props;
 
     const { treeExpanded } = this.state;
 
     const categoriesWithoutRoot = categories.filter(c => c.code !== 'home');
-
     const categoryRows = categoriesWithoutRoot.map((category, i) => (
       <CategoryTreeFileItem
         category={category}
@@ -61,33 +62,40 @@ class CategoryTreeFilter extends React.Component {
         language={language}
         onExpandCategory={onExpandCategory}
         onCheckCategory={onCheckCategory}
+        filterSubject={filterSubject}
       />
     ));
 
     return (
       <div>
         <table className="CategoryTreeFilter">
-          <thead>
-            <tr>
-              <th
-                className="CategoryTreeFilter__head"
-                role="button"
-                onClick={this.onExpandTree}
-                onKeyDown={this.onExpandTree}
-              >
-                <TreeNodeExpandedIcon expanded={treeExpanded} />
-                <span className="CategoryTreeFilter__title">
-                  <FormattedMessage id="cms.assets.list.categories" />
-                </span>
-              </th>
-            </tr>
-          </thead>
+          {
+            minimal ? null : (
+              <thead>
+                <tr>
+                  <th
+                    className="CategoryTreeFilter__head"
+                    role="button"
+                    onClick={this.onExpandTree}
+                    onKeyDown={this.onExpandTree}
+                  >
+                    <TreeNodeExpandedIcon expanded={treeExpanded} />
+                    <span className="CategoryTreeFilter__title">
+                      <FormattedMessage id="cms.assets.list.categories" />
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+            )
+          }
           <tbody>{categoryRows}</tbody>
         </table>
         {mobile ? null : <div className="CategoryTreeFilter__separator" />}
-        <Button className="CategoryTreeFilter__apply-button" onClick={() => this.onApply()}>
-          <FormattedMessage id="cms.assets.list.apply" />
-        </Button>
+        { minimal ? null : (
+          <Button className="CategoryTreeFilter__apply-button" onClick={() => this.onApply()}>
+            <FormattedMessage id="cms.assets.list.apply" />
+          </Button>
+        )}
         <br />
       </div>
     );
@@ -100,17 +108,21 @@ CategoryTreeFilter.propTypes = {
   paginationOptions: PropTypes.shape({}).isRequired,
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
-  onApplyFilteredSearch: PropTypes.func.isRequired,
+  onApplyFilteredSearch: PropTypes.func,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   assetType: PropTypes.string.isRequired,
   mobile: PropTypes.bool,
+  minimal: PropTypes.bool,
+  filterSubject: PropTypes.string.isRequired,
 };
 
 CategoryTreeFilter.defaultProps = {
   categories: [],
   onExpandCategory: () => {},
   onCheckCategory: () => {},
+  onApplyFilteredSearch: () => {},
   mobile: false,
+  minimal: false,
 };
 
 export default CategoryTreeFilter;

@@ -8,6 +8,12 @@ const initialState = {
     lastPage: 1,
     totalItems: 0,
   },
+  contents: {
+    page: 1,
+    pageSize: 10,
+    lastPage: 1,
+    totalItems: 0,
+  },
 };
 
 const isPageValid = (page, lastPage) => {

@@ -337,6 +337,7 @@ class AssetsListBody extends Component {
                 filteringCategories={filteringCategories}
                 assetType={fileType}
                 mobile={mobile}
+                filterSubject="asset"
               />
             </div>
             {mobile ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
@@ -351,7 +352,6 @@ class AssetsListBody extends Component {
         {mobile ? (
           <Row>
             <Col xs={12} className="AssetsList__files-container--mobile no-padding">
-              {/* <div className="AssetsList__filter-info">{renderAppliedFilters}</div> */}
               {bodyContent}
             </Col>
           </Row>
