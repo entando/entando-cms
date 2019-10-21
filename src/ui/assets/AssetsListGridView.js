@@ -7,9 +7,9 @@ const AssetsListGridView = ({ assets }) => {
   const gridItems = assets.map((asset) => {
     const { versions } = asset;
     const fileType = versions == null ? 'file' : 'image';
-    // console.log(versions[3]);
     const previewRender = fileType === 'image' ? (
       <img
+        // @TODO switch to URL (getURL from state?)
         src={`http://localhost:8080${versions[3].path}`}
         alt="Preview"
         className="AssetsListGridView__image"

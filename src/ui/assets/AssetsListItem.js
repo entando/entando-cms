@@ -9,6 +9,7 @@ const AssetsListItem = ({ asset }) => {
   } = asset;
   const fileType = versions == null ? 'file' : 'image';
   const previewRender = fileType === 'image' ? (
+    // @TODO switch to URL (getURL from state?)
     <img src={`http://localhost:8080${versions[1].path}`} alt="Preview" />
   ) : (
     <div className="fa fa-file-text AssetsList__item-file" />
