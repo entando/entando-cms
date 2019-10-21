@@ -17,10 +17,25 @@ const initState = {
   loading: {},
   apps: {
     cms: {
-      contentModel: { list: [] },
+      contentModel: {
+        list: [],
+        opened: {},
+        filters: {
+          filterProps: {},
+          attribute: 'descr',
+        },
+      },
     },
   },
   modal: { visibleModal: '', info: {} },
+  pagination: {
+    global: {
+      page: 1,
+      pageSize: 10,
+      lastPage: 1,
+      totalItems: 0,
+    },
+  },
 };
 
 let component;

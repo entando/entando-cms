@@ -249,9 +249,8 @@ export default {
     'validateForm.widgetCode':
       '{name} contiene caratteri non consentiti. Usare solo caratteri alfanumerici o undescore _',
     'validateForm.passwordNotMatch': 'Il valore di Conferma non coincide col valore della Password',
-    'validateForm.code':
-      "Codice contiene caratteri non validi. Usare solo caratteri alfanumerici o l'undescore '_'.",
-    'validateForm.name.help':
-      'Puoi inserire un massimo di 50 caratteri, lettere maiuscole e minuscole, numeri, ed i caratteri speciali',
+    'validateForm.code.max10digits': 'Il codice contiene caratteri non validi o ha raggiunto i requisiti massimi. Sono ammessi solo 10 o meno caratteri numerici.',
+    'validateForm.code': 'Codice contiene caratteri non validi. Usare solo caratteri alfanumerici o l\'undescore \'_\'.',
+    'validateForm.name.help': 'Puoi inserire un massimo di 50 caratteri, lettere maiuscole e minuscole, numeri, ed i caratteri speciali',
   },
 };

@@ -61,6 +61,7 @@ class RenderDropdownTypeaheadInput extends Component {
             id={input.name}
             className="DropdownTypeahead__dropdownbutton"
             onClick={this.typeaheadFocus}
+            disabled={others.disabled}
             rootCloseEvent="click"
           >
             <Typeahead

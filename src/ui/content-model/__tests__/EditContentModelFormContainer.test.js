@@ -37,6 +37,9 @@ const state = {
           contentType: 'WEh',
           descr: 'b',
         },
+        dictionary: {
+          list: [],
+        },
       },
     },
   },

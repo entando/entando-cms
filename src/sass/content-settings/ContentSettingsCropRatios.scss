@@ -9,10 +9,10 @@
   }
 
   & > hr {
-    border-color: #363636; // sass-lint:disable-line variable-for-property
+    border-color: $color-de-list-icon-active;
   }
 
-  & > .row { // sass-lint:disable-line force-element-nesting class-name-format
+  &__row {
     margin-top: 12px;
     margin-bottom: 12px;
   }
