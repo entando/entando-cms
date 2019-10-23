@@ -7,6 +7,7 @@ import {
   getFilteringCategories,
   getLanguage,
   getPaginationOptions,
+  getApiUrl,
 } from 'state/assets/selectors';
 
 const TEST_STATE = {
@@ -26,7 +27,16 @@ const TEST_STATE = {
       },
     },
   },
+  api: {
+    domain: 'https://localhost:8080/',
+  },
 };
+
+it('verify getApiUrl selector', () => {
+  const apiUrl = getApiUrl(TEST_STATE);
+  expect(apiUrl).toEqual('https://localhost:8080/');
+});
+
 
 it('verify getActiveFilters selector', () => {
   const activeFilters = getActiveFilters(TEST_STATE);

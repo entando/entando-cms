@@ -7,6 +7,7 @@ import {
   getFileType,
   getSort,
   getActiveFilters,
+  getApiUrl,
 } from 'state/assets/selectors';
 import {
   fetchAssets,
@@ -36,6 +37,7 @@ export const mapStateToProps = state => ({
   pageSize: getPageSize(state),
   totalItems: getTotalItems(state),
   page: getCurrentPage(state),
+  apiUrl: getApiUrl(state),
 });
 
 export const mapDispatchToProps = dispatch => ({

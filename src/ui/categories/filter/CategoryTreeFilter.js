@@ -29,12 +29,11 @@ class CategoryTreeFilter extends React.Component {
       onApplyFilteredSearch, filteringCategories, assetType, paginationOptions,
     } = this.props;
     const { perPage } = paginationOptions;
-    // @TODO needs support for multiple categories filtering
-    const fetchParams = `?type=${assetType}${`&page=${1}&pageSize=${perPage}`}${
-      filteringCategories.length !== 0
-        ? `&filters[0].attribute=categories&filters[0].value=${filteringCategories[0].code}`
-        : ''
-    }`;
+    const filteringParams = filteringCategories.map(
+      (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
+    ).join('');
+    const typeParams = assetType === 'all' ? '' : `type=${assetType}`;
+    const fetchParams = `?${typeParams}${`&page=${1}&pageSize=${perPage}`}${filteringParams}`;
     onApplyFilteredSearch(filteringCategories, fetchParams);
   }
 
