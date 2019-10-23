@@ -190,6 +190,7 @@ class AssetsListBody extends Component {
       pageSize: perPage,
       page,
       perPageOptions,
+      onAssetSelected,
     } = this.props;
     const pagination = {
       page,
@@ -271,7 +272,9 @@ class AssetsListBody extends Component {
         )}
       </Toolbar.Results>
     );
-    const assetsListItems = assets.map(asset => <AssetsListItem key={asset.id} asset={asset} />);
+    const assetsListItems = assets.map(asset => (
+      <AssetsListItem key={asset.id} asset={asset} onEditClicked={onAssetSelected} />
+    ));
     const tableContent = (
       <table className="table table-bordered table-hover AssetsList__table">
         <thead>
@@ -406,6 +409,7 @@ AssetsListBody.propTypes = {
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
+  onAssetSelected: PropTypes.func.isRequired,
 };
 
 AssetsListBody.defaultProps = {
