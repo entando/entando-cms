@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'react-intl';
+import { intlShape, FormattedMessage } from 'react-intl';
 import {
   Table,
   customHeaderFormattersDefinition,
@@ -9,6 +9,8 @@ import {
   tableCellFormatter, actionHeaderCellFormatter, MenuItem,
 } from 'patternfly-react';
 import * as resolve from 'table-resolver';
+import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
+import PublishContentModalContainer from 'ui/contents/PublishContentModalContainer';
 
 class ContentsTable extends Component {
   constructor(props) {
@@ -83,7 +85,8 @@ class ContentsTable extends Component {
 
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl,
+      activeColumns, availableColumns, intl, onEditContent, onClickDelete,
+      onClickPublish,
     } = this.props;
     const currentActiveColumns = ['selectAll', ...activeColumns];
     const allColumns = [{ code: 'selectAll' }, ...availableColumns];
@@ -123,16 +126,22 @@ class ContentsTable extends Component {
             break;
           case 'actions':
             headerCellFormatter = actionHeaderCellFormatter;
-            // eslint-disable-next-line no-unused-vars
             rowCellFormatter = (value, { rowData }) => [
               <Table.Actions key="1" style={{ width: 'inherit' }}>
                 <div>
                   <Table.DropdownKebab id="actionsKebab" pullRight>
-                    <MenuItem>Action</MenuItem>
-                    <MenuItem>Another Action</MenuItem>
-                    <MenuItem>Something else here</MenuItem>
-                    <MenuItem divider />
-                    <MenuItem>Separated link</MenuItem>
+                    <MenuItem onClick={() => onEditContent(rowData.id)}>
+                      <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+                    </MenuItem>
+                    <MenuItem onClick={() => onClickDelete(rowData)}>
+                      <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                    </MenuItem>
+                    <MenuItem onClick={() => onClickPublish([rowData], true)}>
+                      <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                    </MenuItem>
+                    <MenuItem onClick={() => onClickPublish([rowData], false)}>
+                      <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                    </MenuItem>
                   </Table.DropdownKebab>
                 </div>
               </Table.Actions>];
@@ -206,6 +215,8 @@ class ContentsTable extends Component {
             <Table.Header headerRows={resolve.headerRows({ columns })} />
             <Table.Body rows={contents} rowKey="id" />
           </Table.PfProvider>
+          <DeleteContentModalContainer />
+          <PublishContentModalContainer />
         </div>
         <div className="AssetsList__footer">
           <Grid>
@@ -248,6 +259,9 @@ ContentsTable.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
   onSelectAllRows: PropTypes.func.isRequired,
+  onEditContent: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
+  onClickPublish: PropTypes.func.isRequired,
 };
 
 ContentsTable.defaultProps = {

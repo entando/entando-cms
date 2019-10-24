@@ -9,7 +9,6 @@ const getCategoriesPath = '/api/categories';
 const postAddContentPath = '/api/plugins/cms/contents/';
 
 export const getContent = (params = '') => makeRequest({
-  // @TODO unable to fetch single content due to bug EN6-103, change path when issue is resolved
   uri: `${getContentPath}${params}`,
   method: METHODS.GET,
   contentType: 'application/json',

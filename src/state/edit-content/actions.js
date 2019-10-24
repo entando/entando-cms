@@ -27,9 +27,7 @@ export const fetchContent = params => dispatch => new Promise((resolve) => {
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          const content = json.payload[11] || [];
-          // @TODO unable to fetch single content due to bug EN6-103
-          // change [0] when issue is resolved
+          const content = json.payload;
           dispatch(setContentEntry(content));
           dispatch(setJoinedCategories(content.categories));
           const { mainGroup, groups, description } = content;

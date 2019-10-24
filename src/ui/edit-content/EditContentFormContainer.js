@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { formValueSelector } from 'redux-form';
+import { routeConverter } from '@entando/utils';
 
 import {
   fetchGroups,
@@ -21,6 +22,9 @@ import {
   getLanguage,
   getJoinedCategories,
 } from 'state/edit-content/selectors';
+import {
+  ROUTE_CMS_CONTENTS,
+} from 'app-init/routes';
 import { WORK_MODE_EDIT } from 'state/edit-content/types';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
@@ -35,10 +39,10 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   selectedCategories: getJoinedCategories(state),
 });
 
-export const mapDispatchToProps = dispatch => ({
-  onDidMount: () => {
+export const mapDispatchToProps = (dispatch, { history }) => ({
+  onDidMount: (fetchContentParams) => {
     dispatch(setWorkMode(WORK_MODE_EDIT));
-    dispatch(fetchContent('?status=published'));
+    dispatch(fetchContent(fetchContentParams));
     dispatch(fetchGroups());
     dispatch(fetchCategoryTree());
   },
@@ -47,6 +51,7 @@ export const mapDispatchToProps = dispatch => ({
     // eslint-disable-next-line no-console
     dispatch(console.log('Posting Editting of a form', values));
   },
+  onCancel: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
 });
 
 const EditContentContainer = connect(

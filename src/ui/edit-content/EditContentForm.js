@@ -41,11 +41,15 @@ const defaultOwnerGroup = 'free';
 
 class EditContentFormBody extends React.Component {
   componentDidMount() {
-    const { initialize, onDidMount, workMode } = this.props;
+    const {
+      initialize, onDidMount, workMode, match: { params = {} },
+    } = this.props;
+    const contendId = params.id;
+    const fetchContentParams = `/${contendId}`;
     if (workMode === WORK_MODE_ADD) {
       initialize({ ownerGroup: defaultOwnerGroup });
     }
-    onDidMount();
+    onDidMount(fetchContentParams);
   }
 
   render() {
@@ -55,6 +59,7 @@ class EditContentFormBody extends React.Component {
       content,
       language,
       workMode,
+      onCancel,
       handleSubmit,
       selectedJoinGroups,
       ownerGroupDisabled,
@@ -199,9 +204,9 @@ class EditContentFormBody extends React.Component {
             <SectionTitle nameId="cms.contents.edit.contentAttributes" />
           </Row>
         </div>
-        <Row>
-          <StickySave intl={intl} lastAutoSaveTime={lastModified} />
-        </Row>
+        <div className="AssetsList__footer">
+          <StickySave intl={intl} lastAutoSaveTime={lastModified} onCancel={onCancel} />
+        </div>
       </form>
     );
   }
@@ -226,6 +231,8 @@ EditContentFormBody.propTypes = {
   onDidMount: PropTypes.func.isRequired,
   ownerGroupDisabled: PropTypes.bool,
   onSetOwnerGroupDisable: PropTypes.func.isRequired,
+  match: PropTypes.shape({ match: PropTypes.shape({}) }).isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 EditContentFormBody.defaultProps = {

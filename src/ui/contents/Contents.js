@@ -88,17 +88,32 @@ class Contents extends Component {
       currentAuthorShow, currentStatusShow, currentColumnsShow,
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
-      onSelectRow, onSelectAllRows,
+      onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
     } = this.props;
 
     const { selectedContents } = this.messages;
+    const selectedRowsData = contents.filter(c => selectedRows.includes(c.id));
     const renderSelectedRows = selectedRows.length > 0 ? (
       <div className="Contents__selected-contents">
         {intl.formatMessage(selectedContents, { number: selectedRows.length })}
-        <Button><FormattedMessage id="cms.contents.reloadReferences" defaultMessage="Reload References" /></Button>
-        <Button><FormattedMessage id="cms.contents.categoriesToAdd" defaultMessage="Select Categories to add" /></Button>
-        <Button><FormattedMessage id="cms.contents.publish" defaultMessage="Publish" /></Button>
-        <Button><FormattedMessage id="cms.contents.upublish" defaultMessage="Unpublish" /></Button>
+        <Button>
+          <FormattedMessage
+            id="cms.contents.reloadReferences"
+            defaultMessage="Reload References"
+          />
+        </Button>
+        <Button>
+          <FormattedMessage
+            id="cms.contents.categoriesToAdd"
+            defaultMessage="Select Categories to add"
+          />
+        </Button>
+        <Button onClick={() => onClickPublish(selectedRowsData, true)}>
+          <FormattedMessage
+            id="cms.contents.publish"
+            defaultMessage="Publish"
+          />
+        </Button>
       </div>
     ) : null;
     return (
@@ -151,6 +166,9 @@ class Contents extends Component {
               onSelectAllRows={onSelectAllRows}
               onFilteredSearch={onFilteredSearch}
               availableColumns={AVAILABLE_COLUMNS}
+              onEditContent={onEditContent}
+              onClickDelete={onClickDelete}
+              onClickPublish={onClickPublish}
             />
           </div>
         </div>
@@ -193,6 +211,9 @@ Contents.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
   onSelectAllRows: PropTypes.func.isRequired,
+  onEditContent: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
+  onClickPublish: PropTypes.func.isRequired,
 };
 
 export default Contents;

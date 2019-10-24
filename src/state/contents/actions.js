@@ -1,13 +1,18 @@
 import { toggleLoading } from 'state/loading/actions';
-import { getContents } from 'api/contents';
+import { getContents, deleteContent, publishContent } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
-import { addErrors } from '@entando/messages';
+import { getPagination } from 'state/pagination/selectors';
+import {
+  addErrors, addToast, clearErrors, TOAST_ERROR,
+} from '@entando/messages';
 import {
   SET_CONTENTS, SET_QUICK_FILTER, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE,
   SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS,
 } from 'state/contents/types';
+
+const pageDefault = { page: 1, pageSize: 10 };
 
 export const setContents = contents => ({
   type: SET_CONTENTS,
@@ -79,7 +84,7 @@ export const selectAllRows = checked => ({
   payload: checked,
 });
 
-export const fetchContents = (page = { page: 1, pageSize: 25 },
+export const fetchContents = (page = pageDefault,
   params) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contents'));
   getContents(page, params)
@@ -90,9 +95,53 @@ export const fetchContents = (page = { page: 1, pageSize: 25 },
           dispatch(setPage(json.metaData, 'contents'));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
         }
         dispatch(toggleLoading('contents'));
         resolve();
+      });
+    })
+    .catch(() => {});
+});
+
+export const fetchContentsPaged = () => (dispatch, getState) => {
+  const pagination = getPagination(getState());
+  // @ TODO get filter properties and convert to query string and add as param
+  return dispatch(fetchContents(pagination));
+};
+
+export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
+  deleteContent(id)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPublishContent = (id, onLine) => dispatch => new Promise((resolve) => {
+  publishContent(id, onLine)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
       });
     })
     .catch(() => {});

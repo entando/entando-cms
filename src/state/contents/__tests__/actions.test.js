@@ -2,14 +2,15 @@ import { mockApi } from 'testutils/helpers';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { TOGGLE_LOADING } from 'state/loading/types';
-import { ADD_ERRORS } from 'state/categories/types';
+// import { ADD_ERRORS } from 'state/categories/types';
 import { SET_PAGE } from 'state/pagination/types';
-import { getContents } from 'api/contents';
+import { getContents, deleteContent, publishContent } from 'api/contents';
 import {
   setQuickFilter, setContentType, setGroup, setSort,
   setContentCategoryFilter, checkStatus, checkAccess,
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
   setCurrentColumnsShow, selectRow, selectAllRows, fetchContents,
+  sendDeleteContent, sendPublishContent,
 } from 'state/contents/actions';
 import {
   SET_QUICK_FILTER, SET_CONTENT_TYPE, SET_GROUP,
@@ -21,8 +22,14 @@ import {
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
+const ADD_ERRORS = 'errors/add-errors';
+const CLEAR_ERRORS = 'errors/clear-errors';
+const ADD_TOAST = 'toasts/add-toast';
+
 jest.mock('api/contents', () => ({
   getContents: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
+  deleteContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
+  publishContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
 }));
 
 describe('state/contents/actions', () => {
@@ -112,7 +119,7 @@ describe('state/contents/actions', () => {
   });
 
   describe('fetchContents()', () => {
-    it('when fetching assets it fires all the appropriate actions', (done) => {
+    it('when fetching contents it fires all the appropriate actions', (done) => {
       getContents.mockImplementationOnce(mockApi({ payload: ['a', 'b'], ok: true }));
       store = mockStore({
         contents: { contents: [] },
@@ -129,16 +136,80 @@ describe('state/contents/actions', () => {
         })
         .catch(done.fail);
     });
-    it('when fetching assets it reports errors succesfully', (done) => {
+    it('when fetching contents it reports errors succesfully', (done) => {
       getContents.mockImplementationOnce(mockApi({ errors: true }));
       store = mockStore({
         contents: { contents: [] },
       });
       store.dispatch(fetchContents()).then(() => {
         const actions = store.getActions().map(action => action.type);
-        expect(actions).toHaveLength(3);
+        expect(actions).toHaveLength(5);
         expect(actions.includes(TOGGLE_LOADING)).toBe(true);
         expect(actions[1]).toEqual(ADD_ERRORS);
+        done();
+      });
+    });
+  });
+  describe('deleteContent()', () => {
+    it('when deleting content it fires all the appropriate actions', (done) => {
+      deleteContent.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: { cms: { contents: { contents: [] } } },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendDeleteContent('NEW1'))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when deleting content it reports errors succesfully', (done) => {
+      deleteContent.mockImplementationOnce(mockApi({ errors: true }));
+      store = mockStore({
+        contents: { contents: [] },
+      });
+      store.dispatch(sendDeleteContent('NEW1')).then(() => {
+        const actions = store.getActions().map(action => action.type);
+        expect(actions).toHaveLength(3);
+        expect(actions.includes(ADD_ERRORS)).toBe(true);
+        expect(actions.includes(CLEAR_ERRORS)).toBe(true);
+        expect(actions.includes(ADD_TOAST)).toBe(true);
+        done();
+      });
+    });
+  });
+  describe('publishContent()', () => {
+    it('when publishing/unpublishing content it fires all the appropriate actions', (done) => {
+      publishContent.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: { cms: { contents: { contents: [] } } },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendPublishContent('NEW1', 'published'))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when publishing/unpublishing content it reports errors succesfully', (done) => {
+      publishContent.mockImplementationOnce(mockApi({ errors: true }));
+      store = mockStore({
+        contents: { contents: [] },
+      });
+      store.dispatch(sendPublishContent('NEW1', 'published')).then(() => {
+        const actions = store.getActions().map(action => action.type);
+        expect(actions).toHaveLength(3);
+        expect(actions.includes(ADD_ERRORS)).toBe(true);
+        expect(actions.includes(CLEAR_ERRORS)).toBe(true);
+        expect(actions.includes(ADD_TOAST)).toBe(true);
         done();
       });
     });

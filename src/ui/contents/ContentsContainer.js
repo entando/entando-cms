@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
+import { routeConverter } from '@entando/utils';
 import {
   fetchContents, setQuickFilter, checkStatus, checkAccess, checkAuthor,
   setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow,
@@ -9,12 +10,14 @@ import {
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
+import { setVisibleModal, setInfo } from 'state/modal/actions';
 import {
   getContents, getCurrentQuickFilter, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentAuthorShow,
   getCurrentStatusShow, getCurrentColumnsShow, getSortingColumns,
   getSelectedRows,
 } from 'state/contents/selectors';
+import { ROUTE_CMS_EDIT_CONTENT } from 'app-init/routes';
 import {
   getCurrentPage, getTotalItems, getPageSize, getLastPage,
 } from 'state/pagination/selectors';
@@ -23,6 +26,8 @@ import { getLoading } from 'state/loading/selectors';
 import { getGroups } from 'state/edit-content/selectors';
 import Contents from 'ui/contents/Contents';
 import { getLocale } from 'state/locale/selectors';
+import { DELETE_CONTENT_MODAL_ID } from 'ui/contents/DeleteContentModal';
+import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).contents,
@@ -46,8 +51,8 @@ export const mapStateToProps = state => ({
   selectedRows: getSelectedRows(state),
 });
 
-export const mapDispatchToProps = dispatch => ({
-  onDidMount: (page = { page: 1, pageSize: 25 }, params) => {
+export const mapDispatchToProps = (dispatch, { history }) => ({
+  onDidMount: (page = { page: 1, pageSize: 10 }, params) => {
     dispatch(fetchContents(page, params));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups());
@@ -66,6 +71,17 @@ export const mapDispatchToProps = dispatch => ({
   onSetSort: sort => dispatch(setSort(sort)),
   onSelectRow: contentId => dispatch(selectRow(contentId)),
   onSelectAllRows: checked => dispatch(selectAllRows(checked)),
+  onEditContent: contentId => history.push(
+    routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
+  ),
+  onClickDelete: (item) => {
+    dispatch(setVisibleModal(DELETE_CONTENT_MODAL_ID));
+    dispatch(setInfo(item));
+  },
+  onClickPublish: (contents, onLine) => {
+    dispatch(setVisibleModal(PUBLISH_CONTENT_MODAL_ID));
+    dispatch(setInfo({ contents, onLine }));
+  },
 });
 
 const ContentsContainer = connect(

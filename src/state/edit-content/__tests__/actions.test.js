@@ -61,7 +61,7 @@ describe('editContent thunks', () => {
       .then(() => {
         const actions = store.getActions();
         expect(actions[0]).toHaveProperty('type', SET_CONTENT_ENTRY);
-        expect(actions[0].payload.content).toEqual([]);
+        expect(actions[0].payload.content).toEqual({ content: { categories: ['home'] } });
         done();
       })
       .catch(done.fail);
