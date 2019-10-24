@@ -61,6 +61,10 @@ export const mapDispatchToProps = dispatch => ({
 const ContentModelSearchFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(ContentModelSearchForm);
 
 export default injectIntl(ContentModelSearchFormContainer);

@@ -33,27 +33,25 @@ const headers = [
   {
     name: 'type',
     width: '8%',
+    id: 'type',
   },
   {
     name: 'uploadedBy',
-    width: '13%',
+    width: '17%',
   },
   {
     name: 'uploadedAt',
-    width: '13%',
+    width: '18%',
     id: 'createdAt',
   },
   {
     name: 'group',
     width: '10%',
+    id: 'group',
   },
   {
     name: 'categories',
     width: '12%',
-  },
-  {
-    name: 'used',
-    width: '9%',
   },
   {
     name: 'actions',
@@ -102,14 +100,12 @@ class AssetsListBody extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      sort, refetchAssets, fileType, page, pageSize: perPage,
+      sort, refetchAssets, fileType, pageSize: perPage, filteringCategories,
     } = this.props;
     if (prevProps.sort.name !== sort.name || prevProps.sort.direction !== sort.direction) {
-      const fetchParams = `?type=${fileType}${
-        sort
-          ? `&sort=${sort.name}&direction=${sort.direction}&page=${page}&pageSize=${perPage}`
-          : ''
-      }`;
+      const fetchParams = this.generateUrlParams(
+        1, perPage, sort, filteringCategories, fileType,
+      );
       refetchAssets(fetchParams);
     }
   }
@@ -120,27 +116,33 @@ class AssetsListBody extends Component {
 
   onFileTypeChange(fileType) {
     const {
-      onChangeFileType, refetchAssets, page, pageSize: perPage,
+      onChangeFileType, refetchAssets, pageSize: perPage, filteringCategories, sort,
     } = this.props;
-    const fetchParams = `?type=${fileType}${`&page=${page}&pageSize=${perPage}`}`;
+    const fetchParams = this.generateUrlParams(
+      1, perPage, sort, filteringCategories, fileType,
+    );
     onChangeFileType(fileType);
     refetchAssets(fetchParams);
   }
 
   onPageChange(newPage) {
     const {
-      fileType, pageSize: perPage, lastPage, refetchAssets,
+      fileType, pageSize: perPage, lastPage, refetchAssets, filteringCategories, sort,
     } = this.props;
     if (newPage < 1 || newPage > lastPage) return 0;
-    const fetchParams = `?type=${fileType}${`&page=${newPage}&pageSize=${perPage}`}`;
+    const fetchParams = this.generateUrlParams(
+      newPage, perPage, sort, filteringCategories, fileType,
+    );
     return refetchAssets(fetchParams);
   }
 
   onPerPageSelect(value) {
     const {
-      fileType, refetchAssets,
+      fileType, refetchAssets, filteringCategories, sort,
     } = this.props;
-    const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${value}`}`;
+    const fetchParams = this.generateUrlParams(
+      1, value, sort, filteringCategories, fileType,
+    );
     refetchAssets(fetchParams);
   }
 
@@ -155,20 +157,34 @@ class AssetsListBody extends Component {
 
   handleRemoveActiveFilter(item) {
     const {
-      onRemoveActiveFilter, fileType, pageSize: perPage, refetchAssets,
+      onRemoveActiveFilter, fileType, pageSize: perPage, refetchAssets, filteringCategories, sort,
     } = this.props;
     onRemoveActiveFilter(item);
-    const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${perPage}`}`;
+    const leftCategories = filteringCategories.filter(c => c.code !== item.code);
+    const fetchParams = this.generateUrlParams(1, perPage, sort, leftCategories, fileType);
     refetchAssets(fetchParams);
   }
 
   removeAllActiveFilters() {
     const {
-      onRemoveAllActiveFilters, fileType, pageSize: perPage, refetchAssets,
+      onRemoveAllActiveFilters, fileType, pageSize: perPage, refetchAssets, sort,
     } = this.props;
     onRemoveAllActiveFilters();
-    const fetchParams = `?type=${fileType}${`&page=${1}&pageSize=${perPage}`}`;
+    const fetchParams = this.generateUrlParams(1, perPage, sort, [], fileType);
     refetchAssets(fetchParams);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  generateUrlParams(page, perPage, sort, filteringCategories, fileType) {
+    const sortParams = sort && sort.name && sort.direction
+      ? `&sort=${sort.name}&direction=${sort.direction}`
+      : '';
+    const filteringParams = filteringCategories.map(
+      (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
+    ).join('');
+    const typeParams = fileType === 'all' ? '' : `&type=${fileType}`;
+    const pageParams = `&page=${page}&pageSize=${perPage}`;
+    return `?${sortParams}${filteringParams}${typeParams}${pageParams}`;
   }
 
   render() {
@@ -191,6 +207,7 @@ class AssetsListBody extends Component {
       page,
       perPageOptions,
       onAssetSelected,
+      apiUrl,
     } = this.props;
     const pagination = {
       page,
@@ -200,6 +217,8 @@ class AssetsListBody extends Component {
     const { mobile } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
+    const apiDomain = new URL(apiUrl);
+    const apiOrigin = apiDomain.origin;
     const renderHeader = headers.map((item, i) => (
       <th width={item.width} key={item.name}>
         <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
@@ -273,7 +292,12 @@ class AssetsListBody extends Component {
       </Toolbar.Results>
     );
     const assetsListItems = assets.map(asset => (
-      <AssetsListItem key={asset.id} asset={asset} onEditClicked={onAssetSelected} />
+      <AssetsListItem
+        key={asset.id}
+        asset={asset}
+        domain={apiOrigin}
+        onEditClicked={onAssetSelected}
+      />
     ));
     const tableContent = (
       <table className="table table-bordered table-hover AssetsList__table">
@@ -283,7 +307,7 @@ class AssetsListBody extends Component {
         <tbody>{assetsListItems}</tbody>
       </table>
     );
-    const gridContent = <AssetsListGridView assets={assets} />;
+    const gridContent = <AssetsListGridView assets={assets} domain={apiOrigin} />;
     const emptyContent = (
       <div className="AssetsList__nothing-found">
         <FormattedMessage id="cms.assets.list.nothingFound" />.
@@ -371,7 +395,6 @@ class AssetsListBody extends Component {
                 onPerPageSelect={this.onPerPageSelect}
                 onFirstPage={() => this.onPageChange(1)}
                 onPreviousPage={() => this.onPageChange(page - 1)}
-                // onPageInput={this.onPageInput}
                 onNextPage={() => this.onPageChange(page + 1)}
                 onLastPage={() => this.onPageChange(lastPage)}
               />
@@ -410,6 +433,7 @@ AssetsListBody.propTypes = {
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
+  apiUrl: PropTypes.string.isRequired,
 };
 
 AssetsListBody.defaultProps = {
@@ -417,7 +441,10 @@ AssetsListBody.defaultProps = {
   assets: [],
   filteringCategories: [],
   activeFilters: [],
-  sort: {},
+  sort: {
+    name: 'description',
+    direction: 'ASC',
+  },
   perPageOptions: [5, 10, 15, 25, 50],
 };
 

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { getDomain } from '@entando/apimanager';
 import {
   getAssetsList,
   getFilteringCategories,
@@ -40,6 +41,7 @@ export const mapStateToProps = state => ({
   pageSize: getPageSize(state),
   totalItems: getTotalItems(state),
   page: getCurrentPage(state),
+  apiUrl: getDomain(state),
 });
 
 export const mapDispatchToProps = dispatch => ({

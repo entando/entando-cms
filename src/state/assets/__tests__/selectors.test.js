@@ -26,7 +26,11 @@ const TEST_STATE = {
       },
     },
   },
+  api: {
+    domain: 'https://localhost:8080/',
+  },
 };
+
 
 it('verify getActiveFilters selector', () => {
   const activeFilters = getActiveFilters(TEST_STATE);

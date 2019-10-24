@@ -68,6 +68,10 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
 const EditContentTypeFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AddContentTypeForm);
 
 export default withRouter(EditContentTypeFormContainer);
