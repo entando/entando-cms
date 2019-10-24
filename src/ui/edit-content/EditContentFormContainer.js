@@ -52,6 +52,10 @@ export const mapDispatchToProps = dispatch => ({
 const EditContentContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(EditContentForm);
 
 export default withRouter(injectIntl(EditContentContainer));
