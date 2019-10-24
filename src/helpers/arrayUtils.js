@@ -5,9 +5,7 @@ export const swapItems = (arr, index, canMoveUp) => {
   if (canMoveUp) {
     swapIndex = index > 0 ? index - 1 : 0;
   } else {
-    swapIndex = index < newArr.length - 1
-      ? index + 1
-      : newArr.length - 1;
+    swapIndex = index < newArr.length - 1 ? index + 1 : newArr.length - 1;
   }
   const temp = arr[index];
   newArr[index] = arr[swapIndex];

@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import { configEnzymeAdapter } from 'testutils/helpers';
@@ -17,11 +16,9 @@ describe('SwitchRenderer', () => {
   let component;
   let switchComponent;
   beforeEach(() => {
-    component = shallow((
-      <SwitchRenderer
-        input={{ value: VALUE, name: NAME, onChange: onChangeMock }}
-      />
-    ));
+    component = shallow(
+      <SwitchRenderer input={{ value: VALUE, name: NAME, onChange: onChangeMock }} />,
+    );
     switchComponent = component.find('Switch');
   });
   it('renders without crashing', () => {
@@ -35,7 +32,7 @@ describe('SwitchRenderer', () => {
     expect(switchComponent.prop('defaultValue')).toBe(VALUE);
   });
 
-  it('calls onChange on Switch\'s onChange', () => {
+  it("calls onChange on Switch's onChange", () => {
     switchComponent.prop('onChange')(null, false);
     expect(onChangeMock).toHaveBeenCalledWith(false);
   });

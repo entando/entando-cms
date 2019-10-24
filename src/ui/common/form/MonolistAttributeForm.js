@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, FormSection, Field } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import {
-  Button,
-  Row,
-  Col,
-  FormGroup,
-  Alert,
+  Button, Row, Col, FormGroup, Alert,
 } from 'patternfly-react';
 import AttributeOgnlValidation from 'ui/common/attributes/AttributeOgnlValidation';
 import AttributeHypeLongMonoTextSettings from 'ui/common/attributes/AttributeHypeLongMonoTextSettings';
@@ -35,11 +31,7 @@ import {
   MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE,
 } from 'state/content-type/const';
 
-const NO_INFO_ATTRIBUTE = [
-  TYPE_BOOLEAN,
-  TYPE_CHECKBOX,
-  TYPE_THREESTATE,
-];
+const NO_INFO_ATTRIBUTE = [TYPE_BOOLEAN, TYPE_CHECKBOX, TYPE_THREESTATE];
 
 export class MonolistAttributeFormBody extends Component {
   componentDidMount() {
@@ -49,9 +41,20 @@ export class MonolistAttributeFormBody extends Component {
 
   render() {
     const {
-      attributeCode, selectedAttributeType, isIndexable, type, invalid,
-      submitting, onSubmit, mode, attributesList, onAddAttribute, onClickDelete, onMove,
-      compositeAttributes, handleSubmit,
+      attributeCode,
+      selectedAttributeType,
+      isIndexable,
+      type,
+      invalid,
+      submitting,
+      onSubmit,
+      mode,
+      attributesList,
+      onAddAttribute,
+      onClickDelete,
+      onMove,
+      compositeAttributes,
+      handleSubmit,
     } = this.props;
     const isMonoListComposite = mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE;
     const attributeType = isMonoListComposite ? TYPE_COMPOSITE : type;
@@ -76,12 +79,12 @@ export class MonolistAttributeFormBody extends Component {
         return <AttributeInfoComposite />;
       }
 
-      return (!NO_INFO_ATTRIBUTE.includes(type) ? (
+      return !NO_INFO_ATTRIBUTE.includes(type) ? (
         <fieldset className="no-padding">
           <legend>
             <FormattedMessage id="cms.label.info" />
             <div className="MonolistAttributeForm__required-fields text-right">
-               * <FormattedMessage id="cms.label.fieldsRequired" />
+              * <FormattedMessage id="cms.label.fieldsRequired" />
             </div>
           </legend>
           <Field
@@ -92,36 +95,41 @@ export class MonolistAttributeFormBody extends Component {
           />
           {renderIndexable()}
         </fieldset>
-      ) : null);
+      ) : null;
     };
 
     const renderSelectedAttribute = () => {
       switch (attributeType) {
-        case TYPE_TEXT: return (
-          <FormSection name="validationRules">
-            <AttributeHypeLongMonoTextSettings {...this.props} />
-          </FormSection>
-        );
-        case TYPE_NUMBER: return (
-          <FormSection name="validationRules">
-            <AttributesNumber {...this.props} />
-          </FormSection>
-        );
-        case TYPE_DATE: return (
-          <FormSection name="validationRules">
-            <AttributesDateSettings {...this.props} />
-          </FormSection>
-        );
-        case TYPE_ENUMERATOR: return (
-          <AttributeEnumSettings
-            enumeratorExtractorBeans={selectedAttributeType.enumeratorExtractorBeans}
-          />
-        );
-        case TYPE_ENUMERATOR_MAP: return (
-          <AttributeEnumMapSettings
-            enumeratorMapExtractorBeans={selectedAttributeType.enumeratorMapExtractorBeans}
-          />
-        );
+        case TYPE_TEXT:
+          return (
+            <FormSection name="validationRules">
+              <AttributeHypeLongMonoTextSettings {...this.props} />
+            </FormSection>
+          );
+        case TYPE_NUMBER:
+          return (
+            <FormSection name="validationRules">
+              <AttributesNumber {...this.props} />
+            </FormSection>
+          );
+        case TYPE_DATE:
+          return (
+            <FormSection name="validationRules">
+              <AttributesDateSettings {...this.props} />
+            </FormSection>
+          );
+        case TYPE_ENUMERATOR:
+          return (
+            <AttributeEnumSettings
+              enumeratorExtractorBeans={selectedAttributeType.enumeratorExtractorBeans}
+            />
+          );
+        case TYPE_ENUMERATOR_MAP:
+          return (
+            <AttributeEnumMapSettings
+              enumeratorMapExtractorBeans={selectedAttributeType.enumeratorMapExtractorBeans}
+            />
+          );
         case TYPE_COMPOSITE: {
           return isMonoListComposite ? (
             <AttributeListTableComposite
@@ -136,27 +144,25 @@ export class MonolistAttributeFormBody extends Component {
             />
           ) : null;
         }
-        default: return null;
+        default:
+          return null;
       }
     };
 
-    const renderOgnlValidation = () => (
-      !isMonoListComposite ? (
-        <FormSection name="validationRules">
-          <AttributeOgnlValidation />
-        </FormSection>
-      ) : null
-    );
-
+    const renderOgnlValidation = () => (!isMonoListComposite ? (
+      <FormSection name="validationRules">
+        <AttributeOgnlValidation />
+      </FormSection>
+    ) : null);
 
     return (
       <div className="MonoListAttributeForm">
         <Alert type="info">
           <FormattedMessage id="cms.contenttype.label.working" />
           {type},&nbsp;
-          <FormattedMessage id="cms.contenttype.label.element.of" />&nbsp;
-          {attributeCode}&nbsp;
-           ({isMonoListComposite ? TYPE_MONOLIST : selectedAttributeType}).
+          <FormattedMessage id="cms.contenttype.label.element.of" />
+          &nbsp;
+          {attributeCode}&nbsp; ({isMonoListComposite ? TYPE_MONOLIST : selectedAttributeType}).
         </Alert>
         <form onSubmit={handleSubmit(onSubmit)} className="form-horizontal">
           <Row>

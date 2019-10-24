@@ -1,9 +1,6 @@
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
-  addErrors,
-  addToast,
-  clearErrors,
-  TOAST_ERROR,
+  addErrors, addToast, clearErrors, TOAST_ERROR,
 } from '@entando/messages';
 import { initialize } from 'redux-form';
 import { setPage } from 'state/pagination/actions';
@@ -174,36 +171,40 @@ export const fetchContentModelDictionary = () => dispatch => new Promise(resolve
         resolve();
       }
     });
-  }).catch(() => {})
-));
+  })
+    .catch(() => {})));
 
-export const sendPutContentModel = contModelObject => dispatch => new Promise(resolve => (
-  putContentModel(contModelObject).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        resolve(json.payload);
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-        dispatch(clearErrors());
-        resolve();
-      }
-    });
-  }).catch(() => {})
-));
+export const sendPutContentModel = contModelObject => dispatch => new Promise(
+  resolve => putContentModel(contModelObject)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {}),
+);
 
-export const sendDeleteContentModel = id => dispatch => new Promise(resolve => (
-  deleteContentModel(id).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        resolve(json.payload);
-        dispatch(fetchContentModelListPaged());
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-        dispatch(clearErrors());
-        resolve();
-      }
-    });
-  }).catch(() => {})
-));
+export const sendDeleteContentModel = id => dispatch => new Promise(
+  resolve => deleteContentModel(id)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentModelListPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {}),
+);

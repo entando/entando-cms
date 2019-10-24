@@ -1,4 +1,7 @@
-import { mapStateToProps, mapDispatchToProps } from 'ui/content-model/EditContentModelFormContainer';
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from 'ui/content-model/EditContentModelFormContainer';
 
 const toMap = array => array.reduce((acc, contentType) => {
   acc[contentType.code] = contentType;

@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Form,
-  FormGroup,
-  FormControl,
-  Button,
-  Icon,
+  Form, FormGroup, FormControl, Button, Icon,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
@@ -112,10 +108,7 @@ class ContentSettingsCropRatioInput extends Component {
     );
 
     return (
-      <Form
-        inline
-        onSubmit={this.handleSubmit}
-      >
+      <Form inline onSubmit={this.handleSubmit}>
         <FormGroup
           className="ContentSettingsCropRatioInput__form-group"
           validationState={this.getValidationState()}

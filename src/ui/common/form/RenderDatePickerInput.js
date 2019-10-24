@@ -25,7 +25,14 @@ class RenderDatePickerInput extends Component {
 
   render() {
     const {
-      input, name, label, help, locale, dateFormat, placeholder, meta: { touched, error },
+      input,
+      name,
+      label,
+      help,
+      locale,
+      dateFormat,
+      placeholder,
+      meta: { touched, error },
     } = this.props;
 
     const errorblock = touched ? error : '';
@@ -47,9 +54,7 @@ class RenderDatePickerInput extends Component {
             isClearable
             calendarClassName="RenderDatePickerInput__calendar"
           />
-          <div className="help-block help-block-error">
-            {errorblock}
-          </div>
+          <div className="help-block help-block-error">{errorblock}</div>
         </Col>
       </div>
     );

@@ -43,17 +43,15 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
       contentType: values.contentType.code,
     })).then((res) => {
       if (res) {
-        dispatch(addToast(
-          intl.formatMessage(
-            contentModelMsgs.saved,
-            { modelname: values.descr },
+        dispatch(
+          addToast(
+            intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
+            TOAST_SUCCESS,
           ),
-          TOAST_SUCCESS,
-        ));
+        );
         history.push(ROUTE_CMS_CONTENTMODEL_LIST);
       }
-    })
-  ),
+    })),
 });
 
 const AddContentModelFormContainer = connect(

@@ -9,7 +9,10 @@ export const mapStateToProps = state => ({
 });
 
 // connect the component
-const IntlProviderContainer = connect(mapStateToProps, null)(IntlProvider);
+const IntlProviderContainer = connect(
+  mapStateToProps,
+  null,
+)(IntlProvider);
 
 // export connected component (Container)
 export default IntlProviderContainer;

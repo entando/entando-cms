@@ -2,11 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import {
-  setApi,
-  loginUser,
-  useMocks,
-  getUsername,
-  getToken,
+  setApi, loginUser, useMocks, getUsername, getToken,
 } from '@entando/apimanager';
 import { addToast } from '@entando/messages';
 
@@ -36,9 +32,9 @@ jest.mock('@entando/apimanager', () => ({
 }));
 
 jest.mock('api/login', () => ({
-  login: jest.fn(() => new Promise(resolve => (
-    resolve({ json: () => ({ access_token: 'oioioi' }) })
-  ))),
+  login: jest.fn(
+    () => new Promise(resolve => resolve({ json: () => ({ access_token: 'oioioi' }) })),
+  ),
 }));
 
 jest.spyOn(ApiManager.prototype, 'isUserLogged');

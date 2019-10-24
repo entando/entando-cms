@@ -121,25 +121,31 @@ describe('contentModel thunks', () => {
   });
 
   it('fetchContentModelListPaged', (done) => {
-    store.dispatch(fetchContentModelListPaged()).then(() => {
-      const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-      expect(actions[0].payload.id).toEqual('contentModelList');
-      expect(actions[1]).toHaveProperty('type', SET_CONTENT_MODELS);
-      expect(actions[1].payload.list).toEqual(['a', 'b']);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(fetchContentModelListPaged())
+      .then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[0].payload.id).toEqual('contentModelList');
+        expect(actions[1]).toHaveProperty('type', SET_CONTENT_MODELS);
+        expect(actions[1].payload.list).toEqual(['a', 'b']);
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('fetchContentModelListPaged error', (done) => {
     getContentModels.mockImplementationOnce(mockApi({ errors: true }));
-    store.dispatch(fetchContentModelListPaged()).then(() => {
-      expect(getContentModels).toHaveBeenCalled();
-      const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(fetchContentModelListPaged())
+      .then(() => {
+        expect(getContentModels).toHaveBeenCalled();
+        const actions = store.getActions();
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('filterContentModelBySearch', (done) => {
@@ -236,21 +242,27 @@ describe('contentModel thunks', () => {
 
   it('sendPostContentModel', (done) => {
     const tosend = { a: 1, contentType: 'YO' };
-    store.dispatch(sendPostContentModel(tosend)).then((res) => {
-      expect(postContentModel).toHaveBeenCalledWith(tosend);
-      expect(res).toEqual(tosend);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(sendPostContentModel(tosend))
+      .then((res) => {
+        expect(postContentModel).toHaveBeenCalledWith(tosend);
+        expect(res).toEqual(tosend);
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('sendPostContentModel error', (done) => {
     postContentModel.mockImplementationOnce(mockApi({ errors: true }));
     const tosend = { a: 1, contentType: 'YO' };
-    store.dispatch(sendPostContentModel(tosend)).then((res) => {
-      expect(postContentModel).toHaveBeenCalledWith(tosend);
-      expect(res).toEqual(undefined);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(sendPostContentModel(tosend))
+      .then((res) => {
+        expect(postContentModel).toHaveBeenCalledWith(tosend);
+        expect(res).toEqual(undefined);
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('fetchContentModel', (done) => {
@@ -265,12 +277,15 @@ describe('contentModel thunks', () => {
 
   it('fetchContentModel error', (done) => {
     getContentModel.mockImplementationOnce(mockApi({ errors: true }));
-    store.dispatch(fetchContentModel(1)).then(() => {
-      expect(getContentModel).toHaveBeenCalledWith(1);
-      const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(fetchContentModel(1))
+      .then(() => {
+        expect(getContentModel).toHaveBeenCalledWith(1);
+        const actions = store.getActions();
+        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('fetchContentModelDictionary', (done) => {
@@ -295,38 +310,50 @@ describe('contentModel thunks', () => {
 
   it('sendPutContentModel', (done) => {
     const tosend = { id: 1, contentType: 'YO' };
-    store.dispatch(sendPutContentModel(tosend)).then((res) => {
-      expect(putContentModel).toHaveBeenCalledWith(tosend);
-      expect(res).toEqual(tosend);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(sendPutContentModel(tosend))
+      .then((res) => {
+        expect(putContentModel).toHaveBeenCalledWith(tosend);
+        expect(res).toEqual(tosend);
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('sendPutContentModel error', (done) => {
     putContentModel.mockImplementationOnce(mockApi({ errors: true }));
     const tosend = { id: 1, contentType: 'YO' };
-    store.dispatch(sendPutContentModel(tosend)).then((res) => {
-      expect(putContentModel).toHaveBeenCalledWith(tosend);
-      expect(res).toEqual(undefined);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(sendPutContentModel(tosend))
+      .then((res) => {
+        expect(putContentModel).toHaveBeenCalledWith(tosend);
+        expect(res).toEqual(undefined);
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('sendDeleteContentModel', (done) => {
     const tosend = 1;
-    store.dispatch(sendDeleteContentModel(tosend)).then((res) => {
-      expect(deleteContentModel).toHaveBeenCalledWith(tosend);
-      expect(res).toEqual({ id: tosend });
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(sendDeleteContentModel(tosend))
+      .then((res) => {
+        expect(deleteContentModel).toHaveBeenCalledWith(tosend);
+        expect(res).toEqual({ id: tosend });
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('sendDeleteContentModel error', (done) => {
     deleteContentModel.mockImplementationOnce(mockApi({ errors: true }));
-    store.dispatch(sendDeleteContentModel(1)).then((res) => {
-      expect(deleteContentModel).toHaveBeenCalledWith(1);
-      expect(res).toEqual(undefined);
-      done();
-    }).catch(done.fail);
+    store
+      .dispatch(sendDeleteContentModel(1))
+      .then((res) => {
+        expect(deleteContentModel).toHaveBeenCalledWith(1);
+        expect(res).toEqual(undefined);
+        done();
+      })
+      .catch(done.fail);
   });
 });

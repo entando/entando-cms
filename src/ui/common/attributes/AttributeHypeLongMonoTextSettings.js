@@ -16,25 +16,19 @@ const AttributeHypeLongMonoTextSettings = () => (
         <Field
           component={RenderTextInput}
           name="minLength"
-          label={
-            <FormLabel labelId="cms.label.minLength" />
-          }
+          label={<FormLabel labelId="cms.label.minLength" />}
           validate={[isNumber]}
         />
         <Field
           component={RenderTextInput}
           name="maxLength"
-          label={
-            <FormLabel labelId="cms.label.maxLength" />
-          }
+          label={<FormLabel labelId="cms.label.maxLength" />}
           validate={[isNumber]}
         />
         <Field
           component={RenderTextInput}
           name="regex"
-          label={
-            <FormLabel labelId="cms.label.regexp" />
-          }
+          label={<FormLabel labelId="cms.label.regexp" />}
         />
       </fieldset>
     </Col>

@@ -1,12 +1,10 @@
 import React from 'react';
 
-import {
-  configEnzymeAdapter,
-  addReduxForm,
-  mockRenderWithIntl,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, addReduxForm, mockRenderWithIntl } from 'testutils/helpers';
 import { mount } from 'enzyme';
-import AttributeEnumMapSettingsBody, { elements as elementValidation } from 'ui/common/attributes/AttributeEnumMapSettings';
+import AttributeEnumMapSettingsBody, {
+  elements as elementValidation,
+} from 'ui/common/attributes/AttributeEnumMapSettings';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import { required } from '@entando/utils';
@@ -21,11 +19,7 @@ describe('AttributeEnumMapSettings', () => {
   let component;
   beforeEach(() => {
     component = mount(
-      mockRenderWithIntl(
-        <AttributeEnumMapSettings
-          enumeratorMapExtractorBeans={[DATA]}
-        />,
-      ),
+      mockRenderWithIntl(<AttributeEnumMapSettings enumeratorMapExtractorBeans={[DATA]} />),
     );
   });
 

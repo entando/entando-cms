@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage,
-  defineMessages,
-  injectIntl,
-  intlShape,
+  FormattedMessage, defineMessages, injectIntl, intlShape,
 } from 'react-intl';
 import { Row, Col } from 'patternfly-react';
 import { Field } from 'redux-form';
@@ -13,19 +10,17 @@ import FormLabel from 'ui/common/form/FormLabel';
 import { required } from '@entando/utils';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 
-export const elements = value => (
-  value && !/^(\w+)=([^\s]+)$/i.test(value)
-    ? <FormattedMessage id="validateForm.elements" /> : undefined
-);
-
+export const elements = value => (value && !/^(\w+)=([^\s]+)$/i.test(value) ? (
+  <FormattedMessage id="validateForm.elements" />
+) : (
+  undefined
+));
 
 const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => {
-  const selectAllowedOptions = enumeratorMapExtractorBeans.map(item => (
-    {
-      value: item.code,
-      text: item.descr,
-    }
-  ));
+  const selectAllowedOptions = enumeratorMapExtractorBeans.map(item => ({
+    value: item.code,
+    text: item.descr,
+  }));
 
   const msgs = defineMessages({
     enumStaticItemsMapHelp: {
@@ -44,33 +39,24 @@ const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => 
           <Field
             component={RenderTextInput}
             name="enumeratorStaticItems"
-            label={
-              <FormLabel labelId="cms.contenttype.enumeratorStaticItems" required />
-          }
+            label={<FormLabel labelId="cms.contenttype.enumeratorStaticItems" required />}
             validate={[required, elements]}
             placeholder={intl.formatMessage(msgs.enumStaticItemsMapHelp)}
           />
           <Field
             component={RenderTextInput}
             name="enumeratorStaticItemsSeparator"
-            label={
-              <FormLabel labelId="cms.contenttype.enumeratorStaticItemsSeparator" />
-            }
+            label={<FormLabel labelId="cms.contenttype.enumeratorStaticItemsSeparator" />}
           />
-          {
-            enumeratorMapExtractorBeans.length > 0 ? (
-              <Field
-                component={RenderSelectInput}
-                options={selectAllowedOptions}
-                defaultOptionId="cms.label.chooseoption"
-                label={
-                  <FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />
-              }
-                name="enumeratorMapExtractorBeans"
-              />
-            ) : null
-          }
-
+          {enumeratorMapExtractorBeans.length > 0 ? (
+            <Field
+              component={RenderSelectInput}
+              options={selectAllowedOptions}
+              defaultOptionId="cms.label.chooseoption"
+              label={<FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />}
+              name="enumeratorMapExtractorBeans"
+            />
+          ) : null}
         </fieldset>
       </Col>
     </Row>
@@ -78,15 +64,16 @@ const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => 
 };
 AttributeEnumEnumMapSettings.propTypes = {
   intl: intlShape.isRequired,
-  enumeratorMapExtractorBeans: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string,
-    descr: PropTypes.string,
-  })),
+  enumeratorMapExtractorBeans: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+      descr: PropTypes.string,
+    }),
+  ),
 };
 
 AttributeEnumEnumMapSettings.defaultProps = {
   enumeratorMapExtractorBeans: [],
 };
-
 
 export default injectIntl(AttributeEnumEnumMapSettings);

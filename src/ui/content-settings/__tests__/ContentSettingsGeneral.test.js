@@ -25,9 +25,7 @@ const PROPS = {
 };
 
 describe('ui/content-settings/ContentSettingsGeneral', () => {
-  const component = mount(
-    mockRenderWithIntl(<ContentSettingsGeneral {...PROPS} />),
-  );
+  const component = mount(mockRenderWithIntl(<ContentSettingsGeneral {...PROPS} />));
 
   it('renders without crashing and calls onDidMount', () => {
     expect(component.exists()).toEqual(true);

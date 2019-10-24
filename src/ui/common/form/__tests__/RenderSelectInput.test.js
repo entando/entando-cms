@@ -1,7 +1,4 @@
-import {
-  configEnzymeAdapter,
-  mockRenderWithIntl,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
 import React from 'react';
 import { mount } from 'enzyme';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';

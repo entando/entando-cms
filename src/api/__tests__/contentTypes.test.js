@@ -40,7 +40,10 @@ jest.unmock('api/contentTypes');
 jest.mock('@entando/apimanager', () => ({
   makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   METHODS: {
-    GET: 'GET', POST: 'POST', PUT: 'PUT', DELETE: 'DELETE',
+    GET: 'GET',
+    POST: 'POST',
+    PUT: 'PUT',
+    DELETE: 'DELETE',
   },
 }));
 
@@ -168,7 +171,6 @@ describe('api/getContentType', () => {
   });
 });
 
-
 describe('api/deleteContentType', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -252,7 +254,9 @@ describe('/api/contentTypes/', () => {
       jest.clearAllMocks();
     });
     it('returns a promise', () => {
-      expect(putAttributeFromContentType('AAA', GET_CONTENT_TYPES_RESPONSE_OK[0].attributes[0])).toBeInstanceOf(Promise);
+      expect(
+        putAttributeFromContentType('AAA', GET_CONTENT_TYPES_RESPONSE_OK[0].attributes[0]),
+      ).toBeInstanceOf(Promise);
     });
 
     it('if successful, returns a mock ok response', () => {
@@ -280,35 +284,26 @@ describe('api/getContentTypes', () => {
 
     it('get fragment page 1 by default', () => {
       getContentTypes({ page: 1, pageSize: 10 });
-      expect(makeRequest).toHaveBeenCalledWith(
-        correctRequest,
-        {
-          page: 1,
-          pageSize: 10,
-        },
-      );
+      expect(makeRequest).toHaveBeenCalledWith(correctRequest, {
+        page: 1,
+        pageSize: 10,
+      });
     });
 
     it('request page 2', () => {
       getContentTypes({ page: 2, pageSize: 10 });
-      expect(makeRequest).toHaveBeenCalledWith(
-        correctRequest,
-        {
-          page: 2,
-          pageSize: 10,
-        },
-      );
+      expect(makeRequest).toHaveBeenCalledWith(correctRequest, {
+        page: 2,
+        pageSize: 10,
+      });
     });
 
     it('request different page size', () => {
       getContentTypes({ page: 1, pageSize: 5 });
-      expect(makeRequest).toHaveBeenCalledWith(
-        correctRequest,
-        {
-          page: 1,
-          pageSize: 5,
-        },
-      );
+      expect(makeRequest).toHaveBeenCalledWith(correctRequest, {
+        page: 1,
+        pageSize: 5,
+      });
     });
     it('makes the request with additional params', () => {
       getContentTypes({ page: 1, pageSize: 10 }, '?param=true');
@@ -377,11 +372,13 @@ describe('api/getContentTypes', () => {
 
       it('if successful, returns a attributes response', () => {
         getContentTypeAttribute('code');
-        expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-          ...correctRequest,
-          uri: '/api/plugins/cms/contentTypeAttributes/code',
-          mockResponse: CONTENT_TYPE_ATTRIBUTE,
-        }));
+        expect(makeRequest).toHaveBeenCalledWith(
+          expect.objectContaining({
+            ...correctRequest,
+            uri: '/api/plugins/cms/contentTypeAttributes/code',
+            mockResponse: CONTENT_TYPE_ATTRIBUTE,
+          }),
+        );
       });
     });
   });
@@ -395,13 +392,15 @@ describe('api/getContentTypes', () => {
 
     it('if successful, returns a move up comfirm', () => {
       moveAttributeUp('ContentType_code', 'attribute_code');
-      expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        ...correctRequest,
-        body: {},
-        method: METHODS.PUT,
-        uri: `${contentTypePath}/ContentType_code/attributes/attribute_code/moveUp`,
-        mockResponse: ATTRIBUTE_MOVE_UP,
-      }));
+      expect(makeRequest).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...correctRequest,
+          body: {},
+          method: METHODS.PUT,
+          uri: `${contentTypePath}/ContentType_code/attributes/attribute_code/moveUp`,
+          mockResponse: ATTRIBUTE_MOVE_UP,
+        }),
+      );
     });
   });
 
@@ -416,13 +415,15 @@ describe('api/getContentTypes', () => {
 
     it('if successful, returns a move up comfirm', () => {
       moveAttributeDown('ContentType_code', 'attribute_code');
-      expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        ...correctRequest,
-        body: {},
-        method: METHODS.PUT,
-        uri: `${contentTypePath}/ContentType_code/attributes/attribute_code/moveDown`,
-        mockResponse: ATTRIBUTE_MOVE_DOWN,
-      }));
+      expect(makeRequest).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...correctRequest,
+          body: {},
+          method: METHODS.PUT,
+          uri: `${contentTypePath}/ContentType_code/attributes/attribute_code/moveDown`,
+          mockResponse: ATTRIBUTE_MOVE_DOWN,
+        }),
+      );
     });
   });
 });

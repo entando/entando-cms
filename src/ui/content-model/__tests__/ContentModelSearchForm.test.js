@@ -24,9 +24,7 @@ const PROPS = {
 };
 
 describe('ui/content-model/ContentModelSearchForm', () => {
-  const component = mount(
-    mockRenderWithIntl(<ContentModelSearchForm {...PROPS} />),
-  );
+  const component = mount(mockRenderWithIntl(<ContentModelSearchForm {...PROPS} />));
 
   it('renders without crashing and called onDidMount', () => {
     expect(component.exists()).toEqual(true);

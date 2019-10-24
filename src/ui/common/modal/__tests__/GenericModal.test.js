@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import { configEnzymeAdapter } from 'testutils/helpers';
@@ -17,16 +16,10 @@ const props = {
 };
 
 const toolbarButtons = [
-  <Button
-    id="button1"
-    bsStyle="default"
-  >
+  <Button id="button1" bsStyle="default">
     default button
   </Button>,
-  <Button
-    id="button2"
-    bsStyle="primary"
-  >
+  <Button id="button2" bsStyle="primary">
     primary button
   </Button>,
 ];

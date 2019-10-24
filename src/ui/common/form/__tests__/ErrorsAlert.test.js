@@ -5,10 +5,7 @@ import ErrorsAlert from 'ui/common/form/ErrorsAlert';
 
 configEnzymeAdapter();
 
-const MESSAGES = [
-  'Error message 1',
-  'Error message 2',
-];
+const MESSAGES = ['Error message 1', 'Error message 2'];
 
 const handleDismiss = jest.fn();
 

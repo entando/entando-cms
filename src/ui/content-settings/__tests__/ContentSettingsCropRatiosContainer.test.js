@@ -7,46 +7,34 @@ import ContentSettingsCropRatios from 'ui/content-settings/ContentSettingsCropRa
 
 configEnzymeAdapter();
 
-jest.mock(
-  'ui/content-settings/ContentSettingsCropRatios',
-  () => jest.fn(() => <div>ContentSettingsCropRatios</div>),
-);
+jest.mock('ui/content-settings/ContentSettingsCropRatios', () => jest.fn(() => <div>ContentSettingsCropRatios</div>));
 
 const initialState = {
   apps: {
     cms: {
       contentSettings: {
-        cropRatios: [
-          '4:9',
-          '16:9',
-        ],
+        cropRatios: ['4:9', '16:9'],
       },
     },
   },
 };
 
-const actionList = [
-  'onAdd',
-  'onDelete',
-  'onUpdate',
-];
+const actionList = ['onAdd', 'onDelete', 'onUpdate'];
 
 describe('ContentSettingsCropRatiosContainer', () => {
   it('should render ContentSettingsCropRatios with correct props', () => {
-    render(
-      mockRenderWithIntl(
-        <ContentSettingsCropRatiosContainer />,
-        initialState,
-      ),
-    );
+    render(mockRenderWithIntl(<ContentSettingsCropRatiosContainer />, initialState));
 
     expect(ContentSettingsCropRatios).toHaveBeenCalledWith(
       expect.objectContaining({
         ...initialState.contentSettings,
-        ...actionList.reduce((acc, curr) => ({
-          ...acc,
-          [curr]: expect.any(Function),
-        }), {}),
+        ...actionList.reduce(
+          (acc, curr) => ({
+            ...acc,
+            [curr]: expect.any(Function),
+          }),
+          {},
+        ),
       }),
       {},
       expect.any(Object),

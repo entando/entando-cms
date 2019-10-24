@@ -1,12 +1,6 @@
-
 import { MODAL_VISIBILITY, MODAL_INFO } from 'testutils/mocks/modal';
 
-import {
-  getModal,
-  getVisibleModal,
-  getInfo,
-} from 'state/modal/selectors';
-
+import { getModal, getVisibleModal, getInfo } from 'state/modal/selectors';
 
 const TEST_STATE = {
   modal: {

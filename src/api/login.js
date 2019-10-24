@@ -7,7 +7,9 @@ export const login = (username, password) => makeRequest({
   mockResponse: {},
   contentType: 'application/x-www-form-urlencoded',
   headers: {
-    Authorization: `Basic ${btoa(`${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`)}`,
+    Authorization: `Basic ${btoa(
+      `${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`,
+    )}`,
   },
   body: {
     username,

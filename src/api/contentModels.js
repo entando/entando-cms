@@ -4,18 +4,16 @@ import { GET_CONTENT_MODELS_RESPONSE_OK } from 'testutils/mocks/contentModel';
 const contentModelsPath = '/api/plugins/cms/contentmodels';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getContentModels = (page = { page: 1, pageSize: 10 }, params = '') => (
-  makeRequest(
-    {
-      uri: `${contentModelsPath}${params}`,
-      method: METHODS.GET,
-      mockResponse: GET_CONTENT_MODELS_RESPONSE_OK,
-      contentType: 'application/json',
-      useAuthentication: true,
-      errors: () => [],
-    },
-    page,
-  )
+export const getContentModels = (page = { page: 1, pageSize: 10 }, params = '') => makeRequest(
+  {
+    uri: `${contentModelsPath}${params}`,
+    method: METHODS.GET,
+    mockResponse: GET_CONTENT_MODELS_RESPONSE_OK,
+    contentType: 'application/json',
+    useAuthentication: true,
+    errors: () => [],
+  },
+  page,
 );
 
 export const getContentModelDictionary = () => (
@@ -36,17 +34,13 @@ export const postContentModel = contModelObject => makeRequest({
   useAuthentication: true,
 });
 
-export const getContentModel = id => (
-  makeRequest(
-    {
-      uri: `${contentModelsPath}/${id}`,
-      method: METHODS.GET,
-      mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
-      contentType: 'application/json',
-      useAuthentication: true,
-    },
-  )
-);
+export const getContentModel = id => makeRequest({
+  uri: `${contentModelsPath}/${id}`,
+  method: METHODS.GET,
+  mockResponse: GET_CONTENT_MODELS_RESPONSE_OK[0],
+  contentType: 'application/json',
+  useAuthentication: true,
+});
 
 export const putContentModel = contModelObject => makeRequest({
   uri: `${contentModelsPath}/${contModelObject.id}`,

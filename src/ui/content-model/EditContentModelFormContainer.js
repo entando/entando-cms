@@ -49,23 +49,22 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(clearContentModel());
     dispatch(clearContentModelDictionary());
   },
-  onSubmit: values => (
-    dispatch(sendPutContentModel({
+  onSubmit: values => dispatch(
+    sendPutContentModel({
       ...values,
       contentType: values.contentType.code,
-    })).then((res) => {
-      if (res) {
-        dispatch(addToast(
-          intl.formatMessage(
-            contentModelMsgs.saved,
-            { modelname: values.descr },
-          ),
+    }),
+  ).then((res) => {
+    if (res) {
+      dispatch(
+        addToast(
+          intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr }),
           TOAST_SUCCESS,
-        ));
-        history.push(ROUTE_CMS_CONTENTMODEL_LIST);
-      }
-    })
-  ),
+        ),
+      );
+      history.push(ROUTE_CMS_CONTENTMODEL_LIST);
+    }
+  }),
 });
 
 const EditContentModelFormContainer = connect(

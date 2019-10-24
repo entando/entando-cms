@@ -33,7 +33,8 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   contentTypeAttributeCode: params.entityCode,
   joinAllowedOptions:
     formValueSelector('attribute')(state, 'joinRoles')
-    || formValueSelector('attribute')(state, 'joinAllowedOptions') || [],
+    || formValueSelector('attribute')(state, 'joinAllowedOptions')
+    || [],
   selectedAttributeType: getSelectedAttributeType(state),
   selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
   attributesList: getContentTypeAttributesIdList(state),
@@ -50,30 +51,31 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(fetchContentTypeAttributes());
   },
   onSubmit: (values, allowedRoles, mode) => {
-    dispatch(handlerAttributeFromContentType(
-      METHODS.PUT,
-      values,
-      allowedRoles,
-      mode,
-      params.entityCode,
-      history,
-    ));
+    dispatch(
+      handlerAttributeFromContentType(
+        METHODS.PUT,
+        values,
+        allowedRoles,
+        mode,
+        params.entityCode,
+        history,
+      ),
+    );
   },
   onAddAttribute: (props) => {
     const { attributeCode, contentTypeAttributeCode, selectedAttributeType } = props;
-    dispatch(fetchContentTypeAttribute(
-      attributeCode,
-      () => (
-        history.push(
-          routeConverter(
-            ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode: contentTypeAttributeCode },
-          ),
-        )
+    dispatch(
+      fetchContentTypeAttribute(
+        attributeCode,
+        () => history.push(
+          routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
+            entityCode: contentTypeAttributeCode,
+          }),
+        ),
+        selectedAttributeType,
+        'attribute',
       ),
-      selectedAttributeType,
-      'attribute',
-    ));
+    );
   },
   onClickDelete: (attributeCode, isMonolistCompositeType) => {
     dispatch(removeAttributeFromComposite(attributeCode, isMonolistCompositeType));
@@ -83,4 +85,9 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditAttributeForm));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(EditAttributeForm),
+);

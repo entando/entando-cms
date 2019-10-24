@@ -46,31 +46,32 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(fetchContentTypeAttributes());
   },
   onSubmit: (values, allowedRoles, mode) => {
-    dispatch(handlerAttributeFromContentType(
-      METHODS.POST,
-      values,
-      allowedRoles,
-      mode,
-      params.entityCode,
-      history,
-    ));
+    dispatch(
+      handlerAttributeFromContentType(
+        METHODS.POST,
+        values,
+        allowedRoles,
+        mode,
+        params.entityCode,
+        history,
+      ),
+    );
   },
   onAddAttribute: (props) => {
-    const { attributeCode, entityCode, selectedAttributeType: { code } } = props;
-    dispatch(setActionMode(MODE_ADD));
-    dispatch(fetchContentTypeAttribute(
+    const {
       attributeCode,
-      () => (
-        history.push(
-          routeConverter(
-            ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode },
-          ),
-        )
+      entityCode,
+      selectedAttributeType: { code },
+    } = props;
+    dispatch(setActionMode(MODE_ADD));
+    dispatch(
+      fetchContentTypeAttribute(
+        attributeCode,
+        () => history.push(routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode })),
+        code,
+        'addAttribute',
       ),
-      code,
-      'addAttribute',
-    ));
+    );
   },
   onClickDelete: (attributeCode) => {
     dispatch(removeAttributeFromComposite(attributeCode));
@@ -78,7 +79,11 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   onMove: (fromIndex, toIndex) => {
     dispatch(moveAttributeFromComposite(fromIndex, toIndex));
   },
-
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AttributeForm));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(AttributeForm),
+);

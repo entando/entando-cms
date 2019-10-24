@@ -19,12 +19,8 @@ import {
 import { getCropRatios, getMetadataMappingFormData } from 'state/content-settings/selectors';
 import { toggleLoading } from 'state/loading/actions';
 import {
-  addErrors,
-  addToast,
-  clearErrors,
-  TOAST_ERROR,
+  addErrors, addToast, clearErrors, TOAST_ERROR,
 } from '@entando/messages';
-
 
 export const setContentSettings = payload => ({
   type: SET_CONTENT_SETTINGS,
@@ -50,115 +46,119 @@ export const setMetadataMapping = payload => ({
 
 export const fetchContentSettings = () => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('getSettings'));
-  getContentSettings().then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setContentSettings(json.payload));
-        resolve(json.payload);
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-        dispatch(clearErrors());
-        resolve();
-      }
-      dispatch(toggleLoading('getSettings'));
-    });
-  }).catch(() => {});
-});
-
-export const sendPostReloadReferences = () => dispatch => (
-  new Promise((resolve) => {
-    dispatch(toggleLoading('reloadReferences'));
-    postReloadReferences().then((response) => {
+  getContentSettings()
+    .then((response) => {
       response.json().then((json) => {
-        if (!response.ok) {
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
-        }
-        dispatch(toggleLoading('reloadReferences'));
-        resolve();
-      });
-    });
-  })
-);
-
-export const sendPostReloadIndexes = () => dispatch => (
-  new Promise((resolve) => {
-    dispatch(toggleLoading('reloadIndexes'));
-    postReloadIndexes().then((response) => {
-      response.json().then((json) => {
-        dispatch(toggleLoading('reloadIndexes'));
         if (response.ok) {
-          dispatch(fetchContentSettings());
+          dispatch(setContentSettings(json.payload));
+          resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
+          resolve();
         }
-        resolve();
+        dispatch(toggleLoading('getSettings'));
       });
+    })
+    .catch(() => {});
+});
+
+export const sendPostReloadReferences = () => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('reloadReferences'));
+  postReloadReferences().then((response) => {
+    response.json().then((json) => {
+      if (!response.ok) {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+        dispatch(clearErrors());
+      }
+      dispatch(toggleLoading('reloadReferences'));
+      resolve();
     });
-  })
-);
+  });
+});
+
+export const sendPostReloadIndexes = () => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('reloadIndexes'));
+  postReloadIndexes().then((response) => {
+    response.json().then((json) => {
+      dispatch(toggleLoading('reloadIndexes'));
+      if (response.ok) {
+        dispatch(fetchContentSettings());
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+        dispatch(clearErrors());
+      }
+      resolve();
+    });
+  });
+});
 
 export const sendPutEditorSettings = editor => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('putEditorSettings'));
-  putEditorSettings(editor).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setEditorSettings(json.payload));
-        resolve(json);
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        resolve();
-      }
-      dispatch(toggleLoading('putEditorSettings'));
-    });
-  }).catch(() => {});
+  putEditorSettings(editor)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setEditorSettings(json.payload));
+          resolve(json);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          resolve();
+        }
+        dispatch(toggleLoading('putEditorSettings'));
+      });
+    })
+    .catch(() => {});
 });
 
 export const addCropRatio = cropRatio => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('addCropRatio'));
 
-  postCropRatio(cropRatio).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setCropRatios(json.payload));
-        resolve(json);
-      } else {
-        const errorMsgs = json.errors.map(err => err.message);
-        dispatch(addErrors(errorMsgs));
-        errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
-        resolve();
-      }
+  postCropRatio(cropRatio)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setCropRatios(json.payload));
+          resolve(json);
+        } else {
+          const errorMsgs = json.errors.map(err => err.message);
+          dispatch(addErrors(errorMsgs));
+          errorMsgs.forEach(errMsg => dispatch(addToast(errMsg, TOAST_ERROR)));
+          resolve();
+        }
 
-      dispatch(toggleLoading('addCropRatio'));
-    });
-  }).catch(() => {});
+        dispatch(toggleLoading('addCropRatio'));
+      });
+    })
+    .catch(() => {});
 });
 
 export const sendPostMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('postMetadataMap'));
-  postMetadataMap({ key, mapping }).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setMetadataMapping(json.payload));
-        resolve(json);
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        resolve();
-      }
-      dispatch(toggleLoading('postMetadataMap'));
-    });
-  }).catch(() => {});
+  postMetadataMap({ key, mapping })
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setMetadataMapping(json.payload));
+          resolve(json);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          resolve();
+        }
+        dispatch(toggleLoading('postMetadataMap'));
+      });
+    })
+    .catch(() => {});
 });
 
-export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise(
-  (resolve) => {
-    dispatch(toggleLoading('removeCropRatio'));
+export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise((resolve) => {
+  dispatch(toggleLoading('removeCropRatio'));
 
-    deleteCropRatio(cropRatio).then((response) => {
+  deleteCropRatio(cropRatio)
+    .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
           const cropRatios = getCropRatios(getState());
@@ -173,15 +173,15 @@ export const removeCropRatio = cropRatio => (dispatch, getState) => new Promise(
 
         dispatch(toggleLoading('removeCropRatio'));
       });
-    }).catch(() => {});
-  },
-);
+    })
+    .catch(() => {});
+});
 
-export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise(
-  (resolve) => {
-    dispatch(toggleLoading('updateCropRatio'));
+export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('updateCropRatio'));
 
-    putCropRatio(cropRatio, newValue).then((response) => {
+  putCropRatio(cropRatio, newValue)
+    .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setCropRatios(json.payload));
@@ -195,22 +195,24 @@ export const updateCropRatio = (cropRatio, newValue) => dispatch => new Promise(
 
         dispatch(toggleLoading('updateCropRatio'));
       });
-    }).catch();
-  },
-);
+    })
+    .catch();
+});
 
 export const sendPutMetadataMap = (key, mapping) => dispatch => new Promise((resolve) => {
-  putMetadataMap(key, mapping).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setMetadataMapping(json.payload));
-        resolve({ key, json });
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        resolve({ key });
-      }
-    });
-  }).catch(() => {});
+  putMetadataMap(key, mapping)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setMetadataMapping(json.payload));
+          resolve({ key, json });
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          resolve({ key });
+        }
+      });
+    })
+    .catch(() => {});
 });
 
 export const checkAndPutMetadataMap = values => (dispatch, getState) => new Promise((resolve) => {
@@ -220,11 +222,10 @@ export const checkAndPutMetadataMap = values => (dispatch, getState) => new Prom
     if (prevValues[key] !== mapping) {
       dispatch(toggleLoading(key));
       proms.push(
-        dispatch(sendPutMetadataMap(key, mapping))
-          .then((res) => {
-            dispatch(toggleLoading(res.key));
-            return res.json || null;
-          }),
+        dispatch(sendPutMetadataMap(key, mapping)).then((res) => {
+          dispatch(toggleLoading(res.key));
+          return res.json || null;
+        }),
       );
     }
   });
@@ -233,16 +234,18 @@ export const checkAndPutMetadataMap = values => (dispatch, getState) => new Prom
 
 export const sendDeleteMetadataMap = key => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('deleteMetadataMap'));
-  deleteMetadataMap(key).then((response) => {
-    response.json().then((json) => {
-      if (response.ok) {
-        dispatch(setMetadataMapping(json.payload));
-        resolve(json);
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        resolve();
-      }
-      dispatch(toggleLoading('deleteMetadataMap'));
-    });
-  }).catch(() => {});
+  deleteMetadataMap(key)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setMetadataMapping(json.payload));
+          resolve(json);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          resolve();
+        }
+        dispatch(toggleLoading('deleteMetadataMap'));
+      });
+    })
+    .catch(() => {});
 });

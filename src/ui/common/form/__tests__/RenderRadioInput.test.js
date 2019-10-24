@@ -8,18 +8,20 @@ configEnzymeAdapter();
 
 const onChangeMock = jest.fn();
 
-const TOGGLE_ELEMENT = [{
-  id: 'field1',
-  label: 'Field 1',
-},
-{
-  id: 'field2',
-  label: 'Field 2',
-},
-{
-  id: 'field3',
-  label: 'Field 3',
-}];
+const TOGGLE_ELEMENT = [
+  {
+    id: 'field1',
+    label: 'Field 1',
+  },
+  {
+    id: 'field2',
+    label: 'Field 2',
+  },
+  {
+    id: 'field3',
+    label: 'Field 3',
+  },
+];
 
 const INPUT = {
   name: 'base',
@@ -37,13 +39,9 @@ describe('RenderRadioInput', () => {
 
   let component;
   beforeEach(() => {
-    component = shallow((
-      <RenderRadioInput
-        input={INPUT}
-        meta={META}
-        toggleElement={TOGGLE_ELEMENT}
-      />
-    ));
+    component = shallow(
+      <RenderRadioInput input={INPUT} meta={META} toggleElement={TOGGLE_ELEMENT} />,
+    );
   });
 
   it('renders without crashing', () => {
@@ -54,7 +52,7 @@ describe('RenderRadioInput', () => {
     expect(component.find('ToggleButton')).toHaveLength(3);
   });
 
-  it('calls onChange on ToggleButton\'s onChange', () => {
+  it("calls onChange on ToggleButton's onChange", () => {
     component.find('[name="base"]').prop('onChange')(INPUT.value);
     expect(onChangeMock).toHaveBeenCalledWith(INPUT.value);
   });

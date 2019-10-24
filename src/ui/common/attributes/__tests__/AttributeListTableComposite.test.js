@@ -11,17 +11,20 @@ const props = {
   onClickDelete: () => {},
   onMove: () => {},
   attributesList: ['a', 'b', 'c'],
-  compositeAttributes: [{
-    code: 'Via',
-    type: 'Text',
-    name: 'Via',
-    mandatory: false,
-  }, {
-    code: 'Civico',
-    type: 'Text',
-    name: 'Civico',
-    mandatory: true,
-  }],
+  compositeAttributes: [
+    {
+      code: 'Via',
+      type: 'Text',
+      name: 'Via',
+      mandatory: false,
+    },
+    {
+      code: 'Civico',
+      type: 'Text',
+      name: 'Civico',
+      mandatory: true,
+    },
+  ],
 };
 
 describe('AttributeListTableComposite', () => {

@@ -15,12 +15,10 @@ class AttributeRole extends Component {
   render() {
     const { joinAllowedOptions, allowedRoles } = this.props;
 
-    const selectAllowedOptions = allowedRoles.map(item => (
-      {
-        value: item.code,
-        text: item.descr,
-      }
-    ));
+    const selectAllowedOptions = allowedRoles.map(item => ({
+      value: item.code,
+      text: item.descr,
+    }));
 
     const roleWrapper = () => {
       if (isEmpty(allowedRoles)) {
@@ -70,10 +68,12 @@ class AttributeRole extends Component {
 
 AttributeRole.propTypes = {
   onDidMount: PropTypes.func,
-  allowedRoles: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string,
-    descr: PropTypes.string,
-  })),
+  allowedRoles: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+      descr: PropTypes.string,
+    }),
+  ),
   joinAllowedOptions: PropTypes.arrayOf(PropTypes.string),
 };
 
@@ -82,6 +82,5 @@ AttributeRole.defaultProps = {
   allowedRoles: [],
   joinAllowedOptions: [],
 };
-
 
 export default AttributeRole;

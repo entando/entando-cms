@@ -16,8 +16,12 @@ jest.mock('state/content-type/actions', () => ({
 }));
 
 jest.mock('state/content-type/selectors', () => ({
-  getSelectedContentTypeAttributes: jest.fn().mockReturnValue('getSelectedContentTypeAttributes_result'),
-  getContentTypeAttributesIdList: jest.fn().mockReturnValue('getContentTypeAttributesIdList_result'),
+  getSelectedContentTypeAttributes: jest
+    .fn()
+    .mockReturnValue('getSelectedContentTypeAttributes_result'),
+  getContentTypeAttributesIdList: jest
+    .fn()
+    .mockReturnValue('getContentTypeAttributesIdList_result'),
 }));
 
 const ownProps = {

@@ -1,4 +1,7 @@
-import { mapStateToProps, mapDispatchToProps } from 'ui/content-type/attributes/DeleteAttributeModalContainer';
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from 'ui/content-type/attributes/DeleteAttributeModalContainer';
 
 import { MODAL_VISIBILITY, MODAL_INFO } from 'testutils/mocks/modal';
 
@@ -14,8 +17,7 @@ const dispatchMock = jest.fn();
 describe('DeleteAttributeModalContainer', () => {
   describe('mapStateToProps', () => {
     it('maps info property from state', () => {
-      expect(mapStateToProps(TEST_STATE))
-        .toHaveProperty('info', MODAL_INFO);
+      expect(mapStateToProps(TEST_STATE)).toHaveProperty('info', MODAL_INFO);
     });
   });
 

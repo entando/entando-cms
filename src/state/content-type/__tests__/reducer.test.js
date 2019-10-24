@@ -60,10 +60,7 @@ describe('state/content-type/reducer', () => {
 
   describe('after action REMOVE_ATTRIBUTE', () => {
     it('should define the new state', () => {
-      newState = reducer(
-        { selected: STATE_REMOVE_ATTRIBUTE },
-        removeAttribute('AAA', 'attrCode'),
-      );
+      newState = reducer({ selected: STATE_REMOVE_ATTRIBUTE }, removeAttribute('AAA', 'attrCode'));
       expect(newState.selected).toMatchObject({
         code: 'AAA',
         attributes: [{ type: 'text', code: 'attrCode1' }],
@@ -84,12 +81,15 @@ describe('state/content-type/reducer', () => {
 
   describe('after action MOVE_ATTRIBUTE_UP', () => {
     beforeEach(() => {
-      newState = reducer({
-        selected: {
-          code: 'AAA',
-          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+      newState = reducer(
+        {
+          selected: {
+            code: 'AAA',
+            attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+          },
         },
-      }, moveAttributeUpSync({ entityCode: 'AAA', attributeCode: 'attrCode1', attributeIndex: 1 }));
+        moveAttributeUpSync({ entityCode: 'AAA', attributeCode: 'attrCode1', attributeIndex: 1 }),
+      );
     });
 
     it('should define the selected payload', () => {
@@ -99,12 +99,15 @@ describe('state/content-type/reducer', () => {
 
   describe('after action MOVE_ATTRIBUTE_DOWN', () => {
     beforeEach(() => {
-      newState = reducer({
-        selected: {
-          code: 'AAA',
-          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+      newState = reducer(
+        {
+          selected: {
+            code: 'AAA',
+            attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+          },
         },
-      }, moveAttributeDownSync({ entityCode: 'AAA', attributeCode: 'attrCode', attributeIndex: 0 }));
+        moveAttributeDownSync({ entityCode: 'AAA', attributeCode: 'attrCode', attributeIndex: 0 }),
+      );
     });
 
     it('should define the selected payload', () => {
@@ -114,12 +117,15 @@ describe('state/content-type/reducer', () => {
 
   describe('after action SET_ACTION_MODE', () => {
     beforeEach(() => {
-      newState = reducer({
-        selected: {
-          code: 'AAA',
-          attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+      newState = reducer(
+        {
+          selected: {
+            code: 'AAA',
+            attributes: [...STATE_REMOVE_ATTRIBUTE.attributes],
+          },
         },
-      }, setActionMode('hello'));
+        setActionMode('hello'),
+      );
     });
 
     it('should define the selected payload', () => {
@@ -144,7 +150,9 @@ describe('state/content-type/reducer', () => {
       newState = reducer(STATE_HERE, removeAttributeFromComposite('testo', true));
       expect(newState).toHaveProperty('selected');
       expect(newState.selected).toHaveProperty('attributeSelected');
-      expect(newState.selected.attributeSelected.nestedAttribute.compositeAttributes[0].code).toBe('number');
+      expect(newState.selected.attributeSelected.nestedAttribute.compositeAttributes[0].code).toBe(
+        'number',
+      );
     });
 
     it('should remove attribute properly for non-composite monolist', () => {
@@ -172,7 +180,9 @@ describe('state/content-type/reducer', () => {
       newState = reducer(STATE_HERE, moveAttributeFromComposite(0, 1, true));
       expect(newState).toHaveProperty('selected');
       expect(newState.selected).toHaveProperty('attributeSelected');
-      expect(newState.selected.attributeSelected.nestedAttribute.compositeAttributes[0].code).toBe('number');
+      expect(newState.selected.attributeSelected.nestedAttribute.compositeAttributes[0].code).toBe(
+        'number',
+      );
     });
 
     it('should move attribute properly for non-composite monolist', () => {
@@ -211,7 +221,10 @@ describe('state/content-type/reducer', () => {
         newState,
         setSelectedAttributeContentType(GET_CONTENT_TYPE_RESPONSE_OK.attributes[0]),
       );
-      expect(newState).toHaveProperty('selected.attributeSelected', GET_CONTENT_TYPE_RESPONSE_OK.attributes[0]);
+      expect(newState).toHaveProperty(
+        'selected.attributeSelected',
+        GET_CONTENT_TYPE_RESPONSE_OK.attributes[0],
+      );
     });
   });
 

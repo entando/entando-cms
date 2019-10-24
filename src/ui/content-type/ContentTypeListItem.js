@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage,
-  injectIntl,
-  intlShape,
-  defineMessages,
+  FormattedMessage, injectIntl, intlShape, defineMessages,
 } from 'react-intl';
 import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
@@ -47,10 +44,7 @@ class ContentTypeListItem extends Component {
         <td className="ContentTypeList__td">{name}</td>
         <td className="ContentTypeList__td">{code}</td>
         <td className="ContentTypeList__td text-center">
-          <ContentTypeStatusIcon
-            status={status}
-            title={intl.formatMessage(msgs.statusTitle)}
-          />
+          <ContentTypeStatusIcon status={status} title={intl.formatMessage(msgs.statusTitle)} />
         </td>
         <td className="ContentTypeList__td text-center">
           <DropdownKebab pullRight id="ContentTypeList-dropdown">
@@ -60,20 +54,13 @@ class ContentTypeListItem extends Component {
               label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
               className="ContentTypeList__menu-item-edit"
             />
-            <MenuItem
-              className="ContentTypeList__menu-item-reload"
-              onClick={this.onClickReload}
-            >
+            <MenuItem className="ContentTypeList__menu-item-reload" onClick={this.onClickReload}>
               <FormattedMessage id="cms.label.reload" defaultMessage="Refresh" />
             </MenuItem>
-            <MenuItem
-              className="ContentTypeList__menu-item-delete"
-              onClick={this.onClickDelete}
-            >
+            <MenuItem className="ContentTypeList__menu-item-delete" onClick={this.onClickDelete}>
               <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
             </MenuItem>
           </DropdownKebab>
-
         </td>
       </tr>
     );

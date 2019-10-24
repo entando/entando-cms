@@ -56,14 +56,18 @@ class ContentModelList extends Component {
           <table className="table table-striped table-bordered table-hover ContentModelList__table">
             <thead>
               <tr>
-                <th width="20%"><FormattedMessage id="cms.contentmodel.list.contentTypeHeader" /></th>
-                <th width="70%"><FormattedMessage id="cms.contentmodel.list.contentModelNameHeader" /></th>
-                <th width="10%" className="text-center"><FormattedMessage id="cms.contentmodel.list.actionsHeader" /></th>
+                <th width="20%">
+                  <FormattedMessage id="cms.contentmodel.list.contentTypeHeader" />
+                </th>
+                <th width="70%">
+                  <FormattedMessage id="cms.contentmodel.list.contentModelNameHeader" />
+                </th>
+                <th width="10%" className="text-center">
+                  <FormattedMessage id="cms.contentmodel.list.actionsHeader" />
+                </th>
               </tr>
             </thead>
-            <tbody>
-              {renderRow}
-            </tbody>
+            <tbody>{renderRow}</tbody>
           </table>
           <Paginator
             pagination={pagination}
@@ -80,9 +84,7 @@ class ContentModelList extends Component {
 }
 
 ContentModelList.propTypes = {
-  contentModels: PropTypes.arrayOf(
-    PropTypes.shape({}),
-  ).isRequired,
+  contentModels: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
   fetchList: PropTypes.func.isRequired,

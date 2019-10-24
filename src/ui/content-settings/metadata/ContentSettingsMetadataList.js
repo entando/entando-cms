@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
-  Row,
-  Col,
-  Button,
-  Icon,
+  Row, Col, Button, Icon,
 } from 'patternfly-react';
 import DeleteContentMetadataModalContainer from 'ui/content-settings/metadata/DeleteContentMetadataModalContainer';
 import { reduxForm, Field } from 'redux-form';
@@ -56,10 +53,16 @@ class ContentSettingsMetadataListBody extends Component {
                       helpId="cms.contentsettings.form.metadatamapping.help"
                       helpValues={{ key: meta.key }}
                     />
-                  )}
+)}
                 />
                 <span className="ContentSettingsMetadata__list-input-right-placeholder">
-                  <FormattedMessage id={loadings[meta.key] ? 'cms.label.savingdot' : 'cms.label.pressenter.placeholder'} />
+                  <FormattedMessage
+                    id={
+                      loadings[meta.key]
+                        ? 'cms.label.savingdot'
+                        : 'cms.label.pressenter.placeholder'
+                    }
+                  />
                 </span>
               </Col>
               <Col xs={12} md={1} className="text-right ContentSettingsMetadata__list-cell-del">
@@ -98,6 +101,5 @@ const ContentSettingsMetadataList = reduxForm({
   form: 'settingsmetadata',
   enableReinitialize: true,
 })(ContentSettingsMetadataListBody);
-
 
 export default ContentSettingsMetadataList;

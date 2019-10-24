@@ -5,7 +5,11 @@ import { initialize } from 'redux-form';
 
 import { getContent, getGroups, postAddContent } from 'api/editContent';
 import {
-  SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, SET_WORK_MODE, SET_JOINED_CATEGORIES,
+  SET_CONTENT_ENTRY,
+  SET_OWNER_GROUP_DISABLE,
+  SET_GROUPS,
+  SET_WORK_MODE,
+  SET_JOINED_CATEGORIES,
 } from './types';
 
 export const setContentEntry = content => ({
@@ -29,18 +33,20 @@ export const fetchContent = params => dispatch => new Promise((resolve) => {
           dispatch(setContentEntry(content));
           dispatch(setJoinedCategories(content.categories));
           const { mainGroup, groups, description } = content;
-          dispatch(initialize('editcontentform', {
-            ownerGroup: mainGroup,
-            joinGroups: groups,
-            contentDescription: description,
-          }));
+          dispatch(
+            initialize('editcontentform', {
+              ownerGroup: mainGroup,
+              joinGroups: groups,
+              contentDescription: description,
+            }),
+          );
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
         }
         resolve();
       });
     })
-    .catch(() => { });
+    .catch(() => {});
 });
 
 export const setOwnerGroupDisable = disabled => ({
@@ -70,7 +76,7 @@ export const fetchGroups = params => dispatch => new Promise((resolve) => {
         resolve();
       });
     })
-    .catch(() => { });
+    .catch(() => {});
 });
 
 export const sendPostAddContent = contModelObject => dispatch => new Promise(
@@ -87,5 +93,5 @@ export const sendPostAddContent = contModelObject => dispatch => new Promise(
         }
       });
     })
-    .catch(() => { }),
+    .catch(() => {}),
 );

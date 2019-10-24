@@ -10,7 +10,6 @@ import { MODAL_ID } from 'ui/content-settings/metadata/DeleteContentMetadataModa
 
 import ContentSettingsMetadataList from 'ui/content-settings/metadata/ContentSettingsMetadataList';
 
-
 export const mapStateToProps = (state) => {
   const metadata = getMetadataMappingList(state);
   const loadings = metadata.reduce((acc, { key }) => {

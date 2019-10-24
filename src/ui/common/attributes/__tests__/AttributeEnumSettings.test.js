@@ -1,12 +1,10 @@
 import React from 'react';
 
-import {
-  configEnzymeAdapter,
-  addReduxForm,
-  mockRenderWithIntl,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, addReduxForm, mockRenderWithIntl } from 'testutils/helpers';
 import { mount } from 'enzyme';
-import AttributeEnumSettingsBody, { element as elementValidation } from 'ui/common/attributes/AttributeEnumSettings';
+import AttributeEnumSettingsBody, {
+  element as elementValidation,
+} from 'ui/common/attributes/AttributeEnumSettings';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import { required } from '@entando/utils';

@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { InputGroup, Button, Col } from 'patternfly-react';
 import {
-  FormattedMessage,
-  injectIntl,
-  intlShape,
-  defineMessages,
+  FormattedMessage, injectIntl, intlShape, defineMessages,
 } from 'react-intl';
 
 class RoleSelectRenderer extends Component {
@@ -19,9 +16,7 @@ class RoleSelectRenderer extends Component {
     if (!this.select || !this.select.value) {
       return;
     }
-    const {
-      selectedValues, fields,
-    } = this.props;
+    const { selectedValues, fields } = this.props;
 
     if (this.select.value && !selectedValues.includes(this.select.value)) {
       fields.push(this.select.value);
@@ -30,7 +25,13 @@ class RoleSelectRenderer extends Component {
 
   render() {
     const {
-      options, selectedValues, labelKey, valueKey, emptyOptionTextId, intl, fields,
+      options,
+      selectedValues,
+      labelKey,
+      valueKey,
+      emptyOptionTextId,
+      intl,
+      fields,
     } = this.props;
 
     const filteredOptions = options
@@ -48,40 +49,43 @@ class RoleSelectRenderer extends Component {
           defaultMessage: 'Unknown',
         },
       });
-      filteredOptions.unshift((
+      filteredOptions.unshift(
         <option key={emptyOptionTextId} value="">
           {intl.formatMessage(msgs.emptyOptionText)}
-        </option>
-      ));
+        </option>,
+      );
     }
 
-    const renderTags = (
-      selectedValues.map((value, i) => (
-        <div key={value}>
-          <h3><FormattedMessage id="cms.contenttype.labelrole.assigned" /></h3>
-          <hr />
-          <Col xs={4}>
-            <p>
-              {options.find(opt => opt[valueKey] === value)[labelKey]}
-            </p>
-          </Col>
-          <Col xs={8}>
-            <Button
-              bsStyle="danger"
-              className="btn btn-danger RoleSelectRenderer__remove--btn"
-              onClick={() => fields.remove(i)}
-            >
-              <FormattedMessage id="cms.label.delete" />
-            </Button>
-          </Col>
-        </div>
-      ))
-    );
+    const renderTags = selectedValues.map((value, i) => (
+      <div key={value}>
+        <h3>
+          <FormattedMessage id="cms.contenttype.labelrole.assigned" />
+        </h3>
+        <hr />
+        <Col xs={4}>
+          <p>{options.find(opt => opt[valueKey] === value)[labelKey]}</p>
+        </Col>
+        <Col xs={8}>
+          <Button
+            bsStyle="danger"
+            className="btn btn-danger RoleSelectRenderer__remove--btn"
+            onClick={() => fields.remove(i)}
+          >
+            <FormattedMessage id="cms.label.delete" />
+          </Button>
+        </Col>
+      </div>
+    ));
 
     return (
       <div className="RoleSelectRenderer">
         <InputGroup>
-          <select className="form-control" ref={(select) => { this.select = select; }}>
+          <select
+            className="form-control"
+            ref={(select) => {
+              this.select = select;
+            }}
+          >
             {filteredOptions}
           </select>
           <span className="input-group-btn">
@@ -100,7 +104,6 @@ class RoleSelectRenderer extends Component {
     );
   }
 }
-
 
 RoleSelectRenderer.propTypes = {
   intl: intlShape.isRequired,

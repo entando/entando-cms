@@ -56,10 +56,7 @@ describe('AttributeListTableActions', () => {
   beforeEach(() => {
     history = createMockHistory();
     component = mount(
-      mockRenderWithRouter(
-        mockRenderWithIntl(<AttributeListTableActions {...props} />),
-        history,
-      ),
+      mockRenderWithRouter(mockRenderWithIntl(<AttributeListTableActions {...props} />), history),
     );
   });
 
@@ -73,23 +70,34 @@ describe('AttributeListTableActions', () => {
 
   describe('test moveUp/moveDown', () => {
     it('on item-move-up clicked should call onMoveUp', () => {
-      component.find('.AttributeListMenuAction__menu-item-move-up').at(1).simulate('click');
+      component
+        .find('.AttributeListMenuAction__menu-item-move-up')
+        .at(1)
+        .simulate('click');
       expect(component.exists()).toBe(true);
     });
 
     it('on item-move-up clicked should call onMoveDown', () => {
-      component.find('.AttributeListMenuAction__menu-item-move-down').at(1).simulate('click');
+      component
+        .find('.AttributeListMenuAction__menu-item-move-down')
+        .at(1)
+        .simulate('click');
       expect(component.exists()).toBe(true);
     });
 
-
     it('on item-delete clicked should call onClickDelete', () => {
-      component.find('.AttributeListMenuAction__menu-item-delete').at(1).simulate('click');
+      component
+        .find('.AttributeListMenuAction__menu-item-delete')
+        .at(1)
+        .simulate('click');
       expect(component.exists()).toBe(true);
     });
 
     it('on item-delete clicked should call on edit', () => {
-      component.find('.AttributeListMenuAction__menu-item-edit').at(1).simulate('click');
+      component
+        .find('.AttributeListMenuAction__menu-item-edit')
+        .at(1)
+        .simulate('click');
       expect(component.exists()).toBe(true);
     });
   });

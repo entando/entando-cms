@@ -68,7 +68,7 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE) => async (dispatch, 
       ]);
       dispatch(setCategoryLoaded(categoryCode));
       const categoryStatus = getStatusMap(getState())[categoryCode];
-      const toExpand = (!categoryStatus || !categoryStatus.expanded);
+      const toExpand = !categoryStatus || !categoryStatus.expanded;
       if (toExpand) {
         dispatch(toggleCategoryExpanded(categoryCode, true));
       }
@@ -87,21 +87,23 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE) => async (dispatch, 
 
 export const handleExpandCategory = (categoryCode = ROOT_CODE) => (
   dispatch, getState,
-) => new Promise((resolve) => {
-  const categoryStatus = getStatusMap(getState())[categoryCode];
-  const toExpand = (!categoryStatus || !categoryStatus.expanded);
-  const toLoad = (toExpand && (!categoryStatus || !categoryStatus.loaded));
-  if (toLoad) {
-    dispatch(setCategoryLoading(categoryCode));
-    dispatch(fetchCategoryTree(categoryCode)).then(() => {
-      dispatch(toggleCategoryExpanded(categoryCode, true));
-      dispatch(setCategoryLoaded(categoryCode));
-    });
-  } else {
-    dispatch(toggleCategoryExpanded(categoryCode, toExpand));
-  }
-  resolve();
-});
+) => new Promise(
+  (resolve) => {
+    const categoryStatus = getStatusMap(getState())[categoryCode];
+    const toExpand = !categoryStatus || !categoryStatus.expanded;
+    const toLoad = toExpand && (!categoryStatus || !categoryStatus.loaded);
+    if (toLoad) {
+      dispatch(setCategoryLoading(categoryCode));
+      dispatch(fetchCategoryTree(categoryCode)).then(() => {
+        dispatch(toggleCategoryExpanded(categoryCode, true));
+        dispatch(setCategoryLoaded(categoryCode));
+      });
+    } else {
+      dispatch(toggleCategoryExpanded(categoryCode, toExpand));
+    }
+    resolve();
+  },
+);
 
 export const onJoinCategory = category => ({
   type: JOIN_CATEGORY,

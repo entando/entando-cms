@@ -2,10 +2,7 @@ import { mapStateToProps, mapDispatchToProps } from 'ui/common/form/ErrorsAlertC
 
 const CLEAR_ERRORS = 'errors/clear-errors';
 
-const ERRORS = [
-  'Error message 1',
-  'Error message 2',
-];
+const ERRORS = ['Error message 1', 'Error message 2'];
 
 const STATE = {
   messages: { errors: ERRORS },
@@ -34,9 +31,11 @@ describe('ErrorsAlertContainer', () => {
     });
     it('onDismiss property dispatches clearErrors', () => {
       props.onDismiss();
-      expect(dispatchMock).toHaveBeenCalledWith(expect.objectContaining({
-        type: CLEAR_ERRORS,
-      }));
+      expect(dispatchMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: CLEAR_ERRORS,
+        }),
+      );
     });
   });
 });

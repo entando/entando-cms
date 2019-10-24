@@ -4,18 +4,23 @@ import { Modal, Icon, Button } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
 const GenericModal = ({
-  visibleModal, modalId, modalClassName, onCloseModal, children, buttons, modalFooter, modalTitle,
+  visibleModal,
+  modalId,
+  modalClassName,
+  onCloseModal,
+  children,
+  buttons,
+  modalFooter,
+  modalTitle,
 }) => {
   const footer = modalFooter || (
     <Modal.Footer>
-      <Button
-        bsStyle="default"
-        className="btn-cancel"
-        onClick={onCloseModal}
-      >
+      <Button bsStyle="default" className="btn-cancel" onClick={onCloseModal}>
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      {buttons.map(button => (<Button {...button.props} key={button.props.id} />))}
+      {buttons.map(button => (
+        <Button {...button.props} key={button.props.id} />
+      ))}
     </Modal.Footer>
   );
 
@@ -38,9 +43,7 @@ const GenericModal = ({
         </button>
         {modalTitle}
       </Modal.Header>
-      <Modal.Body>
-        {children}
-      </Modal.Body>
+      <Modal.Body>{children}</Modal.Body>
       {footer}
     </Modal>
   );

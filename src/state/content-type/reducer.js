@@ -14,7 +14,6 @@ import {
   SET_ACTION_MODE,
   REMOVE_ATTRIBUTE_FROM_COMPOSITE,
   MOVE_ATTRIBUTE_FROM_COMPOSITE,
-
   SET_NEW_ATTRIBUTE_COMPOSITE,
 } from 'state/content-type/types';
 
@@ -27,7 +26,6 @@ export const toMap = array => array.reduce((acc, contentType) => {
 
 export const toIdList = array => array.map(contentType => contentType.code);
 
-
 export const list = (state = [], action = {}) => {
   switch (action.type) {
     case SET_CONTENT_TYPES: {
@@ -37,7 +35,8 @@ export const list = (state = [], action = {}) => {
       const { contentTypeCode } = action.payload;
       return state.filter(item => item !== contentTypeCode);
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 
@@ -52,7 +51,8 @@ const contentTypeMap = (state = {}, action = {}) => {
       delete newState[contentTypeCode];
       return newState;
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 
@@ -93,7 +93,8 @@ export const selectedContentType = (state = {}, action = {}) => {
     case REMOVE_ATTRIBUTE_FROM_COMPOSITE: {
       const { attributeCode, isMonolistComposite } = action.payload;
       const { compositeAttributes } = isMonolistComposite
-        ? state.attributeSelected.nestedAttribute : state.attributeSelected;
+        ? state.attributeSelected.nestedAttribute
+        : state.attributeSelected;
       const newComposite = compositeAttributes.filter(f => f.code !== attributeCode);
       const newState = cloneDeep(state);
       if (isMonolistComposite) {
@@ -106,7 +107,8 @@ export const selectedContentType = (state = {}, action = {}) => {
     case MOVE_ATTRIBUTE_FROM_COMPOSITE: {
       const { fromIndex, toIndex, isMonolistComposite } = action.payload;
       const { compositeAttributes } = isMonolistComposite
-        ? state.attributeSelected.nestedAttribute : state.attributeSelected;
+        ? state.attributeSelected.nestedAttribute
+        : state.attributeSelected;
       const newCompositeAttribute = [...compositeAttributes];
       const from = newCompositeAttribute.splice(toIndex, 1)[0];
       newCompositeAttribute.splice(fromIndex, 0, from);
@@ -125,7 +127,8 @@ export const selectedContentType = (state = {}, action = {}) => {
     case SET_NEW_ATTRIBUTE_COMPOSITE: {
       return { ...state, newAttributeComposite: action.payload.attributeData };
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 
@@ -134,7 +137,8 @@ export const attributeList = (state = [], action = {}) => {
     case SET_ATTRIBUTES: {
       return action.payload.attributes;
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 
@@ -143,7 +147,8 @@ export const selectedAttribute = (state = {}, action = {}) => {
     case SET_SELECTED_ATTRIBUTE: {
       return action.payload.attribute;
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 export const status = (state = [], action = {}) => {
@@ -151,7 +156,8 @@ export const status = (state = [], action = {}) => {
     case SET_CONTENT_TYPE_REFERENCE_STATUS: {
       return action.payload.contentTypeStatus;
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 

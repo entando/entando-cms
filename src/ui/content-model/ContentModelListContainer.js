@@ -35,6 +35,9 @@ export const mapDispatchToProps = dispatch => ({
   },
 });
 
-const ContentModelListContainer = connect(mapStateToProps, mapDispatchToProps)(ContentModelList);
+const ContentModelListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ContentModelList);
 
 export default ContentModelListContainer;

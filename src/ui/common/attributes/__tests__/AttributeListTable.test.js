@@ -26,7 +26,6 @@ const props = {
   fields: FIELDS,
 };
 
-
 describe('AttributeListTable', () => {
   let component;
   beforeEach(() => {

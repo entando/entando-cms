@@ -52,7 +52,9 @@ const StickySave = ({ lastAutoSaveTime, intl }) => (
                 <FormattedMessage id="cms.stickySave.status" defaultMessage="Status" />
               </strong>
               <select className="form-control StickySave__select" disabled={false}>
-                <option value="Choose an option">{intl.formatMessage(messages.chooseOption)}</option>
+                <option value="Choose an option">
+                  {intl.formatMessage(messages.chooseOption)}
+                </option>
                 <option value="Select Option">{intl.formatMessage(messages.new)}</option>
               </select>
             </Col>
@@ -67,7 +69,9 @@ const StickySave = ({ lastAutoSaveTime, intl }) => (
               <strong className="StickySave__saveText">
                 <FormattedMessage id="rame" defaultMessage="Set content as" />
               </strong>
-              <Button className="StickySave__actionButton">{intl.formatMessage(messages.saveAndContinue)}</Button>
+              <Button className="StickySave__actionButton">
+                {intl.formatMessage(messages.saveAndContinue)}
+              </Button>
               <Button className="StickySave__actionButton" bsStyle="success">
                 {intl.formatMessage(messages.saveAndApprove)}
               </Button>

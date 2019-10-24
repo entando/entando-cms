@@ -26,9 +26,7 @@ const AttributeMonoListMonoSettings = ({ attributesList }) => {
               component={RenderSelectInput}
               options={selectAttribute}
               defaultOptionId="cms.label.chooseoption"
-              label={
-                <FormLabel labelId="cms.label.list" required />
-              }
+              label={<FormLabel labelId="cms.label.list" required />}
               name="type"
               validate={[required]}
             />

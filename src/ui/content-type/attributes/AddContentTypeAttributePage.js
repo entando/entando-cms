@@ -1,10 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
-  CardGrid,
-  Row,
-  Col,
-  Breadcrumb,
+  CardGrid, Row, Col, Breadcrumb,
 } from 'patternfly-react';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';

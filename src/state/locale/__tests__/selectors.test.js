@@ -1,4 +1,3 @@
-
 import { getLocale } from 'state/locale/selectors';
 
 const TEST_STATE = { locale: 'en' };

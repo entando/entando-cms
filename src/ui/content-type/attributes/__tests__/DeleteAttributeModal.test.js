@@ -23,9 +23,7 @@ const STATE = {
 describe('DeleteAttributeModal', () => {
   let component;
   beforeEach(() => {
-    component = mount(
-      mockRenderWithIntl(<DeleteAttributeModal />, STATE),
-    );
+    component = mount(mockRenderWithIntl(<DeleteAttributeModal />, STATE));
   });
 
   describe('component with required props only', () => {
@@ -60,9 +58,7 @@ describe('DeleteAttributeModal', () => {
 
   describe('component with extra props', () => {
     it('renders info prop', () => {
-      component = mount(
-        mockRenderWithIntl(<DeleteAttributeModal {...props} />, STATE),
-      );
+      component = mount(mockRenderWithIntl(<DeleteAttributeModal {...props} />, STATE));
       const title = component.find('EmptyStateTitle');
       expect(title.render().text()).toContain('attribute');
     });

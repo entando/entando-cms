@@ -33,24 +33,17 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   routeToEdit: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
 });
 
-
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: ({ contentTypeCode }) => {
     dispatch(fetchContentType(contentTypeCode));
     dispatch(fetchContentTypeAttributes());
   },
   onAddAttribute: ({ attributeCode, contentTypeCode }) => {
-    dispatch(fetchContentTypeAttribute(
-      attributeCode,
-      () => (
-        history.push(
-          routeConverter(
-            ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode: contentTypeCode },
-          ),
-        )
-      ),
-    ));
+    dispatch(
+      fetchContentTypeAttribute(attributeCode, () => history.push(
+        routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
+      )),
+    );
   },
 
   onMoveUp: (entityCode, attributeCode, attributeIndex) => {
@@ -70,7 +63,6 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
       }
     });
   },
-
 });
 
 const EditContentTypeFormContainer = connect(

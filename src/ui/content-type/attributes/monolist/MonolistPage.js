@@ -2,20 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
-  CardGrid,
-  Row,
-  Col,
-  Breadcrumb,
+  CardGrid, Row, Col, Breadcrumb,
 } from 'patternfly-react';
 import { routeConverter } from '@entando/utils';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import PageTitle from 'ui/common/PageTitle';
 import MonolistAttributeFormContainer from 'ui/content-type/attributes/monolist/MonolistAttributeFormContainer';
-import {
-  ROUTE_CMS_CONTENTTYPE_LIST,
-  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
-} from 'app-init/routes';
+import { ROUTE_CMS_CONTENTTYPE_LIST, ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT } from 'app-init/routes';
 
 import { TYPE_COMPOSITE, TYPE_MONOLIST } from 'state/content-type/const';
 
@@ -29,7 +23,9 @@ class MonolistPage extends Component {
     const {
       attributeCode, contentTypeCode, selectedAttribute, entityCode, type,
     } = this.props;
-    const titleId = selectedAttribute === '' ? 'cms.label.edit' : `cms.contenttype.label.edit.${selectedAttribute}`;
+    const titleId = selectedAttribute === ''
+      ? 'cms.label.edit'
+      : `cms.contenttype.label.edit.${selectedAttribute}`;
 
     const nextBreadCrumbs = type === TYPE_COMPOSITE ? (
       <BreadcrumbItem>
@@ -38,10 +34,7 @@ class MonolistPage extends Component {
       </BreadcrumbItem>
     ) : (
       <BreadcrumbItem
-        to={routeConverter(
-          ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
-          { entityCode, attributeCode },
-        )}
+        to={routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT, { entityCode, attributeCode })}
       >
         <FormattedMessage id="cms.contenttype.label.edit.attribute" />
         {attributeCode}
@@ -62,22 +55,16 @@ class MonolistPage extends Component {
                 <FormattedMessage id="cms.contenttype.title" />
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <FormattedMessage id="cms.label.edit" />:
-                &nbsp;{contentTypeCode}
+                <FormattedMessage id="cms.label.edit" />: &nbsp;{contentTypeCode}
               </BreadcrumbItem>
               {nextBreadCrumbs}
-              <BreadcrumbItem active>
-                {lastBreadcrumbLabel}
-              </BreadcrumbItem>
+              <BreadcrumbItem active>{lastBreadcrumbLabel}</BreadcrumbItem>
             </Breadcrumb>
           </Col>
         </Row>
         <Row>
           <Col xs={12}>
-            <PageTitle
-              titleId={titleId}
-              helpId="cms.contentType.helpattributes.label"
-            />
+            <PageTitle titleId={titleId} helpId="cms.contentType.helpattributes.label" />
           </Col>
         </Row>
         <Row>
@@ -97,7 +84,6 @@ MonolistPage.propTypes = {
   selectedAttribute: PropTypes.string,
   entityCode: PropTypes.string,
   type: PropTypes.string,
-
 };
 
 MonolistPage.defaultProps = {
@@ -108,6 +94,5 @@ MonolistPage.defaultProps = {
   entityCode: '',
   type: '',
 };
-
 
 export default MonolistPage;

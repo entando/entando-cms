@@ -11,6 +11,7 @@ import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
 import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
+import assets from 'state/assets/reducer';
 import contentSettings from 'state/content-settings/reducer';
 
 export const cms = combineReducers({
@@ -18,6 +19,7 @@ export const cms = combineReducers({
   contentType,
   editContent,
   categories,
+  assets,
   contentSettings,
 });
 
@@ -30,5 +32,6 @@ export default combineReducers({
   locale,
   messages,
   modal,
+  categories,
   pagination,
 });

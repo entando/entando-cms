@@ -16,7 +16,8 @@ import AttributesDateSettings from 'ui/common/attributes/AttributesDateSettings'
 import AttributeListTableComposite from 'ui/common/attributes/AttributeListTableComposite';
 
 import {
-  MODE_ADD_COMPOSITE, MODE_EDIT_COMPOSITE,
+  MODE_ADD_COMPOSITE,
+  MODE_EDIT_COMPOSITE,
   MODE_ADD_ATTRIBUTE_COMPOSITE,
   TYPE_COMPOSITE,
   TYPE_BOOLEAN,
@@ -54,27 +55,27 @@ export class AttributeFormBody extends Component {
     const isAddAttributeComposite = mode === MODE_ADD_ATTRIBUTE_COMPOSITE;
     const labelsubmit = isEditComposite || isAddAttributeComposite ? 'cms.label.save' : 'cms.label.continue';
 
-    const renderAttributeInfo = () => (
-      isComposite
-        ? <AttributeInfoComposite />
-        : (
-          <AttributeInfo
-            isSearchable={selectedAttributeType.searchableOptionSupported}
-            isIndexable={selectedAttributeType.indexableOptionSupported}
-          />
-        )
-    );
+    const renderAttributeInfo = () => (isComposite ? (
+      <AttributeInfoComposite />
+    ) : (
+      <AttributeInfo
+        isSearchable={selectedAttributeType.searchableOptionSupported}
+        isIndexable={selectedAttributeType.indexableOptionSupported}
+      />
+    ));
 
-    const renderAttributeRole = () => (
-      !isComposite ? <AttributeRole {...this.props} /> : null
-    );
+    const renderAttributeRole = () => (!isComposite ? <AttributeRole {...this.props} /> : null);
 
     const renderSelectedAttribute = () => {
       switch (selectedAttributeType.code) {
-        case TYPE_BOOLEAN: return null;
-        case TYPE_CHECKBOX: return null;
-        case TYPE_THREESTATE: return null;
-        case TYPE_TIMESTAMP: return null;
+        case TYPE_BOOLEAN:
+          return null;
+        case TYPE_CHECKBOX:
+          return null;
+        case TYPE_THREESTATE:
+          return null;
+        case TYPE_TIMESTAMP:
+          return null;
         case TYPE_MONOLIST:
           return (
             <AttributeMonoListMonoSettings
@@ -89,49 +90,49 @@ export class AttributeFormBody extends Component {
               attributesList={attributesList}
             />
           );
-        case TYPE_NUMBER: return (
-          <FormSection name="validationRules">
-            <AttributesNumber {...this.props} />
-          </FormSection>
-        );
-        case TYPE_DATE: return (
-          <FormSection name="validationRules">
-            <AttributesDateSettings />
-          </FormSection>
-        );
-        case TYPE_ENUMERATOR: return (
-          <AttributeEnumSettings
-            enumeratorExtractorBeans={selectedAttributeType.enumeratorExtractorBeans}
-          />
-        );
-        case TYPE_ENUMERATOR_MAP: return (
-          <AttributeEnumMapSettings
-            enumeratorMapExtractorBeans={selectedAttributeType.enumeratorMapExtractorBeans}
-          />
-        );
+        case TYPE_NUMBER:
+          return (
+            <FormSection name="validationRules">
+              <AttributesNumber {...this.props} />
+            </FormSection>
+          );
+        case TYPE_DATE:
+          return (
+            <FormSection name="validationRules">
+              <AttributesDateSettings />
+            </FormSection>
+          );
+        case TYPE_ENUMERATOR:
+          return (
+            <AttributeEnumSettings
+              enumeratorExtractorBeans={selectedAttributeType.enumeratorExtractorBeans}
+            />
+          );
+        case TYPE_ENUMERATOR_MAP:
+          return (
+            <AttributeEnumMapSettings
+              enumeratorMapExtractorBeans={selectedAttributeType.enumeratorMapExtractorBeans}
+            />
+          );
         case TYPE_COMPOSITE: {
           return isComposite ? (
-            <AttributeListTableComposite
-              entityCode={contentTypeAttributeCode}
-              {...this.props}
-            />
+            <AttributeListTableComposite entityCode={contentTypeAttributeCode} {...this.props} />
           ) : null;
         }
-        default: return (
-          <FormSection name="validationRules">
-            <AttributeHypeLongMonoTextSettings {...this.props} />
-          </FormSection>
-        );
+        default:
+          return (
+            <FormSection name="validationRules">
+              <AttributeHypeLongMonoTextSettings {...this.props} />
+            </FormSection>
+          );
       }
     };
 
-    const renderOgnlValidation = () => (
-      !isComposite ? (
-        <FormSection name="validationRules">
-          <AttributeOgnlValidation />
-        </FormSection>
-      ) : null
-    );
+    const renderOgnlValidation = () => (!isComposite ? (
+      <FormSection name="validationRules">
+        <AttributeOgnlValidation />
+      </FormSection>
+    ) : null);
 
     return (
       <form
@@ -194,14 +195,15 @@ AttributeFormBody.propTypes = {
     maxLength: PropTypes.string,
     regex: PropTypes.string,
   }),
-  allowedRoles: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string,
-    descr: PropTypes.string,
-  })),
+  allowedRoles: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+      descr: PropTypes.string,
+    }),
+  ),
   mode: PropTypes.string.isRequired,
   compositeAttributes: PropTypes.arrayOf(PropTypes.shape({})),
   attributesList: PropTypes.arrayOf(PropTypes.string).isRequired,
-
 };
 
 AttributeFormBody.defaultProps = {
@@ -210,11 +212,11 @@ AttributeFormBody.defaultProps = {
   submitting: false,
   contentTypeAttributeCode: '',
   initialValues: {},
-  validation: ({
+  validation: {
     minLength: '',
     maxLength: '',
     regex: '',
-  }),
+  },
   allowedRoles: [],
   compositeAttributes: [],
 };

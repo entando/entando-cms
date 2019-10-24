@@ -17,7 +17,7 @@ const renderRoles = (roles) => {
       </ul>
     );
   }
-  return (<span>&ndash;</span>);
+  return <span>&ndash;</span>;
 };
 
 const AttributeListTableActions = ({
@@ -37,13 +37,9 @@ const AttributeListTableActions = ({
     <tr key={attribute.code}>
       <td className="AttributeListRow__td">{attribute.code}</td>
       <td className="AttributeListRow__td">
-        {
-          type === TYPE_LIST || type === TYPE_MONOLIST ? `${type}: ${nestedAttribute.type}` : type
-        }
+        {type === TYPE_LIST || type === TYPE_MONOLIST ? `${type}: ${nestedAttribute.type}` : type}
       </td>
-      <td className="AttributeListRow__td">
-        {renderRoles(attribute.roles)}
-      </td>
+      <td className="AttributeListRow__td">{renderRoles(attribute.roles)}</td>
       <td className="AttributeListRow__td text-center">
         <AttributeCheckIcon isChecked={attribute.mandatory || false} />
       </td>
@@ -59,38 +55,34 @@ const AttributeListTableActions = ({
             label={<FormattedMessage id="cms.label.edit" />}
             className="AttributeListMenuAction__menu-item-edit"
           />
-          {
-            isMovableUp ? (
-              <MenuItem
-                className="AttributeListMenuAction__menu-item-move-up"
-                onClick={() => {
-                  onMoveUp(entityCode, attribute.code, index);
-                  fields.move(index, index - 1);
-                }
-              }
-              >
-                <FormattedMessage id="cms.label.moveUp" />
-              </MenuItem>
-            ) : null
-          }
-          {
-          isMovableDown ? (
+          {isMovableUp ? (
+            <MenuItem
+              className="AttributeListMenuAction__menu-item-move-up"
+              onClick={() => {
+                onMoveUp(entityCode, attribute.code, index);
+                fields.move(index, index - 1);
+              }}
+            >
+              <FormattedMessage id="cms.label.moveUp" />
+            </MenuItem>
+          ) : null}
+          {isMovableDown ? (
             <MenuItem
               className="AttributeListMenuAction__menu-item-move-down"
               onClick={() => {
                 onMoveDown(entityCode, attribute.code, index);
                 fields.move(index, index + 1);
-              }
-            }
+              }}
             >
               <FormattedMessage id="cms.label.moveDown" />
             </MenuItem>
-          ) : null
-        }
+          ) : null}
           <MenuItem
             className="AttributeListMenuAction__menu-item-delete"
-            onClick={() => { fields.remove(index); onClickDelete(attribute.code); }
-              }
+            onClick={() => {
+              fields.remove(index);
+              onClickDelete(attribute.code);
+            }}
           >
             <FormattedMessage id="cms.label.delete" />
           </MenuItem>

@@ -1,4 +1,7 @@
-import { mapStateToProps, mapDispatchToProps } from 'ui/content-settings/metadata/AddContentSettingsMetadataContainer';
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from 'ui/content-settings/metadata/AddContentSettingsMetadataContainer';
 import { CONTENT_SETTINGS_OK as C_OK } from 'testutils/mocks/contentSettings';
 import { sendPostMetadataMap } from 'state/content-settings/actions';
 

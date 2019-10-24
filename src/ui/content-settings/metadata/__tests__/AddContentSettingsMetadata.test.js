@@ -1,9 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-  configEnzymeAdapter,
-  mockRenderWithIntl,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
 
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import AddContentSettingsMetadata from 'ui/content-settings/metadata/AddContentSettingsMetadata';
@@ -19,12 +16,7 @@ const STATE = {
 };
 
 describe('content-settings/metadata/AddContentSettingsMetadata', () => {
-  const component = mount(
-    mockRenderWithIntl(
-      <AddContentSettingsMetadata {...PROPS} />,
-      STATE,
-    ),
-  );
+  const component = mount(mockRenderWithIntl(<AddContentSettingsMetadata {...PROPS} />, STATE));
 
   it('renders without crashing', () => {
     expect(component.exists()).toEqual(true);

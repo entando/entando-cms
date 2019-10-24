@@ -6,7 +6,12 @@ import { Col } from 'patternfly-react';
 import AttributeListTableActions from 'ui/common/attributes/AttributeListTableActions';
 
 const AttributeListTable = ({
-  attributes, onClickDelete, onMoveUp, onMoveDown, entityCode, routeToEdit,
+  attributes,
+  onClickDelete,
+  onMoveUp,
+  onMoveDown,
+  entityCode,
+  routeToEdit,
 }) => {
   const renderTable = () => (
     <Col xs={10} xsOffset={2}>
@@ -50,11 +55,7 @@ const AttributeListTable = ({
     </Col>
   );
 
-  return (
-    <div className="AttributeListTable">
-      {attributes.length > 0 ? renderTable() : null}
-    </div>
-  );
+  return <div className="AttributeListTable">{attributes.length > 0 ? renderTable() : null}</div>;
 };
 
 AttributeListTable.propTypes = {

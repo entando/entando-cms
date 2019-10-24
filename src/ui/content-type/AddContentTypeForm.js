@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import {
-  InputGroup,
-  Button,
-  Row,
-  Col,
+  InputGroup, Button, Row, Col,
 } from 'patternfly-react';
 
 import { required, maxLength } from '@entando/utils';
@@ -16,16 +13,11 @@ import FormLabel from 'ui/common/form/FormLabel';
 import AttributeListTable from 'ui/common/attributes/AttributeListTable';
 import DeleteAttributeModalContainer from 'ui/content-type/attributes/DeleteAttributeModalContainer';
 
-
-const uppercaseThreeLetters = value => (
-  value && !/[A-Z]$/g.test(value) ? (
-    <FormattedMessage id="validateForm.element.code" />
-  ) : undefined);
+const uppercaseThreeLetters = value => (value && !/[A-Z]$/g.test(value) ? <FormattedMessage id="validateForm.element.code" /> : undefined);
 
 const maxLength3 = maxLength(3);
 
 const maxLength50 = maxLength(50);
-
 
 export class AddContentTypeFormBody extends Component {
   componentDidMount() {
@@ -35,8 +27,12 @@ export class AddContentTypeFormBody extends Component {
 
   render() {
     const {
-      attributesType, mode, handleSubmit,
-      onAddAttribute, invalid, submitting,
+      attributesType,
+      mode,
+      handleSubmit,
+      onAddAttribute,
+      invalid,
+      submitting,
       contentTypeCode,
     } = this.props;
 
@@ -51,10 +47,7 @@ export class AddContentTypeFormBody extends Component {
       if (isEdit) {
         return (
           <Row>
-            <AttributeListTable
-              entityCode={contentTypeCode}
-              {...this.props}
-            />
+            <AttributeListTable entityCode={contentTypeCode} {...this.props} />
             <DeleteAttributeModalContainer />
           </Row>
         );
@@ -74,9 +67,7 @@ export class AddContentTypeFormBody extends Component {
                 component={RenderSelectInput}
                 options={selectOptions}
                 defaultOptionId="cms.label.select"
-                label={
-                  <FormLabel labelId="cms.contenttype.form.type" required />
-                }
+                label={<FormLabel labelId="cms.contenttype.form.type" required />}
                 name="type"
               />
               <span className="input-group-btn">
@@ -87,9 +78,7 @@ export class AddContentTypeFormBody extends Component {
                   onClick={() => onAddAttribute(this.props)}
                   disabled={invalid || submitting}
                 >
-                  <FormattedMessage
-                    id="cms.label.add"
-                  />
+                  <FormattedMessage id="cms.label.add" />
                 </Button>
               </span>
             </InputGroup>
@@ -107,25 +96,33 @@ export class AddContentTypeFormBody extends Component {
               <legend>
                 <FormattedMessage id="cms.label.info" />
                 <div className="ContentTypeForm__required-fields text-right">
-                   * <FormattedMessage id="cms.label.fieldsRequired" />
+                  * <FormattedMessage id="cms.label.fieldsRequired" />
                 </div>
               </legend>
               <Field
                 component={RenderTextInput}
                 className="ContentTypeForm__input-code"
                 name="code"
-                label={
-                  <FormLabel labelId="cms.contenttype.form.code" helpId="validateForm.element.code" required />
-                 }
+                label={(
+                  <FormLabel
+                    labelId="cms.contenttype.form.code"
+                    helpId="validateForm.element.code"
+                    required
+                  />
+)}
                 validate={[required, uppercaseThreeLetters, maxLength3]}
                 disabled={isEdit}
               />
               <Field
                 component={RenderTextInput}
                 name="name"
-                label={
-                  <FormLabel labelId="cms.contenttype.form.name" helpId="validateForm.name.help" required />
-                 }
+                label={(
+                  <FormLabel
+                    labelId="cms.contenttype.form.name"
+                    helpId="validateForm.name.help"
+                    required
+                  />
+)}
                 validate={[required, maxLength50]}
               />
               {renderSelectOption()}
@@ -147,7 +144,6 @@ export class AddContentTypeFormBody extends Component {
           </Col>
         </Row>
       </form>
-
     );
   }
 }

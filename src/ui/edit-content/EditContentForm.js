@@ -62,10 +62,7 @@ class EditContentFormBody extends React.Component {
       currentUser: { username: currentUserName },
     } = this.props;
     const {
-      version,
-      lastModified,
-      firstEditor: creatorUserName,
-      lastEditor: modifierUserName,
+      version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
     } = content || {};
     const { contentType: newContentsType } = this.props;
     const contentType = content.typeDescription || newContentsType;
@@ -116,7 +113,7 @@ class EditContentFormBody extends React.Component {
                         labelId="cms.contents.edit.contentDescription.label"
                         helpId="cms.contents.edit.contentDescription.tooltip"
                       />
-                    )}
+)}
                     placeholder={intl.formatMessage(messages.contentDesctiption)}
                   />
                 </Col>
@@ -149,7 +146,7 @@ class EditContentFormBody extends React.Component {
                         helpId="cms.contents.edit.groups.ownerGroup.tooltip"
                         required
                       />
-                    )}
+)}
                     labelSize={2}
                     options={groupsWithEmptyOption}
                     optionValue="code"

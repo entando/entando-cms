@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Row,
-  Col,
-} from 'patternfly-react';
+import { Row, Col } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
 import RatioInput from 'ui/content-settings/ContentSettingsCropRatioInput';
@@ -56,11 +53,7 @@ const ContentSettingsCropRatios = ({
     ))}
     <Row>
       <Col xs={12} sm={5} smOffset={2}>
-        <RatioInput
-          data-test-id="content-settings-crop-ratios-form-input"
-          isNew
-          onAdd={onAdd}
-        />
+        <RatioInput data-test-id="content-settings-crop-ratios-form-input" isNew onAdd={onAdd} />
       </Col>
     </Row>
   </div>

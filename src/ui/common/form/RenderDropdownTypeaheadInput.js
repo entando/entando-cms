@@ -25,20 +25,36 @@ class RenderDropdownTypeaheadInput extends Component {
 
   render() {
     const {
-      input, meta: { touched, error }, label, help, labelSize, inputSize,
-      labelKey, append, alignClass, placeholder, options, ...others
+      input,
+      meta: { touched, error },
+      label,
+      help,
+      labelSize,
+      inputSize,
+      labelKey,
+      append,
+      alignClass,
+      placeholder,
+      options,
+      ...others
     } = this.props;
     return (
-      <div className={(touched && error) ? 'DropdownTypeahead form-group has-error' : 'DropdownTypeahead form-group'}>
-        {
-          labelSize > 0 ? (
-            <Col xs={labelSize} className={alignClass}>
-              <ControlLabel htmlFor={input.name}>
-                {label} {help}
-              </ControlLabel>
-            </Col>
-          ) : ''
+      <div
+        className={
+          touched && error
+            ? 'DropdownTypeahead form-group has-error'
+            : 'DropdownTypeahead form-group'
         }
+      >
+        {labelSize > 0 ? (
+          <Col xs={labelSize} className={alignClass}>
+            <ControlLabel htmlFor={input.name}>
+              {label} {help}
+            </ControlLabel>
+          </Col>
+        ) : (
+          ''
+        )}
         <Col xs={inputSize || 12 - labelSize}>
           <DropdownButton
             title={(input.value && input.value[labelKey]) || placeholder}
@@ -63,7 +79,7 @@ class RenderDropdownTypeaheadInput extends Component {
             />
           </DropdownButton>
           {append && <span className="AppendedLabel">{append}</span>}
-          {touched && ((error && <span className="help-block">{error}</span>))}
+          {touched && (error && <span className="help-block">{error}</span>)}
         </Col>
       </div>
     );

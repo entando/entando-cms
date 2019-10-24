@@ -29,9 +29,7 @@ const PROPS = {
 
 describe('content-model/AddContentModelForm', () => {
   const InjectedAddContentModelForm = injectIntl(AddContentModelForm);
-  const component = mount(
-    mockRenderWithIntl(<InjectedAddContentModelForm {...PROPS} />),
-  );
+  const component = mount(mockRenderWithIntl(<InjectedAddContentModelForm {...PROPS} />));
 
   it('renders without crashing', () => {
     expect(component.exists()).toEqual(true);

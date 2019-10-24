@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage,
-  defineMessages,
-  injectIntl,
-  intlShape,
+  FormattedMessage, defineMessages, injectIntl, intlShape,
 } from 'react-intl';
 import { Row, Col } from 'patternfly-react';
 import { Field } from 'redux-form';
@@ -14,18 +11,17 @@ import FormLabel from 'ui/common/form/FormLabel';
 import { required } from '@entando/utils';
 import { MODE_EDIT, MODE_ADD } from 'state/content-type/const';
 
-export const element = value => (
-  value && !/^[a-zA-Z0-9_]+(,[a-zA-Z0-9_]+)*$/i.test(value)
-    ? <FormattedMessage id="validateForm.element" /> : undefined
-);
+export const element = value => (value && !/^[a-zA-Z0-9_]+(,[a-zA-Z0-9_]+)*$/i.test(value) ? (
+  <FormattedMessage id="validateForm.element" />
+) : (
+  undefined
+));
 
 const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode, intl }) => {
-  const selectAllowedOptions = enumeratorExtractorBeans.map(item => (
-    {
-      value: item,
-      text: item,
-    }
-  ));
+  const selectAllowedOptions = enumeratorExtractorBeans.map(item => ({
+    value: item,
+    text: item,
+  }));
 
   const msgs = defineMessages({
     enumStaticItemsHelp: {
@@ -44,42 +40,31 @@ const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode, intl }) => {
           <Field
             component={RenderTextInput}
             name="enumeratorStaticItems"
-            label={
-              <FormLabel labelId="cms.contenttype.enumeratorStaticItems" required />
-            }
+            label={<FormLabel labelId="cms.contenttype.enumeratorStaticItems" required />}
             placeholder={intl.formatMessage(msgs.enumStaticItemsHelp)}
             validate={[required, element]}
           />
           <Field
             component={RenderTextInput}
             name="enumeratorStaticItemsSeparator"
-            label={
-              <FormLabel labelId="cms.contenttype.enumeratorStaticItemsSeparator" />
-            }
+            label={<FormLabel labelId="cms.contenttype.enumeratorStaticItemsSeparator" />}
           />
-          {
-            mode === MODE_ADD ? (
-              <Field
-                component={RenderSelectInput}
-                options={selectAllowedOptions}
-                defaultOptionId="cms.label.chooseoption"
-                label={
-                  <FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />
-              }
-                name="enumeratorExtractorBean"
-              />
-            ) : (
-              <Field
-                component={RenderTextInput}
-                name="enumeratorExtractorBean"
-                label={
-                  <FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />
-                }
-                disabled
-              />
-            )
-          }
-
+          {mode === MODE_ADD ? (
+            <Field
+              component={RenderSelectInput}
+              options={selectAllowedOptions}
+              defaultOptionId="cms.label.chooseoption"
+              label={<FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />}
+              name="enumeratorExtractorBean"
+            />
+          ) : (
+            <Field
+              component={RenderTextInput}
+              name="enumeratorExtractorBean"
+              label={<FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />}
+              disabled
+            />
+          )}
         </fieldset>
       </Col>
     </Row>

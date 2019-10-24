@@ -16,25 +16,19 @@ const AttributesNumber = () => (
         <Field
           component={RenderTextInput}
           name="rangeStartNumber"
-          label={
-            <FormLabel labelId="cms.label.from" />
-          }
+          label={<FormLabel labelId="cms.label.from" />}
           validate={[isNumber]}
         />
         <Field
           component={RenderTextInput}
           name="rangeEndNumber"
-          label={
-            <FormLabel labelId="cms.label.to" />
-          }
+          label={<FormLabel labelId="cms.label.to" />}
           validate={[isNumber]}
         />
         <Field
           component={RenderTextInput}
           name="equalNumber"
-          label={
-            <FormLabel labelId="cms.label.equal" />
-          }
+          label={<FormLabel labelId="cms.label.equal" />}
           validate={[isNumber]}
         />
       </fieldset>

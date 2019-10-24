@@ -22,13 +22,12 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
   onConfirmDelete: (contMeta) => {
     dispatch(sendDeleteMetadataMap(contMeta.key)).then((res) => {
       if (res) {
-        dispatch(addToast(
-          intl.formatMessage(
-            contentModelMsgs.removed,
-            { name: contMeta.key },
+        dispatch(
+          addToast(
+            intl.formatMessage(contentModelMsgs.removed, { name: contMeta.key }),
+            TOAST_SUCCESS,
           ),
-          TOAST_SUCCESS,
-        ));
+        );
       }
     });
     dispatch(setVisibleModal(''));

@@ -19,9 +19,7 @@ const AttributeInfoComposite = () => (
         <Field
           component={RenderTextInput}
           name="compositeAttributeType"
-          label={
-            <FormLabel labelId="cms.contenttype.form.type" />
-            }
+          label={<FormLabel labelId="cms.contenttype.form.type" />}
           disabled
         />
       </fieldset>

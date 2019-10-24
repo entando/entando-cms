@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage,
-  injectIntl,
-  intlShape,
-  defineMessages,
+  FormattedMessage, injectIntl, intlShape, defineMessages,
 } from 'react-intl';
 import { CKEDITOR_OPTION_NODE } from 'state/content-settings/const';
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
 import {
-  Row,
-  Col,
-  Button,
-  Icon,
+  Row, Col, Button, Icon,
 } from 'patternfly-react';
 
 const messages = defineMessages({
@@ -74,9 +68,9 @@ class ContentSettingsGeneral extends Component {
 
     let lastReloadRemarkId = '';
     if (indexesLastReloadDate) {
-      lastReloadRemarkId = `${reloadStatusId}.remark.${(
+      lastReloadRemarkId = `${reloadStatusId}.remark.${
         indexesLastReloadResult ? 'success' : 'failed'
-      )}`;
+      }`;
     }
 
     const statuses = defineMessages({
@@ -101,10 +95,13 @@ class ContentSettingsGeneral extends Component {
               defaultValue={editorSettings.key}
               meta={{ touched: false, error: false }}
             />
-          </div> {(
-            isEditorChanging
-              ? <span>({saving}... <Icon title={`${saving}...`} name="spinner" type="fa" />)</span>
-              : ''
+          </div>{' '}
+          {isEditorChanging ? (
+            <span>
+              ({saving}... <Icon title={`${saving}...`} name="spinner" type="fa" />)
+            </span>
+          ) : (
+            ''
           )}
         </Col>
       </Row>
@@ -114,30 +111,48 @@ class ContentSettingsGeneral extends Component {
       <div className="ContentSettingsGeneral__form-group">
         <Row>
           <Col xs={12} sm={2} className="text-right">
-            <FormattedMessage id="cms.contentsettings.label.reloadreferences" defaultMessage="Reload references" />
+            <FormattedMessage
+              id="cms.contentsettings.label.reloadreferences"
+              defaultMessage="Reload references"
+            />
           </Col>
           <Col xs={12} sm={10}>
             <Button bsStyle="primary" onClick={onReloadReferences}>
-              <FormattedMessage id="cms.contentsettings.label.reloadreferences" defaultMessage="Reload references" />
-            </Button> {(
-              isReloadingReferences
-                ? <span>({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)</span>
-                : <span>({intl.formatMessage(statuses.reference)})</span>
+              <FormattedMessage
+                id="cms.contentsettings.label.reloadreferences"
+                defaultMessage="Reload references"
+              />
+            </Button>{' '}
+            {isReloadingReferences ? (
+              <span>
+                ({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)
+              </span>
+            ) : (
+              <span>({intl.formatMessage(statuses.reference)})</span>
             )}
           </Col>
         </Row>
         <br />
         <Row>
           <Col xs={12} sm={2} className="text-right">
-            <FormattedMessage id="cms.contentsettings.label.reloadindexes" defaultMessage="Reload indexes" />
+            <FormattedMessage
+              id="cms.contentsettings.label.reloadindexes"
+              defaultMessage="Reload indexes"
+            />
           </Col>
           <Col xs={12} sm={10}>
             <Button bsStyle="primary" onClick={onReloadIndexes}>
-              <FormattedMessage id="cms.contentsettings.label.reloadindexes" defaultMessage="Reload indexes" />
-            </Button> {(
-              isReloadingIndexes
-                ? <span>({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)</span>
-                : <span>({intl.formatMessage(statuses.indexes)})</span>
+              <FormattedMessage
+                id="cms.contentsettings.label.reloadindexes"
+                defaultMessage="Reload indexes"
+              />
+            </Button>{' '}
+            {isReloadingIndexes ? (
+              <span>
+                ({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)
+              </span>
+            ) : (
+              <span>({intl.formatMessage(statuses.indexes)})</span>
             )}
           </Col>
         </Row>
@@ -153,7 +168,9 @@ class ContentSettingsGeneral extends Component {
               </div>
             </Col>
           </Row>
-        ) : ''}
+        ) : (
+          ''
+        )}
         <br />
         {generateEditorSwitch()}
       </div>

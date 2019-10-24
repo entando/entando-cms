@@ -1,10 +1,7 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
-  getGroups,
-  getContent,
-  getCategories,
-  postAddContent,
+  getGroups, getContent, getCategories, postAddContent,
 } from 'api/editContent';
 import { makeRequest } from '@entando/apimanager';
 import { GET_GROUPS_RESPONSE_OK, GET_CATEGORIES_RESPONSE_OK } from 'testutils/mocks/contentType';

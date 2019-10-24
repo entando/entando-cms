@@ -3,31 +3,45 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import GenericModalContainer from 'ui/common/modal/GenericModalContainer';
 import {
-  Button, EmptyState, Modal,
-  EmptyStateIcon, EmptyStateTitle, EmptyStateInfo,
+  Button,
+  EmptyState,
+  Modal,
+  EmptyStateIcon,
+  EmptyStateTitle,
+  EmptyStateInfo,
 } from 'patternfly-react';
 
 export const MODAL_ID = 'DeleteContentModelModal';
 
-const DeleteContentModelModal = ({
-  onConfirmDelete, info,
-}) => {
+const DeleteContentModelModal = ({ onConfirmDelete, info }) => {
   const buttons = [
-    <Button bsStyle="danger" id="DeleteContentModelModal__button-delete" onClick={() => (onConfirmDelete(info))}>
+    <Button
+      bsStyle="danger"
+      id="DeleteContentModelModal__button-delete"
+      onClick={() => onConfirmDelete(info)}
+    >
       <FormattedMessage id="cms.label.delete" />
     </Button>,
   ];
 
   const modalTitle = (
-    <Modal.Title><FormattedMessage id="cms.label.delete" /></Modal.Title>
+    <Modal.Title>
+      <FormattedMessage id="cms.label.delete" />
+    </Modal.Title>
   );
 
   return (
-    <GenericModalContainer modalId={MODAL_ID} buttons={buttons} modalTitle={modalTitle} className="DeleteContentModelModal">
+    <GenericModalContainer
+      modalId={MODAL_ID}
+      buttons={buttons}
+      modalTitle={modalTitle}
+      className="DeleteContentModelModal"
+    >
       <EmptyState>
         <EmptyStateIcon name="exclamation" type="fa" className="DeleteContentModelModal__icon" />
         <EmptyStateTitle>
-          <FormattedMessage id="cms.label.delete" />&nbsp;{info.descr}
+          <FormattedMessage id="cms.label.delete" />
+          &nbsp;{info.descr}
         </EmptyStateTitle>
         <EmptyStateInfo className="DeleteContentModelModal__info">
           <FormattedMessage id="cms.label.modal.confirmdelete" values={{ code: info.id }} />

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  defineMessages,
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { InputGroup, Button, Label } from 'patternfly-react';
 
 class MultiSelectRenderer extends Component {
@@ -25,7 +23,13 @@ class MultiSelectRenderer extends Component {
 
   render() {
     const {
-      options, selectedValues, labelKey, valueKey, emptyOptionTextId, intl, fields,
+      options,
+      selectedValues,
+      labelKey,
+      valueKey,
+      emptyOptionTextId,
+      intl,
+      fields,
     } = this.props;
     const filteredOptions = options
       .filter(opt => !selectedValues.includes(opt[valueKey]))

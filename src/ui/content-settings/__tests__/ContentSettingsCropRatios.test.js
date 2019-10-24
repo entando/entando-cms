@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-  shallow,
-} from 'enzyme';
+import { shallow } from 'enzyme';
 
-import {
-  configEnzymeAdapter,
-  findByTestId,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, findByTestId } from 'testutils/helpers';
 import ContentSettingsCropRatios from 'ui/content-settings/ContentSettingsCropRatios';
 
 configEnzymeAdapter();
 
-const cropRatios = [
-  '4:3',
-  '16:9',
-];
+const cropRatios = ['4:3', '16:9'];
 
 describe('ContentSettingsCropRatios', () => {
   const mockOnAddCallback = jest.fn();
@@ -46,7 +38,7 @@ describe('ContentSettingsCropRatios', () => {
       expect(findByTestId(wrapper, ratioInputTestId).length).toBe(cropRatios.length + 1);
     });
 
-    it('should call onAdd prop when crop ratio input\'s onAdd is called', () => {
+    it("should call onAdd prop when crop ratio input's onAdd is called", () => {
       const ratioInputs = findByTestId(wrapper, ratioInputTestId);
       const newRatioInput = ratioInputs.last();
       newRatioInput.props().onAdd();
@@ -54,14 +46,14 @@ describe('ContentSettingsCropRatios', () => {
       expect(mockOnAddCallback).toHaveBeenCalled();
     });
 
-    it('should call onDelete prop when crop ratio input\'s onDelete is called', () => {
+    it("should call onDelete prop when crop ratio input's onDelete is called", () => {
       const ratioInput = findByTestId(wrapper, ratioInputTestId).at(0);
       ratioInput.props().onDelete();
 
       expect(mockOnDeleteCallback).toHaveBeenCalled();
     });
 
-    it('should call onUpdate prop when crop ratio input\'s onSave is called', () => {
+    it("should call onUpdate prop when crop ratio input's onSave is called", () => {
       const ratioInput = findByTestId(wrapper, ratioInputTestId).at(0);
       ratioInput.props().onSave();
 

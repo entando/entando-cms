@@ -48,23 +48,25 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
           <legend>
             <FormattedMessage id="cms.label.info" />
             <div className="ContentTypeForm__required-fields text-right">
-            * <FormattedMessage id="cms.label.fieldsRequired" />
+              * <FormattedMessage id="cms.label.fieldsRequired" />
             </div>
           </legend>
           <Field
             component={RenderTextInput}
             name="type"
-            label={
-              <FormLabel labelId="cms.contenttype.form.type" />
-            }
+            label={<FormLabel labelId="cms.contenttype.form.type" />}
             disabled
           />
           <Field
             component={RenderTextInput}
             name="code"
-            label={
-              <FormLabel labelId="cms.contenttype.form.code" helpId="cms.contenttype.form.codeHelp" required />
-          }
+            label={(
+              <FormLabel
+                labelId="cms.contenttype.form.code"
+                helpId="cms.contenttype.form.codeHelp"
+                required
+              />
+)}
             validate={[required, maxLength10]}
             disabled={mode === MODE_EDIT}
           />
@@ -73,7 +75,7 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
             name="name"
             label={
               <FormLabel labelId="cms.contenttype.form.name" helpId="validateForm.name.help" />
-          }
+            }
             validate={[maxLength50]}
           />
           <FormGroup>
@@ -91,7 +93,6 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
     </Row>
   );
 };
-
 
 AttributeInfo.propTypes = {
   isSearchable: PropTypes.bool,

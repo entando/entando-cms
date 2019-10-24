@@ -67,15 +67,17 @@ describe('MultiSelectRenderer', () => {
 
   describe('when using an empty option', () => {
     beforeEach(() => {
-      component = shallow(mockRenderWithIntl((
-        <MultiSelectRenderer
-          fields={FIELDS}
-          options={OPTIONS}
-          valueKey="code"
-          labelKey="description"
-          emptyOptionTextId={EMPTY_TEXT_LABEL_ID}
-        />
-      )));
+      component = shallow(
+        mockRenderWithIntl(
+          <MultiSelectRenderer
+            fields={FIELDS}
+            options={OPTIONS}
+            valueKey="code"
+            labelKey="description"
+            emptyOptionTextId={EMPTY_TEXT_LABEL_ID}
+          />,
+        ),
+      );
     });
     it('uses options[][valueKey] to define the <option> value', () => {
       const options = component.find('option');
@@ -91,15 +93,15 @@ describe('MultiSelectRenderer', () => {
 
   xdescribe('when something is selected', () => {
     beforeEach(() => {
-      component = shallow((
+      component = shallow(
         <MultiSelectRenderer
           fields={FIELDS}
           options={OPTIONS}
           valueKey="code"
           labelKey="description"
           selectedValues={SELECTED_VALUES}
-        />
-      ));
+        />,
+      );
     });
     it('renders as many <Label> as the selected options', () => {
       const labels = component.instance().renderTags();
@@ -110,7 +112,7 @@ describe('MultiSelectRenderer', () => {
   describe('when clicking on the "+" button', () => {
     beforeEach(jest.clearAllMocks);
     beforeEach(() => {
-      component = mount((
+      component = mount(
         <MultiSelectRenderer
           fields={FIELDS}
           options={OPTIONS}
@@ -118,8 +120,8 @@ describe('MultiSelectRenderer', () => {
           labelKey="description"
           selectedValues={SELECTED_VALUES}
           emptyOptionTextId={EMPTY_TEXT_LABEL_ID}
-        />
-      ));
+        />,
+      );
     });
   });
 });

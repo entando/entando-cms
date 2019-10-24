@@ -1,10 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
-  CardGrid,
-  Row,
-  Col,
-  Breadcrumb,
+  CardGrid, Row, Col, Breadcrumb,
 } from 'patternfly-react';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import PageTitle from 'ui/common/PageTitle';
@@ -31,9 +28,7 @@ const EditContentTypeAttributePage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <PageTitle
-          titleId="cms.contenttype.attribute.edit.title"
-        />
+        <PageTitle titleId="cms.contenttype.attribute.edit.title" />
       </Col>
     </Row>
     <Row>

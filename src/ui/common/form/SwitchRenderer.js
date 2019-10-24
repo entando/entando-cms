@@ -11,13 +11,20 @@ const switchField = (input, switchValue, trueValue, falseValue) => (
 );
 
 const SwitchRenderer = ({
-  input, append, label, labelSize, alignClass,
-  meta: { touched, error }, help, trueValue, falseValue,
+  input,
+  append,
+  label,
+  labelSize,
+  alignClass,
+  meta: { touched, error },
+  help,
+  trueValue,
+  falseValue,
 }) => {
   const switchValue = input.value === 'true' || input.value === true || input.value === trueValue;
   if (label) {
     return (
-      <div className={`SwitchRenderer ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
+      <div className={`SwitchRenderer ${touched && error ? 'form-group has-error' : 'form-group'}`}>
         <Col xs={labelSize} className={alignClass}>
           <ControlLabel htmlFor={input.name}>
             {label} {help}
@@ -26,7 +33,7 @@ const SwitchRenderer = ({
         <Col xs={12 - labelSize}>
           {switchField(input, switchValue, trueValue, falseValue)}
           {append && <span className="AppendedLabel">{append}</span>}
-          {touched && ((error && <span className="help-block">{error}</span>))}
+          {touched && (error && <span className="help-block">{error}</span>)}
         </Col>
       </div>
     );

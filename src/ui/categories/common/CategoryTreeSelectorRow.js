@@ -59,15 +59,11 @@ const CategoryTreeSelectorRow = ({
           onKeyDown={onClickSelect}
         >
           <TreeNodeFolderIcon empty={category.isEmpty} />
-          <span className="CategoryTreeSelector__category-name">
-            {category.titles[language]}
-          </span>
+          <span className="CategoryTreeSelector__category-name">{category.titles[language]}</span>
           <RowSpinner loading={!!category.loading} />
         </span>
       </td>
-      <td className="text-center">
-        {joinMark}
-      </td>
+      <td className="text-center">{joinMark}</td>
     </tr>
   );
 };
@@ -85,8 +81,8 @@ CategoryTreeSelectorRow.propTypes = {
 };
 
 CategoryTreeSelectorRow.defaultProps = {
-  onExpandCategory: () => { },
-  onJoinCategory: () => { },
+  onExpandCategory: () => {},
+  onJoinCategory: () => {},
 };
 
 export default CategoryTreeSelectorRow;

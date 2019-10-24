@@ -16,9 +16,7 @@ const AttributesDateSettings = () => (
           component={RenderDatePickerInput}
           name="rangeStartDate"
           dateFormat="DD/MM/YYYY"
-          label={
-            <FormLabel labelId="cms.label.from" />
-          }
+          label={<FormLabel labelId="cms.label.from" />}
         />
         <Col xs={10} xsOffset={2}>
           <div className="AttributesDateSettings__placeholder">
@@ -29,9 +27,7 @@ const AttributesDateSettings = () => (
           component={RenderDatePickerInput}
           name="rangeEndDate"
           dateFormat="DD/MM/YYYY"
-          label={
-            <FormLabel labelId="cms.label.to" />
-          }
+          label={<FormLabel labelId="cms.label.to" />}
         />
         <Col xs={10} xsOffset={2}>
           <div className="AttributesDateSettings__placeholder">
@@ -42,9 +38,7 @@ const AttributesDateSettings = () => (
           component={RenderDatePickerInput}
           name="equalDate"
           dateFormat="DD/MM/YYYY"
-          label={
-            <FormLabel labelId="cms.label.equal" />
-          }
+          label={<FormLabel labelId="cms.label.equal" />}
         />
         <Col xs={10} xsOffset={2}>
           <div className="AttributesDateSettings__placeholder">

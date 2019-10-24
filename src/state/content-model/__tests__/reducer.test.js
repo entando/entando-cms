@@ -19,10 +19,7 @@ describe('state/locale/reducer', () => {
   describe('after action SET_CONTENT_MODELS', () => {
     let state;
     beforeEach(() => {
-      state = reducer(
-        { list: [], opened: {} },
-        setContentModelList(['a', 'b']),
-      );
+      state = reducer({ list: [], opened: {} }, setContentModelList(['a', 'b']));
       state = reducer(state, setContentModel({ a: 1, b: 2 }));
     });
 
