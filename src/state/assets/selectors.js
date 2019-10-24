@@ -1,12 +1,6 @@
 import { createSelector } from 'reselect';
 
 export const getAssetsState = state => state.apps.cms.assets;
-export const getApiState = state => state.api;
-
-export const getApiUrl = createSelector(
-  getApiState,
-  api => api.domain,
-);
 
 export const getAssetsList = createSelector(
   getAssetsState,
