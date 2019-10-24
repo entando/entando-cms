@@ -70,6 +70,10 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
 const EditContentModelFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AddContentModelForm);
 
 export default withRouter(injectIntl(EditContentModelFormContainer));
