@@ -9,7 +9,7 @@ const AssetsListItem = ({ asset, domain }) => {
   } = asset;
   const fileType = versions == null ? 'file' : 'image';
   const previewRender = fileType === 'image' ? (
-    <img src={`http://${domain}${versions[1].path}`} alt="Preview" />
+    <img src={`${domain}${versions[1].path}`} alt="Preview" />
   ) : (
     <div className="fa fa-file-text AssetsList__item-file" />
   );

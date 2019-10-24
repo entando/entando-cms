@@ -216,7 +216,8 @@ class AssetsListBody extends Component {
     const { mobile } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
-    const apiDomain = apiUrl.match(/:\/\/(.[^/]+)/)[1];
+    const apiDomain = new URL(apiUrl);
+    const apiOrigin = apiDomain.origin;
     const renderHeader = headers.map((item, i) => (
       <th width={item.width} key={item.name}>
         <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
@@ -293,7 +294,7 @@ class AssetsListBody extends Component {
       <AssetsListItem
         key={asset.id}
         asset={asset}
-        domain={apiDomain}
+        domain={apiOrigin}
       />
     ));
     const tableContent = (
@@ -304,7 +305,7 @@ class AssetsListBody extends Component {
         <tbody>{assetsListItems}</tbody>
       </table>
     );
-    const gridContent = <AssetsListGridView assets={assets} domain={apiDomain} />;
+    const gridContent = <AssetsListGridView assets={assets} domain={apiOrigin} />;
     const emptyContent = (
       <div className="AssetsList__nothing-found">
         <FormattedMessage id="cms.assets.list.nothingFound" />.

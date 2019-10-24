@@ -9,7 +9,7 @@ const AssetsListGridView = ({ assets, domain }) => {
     const fileType = versions == null ? 'file' : 'image';
     const previewRender = fileType === 'image' ? (
       <img
-        src={`http://${domain}${versions[3].path}`}
+        src={`${domain}${versions[3].path}`}
         alt="Preview"
         className="AssetsListGridView__image"
       />
