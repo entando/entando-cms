@@ -59,6 +59,10 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
 const AddContentModelFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AddContentModelForm);
 
 export default withRouter(injectIntl(AddContentModelFormContainer));
