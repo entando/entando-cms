@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
-const AssetsListGridView = ({ assets }) => {
+const AssetsListGridView = ({ assets, domain }) => {
   const gridItems = assets.map((asset) => {
     const { versions } = asset;
     const fileType = versions == null ? 'file' : 'image';
-    // console.log(versions[3]);
     const previewRender = fileType === 'image' ? (
       <img
-        src={`http://localhost:8080${versions[3].path}`}
+        src={`${domain}${versions[3].path}`}
         alt="Preview"
         className="AssetsListGridView__image"
       />
@@ -39,6 +38,7 @@ const AssetsListGridView = ({ assets }) => {
 
 AssetsListGridView.propTypes = {
   assets: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  domain: PropTypes.string.isRequired,
 };
 
 export default AssetsListGridView;

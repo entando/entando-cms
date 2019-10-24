@@ -8,7 +8,6 @@ import {
   changeFileType,
   changeAssetsView,
   applySort,
-  changePagination,
 } from 'state/assets/actions';
 
 const ASSETS = ['dog.png', 'cat.png'];
@@ -78,10 +77,6 @@ describe('state/assets/reducer', () => {
 
         newState = reducer(newState, applySort('otherName'));
         expect(newState.sort).toEqual({ name: 'otherName', direction: 'ASC' });
-      });
-      it('should correctly change pagination state field', () => {
-        newState = reducer(state, changePagination({ page: 1, perPage: 2 }));
-        expect(newState.paginationOptions).toEqual({ page: 1, perPage: 2 });
       });
     });
   });

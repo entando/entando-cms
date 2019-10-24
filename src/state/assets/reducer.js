@@ -6,7 +6,6 @@ import {
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
   APPLY_SORT,
-  CHANGE_PAGINATION,
 } from 'state/assets/types';
 
 const defaultState = {
@@ -89,13 +88,6 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         sort: currentSort,
-      };
-    }
-    case CHANGE_PAGINATION: {
-      const newPaginationOptions = Object.assign({}, action.payload);
-      return {
-        ...state,
-        paginationOptions: newPaginationOptions,
       };
     }
     default:

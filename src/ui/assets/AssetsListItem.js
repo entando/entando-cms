@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
-const AssetsListItem = ({ asset }) => {
+const AssetsListItem = ({ asset, domain }) => {
   const {
-    createdAt, description, metadata = {}, group, categories, versions,
+    createdAt, description, metadata = {}, group, categories, versions, owner,
   } = asset;
   const fileType = versions == null ? 'file' : 'image';
   const previewRender = fileType === 'image' ? (
-    <img src={`http://localhost:8080${versions[1].path}`} alt="Preview" />
+    <img src={`${domain}${versions[1].path}`} alt="Preview" />
   ) : (
     <div className="fa fa-file-text AssetsList__item-file" />
   );
@@ -29,11 +29,10 @@ const AssetsListItem = ({ asset }) => {
       <td className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>
       <td>{description}</td>
       <td>{type}</td>
-      <td>Admin</td>
+      <td>{owner || 'N/A'}</td>
       <td>{new Date(createdAt).toLocaleDateString()}</td>
       <td>{group}</td>
       <td>{renderCategories}</td>
-      <td>NO</td>
       <td>
         <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
           <MenuItem className="" onClick={() => {}}>
@@ -50,6 +49,7 @@ const AssetsListItem = ({ asset }) => {
 
 AssetsListItem.propTypes = {
   asset: PropTypes.shape({}).isRequired,
+  domain: PropTypes.string.isRequired,
 };
 
 export default AssetsListItem;

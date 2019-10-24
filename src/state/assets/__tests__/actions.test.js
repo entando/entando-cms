@@ -9,7 +9,6 @@ import {
   changeFileType,
   changeAssetsView,
   applySort,
-  changePagination,
   fetchAssets,
 } from 'state/assets/actions';
 import {
@@ -19,7 +18,6 @@ import {
   REMOVE_ACTIVE_FILTER,
   APPLY_SORT,
   ASSETS_VIEW_CHANGE,
-  CHANGE_PAGINATION,
   FILE_TYPE_CHANGE,
 } from 'state/assets/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
@@ -90,12 +88,6 @@ describe('state/assets/actions', () => {
     expect(action.payload).toEqual('name');
   });
 
-  it('changePagination() should return a well formed action', () => {
-    const action = changePagination({ a: 1, b: 2 });
-    expect(action).toHaveProperty('type', CHANGE_PAGINATION);
-    expect(action.payload).toEqual({ a: 1, b: 2 });
-  });
-
   describe('handleExpandCategory()', () => {
     it('when fetching assets it fires all the appropriate actions', (done) => {
       getAssets.mockImplementationOnce(mockApi({ payload: ['a', 'b'], ok: true }));
@@ -109,7 +101,6 @@ describe('state/assets/actions', () => {
           expect(actionTypes).toHaveLength(4);
           expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
           expect(actionTypes.includes(SET_ASSETS)).toBe(true);
-          expect(actionTypes.includes(CHANGE_PAGINATION)).toBe(true);
           done();
         })
         .catch(done.fail);
