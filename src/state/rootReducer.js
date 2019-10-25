@@ -13,6 +13,7 @@ import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
 import assets from 'state/assets/reducer';
 import contentSettings from 'state/content-settings/reducer';
+import groups from 'state/groups/reducer';
 
 export const cms = combineReducers({
   contentModel,
@@ -21,6 +22,7 @@ export const cms = combineReducers({
   categories,
   assets,
   contentSettings,
+  groups,
 });
 
 export default combineReducers({
