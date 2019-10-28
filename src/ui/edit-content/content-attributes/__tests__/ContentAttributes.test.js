@@ -8,8 +8,12 @@ configEnzymeAdapter();
 
 describe('ui/edit-content/content-attributes/ContentAttributes', () => {
   const onDidMountMock = jest.fn();
+  const attributes = [{ code: 'Title', type: 'text' }];
   const wrapper = shallow(
-    <ContentAttributes onDidMount={onDidMountMock} />,
+    <ContentAttributes
+      onDidMount={onDidMountMock}
+      attributes={attributes}
+    />,
   );
 
   it('should call onDidMount prop when componentDidMount is called', () => {
@@ -18,8 +22,10 @@ describe('ui/edit-content/content-attributes/ContentAttributes', () => {
     expect(onDidMountMock).toHaveBeenCalled();
   });
 
-  it('should contain a field array', () => {
+  it('should contain a field array with passed in attributes as prop', () => {
     const testId = 'edit-content-content-attributes-field-array';
-    expect(findByTestId(wrapper, testId).length).toBe(1);
+    const fieldArrayWrapper = findByTestId(wrapper, testId);
+    expect(fieldArrayWrapper.length).toBe(1);
+    expect(fieldArrayWrapper.props().attributes).toMatchObject(attributes);
   });
 });
