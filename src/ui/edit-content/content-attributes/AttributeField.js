@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
 import {
   TYPE_BOOLEAN,
   TYPE_CHECKBOX,
@@ -21,7 +22,25 @@ import {
   TYPE_LINK,
   TYPE_MONOTEXT,
 } from 'state/content-type/const';
-import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
+import BooleanAttributeField from 'ui/edit-content/content-attributes/BooleanAttributeField';
+import CheckboxAttributeField from 'ui/edit-content/content-attributes/CheckboxAttributeField';
+import DateAttributeField from 'ui/edit-content/content-attributes/DateAttributeField';
+import EnumeratorAttributeField from 'ui/edit-content/content-attributes/EnumeratorAttributeField';
+import EnumeratorMapAttributeField from 'ui/edit-content/content-attributes/EnumeratorMapAttributeField';
+import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
+import ListAttributeField from 'ui/edit-content/content-attributes/ListAttributeField';
+import MonolistAttributeField from 'ui/edit-content/content-attributes/MonolistAttributeField';
+import NumberAttributeField from 'ui/edit-content/content-attributes/NumberAttributeField';
+import ThreeStateAttributeField from 'ui/edit-content/content-attributes/ThreeStateAttributeField';
+import TimestampAttributeField from 'ui/edit-content/content-attributes/TimestampAttributeField';
+import HypertextAttributeField from 'ui/edit-content/content-attributes/HypertextAttributeField';
+import LongtextAttributeField from 'ui/edit-content/content-attributes/LongtextAttributeField';
+import TextAttributeField from 'ui/edit-content/content-attributes/TextAttributeField';
+import AttachAttributeField from 'ui/edit-content/content-attributes/AttachAttributeField';
+import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttributeField';
+import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
+import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
+
 
 const AttributeField = ({
   attribute,
@@ -30,60 +49,60 @@ const AttributeField = ({
   let AttributeFieldComp;
 
   switch (type) {
-    // case TYPE_BOOLEAN:
-    //   AttributeFieldComp = BooleanAttributeField;
-    //   break;
-    // case TYPE_CHECKBOX:
-    //   AttributeFieldComp = CheckboxAttributeField;
-    //   break;
-    // case TYPE_DATE:
-    //   AttributeFieldComp = DateAttributeField;
-    //   break;
-    // case TYPE_ENUMERATOR:
-    //   AttributeFieldComp = EnumeratorAttributeField;
-    //   break;
-    // case TYPE_ENUMERATOR_MAP:
-    //   AttributeFieldComp = EnumeratorMapAttributeField;
-    //   break;
-    // case TYPE_COMPOSITE:
-    //   AttributeFieldComp = CompositeAttributeField;
-    //   break;
-    // case TYPE_LIST:
-    //   AttributeFieldComp = ListAttributeField;
-    //   break;
-    // case TYPE_MONOLIST:
-    //   AttributeFieldComp = MonolistAttributeField;
-    //   break;
-    // case TYPE_TIMESTAMP:
-    //   AttributeFieldComp = TimestampAttributeField;
-    //   break;
-    // case TYPE_HYPERTEXT:
-    //   AttributeFieldComp = HypertextAttributeField;
-    //   break;
-    // case TYPE_NUMBER:
-    //   AttributeFieldComp = NumberAttributeField;
-    //   break;
-    // case TYPE_THREESTATE:
-    //   AttributeFieldComp = ThreeStateAttributeField;
-    //   break;
-    // case TYPE_LONGTEXT:
-    //   AttributeFieldComp = LongtextAttributeField;
-    //   break;
-    // case TYPE_TEXT:
-    //   AttributeFieldComp = TextAttributeField;
-    //   break;
-    // case TYPE_ATTACH:
-    //   AttributeFieldComp = AttachAttributeField;
-    //   break;
-    // case TYPE_IMAGE:
-    //   AttributeFieldComp = ImageAttributeField;
-    //   break;
-    // case TYPE_LINK:
-    //   AttributeFieldComp = LinkAttributeField;
-    //   break;
-    // case TYPE_MONOTEXT:
-    //   AttributeFieldComp = MonotextAttributeField;
-    //   break;
+    case TYPE_BOOLEAN:
+      AttributeFieldComp = BooleanAttributeField;
+      break;
+    case TYPE_CHECKBOX:
+      AttributeFieldComp = CheckboxAttributeField;
+      break;
+    case TYPE_DATE:
+      AttributeFieldComp = DateAttributeField;
+      break;
+    case TYPE_ENUMERATOR:
+      AttributeFieldComp = EnumeratorAttributeField;
+      break;
+    case TYPE_ENUMERATOR_MAP:
+      AttributeFieldComp = EnumeratorMapAttributeField;
+      break;
+    case TYPE_COMPOSITE:
+      AttributeFieldComp = CompositeAttributeField;
+      break;
+    case TYPE_LIST:
+      AttributeFieldComp = ListAttributeField;
+      break;
+    case TYPE_MONOLIST:
+      AttributeFieldComp = MonolistAttributeField;
+      break;
+    case TYPE_TIMESTAMP:
+      AttributeFieldComp = TimestampAttributeField;
+      break;
+    case TYPE_HYPERTEXT:
+      AttributeFieldComp = HypertextAttributeField;
+      break;
+    case TYPE_NUMBER:
+      AttributeFieldComp = NumberAttributeField;
+      break;
+    case TYPE_THREESTATE:
+      AttributeFieldComp = ThreeStateAttributeField;
+      break;
+    case TYPE_LONGTEXT:
+      AttributeFieldComp = LongtextAttributeField;
+      break;
+    case TYPE_TEXT:
+      AttributeFieldComp = TextAttributeField;
+      break;
+    case TYPE_ATTACH:
+      AttributeFieldComp = AttachAttributeField;
+      break;
+    case TYPE_IMAGE:
+      AttributeFieldComp = ImageAttributeField;
+      break;
+    case TYPE_LINK:
+      AttributeFieldComp = LinkAttributeField;
+      break;
+    case TYPE_MONOTEXT:
+      AttributeFieldComp = MonotextAttributeField;
+      break;
     default:
       return null;
   }
