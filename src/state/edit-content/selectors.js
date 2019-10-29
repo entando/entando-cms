@@ -7,6 +7,11 @@ export const getOwnerGroupDisabled = createSelector(
   editContent => editContent.ownerGroupDisabled.disabled,
 );
 
+export const getSaveType = createSelector(
+  getEditContentState,
+  editContent => editContent.saveType,
+);
+
 export const getContent = createSelector(
   getEditContentState,
   editContent => editContent.content,
@@ -35,4 +40,14 @@ export const getLanguage = createSelector(
 export const getNewContentsType = createSelector(
   getEditContentState,
   editContent => editContent.contentType,
+);
+
+export const getContentValues = createSelector(
+  getEditContentState,
+  (editContent) => {
+    const { contentType } = editContent;
+    return {
+      contentType,
+    };
+  },
 );

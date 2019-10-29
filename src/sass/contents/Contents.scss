@@ -2,6 +2,7 @@
 
   &__body {
     margin-top: 15px;
+    // padding-bottom: 90px;
   }
 
   &__main-action-button {
@@ -33,10 +34,8 @@
   }
 
   &__table {
-    padding-bottom: 20px;
-
     @media (min-width: 991px) {
-      overflow-x: visible;
+      overflow: visible;
     }
   }
 

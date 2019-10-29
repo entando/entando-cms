@@ -23,12 +23,12 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = (dispatch, { intl }) => ({
-  onConfirmPublish: (content, onLine) => {
-    dispatch(sendPublishContent(content.id, onLine)).then((res) => {
+  onConfirmPublish: (content, status) => {
+    dispatch(sendPublishContent(content.id, status)).then((res) => {
       if (res) {
         dispatch(
           addToast(
-            intl.formatMessage(onLine === 'published'
+            intl.formatMessage(status === 'published'
               ? publishContentMsgs.published
               : publishContentMsgs.unpublished,
             { modelname: content.description }),

@@ -3,6 +3,8 @@ import {
   TabContainer, Nav, NavItem, TabContent, TabPane,
   DropdownButton, MenuItem,
 } from 'patternfly-react';
+import { CSVLink } from 'react-csv';
+import Workbook from 'react-excel-workbook';
 import {
   intlShape, FormattedMessage,
 } from 'react-intl';
@@ -12,7 +14,14 @@ import MultiSelectMenuItem from 'ui/common/form/MultiSelectMenuItem';
 const ContentTabs = ({
   intl, availableColumns, messages, contentTypes, currentColumnsShow, currentAuthorShow,
   currentStatusShow, onSetCurrentColumnsShow, onSetCurrentStatusShow, onSetCurrentAuthorShow,
+  onClickAddContent, contents,
 }) => {
+  const filteredAvailableColumns = availableColumns.filter(
+    column => currentColumnsShow.includes(column.code),
+  );
+  const csvHeaders = filteredAvailableColumns.map(
+    column => Object.assign({}, { label: column.name, key: column.code }),
+  );
   const navItems = (
     <div>
       <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
@@ -34,13 +43,13 @@ const ContentTabs = ({
           bsStyle="primary"
           title={intl.formatMessage(messages.addContent)}
           id="addContent"
-          onClick={null}
         >
           {
             contentTypes.map(contentType => (
               <MenuItem
                 eventKey={contentType.code}
                 key={contentType.code}
+                onClick={() => onClickAddContent(contentType.code)}
               >
                 {contentType.name}
               </MenuItem>
@@ -55,11 +64,25 @@ const ContentTabs = ({
           id="downloadAs"
           onClick={null}
         >
-          <MenuItem eventKey="csv">
-            CSV
-          </MenuItem>
+          <li>
+            <CSVLink data={contents} headers={csvHeaders}><span>CSV</span></CSVLink>
+          </li>
           <MenuItem eventKey="xls">
-            XLS
+            <Workbook filename="contents.xlsx" element={<span>XLS</span>}>
+              <Workbook.Sheet data={contents} name="contentsSheet">
+                {
+                  filteredAvailableColumns.map(
+                    column => (
+                      <Workbook.Column
+                        key={column.code}
+                        label={column.name}
+                        value={column.code}
+                      />
+                    ),
+                  )
+                }
+              </Workbook.Sheet>
+            </Workbook>
           </MenuItem>
         </DropdownButton>
       </div>
@@ -133,12 +156,14 @@ ContentTabs.propTypes = {
   availableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   messages: PropTypes.shape({}).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentAuthorShow: PropTypes.string.isRequired,
   currentStatusShow: PropTypes.string.isRequired,
   onSetCurrentAuthorShow: PropTypes.func.isRequired,
   onSetCurrentStatusShow: PropTypes.func.isRequired,
   onSetCurrentColumnsShow: PropTypes.func.isRequired,
+  onClickAddContent: PropTypes.func.isRequired,
 };
 
 export default ContentTabs;

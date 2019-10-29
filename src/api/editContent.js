@@ -6,7 +6,6 @@ import { GET_CONTENT_RESPONSE_OK, POST_CONTENT_ADD_RESPONSE_OK } from 'testutils
 const getContentPath = '/api/plugins/cms/contents';
 const getGroupsPath = '/api/groups';
 const getCategoriesPath = '/api/categories';
-const postAddContentPath = '/api/plugins/cms/contents/';
 
 export const getContent = (params = '') => makeRequest({
   uri: `${getContentPath}${params}`,
@@ -33,9 +32,19 @@ export const getCategories = (params = '') => makeRequest({
 });
 
 export const postAddContent = addContentObject => makeRequest({
-  uri: postAddContentPath,
-  body: addContentObject,
+  uri: getContentPath,
+  body: [addContentObject],
+  contentType: 'application/json',
   method: METHODS.POST,
+  mockResponse: POST_CONTENT_ADD_RESPONSE_OK,
+  useAuthentication: true,
+});
+
+export const putUpdateContent = (id, editContentObject) => makeRequest({
+  uri: `${getContentPath}/${id}`,
+  body: editContentObject,
+  contentType: 'application/json',
+  method: METHODS.PUT,
   mockResponse: POST_CONTENT_ADD_RESPONSE_OK,
   useAuthentication: true,
 });

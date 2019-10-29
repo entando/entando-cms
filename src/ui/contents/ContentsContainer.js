@@ -8,7 +8,7 @@ import {
   setContentType, setGroup, setSort, selectRow, selectAllRows,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
-import { fetchGroups } from 'state/edit-content/actions';
+import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import {
@@ -17,17 +17,18 @@ import {
   getCurrentStatusShow, getCurrentColumnsShow, getSortingColumns,
   getSelectedRows,
 } from 'state/contents/selectors';
-import { ROUTE_CMS_EDIT_CONTENT } from 'app-init/routes';
+import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
 import {
   getCurrentPage, getTotalItems, getPageSize, getLastPage,
 } from 'state/pagination/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
 import { getGroups } from 'state/edit-content/selectors';
-import Contents from 'ui/contents/Contents';
 import { getLocale } from 'state/locale/selectors';
 import { DELETE_CONTENT_MODAL_ID } from 'ui/contents/DeleteContentModal';
 import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
+import { WORK_MODE_EDIT, WORK_MODE_ADD } from 'state/edit-content/types';
+import Contents from 'ui/contents/Contents';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).contents,
@@ -71,9 +72,12 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
   onSetSort: sort => dispatch(setSort(sort)),
   onSelectRow: contentId => dispatch(selectRow(contentId)),
   onSelectAllRows: checked => dispatch(selectAllRows(checked)),
-  onEditContent: contentId => history.push(
-    routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
-  ),
+  onEditContent: (contentId) => {
+    dispatch(setWorkMode(WORK_MODE_EDIT));
+    history.push(
+      routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
+    );
+  },
   onClickDelete: (item) => {
     dispatch(setVisibleModal(DELETE_CONTENT_MODAL_ID));
     dispatch(setInfo(item));
@@ -81,6 +85,13 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
   onClickPublish: (contents, onLine) => {
     dispatch(setVisibleModal(PUBLISH_CONTENT_MODAL_ID));
     dispatch(setInfo({ contents, onLine }));
+  },
+  onClickAddContent: (contentType) => {
+    dispatch(setWorkMode(WORK_MODE_ADD));
+    dispatch(setNewContentsType(contentType));
+    history.push(
+      routeConverter(ROUTE_CMS_ADD_CONTENT),
+    );
   },
 });
 

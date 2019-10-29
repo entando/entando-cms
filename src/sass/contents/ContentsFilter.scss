@@ -109,6 +109,10 @@
     &--unpublished {
       background: $color-unpublish;
     }
+
+    &--draft {
+      background: $color-mid-grey;
+    }
   }
 
   &__access-icon {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   intlShape, defineMessages, FormattedMessage,
 } from 'react-intl';
-import { Button } from 'patternfly-react';
+import { Button, Spinner } from 'patternfly-react';
 import ContentsFilter from 'ui/contents/ContentsFilter';
 import ContentsTable from 'ui/contents/ContentsTable';
 import ContentsTabs from 'ui/contents/ContentsTabs';
@@ -81,7 +81,7 @@ class Contents extends Component {
 
   render() {
     const {
-      page, totalItems, pageSize, contents, lastPage,
+      page, totalItems, pageSize, contents, lastPage, loading,
       currentQuickFilter, onSetQuickFilter, onFilteredSearch, intl,
       contentTypes, groups, language, filteringCategories, statusChecked,
       onCheckStatus, onCheckAccess, accessChecked, onCheckAuthor, authorChecked,
@@ -89,6 +89,7 @@ class Contents extends Component {
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
+      onClickAddContent,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -141,6 +142,7 @@ class Contents extends Component {
             intl={intl}
             availableColumns={AVAILABLE_COLUMNS}
             messages={this.messages}
+            contents={contents}
             contentTypes={contentTypes}
             currentAuthorShow={currentAuthorShow}
             currentStatusShow={currentStatusShow}
@@ -148,28 +150,31 @@ class Contents extends Component {
             onSetCurrentAuthorShow={onSetCurrentAuthorShow}
             onSetCurrentStatusShow={onSetCurrentStatusShow}
             onSetCurrentColumnsShow={onSetCurrentColumnsShow}
+            onClickAddContent={onClickAddContent}
           />
           {renderSelectedRows}
           <div>
-            <ContentsTable
-              intl={intl}
-              page={page}
-              lastPage={lastPage}
-              totalItems={totalItems}
-              pageSize={pageSize}
-              contents={contents}
-              sortingColumns={sortingColumns}
-              activeColumns={currentColumnsShow}
-              onSetSort={onSetSort}
-              selectedRows={selectedRows}
-              onSelectRow={onSelectRow}
-              onSelectAllRows={onSelectAllRows}
-              onFilteredSearch={onFilteredSearch}
-              availableColumns={AVAILABLE_COLUMNS}
-              onEditContent={onEditContent}
-              onClickDelete={onClickDelete}
-              onClickPublish={onClickPublish}
-            />
+            <Spinner loading={!!loading}>
+              <ContentsTable
+                intl={intl}
+                page={page}
+                lastPage={lastPage}
+                totalItems={totalItems}
+                pageSize={pageSize}
+                contents={contents}
+                sortingColumns={sortingColumns}
+                activeColumns={currentColumnsShow}
+                onSetSort={onSetSort}
+                selectedRows={selectedRows}
+                onSelectRow={onSelectRow}
+                onSelectAllRows={onSelectAllRows}
+                onFilteredSearch={onFilteredSearch}
+                availableColumns={AVAILABLE_COLUMNS}
+                onEditContent={onEditContent}
+                onClickDelete={onClickDelete}
+                onClickPublish={onClickPublish}
+              />
+            </Spinner>
           </div>
         </div>
       </div>
@@ -185,6 +190,7 @@ Contents.propTypes = {
   pageSize: PropTypes.number.isRequired,
   language: PropTypes.string.isRequired,
   onDidMount: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
   currentQuickFilter: PropTypes.shape({}).isRequired,
   onSetQuickFilter: PropTypes.func.isRequired,
   onFilteredSearch: PropTypes.func.isRequired,
@@ -214,6 +220,11 @@ Contents.propTypes = {
   onEditContent: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
+  onClickAddContent: PropTypes.func.isRequired,
+};
+
+Contents.defaultProps = {
+  loading: false,
 };
 
 export default Contents;

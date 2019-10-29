@@ -4,7 +4,7 @@ import { intlShape, FormattedMessage } from 'react-intl';
 import {
   Table,
   customHeaderFormattersDefinition,
-  Grid, PAGINATION_VIEW, PaginationRow, TABLE_SORT_DIRECTION,
+  PAGINATION_VIEW, PaginationRow, TABLE_SORT_DIRECTION,
   selectionHeaderCellFormatter, selectionCellFormatter, sortableHeaderCellFormatter,
   tableCellFormatter, actionHeaderCellFormatter, MenuItem,
 } from 'patternfly-react';
@@ -104,16 +104,23 @@ class ContentsTable extends Component {
             rowCellFormatter = date => <td>{new Date(date).toLocaleDateString()}</td>;
             break;
           case 'groups':
-            rowCellFormatter = groups => <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groups.join(', ')}</td>;
+            rowCellFormatter = groups => <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groups && groups.join(', ')}</td>;
             break;
           case 'status':
-            rowCellFormatter = restr => <td className="text-center">{<span className={`fa fa-${restr === 'PUBLIC' ? 'unlock' : 'lock'}`} />}</td>;
+            rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center">{<span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />}</td>;
             break;
           case 'onLine':
-            rowCellFormatter = (status) => {
-              const statusColor = status ? 'published' : 'review';
+            rowCellFormatter = (onLine, { rowData }) => {
+              const { status } = rowData;
+              // let statusColor = '';
+              // if (status === 'PUBLIC') statusColor = 'published';
+              // else if (status === 'READY') statusColor = 'review';
+              // else statusColor = 'draft';
               return (
-                <td className="text-center">{<span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />}</td>
+                // <td className="text-center">{
+                // eslint-disable-next-line max-len
+                // <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />}</td>
+                <td className="text-center">{status}</td>
               );
             };
             break;
@@ -215,28 +222,24 @@ class ContentsTable extends Component {
             <Table.Header headerRows={resolve.headerRows({ columns })} />
             <Table.Body rows={contents} rowKey="id" />
           </Table.PfProvider>
+          <PaginationRow
+            itemCount={totalItems}
+            itemsStart={itemsStart}
+            itemsEnd={itemsEnd}
+            viewType={PAGINATION_VIEW.TABLE}
+            pagination={pagination}
+            amountOfPages={lastPage}
+            pageInputValue={page}
+            onPageSet={this.onPageSet}
+            onPerPageSelect={this.onPerPageSelect}
+            onFirstPage={() => this.onPageChange(1)}
+            onPreviousPage={() => this.onPageChange(page - 1)}
+            onPageInput={this.onPageInput}
+            onNextPage={() => this.onPageChange(page + 1)}
+            onLastPage={() => this.onPageChange(lastPage)}
+          />
           <DeleteContentModalContainer />
           <PublishContentModalContainer />
-        </div>
-        <div className="AssetsList__footer">
-          <Grid>
-            <PaginationRow
-              itemCount={totalItems}
-              itemsStart={itemsStart}
-              itemsEnd={itemsEnd}
-              viewType={PAGINATION_VIEW.TABLE}
-              pagination={pagination}
-              amountOfPages={lastPage}
-              pageInputValue={page}
-              onPageSet={this.onPageSet}
-              onPerPageSelect={this.onPerPageSelect}
-              onFirstPage={() => this.onPageChange(1)}
-              onPreviousPage={() => this.onPageChange(page - 1)}
-              onPageInput={this.onPageInput}
-              onNextPage={() => this.onPageChange(page + 1)}
-              onLastPage={() => this.onPageChange(lastPage)}
-            />
-          </Grid>
         </div>
       </div>
     );

@@ -19,11 +19,11 @@ export const deleteContent = id => makeRequest({
   useAuthentication: true,
 });
 
-export const publishContent = (id, onLine) => makeRequest({
+export const publishContent = (id, status) => makeRequest({
   uri: `${contentsPath}/${id}/status`,
   method: METHODS.PUT,
   contentType: 'application/json',
   mockResponse: RESPONSE_PUBLISH_OK,
   useAuthentication: true,
-  body: { status: onLine },
+  body: { status },
 });

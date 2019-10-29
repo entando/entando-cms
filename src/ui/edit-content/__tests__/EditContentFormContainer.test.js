@@ -23,6 +23,7 @@ const TEST_STATE = {
       },
     },
   },
+  loading: {},
 };
 
 const TEST_OWN_PROPS = {

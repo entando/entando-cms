@@ -1,5 +1,7 @@
 import { toggleLoading } from 'state/loading/actions';
-import { getContents, deleteContent, publishContent } from 'api/contents';
+import {
+  getContents, deleteContent, publishContent,
+} from 'api/contents';
 import { setPage } from 'state/pagination/actions';
 import { getPagination } from 'state/pagination/selectors';
 import {
@@ -129,8 +131,8 @@ export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
     .catch(() => {});
 });
 
-export const sendPublishContent = (id, onLine) => dispatch => new Promise((resolve) => {
-  publishContent(id, onLine)
+export const sendPublishContent = (id, status) => dispatch => new Promise((resolve) => {
+  publishContent(id, status)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
