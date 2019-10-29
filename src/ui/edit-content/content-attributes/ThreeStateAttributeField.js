@@ -6,10 +6,8 @@ import {
 } from 'redux-form';
 
 import RadioInput from 'ui/common/form/RenderRadioInput';
-import attributeShape from './attributeShape';
 
-// TODO: validation
-const ThreeStateAttributeField = ({ attribute, input, meta }) => {
+const ThreeStateAttributeField = ({ label, input, meta }) => {
   const toggleElements = [
     { id: 'true', label: 'Yes' },
     { id: 'false', label: 'No' },
@@ -30,20 +28,18 @@ const ThreeStateAttributeField = ({ attribute, input, meta }) => {
     },
   };
 
-  const { code } = attribute;
-
   return (
     <RadioInput
       input={attrInput}
       meta={meta}
       toggleElement={toggleElements}
-      label={code}
+      label={label}
     />
   );
 };
 
 ThreeStateAttributeField.propTypes = {
-  attribute: PropTypes.shape(attributeShape).isRequired,
+  label: PropTypes.node.isRequired,
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
   meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
 };

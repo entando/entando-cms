@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
+import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
 import {
   TYPE_BOOLEAN,
@@ -42,12 +43,31 @@ import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttribu
 import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
 
-
+// TODO: validation
 const AttributeField = ({
   name,
   attribute,
 }) => {
-  const { type } = attribute;
+  const {
+    type,
+    code,
+    mandatory,
+    listFilter,
+    indexable,
+  } = attribute;
+
+  let helpText = '';
+  helpText += listFilter ? 'Can be used as a filter in lists <br>' : '';
+  helpText += indexable ? 'Searchable' : '';
+
+  const label = (
+    <FormLabel
+      labelText={code}
+      required={mandatory}
+      helpText={helpText}
+    />
+  );
+
   let AttributeFieldComp;
 
   switch (type) {
@@ -110,7 +130,12 @@ const AttributeField = ({
   }
 
   return (
-    <Field name={name} attribute={attribute} component={AttributeFieldComp} />
+    <Field
+      name={name}
+      attribute={attribute}
+      component={AttributeFieldComp}
+      label={label}
+    />
   );
 };
 
