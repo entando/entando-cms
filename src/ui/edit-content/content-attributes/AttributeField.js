@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
 
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
 import {
@@ -43,6 +44,7 @@ import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextA
 
 
 const AttributeField = ({
+  name,
   attribute,
 }) => {
   const { type } = attribute;
@@ -107,10 +109,13 @@ const AttributeField = ({
       return null;
   }
 
-  return <AttributeFieldComp attribute={attribute} />;
+  return (
+    <Field name={name} attribute={attribute} component={AttributeFieldComp} />
+  );
 };
 
 AttributeField.propTypes = {
+  name: PropTypes.string.isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
 };
 
