@@ -1,18 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  fieldInputPropTypes,
+  fieldMetaPropTypes,
+} from 'redux-form';
 
-import attributeShape from './attributeShape';
+import TextInput from 'ui/common/form/RenderTextInput';
 
-const NumberAttributeField = ({ attribute }) => {
-  const { code } = attribute;
+const NumberAttributeField = ({
+  label, input, meta,
+}) => {
+  const { name, value: inputValue, onChange: inputOnChange } = input;
+  const { value: actualValue } = inputValue;
+
+  const attrInput = {
+    name,
+    value: actualValue || '',
+    onChange: (event) => {
+      inputOnChange({
+        ...inputValue,
+        value: event.target.value,
+      });
+    },
+  };
 
   return (
-    <div />
+    <TextInput
+      input={attrInput}
+      label={label}
+      meta={meta}
+    />
   );
 };
 
 NumberAttributeField.propTypes = {
-  attribute: PropTypes.shape(attributeShape).isRequired,
+  label: PropTypes.node.isRequired,
+  input: PropTypes.shape(fieldInputPropTypes).isRequired,
+  meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
 };
 
 export default NumberAttributeField;
