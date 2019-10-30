@@ -56,9 +56,10 @@ const AttributeField = ({
     indexable,
   } = attribute;
 
-  let helpText = '';
-  helpText += listFilter ? 'Can be used as a filter in lists <br>' : '';
-  helpText += indexable ? 'Searchable' : '';
+  const helpTextArr = [];
+  if (listFilter) helpTextArr.push('Can be used as a filter in lists');
+  if (indexable) helpTextArr.push('Searchable');
+  const helpText = helpTextArr.join('<br>');
 
   const label = (
     <FormLabel
