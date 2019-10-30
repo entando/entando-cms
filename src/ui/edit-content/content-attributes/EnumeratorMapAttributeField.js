@@ -1,17 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  fieldInputPropTypes,
+  fieldMetaPropTypes,
+} from 'redux-form';
 
+import SelectInput from 'ui/common/form/RenderSelectInput';
 import attributeShape from './attributeShape';
 
-const EnumeratorMapAttributeField = ({ attribute }) => {
-  const { code } = attribute;
+const EnumeratorMapAttributeField = ({
+  label, input, meta, attribute,
+}) => {
+  const optionKeys = {
+    optionValue: 'value',
+    optionDisplayName: 'displayName',
+  };
+
+  const { enumeratorStaticItems: itemsStr, enumeratorStaticItemsSeparator: separator } = attribute;
+  const options = itemsStr.split(separator).map(item => ({
+    [optionKeys.optionValue]: item.split('=')[0],
+    [optionKeys.optionDisplayName]: item.split('=')[1],
+  }));
+
+  const { name, value: inputValue, onChange: inputOnChange } = input;
+  const { value: actualValue } = inputValue;
+
+  const attrInput = {
+    name,
+    value: actualValue || '',
+    onChange: (event) => {
+      inputOnChange({
+        ...inputValue,
+        value: event.target.value,
+      });
+    },
+  };
 
   return (
-    <div />
+    <SelectInput
+      input={attrInput}
+      label={label}
+      meta={meta}
+      options={options}
+      {...optionKeys}
+    />
   );
 };
 
 EnumeratorMapAttributeField.propTypes = {
+  label: PropTypes.node.isRequired,
+  input: PropTypes.shape(fieldInputPropTypes).isRequired,
+  meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
 };
 
