@@ -1,4 +1,5 @@
 import { addErrors } from '@entando/messages';
+import { flattenDeep } from 'lodash';
 
 import { getCategoryTree, getCategory } from 'api/categories';
 import { toggleLoading } from 'state/loading/actions';
@@ -80,6 +81,33 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE) => async (dispatch, 
     }
 
     dispatch(setCategories(categoryTree));
+  } catch (e) {
+    // do nothing
+  }
+};
+
+export const fetchCategoryTreeAll = () => async (dispatch) => {
+  try {
+    const fetchBranch = async (categoryCode) => {
+      const response = await fetchCategoryChildren(categoryCode)(dispatch);
+      return response.payload;
+    };
+    const loadChildrenBranch = async catArr => (
+      Promise.all(catArr.map((cat) => {
+        if (cat.children.length > 0) {
+          return fetchBranch(cat.code).then(res => (
+            loadChildrenBranch(res)
+          )).then(loadedres => (
+            [cat, ...loadedres]
+          ));
+        }
+        return Promise.resolve(cat);
+      }))
+    );
+    const rootCat = await fetchCategoryNode(ROOT_CODE)(dispatch);
+    const catResult = await fetchBranch(ROOT_CODE);
+    const fullResult = await loadChildrenBranch(catResult);
+    dispatch(setCategories([rootCat, ...flattenDeep(fullResult)]));
   } catch (e) {
     // do nothing
   }

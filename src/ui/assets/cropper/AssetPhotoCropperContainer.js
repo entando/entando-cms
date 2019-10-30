@@ -1,25 +1,26 @@
 import { connect } from 'react-redux';
-import { get } from 'lodash';
-import { getInfo } from 'state/modal/selectors';
+import { getCropRatios } from 'state/content-settings/selectors';
+import { fetchContentSettings } from 'state/content-settings/actions';
 
 import AssetPhotoCropper from 'ui/assets/cropper/AssetPhotoCropper';
 
-const mapStateToProps = (state) => {
-  const assetInfo = getInfo(state);
-  const imgSrc = get(assetInfo, 'versions[0].path', '');
-  return {
-    assetInfo,
-    imgSrc,
-  };
-};
+const mapStateToProps = state => ({
+  cropRatios: getCropRatios(state),
+});
 
 const mapDispatchToProps = dispatch => ({
-  onConfirmSave: () => {},
+  onDidMount: () => {
+    dispatch(fetchContentSettings());
+  },
 });
 
 const AssetPhotoCropperContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AssetPhotoCropper);
 
 export default AssetPhotoCropperContainer;

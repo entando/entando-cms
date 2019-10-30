@@ -1,4 +1,9 @@
-import { addErrors } from '@entando/messages';
+import {
+  addErrors,
+  addToast,
+  TOAST_ERROR,
+  clearErrors,
+} from '@entando/messages';
 import {
   SET_ASSETS,
   SET_CATEGORY_FILTER,
@@ -12,7 +17,7 @@ import { setPage } from 'state/pagination/actions';
 
 import { toggleLoading } from 'state/loading/actions';
 
-import { getAssets } from 'api/assets';
+import { getAssets, editAsset } from 'api/assets';
 
 export const setCategoryFilter = category => ({
   type: SET_CATEGORY_FILTER,
@@ -62,6 +67,26 @@ export const fetchAssets = params => dispatch => new Promise((resolve) => {
         }
         dispatch(toggleLoading('assets'));
         resolve();
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPostAssetEdit = ({ id, ...info }, file) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('editasset'));
+  console.log(id, info, file);
+  editAsset(id, file, `?${new URLSearchParams(info).toString()}`)
+    .then((response) => {
+      response.json().then((json) => {
+        dispatch(toggleLoading('editasset'));
+        if (response.ok) {
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
       });
     })
     .catch(() => {});

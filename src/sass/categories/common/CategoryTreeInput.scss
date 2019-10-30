@@ -1,0 +1,12 @@
+.CategoryTreeInput {
+  &__search {
+    width: 100%;
+    border: 1px solid $color-de-list-icon;
+  }
+
+  &__treebody {
+    padding: 5px;
+    border: 1px solid $color-de-list-icon;
+    border-top: none;
+  }
+}

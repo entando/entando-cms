@@ -21,12 +21,13 @@ import {
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
 } from 'state/pagination/selectors';
+import { fetchGroup } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import AssetsList from 'ui/assets/AssetsList';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
-import { MODAL_ID } from 'ui/assets/cropper/AssetPhotoCropper';
+import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
@@ -75,6 +76,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setVisibleModal(MODAL_ID));
     const asset = condenseAssetInfo(item);
     dispatch(setInfo(asset));
+    dispatch(fetchGroup(asset.group));
   },
 });
 
