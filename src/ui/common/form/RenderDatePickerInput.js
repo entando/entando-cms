@@ -33,6 +33,7 @@ class RenderDatePickerInput extends Component {
       dateFormat,
       placeholder,
       meta: { touched, error },
+      isClearable,
     } = this.props;
 
     const errorblock = touched ? error : '';
@@ -51,7 +52,7 @@ class RenderDatePickerInput extends Component {
             disabledKeyboardNavigation
             locale={locale}
             dateFormat={dateFormat}
-            isClearable
+            isClearable={isClearable}
             calendarClassName="RenderDatePickerInput__calendar"
           />
           <div className="help-block help-block-error">{errorblock}</div>
@@ -78,6 +79,7 @@ RenderDatePickerInput.propTypes = {
   language: PropTypes.string,
   dateFormat: PropTypes.string,
   locale: PropTypes.string,
+  isClearable: PropTypes.bool,
 };
 
 RenderDatePickerInput.defaultProps = {
@@ -90,5 +92,6 @@ RenderDatePickerInput.defaultProps = {
   dateFormat: 'DD/MM/YYYY',
   locale: 'en',
   meta: {},
+  isClearable: true,
 };
 export default RenderDatePickerInput;
