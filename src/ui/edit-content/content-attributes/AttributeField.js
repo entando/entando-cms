@@ -34,6 +34,9 @@ import CompositeAttributeField from 'ui/edit-content/content-attributes/Composit
 // TODO: implement a better solution to avoid dependency cycle
 // eslint-disable-next-line import/no-cycle
 import ListAttributeField from 'ui/edit-content/content-attributes/ListAttributeField';
+
+// TODO: implement a better solution to avoid dependency cycle
+// eslint-disable-next-line import/no-cycle
 import MonolistAttributeField from 'ui/edit-content/content-attributes/MonolistAttributeField';
 import NumberAttributeField from 'ui/edit-content/content-attributes/NumberAttributeField';
 import ThreeStateAttributeField from 'ui/edit-content/content-attributes/ThreeStateAttributeField';
@@ -103,6 +106,8 @@ const AttributeField = ({
       AttributeFieldComp = ListAttributeField;
       break;
     case TYPE_MONOLIST:
+      fieldName = `${name}.elements`;
+      FieldComp = FieldArray;
       AttributeFieldComp = MonolistAttributeField;
       break;
     case TYPE_TIMESTAMP:
