@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   fieldArrayFieldsPropTypes,
-  fieldMetaPropTypes,
+  fieldArrayMetaPropTypes,
 } from 'redux-form';
 
 // TODO: implement a better solution to avoid dependency cycle
@@ -29,7 +29,7 @@ const MonolistAttributeField = ({
 MonolistAttributeField.propTypes = {
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
   label: PropTypes.node.isRequired,
-  meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
+  meta: PropTypes.shape(fieldArrayMetaPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
 };
 
