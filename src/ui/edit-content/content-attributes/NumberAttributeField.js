@@ -8,7 +8,10 @@ import {
 import TextInput from 'ui/common/form/RenderTextInput';
 
 const NumberAttributeField = ({
-  label, input, meta,
+  label,
+  input,
+  meta,
+  ...rest
 }) => {
   const { name, value: inputValue, onChange: inputOnChange } = input;
   const { value: actualValue } = inputValue;
@@ -29,6 +32,7 @@ const NumberAttributeField = ({
       input={attrInput}
       label={label}
       meta={meta}
+      {...rest}
     />
   );
 };

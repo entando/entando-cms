@@ -7,7 +7,12 @@ import {
 
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
-const ThreeStateAttributeField = ({ label, input, meta }) => {
+const ThreeStateAttributeField = ({
+  label,
+  input,
+  meta,
+  ...rest
+}) => {
   const toggleElements = [
     { id: 'true', label: 'Yes' },
     { id: 'false', label: 'No' },
@@ -34,6 +39,7 @@ const ThreeStateAttributeField = ({ label, input, meta }) => {
       meta={meta}
       toggleElement={toggleElements}
       label={label}
+      {...rest}
     />
   );
 };

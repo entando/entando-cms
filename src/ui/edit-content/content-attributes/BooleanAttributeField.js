@@ -7,7 +7,12 @@ import {
 
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
-const BooleanAttributeField = ({ label, input, meta }) => {
+const BooleanAttributeField = ({
+  label,
+  input,
+  meta,
+  ...rest
+}) => {
   const toggleElements = [
     { id: 'true', label: 'Yes' },
     { id: 'false', label: 'No' },
@@ -33,6 +38,7 @@ const BooleanAttributeField = ({ label, input, meta }) => {
       meta={meta}
       toggleElement={toggleElements}
       label={label}
+      {...rest}
     />
   );
 };

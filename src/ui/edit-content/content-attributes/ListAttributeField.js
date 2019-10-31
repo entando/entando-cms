@@ -15,12 +15,14 @@ const ListAttributeField = ({
   label,
   meta,
   attribute,
+  ...rest
 }) => (
   <ListField
     label={label}
     fields={fields}
     meta={meta}
     attribute={attribute.nestedAttribute}
+    {...rest}
   />
 );
 

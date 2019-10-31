@@ -10,7 +10,10 @@ import DateTimePickerInput from 'ui/common/form/RenderDateTimePickerInput';
 import { generateNumArray } from 'helpers/arrayUtils';
 
 const TimestampAttributeField = ({
-  label, input, meta,
+  label,
+  input,
+  meta,
+  ...rest
 }) => {
   const dateFormat = 'DD/MM/YYYY';
   const hoursList = generateNumArray(24);
@@ -44,6 +47,7 @@ const TimestampAttributeField = ({
       dateFormat={dateFormat}
       isClearable={false}
       {...timeOptions}
+      {...rest}
     />
   );
 };

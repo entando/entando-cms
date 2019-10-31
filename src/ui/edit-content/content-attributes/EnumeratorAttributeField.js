@@ -9,7 +9,11 @@ import SelectInput from 'ui/common/form/RenderSelectInput';
 import attributeShape from './attributeShape';
 
 const EnumeratorAttributeField = ({
-  label, input, meta, attribute,
+  label,
+  input,
+  meta,
+  attribute,
+  ...rest
 }) => {
   const optionKeys = {
     optionValue: 'value',
@@ -43,6 +47,7 @@ const EnumeratorAttributeField = ({
       meta={meta}
       options={options}
       {...optionKeys}
+      {...rest}
     />
   );
 };

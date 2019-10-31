@@ -9,7 +9,10 @@ import {
 import DatePickerInput from 'ui/common/form/RenderDatePickerInput';
 
 const DateAttributeField = ({
-  label, input, meta,
+  label,
+  input,
+  meta,
+  ...rest
 }) => {
   const dateFormat = 'DD/MM/YYYY';
 
@@ -34,6 +37,7 @@ const DateAttributeField = ({
       meta={meta}
       dateFormat={dateFormat}
       isClearable={false}
+      {...rest}
     />
   );
 };

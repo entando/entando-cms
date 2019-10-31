@@ -8,7 +8,10 @@ import {
 import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
 
 const LongtextAttributeField = ({
-  label, input, meta,
+  label,
+  input,
+  meta,
+  ...rest
 }) => {
   const { name, value: inputValue, onChange: inputOnChange } = input;
   const { value: actualValue } = inputValue;
@@ -31,6 +34,7 @@ const LongtextAttributeField = ({
       meta={meta}
       rows={3}
       cols={50}
+      {...rest}
     />
   );
 };

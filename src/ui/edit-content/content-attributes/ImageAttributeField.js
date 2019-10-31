@@ -8,7 +8,12 @@ import { FormattedMessage } from 'react-intl';
 import RenderButton from 'ui/common/form/RenderButton';
 import attributeShape from './attributeShape';
 
-const ImageAttributeField = ({ label, meta, attribute }) => {
+const ImageAttributeField = ({
+  label,
+  meta,
+  attribute,
+  ...rest
+}) => {
   const { code } = attribute;
 
   const handleAddClick = () => {
@@ -23,6 +28,7 @@ const ImageAttributeField = ({ label, meta, attribute }) => {
       label={label}
       meta={meta}
       onClick={handleAddClick}
+      {...rest}
     />
   );
 };

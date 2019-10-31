@@ -7,7 +7,12 @@ import {
 
 import SwitchRenderer from 'ui/common/form/SwitchRenderer';
 
-const CheckboxAttributeField = ({ label, input, meta }) => {
+const CheckboxAttributeField = ({
+  label,
+  input,
+  meta,
+  ...rest
+}) => {
   const switchVals = {
     trueValue: true,
     falseValue: false,
@@ -33,6 +38,7 @@ const CheckboxAttributeField = ({ label, input, meta }) => {
       meta={meta}
       label={label}
       {...switchVals}
+      {...rest}
     />
   );
 };

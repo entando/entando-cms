@@ -8,7 +8,12 @@ import { FormattedMessage } from 'react-intl';
 import RenderButton from 'ui/common/form/RenderButton';
 import attributeShape from './attributeShape';
 
-const AttachAttributeField = ({ label, meta, attribute }) => {
+const AttachAttributeField = ({
+  label,
+  meta,
+  attribute,
+  ...rest
+}) => {
   const { code } = attribute;
 
   const handleAddClick = () => {
@@ -23,6 +28,7 @@ const AttachAttributeField = ({ label, meta, attribute }) => {
       label={label}
       meta={meta}
       onClick={handleAddClick}
+      {...rest}
     />
   );
 };
