@@ -85,6 +85,7 @@ class RenderListField extends Component {
                     name={name}
                     label={index + 1}
                     {...rest}
+                    hasLabel={false}
                   />
                 </Panel.Body>
               </Panel>

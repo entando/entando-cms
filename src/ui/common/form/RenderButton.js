@@ -11,6 +11,7 @@ const RenderButton = ({
   inputSize,
   buttonContent,
   onClick,
+  hasLabel,
 }) => {
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -18,11 +19,13 @@ const RenderButton = ({
 
   return (
     <div className={containerClasses}>
-      <Col xs={labelSize} className={alignClass}>
-        <ControlLabel>
-          {label} {help}
-        </ControlLabel>
-      </Col>
+      {hasLabel && (
+        <Col xs={labelSize} className={alignClass}>
+          <ControlLabel>
+            {label} {help}
+          </ControlLabel>
+        </Col>
+      )}
       <Col xs={inputSize || 12 - labelSize}>
         <Button
           bsStyle="primary"
@@ -49,6 +52,7 @@ RenderButton.propTypes = {
   inputSize: PropTypes.number,
   buttonContent: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
+  hasLabel: PropTypes.bool,
 };
 
 RenderButton.defaultProps = {
@@ -62,5 +66,6 @@ RenderButton.defaultProps = {
   alignClass: 'text-right',
   help: null,
   inputSize: null,
+  hasLabel: true,
 };
 export default RenderButton;

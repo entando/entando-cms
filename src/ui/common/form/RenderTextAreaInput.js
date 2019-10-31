@@ -5,14 +5,17 @@ import { Col, ControlLabel } from 'patternfly-react';
 const RenderTextAreaInput = ({
   input, append, label, labelSize, placeholder, alignClass,
   meta: { touched, error }, help, disabled, cols, rows,
+  hasLabel,
 }) => (
 
   <div className={`RenderTextAreaInput ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
-    <Col xs={labelSize} className={`RenderTextAreaInput-label ${alignClass}`}>
-      <ControlLabel htmlFor={input.name}>
-        {label} {help}
-      </ControlLabel>
-    </Col>
+    {hasLabel && (
+      <Col xs={labelSize} className={`RenderTextAreaInput-label ${alignClass}`}>
+        <ControlLabel htmlFor={input.name}>
+          {label} {help}
+        </ControlLabel>
+      </Col>
+    )}
     <Col xs={12 - labelSize} className="RenderTextAreaInput-content">
       <textarea
         {...input}
@@ -42,6 +45,7 @@ RenderTextAreaInput.propTypes = {
   alignClass: PropTypes.string,
   cols: PropTypes.number,
   rows: PropTypes.number,
+  hasLabel: PropTypes.bool,
 };
 
 RenderTextAreaInput.defaultProps = {
@@ -57,5 +61,6 @@ RenderTextAreaInput.defaultProps = {
   alignClass: 'text-right',
   cols: 20,
   rows: 20,
+  hasLabel: true,
 };
 export default RenderTextAreaInput;

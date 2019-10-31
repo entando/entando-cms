@@ -24,7 +24,7 @@ class RenderDateTimePickerInput extends Component {
     const {
       input, name, label, help, locale, dateFormat, placeholder,
       meta: { touched, error }, hoursList, minutesList, secondsList,
-      isClearable,
+      isClearable, hasLabel,
     } = this.props;
     const optionsHours = hoursList.map(item => padStart(item, 2, '0'));
     const optionsMinutes = minutesList.map(item => padStart(item, 2, '0'));
@@ -32,9 +32,11 @@ class RenderDateTimePickerInput extends Component {
 
     return (
       <div className="form-group">
-        <label htmlFor={name} className="col-xs-2 control-label">
-          {label} {help}
-        </label>
+        {hasLabel && (
+          <label htmlFor={name} className="col-xs-2 control-label">
+            {label} {help}
+          </label>
+        )}
         <Col xs={10}>
           <Row>
             <Col xs={3}>
@@ -119,6 +121,7 @@ RenderDateTimePickerInput.propTypes = {
   minutesList: PropTypes.arrayOf(PropTypes.number),
   secondsList: PropTypes.arrayOf(PropTypes.number),
   isClearable: PropTypes.bool,
+  hasLabel: PropTypes.bool,
 };
 
 RenderDateTimePickerInput.defaultProps = {
@@ -135,5 +138,6 @@ RenderDateTimePickerInput.defaultProps = {
   minutesList: Array.from(Array(60).keys()),
   secondsList: Array.from(Array(60).keys()),
   isClearable: true,
+  hasLabel: true,
 };
 export default RenderDateTimePickerInput;

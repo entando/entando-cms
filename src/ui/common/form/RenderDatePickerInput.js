@@ -34,15 +34,18 @@ class RenderDatePickerInput extends Component {
       placeholder,
       meta: { touched, error },
       isClearable,
+      hasLabel,
     } = this.props;
 
     const errorblock = touched ? error : '';
 
     return (
       <div className="form-group">
-        <label htmlFor={name} className="col-xs-2 control-label">
-          {label} {help}
-        </label>
+        {hasLabel && (
+          <label htmlFor={name} className="col-xs-2 control-label">
+            {label} {help}
+          </label>
+        )}
         <Col xs={10}>
           <DatePicker
             {...input}
@@ -80,6 +83,7 @@ RenderDatePickerInput.propTypes = {
   dateFormat: PropTypes.string,
   locale: PropTypes.string,
   isClearable: PropTypes.bool,
+  hasLabel: PropTypes.bool,
 };
 
 RenderDatePickerInput.defaultProps = {
@@ -93,5 +97,6 @@ RenderDatePickerInput.defaultProps = {
   locale: 'en',
   meta: {},
   isClearable: true,
+  hasLabel: true,
 };
 export default RenderDatePickerInput;

@@ -30,6 +30,9 @@ import DateAttributeField from 'ui/edit-content/content-attributes/DateAttribute
 import EnumeratorAttributeField from 'ui/edit-content/content-attributes/EnumeratorAttributeField';
 import EnumeratorMapAttributeField from 'ui/edit-content/content-attributes/EnumeratorMapAttributeField';
 import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
+
+// TODO: implement a better solution to avoid dependency cycle
+// eslint-disable-next-line import/no-cycle
 import ListAttributeField from 'ui/edit-content/content-attributes/ListAttributeField';
 import MonolistAttributeField from 'ui/edit-content/content-attributes/MonolistAttributeField';
 import NumberAttributeField from 'ui/edit-content/content-attributes/NumberAttributeField';
@@ -48,6 +51,7 @@ const AttributeField = ({
   name,
   attribute,
   label,
+  hasLabel,
 }) => {
   const {
     type,
@@ -141,6 +145,7 @@ const AttributeField = ({
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}
+      hasLabel={hasLabel}
     />
   );
 };
@@ -149,10 +154,12 @@ AttributeField.propTypes = {
   name: PropTypes.string.isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
   label: PropTypes.node,
+  hasLabel: PropTypes.bool,
 };
 
 AttributeField.defaultProps = {
   label: null,
+  hasLabel: true,
 };
 
 export default AttributeField;
