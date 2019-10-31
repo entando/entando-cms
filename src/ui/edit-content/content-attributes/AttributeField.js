@@ -29,6 +29,9 @@ import CheckboxAttributeField from 'ui/edit-content/content-attributes/CheckboxA
 import DateAttributeField from 'ui/edit-content/content-attributes/DateAttributeField';
 import EnumeratorAttributeField from 'ui/edit-content/content-attributes/EnumeratorAttributeField';
 import EnumeratorMapAttributeField from 'ui/edit-content/content-attributes/EnumeratorMapAttributeField';
+
+// TODO: implement a better solution to avoid dependency cycle
+// eslint-disable-next-line import/no-cycle
 import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
 
 // TODO: implement a better solution to avoid dependency cycle
