@@ -6,6 +6,8 @@ import {
 } from 'patternfly-react';
 import Panel from 'react-bootstrap/lib/Panel';
 
+// TODO: implement a better solution to avoid dependency cycle
+// eslint-disable-next-line import/no-cycle
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 
 class RenderListField extends Component {
