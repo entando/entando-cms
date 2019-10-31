@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
@@ -47,6 +47,7 @@ import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextA
 const AttributeField = ({
   name,
   attribute,
+  label,
 }) => {
   const {
     type,
@@ -61,7 +62,7 @@ const AttributeField = ({
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
 
-  const label = (
+  const fieldLabel = label || (
     <FormLabel
       labelText={code}
       required={mandatory}
@@ -69,6 +70,8 @@ const AttributeField = ({
     />
   );
 
+  let fieldName = name;
+  let FieldComp = Field;
   let AttributeFieldComp;
 
   switch (type) {
@@ -91,6 +94,8 @@ const AttributeField = ({
       AttributeFieldComp = CompositeAttributeField;
       break;
     case TYPE_LIST:
+      fieldName = `${name}.elements`;
+      FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
       break;
     case TYPE_MONOLIST:
@@ -131,11 +136,11 @@ const AttributeField = ({
   }
 
   return (
-    <Field
-      name={name}
+    <FieldComp
+      name={fieldName}
       attribute={attribute}
       component={AttributeFieldComp}
-      label={label}
+      label={fieldLabel}
     />
   );
 };
@@ -143,6 +148,11 @@ const AttributeField = ({
 AttributeField.propTypes = {
   name: PropTypes.string.isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
+  label: PropTypes.node,
+};
+
+AttributeField.defaultProps = {
+  label: null,
 };
 
 export default AttributeField;
