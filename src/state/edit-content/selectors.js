@@ -32,22 +32,7 @@ export const getJoinedCategories = createSelector(
   editContent => editContent.joinedCategories,
 );
 
-export const getLanguage = createSelector(
-  getEditContentState,
-  editContent => editContent.language,
-);
-
 export const getNewContentsType = createSelector(
   getEditContentState,
   editContent => editContent.contentType,
-);
-
-export const getContentValues = createSelector(
-  getEditContentState,
-  (editContent) => {
-    const { contentType } = editContent;
-    return {
-      contentType,
-    };
-  },
 );

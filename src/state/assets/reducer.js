@@ -9,7 +9,6 @@ import {
 } from 'state/assets/types';
 
 const defaultState = {
-  language: 'en',
   filteringCategories: [],
   activeFilters: [],
   assetsView: 'list',

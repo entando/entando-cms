@@ -15,12 +15,12 @@ import { fetchCategoryTree } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getCurrentUser } from '@entando/apimanager/dist/state/current-user/selectors';
+import { getLocale } from 'state/locale/selectors';
 import {
   getOwnerGroupDisabled,
   getContent,
   getWorkMode,
   getGroups,
-  getLanguage,
   getJoinedCategories,
   getSaveType,
 } from 'state/edit-content/selectors';
@@ -43,7 +43,7 @@ const publishContentMsgs = defineMessages({
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   workMode: getWorkMode(state),
-  language: getLanguage(state),
+  language: getLocale(state),
   content: getContent(state),
   groups: getGroups(state),
   currentUser: getCurrentUser(state),

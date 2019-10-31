@@ -7,7 +7,6 @@ const TEST_STATE = {
   apps: {
     cms: {
       editContent: {
-        language: 'en',
         workMode: 'work-mode-edit',
         content: {
           contentType: 'NEWS',

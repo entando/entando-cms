@@ -111,16 +111,13 @@ class ContentsTable extends Component {
             break;
           case 'onLine':
             rowCellFormatter = (onLine, { rowData }) => {
+              // eslint-disable-next-line no-unused-vars
               const { status } = rowData;
-              // let statusColor = '';
-              // if (status === 'PUBLIC') statusColor = 'published';
-              // else if (status === 'READY') statusColor = 'review';
-              // else statusColor = 'draft';
+              const statusColor = onLine ? 'published' : 'unpublished';
               return (
-                // <td className="text-center">{
-                // eslint-disable-next-line max-len
-                // <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />}</td>
-                <td className="text-center">{status}</td>
+                <td className="text-center">
+                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />
+                </td>
               );
             };
             break;

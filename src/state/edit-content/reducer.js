@@ -15,7 +15,6 @@ const defaultState = {
   ownerGroupDisabled: {
     disabled: false,
   },
-  language: 'en',
   workMode: WORK_MODE_EDIT,
   contentType: '',
   groups: [],

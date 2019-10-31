@@ -16,7 +16,6 @@ import {
   SET_NEW_CONTENTS_TYPE,
   CLEAR_EDIT_CONTENT_FORM,
   WORK_MODE_ADD,
-  WORK_MODE_EDIT,
 } from './types';
 import {
   getWorkMode, getContent as getStateContent, getJoinedCategories, getNewContentsType,
@@ -130,7 +129,7 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
     .catch(() => {}),
 );
 
-export const saveContent = values => (dispatch, getState) => {
+export const saveContent = values => (dispatch, getState) => new Promise((resolve) => {
   const state = getState();
   const currentUser = getCurrentUser(state);
   const categories = getJoinedCategories(state);
@@ -154,14 +153,14 @@ export const saveContent = values => (dispatch, getState) => {
       firstEditor: currentUser.username,
       typeCode: getNewContentsType(state),
     };
-    dispatch(sendPostAddContent(requestObject));
-  } else if (workMode === WORK_MODE_EDIT) {
+    dispatch(sendPostAddContent(requestObject)).then(() => resolve());
+  } else {
     const { id, typeCode } = getStateContent(state);
     const requestObject = {
       ...enhancedValues,
       id,
       typeCode,
     };
-    dispatch(sendPutEditContent(id, requestObject));
+    dispatch(sendPutEditContent(id, requestObject)).then(() => resolve());
   }
-};
+});

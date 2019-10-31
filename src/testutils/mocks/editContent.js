@@ -1,7 +1,6 @@
 export const EDIT_CONTENT_OPENED_OK = {
   ownerGroupDisabled: false,
   currentUser: undefined,
-  language: 'en',
   workMode: 'work-mode-edit',
   contentId: 1,
   content: {
@@ -14,12 +13,13 @@ export const EDIT_CONTENT_OPENED_OK = {
   ],
   selectedCategories: undefined,
   selectedJoinGroups: undefined,
+  language: undefined,
+  saveType: undefined,
 };
 
 export const ADD_CONTENT_OPENED_OK = {
   ownerGroupDisabled: false,
   currentUser: undefined,
-  language: 'en',
   workMode: 'work-mode-add',
   groups: [
     { code: 'adminstrators', name: 'Administrators' },
@@ -27,6 +27,9 @@ export const ADD_CONTENT_OPENED_OK = {
   ],
   contentType: undefined,
   selectedCategories: undefined,
+  language: undefined,
+  saveType: undefined,
+  loading: undefined,
   selectedJoinGroups: undefined,
 };
 

@@ -6,10 +6,20 @@ import {
   setGroups,
   fetchGroups,
   sendPostAddContent,
+  sendPutEditContent,
+  saveContent,
+  setNewContentsType,
+  clearEditContentForm,
 } from 'state/edit-content/actions';
 import { GET_CONTENT_RESPONSE_OK } from 'testutils/mocks/editContent';
-import { SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS } from 'state/edit-content/types';
-import { getContent, getGroups, postAddContent } from 'api/editContent';
+import {
+  SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, WORK_MODE_ADD, WORK_MODE_EDIT,
+  CLEAR_EDIT_CONTENT_FORM,
+  SET_NEW_CONTENTS_TYPE,
+} from 'state/edit-content/types';
+import {
+  getContent, getGroups, postAddContent, putUpdateContent,
+} from 'api/editContent';
 
 const SET_CONTENT = {
   type: SET_CONTENT_ENTRY,
@@ -36,6 +46,7 @@ jest.mock('api/editContent', () => ({
   getContent: jest.fn(mockApi({ payload: { content: { categories: ['home'] } } })),
   getGroups: jest.fn(mockApi({ payload: ['a', 'b'] })),
   postAddContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
+  putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
 }));
 
 it('test setContentModelList action', () => {
@@ -44,6 +55,14 @@ it('test setContentModelList action', () => {
 
 it('test setOwnerGroupDisable action', () => {
   expect(setOwnerGroupDisable(true)).toEqual(SET_GROUP_DISABLED);
+});
+
+it('test clearEditContentForm action', () => {
+  expect(clearEditContentForm()).toEqual({ type: CLEAR_EDIT_CONTENT_FORM });
+});
+
+it('test setNewContentsType action', () => {
+  expect(setNewContentsType('NEWS')).toEqual({ type: SET_NEW_CONTENTS_TYPE, payload: 'NEWS' });
 });
 
 it('test setGroups action', () => {
@@ -124,5 +143,51 @@ describe('editContent thunks', () => {
         done();
       })
       .catch(done.fail);
+  });
+  it('sendPutEditContent', (done) => {
+    const tosend = { a: 1, contentType: 'YO' };
+    store
+      .dispatch(sendPutEditContent(1, tosend))
+      .then((res) => {
+        expect(putUpdateContent).toHaveBeenCalledWith(1, tosend);
+        expect(res).toEqual(tosend);
+        done();
+      })
+      .catch(done.fail);
+  });
+
+  it('sendPutEditContent error', (done) => {
+    putUpdateContent.mockImplementationOnce(mockApi({ errors: true }));
+    const tosend = { a: 1, contentType: 'YO' };
+    store
+      .dispatch(sendPutEditContent(1, tosend))
+      .then((res) => {
+        expect(putUpdateContent).toHaveBeenCalledWith(1, tosend);
+        expect(res).toEqual(undefined);
+        done();
+      })
+      .catch(done.fail);
+  });
+
+  it('save new content', (done) => {
+    store = createMockStore({
+      apps:
+      { cms: { editContent: { workMode: WORK_MODE_ADD } } },
+      currentUser: { username: 'admin' },
+      form: { editcontentform: { values: {} } },
+    });
+    store
+      .dispatch(saveContent({})).then(() => done());
+  });
+
+  it('save add content', (done) => {
+    store = createMockStore({
+      apps:
+      { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: 'NEW' } } } },
+      currentUser: { username: 'admin' },
+      form: { editcontentform: { values: {} } },
+    });
+    store
+      .dispatch(saveContent({ contentStatus: 'ready' })).then(() => done());
   });
 });

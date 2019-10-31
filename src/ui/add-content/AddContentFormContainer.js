@@ -19,10 +19,11 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getCurrentUser } from '@entando/apimanager/dist/state/current-user/selectors';
 
+import { getLocale } from 'state/locale/selectors';
+
 import {
   getGroups,
   getWorkMode,
-  getLanguage,
   getNewContentsType,
   getOwnerGroupDisabled,
   getSaveType,
@@ -44,7 +45,7 @@ const publishContentMsgs = defineMessages({
 
 export const mapStateToProps = state => ({
   workMode: getWorkMode(state),
-  language: getLanguage(state),
+  language: getLocale(state),
   contentType: getNewContentsType(state),
   groups: getGroups(state),
   currentUser: getCurrentUser(state),
