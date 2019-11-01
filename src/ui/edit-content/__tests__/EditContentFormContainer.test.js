@@ -23,6 +23,7 @@ const TEST_STATE = {
     },
   },
   loading: {},
+  currentUser: { username: 'admin' },
 };
 
 const TEST_OWN_PROPS = {

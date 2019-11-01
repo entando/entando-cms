@@ -24,6 +24,7 @@ const TEST_STATE = {
       },
     },
   },
+  currentUser: { username: 'admin' },
 };
 
 configEnzymeAdapter();

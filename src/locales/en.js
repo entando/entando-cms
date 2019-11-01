@@ -238,8 +238,6 @@ export default {
     'cms.assets.list.nothingFound': 'No items found',
     'cms.assets.list.of': 'of',
     'cms.assets.list.items': 'items',
-    /* Digital Assets ends here */
-    /* contents start here */
     'cms.menu.contents': 'Contents',
     'cms.contents.tip': 'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.quickSearchPlaceHolder': 'Search Content',
@@ -291,7 +289,6 @@ export default {
     'cms.contents.selectContentType': 'Select a Content Type',
     'cms.contents.selectGroup': 'Select a Group',
     'cms.contents.selectedContents': 'You have selected {number} content(s), you can',
-    /* contents end here */
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Code must be 3 uppercase letters',

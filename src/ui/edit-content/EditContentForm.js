@@ -77,7 +77,7 @@ class EditContentFormBody extends React.Component {
       selectedJoinGroups,
       ownerGroupDisabled,
       onSetOwnerGroupDisable,
-      currentUser: { username: currentUserName },
+      currentUser: currentUserName,
     } = this.props;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
@@ -244,7 +244,7 @@ EditContentFormBody.propTypes = {
   language: PropTypes.string.isRequired,
   content: PropTypes.shape({}),
   contentType: PropTypes.string,
-  currentUser: PropTypes.shape({}).isRequired,
+  currentUser: PropTypes.string.isRequired,
   location: PropTypes.shape({}).isRequired,
   groups: PropTypes.arrayOf(
     PropTypes.shape({

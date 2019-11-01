@@ -6,7 +6,7 @@ import { initialize } from 'redux-form';
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
-import { getCurrentUser } from '@entando/apimanager/dist/state/current-user/selectors';
+import { getUsername } from '@entando/apimanager';
 import {
   SET_CONTENT_ENTRY,
   SET_OWNER_GROUP_DISABLE,
@@ -131,7 +131,7 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
 
 export const saveContent = values => (dispatch, getState) => new Promise((resolve) => {
   const state = getState();
-  const currentUser = getCurrentUser(state);
+  const currentUser = getUsername(state);
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
   const {
@@ -144,13 +144,13 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
     categories,
     attributes: [],
     onLine: values.contentStatus === 'ready',
-    lastEditor: currentUser.username,
+    lastEditor: currentUser,
     ...(contentStatus != null && { status: contentStatus }),
   };
   if (workMode === WORK_MODE_ADD) {
     const requestObject = {
       ...enhancedValues,
-      firstEditor: currentUser.username,
+      firstEditor: currentUser,
       typeCode: getNewContentsType(state),
     };
     dispatch(sendPostAddContent(requestObject)).then(() => resolve());

@@ -17,7 +17,7 @@ import { ROUTE_CMS_CONTENTS } from 'app-init/routes';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 
 import EditContentForm from 'ui/edit-content/EditContentForm';
-import { getCurrentUser } from '@entando/apimanager/dist/state/current-user/selectors';
+import { getUsername } from '@entando/apimanager';
 
 import { getLocale } from 'state/locale/selectors';
 
@@ -48,7 +48,7 @@ export const mapStateToProps = state => ({
   language: getLocale(state),
   contentType: getNewContentsType(state),
   groups: getGroups(state),
-  currentUser: getCurrentUser(state),
+  currentUser: getUsername(state),
   ownerGroupDisabled: getOwnerGroupDisabled(state),
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
   selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),

@@ -14,7 +14,7 @@ import {
 import { fetchCategoryTree } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import EditContentForm from 'ui/edit-content/EditContentForm';
-import { getCurrentUser } from '@entando/apimanager/dist/state/current-user/selectors';
+import { getUsername } from '@entando/apimanager';
 import { getLocale } from 'state/locale/selectors';
 import {
   getOwnerGroupDisabled,
@@ -46,7 +46,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   language: getLocale(state),
   content: getContent(state),
   groups: getGroups(state),
-  currentUser: getCurrentUser(state),
+  currentUser: getUsername(state),
   contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
