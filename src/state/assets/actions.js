@@ -12,6 +12,7 @@ import {
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
   APPLY_SORT,
+  SET_ASSET_SYNC,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 
@@ -49,6 +50,11 @@ export const changeAssetsView = assetsView => ({
   payload: assetsView,
 });
 
+export const setAssetChanged = asset => ({
+  type: SET_ASSET_SYNC,
+  payload: asset,
+});
+
 export const applySort = sortName => ({
   type: APPLY_SORT,
   payload: sortName,
@@ -72,14 +78,19 @@ export const fetchAssets = params => dispatch => new Promise((resolve) => {
     .catch(() => {});
 });
 
-export const sendPostAssetEdit = ({ id, ...info }, file) => dispatch => new Promise((resolve) => {
+export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('editasset'));
-  console.log(id, info, file);
-  editAsset(id, file, `?${new URLSearchParams(info).toString()}`)
+  const { filename, ...info } = others;
+  const formdata = new FormData();
+  if (file) {
+    formdata.append('file', new File([file], filename, { type: 'image/png', lastModified: new Date() }));
+  }
+  editAsset(id, formdata, `?${new URLSearchParams(info).toString()}`)
     .then((response) => {
       response.json().then((json) => {
         dispatch(toggleLoading('editasset'));
         if (response.ok) {
+          dispatch(setAssetChanged(json.payload));
           resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));

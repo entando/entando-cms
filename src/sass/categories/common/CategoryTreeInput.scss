@@ -5,8 +5,11 @@
   }
 
   &__treebody {
+    min-height: 45px;
+    max-height: 214px;
     padding: 5px;
     border: 1px solid $color-de-list-icon;
-    border-top: none;
+    border-top: 0;
+    overflow: scroll;
   }
 }

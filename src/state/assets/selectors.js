@@ -32,9 +32,20 @@ export const condenseAssetInfo = (asset) => {
 
 export const getAssetsState = state => state.apps.cms.assets;
 
-export const getAssetsList = createSelector(
+export const getAssetsIdList = createSelector(
   getAssetsState,
-  assets => assets.assets,
+  state => state.assets,
+);
+
+export const getAssetsMap = createSelector(
+  getAssetsState,
+  state => state.assetsMap,
+);
+
+
+export const getAssetsList = createSelector(
+  [getAssetsMap, getAssetsIdList],
+  (assetsMap, idList) => idList.map(id => (assetsMap[id])),
 );
 
 export const getFilteringCategories = createSelector(

@@ -13,8 +13,9 @@ export const getAssets = (params = '') => makeRequest({
 
 export const editAsset = (id, file, params = '') => makeRequest({
   uri: `${getAssetsPath}/${id}${params}`,
-  body: { file },
+  body: file,
   method: METHODS.POST,
+  contentType: 'multipart/form-data',
   mockResponse: GET_ASSETS_RESPONSE_OK,
   useAuthentication: true,
 });

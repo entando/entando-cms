@@ -70,6 +70,7 @@ const RenderCategoryTreeInput = ({
             textfieldClass="CategoryTreeInput__search"
             onValueChange={onSearchValueChange}
             onClear={onClearSearch}
+            placeholder="Search Category"
           />
           <div className="CategoryTreeInput__treebody">
             <table className="CategoryTreeFilter">

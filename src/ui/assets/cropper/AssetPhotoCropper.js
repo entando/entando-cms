@@ -11,6 +11,7 @@ import {
   InputGroup,
   ButtonGroup,
 } from 'patternfly-react';
+import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import Cropper from 'react-cropper';
 
 class AssetPhotoCropper extends Component {
@@ -28,7 +29,7 @@ class AssetPhotoCropper extends Component {
       dataScaleY: '1',
     };
     this.cropper = createRef();
-    this.onConfirmCrop = this.onConfirmCrop.bind(this);
+    this.onCropDetailsChange = this.onCropDetailsChange.bind(this);
     this.cropCommand = this.cropCommand.bind(this);
     this.aspectRatioClicked = this.aspectRatioClicked.bind(this);
   }
@@ -38,7 +39,7 @@ class AssetPhotoCropper extends Component {
     onDidMount();
   }
 
-  onConfirmCrop(e) {
+  onCropDetailsChange(e) {
     const {
       x, y, width, height, rotate, scaleX, scaleY,
     } = e.detail;
@@ -104,23 +105,21 @@ class AssetPhotoCropper extends Component {
         crop.zoom(-0.1);
         break;
       case 'save': {
-        // crop.crop();
-        this.setCroppedImg(crop.getCroppedCanvas().toDataURL());
-        const { input, assetInfo: { metadata } } = this.props;
-        // const dataURL = crop.getCroppedCanvas().toDataURL();
-        input.onChange(crop.getCroppedCanvas().toDataURL());
-        // crop.getCroppedCanvas().toBlob((blob) => {
-          // input.onChange(new File([blob], metadata.filename, { type: 'image/png', lastModified: new Date() }));
-          // const formdata = new FormData();
-          // formdata.append('file', new File([blob], metadata.filename));
-          // input.onChange(formdata);
-        // });
+        const dataURL = crop.getCroppedCanvas().toDataURL();
+        this.setCroppedImg(dataURL);
+        const { input } = this.props;
+        crop.getCroppedCanvas().toBlob((blob) => {
+          input.onChange(blob);
+        });
         break;
       }
-      case 'cancel':
+      case 'cancel': {
+        const { input } = this.props;
         this.setCroppedImg(null);
+        input.onChange(null);
         crop.clear();
         break;
+      }
       default:
         break;
     }
@@ -186,7 +185,7 @@ class AssetPhotoCropper extends Component {
         </Row>
         <Row>
           <Col xs={4} className="lbl"><FormattedMessage id="cms.assets.form.title" /></Col>
-          <Col xs={8} className="inf">{assetInfo && assetInfo.name}</Col>
+          <Col xs={8} className="inf">{assetInfo && assetInfo.description}</Col>
         </Row>
         <Row>
           <Col xs={4} className="lbl"><FormattedMessage id="cms.assets.form.filename" /></Col>
@@ -306,12 +305,12 @@ class AssetPhotoCropper extends Component {
           </ButtonGroup>
         </Col>
         <Col xs={12} md={4} className="AssetPhotoCropper__aspect-ratio-bar">
-          <ButtonGroup title="aspect ratio">
-            {cropRatios.map(ratio => (
-              <Button key={`ratio${ratio}`} data-value={ratio} onClick={this.aspectRatioClicked}>{ratio}</Button>  
+          <ToggleButtonGroup type="radio" name="aspectRatio" title="aspect ratio" defaultValue={0}>
+            {cropRatios.map((ratio, i) => (
+              <ToggleButton key={`ratio${ratio}`} value={i} data-value={ratio} onClick={this.aspectRatioClicked}>{ratio}</ToggleButton>
             ))}
-            <Button data-value="NaN" onClick={this.aspectRatioClicked}><FormattedMessage id="cms.assets.form.aspectfree" /></Button>
-          </ButtonGroup>
+            <ToggleButton data-value="NaN" value={cropRatios.length} onClick={this.aspectRatioClicked} active><FormattedMessage id="cms.assets.form.aspectfree" /></ToggleButton>
+          </ToggleButtonGroup>
         </Col>
       </Row>
     );
@@ -326,7 +325,7 @@ class AssetPhotoCropper extends Component {
               src={croppedImg || imgSrc}
               preview=".AssetPhotoCropper__crop-preview"
               style={{ height: 400 }}
-              crop={this.onConfirmCrop}
+              crop={this.onCropDetailsChange}
             />
           </Col>
           <Col xs={12} md={6} className="AssetPhotoCropper__rightinfo">

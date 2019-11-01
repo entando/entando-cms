@@ -178,7 +178,7 @@
     "reselect": "^4.0.0"
   },
   "peerDependencies": {
-    "@entando/apimanager": "^3.0.2",
+    "@entando/apimanager": "^4.2.0",
     "@entando/messages": "^1.0.4",
     "@entando/menu": "^2.0.0",
     "@entando/utils": "^2.0.0",

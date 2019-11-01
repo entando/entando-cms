@@ -1,5 +1,6 @@
 import {
   SET_ASSETS,
+  SET_ASSET_SYNC,
   SET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
@@ -9,6 +10,8 @@ import {
 } from 'state/assets/types';
 
 const defaultState = {
+  assets: [],
+  assetsMap: {},
   language: 'en',
   filteringCategories: [],
   activeFilters: [],
@@ -22,6 +25,12 @@ const defaultState = {
     perPageOptions: [5, 10, 15, 25, 50],
   },
 };
+
+export const toMap = array => array.reduce((acc, asset) => {
+  acc[asset.id] = asset;
+  return acc;
+}, {});
+export const toIdList = array => array.map(asset => asset.id);
 
 const reducer = (state = defaultState, action = {}) => {
   switch (action.type) {
@@ -41,10 +50,20 @@ const reducer = (state = defaultState, action = {}) => {
       };
     }
     case SET_ASSETS: {
-      const assets = action.payload || [];
+      const assets = toIdList(action.payload);
+      const assetsMap = toMap(action.payload);
       return {
         ...state,
         assets,
+        assetsMap,
+      };
+    }
+    case SET_ASSET_SYNC: {
+      const newStateMap = { ...state.assetsMap };
+      newStateMap[action.payload.id] = action.payload;
+      return {
+        ...state,
+        assetsMap: newStateMap,
       };
     }
     case SET_ACTIVE_FILTERS: {

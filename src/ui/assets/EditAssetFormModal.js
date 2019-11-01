@@ -32,6 +32,7 @@ const EditAssetFormModalBody = ({
   language,
   categories,
   onModalOpen,
+  onModalClose,
 }) => {
   const modalTitle = (
     <Modal.Title>
@@ -40,6 +41,8 @@ const EditAssetFormModalBody = ({
   );
 
   const toOpenModal = () => onModalOpen(assetInfo);
+
+  const groupItems = group && JSON.stringify(group) !== '{}' ? [group] : [];
 
   return (
     <GenericModalContainer
@@ -65,22 +68,23 @@ const EditAssetFormModalBody = ({
                     * <FormattedMessage id="cms.label.fieldsRequired" />
                   </div>
                 </legend>
-                <Field
-                  component={RenderTextInput}
-                  name="name"
-                  label={<FormLabel labelId="cms.assets.form.name" helpId="cms.contentmodel.form.nameHelp" required />}
-                  validate={[required, maxLength50]}
-                />
                 <div className="form-group">
                   <Col xs={12} sm={6}>
+                    <Field
+                      component={RenderTextInput}
+                      name="description"
+                      labelSize={4}
+                      label={<FormLabel labelId="cms.assets.form.desc" helpId="cms.contentmodel.form.nameHelp" required />}
+                      validate={[required, maxLength50]}
+                    />
                     <Field
                       component={RenderSelectInput}
                       name="group"
                       labelSize={4}
-                      label={<FormLabel labelId="cms.assets.form.group" required />}
+                      label={<FormLabel labelId="cms.assets.form.group" />}
                       optionDisplayName="name"
                       optionValue="code"
-                      options={[group]}
+                      options={groupItems}
                       disabled
                     />
                   </Col>
@@ -99,7 +103,7 @@ const EditAssetFormModalBody = ({
           </Row>
           <Row className="form-horizontal">
             <Col xs={12} className="text-right modal-footer">
-              <Button bsStyle="default" className="btn-cancel">
+              <Button bsStyle="default" className="btn-cancel" onClick={onModalClose}>
                 <FormattedMessage id="cms.label.cancel" />
               </Button>
               <Button
@@ -125,6 +129,7 @@ EditAssetFormModalBody.propTypes = {
   group: PropTypes.shape({}).isRequired,
   language: PropTypes.string.isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onModalClose: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
 };
