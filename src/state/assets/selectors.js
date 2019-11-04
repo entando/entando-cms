@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
 
-const removePixelWord = word => word.replace(' pixels', '');
+export const removePixelWord = word => word.replace(' pixels', '');
 
 export const condenseAssetInfo = (asset) => {
   const domain = new URL(process.env.REACT_APP_DOMAIN);

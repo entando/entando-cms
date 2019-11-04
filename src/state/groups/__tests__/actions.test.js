@@ -1,11 +1,10 @@
 import { createMockStore } from 'testutils/helpers';
-import { initialize } from 'redux-form';
-import { ADD_ERRORS } from '@entando/messages';
 
 import {
   setGroups,
   fetchGroups,
   setGroupsTotal,
+  setSelectedGroup,
   fetchGroupsTotal,
   fetchGroup,
 } from 'state/groups/actions';
@@ -19,12 +18,12 @@ import { LIST_GROUPS_OK } from 'testutils/mocks/groups';
 import {
   SET_GROUPS,
   SET_GROUPS_TOTAL,
+  SET_SELECTED_GROUP,
 } from 'state/groups/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { SET_PAGE } from 'state/pagination/types';
 
 const GROUP_CODE = LIST_GROUPS_OK[0].code;
-const INITIALIZE_TYPE = '@@redux-form/INITIALIZE';
 
 jest.mock('api/groups', () => ({
   getGroups: jest.fn(),
@@ -81,6 +80,13 @@ describe('state/groups/actions', () => {
     });
   });
 
+  describe('setSelectedGroup', () => {
+    it('test setSelectedGroup action sets the correct type', () => {
+      const action = setSelectedGroup(LIST_GROUPS_OK[0]);
+      expect(action).toHaveProperty('type', SET_SELECTED_GROUP);
+    });
+  });
+
   describe('setGroupsTotal', () => {
     it('test setGroupsTotal action sets the correct type', () => {
       const action = setGroupsTotal(12);
@@ -120,7 +126,7 @@ describe('state/groups/actions', () => {
         const actions = store.getActions();
         expect(actions).toHaveLength(3);
         expect(actions[0].type).toEqual(TOGGLE_LOADING);
-        expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+        expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
         expect(actions[2].type).toEqual(TOGGLE_LOADING);
         done();
       }).catch(done.fail);
@@ -143,22 +149,21 @@ describe('state/groups/actions', () => {
         expect(getGroups).toHaveBeenCalled();
         const actions = store.getActions();
         expect(actions).toHaveLength(1);
-        expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
         done();
       }).catch(done.fail);
     });
   });
 
   describe('fetchGroup()', () => {
-    it('when getGroup succeeds, should dispatch inizialize', (done) => {
+    it('when getGroup succeeds, should dispatch select group', (done) => {
       getGroup.mockReturnValueOnce(new Promise(resolve => resolve(GET_GROUP_PROMISE)));
       store.dispatch(fetchGroup(GROUP_CODE)).then(() => {
         expect(getGroup).toHaveBeenCalled();
         const actions = store.getActions();
         expect(actions).toHaveLength(1);
-        expect(actions[0]).toHaveProperty('type', INITIALIZE_TYPE);
-        expect(actions[0]).toHaveProperty('payload', LIST_GROUPS_OK[0]);
-        expect(initialize).toHaveBeenCalled();
+        expect(actions[0]).toHaveProperty('type', SET_SELECTED_GROUP);
+        expect(actions[0]).toHaveProperty('payload', { group: LIST_GROUPS_OK[0] });
         done();
       }).catch(done.fail);
     });
@@ -169,7 +174,7 @@ describe('state/groups/actions', () => {
         expect(getGroup).toHaveBeenCalled();
         const actions = store.getActions();
         expect(actions).toHaveLength(1);
-        expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
         done();
       }).catch(done.fail);
     });

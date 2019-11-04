@@ -14,7 +14,7 @@ const filterMockList = (groupCode) => {
 };
 
 const getGroupErrors = groupname => (
-  GROUPS_NORMALIZED.groups.map[groupname] ? []
+  GROUPS_NORMALIZED.apps.cms.groups.map[groupname] ? []
     : [{ code: 1, message: 'invalid group name' }]
 );
 

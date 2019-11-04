@@ -130,13 +130,6 @@ EditAssetFormModalBody.propTypes = {
   language: PropTypes.string.isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onModalClose: PropTypes.func.isRequired,
-  invalid: PropTypes.bool,
-  submitting: PropTypes.bool,
-};
-
-EditAssetFormModalBody.defaultProps = {
-  invalid: false,
-  submitting: false,
 };
 
 const EditAssetFormModal = reduxForm({

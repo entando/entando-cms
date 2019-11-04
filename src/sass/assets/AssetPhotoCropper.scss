@@ -45,7 +45,7 @@
       margin-bottom: 0;
     }
 
-    .form-control[readonly] {
+    .form-control[readonly] { // sass-lint:disable-line class-name-format
       background-color: $color-white;
       color: $color-de-list-icon-active;
     }

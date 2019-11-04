@@ -18,7 +18,7 @@ const correctRequest = {
   errors: expect.any(Function),
 };
 
-const GROUP_CODE = 'group_code';
+const GROUP_CODE = 'free';
 
 jest.unmock('api/groups');
 jest.mock('@entando/apimanager', () => ({
@@ -82,6 +82,36 @@ describe('api/groups', () => {
         },
       );
     });
+
+    it('unsuccessful, run error', () => {
+      makeRequest.mockImplementationOnce(jest.fn(({ errors }) => errors()));
+      getGroups({ page: 1, pageSize: 10 });
+      expect(makeRequest).toHaveBeenCalledWith(
+        {
+          ...correctRequest,
+          uri: '/api/groups',
+        },
+        {
+          page: 1,
+          pageSize: 10,
+        },
+      );
+    });
+
+    it('run error with additional params', () => {
+      makeRequest.mockImplementationOnce(jest.fn(({ errors }) => errors()));
+      getGroups({ page: 1, pageSize: 10 }, '?param=true');
+      expect(makeRequest).toHaveBeenCalledWith(
+        {
+          ...correctRequest,
+          uri: '/api/groups?param=true',
+        },
+        {
+          page: 1,
+          pageSize: 10,
+        },
+      );
+    });
   });
 
   describe('getGroup()', () => {
@@ -94,7 +124,17 @@ describe('api/groups', () => {
       expect(makeRequest).toHaveBeenCalledWith({
         ...correctRequest,
         uri: `/api/groups/${GROUP_CODE}`,
-        mockResponse: {},
+        mockResponse: expect.any(Object),
+      });
+    });
+
+    it('if unsuccessful, calls errors', () => {
+      makeRequest.mockImplementationOnce(jest.fn(({ errors }) => errors()));
+      getGroup(GROUP_CODE);
+      expect(makeRequest).toHaveBeenCalledWith({
+        ...correctRequest,
+        uri: `/api/groups/${GROUP_CODE}`,
+        mockResponse: expect.any(Object),
       });
     });
   });

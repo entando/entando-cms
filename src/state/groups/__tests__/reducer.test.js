@@ -39,7 +39,14 @@ describe('state/groups/reducer', () => {
     });
 
     it('should define the groups payload', () => {
-      expect(getGroupsList({ groups: newState })).toMatchObject(LIST_GROUPS_OK);
+      const STATE_HERE = {
+        apps: {
+          cms: {
+            groups: newState,
+          },
+        },
+      };
+      expect(getGroupsList(STATE_HERE)).toMatchObject(LIST_GROUPS_OK);
     });
   });
 
@@ -57,7 +64,14 @@ describe('state/groups/reducer', () => {
     });
 
     it('should define the selected group payload', () => {
-      expect(getSelectedGroup({ groups: newState })).toMatchObject(BODY_OK);
+      const STATE_HERE = {
+        apps: {
+          cms: {
+            groups: newState,
+          },
+        },
+      };
+      expect(getSelectedGroup(STATE_HERE)).toMatchObject(BODY_OK);
     });
   });
 });
