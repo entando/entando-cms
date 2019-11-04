@@ -2,7 +2,7 @@ import { mockApi } from 'testutils/helpers';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
-  setCategoryFilter,
+  setAssetCategoryFilter,
   setActiveFilters,
   setAssets,
   removeActiveFilter,
@@ -13,7 +13,7 @@ import {
 } from 'state/assets/actions';
 import {
   SET_ASSETS,
-  SET_CATEGORY_FILTER,
+  SET_ASSET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
   APPLY_SORT,
@@ -39,16 +39,16 @@ describe('state/assets/actions', () => {
   });
 
   it('checks if setting a category filter works ok', () => {
-    setCategoryFilter('fifa_18');
+    setAssetCategoryFilter('fifa_18');
     const state = store.getState();
     expect(state).toHaveProperty('assets');
     const { assets } = state;
     expect(assets).toHaveProperty('filteringCategories');
   });
 
-  it('setCategoryFilter() should return a well formed action', () => {
-    const action = setCategoryFilter('fifa_18');
-    expect(action).toHaveProperty('type', SET_CATEGORY_FILTER);
+  it('setAssetCategoryFilter() should return a well formed action', () => {
+    const action = setAssetCategoryFilter('fifa_18');
+    expect(action).toHaveProperty('type', SET_ASSET_CATEGORY_FILTER);
     expect(action.payload).toEqual('fifa_18');
   });
 

@@ -7,7 +7,6 @@ const TEST_STATE = {
   apps: {
     cms: {
       editContent: {
-        language: 'en',
         workMode: 'work-mode-edit',
         content: {
           contentType: 'NEWS',
@@ -23,6 +22,8 @@ const TEST_STATE = {
       },
     },
   },
+  loading: {},
+  currentUser: { username: 'admin' },
 };
 
 const TEST_OWN_PROPS = {

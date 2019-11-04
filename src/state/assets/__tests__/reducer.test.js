@@ -1,7 +1,7 @@
 import reducer from 'state/assets/reducer';
 
 import {
-  setCategoryFilter,
+  setAssetCategoryFilter,
   setActiveFilters,
   setAssets,
   removeActiveFilter,
@@ -27,16 +27,16 @@ describe('state/assets/reducer', () => {
     describe('action setCategoryFilter', () => {
       let newState;
       it('should correctly update filtering category state field', () => {
-        newState = reducer(state, setCategoryFilter({ code: 'fifa_18' }));
+        newState = reducer(state, setAssetCategoryFilter({ code: 'fifa_18' }));
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
 
-        newState = reducer(newState, setCategoryFilter({ code: 'a' }));
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }, { code: 'a' }]);
 
-        newState = reducer(newState, setCategoryFilter({ code: 'a' }));
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
 
-        newState = reducer(newState, setCategoryFilter({ code: 'fifa_18' }));
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'fifa_18' }));
         expect(newState.filteringCategories).toEqual([]);
       });
       it('should correctly change assets state field', () => {

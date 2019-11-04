@@ -57,12 +57,13 @@ describe('api/editContent', () => {
   });
   describe('api/postAddContent', () => {
     it('postAddContent returns a promise with correct params', () => {
-      const body = { a: 1, b: 2 };
+      const body = [{ a: 1, b: 2 }];
       const response = postAddContent({ a: 1, b: 2 });
       expect(makeRequest).toHaveBeenCalledWith({
-        uri: '/api/plugins/cms/contents/',
+        uri: '/api/plugins/cms/contents',
         body,
         method: 'POST',
+        contentType: 'application/json',
         mockResponse: POST_CONTENT_ADD_RESPONSE_OK,
         useAuthentication: true,
       });

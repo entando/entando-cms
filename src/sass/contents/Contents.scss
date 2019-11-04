@@ -1,0 +1,57 @@
+.Contents {
+
+  &__body {
+    margin-top: 15px;
+    // padding-bottom: 90px;
+  }
+
+  &__main-action-button {
+    margin-left: 10px;
+    padding-top: 5px;
+    float: right;
+  }
+
+  &__main-tab-bar {
+    display: inline-block;
+    padding-top: 5px;
+  }
+
+  &__select-all {
+    display: table-cell;
+    margin: 0 auto;
+    text-align: center;
+
+    label {
+      padding-top: 2px;
+      vertical-align: bottom;
+    }
+  }
+
+  &__name-td {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__table {
+    @media (min-width: 991px) {
+      overflow: visible;
+    }
+  }
+
+  &__selected-contents {
+    padding: 10px 8px;
+    background-color: $color-ultra-grey-border;
+    font-family: "Open Sans";
+    font-size: 13px;
+
+    > button {
+      margin-right: 5px;
+      margin-left: 5px;
+
+      &:first-child {
+        margin-left: 15px;
+      }
+    }
+  }
+}

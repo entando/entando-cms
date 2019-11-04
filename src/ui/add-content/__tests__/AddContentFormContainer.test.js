@@ -10,7 +10,6 @@ const TEST_STATE = {
         ownerGroupDisabled: {
           disabled: false,
         },
-        language: 'en',
         workMode: 'work-mode-add',
         content: {
           contentType: 'NEWS',
@@ -25,6 +24,7 @@ const TEST_STATE = {
       },
     },
   },
+  currentUser: { username: 'admin' },
 };
 
 configEnzymeAdapter();

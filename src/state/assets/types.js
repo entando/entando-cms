@@ -1,4 +1,4 @@
-export const SET_CATEGORY_FILTER = 'assets/set-category-filter';
+export const SET_ASSET_CATEGORY_FILTER = 'assets/set-asset-category-filter';
 export const SET_ASSETS = 'assets/set-assets';
 export const SET_ACTIVE_FILTERS = 'assets/set-active-filters';
 export const REMOVE_ACTIVE_FILTER = 'assets/remove-active-filter';
