@@ -18,9 +18,7 @@ import {
   getSelectedRows,
 } from 'state/contents/selectors';
 import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
-import {
-  getCurrentPage, getTotalItems, getPageSize, getLastPage,
-} from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
 import { getGroups } from 'state/edit-content/selectors';
@@ -30,27 +28,32 @@ import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
 import { WORK_MODE_EDIT, WORK_MODE_ADD } from 'state/edit-content/types';
 import Contents from 'ui/contents/Contents';
 
-export const mapStateToProps = state => ({
-  loading: getLoading(state).contents,
-  language: getLocale(state),
-  contents: getContents(state),
-  currentQuickFilter: getCurrentQuickFilter(state),
-  groups: getGroups(state),
-  contentTypes: getContentTypeList(state),
-  filteringCategories: getFilteringCategories(state),
-  statusChecked: getStatusChecked(state),
-  accessChecked: getAccessChecked(state),
-  authorChecked: getAuthorChecked(state),
-  currentAuthorShow: getCurrentAuthorShow(state),
-  currentStatusShow: getCurrentStatusShow(state),
-  currentColumnsShow: getCurrentColumnsShow(state),
-  page: getCurrentPage(state, 'contents'),
-  lastPage: getLastPage(state, 'contents'),
-  totalItems: getTotalItems(state, 'contents'),
-  pageSize: getPageSize(state, 'contents'),
-  sortingColumns: getSortingColumns(state),
-  selectedRows: getSelectedRows(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, lastPage, totalItems, pageSize,
+  } = getPagination(state, 'contents') || getPagination(state);
+  return ({
+    loading: getLoading(state).contents,
+    language: getLocale(state),
+    contents: getContents(state),
+    currentQuickFilter: getCurrentQuickFilter(state),
+    groups: getGroups(state),
+    contentTypes: getContentTypeList(state),
+    filteringCategories: getFilteringCategories(state),
+    statusChecked: getStatusChecked(state),
+    accessChecked: getAccessChecked(state),
+    authorChecked: getAuthorChecked(state),
+    currentAuthorShow: getCurrentAuthorShow(state),
+    currentStatusShow: getCurrentStatusShow(state),
+    currentColumnsShow: getCurrentColumnsShow(state),
+    page,
+    lastPage,
+    totalItems,
+    pageSize,
+    sortingColumns: getSortingColumns(state),
+    selectedRows: getSelectedRows(state),
+  });
+};
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: (page = { page: 1, pageSize: 10 }, params) => {
