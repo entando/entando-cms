@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
+import { injectIntl, defineMessages } from 'react-intl';
 import { get } from 'lodash';
 import { initialize } from 'redux-form';
 import { setVisibleModal } from 'state/modal/actions';
@@ -11,6 +12,13 @@ import { getLanguage } from 'state/assets/selectors';
 import { sendPostAssetEdit } from 'state/assets/actions';
 
 import EditAssetFormModal from 'ui/assets/EditAssetFormModal';
+
+const editAssetMsgs = defineMessages({
+  saved: {
+    id: 'cms.assets.form.updated',
+    defaultMessage: '{name} saved.',
+  },
+});
 
 const mapStateToProps = (state) => {
   const assetInfo = getInfo(state);
@@ -24,7 +32,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { intl }) => ({
   onModalOpen: (info) => {
     dispatch(fetchCategoryTreeAll());
     dispatch(initialize('editassetformmodal', info));
@@ -48,9 +56,8 @@ const mapDispatchToProps = dispatch => ({
       if (res) {
         dispatch(setVisibleModal(''));
         dispatch(
-          // intl.formatMessage(contentModelMsgs.saved, { modelname: values.descr })
           addToast(
-            'Saved!',
+            intl.formatMessage(editAssetMsgs.saved, { name: res.description }),
             TOAST_SUCCESS,
           ),
         );
@@ -68,4 +75,4 @@ const EditAssetFormModalContainer = connect(
   },
 )(EditAssetFormModal);
 
-export default EditAssetFormModalContainer;
+export default injectIntl(EditAssetFormModalContainer);

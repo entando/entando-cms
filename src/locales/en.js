@@ -264,6 +264,7 @@ export default {
     'cms.assets.form.zoom': 'Zoom',
     'cms.assets.form.cropsave': 'Apply',
     'cms.assets.form.cropcancel': 'Revert',
+    'cms.assets.form.updated': 'Asset "{name}" updated.',
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Code must be 3 uppercase letters',
