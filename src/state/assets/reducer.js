@@ -1,7 +1,7 @@
 import {
   SET_ASSETS,
   SET_ASSET_SYNC,
-  SET_CATEGORY_FILTER,
+  SET_ASSET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
   FILE_TYPE_CHANGE,
@@ -12,7 +12,6 @@ import {
 const defaultState = {
   assets: [],
   assetsMap: {},
-  language: 'en',
   filteringCategories: [],
   activeFilters: [],
   assetsView: 'list',
@@ -34,7 +33,7 @@ export const toIdList = array => array.map(asset => asset.id);
 
 const reducer = (state = defaultState, action = {}) => {
   switch (action.type) {
-    case SET_CATEGORY_FILTER: {
+    case SET_ASSET_CATEGORY_FILTER: {
       const { filteringCategories } = state;
       let newFilters = filteringCategories.slice(0);
       const category = action.payload;

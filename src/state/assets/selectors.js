@@ -53,11 +53,6 @@ export const getFilteringCategories = createSelector(
   assets => assets.filteringCategories,
 );
 
-export const getLanguage = createSelector(
-  getAssetsState,
-  assets => assets.language,
-);
-
 export const getFileType = createSelector(
   getAssetsState,
   assets => assets.fileType,

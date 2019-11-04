@@ -14,6 +14,7 @@ import categories from 'state/categories/reducer';
 import assets from 'state/assets/reducer';
 import contentSettings from 'state/content-settings/reducer';
 import groups from 'state/groups/reducer';
+import contents from 'state/contents/reducer';
 
 export const cms = combineReducers({
   contentModel,
@@ -23,6 +24,7 @@ export const cms = combineReducers({
   assets,
   contentSettings,
   groups,
+  contents,
 });
 
 export default combineReducers({

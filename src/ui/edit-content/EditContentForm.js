@@ -41,12 +41,25 @@ const defaultOwnerGroup = 'free';
 
 class EditContentFormBody extends React.Component {
   componentDidMount() {
-    const { initialize, onDidMount, workMode } = this.props;
+    const {
+      initialize, onDidMount, workMode, match: { params = {} },
+      onIncompleteData, contentType,
+    } = this.props;
+    const contentId = params.id;
+    const fetchContentParams = `/${contentId}`;
+    if (workMode === WORK_MODE_EDIT && contentId == null) return onIncompleteData();
     if (workMode === WORK_MODE_ADD) {
-      initialize({ ownerGroup: defaultOwnerGroup });
+      if (contentType == null || contentType === '') return onIncompleteData();
+      return initialize({ ownerGroup: defaultOwnerGroup });
     }
-    onDidMount();
+    return onDidMount(fetchContentParams);
   }
+
+  componentWillUnmount() {
+    const { onWillUnmount } = this.props;
+    onWillUnmount();
+  }
+
 
   render() {
     const {
@@ -55,21 +68,29 @@ class EditContentFormBody extends React.Component {
       content,
       language,
       workMode,
+      onCancel,
       handleSubmit,
+      onSubmit,
+      invalid,
+      submitting,
+      onUnpublish,
       selectedJoinGroups,
       ownerGroupDisabled,
       onSetOwnerGroupDisable,
-      currentUser: { username: currentUserName },
+      currentUser: currentUserName,
     } = this.props;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
+      onLine,
     } = content || {};
     const { contentType: newContentsType } = this.props;
     const contentType = content.typeDescription || newContentsType;
     const groupsWithEmptyOption = [...groups];
 
     return (
-      <form onSubmit={handleSubmit} className="EditContentForm form-horizontal">
+      <form
+        className="EditContentForm form-horizontal"
+      >
         <div className="EditContentForm__content">
           <Row className="InfoFormBody">
             <SectionTitle nameId="cms.contents.edit.info" />
@@ -108,6 +129,7 @@ class EditContentFormBody extends React.Component {
                   <Field
                     component={RenderTextInput}
                     name="contentDescription"
+                    validate={[required]}
                     label={(
                       <FormLabel
                         labelId="cms.contents.edit.contentDescription.label"
@@ -151,7 +173,6 @@ class EditContentFormBody extends React.Component {
                     options={groupsWithEmptyOption}
                     optionValue="code"
                     optionDisplayName="name"
-                    validate={[required]}
                     defaultValueCode="free"
                     disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
                   />
@@ -199,9 +220,20 @@ class EditContentFormBody extends React.Component {
             <SectionTitle nameId="cms.contents.edit.contentAttributes" />
           </Row>
         </div>
-        <Row>
-          <StickySave intl={intl} lastAutoSaveTime={lastModified} />
-        </Row>
+        <div className="AssetsList__footer">
+          <StickySave
+            intl={intl}
+            lastAutoSaveTime={lastModified}
+            onCancel={onCancel}
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            invalid={invalid}
+            submitting={submitting}
+            onLine={onLine}
+            content={content}
+            onUnpublish={onUnpublish}
+          />
+        </div>
       </form>
     );
   }
@@ -212,7 +244,7 @@ EditContentFormBody.propTypes = {
   language: PropTypes.string.isRequired,
   content: PropTypes.shape({}),
   contentType: PropTypes.string,
-  currentUser: PropTypes.shape({}).isRequired,
+  currentUser: PropTypes.string.isRequired,
   location: PropTypes.shape({}).isRequired,
   groups: PropTypes.arrayOf(
     PropTypes.shape({
@@ -222,10 +254,18 @@ EditContentFormBody.propTypes = {
   ).isRequired,
   selectedJoinGroups: PropTypes.arrayOf(PropTypes.string),
   handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   initialize: PropTypes.func.isRequired,
   onDidMount: PropTypes.func.isRequired,
   ownerGroupDisabled: PropTypes.bool,
   onSetOwnerGroupDisable: PropTypes.func.isRequired,
+  match: PropTypes.shape({ match: PropTypes.shape({}) }).isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onIncompleteData: PropTypes.func.isRequired,
+  onWillUnmount: PropTypes.func.isRequired,
+  onUnpublish: PropTypes.func.isRequired,
+  invalid: PropTypes.bool,
+  submitting: PropTypes.bool,
 };
 
 EditContentFormBody.defaultProps = {
@@ -233,12 +273,14 @@ EditContentFormBody.defaultProps = {
   selectedJoinGroups: [],
   content: {},
   contentType: '',
+  invalid: false,
+  submitting: false,
 };
 
 const EditContentForm = reduxForm({
   form: 'editcontentform',
   enableReinitialize: true,
-  // keepDirtyOnReinitialize: true,
+  keepDirtyOnReinitialize: true,
 })(EditContentFormBody);
 
 export default EditContentForm;

@@ -3,7 +3,6 @@ import { getDomain } from '@entando/apimanager';
 import {
   getAssetsList,
   getFilteringCategories,
-  getLanguage,
   getAssetsView,
   getFileType,
   getSort,
@@ -24,6 +23,7 @@ import {
 import { fetchGroup } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
+import { getLocale } from 'state/locale/selectors';
 import AssetsList from 'ui/assets/AssetsList';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
@@ -31,7 +31,7 @@ import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
-  language: getLanguage(state),
+  language: getLocale(state),
   filteringCategories: getFilteringCategories(state),
   activeFilters: getActiveFilters(state),
   assetsView: getAssetsView(state),

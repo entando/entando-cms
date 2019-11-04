@@ -1,20 +1,21 @@
 import {
   SET_OWNER_GROUP_DISABLE,
-  WORK_MODE_ADD,
+  WORK_MODE_EDIT,
   SET_WORK_MODE,
   SET_CONTENT_ENTRY,
   SET_GROUPS,
   JOIN_CATEGORY,
   UNJOIN_CATEGORY,
   SET_JOINED_CATEGORIES,
+  SET_NEW_CONTENTS_TYPE,
+  CLEAR_EDIT_CONTENT_FORM,
 } from 'state/edit-content/types';
 
 const defaultState = {
   ownerGroupDisabled: {
     disabled: false,
   },
-  language: 'en',
-  workMode: WORK_MODE_ADD,
+  workMode: WORK_MODE_EDIT,
   contentType: '',
   groups: [],
   joinedCategories: [],
@@ -31,6 +32,11 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         workMode: action.payload,
+      };
+    case SET_NEW_CONTENTS_TYPE:
+      return {
+        ...state,
+        contentType: action.payload,
       };
     case SET_GROUPS:
       return {
@@ -69,6 +75,11 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         content,
+      };
+    }
+    case CLEAR_EDIT_CONTENT_FORM: {
+      return {
+        ...defaultState,
       };
     }
     default:

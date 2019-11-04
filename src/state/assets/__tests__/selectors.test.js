@@ -5,7 +5,6 @@ import {
   getSort,
   getAssetsList,
   getFilteringCategories,
-  getLanguage,
   getPaginationOptions,
   condenseAssetInfo,
   removePixelWord,
@@ -75,10 +74,6 @@ it('verify getAssetsList selector', () => {
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
   expect(filteringCategories).toEqual([]);
-});
-it('verify getLanguage selector', () => {
-  const language = getLanguage(TEST_STATE);
-  expect(language).toEqual('en');
 });
 it('verify getPaginationOptions selector', () => {
   const paginationOptions = getPaginationOptions(TEST_STATE);

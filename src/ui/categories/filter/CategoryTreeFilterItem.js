@@ -12,13 +12,14 @@ const CategoryTreeFilterItem = ({
   language,
   onExpandCategory,
   onCheckCategory,
+  filterSubject,
 }) => {
   const onClickExpand = () => {
     if (!category.isEmpty) {
       onExpandCategory(category.code);
     }
   };
-  const onClickSelect = () => onCheckCategory(category);
+  const onClickSelect = () => onCheckCategory(category, filterSubject);
 
   const className = ['CategoryTreeSelector__column-td'];
   if (category.isEmpty) {
@@ -64,6 +65,7 @@ CategoryTreeFilterItem.propTypes = {
   onExpandCategory: PropTypes.func,
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
+  filterSubject: PropTypes.string.isRequired,
 };
 
 CategoryTreeFilterItem.defaultProps = {

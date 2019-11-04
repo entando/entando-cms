@@ -11,7 +11,7 @@
 
   &__select {
     display: inline;
-    width: auto;
+    width: auto; //sass-lint:disable-line propertyIgnoredDueToDisplay
     margin-left: 20px;
   }
 

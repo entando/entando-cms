@@ -8,7 +8,7 @@ import { getInfo } from 'state/modal/selectors';
 import { getSelectedGroup } from 'state/groups/selectors';
 import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { getCategoryTree } from 'state/categories/selectors';
-import { getLanguage } from 'state/assets/selectors';
+import { getLocale } from 'state/locale/selectors';
 import { sendPostAssetEdit } from 'state/assets/actions';
 
 import EditAssetFormModal from 'ui/assets/EditAssetFormModal';
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
     assetInfo,
     imgSrc,
     group: getSelectedGroup(state),
-    language: getLanguage(state),
+    language: getLocale(state),
     categories: getCategoryTree(state),
   };
 };

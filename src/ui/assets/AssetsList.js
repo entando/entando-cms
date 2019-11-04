@@ -357,6 +357,7 @@ class AssetsListBody extends Component {
                 filteringCategories={filteringCategories}
                 assetType={fileType}
                 mobile={mobile}
+                filterSubject="asset"
               />
             </div>
             {mobile ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
