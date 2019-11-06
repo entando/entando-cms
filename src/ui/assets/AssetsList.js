@@ -206,6 +206,7 @@ class AssetsListBody extends Component {
       pageSize: perPage,
       page,
       perPageOptions,
+      onAssetSelected,
       apiUrl,
     } = this.props;
     const pagination = {
@@ -295,6 +296,7 @@ class AssetsListBody extends Component {
         key={asset.id}
         asset={asset}
         domain={apiOrigin}
+        onEditClicked={onAssetSelected}
       />
     ));
     const tableContent = (
@@ -431,6 +433,7 @@ AssetsListBody.propTypes = {
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
+  onAssetSelected: PropTypes.func.isRequired,
   apiUrl: PropTypes.string.isRequired,
 };
 

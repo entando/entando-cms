@@ -1,4 +1,9 @@
-import { addErrors } from '@entando/messages';
+import {
+  addErrors,
+  addToast,
+  TOAST_ERROR,
+  clearErrors,
+} from '@entando/messages';
 import {
   SET_ASSETS,
   SET_ASSET_CATEGORY_FILTER,
@@ -7,12 +12,13 @@ import {
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
   APPLY_SORT,
+  SET_ASSET_SYNC,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 
 import { toggleLoading } from 'state/loading/actions';
 
-import { getAssets } from 'api/assets';
+import { getAssets, editAsset } from 'api/assets';
 
 export const setAssetCategoryFilter = category => ({
   type: SET_ASSET_CATEGORY_FILTER,
@@ -44,6 +50,11 @@ export const changeAssetsView = assetsView => ({
   payload: assetsView,
 });
 
+export const setAssetChanged = asset => ({
+  type: SET_ASSET_SYNC,
+  payload: asset,
+});
+
 export const applySort = sortName => ({
   type: APPLY_SORT,
   payload: sortName,
@@ -62,6 +73,31 @@ export const fetchAssets = params => dispatch => new Promise((resolve) => {
         }
         dispatch(toggleLoading('assets'));
         resolve();
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('editasset'));
+  const { filename, ...info } = others;
+  const formdata = new FormData();
+  if (file) {
+    formdata.append('file', new File([file], filename, { type: 'image/png', lastModified: new Date() }));
+  }
+  editAsset(id, formdata, `?${new URLSearchParams(info).toString()}`)
+    .then((response) => {
+      response.json().then((json) => {
+        dispatch(toggleLoading('editasset'));
+        if (response.ok) {
+          dispatch(setAssetChanged(json.payload));
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
       });
     })
     .catch(() => {});

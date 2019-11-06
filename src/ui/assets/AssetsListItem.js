@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
-const AssetsListItem = ({ asset, domain }) => {
+const AssetsListItem = ({ asset, domain, onEditClicked }) => {
   const {
     createdAt, description, metadata = {}, group, categories, versions, owner,
   } = asset;
@@ -24,6 +24,7 @@ const AssetsListItem = ({ asset, domain }) => {
       <br />
     </span>
   ));
+  const onEditClickHandle = () => onEditClicked(asset);
   return (
     <tr className="AssetsList__item" key={asset.id}>
       <td className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>
@@ -35,7 +36,7 @@ const AssetsListItem = ({ asset, domain }) => {
       <td>{renderCategories}</td>
       <td>
         <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
-          <MenuItem className="" onClick={() => {}}>
+          <MenuItem className="" onClick={onEditClickHandle}>
             <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
           </MenuItem>
           <MenuItem className="" onClick={() => {}}>
@@ -49,6 +50,7 @@ const AssetsListItem = ({ asset, domain }) => {
 
 AssetsListItem.propTypes = {
   asset: PropTypes.shape({}).isRequired,
+  onEditClicked: PropTypes.func.isRequired,
   domain: PropTypes.string.isRequired,
 };
 

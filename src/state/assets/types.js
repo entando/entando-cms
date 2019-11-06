@@ -5,3 +5,4 @@ export const REMOVE_ACTIVE_FILTER = 'assets/remove-active-filter';
 export const FILE_TYPE_CHANGE = 'assets/file-type-change';
 export const ASSETS_VIEW_CHANGE = 'assets/assets-view-change';
 export const APPLY_SORT = 'assets/apply-sort';
+export const SET_ASSET_SYNC = 'assets/set-asset-sync';

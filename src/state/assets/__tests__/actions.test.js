@@ -10,6 +10,7 @@ import {
   changeAssetsView,
   applySort,
   fetchAssets,
+  sendPostAssetEdit,
 } from 'state/assets/actions';
 import {
   SET_ASSETS,
@@ -19,16 +20,18 @@ import {
   APPLY_SORT,
   ASSETS_VIEW_CHANGE,
   FILE_TYPE_CHANGE,
+  SET_ASSET_SYNC,
 } from 'state/assets/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { ADD_ERRORS } from 'state/categories/types';
-import { getAssets } from 'api/assets';
+import { getAssets, editAsset } from 'api/assets';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 jest.mock('api/assets', () => ({
   getAssets: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
+  editAsset: jest.fn(res => mockApi({ payload: res })()),
 }));
 
 describe('state/assets/actions', () => {
@@ -117,6 +120,44 @@ describe('state/assets/actions', () => {
         expect(actions[1]).toEqual(ADD_ERRORS);
         done();
       });
+    });
+  });
+
+  describe('sendPostAssetEdit', () => {
+    const tosend = { id: 1, filename: 'jojo.jpg', description: 'jojopic' };
+    const fileblob = new Blob([JSON.stringify({ hello: 'world' }, null, 2)], { type: 'application/json' });
+    it('sendPostAssetEdit success', (done) => {
+      store
+        .dispatch(sendPostAssetEdit(tosend, fileblob))
+        .then(() => {
+          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object), '?description=jojopic');
+          const actions = store.getActions();
+          expect(actions).toHaveLength(3);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[2]).toHaveProperty('type', SET_ASSET_SYNC);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('sendPostAssetEdit error', (done) => {
+      editAsset.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(sendPostAssetEdit(tosend, fileblob))
+        .then((res) => {
+          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object), '?description=jojopic');
+          expect(res).toEqual(undefined);
+          const actions = store.getActions();
+          expect(actions).toHaveLength(5);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[3]).toHaveProperty('type', 'toasts/add-toast');
+          expect(actions[4]).toHaveProperty('type', 'errors/clear-errors');
+          done();
+        })
+        .catch(done.fail);
     });
   });
 });

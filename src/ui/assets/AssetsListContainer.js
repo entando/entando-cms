@@ -7,6 +7,7 @@ import {
   getFileType,
   getSort,
   getActiveFilters,
+  condenseAssetInfo,
 } from 'state/assets/selectors';
 import {
   fetchAssets,
@@ -19,10 +20,14 @@ import {
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
 } from 'state/pagination/selectors';
+import { fetchGroup } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import AssetsList from 'ui/assets/AssetsList';
+
+import { setVisibleModal, setInfo } from 'state/modal/actions';
+import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
@@ -66,6 +71,12 @@ export const mapDispatchToProps = dispatch => ({
   },
   onRemoveAllActiveFilters: () => {
     dispatch(setActiveFilters([]));
+  },
+  onAssetSelected: (item) => {
+    dispatch(setVisibleModal(MODAL_ID));
+    const asset = condenseAssetInfo(item);
+    dispatch(setInfo(asset));
+    dispatch(fetchGroup(asset.group));
   },
 });
 
