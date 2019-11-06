@@ -2,7 +2,6 @@ import { mockApi } from 'testutils/helpers';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { TOGGLE_LOADING } from 'state/loading/types';
-// import { ADD_ERRORS } from 'state/categories/types';
 import { SET_PAGE } from 'state/pagination/types';
 import { getContents, deleteContent, publishContent } from 'api/contents';
 import {

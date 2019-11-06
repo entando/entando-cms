@@ -28,7 +28,7 @@ import { getLoading } from 'state/loading/selectors';
 import {
   ROUTE_CMS_CONTENTS,
 } from 'app-init/routes';
-import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE, REGULAR_SAVE_TYPE } from 'state/edit-content/types';
+import { CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
 
 const publishContentMsgs = defineMessages({
   published: {
@@ -66,30 +66,26 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
     const { saveType } = values;
-    switch (saveType) {
-      case CONTINUE_SAVE_TYPE:
-        dispatch(saveContent(values, categories));
-        break;
-      case APPROVE_SAVE_TYPE:
-        dispatch(saveContent(Object.assign(values, { onLine: true }), categories));
-        history.push(routeConverter(ROUTE_CMS_CONTENTS));
-        break;
-      case REGULAR_SAVE_TYPE:
-        dispatch(saveContent(values, categories));
-        history.push(routeConverter(ROUTE_CMS_CONTENTS));
-        break;
-      default:
-        dispatch(saveContent(values, categories));
-        break;
-    }
+    dispatch(saveContent(values, categories)).then((res) => {
+      if (res) {
+        dispatch(
+          addToast(
+            intl.formatMessage(publishContentMsgs.saved),
+            TOAST_SUCCESS,
+          ),
+        );
+        if (saveType !== CONTINUE_SAVE_TYPE) {
+          history.push(routeConverter(ROUTE_CMS_CONTENTS));
+        }
+      }
+    });
   },
   onCancel: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onUnpublish: content => dispatch(sendPublishContent(content.id, 'draft')).then((res) => {
     if (res) {
       dispatch(
         addToast(
-          intl.formatMessage(publishContentMsgs.unpublished,
-            { modelname: content.description }),
+          intl.formatMessage(publishContentMsgs.unpublished),
           TOAST_SUCCESS,
         ),
       );

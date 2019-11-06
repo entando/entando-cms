@@ -28,6 +28,7 @@ import AssetsList from 'ui/assets/AssetsList';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
+import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
@@ -77,6 +78,10 @@ export const mapDispatchToProps = dispatch => ({
     const asset = condenseAssetInfo(item);
     dispatch(setInfo(asset));
     dispatch(fetchGroup(asset.group));
+  },
+  onClickDelete: (asset) => {
+    dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
+    dispatch(setInfo(asset));
   },
 });
 

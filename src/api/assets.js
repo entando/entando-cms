@@ -19,3 +19,11 @@ export const editAsset = (id, file, params = '') => makeRequest({
   mockResponse: GET_ASSETS_RESPONSE_OK,
   useAuthentication: true,
 });
+
+export const deleteAsset = id => makeRequest({
+  uri: `${getAssetsPath}/${id}`,
+  method: METHODS.DELETE,
+  contentType: 'application/json',
+  mockResponse: GET_ASSETS_RESPONSE_OK,
+  useAuthentication: true,
+});

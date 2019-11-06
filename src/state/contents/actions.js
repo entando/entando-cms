@@ -108,7 +108,7 @@ export const fetchContents = (page = pageDefault,
 });
 
 export const fetchContentsPaged = () => (dispatch, getState) => {
-  const pagination = getPagination(getState());
+  const pagination = getPagination(getState(), 'contents');
   // @ TODO get filter properties and convert to query string and add as param
   return dispatch(fetchContents(pagination));
 };

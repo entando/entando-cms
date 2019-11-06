@@ -15,10 +15,14 @@ import {
   SET_ASSET_SYNC,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
-
 import { toggleLoading } from 'state/loading/actions';
-
-import { getAssets, editAsset } from 'api/assets';
+import { getPagination } from 'state/pagination/selectors';
+import {
+  getFilteringCategories,
+  getFileType,
+  getSort,
+} from 'state/assets/selectors';
+import { getAssets, editAsset, deleteAsset } from 'api/assets';
 
 export const setAssetCategoryFilter = category => ({
   type: SET_ASSET_CATEGORY_FILTER,
@@ -73,6 +77,42 @@ export const fetchAssets = params => dispatch => new Promise((resolve) => {
         }
         dispatch(toggleLoading('assets'));
         resolve();
+      });
+    })
+    .catch(() => {});
+});
+
+export const fetchAssetsPaged = () => (dispatch, getState) => {
+  const state = getState();
+  const { pageSize } = getPagination(state);
+  const sort = getSort(state);
+  const filteringCategories = getFilteringCategories(state);
+  const fileType = getFileType(state);
+  const sortParams = sort && sort.name && sort.direction
+    ? `&sort=${sort.name}&direction=${sort.direction}`
+    : '';
+  const filteringParams = filteringCategories.map(
+    (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
+  ).join('');
+  const typeParams = fileType === 'all' ? '' : `&type=${fileType}`;
+  const pageParams = `&page=${1}&pageSize=${pageSize}`;
+  const url = `?${sortParams}${filteringParams}${typeParams}${pageParams}`;
+  return dispatch(fetchAssets(url));
+};
+
+export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
+  deleteAsset(id)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchAssetsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
       });
     })
     .catch(() => {});

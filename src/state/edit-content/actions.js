@@ -143,7 +143,6 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
     description: contentDescription,
     categories,
     attributes: [],
-    onLine: values.contentStatus === 'ready',
     lastEditor: currentUser,
     ...(contentStatus != null && { status: contentStatus }),
   };
@@ -153,7 +152,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       firstEditor: currentUser,
       typeCode: getNewContentsType(state),
     };
-    dispatch(sendPostAddContent(requestObject)).then(() => resolve());
+    dispatch(sendPostAddContent(requestObject)).then(res => resolve(res));
   } else {
     const { id, typeCode } = getStateContent(state);
     const requestObject = {
@@ -161,6 +160,6 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       id,
       typeCode,
     };
-    dispatch(sendPutEditContent(id, requestObject)).then(() => resolve());
+    dispatch(sendPutEditContent(id, requestObject)).then(res => resolve(res));
   }
 });

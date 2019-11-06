@@ -29,7 +29,7 @@ import {
   getSaveType,
 } from 'state/edit-content/selectors';
 import {
-  CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE, REGULAR_SAVE_TYPE, WORK_MODE_ADD,
+  CONTINUE_SAVE_TYPE, WORK_MODE_ADD,
 } from 'state/edit-content/types';
 
 const publishContentMsgs = defineMessages({
@@ -40,6 +40,10 @@ const publishContentMsgs = defineMessages({
   unpublished: {
     id: 'cms.contents.unpublished',
     defaultMessage: '{name} unpublished.',
+  },
+  saved: {
+    id: 'cms.contents.saved',
+    defaultMessage: '{name} saved.',
   },
 });
 
@@ -67,30 +71,25 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
     const { saveType } = values;
-    switch (saveType) {
-      case CONTINUE_SAVE_TYPE:
-        dispatch(saveContent(values, categories));
-        break;
-      case APPROVE_SAVE_TYPE:
-        dispatch(saveContent(Object.assign(values, { onLine: true }), categories));
-        history.push(routeConverter(ROUTE_CMS_CONTENTS));
-        break;
-      case REGULAR_SAVE_TYPE:
-        dispatch(saveContent(values, categories));
-        history.push(routeConverter(ROUTE_CMS_CONTENTS));
-        break;
-      default:
-        dispatch(saveContent(values, categories));
-        history.push(routeConverter(ROUTE_CMS_CONTENTS));
-        break;
-    }
+    dispatch(saveContent(values, categories)).then((res) => {
+      if (res) {
+        dispatch(
+          addToast(
+            intl.formatMessage(publishContentMsgs.saved),
+            TOAST_SUCCESS,
+          ),
+        );
+        if (saveType !== CONTINUE_SAVE_TYPE) {
+          history.push(routeConverter(ROUTE_CMS_CONTENTS));
+        }
+      }
+    });
   },
   onUnpublish: content => dispatch(sendPublishContent(content.id, 'draft')).then((res) => {
     if (res) {
       dispatch(
         addToast(
-          intl.formatMessage(publishContentMsgs.unpublished,
-            { modelname: content.description }),
+          intl.formatMessage(publishContentMsgs.unpublished),
           TOAST_SUCCESS,
         ),
       );
