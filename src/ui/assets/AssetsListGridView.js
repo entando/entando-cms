@@ -21,18 +21,19 @@ const AssetsListGridView = ({
     );
     const onEditClickHandle = () => onEditClicked(asset);
     const onClickDeleteHandle = () => onClickDelete(asset);
+    const onDownloadHandle = () => window.open(downloadUrl);
     return (
       <div className="AssetsListGridView__item" key={asset.id}>
         <div className="AssetsListGridView__header">
           <span className="AssetsListGridView__name">{asset.description}</span>
           <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
-            <MenuItem className="" onClick={onEditClickHandle}>
+            <MenuItem onClick={onEditClickHandle}>
               <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
             </MenuItem>
-            <MenuItem className="" onClick={() => window.open(downloadUrl)}>
+            <MenuItem onClick={onDownloadHandle}>
               <FormattedMessage id="cms.label.download" defaultMessage="Download" />
             </MenuItem>
-            <MenuItem className="" onClick={onClickDeleteHandle}>
+            <MenuItem onClick={onClickDeleteHandle}>
               <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
             </MenuItem>
           </DropdownKebab>
