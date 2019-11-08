@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
-const AssetsListItem = ({ asset, domain, onEditClicked }) => {
+const AssetsListItem = ({
+  asset, domain, onEditClicked, onClickDelete,
+}) => {
   const {
-    createdAt, description, metadata = {}, group, categories, versions, owner,
+    createdAt, description, metadata = {}, group, categories, versions, owner, path,
   } = asset;
   const fileType = versions == null ? 'file' : 'image';
+  const downloadUrl = `${domain}${fileType === 'image' ? `${versions[0].path}` : `${path}`}`;
   const previewRender = fileType === 'image' ? (
     <img src={`${domain}${versions[1].path}`} alt="Preview" />
   ) : (
@@ -25,6 +28,8 @@ const AssetsListItem = ({ asset, domain, onEditClicked }) => {
     </span>
   ));
   const onEditClickHandle = () => onEditClicked(asset);
+  const onClickDeleteHandle = () => onClickDelete(asset);
+  const onDownloadHandle = () => window.open(downloadUrl);
   return (
     <tr className="AssetsList__item" key={asset.id}>
       <td className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>
@@ -36,10 +41,13 @@ const AssetsListItem = ({ asset, domain, onEditClicked }) => {
       <td>{renderCategories}</td>
       <td>
         <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
-          <MenuItem className="" onClick={onEditClickHandle}>
+          <MenuItem onClick={onEditClickHandle}>
             <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
           </MenuItem>
-          <MenuItem className="" onClick={() => {}}>
+          <MenuItem onClick={onDownloadHandle}>
+            <FormattedMessage id="cms.label.download" defaultMessage="Download" />
+          </MenuItem>
+          <MenuItem onClick={onClickDeleteHandle}>
             <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
           </MenuItem>
         </DropdownKebab>
@@ -51,6 +59,7 @@ const AssetsListItem = ({ asset, domain, onEditClicked }) => {
 AssetsListItem.propTypes = {
   asset: PropTypes.shape({}).isRequired,
   onEditClicked: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
   domain: PropTypes.string.isRequired,
 };
 

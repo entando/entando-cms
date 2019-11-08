@@ -208,6 +208,7 @@ class AssetsListBody extends Component {
       perPageOptions,
       onAssetSelected,
       apiUrl,
+      onClickDelete,
     } = this.props;
     const pagination = {
       page,
@@ -297,6 +298,7 @@ class AssetsListBody extends Component {
         asset={asset}
         domain={apiOrigin}
         onEditClicked={onAssetSelected}
+        onClickDelete={onClickDelete}
       />
     ));
     const tableContent = (
@@ -307,7 +309,14 @@ class AssetsListBody extends Component {
         <tbody>{assetsListItems}</tbody>
       </table>
     );
-    const gridContent = <AssetsListGridView assets={assets} domain={apiOrigin} />;
+    const gridContent = (
+      <AssetsListGridView
+        assets={assets}
+        domain={apiOrigin}
+        onEditClicked={onAssetSelected}
+        onClickDelete={onClickDelete}
+      />
+    );
     const emptyContent = (
       <div className="AssetsList__nothing-found">
         <FormattedMessage id="cms.assets.list.nothingFound" />.
@@ -435,6 +444,7 @@ AssetsListBody.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   apiUrl: PropTypes.string.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
 };
 
 AssetsListBody.defaultProps = {

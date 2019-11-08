@@ -1,6 +1,6 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
-import { getAssets, editAsset } from 'api/assets';
+import { getAssets, editAsset, deleteAsset } from 'api/assets';
 import { makeRequest } from '@entando/apimanager';
 import { GET_ASSETS_RESPONSE_OK } from 'testutils/mocks/assets';
 
@@ -9,7 +9,7 @@ configEnzymeAdapter();
 jest.unmock('api/assets');
 jest.mock('@entando/apimanager', () => ({
   makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
-  METHODS: { GET: 'GET', POST: 'POST' },
+  METHODS: { GET: 'GET', POST: 'POST', DELETE: 'DELETE' },
 }));
 
 describe('api/assets', () => {
@@ -37,6 +37,20 @@ describe('api/assets', () => {
         method: 'POST',
         mockResponse: GET_ASSETS_RESPONSE_OK,
         contentType: 'multipart/form-data',
+        useAuthentication: true,
+      });
+      expect(response).toBeInstanceOf(Promise);
+    });
+  });
+
+  describe('deleteAsset', () => {
+    it('returns a promise', () => {
+      const response = deleteAsset(1);
+      expect(makeRequest).toHaveBeenCalledWith({
+        uri: '/api/plugins/cms/assets/1',
+        method: 'DELETE',
+        mockResponse: GET_ASSETS_RESPONSE_OK,
+        contentType: 'application/json',
         useAuthentication: true,
       });
       expect(response).toBeInstanceOf(Promise);

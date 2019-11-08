@@ -11,6 +11,7 @@ import {
   applySort,
   fetchAssets,
   sendPostAssetEdit,
+  sendDeleteAsset,
 } from 'state/assets/actions';
 import {
   SET_ASSETS,
@@ -23,8 +24,12 @@ import {
   SET_ASSET_SYNC,
 } from 'state/assets/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
-import { ADD_ERRORS } from 'state/categories/types';
-import { getAssets, editAsset } from 'api/assets';
+import { getAssets, editAsset, deleteAsset } from 'api/assets';
+
+const ADD_ERRORS = 'errors/add-errors';
+const CLEAR_ERRORS = 'errors/clear-errors';
+const ADD_TOAST = 'toasts/add-toast';
+
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -32,6 +37,7 @@ const mockStore = configureMockStore(middlewares);
 jest.mock('api/assets', () => ({
   getAssets: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
   editAsset: jest.fn(res => mockApi({ payload: res })()),
+  deleteAsset: jest.fn(mockApi({ payload: [] })()),
 }));
 
 describe('state/assets/actions', () => {
@@ -158,6 +164,89 @@ describe('state/assets/actions', () => {
           done();
         })
         .catch(done.fail);
+    });
+  });
+
+  describe('deleteContent()', () => {
+    it('when deleting asset it fires all the appropriate actions', (done) => {
+      deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], sort: { name: 'description', direction: 'ASC' }, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendDeleteAsset(1))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when deleting asset it fires all the appropriate actions from different state', (done) => {
+      deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], sort: {}, fileType: 'file', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendDeleteAsset(1))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when deleting asset it fires all the appropriate actions', (done) => {
+      deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], sort: { name: 'description', direction: 'DESC' }, fileType: 'all', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendDeleteAsset(1))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when deleting asset it reports errors succesfully', (done) => {
+      deleteAsset.mockImplementationOnce(mockApi({ errors: true }));
+      store = mockStore({
+        contents: { contents: [] },
+      });
+      store.dispatch(sendDeleteAsset(1)).then(() => {
+        const actions = store.getActions().map(action => action.type);
+        expect(actions).toHaveLength(3);
+        expect(actions.includes(ADD_ERRORS)).toBe(true);
+        expect(actions.includes(CLEAR_ERRORS)).toBe(true);
+        expect(actions.includes(ADD_TOAST)).toBe(true);
+        done();
+      });
     });
   });
 });
