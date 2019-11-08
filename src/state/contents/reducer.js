@@ -9,6 +9,8 @@ import {
   SET_GROUP,
   SELECT_ROW,
   SELECT_ALL_ROWS,
+  SET_JOIN_CONTENT_CATEGORY,
+  RESET_JOIN_CONTENT_CATEGORIES,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -20,6 +22,7 @@ const defaultState = {
     value: '',
   },
   filteringCategories: [],
+  joiningCategories: [],
   sortingColumns: {
     created: {
       direction: TABLE_SORT_DIRECTION.ASC,
@@ -159,6 +162,27 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         filteringCategories: newFilters,
+      };
+    }
+    case SET_JOIN_CONTENT_CATEGORY: {
+      const { joiningCategories } = state;
+      let newFilters = joiningCategories.slice(0);
+      const category = action.payload;
+      const contains = newFilters.filter(cat => cat.code === category.code).length !== 0;
+      if (!contains) {
+        newFilters.push(category);
+      } else {
+        newFilters = newFilters.filter(c => c.code !== category.code);
+      }
+      return {
+        ...state,
+        joiningCategories: newFilters,
+      };
+    }
+    case RESET_JOIN_CONTENT_CATEGORIES: {
+      return {
+        ...state,
+        joiningCategories: [],
       };
     }
     default:

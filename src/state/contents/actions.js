@@ -1,6 +1,6 @@
 import { toggleLoading } from 'state/loading/actions';
 import {
-  getContents, deleteContent, publishContent,
+  getContents, deleteContent, publishContent, updateContents,
 } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
 import { getPagination } from 'state/pagination/selectors';
@@ -11,7 +11,7 @@ import {
   SET_CONTENTS, SET_QUICK_FILTER, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE,
-  SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS,
+  SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
 } from 'state/contents/types';
 
 const pageDefault = { page: 1, pageSize: 10 };
@@ -44,6 +44,15 @@ export const setSort = sort => ({
 export const setContentCategoryFilter = category => ({
   type: SET_CONTENT_CATEGORY_FILTER,
   payload: category,
+});
+
+export const setJoinContentCategory = category => ({
+  type: SET_JOIN_CONTENT_CATEGORY,
+  payload: category,
+});
+
+export const resetJoinContentCategories = () => ({
+  type: RESET_JOIN_CONTENT_CATEGORIES,
 });
 
 export const checkStatus = status => ({
@@ -133,6 +142,24 @@ export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
 
 export const sendPublishContent = (id, status) => dispatch => new Promise((resolve) => {
   publishContent(id, status)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendUpdateContents = contents => dispatch => new Promise((resolve) => {
+  updateContents(contents)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {

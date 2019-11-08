@@ -89,7 +89,7 @@ class Contents extends Component {
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
-      onClickAddContent,
+      onClickAddContent, onClickJoinCategories,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -97,13 +97,7 @@ class Contents extends Component {
     const renderSelectedRows = selectedRows.length > 0 ? (
       <div className="Contents__selected-contents">
         {intl.formatMessage(selectedContents, { number: selectedRows.length })}
-        <Button>
-          <FormattedMessage
-            id="cms.contents.reloadReferences"
-            defaultMessage="Reload References"
-          />
-        </Button>
-        <Button>
+        <Button onClick={() => onClickJoinCategories(selectedRowsData)}>
           <FormattedMessage
             id="cms.contents.categoriesToAdd"
             defaultMessage="Select Categories to add"
@@ -221,6 +215,7 @@ Contents.propTypes = {
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
   onClickAddContent: PropTypes.func.isRequired,
+  onClickJoinCategories: PropTypes.func.isRequired,
 };
 
 Contents.defaultProps = {

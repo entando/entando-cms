@@ -3,7 +3,8 @@ import {
   setQuickFilter, setContentType, setGroup, setSort,
   setContentCategoryFilter, checkStatus, checkAccess, setContents,
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
-  setCurrentColumnsShow, selectRow, selectAllRows,
+  setCurrentColumnsShow, selectRow, selectAllRows, setJoinContentCategory,
+  resetJoinContentCategories,
 } from 'state/contents/actions';
 
 const CONTENTS = [{ id: 1 }, { id: 2 }];
@@ -137,6 +138,22 @@ describe('state/contents/reducer', () => {
         expect(newState.filteringCategories).toEqual([{ code: 'cat1' }]);
         newState = reducer(newState, setContentCategoryFilter({ code: 'cat1' }));
         expect(newState.filteringCategories).toEqual([]);
+      });
+    });
+    describe('after action setJoinContentCategory', () => {
+      let newState = reducer({ joiningCategories: [] });
+      it('should correctly update joiningCategories state field', () => {
+        newState = reducer(newState, setJoinContentCategory({ code: 'cat1' }));
+        expect(newState.joiningCategories).toEqual([{ code: 'cat1' }]);
+        newState = reducer(newState, setJoinContentCategory({ code: 'cat1' }));
+        expect(newState.joiningCategories).toEqual([]);
+      });
+    });
+    describe('after action resetJoinContentCategories', () => {
+      let newState = reducer({ joiningCategories: ['a'] });
+      it('should correctly update joiningCategories state field', () => {
+        newState = reducer(newState, resetJoinContentCategories());
+        expect(newState.joiningCategories).toEqual([]);
       });
     });
   });

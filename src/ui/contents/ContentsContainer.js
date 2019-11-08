@@ -5,7 +5,7 @@ import { routeConverter } from '@entando/utils';
 import {
   fetchContents, setQuickFilter, checkStatus, checkAccess, checkAuthor,
   setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow,
-  setContentType, setGroup, setSort, selectRow, selectAllRows,
+  setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
@@ -25,6 +25,7 @@ import { getGroups } from 'state/edit-content/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { DELETE_CONTENT_MODAL_ID } from 'ui/contents/DeleteContentModal';
 import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
+import { JOIN_CATEGORIES_MODAL_ID } from 'ui/contents/JoinCategoriesModal';
 import { WORK_MODE_EDIT, WORK_MODE_ADD } from 'state/edit-content/types';
 import Contents from 'ui/contents/Contents';
 
@@ -95,6 +96,11 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     history.push(
       routeConverter(ROUTE_CMS_ADD_CONTENT),
     );
+  },
+  onClickJoinCategories: (contents) => {
+    dispatch(resetJoinContentCategories());
+    dispatch(setVisibleModal(JOIN_CATEGORIES_MODAL_ID));
+    dispatch(setInfo({ contents }));
   },
 });
 

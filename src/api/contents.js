@@ -27,3 +27,12 @@ export const publishContent = (id, status) => makeRequest({
   useAuthentication: true,
   body: { status },
 });
+
+export const updateContents = contents => makeRequest({
+  uri: `${contentsPath}`,
+  method: METHODS.PUT,
+  contentType: 'application/json',
+  mockResponse: RESPONSE_PUBLISH_OK,
+  useAuthentication: true,
+  body: contents,
+});

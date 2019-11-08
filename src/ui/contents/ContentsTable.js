@@ -11,6 +11,7 @@ import {
 import * as resolve from 'table-resolver';
 import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
 import PublishContentModalContainer from 'ui/contents/PublishContentModalContainer';
+import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
 
 class ContentsTable extends Component {
   constructor(props) {
@@ -237,6 +238,7 @@ class ContentsTable extends Component {
           />
           <DeleteContentModalContainer />
           <PublishContentModalContainer />
+          <JoinCategoriesModalContainer />
         </div>
       </div>
     );

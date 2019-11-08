@@ -3,19 +3,23 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { SET_PAGE } from 'state/pagination/types';
-import { getContents, deleteContent, publishContent } from 'api/contents';
+import {
+  getContents, deleteContent, publishContent, updateContents,
+} from 'api/contents';
 import {
   setQuickFilter, setContentType, setGroup, setSort,
   setContentCategoryFilter, checkStatus, checkAccess,
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
   setCurrentColumnsShow, selectRow, selectAllRows, fetchContents,
-  sendDeleteContent, sendPublishContent,
+  sendDeleteContent, sendPublishContent, setJoinContentCategory,
+  resetJoinContentCategories, sendUpdateContents,
 } from 'state/contents/actions';
 import {
   SET_QUICK_FILTER, SET_CONTENT_TYPE, SET_GROUP,
   SET_SORT, SET_CONTENT_CATEGORY_FILTER, CHECK_STATUS, CHECK_ACCESS,
   CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW, SET_CURRENT_STATUS_SHOW,
   SET_CURRENT_COLUMNS_SHOW, SELECT_ROW, SELECT_ALL_ROWS, SET_CONTENTS,
+  SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
 } from '../types';
 
 const middlewares = [thunk];
@@ -29,6 +33,7 @@ jest.mock('api/contents', () => ({
   getContents: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
   deleteContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
   publishContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
+  updateContents: jest.fn(mockApi({ payload: { result: 'ok' } })),
 }));
 
 describe('state/contents/actions', () => {
@@ -67,6 +72,17 @@ describe('state/contents/actions', () => {
     const action = setContentCategoryFilter({ code: 'NEWS', name: 'News' });
     expect(action).toHaveProperty('type', SET_CONTENT_CATEGORY_FILTER);
     expect(action.payload).toEqual({ code: 'NEWS', name: 'News' });
+  });
+
+  it('setJoinContentCategory() should return a well formed action', () => {
+    const action = setJoinContentCategory({ code: 'NEWS', name: 'News' });
+    expect(action).toHaveProperty('type', SET_JOIN_CONTENT_CATEGORY);
+    expect(action.payload).toEqual({ code: 'NEWS', name: 'News' });
+  });
+
+  it('resetJoinContentCategories() should return a well formed action', () => {
+    const action = resetJoinContentCategories();
+    expect(action).toHaveProperty('type', RESET_JOIN_CONTENT_CATEGORIES);
   });
 
   it('checkStatus() should return a well formed action', () => {
@@ -204,6 +220,38 @@ describe('state/contents/actions', () => {
         contents: { contents: [] },
       });
       store.dispatch(sendPublishContent('NEW1', 'published')).then(() => {
+        const actions = store.getActions().map(action => action.type);
+        expect(actions).toHaveLength(3);
+        expect(actions.includes(ADD_ERRORS)).toBe(true);
+        expect(actions.includes(CLEAR_ERRORS)).toBe(true);
+        expect(actions.includes(ADD_TOAST)).toBe(true);
+        done();
+      });
+    });
+  });
+  describe('sentUpdateContents()', () => {
+    it('when updating batch of contents it fires all the appropriate actions', (done) => {
+      updateContents.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: { cms: { contents: { contents: [] } } },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendUpdateContents([{ a: 1 }]))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when updating batch of contents it reports errors succesfully', (done) => {
+      updateContents.mockImplementationOnce(mockApi({ errors: true }));
+      store = mockStore({
+        contents: { contents: [] },
+      });
+      store.dispatch(sendUpdateContents([{ a: 1 }])).then(() => {
         const actions = store.getActions().map(action => action.type);
         expect(actions).toHaveLength(3);
         expect(actions.includes(ADD_ERRORS)).toBe(true);

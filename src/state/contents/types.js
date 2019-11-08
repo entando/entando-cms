@@ -12,3 +12,5 @@ export const SET_CONTENT_TYPE = 'cms/contents/set-content-type';
 export const SET_GROUP = 'cms/contents/set-group';
 export const SELECT_ROW = 'cms/contents/select-row';
 export const SELECT_ALL_ROWS = 'cms/contents/select-all-rows';
+export const SET_JOIN_CONTENT_CATEGORY = 'cms/contents/set-join-content-category';
+export const RESET_JOIN_CONTENT_CATEGORIES = 'cms/contents/reset-join-content-categories';

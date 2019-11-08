@@ -17,6 +17,11 @@ export const getFilteringCategories = createSelector(
   contents => contents.filteringCategories,
 );
 
+export const getJoiningCategories = createSelector(
+  getContentsState,
+  contents => contents.joiningCategories,
+);
+
 export const getStatusChecked = createSelector(
   getContentsState,
   contents => contents.statusChecked,

@@ -10,6 +10,7 @@ import {
   getCurrentColumnsShow,
   getSortingColumns,
   getSelectedRows,
+  getJoiningCategories,
 } from 'state/contents/selectors';
 
 const TEST_STATE = {
@@ -20,6 +21,7 @@ const TEST_STATE = {
         contents: ['a', 'b'],
         currentQuickFilter: { name: 'code', value: 'new2' },
         filteringCategories: [{ code: 'a' }],
+        joiningCategories: [{ code: 'a' }],
         contentType: 'NEWS',
         group: 'free',
         statusChecked: 'approved',
@@ -47,6 +49,11 @@ it('verify getCurrentQuickFilter selector', () => {
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
   expect(filteringCategories).toEqual([{ code: 'a' }]);
+});
+
+it('verify getJoiningCategories selector', () => {
+  const joiningCategories = getJoiningCategories(TEST_STATE);
+  expect(joiningCategories).toEqual([{ code: 'a' }]);
 });
 
 it('verify getStatusChecked selector', () => {
