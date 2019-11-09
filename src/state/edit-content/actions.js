@@ -160,6 +160,6 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       id,
       typeCode,
     };
-    dispatch(sendPutEditContent(id, requestObject)).then(res => resolve(res));
+    dispatch(sendPutEditContent(id, requestObject)).then(resolve);
   }
 });

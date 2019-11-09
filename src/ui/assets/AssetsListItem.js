@@ -29,6 +29,7 @@ const AssetsListItem = ({
   ));
   const onEditClickHandle = () => onEditClicked(asset);
   const onClickDeleteHandle = () => onClickDelete(asset);
+  const onDownloadHandle = () => window.open(downloadUrl);
   return (
     <tr className="AssetsList__item" key={asset.id}>
       <td className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>
@@ -40,13 +41,13 @@ const AssetsListItem = ({
       <td>{renderCategories}</td>
       <td>
         <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
-          <MenuItem className="" onClick={onEditClickHandle}>
+          <MenuItem onClick={onEditClickHandle}>
             <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
           </MenuItem>
-          <MenuItem className="" onClick={() => window.open(downloadUrl)}>
+          <MenuItem onClick={onDownloadHandle}>
             <FormattedMessage id="cms.label.download" defaultMessage="Download" />
           </MenuItem>
-          <MenuItem className="" onClick={onClickDeleteHandle}>
+          <MenuItem onClick={onClickDeleteHandle}>
             <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
           </MenuItem>
         </DropdownKebab>
