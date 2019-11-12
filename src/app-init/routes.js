@@ -14,3 +14,4 @@ export const ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD = '/content-type/attribute/:en
 export const ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT = '/content-type/attribute/:entityCode/edit/:attributeCode';
 export const ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD = '/content-type/attribute/:entityCode/MonolistAdd/:attributeCode';
 export const ROUTE_CMS_CONTENT_SETTINGS = '/cms/content-settings';
+export const ROUTE_CMS_CONTENTS = '/cms/contents';

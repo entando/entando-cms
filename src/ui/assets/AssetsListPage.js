@@ -6,6 +6,8 @@ import { FormattedMessage } from 'react-intl';
 import PageTitle from 'ui/common/PageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
+import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
+import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
 
 const ContentModelListPage = () => (
   <CardGrid>
@@ -31,6 +33,8 @@ const ContentModelListPage = () => (
         <AssetsListContainer />
       </Col>
     </Row>
+    <EditAssetFormModalContainer />
+    <DeleteAssetModalContainer />
   </CardGrid>
 );
 

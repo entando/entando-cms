@@ -206,7 +206,9 @@ class AssetsListBody extends Component {
       pageSize: perPage,
       page,
       perPageOptions,
+      onAssetSelected,
       apiUrl,
+      onClickDelete,
     } = this.props;
     const pagination = {
       page,
@@ -295,6 +297,8 @@ class AssetsListBody extends Component {
         key={asset.id}
         asset={asset}
         domain={apiOrigin}
+        onEditClicked={onAssetSelected}
+        onClickDelete={onClickDelete}
       />
     ));
     const tableContent = (
@@ -305,7 +309,14 @@ class AssetsListBody extends Component {
         <tbody>{assetsListItems}</tbody>
       </table>
     );
-    const gridContent = <AssetsListGridView assets={assets} domain={apiOrigin} />;
+    const gridContent = (
+      <AssetsListGridView
+        assets={assets}
+        domain={apiOrigin}
+        onEditClicked={onAssetSelected}
+        onClickDelete={onClickDelete}
+      />
+    );
     const emptyContent = (
       <div className="AssetsList__nothing-found">
         <FormattedMessage id="cms.assets.list.nothingFound" />.
@@ -355,6 +366,7 @@ class AssetsListBody extends Component {
                 filteringCategories={filteringCategories}
                 assetType={fileType}
                 mobile={mobile}
+                filterSubject="asset"
               />
             </div>
             {mobile ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
@@ -430,7 +442,9 @@ AssetsListBody.propTypes = {
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
+  onAssetSelected: PropTypes.func.isRequired,
   apiUrl: PropTypes.string.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
 };
 
 AssetsListBody.defaultProps = {

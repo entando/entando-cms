@@ -7,6 +7,7 @@ const GenericModal = ({
   visibleModal,
   modalId,
   modalClassName,
+  onOpenModal,
   onCloseModal,
   children,
   buttons,
@@ -27,6 +28,7 @@ const GenericModal = ({
   return (
     <Modal
       show={visibleModal === modalId}
+      onEnter={onOpenModal}
       onHide={onCloseModal}
       id={modalId}
       dialogClassName={modalClassName}
@@ -54,6 +56,7 @@ GenericModal.propTypes = {
   modalClassName: PropTypes.string,
   modalId: PropTypes.string.isRequired,
   onCloseModal: PropTypes.func.isRequired,
+  onOpenModal: PropTypes.func,
   modalTitle: PropTypes.node,
   children: PropTypes.node.isRequired,
   modalFooter: PropTypes.node,
@@ -66,6 +69,7 @@ GenericModal.defaultProps = {
   modalTitle: '',
   modalFooter: '',
   buttons: [],
+  onOpenModal: () => {},
 };
 
 export default GenericModal;

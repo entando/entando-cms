@@ -1,7 +1,7 @@
 import reducer from 'state/assets/reducer';
 
 import {
-  setCategoryFilter,
+  setAssetCategoryFilter,
   setActiveFilters,
   setAssets,
   removeActiveFilter,
@@ -10,7 +10,13 @@ import {
   applySort,
 } from 'state/assets/actions';
 
-const ASSETS = ['dog.png', 'cat.png'];
+const ASSETS = [{
+  id: 'a',
+  filename: 'dog.png',
+}, {
+  id: 'b',
+  filename: 'cat.png',
+}];
 
 describe('state/assets/reducer', () => {
   it('should return an object', () => {
@@ -27,25 +33,24 @@ describe('state/assets/reducer', () => {
     describe('action setCategoryFilter', () => {
       let newState;
       it('should correctly update filtering category state field', () => {
-        newState = reducer(state, setCategoryFilter({ code: 'fifa_18' }));
+        newState = reducer(state, setAssetCategoryFilter({ code: 'fifa_18' }));
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
 
-        newState = reducer(newState, setCategoryFilter({ code: 'a' }));
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }, { code: 'a' }]);
 
-        newState = reducer(newState, setCategoryFilter({ code: 'a' }));
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
 
-        newState = reducer(newState, setCategoryFilter({ code: 'fifa_18' }));
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'fifa_18' }));
         expect(newState.filteringCategories).toEqual([]);
       });
-      it('should correctly change assets state field', () => {
-        newState = reducer(state, setAssets(['a', 'b']));
-        expect(newState.assets).toEqual(['a', 'b']);
 
-        newState = reducer(state, setAssets(undefined));
-        expect(newState.assets).toEqual([]);
+      it('should correctly change assets state field', () => {
+        newState = reducer(state, setAssets(ASSETS));
+        expect(newState.assets).toEqual(['a', 'b']);
       });
+
       it('should correctly change active filters state field', () => {
         newState = reducer(state, setActiveFilters([{ code: 'a' }, { code: 'b' }]));
         expect(newState.activeFilters).toEqual([{ code: 'a' }, { code: 'b' }]);

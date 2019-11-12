@@ -5,9 +5,14 @@ import {
   getSort,
   getAssetsList,
   getFilteringCategories,
-  getLanguage,
   getPaginationOptions,
+  condenseAssetInfo,
+  removePixelWord,
 } from 'state/assets/selectors';
+import { ASSET_RESPONSE } from 'testutils/mocks/assets';
+
+const a = { id: 'a', name: 'yo' };
+const b = { id: 'b', name: 'mama' };
 
 const TEST_STATE = {
   apps: {
@@ -15,6 +20,7 @@ const TEST_STATE = {
       assets: {
         sort: {},
         assets: ['a', 'b'],
+        assetsMap: { a, b },
         language: 'en',
         filteringCategories: [],
         activeFilters: [],
@@ -30,6 +36,16 @@ const TEST_STATE = {
     domain: 'https://localhost:8080/',
   },
 };
+
+it('verify condense function', () => {
+  const { metadata } = ASSET_RESPONSE;
+  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
+  const res = condenseAssetInfo(ASSET_RESPONSE);
+  expect(res.versions[0].dimensions).toEqual(dimension);
+  expect(res.metadata.dimension).toEqual(dimension);
+  expect(res.versions[0].sizetype).toEqual('orig');
+  expect(res.metadata.filename).toEqual('a-ping-d0.png');
+});
 
 
 it('verify getActiveFilters selector', () => {
@@ -53,15 +69,11 @@ it('verify getSort selector', () => {
 });
 it('verify getAssetsList selector', () => {
   const assetsList = getAssetsList(TEST_STATE);
-  expect(assetsList).toEqual(['a', 'b']);
+  expect(assetsList).toEqual([a, b]);
 });
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
   expect(filteringCategories).toEqual([]);
-});
-it('verify getLanguage selector', () => {
-  const language = getLanguage(TEST_STATE);
-  expect(language).toEqual('en');
 });
 it('verify getPaginationOptions selector', () => {
   const paginationOptions = getPaginationOptions(TEST_STATE);
