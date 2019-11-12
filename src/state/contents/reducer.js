@@ -34,8 +34,8 @@ const defaultState = {
   accessChecked: '',
   authorChecked: '',
   selectedRows: [],
-  currentAuthorShow: 'allContents',
-  currentStatusShow: 'toApprove',
+  currentAuthorShow: 'all',
+  currentStatusShow: 'ready',
   currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeDescription', 'created', 'onLine', 'status', 'actions'],
 };
 

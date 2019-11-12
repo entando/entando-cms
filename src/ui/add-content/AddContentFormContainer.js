@@ -35,15 +35,15 @@ import {
 const publishContentMsgs = defineMessages({
   published: {
     id: 'cms.contents.published',
-    defaultMessage: '{name} published.',
+    defaultMessage: 'Published.',
   },
   unpublished: {
     id: 'cms.contents.unpublished',
-    defaultMessage: '{name} unpublished.',
+    defaultMessage: 'Unpublished.',
   },
   saved: {
     id: 'cms.contents.saved',
-    defaultMessage: '{name} saved.',
+    defaultMessage: 'Saved.',
   },
 });
 

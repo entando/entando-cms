@@ -33,11 +33,15 @@ import { CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
 const publishContentMsgs = defineMessages({
   published: {
     id: 'cms.contents.published',
-    defaultMessage: '{name} published.',
+    defaultMessage: 'Published.',
   },
   unpublished: {
     id: 'cms.contents.unpublished',
-    defaultMessage: '{name} unpublished.',
+    defaultMessage: 'Unpublished.',
+  },
+  saved: {
+    id: 'cms.contents.saved',
+    defaultMessage: 'Saved.',
   },
 });
 
@@ -58,7 +62,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onDidMount: (fetchContentParams) => {
     dispatch(fetchContent(fetchContentParams));
-    dispatch(fetchGroups());
+    dispatch(fetchGroups({ page: 1, pageSize: 100 }));
     dispatch(fetchCategoryTree());
   },
   onWillUnmount: () => dispatch(clearEditContentForm()),

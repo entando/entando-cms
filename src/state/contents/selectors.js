@@ -27,6 +27,16 @@ export const getStatusChecked = createSelector(
   contents => contents.statusChecked,
 );
 
+export const getContentType = createSelector(
+  getContentsState,
+  contents => contents.contentType,
+);
+
+export const getGroup = createSelector(
+  getContentsState,
+  contents => contents.group,
+);
+
 export const getAccessChecked = createSelector(
   getContentsState,
   contents => contents.accessChecked,

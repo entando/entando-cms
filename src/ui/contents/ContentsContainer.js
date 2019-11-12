@@ -2,9 +2,10 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { routeConverter } from '@entando/utils';
+import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
-  fetchContents, setQuickFilter, checkStatus, checkAccess, checkAuthor,
-  setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow,
+  setQuickFilter, checkStatus, checkAccess, checkAuthor, sendCloneContent,
+  setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow, fetchContentsPaged,
   setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -23,6 +24,7 @@ import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
 import { getGroups } from 'state/edit-content/selectors';
 import { getLocale } from 'state/locale/selectors';
+import { getUsername } from '@entando/apimanager';
 import { DELETE_CONTENT_MODAL_ID } from 'ui/contents/DeleteContentModal';
 import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
 import { JOIN_CATEGORIES_MODAL_ID } from 'ui/contents/JoinCategoriesModal';
@@ -53,23 +55,38 @@ export const mapStateToProps = (state) => {
     pageSize,
     sortingColumns: getSortingColumns(state),
     selectedRows: getSelectedRows(state),
+    currentUsername: getUsername(state),
   });
 };
 
-export const mapDispatchToProps = (dispatch, { history }) => ({
-  onDidMount: (page = { page: 1, pageSize: 10 }, params) => {
-    dispatch(fetchContents(page, params));
+export const mapDispatchToProps = (dispatch, { intl, history }) => ({
+  onDidMount: () => {
+    dispatch(fetchContentsPaged());
     dispatch(fetchCategoryTree());
-    dispatch(fetchGroups());
+    dispatch(fetchGroups({ page: 1, pageSize: 100 }));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 100 }));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
-  onFilteredSearch: (page, params) => dispatch(fetchContents(page, params)),
+  onFilteredSearch: (pagination, fetchParams) => dispatch(
+    fetchContentsPaged(fetchParams, pagination),
+  ),
   onCheckStatus: status => dispatch(checkStatus(status)),
   onCheckAccess: access => dispatch(checkAccess(access)),
   onCheckAuthor: author => dispatch(checkAuthor(author)),
-  onSetCurrentAuthorShow: author => dispatch(setCurrentAuthorShow(author)),
-  onSetCurrentStatusShow: status => dispatch(setCurrentStatusShow(status)),
+  onSetCurrentAuthorShow: (author, status) => {
+    dispatch(setCurrentAuthorShow(author));
+    const statusParams = `?filters[0].attribute=status&filters[0].value=${status}`;
+    const authorParams = `${author === 'all' ? '' : `&filters[1].attribute=firstEditor&filters[1].value=${author}`}`;
+    const fetchParams = `${statusParams}${authorParams}`;
+    dispatch(fetchContentsPaged(fetchParams));
+  },
+  onSetCurrentStatusShow: (status, author) => {
+    dispatch(setCurrentStatusShow(status));
+    const statusParams = `?filters[0].attribute=status&filters[0].value=${status}`;
+    const authorParams = `${author === 'all' ? '' : `&filters[1].attribute=firstEditor&filters[1].value=${author}`}`;
+    const fetchParams = `${statusParams}${authorParams}`;
+    dispatch(fetchContentsPaged(fetchParams));
+  },
   onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetGroup: group => dispatch(setGroup(group)),
@@ -101,6 +118,24 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(resetJoinContentCategories());
     dispatch(setVisibleModal(JOIN_CATEGORIES_MODAL_ID));
     dispatch(setInfo({ contents }));
+  },
+  onClickClone: (content) => {
+    const cloneContent = content;
+    delete cloneContent.id;
+    dispatch(setWorkMode(WORK_MODE_EDIT));
+    dispatch(sendCloneContent(cloneContent)).then((res) => {
+      if (res) {
+        dispatch(
+          addToast(
+            intl.formatMessage({ id: 'cms.contents.cloned', defaultMessage: 'Cloned' }),
+            TOAST_SUCCESS,
+          ),
+        );
+        history.push(
+          routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: res[0].id }),
+        );
+      }
+    });
   },
 });
 

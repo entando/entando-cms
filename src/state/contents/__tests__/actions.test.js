@@ -12,7 +12,7 @@ import {
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
   setCurrentColumnsShow, selectRow, selectAllRows, fetchContents,
   sendDeleteContent, sendPublishContent, setJoinContentCategory,
-  resetJoinContentCategories, sendUpdateContents,
+  resetJoinContentCategories, sendUpdateContents, fetchContentsPaged,
 } from 'state/contents/actions';
 import {
   SET_QUICK_FILTER, SET_CONTENT_TYPE, SET_GROUP,
@@ -169,7 +169,20 @@ describe('state/contents/actions', () => {
     it('when deleting content it fires all the appropriate actions', (done) => {
       deleteContent.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
       store = mockStore({
-        apps: { cms: { contents: { contents: [] } } },
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              currentQuickFilter: { id: 'id', value: 'test' },
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
@@ -185,7 +198,16 @@ describe('state/contents/actions', () => {
     it('when deleting content it reports errors succesfully', (done) => {
       deleteContent.mockImplementationOnce(mockApi({ errors: true }));
       store = mockStore({
-        contents: { contents: [] },
+        contents: {
+          contents: [],
+          currentQuickFilter: { id: 'id', value: 'test' },
+          sortingColumns: {
+            created: {
+              direction: 'ASC',
+              position: 0,
+            },
+          },
+        },
       });
       store.dispatch(sendDeleteContent('NEW1')).then(() => {
         const actions = store.getActions().map(action => action.type);
@@ -201,7 +223,20 @@ describe('state/contents/actions', () => {
     it('when publishing/unpublishing content it fires all the appropriate actions', (done) => {
       publishContent.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
       store = mockStore({
-        apps: { cms: { contents: { contents: [] } } },
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              currentQuickFilter: { id: 'id', value: 'test' },
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
@@ -229,11 +264,24 @@ describe('state/contents/actions', () => {
       });
     });
   });
-  describe('sentUpdateContents()', () => {
+  describe('sendUpdateContents()', () => {
     it('when updating batch of contents it fires all the appropriate actions', (done) => {
       updateContents.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
       store = mockStore({
-        apps: { cms: { contents: { contents: [] } } },
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              currentQuickFilter: { id: 'id', value: 'test' },
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
@@ -246,10 +294,111 @@ describe('state/contents/actions', () => {
         })
         .catch(done.fail);
     });
+
+    it('when updating batch of contents it fires all the appropriate actions', (done) => {
+      updateContents.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+              currentQuickFilter: { id: 'id', value: '' },
+              filteringCategories: ['a', 'b'],
+              contentType: 'OLD',
+              group: 'free',
+              statusChecked: 'draft',
+              accessChecked: 'free',
+              authorChecked: 'admin',
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendUpdateContents([{ a: 1 }]))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('when updating batch of contents it fires all the appropriate actions', (done) => {
+      updateContents.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+              currentQuickFilter: { id: 'id', value: '' },
+              filteringCategories: ['a', 'b'],
+              currentStatusShow: 'draft',
+              currentAuthorShow: 'admin',
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendUpdateContents([{ a: 1 }]))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('when updating batch of contents it fires all the appropriate actions', (done) => {
+      updateContents.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+              accessChecked: 'administrators',
+              currentQuickFilter: { id: 'id', value: '' },
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(sendUpdateContents([{ a: 1 }]))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+
     it('when updating batch of contents it reports errors succesfully', (done) => {
       updateContents.mockImplementationOnce(mockApi({ errors: true }));
       store = mockStore({
-        contents: { contents: [] },
+        contents: { contents: [], currentQuickFilter: { id: 'id', value: 'test' } },
       });
       store.dispatch(sendUpdateContents([{ a: 1 }])).then(() => {
         const actions = store.getActions().map(action => action.type);
@@ -259,6 +408,39 @@ describe('state/contents/actions', () => {
         expect(actions.includes(ADD_TOAST)).toBe(true);
         done();
       });
+    });
+
+    it('when updating batch of contents it fires all the appropriate actions', (done) => {
+      updateContents.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              accessChecked: 'administrators',
+              currentQuickFilter: { id: 'id', value: '' },
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(fetchContentsPaged('?test=a'))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(4);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          expect(actionTypes.includes(SET_CONTENTS)).toBe(true);
+          expect(actionTypes.includes(SET_PAGE)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
     });
   });
 });

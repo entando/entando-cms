@@ -15,12 +15,11 @@ export const JOIN_CATEGORIES_MODAL_ID = 'JoinCategoriesModal';
 
 const JoinCategoriesModal = ({
   onConfirmJoinCategories, info: { contents }, language, joiningCategories,
-  currentUser,
 }) => {
   const modifiedCategories = joiningCategories.map(c => c.code);
   const modifiedContents = contents && contents.map(
     content => Object.assign({},
-      { categories: modifiedCategories, id: content.id, lastEditor: currentUser }),
+      { categories: modifiedCategories, id: content.id }),
   );
   const buttons = [
     <Button
@@ -81,7 +80,6 @@ const JoinCategoriesModal = ({
 
 JoinCategoriesModal.propTypes = {
   onConfirmJoinCategories: PropTypes.func.isRequired,
-  currentUser: PropTypes.string.isRequired,
   info: PropTypes.shape({}),
   language: PropTypes.string.isRequired,
   joiningCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

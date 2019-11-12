@@ -26,30 +26,24 @@ class ContentsTable extends Component {
   }
 
   onPerPageSelect(eventKey) {
-    const { sortingColumns, onFilteredSearch } = this.props;
-    const columnKey = Object.keys(sortingColumns)[0];
-    const sortDirection = sortingColumns[columnKey].direction;
+    const { onFilteredSearch } = this.props;
     const newPagination = {
       page: 1,
       pageSize: eventKey,
     };
-    const sortParams = `?sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
-    onFilteredSearch(newPagination, sortParams);
+    onFilteredSearch(newPagination);
   }
 
   onPageChange(newPage) {
     const {
-      lastPage, pageSize, onFilteredSearch, sortingColumns,
+      lastPage, pageSize, onFilteredSearch,
     } = this.props;
     if (newPage < 1 || newPage > lastPage) return 0;
-    const columnKey = Object.keys(sortingColumns)[0];
-    const sortDirection = sortingColumns[columnKey].direction;
-    const sortParams = `?sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
     const newPagination = {
       page: newPage,
       pageSize,
     };
-    return onFilteredSearch(newPagination, sortParams);
+    return onFilteredSearch(newPagination);
   }
 
   onSort(e, column, sortDirection) {
@@ -87,7 +81,7 @@ class ContentsTable extends Component {
   showingColumns() {
     const {
       activeColumns, availableColumns, intl, onEditContent, onClickDelete,
-      onClickPublish,
+      onClickPublish, onClickClone,
     } = this.props;
     const currentActiveColumns = ['selectAll', ...activeColumns];
     const allColumns = [{ code: 'selectAll' }, ...availableColumns];
@@ -112,9 +106,11 @@ class ContentsTable extends Component {
             break;
           case 'onLine':
             rowCellFormatter = (onLine, { rowData }) => {
-              // eslint-disable-next-line no-unused-vars
               const { status } = rowData;
-              const statusColor = onLine ? 'published' : 'unpublished';
+              let statusColor = '';
+              if (status === 'PUBLIC') statusColor = 'published';
+              else if (status === 'READY') statusColor = 'review';
+              else statusColor = 'unpublished';
               return (
                 <td className="text-center">
                   <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />
@@ -143,6 +139,9 @@ class ContentsTable extends Component {
                     </MenuItem>
                     <MenuItem onClick={() => onClickPublish([rowData], true)}>
                       <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                    </MenuItem>
+                    <MenuItem onClick={() => onClickClone(rowData)}>
+                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
                     </MenuItem>
                     <MenuItem onClick={() => onClickPublish([rowData], false)}>
                       <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
@@ -264,6 +263,7 @@ ContentsTable.propTypes = {
   onEditContent: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
+  onClickClone: PropTypes.func.isRequired,
 };
 
 ContentsTable.defaultProps = {

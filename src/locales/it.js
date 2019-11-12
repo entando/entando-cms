@@ -247,6 +247,7 @@ export default {
     'cms.contents.joinCategoriesTip': 'L\'azione cambierà la versione bozza dei contenuti selezionati, non la versione online. Per visualizzare le modifiche nella versione online, è necessario approvare le modifiche.',
     'cms.contents.seeOnlineVersion': 'Vedi Versione Online',
     'cms.contents.clone': 'Clone',
+    'cms.contents.cloned': 'Clonato',
     'cms.contents.publish': 'Pubblicare',
     'cms.contents.unpublish': 'Non Pubblicato',
     'cms.contents.details': 'Dettagli',

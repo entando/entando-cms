@@ -89,7 +89,7 @@ class Contents extends Component {
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
-      onClickAddContent, onClickJoinCategories,
+      onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -130,6 +130,7 @@ class Contents extends Component {
           authorChecked={authorChecked}
           onSetContentType={onSetContentType}
           onSetGroup={onSetGroup}
+          currentUsername={currentUsername}
         />
         <div className="Contents__body">
           <ContentsTabs
@@ -145,6 +146,7 @@ class Contents extends Component {
             onSetCurrentStatusShow={onSetCurrentStatusShow}
             onSetCurrentColumnsShow={onSetCurrentColumnsShow}
             onClickAddContent={onClickAddContent}
+            currentUsername={currentUsername}
           />
           {renderSelectedRows}
           <div>
@@ -167,6 +169,7 @@ class Contents extends Component {
                 onEditContent={onEditContent}
                 onClickDelete={onClickDelete}
                 onClickPublish={onClickPublish}
+                onClickClone={onClickClone}
               />
             </Spinner>
           </div>
@@ -216,6 +219,8 @@ Contents.propTypes = {
   onClickPublish: PropTypes.func.isRequired,
   onClickAddContent: PropTypes.func.isRequired,
   onClickJoinCategories: PropTypes.func.isRequired,
+  currentUsername: PropTypes.string.isRequired,
+  onClickClone: PropTypes.func.isRequired,
 };
 
 Contents.defaultProps = {

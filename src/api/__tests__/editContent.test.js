@@ -18,14 +18,14 @@ jest.mock('@entando/apimanager', () => ({
 describe('api/editContent', () => {
   describe('groups', () => {
     it('returns a promise', () => {
-      const response = getGroups();
+      const response = getGroups('', { page: 1, pageSize: 10 });
       expect(makeRequest).toHaveBeenCalledWith({
         uri: '/api/groups',
         method: 'GET',
         mockResponse: GET_GROUPS_RESPONSE_OK,
         contentType: 'application/json',
         useAuthentication: true,
-      });
+      }, { page: 1, pageSize: 10 });
       expect(response).toBeInstanceOf(Promise);
     });
   });

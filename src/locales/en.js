@@ -299,6 +299,7 @@ export default {
     'cms.contents.joinCategory': 'Join Category',
     'cms.contents.seeOnlineVersion': 'See Online Version',
     'cms.contents.clone': 'Clone',
+    'cms.contents.cloned': 'Cloned',
     'cms.contents.publish': 'Publish',
     'cms.contents.unpublish': 'Unpublish',
     'cms.contents.details': 'Details',
