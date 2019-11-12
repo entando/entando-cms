@@ -52,7 +52,7 @@ const attributeShape = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.number,
+    PropTypes.bool,
   ]),
   values: PropTypes.object,
   elements: PropTypes.array,
