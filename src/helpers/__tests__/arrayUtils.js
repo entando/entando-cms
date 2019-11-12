@@ -1,4 +1,4 @@
-import { swapItems } from 'helpers/arrayUtils';
+import { swapItems, generateNumArray } from 'helpers/arrayUtils';
 
 describe('helpers/arrayUtils', () => {
   describe('swapItems', () => {
@@ -20,6 +20,13 @@ describe('helpers/arrayUtils', () => {
     it('another movedown', () => {
       const toswap = swapItems([1, 2, 3], 2);
       expect(toswap[2]).toEqual(3);
+    });
+  });
+
+  describe('generateNumArray', () => {
+    it('should return [0, 1, 2] when maxVal is 3', () => {
+      const maxVal = 3;
+      expect(generateNumArray(maxVal)).toEqual([0, 1, 2]);
     });
   });
 });
