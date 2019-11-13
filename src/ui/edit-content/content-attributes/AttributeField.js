@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray } from 'redux-form';
-import { isNumber } from '@entando/utils';
+import { required, isNumber } from '@entando/utils';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
@@ -84,6 +84,7 @@ const AttributeField = ({
   );
 
   const validate = getAttrValidators({ ...validationRules, mandatory });
+  if (mandatory) validate.push(required);
 
   let fieldName = name;
   let FieldComp = Field;
