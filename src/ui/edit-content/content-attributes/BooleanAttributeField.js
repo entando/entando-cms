@@ -19,16 +19,13 @@ const BooleanAttributeField = ({
   ];
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
-  const { value: actualValue } = inputValue;
 
   const attrInput = {
+    ...input,
     name,
-    value: actualValue || 'false',
+    value: inputValue || 'false',
     onChange: (val) => {
-      inputOnChange({
-        ...inputValue,
-        value: val,
-      });
+      inputOnChange(val);
     },
   };
 

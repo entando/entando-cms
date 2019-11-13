@@ -73,7 +73,7 @@ RenderDatePickerInput.propTypes = {
   }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.bool,
+    error: PropTypes.shape({}),
   }),
   name: PropTypes.string,
   placeholder: PropTypes.string,

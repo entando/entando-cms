@@ -17,16 +17,13 @@ const DateAttributeField = ({
   const dateFormat = 'DD/MM/YYYY';
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
-  const { value: actualValue } = inputValue;
 
   const attrInput = {
+    ...input,
     name,
-    value: actualValue || moment().format(dateFormat),
+    value: inputValue || moment().format(dateFormat),
     onChange: (val) => {
-      inputOnChange({
-        ...inputValue,
-        value: val,
-      });
+      inputOnChange(val);
     },
   };
 

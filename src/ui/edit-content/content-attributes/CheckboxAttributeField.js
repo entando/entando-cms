@@ -19,16 +19,13 @@ const CheckboxAttributeField = ({
   };
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
-  const { value: actualValue } = inputValue;
 
   const attrInput = {
+    ...input,
     name,
-    value: actualValue || switchVals.falseValue,
+    value: inputValue || switchVals.falseValue,
     onChange: (val) => {
-      inputOnChange({
-        ...inputValue,
-        value: val,
-      });
+      inputOnChange(val);
     },
   };
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray } from 'redux-form';
+import { isNumber } from '@entando/utils';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
+import { getAttrValidations } from 'helpers/validation';
 import {
   TYPE_BOOLEAN,
   TYPE_CHECKBOX,
@@ -65,6 +67,7 @@ const AttributeField = ({
     mandatory,
     listFilter,
     indexable,
+    validationRules,
   } = attribute;
 
   const helpTextArr = [];
@@ -79,6 +82,8 @@ const AttributeField = ({
       helpText={helpText}
     />
   );
+
+  const validate = getAttrValidations({ ...validationRules, mandatory });
 
   let fieldName = name;
   let FieldComp = Field;
@@ -120,6 +125,7 @@ const AttributeField = ({
       AttributeFieldComp = HypertextAttributeField;
       break;
     case TYPE_NUMBER:
+      validate.push(isNumber);
       AttributeFieldComp = NumberAttributeField;
       break;
     case TYPE_THREESTATE:
@@ -154,6 +160,7 @@ const AttributeField = ({
       component={AttributeFieldComp}
       label={fieldLabel}
       hasLabel={hasLabel}
+      {...(FieldComp !== FieldArray ? { validate } : {})}
     />
   );
 };

@@ -14,16 +14,13 @@ const TextAttributeField = ({
   ...rest
 }) => {
   const { name, value: inputValue, onChange: inputOnChange } = input;
-  const { value: actualValue } = inputValue;
 
   const attrInput = {
+    ...input,
     name,
-    value: actualValue || '',
+    value: inputValue || '',
     onChange: (event) => {
-      inputOnChange({
-        ...inputValue,
-        value: event.target.value,
-      });
+      inputOnChange(event.target.value);
     },
   };
 

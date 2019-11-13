@@ -6,6 +6,7 @@ import {
 } from 'redux-form';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
+import { TYPE_TIMESTAMP } from 'state/content-type/const';
 
 const AttributeFields = ({ attributes, fields }) => {
   if (fields.length < attributes.length) {
@@ -13,15 +14,14 @@ const AttributeFields = ({ attributes, fields }) => {
     // as it cannot be set directly from props
     attributes.forEach((attr) => {
       const {
-        value, values, elements, compositeelements, listelements,
+        value, elements, compositeelements, type,
       } = attr;
-      fields.push({
-        value,
-        values,
-        elements,
-        compositeelements,
-        listelements,
-      });
+      fields.push(
+        (type === TYPE_TIMESTAMP && {})
+        || (elements && { elements })
+        || (compositeelements && { compositeelements })
+        || value,
+      );
     });
   }
 
