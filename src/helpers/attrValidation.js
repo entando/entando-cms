@@ -38,7 +38,10 @@ export const rangeStartStringAttribute = () => {};
 
 export const regex = () => {};
 
-export const mandatory = required;
+export const mandatory = (value, values, props) => {
+  console.log(props);
+  return required(value);
+};
 
 export const attrValidationsObj = {
   equalDate,
@@ -65,8 +68,8 @@ export const attrValidationsObj = {
   mandatory,
 };
 
-export const getAttrValidations = (validationRules) => {
-  const validations = [];
+export const getAttrValidators = (validationRules) => {
+  const validators = [];
 
   Object.keys(validationRules).forEach((key) => {
     if (
@@ -74,9 +77,9 @@ export const getAttrValidations = (validationRules) => {
       && validationRules[key] !== false
       && attrValidationsObj[key]
     ) {
-      validations.push(attrValidationsObj[key]);
+      validators.push(attrValidationsObj[key]);
     }
   });
 
-  return validations;
+  return validators;
 };

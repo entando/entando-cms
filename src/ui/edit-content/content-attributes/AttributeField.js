@@ -5,7 +5,7 @@ import { isNumber } from '@entando/utils';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
-import { getAttrValidations } from 'helpers/validation';
+import { getAttrValidators } from 'helpers/attrValidation';
 import {
   TYPE_BOOLEAN,
   TYPE_CHECKBOX,
@@ -83,7 +83,7 @@ const AttributeField = ({
     />
   );
 
-  const validate = getAttrValidations({ ...validationRules, mandatory });
+  const validate = getAttrValidators({ ...validationRules, mandatory });
 
   let fieldName = name;
   let FieldComp = Field;
