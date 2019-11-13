@@ -1,3 +1,4 @@
+import { compact } from 'lodash';
 import {
   addErrors,
   addToast,
@@ -5,22 +6,25 @@ import {
   clearErrors,
 } from '@entando/messages';
 import {
+  convertToQueryString,
+  FILTER_OPERATORS,
+  SORT_DIRECTIONS,
+} from '@entando/utils';
+import {
   SET_ASSETS,
   SET_ASSET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
-  APPLY_SORT,
   SET_ASSET_SYNC,
+  SET_LIST_FILTER_PARAMS,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
-import { getPagination } from 'state/pagination/selectors';
 import {
-  getFilteringCategories,
   getFileType,
-  getSort,
+  getListFilterParams,
 } from 'state/assets/selectors';
 import { getAssets, editAsset, deleteAsset } from 'api/assets';
 
@@ -59,14 +63,16 @@ export const setAssetChanged = asset => ({
   payload: asset,
 });
 
-export const applySort = sortName => ({
-  type: APPLY_SORT,
-  payload: sortName,
+export const setListFilterParams = params => ({
+  type: SET_LIST_FILTER_PARAMS,
+  payload: params,
 });
 
-export const fetchAssets = params => dispatch => new Promise((resolve) => {
+export const pageDefault = { page: 1, pageSize: 10 };
+
+export const fetchAssets = (page, params) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('assets'));
-  getAssets(params)
+  getAssets(page, params)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
@@ -82,22 +88,75 @@ export const fetchAssets = params => dispatch => new Promise((resolve) => {
     .catch(() => {});
 });
 
-export const fetchAssetsPaged = () => (dispatch, getState) => {
+export const fetchAssetsPaged = (
+  paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
   const state = getState();
-  const { pageSize } = getPagination(state);
-  const sort = getSort(state);
-  const filteringCategories = getFilteringCategories(state);
+  // const filteringCategories = getFilteringCategories(state);
   const fileType = getFileType(state);
-  const sortParams = sort && sort.name && sort.direction
+  let filters = getListFilterParams(state);
+
+  /* const sortParams = sort && sort.name && sort.direction
     ? `&sort=${sort.name}&direction=${sort.direction}`
     : '';
   const filteringParams = filteringCategories.map(
     (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
   ).join('');
-  const typeParams = fileType === 'all' ? '' : `&type=${fileType}`;
-  const pageParams = `&page=${1}&pageSize=${pageSize}`;
-  const url = `?${sortParams}${filteringParams}${typeParams}${pageParams}`;
-  return dispatch(fetchAssets(url));
+  */
+  const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
+  if (Object.keys(filters).length === 0) {
+    filters = { formValues: {}, operators: {} };
+  }
+  filters.formValues.description = 'hot';
+  filters.operators.description = FILTER_OPERATORS.LIKE;
+  const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&');
+  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
+};
+
+export const makeFilter = (value, op = FILTER_OPERATORS.EQUAL) => ({ value, op });
+
+export const applyAssetsFilter = (
+  filters,
+  paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
+  const { sorting } = getListFilterParams(getState());
+  const filter = Object.entries(filters).reduce((curr, [key, entry]) => ({
+    formValues: {
+      ...curr.formValues,
+      [key]: entry.value,
+    },
+    operators: {
+      ...curr.operators,
+      [key]: entry.op,
+    },
+    sorting: curr.sorting,
+  }), { formValues: {}, operators: {}, sorting });
+
+  dispatch(setListFilterParams(filter));
+  return dispatch(fetchAssetsPaged(paginationMetadata));
+};
+
+export const sortAssetsList = (
+  attribute,
+  direction = SORT_DIRECTIONS.ASCENDANT,
+  paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
+  const newSorting = { attribute, direction };
+  const { sorting, ...others } = getListFilterParams(getState());
+
+  if (sorting && sorting.attribute === attribute) {
+    newSorting.direction = sorting.direction === 'ASC' ? 'DESC' : 'ASC';
+  } else {
+    newSorting.direction = 'ASC';
+  }
+
+  const filter = {
+    ...others,
+    sorting: newSorting,
+  };
+
+  dispatch(setListFilterParams(filter));
+  return dispatch(fetchAssetsPaged(paginationMetadata));
 };
 
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
