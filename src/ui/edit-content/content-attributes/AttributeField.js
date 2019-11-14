@@ -54,7 +54,6 @@ import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttribu
 import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
 
-// TODO: validation
 const AttributeField = ({
   name,
   attribute,

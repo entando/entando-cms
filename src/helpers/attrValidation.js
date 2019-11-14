@@ -16,8 +16,6 @@ export const equalDate = date => value => (
     ) : undefined
 );
 
-export const equalDateAttribute = () => {};
-
 export const equalNumber = num => value => (
   number(value) && parseFloat(value) !== num
     ? (
@@ -28,8 +26,6 @@ export const equalNumber = num => value => (
       />
     ) : undefined
 );
-
-export const equalNumberAttribute = () => {};
 
 export const equalString = str => value => (
   value !== str
@@ -42,8 +38,6 @@ export const equalString = str => value => (
     ) : undefined
 );
 
-export const equalStringAttribute = () => {};
-
 export const rangeEndDate = date => value => (
   value > date
     ? (
@@ -54,8 +48,6 @@ export const rangeEndDate = date => value => (
       />
     ) : undefined
 );
-
-export const rangeEndDateAttribute = () => {};
 
 export const rangeEndNumber = num => value => (
   number(value) && parseFloat(value) > num
@@ -68,8 +60,6 @@ export const rangeEndNumber = num => value => (
     ) : undefined
 );
 
-export const rangeEndNumberAttribute = () => {};
-
 export const rangeEndString = str => value => (
   value > str
     ? (
@@ -80,8 +70,6 @@ export const rangeEndString = str => value => (
       />
     ) : undefined
 );
-
-export const rangeEndStringAttribute = () => {};
 
 export const rangeStartDate = date => value => (
   value < date
@@ -94,8 +82,6 @@ export const rangeStartDate = date => value => (
     ) : undefined
 );
 
-export const rangeStartDateAttribute = () => {};
-
 export const rangeStartNumber = num => value => (
   number(value) && parseFloat(value) < num
     ? (
@@ -107,8 +93,6 @@ export const rangeStartNumber = num => value => (
     ) : undefined
 );
 
-export const rangeStartNumberAttribute = () => {};
-
 export const rangeStartString = str => value => (
   value < str
     ? (
@@ -119,8 +103,6 @@ export const rangeStartString = str => value => (
       />
     ) : undefined
 );
-
-export const rangeStartStringAttribute = () => {};
 
 export const regex = text => (value) => {
   const re = new RegExp(text);
@@ -138,25 +120,16 @@ export const regex = text => (value) => {
 // Otherwise, it will cause an infinite re-rendering of a redux-form Field
 export const attrValidatorsObj = {
   equalDate: memoize(equalDate),
-  equalDateAttribute: memoize(equalDateAttribute),
   equalNumber: memoize(equalNumber),
-  equalNumberAttribute: memoize(equalNumberAttribute),
   equalString: memoize(equalString),
-  equalStringAttribute: memoize(equalStringAttribute),
   maxLength: memoize(maxLength),
   minLength: memoize(minLength),
   rangeEndDate: memoize(rangeEndDate),
-  rangeEndDateAttribute: memoize(rangeEndDateAttribute),
   rangeEndNumber: memoize(rangeEndNumber),
-  rangeEndNumberAttribute: memoize(rangeEndNumberAttribute),
   rangeEndString: memoize(rangeEndString),
-  rangeEndStringAttribute: memoize(rangeEndStringAttribute),
   rangeStartDate: memoize(rangeStartDate),
-  rangeStartDateAttribute: memoize(rangeStartDateAttribute),
   rangeStartNumber: memoize(rangeStartNumber),
-  rangeStartNumberAttribute: memoize(rangeStartNumberAttribute),
   rangeStartString: memoize(rangeStartString),
-  rangeStartStringAttribute: memoize(rangeStartStringAttribute),
   regex: memoize(regex),
 };
 
