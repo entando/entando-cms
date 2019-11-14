@@ -53,10 +53,11 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
     it(`should render ${attrCompName} when type is ${attrType}`, () => {
       const attribute = {
         type: attrType,
-        code: 'Test code',
+        code: 'Test attribute code',
       };
       const wrapper = shallow(<AttributeField attribute={attribute} />);
-      expect(wrapper.find(attrCompName)).toHaveLength(1);
+
+      expect(wrapper.prop('component').name).toEqual(attrCompName);
     });
   });
 });
