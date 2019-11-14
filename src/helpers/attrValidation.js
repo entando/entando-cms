@@ -31,31 +31,94 @@ export const equalNumber = num => value => (
 
 export const equalNumberAttribute = () => {};
 
-export const equalString = () => {};
+export const equalString = str => value => (
+  value !== str
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeEqualString"
+        values={{ str: <b>{str}</b> }}
+        defaultMessage="Must be equal to {str}"
+      />
+    ) : undefined
+);
 
 export const equalStringAttribute = () => {};
 
-export const rangeEndDate = () => {};
+export const rangeEndDate = date => value => (
+  value > date
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeEndDate"
+        values={{ date: <b>{date}</b> }}
+        defaultMessage="Must be equal to or before {date}"
+      />
+    ) : undefined
+);
 
 export const rangeEndDateAttribute = () => {};
 
-export const rangeEndNumber = () => {};
+export const rangeEndNumber = num => value => (
+  number(value) && parseFloat(value) > num
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeEndNumber"
+        values={{ num: <b>{num}</b> }}
+        defaultMessage="Must be equal to or less than {num}"
+      />
+    ) : undefined
+);
 
 export const rangeEndNumberAttribute = () => {};
 
-export const rangeEndString = () => {};
+export const rangeEndString = str => value => (
+  value > str
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeEndString"
+        values={{ str: <b>{str}</b> }}
+        defaultMessage="Must be before {str}"
+      />
+    ) : undefined
+);
 
 export const rangeEndStringAttribute = () => {};
 
-export const rangeStartDate = () => {};
+export const rangeStartDate = date => value => (
+  value < date
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeStartDate"
+        values={{ date: <b>{date}</b> }}
+        defaultMessage="Must be after {date}"
+      />
+    ) : undefined
+);
 
 export const rangeStartDateAttribute = () => {};
 
-export const rangeStartNumber = () => {};
+export const rangeStartNumber = num => value => (
+  number(value) && parseFloat(value) < num
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeStartNumber"
+        values={{ num: <b>{num}</b> }}
+        defaultMessage="Must be equal to or more than {num}"
+      />
+    ) : undefined
+);
 
 export const rangeStartNumberAttribute = () => {};
 
-export const rangeStartString = () => {};
+export const rangeStartString = str => value => (
+  value < str
+    ? (
+      <FormattedMessage
+        id="validateForm.rangeStartString"
+        values={{ str: <b>{str}</b> }}
+        defaultMessage="Must be after {str}"
+      />
+    ) : undefined
+);
 
 export const rangeStartStringAttribute = () => {};
 
