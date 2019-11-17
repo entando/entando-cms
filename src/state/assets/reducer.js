@@ -7,6 +7,7 @@ import {
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
   SET_LIST_FILTER_PARAMS,
+  SET_ASSET_SEARCH_KEYWORD,
 } from 'state/assets/types';
 
 const defaultState = {
@@ -15,6 +16,7 @@ const defaultState = {
   filteringCategories: [],
   activeFilters: [],
   filterParams: {},
+  keyword: '',
   assetsView: 'list',
   fileType: 'image',
   paginationOptions: {
@@ -85,6 +87,12 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         activeFilters: activeFilters.filter(f => f.code !== filter.code),
+      };
+    }
+    case SET_ASSET_SEARCH_KEYWORD: {
+      return {
+        ...state,
+        keyword: action.payload,
       };
     }
     case FILE_TYPE_CHANGE: {

@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage, defineMessages, intlShape, injectIntl,
+  FormattedMessage, defineMessages,
 } from 'react-intl';
 import {
   Spinner,
   Grid,
   Row,
   Col,
-  Button,
-  Icon,
   PaginationRow,
   PAGINATION_VIEW_TYPES,
   Filter,
   Toolbar,
 } from 'patternfly-react';
-import RenderSearchFormInput from 'ui/common/form/RenderSearchFormInput';
+import AssetSearchFormContainer from 'ui/assets/search/AssetSearchFormContainer';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 import AssetsListItem from 'ui/assets/AssetsListItem';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
@@ -74,7 +72,7 @@ const fileTypes = [
   },
 ];
 
-class AssetsListBody extends Component {
+class AssetsList extends Component {
   constructor(props) {
     super(props);
     this.state = { mobile: window.innerWidth < 992 };
@@ -136,7 +134,6 @@ class AssetsListBody extends Component {
   render() {
     const {
       loading,
-      intl,
       assets,
       filteringCategories,
       language,
@@ -204,7 +201,7 @@ class AssetsListBody extends Component {
     const listViewClass = `fa fa-list AssetsList__view-option ${
       assetsView === 'list' ? 'AssetsList__view-option--selected' : ''
     }`;
-    const renderAppliedFilters = activeFilters && (
+    const renderAppliedFilters = activeFilters && !loading && (
       <Toolbar.Results className="AssetsList__toolbar-results">
         <span className="AssetsList__items-count">
           {itemsEnd} <FormattedMessage id="cms.assets.list.of" /> {totalItems}{' '}
@@ -268,6 +265,7 @@ class AssetsListBody extends Component {
         <FormattedMessage id="cms.assets.list.nothingFound" />.
       </div>
     );
+
     let bodyContent = emptyContent;
     if (assets.length > 0) {
       bodyContent = assetsView === 'list' ? tableContent : gridContent;
@@ -297,14 +295,7 @@ class AssetsListBody extends Component {
         </div>
         <Row className="AssetsList__body">
           <Col xs={mobile ? 12 : 2} className="no-padding">
-            <div className="AssetsList__filter-container">
-              <RenderSearchFormInput
-                placeholder={intl.formatMessage(this.messages.filterPlaceholder)}
-              />
-              <Button className="SearchForm__button" type="submit">
-                <Icon name="search" />
-              </Button>
-            </div>
+            <AssetSearchFormContainer />
             <div className="AssetsList__tree-container">
               <CategoryTreeFilterContainer
                 language={language}
@@ -315,19 +306,23 @@ class AssetsListBody extends Component {
                 filterSubject="asset"
               />
             </div>
-            {mobile ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
+            {mobile && !loading ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
           </Col>
           {mobile ? null : (
             <Col xs={10} className="AssetsList__files-container no-padding">
               <div className="AssetsList__filter-info">{renderAppliedFilters}</div>
-              {bodyContent}
+              <Spinner loading={!!loading}>
+                {bodyContent}
+              </Spinner>
             </Col>
           )}
         </Row>
         {mobile ? (
           <Row>
             <Col xs={12} className="AssetsList__files-container--mobile no-padding">
-              {bodyContent}
+              <Spinner loading={!!loading}>
+                {bodyContent}
+              </Spinner>
             </Col>
           </Row>
         ) : null}
@@ -335,8 +330,8 @@ class AssetsListBody extends Component {
     );
     return (
       <div className="AssetsList__wrap">
-        <Spinner loading={!!loading}>
-          {content}
+        {content}
+        {!loading && (
           <div className="AssetsList__footer">
             <Grid>
               <PaginationRow
@@ -356,14 +351,13 @@ class AssetsListBody extends Component {
               />
             </Grid>
           </div>
-        </Spinner>
+        )}
       </div>
     );
   }
 }
 
-AssetsListBody.propTypes = {
-  intl: intlShape.isRequired,
+AssetsList.propTypes = {
   loading: PropTypes.bool,
   assetsView: PropTypes.string.isRequired,
   fileType: PropTypes.string.isRequired,
@@ -393,7 +387,7 @@ AssetsListBody.propTypes = {
   onClickDelete: PropTypes.func.isRequired,
 };
 
-AssetsListBody.defaultProps = {
+AssetsList.defaultProps = {
   loading: false,
   assets: [],
   filteringCategories: [],
@@ -405,4 +399,4 @@ AssetsListBody.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
 };
 
-export default injectIntl(AssetsListBody);
+export default AssetsList;

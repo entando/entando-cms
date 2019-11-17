@@ -281,7 +281,7 @@ export default {
     'cms.assets.list.all': 'Tutti',
     'cms.assets.list.image': 'Immagini',
     'cms.assets.list.file': 'Allegati',
-    'cms.assets.list.filterBy': 'Filtra per',
+    'cms.assets.list.filterBy': 'Search',
     'cms.assets.list.activeFilters': 'Filtri Attivi',
     'cms.assets.list.clearAll': 'Cancella Tutto',
     'cms.assets.list.nothingFound': 'Nessun articolo trovato',

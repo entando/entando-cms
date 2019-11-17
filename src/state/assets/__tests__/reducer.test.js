@@ -7,7 +7,6 @@ import {
   removeActiveFilter,
   changeFileType,
   changeAssetsView,
-  applySort,
 } from 'state/assets/actions';
 
 const ASSETS = [{
@@ -69,19 +68,6 @@ describe('state/assets/reducer', () => {
       it('should correctly change assets view state field', () => {
         newState = reducer(state, changeAssetsView('grid'));
         expect(newState.assetsView).toEqual('grid');
-      });
-      it('should correctly change sorting mechanics', () => {
-        newState = reducer(state, applySort('name'));
-        expect(newState.sort).toEqual({ name: 'name', direction: 'ASC' });
-
-        newState = reducer(newState, applySort('name'));
-        expect(newState.sort).toEqual({ name: 'name', direction: 'DESC' });
-
-        newState = reducer(newState, applySort('name'));
-        expect(newState.sort).toEqual({ name: 'name', direction: 'ASC' });
-
-        newState = reducer(newState, applySort('otherName'));
-        expect(newState.sort).toEqual({ name: 'otherName', direction: 'ASC' });
       });
     });
   });

@@ -8,7 +8,6 @@ import {
   removeActiveFilter,
   changeFileType,
   changeAssetsView,
-  applySort,
   fetchAssets,
   sendPostAssetEdit,
   sendDeleteAsset,
@@ -18,7 +17,6 @@ import {
   SET_ASSET_CATEGORY_FILTER,
   SET_ACTIVE_FILTERS,
   REMOVE_ACTIVE_FILTER,
-  APPLY_SORT,
   ASSETS_VIEW_CHANGE,
   FILE_TYPE_CHANGE,
   SET_ASSET_SYNC,
@@ -37,7 +35,7 @@ const mockStore = configureMockStore(middlewares);
 jest.mock('api/assets', () => ({
   getAssets: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
   editAsset: jest.fn(res => mockApi({ payload: res })()),
-  deleteAsset: jest.fn(mockApi({ payload: [] })()),
+  deleteAsset: jest.fn(id => mockApi({ payload: { id } })()),
 }));
 
 describe('state/assets/actions', () => {
@@ -89,12 +87,6 @@ describe('state/assets/actions', () => {
     const action = changeAssetsView('grid');
     expect(action).toHaveProperty('type', ASSETS_VIEW_CHANGE);
     expect(action.payload).toEqual('grid');
-  });
-
-  it('applySort() should return a well formed action', () => {
-    const action = applySort('name');
-    expect(action).toHaveProperty('type', APPLY_SORT);
-    expect(action.payload).toEqual('name');
   });
 
   describe('handleExpandCategory()', () => {
@@ -167,8 +159,8 @@ describe('state/assets/actions', () => {
     });
   });
 
-  describe('deleteContent()', () => {
-    it('when deleting asset it fires all the appropriate actions', (done) => {
+  describe('deleteAsset()', () => {
+    it('deleting asset', (done) => {
       deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
       store = mockStore({
         apps: {
@@ -184,61 +176,24 @@ describe('state/assets/actions', () => {
         .dispatch(sendDeleteAsset(1))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
-          expect(actionTypes).toHaveLength(1);
-          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          expect(actionTypes).toHaveLength(0);
           done();
         })
         .catch(done.fail);
     });
-    it('when deleting asset it fires all the appropriate actions from different state', (done) => {
-      deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
-      store = mockStore({
-        apps: {
-          cms: {
-            assets: {
-              assets: [], sort: {}, fileType: 'file', filteringCategories: ['news'],
-            },
-          },
-        },
-        pagination: { global: { page: 1, pageSize: 10 } },
-      });
-      store
-        .dispatch(sendDeleteAsset(1))
-        .then(() => {
-          const actionTypes = store.getActions().map(action => action.type);
-          expect(actionTypes).toHaveLength(1);
-          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
-          done();
-        })
-        .catch(done.fail);
-    });
-    it('when deleting asset it fires all the appropriate actions', (done) => {
-      deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
-      store = mockStore({
-        apps: {
-          cms: {
-            assets: {
-              assets: [], sort: { name: 'description', direction: 'DESC' }, fileType: 'all', filteringCategories: ['news'],
-            },
-          },
-        },
-        pagination: { global: { page: 1, pageSize: 10 } },
-      });
-      store
-        .dispatch(sendDeleteAsset(1))
-        .then(() => {
-          const actionTypes = store.getActions().map(action => action.type);
-          expect(actionTypes).toHaveLength(1);
-          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
-          done();
-        })
-        .catch(done.fail);
-    });
+
     it('when deleting asset it reports errors succesfully', (done) => {
-      deleteAsset.mockImplementationOnce(mockApi({ errors: true }));
       store = mockStore({
-        contents: { contents: [] },
+        apps: {
+          cms: {
+            assets: {
+              assets: [], sort: { name: 'description', direction: 'ASC' }, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
       });
+      deleteAsset.mockImplementationOnce(mockApi({ errors: true }));
       store.dispatch(sendDeleteAsset(1)).then(() => {
         const actions = store.getActions().map(action => action.type);
         expect(actions).toHaveLength(3);

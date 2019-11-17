@@ -83,3 +83,8 @@ export const getActiveFilters = createSelector(
   getAssetsState,
   assets => assets.activeFilters,
 );
+
+export const getAssetSearchKeyword = createSelector(
+  getAssetsState,
+  state => state.keyword,
+);

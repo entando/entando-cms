@@ -2,7 +2,6 @@ import {
   getActiveFilters,
   getAssetsView,
   getFileType,
-  getSort,
   getAssetsList,
   getFilteringCategories,
   getPaginationOptions,
@@ -11,8 +10,11 @@ import {
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
-const a = { id: 'a', name: 'yo' };
-const b = { id: 'b', name: 'mama' };
+const groupdo = { code: 'groupdo', name: 'dodo' };
+const groupre = { code: 'groupre', name: 'rere' };
+
+const a = { id: 'a', name: 'yo', group: 'groupdo' };
+const b = { id: 'b', name: 'mama', group: 'groupre' };
 
 const TEST_STATE = {
   apps: {
@@ -28,6 +30,12 @@ const TEST_STATE = {
         fileType: 'image',
         paginationOptions: {
           page: 1,
+        },
+      },
+      groups: {
+        map: {
+          groupdo,
+          groupre,
         },
       },
     },
@@ -63,13 +71,9 @@ it('verify getFileType selector', () => {
   expect(fileType).toEqual('image');
 });
 
-it('verify getSort selector', () => {
-  const sort = getSort(TEST_STATE);
-  expect(sort).toEqual({});
-});
 it('verify getAssetsList selector', () => {
   const assetsList = getAssetsList(TEST_STATE);
-  expect(assetsList).toEqual([a, b]);
+  expect(assetsList).toEqual([{ ...a, group: groupdo }, { ...b, group: groupre }]);
 });
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);

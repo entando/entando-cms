@@ -19,6 +19,7 @@ import {
   ASSETS_VIEW_CHANGE,
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
+  SET_ASSET_SEARCH_KEYWORD,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -68,6 +69,12 @@ export const setListFilterParams = params => ({
   payload: params,
 });
 
+export const setSearchKeyword = payload => ({
+  type: SET_ASSET_SEARCH_KEYWORD,
+  payload,
+});
+
+
 export const pageDefault = { page: 1, pageSize: 10 };
 
 export const fetchAssets = (page, params) => dispatch => new Promise((resolve) => {
@@ -92,23 +99,13 @@ export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
 ) => (dispatch, getState) => {
   const state = getState();
-  // const filteringCategories = getFilteringCategories(state);
   const fileType = getFileType(state);
   let filters = getListFilterParams(state);
 
-  /* const sortParams = sort && sort.name && sort.direction
-    ? `&sort=${sort.name}&direction=${sort.direction}`
-    : '';
-  const filteringParams = filteringCategories.map(
-    (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
-  ).join('');
-  */
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
-  if (Object.keys(filters).length === 0) {
+  if (filters && Object.keys(filters).length === 0) {
     filters = { formValues: {}, operators: {} };
   }
-  filters.formValues.description = 'hot';
-  filters.operators.description = FILTER_OPERATORS.LIKE;
   const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&');
   return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
@@ -159,6 +156,30 @@ export const sortAssetsList = (
   return dispatch(fetchAssetsPaged(paginationMetadata));
 };
 
+export const filterAssetsBySearch = (
+  keyword,
+  paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
+  const filt = getListFilterParams(getState());
+  let { formValues, operators } = filt;
+  const { sorting } = filt;
+  if (!formValues) {
+    formValues = {};
+    operators = {};
+  } else {
+    delete formValues.description;
+    delete operators.description;
+  }
+  if (keyword !== '') {
+    formValues.description = keyword;
+    operators.description = FILTER_OPERATORS.LIKE;
+  }
+  dispatch(setSearchKeyword(keyword));
+  const filters = { formValues, operators, sorting };
+  dispatch(setListFilterParams(filters));
+  return dispatch(fetchAssetsPaged(paginationMetadata));
+};
+
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
   deleteAsset(id)
     .then((response) => {
@@ -167,6 +188,7 @@ export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
           resolve(json.payload);
           dispatch(fetchAssetsPaged());
         } else {
+          console.log('err');
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());

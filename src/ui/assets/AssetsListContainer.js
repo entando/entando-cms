@@ -21,6 +21,7 @@ import {
   changeAssetsView,
   makeFilter,
   pageDefault,
+  filterAssetsBySearch,
 } from 'state/assets/actions';
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
@@ -60,8 +61,12 @@ export const mapDispatchToProps = dispatch => ({
   },
   onApplyFilteredSearch: (filters) => {
     dispatch(setActiveFilters(filters));
-    const values = filters.length > 1 ? filters.map(filter => filter.code) : filters[0].code;
-    dispatch(applyAssetsFilter({ categories: makeFilter(values) }));
+    let filtprops = {};
+    if (filters.length) {
+      const values = filters.length > 1 ? filters.map(filter => filter.code) : filters[0].code;
+      filtprops = { categories: makeFilter(values) };
+    }
+    dispatch(applyAssetsFilter(filtprops));
   },
   onRemoveActiveFilter: (category, filteringCategories) => {
     dispatch(removeActiveFilter(category));
@@ -79,6 +84,7 @@ export const mapDispatchToProps = dispatch => ({
   onChangeAssetsView: (assetsView) => {
     dispatch(changeAssetsView(assetsView));
   },
+  onAssetSearch: keyword => dispatch(filterAssetsBySearch(keyword)),
   fetchList: (page = pageDefault) => (
     dispatch(fetchAssetsPaged(page))
   ),
