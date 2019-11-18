@@ -151,7 +151,7 @@ describe('state/assets/actions', () => {
         expect(actions[0]).toHaveProperty('payload', {
           formValues: { categories: ['news', 'bits'] },
           operators: { categories: 'eq' },
-          sorting: {},
+          sorting: undefined,
         });
         expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
         expect(actions[2]).toHaveProperty('type', SET_ASSETS);
@@ -227,7 +227,7 @@ describe('state/assets/actions', () => {
           operators: {
             description: 'like',
           },
-          sorting: {},
+          sorting: undefined,
         });
         done();
       });
@@ -260,7 +260,7 @@ describe('state/assets/actions', () => {
         expect(actions[1]).toHaveProperty('payload', {
           formValues: {},
           operators: {},
-          sorting: {},
+          sorting: undefined,
         });
         done();
       });
@@ -312,7 +312,7 @@ describe('state/assets/actions', () => {
         apps: {
           cms: {
             assets: {
-              assets: [], fileType: 'image', filteringCategories: ['news'],
+              assets: [], filterParams: {}, fileType: 'image', filteringCategories: ['news'],
             },
           },
         },

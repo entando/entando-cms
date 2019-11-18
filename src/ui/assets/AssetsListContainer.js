@@ -71,11 +71,12 @@ export const mapDispatchToProps = dispatch => ({
   onRemoveActiveFilter: (category, filteringCategories) => {
     dispatch(removeActiveFilter(category));
     const newFilters = filteringCategories.filter(c => c.code !== category.code).map(c => c.code);
-    dispatch(applyAssetsFilter({
+    const filtSend = newFilters.length ? {
       categories: makeFilter(
         newFilters.length > 1 ? newFilters : newFilters[0],
       ),
-    }));
+    } : {};
+    dispatch(applyAssetsFilter(filtSend));
   },
   onChangeFileType: (fileType) => {
     dispatch(changeFileType(fileType));

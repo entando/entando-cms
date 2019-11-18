@@ -13,7 +13,7 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   onDidMount: () => dispatch(setSearchKeyword('')),
   onSubmit: ({ keyword }) => {
-    dispatch(filterAssetsBySearch(keyword));
+    dispatch(filterAssetsBySearch(keyword || ''));
   },
 });
 

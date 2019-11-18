@@ -103,8 +103,8 @@ export const fetchAssetsPaged = (
   let filters = getListFilterParams(state);
 
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
-  if (!filters || (filters && Object.keys(filters).length === 0)) {
-    filters = { formValues: {}, operators: {}, sorting: {} };
+  if (filters && Object.keys(filters).length === 0) {
+    filters = { formValues: {}, operators: {} };
   }
 
   const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&');
@@ -128,7 +128,7 @@ export const applyAssetsFilter = (
       [key]: entry.op,
     },
     sorting: curr.sorting,
-  }), { formValues: {}, operators: {}, sorting: sorting || {} });
+  }), { formValues: {}, operators: {}, sorting });
 
   dispatch(setListFilterParams(filter));
   return dispatch(fetchAssetsPaged(paginationMetadata));
@@ -176,7 +176,7 @@ export const filterAssetsBySearch = (
     operators.description = FILTER_OPERATORS.LIKE;
   }
   dispatch(setSearchKeyword(keyword));
-  const filters = { formValues, operators, sorting: sorting || {} };
+  const filters = { formValues, operators, sorting };
   dispatch(setListFilterParams(filters));
   return dispatch(fetchAssetsPaged(paginationMetadata));
 };
