@@ -7,6 +7,7 @@ import {
   getPaginationOptions,
   condenseAssetInfo,
   removePixelWord,
+  getAssetSearchKeyword,
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
@@ -31,6 +32,7 @@ const TEST_STATE = {
         paginationOptions: {
           page: 1,
         },
+        keyword: 'kolokoks',
       },
       groups: {
         map: {
@@ -82,4 +84,8 @@ it('verify getFilteringCategories selector', () => {
 it('verify getPaginationOptions selector', () => {
   const paginationOptions = getPaginationOptions(TEST_STATE);
   expect(paginationOptions).toEqual({ page: 1 });
+});
+it('verify getAssetSearchKeyword selector', () => {
+  const key = getAssetSearchKeyword(TEST_STATE);
+  expect(key).toEqual(TEST_STATE.apps.cms.assets.keyword);
 });

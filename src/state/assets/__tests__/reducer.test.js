@@ -5,6 +5,9 @@ import {
   setActiveFilters,
   setAssets,
   removeActiveFilter,
+  setListFilterParams,
+  setAssetChanged,
+  setSearchKeyword,
   changeFileType,
   changeAssetsView,
 } from 'state/assets/actions';
@@ -68,6 +71,26 @@ describe('state/assets/reducer', () => {
       it('should correctly change assets view state field', () => {
         newState = reducer(state, changeAssetsView('grid'));
         expect(newState.assetsView).toEqual('grid');
+      });
+    });
+    describe('list filter reducers', () => {
+      let newState;
+      it('should correctly change an asset', () => {
+        const theAsset = { ...ASSETS[0], filename: 'doggo.png' };
+        newState = reducer(state, setAssetChanged(theAsset));
+        expect(newState.assetsMap[theAsset.id]).toEqual(theAsset);
+      });
+
+      it('should correctly set filterparams', () => {
+        const filt = { cat: 1 };
+        newState = reducer(state, setListFilterParams(filt));
+        expect(newState.filterParams).toEqual(filt);
+      });
+
+      it('should correctly set search keyword', () => {
+        const keyword = 'oi oi';
+        newState = reducer(state, setSearchKeyword(keyword));
+        expect(newState.keyword).toEqual(keyword);
       });
     });
   });

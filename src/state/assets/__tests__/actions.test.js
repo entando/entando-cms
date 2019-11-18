@@ -6,12 +6,17 @@ import {
   setActiveFilters,
   setAssets,
   removeActiveFilter,
+  makeFilter,
+  applyAssetsFilter,
+  sortAssetsList,
+  filterAssetsBySearch,
   changeFileType,
   changeAssetsView,
   fetchAssets,
   sendPostAssetEdit,
   sendDeleteAsset,
 } from 'state/assets/actions';
+import { SORT_DIRECTIONS } from '@entando/utils';
 import {
   SET_ASSETS,
   SET_ASSET_CATEGORY_FILTER,
@@ -20,7 +25,10 @@ import {
   ASSETS_VIEW_CHANGE,
   FILE_TYPE_CHANGE,
   SET_ASSET_SYNC,
+  SET_LIST_FILTER_PARAMS,
+  SET_ASSET_SEARCH_KEYWORD,
 } from 'state/assets/types';
+import { SET_PAGE } from 'state/pagination/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { getAssets, editAsset, deleteAsset } from 'api/assets';
 
@@ -121,6 +129,144 @@ describe('state/assets/actions', () => {
     });
   });
 
+  describe('filtering options', () => {
+    beforeEach(() => {
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], filterParams: {}, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+    });
+    it('applyAssetsFilter', (done) => {
+      const filters = { categories: makeFilter(['news', 'bits']) };
+      store.dispatch(applyAssetsFilter(filters)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(5);
+        expect(actions[0]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[0]).toHaveProperty('payload', {
+          formValues: { categories: ['news', 'bits'] },
+          operators: { categories: 'eq' },
+          sorting: {},
+        });
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[3]).toHaveProperty('type', SET_PAGE);
+        expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
+        done();
+      }).catch(done.fail);
+    });
+
+    it('sortAssetsList', (done) => {
+      const attribute = 'name';
+      store.dispatch(sortAssetsList(attribute)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(5);
+        expect(actions[0]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[0]).toHaveProperty('payload', {
+          sorting: { attribute, direction: SORT_DIRECTIONS.ASCENDANT },
+        });
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[3]).toHaveProperty('type', SET_PAGE);
+        expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
+        done();
+      });
+    });
+
+    it('sortAssetsList on reciprocating direction', (done) => {
+      const attribute = 'name';
+      const filterParams = {
+        formValues: { cats: 1 },
+        operators: { cats: 'eq' },
+        sorting: { attribute, direction: SORT_DIRECTIONS.ASCENDANT },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'image',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(sortAssetsList(attribute)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(5);
+        expect(actions[0]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[0]).toHaveProperty('payload', {
+          ...filterParams,
+          sorting: {
+            attribute,
+            direction: SORT_DIRECTIONS.DESCENDANT,
+          },
+        });
+        done();
+      });
+    });
+
+    it('filterAssetsBySearch', (done) => {
+      const keyword = 'keye';
+      store.dispatch(filterAssetsBySearch(keyword)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(6);
+        expect(actions[0]).toHaveProperty('type', SET_ASSET_SEARCH_KEYWORD);
+        expect(actions[1]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[1]).toHaveProperty('payload', {
+          formValues: {
+            description: keyword,
+          },
+          operators: {
+            description: 'like',
+          },
+          sorting: {},
+        });
+        done();
+      });
+    });
+
+    it('filterAssetsBySearch on clearing', (done) => {
+      const keyword = '';
+      const filterParams = {
+        formValues: { description: 'yo' },
+        operators: { description: 'like' },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'image',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(filterAssetsBySearch(keyword)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(6);
+        expect(actions[0]).toHaveProperty('type', SET_ASSET_SEARCH_KEYWORD);
+        expect(actions[1]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[1]).toHaveProperty('payload', {
+          formValues: {},
+          operators: {},
+          sorting: {},
+        });
+        done();
+      });
+    });
+  });
+
   describe('sendPostAssetEdit', () => {
     const tosend = { id: 1, filename: 'jojo.jpg', description: 'jojopic' };
     const fileblob = new Blob([JSON.stringify({ hello: 'world' }, null, 2)], { type: 'application/json' });
@@ -160,48 +306,41 @@ describe('state/assets/actions', () => {
   });
 
   describe('deleteAsset()', () => {
-    it('deleting asset', (done) => {
-      deleteAsset.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+    beforeEach(() => {
+      jest.clearAllMocks();
       store = mockStore({
         apps: {
           cms: {
             assets: {
-              assets: [], sort: { name: 'description', direction: 'ASC' }, fileType: 'image', filteringCategories: ['news'],
+              assets: [], fileType: 'image', filteringCategories: ['news'],
             },
           },
         },
         pagination: { global: { page: 1, pageSize: 10 } },
       });
+    });
+    it('deleting asset', (done) => {
       store
         .dispatch(sendDeleteAsset(1))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
-          expect(actionTypes).toHaveLength(0);
+          expect(actionTypes).toHaveLength(1);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
           done();
         })
         .catch(done.fail);
     });
 
     it('when deleting asset it reports errors succesfully', (done) => {
-      store = mockStore({
-        apps: {
-          cms: {
-            assets: {
-              assets: [], sort: { name: 'description', direction: 'ASC' }, fileType: 'image', filteringCategories: ['news'],
-            },
-          },
-        },
-        pagination: { global: { page: 1, pageSize: 10 } },
-      });
       deleteAsset.mockImplementationOnce(mockApi({ errors: true }));
-      store.dispatch(sendDeleteAsset(1)).then(() => {
+      store.dispatch(sendDeleteAsset(2)).then(() => {
         const actions = store.getActions().map(action => action.type);
         expect(actions).toHaveLength(3);
         expect(actions.includes(ADD_ERRORS)).toBe(true);
         expect(actions.includes(CLEAR_ERRORS)).toBe(true);
         expect(actions.includes(ADD_TOAST)).toBe(true);
         done();
-      });
+      }).catch(done.fail);
     });
   });
 });

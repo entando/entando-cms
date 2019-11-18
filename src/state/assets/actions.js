@@ -103,9 +103,10 @@ export const fetchAssetsPaged = (
   let filters = getListFilterParams(state);
 
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
-  if (filters && Object.keys(filters).length === 0) {
-    filters = { formValues: {}, operators: {} };
+  if (!filters || (filters && Object.keys(filters).length === 0)) {
+    filters = { formValues: {}, operators: {}, sorting: {} };
   }
+
   const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&');
   return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
@@ -127,7 +128,7 @@ export const applyAssetsFilter = (
       [key]: entry.op,
     },
     sorting: curr.sorting,
-  }), { formValues: {}, operators: {}, sorting });
+  }), { formValues: {}, operators: {}, sorting: sorting || {} });
 
   dispatch(setListFilterParams(filter));
   return dispatch(fetchAssetsPaged(paginationMetadata));
@@ -175,7 +176,7 @@ export const filterAssetsBySearch = (
     operators.description = FILTER_OPERATORS.LIKE;
   }
   dispatch(setSearchKeyword(keyword));
-  const filters = { formValues, operators, sorting };
+  const filters = { formValues, operators, sorting: sorting || {} };
   dispatch(setListFilterParams(filters));
   return dispatch(fetchAssetsPaged(paginationMetadata));
 };
@@ -185,10 +186,9 @@ export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          resolve(json.payload);
           dispatch(fetchAssetsPaged());
+          resolve(json.payload);
         } else {
-          console.log('err');
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
