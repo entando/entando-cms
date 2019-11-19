@@ -49,7 +49,7 @@ export const getAssetsList = createSelector(
     const asset = assetsMap[id];
     return {
       ...asset,
-      group: groups[asset.group],
+      group: groups[asset.group] || asset.group,
     };
   }),
 );

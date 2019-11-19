@@ -55,8 +55,8 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   onDidMount: () => {
     dispatch(setListFilterParams({}));
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }))
-      .then(() => dispatch(fetchAssetsPaged()));
+    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+    dispatch(fetchAssetsPaged());
     dispatch(fetchCategoryTree());
   },
   onApplyFilteredSearch: (filters) => {
