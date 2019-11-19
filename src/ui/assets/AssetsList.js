@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage, defineMessages, intlShape, injectIntl,
+  FormattedMessage, defineMessages,
 } from 'react-intl';
 import {
   Spinner,
   Grid,
   Row,
   Col,
-  Button,
-  Icon,
   PaginationRow,
   PAGINATION_VIEW_TYPES,
   Filter,
   Toolbar,
 } from 'patternfly-react';
-import RenderSearchFormInput from 'ui/common/form/RenderSearchFormInput';
+import AssetSearchFormContainer from 'ui/assets/search/AssetSearchFormContainer';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 import AssetsListItem from 'ui/assets/AssetsListItem';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
@@ -74,7 +72,7 @@ const fileTypes = [
   },
 ];
 
-class AssetsListBody extends Component {
+class AssetsList extends Component {
   constructor(props) {
     super(props);
     this.state = { mobile: window.innerWidth < 992 };
@@ -89,25 +87,10 @@ class AssetsListBody extends Component {
   }
 
   componentDidMount() {
-    const {
-      onDidMount, fileType, page, pageSize: perPage,
-    } = this.props;
-    const urlParams = `?type=${fileType}&page=${page}&pageSize=${perPage}`;
-    onDidMount(urlParams);
+    const { onDidMount } = this.props;
+    onDidMount();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-      sort, refetchAssets, fileType, pageSize: perPage, filteringCategories,
-    } = this.props;
-    if (prevProps.sort.name !== sort.name || prevProps.sort.direction !== sort.direction) {
-      const fetchParams = this.generateUrlParams(
-        1, perPage, sort, filteringCategories, fileType,
-      );
-      refetchAssets(fetchParams);
-    }
   }
 
   componentWillUnmount() {
@@ -115,35 +98,18 @@ class AssetsListBody extends Component {
   }
 
   onFileTypeChange(fileType) {
-    const {
-      onChangeFileType, refetchAssets, pageSize: perPage, filteringCategories, sort,
-    } = this.props;
-    const fetchParams = this.generateUrlParams(
-      1, perPage, sort, filteringCategories, fileType,
-    );
+    const { onChangeFileType } = this.props;
     onChangeFileType(fileType);
-    refetchAssets(fetchParams);
   }
 
-  onPageChange(newPage) {
-    const {
-      fileType, pageSize: perPage, lastPage, refetchAssets, filteringCategories, sort,
-    } = this.props;
-    if (newPage < 1 || newPage > lastPage) return 0;
-    const fetchParams = this.generateUrlParams(
-      newPage, perPage, sort, filteringCategories, fileType,
-    );
-    return refetchAssets(fetchParams);
+  onPageChange(page) {
+    const { fetchList, pageSize } = this.props;
+    fetchList({ page, pageSize });
   }
 
-  onPerPageSelect(value) {
-    const {
-      fileType, refetchAssets, filteringCategories, sort,
-    } = this.props;
-    const fetchParams = this.generateUrlParams(
-      1, value, sort, filteringCategories, fileType,
-    );
-    refetchAssets(fetchParams);
+  onPerPageSelect(pageSize) {
+    const { fetchList } = this.props;
+    fetchList({ page: 1, pageSize });
   }
 
   updateWindowDimensions() {
@@ -156,41 +122,18 @@ class AssetsListBody extends Component {
   }
 
   handleRemoveActiveFilter(item) {
-    const {
-      onRemoveActiveFilter, fileType, pageSize: perPage, refetchAssets, filteringCategories, sort,
-    } = this.props;
-    onRemoveActiveFilter(item);
-    const leftCategories = filteringCategories.filter(c => c.code !== item.code);
-    const fetchParams = this.generateUrlParams(1, perPage, sort, leftCategories, fileType);
-    refetchAssets(fetchParams);
+    const { onRemoveActiveFilter, filteringCategories } = this.props;
+    onRemoveActiveFilter(item, filteringCategories);
   }
 
   removeAllActiveFilters() {
-    const {
-      onRemoveAllActiveFilters, fileType, pageSize: perPage, refetchAssets, sort,
-    } = this.props;
+    const { onRemoveAllActiveFilters } = this.props;
     onRemoveAllActiveFilters();
-    const fetchParams = this.generateUrlParams(1, perPage, sort, [], fileType);
-    refetchAssets(fetchParams);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  generateUrlParams(page, perPage, sort, filteringCategories, fileType) {
-    const sortParams = sort && sort.name && sort.direction
-      ? `&sort=${sort.name}&direction=${sort.direction}`
-      : '';
-    const filteringParams = filteringCategories.map(
-      (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
-    ).join('');
-    const typeParams = fileType === 'all' ? '' : `&type=${fileType}`;
-    const pageParams = `&page=${page}&pageSize=${perPage}`;
-    return `?${sortParams}${filteringParams}${typeParams}${pageParams}`;
   }
 
   render() {
     const {
       loading,
-      intl,
       assets,
       filteringCategories,
       language,
@@ -226,7 +169,7 @@ class AssetsListBody extends Component {
         {item.name !== 'actions' && item.name !== 'preview' ? (
           <i
             className={`fa ${
-              sort && sort.name === item.id && sort.direction === 'ASC'
+              sort && sort.attribute === item.id && sort.direction === 'ASC'
                 ? 'fa-angle-up'
                 : 'fa-angle-down'
             } AssetsList__sort`}
@@ -258,7 +201,7 @@ class AssetsListBody extends Component {
     const listViewClass = `fa fa-list AssetsList__view-option ${
       assetsView === 'list' ? 'AssetsList__view-option--selected' : ''
     }`;
-    const renderAppliedFilters = activeFilters && (
+    const renderAppliedFilters = activeFilters && !loading && (
       <Toolbar.Results className="AssetsList__toolbar-results">
         <span className="AssetsList__items-count">
           {itemsEnd} <FormattedMessage id="cms.assets.list.of" /> {totalItems}{' '}
@@ -322,6 +265,7 @@ class AssetsListBody extends Component {
         <FormattedMessage id="cms.assets.list.nothingFound" />.
       </div>
     );
+
     let bodyContent = emptyContent;
     if (assets.length > 0) {
       bodyContent = assetsView === 'list' ? tableContent : gridContent;
@@ -351,14 +295,7 @@ class AssetsListBody extends Component {
         </div>
         <Row className="AssetsList__body">
           <Col xs={mobile ? 12 : 2} className="no-padding">
-            <div className="AssetsList__filter-container">
-              <RenderSearchFormInput
-                placeholder={intl.formatMessage(this.messages.filterPlaceholder)}
-              />
-              <Button className="SearchForm__button" type="submit">
-                <Icon name="search" />
-              </Button>
-            </div>
+            <AssetSearchFormContainer />
             <div className="AssetsList__tree-container">
               <CategoryTreeFilterContainer
                 language={language}
@@ -369,19 +306,23 @@ class AssetsListBody extends Component {
                 filterSubject="asset"
               />
             </div>
-            {mobile ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
+            {mobile && !loading ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
           </Col>
           {mobile ? null : (
             <Col xs={10} className="AssetsList__files-container no-padding">
               <div className="AssetsList__filter-info">{renderAppliedFilters}</div>
-              {bodyContent}
+              <Spinner loading={!!loading}>
+                {bodyContent}
+              </Spinner>
             </Col>
           )}
         </Row>
         {mobile ? (
           <Row>
             <Col xs={12} className="AssetsList__files-container--mobile no-padding">
-              {bodyContent}
+              <Spinner loading={!!loading}>
+                {bodyContent}
+              </Spinner>
             </Col>
           </Row>
         ) : null}
@@ -389,8 +330,8 @@ class AssetsListBody extends Component {
     );
     return (
       <div className="AssetsList__wrap">
-        <Spinner loading={!!loading}>
-          {content}
+        {content}
+        {!loading && (
           <div className="AssetsList__footer">
             <Grid>
               <PaginationRow
@@ -410,19 +351,18 @@ class AssetsListBody extends Component {
               />
             </Grid>
           </div>
-        </Spinner>
+        )}
       </div>
     );
   }
 }
 
-AssetsListBody.propTypes = {
-  intl: intlShape.isRequired,
+AssetsList.propTypes = {
   loading: PropTypes.bool,
   assetsView: PropTypes.string.isRequired,
   fileType: PropTypes.string.isRequired,
   sort: PropTypes.shape({
-    name: PropTypes.string,
+    attribute: PropTypes.string,
     direction: PropTypes.string,
   }),
   assets: PropTypes.arrayOf(PropTypes.shape({})),
@@ -430,13 +370,13 @@ AssetsListBody.propTypes = {
   onDidMount: PropTypes.func.isRequired,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})),
   activeFilters: PropTypes.arrayOf(PropTypes.shape({})),
-  refetchAssets: PropTypes.func.isRequired,
   onApplySort: PropTypes.func.isRequired,
   onApplyFilteredSearch: PropTypes.func.isRequired,
   onRemoveActiveFilter: PropTypes.func.isRequired,
   onChangeAssetsView: PropTypes.func.isRequired,
   onRemoveAllActiveFilters: PropTypes.func.isRequired,
   onChangeFileType: PropTypes.func.isRequired,
+  fetchList: PropTypes.func.isRequired,
   lastPage: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
@@ -447,16 +387,16 @@ AssetsListBody.propTypes = {
   onClickDelete: PropTypes.func.isRequired,
 };
 
-AssetsListBody.defaultProps = {
+AssetsList.defaultProps = {
   loading: false,
   assets: [],
   filteringCategories: [],
   activeFilters: [],
   sort: {
-    name: 'description',
+    attribute: 'description',
     direction: 'ASC',
   },
   perPageOptions: [5, 10, 15, 25, 50],
 };
 
-export default injectIntl(AssetsListBody);
+export default AssetsList;

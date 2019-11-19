@@ -3,13 +3,16 @@ import { GET_ASSETS_RESPONSE_OK } from 'testutils/mocks/assets';
 
 const getAssetsPath = '/api/plugins/cms/assets';
 
-export const getAssets = (params = '') => makeRequest({
-  uri: `${getAssetsPath}${params}`,
-  method: METHODS.GET,
-  contentType: 'application/json',
-  mockResponse: GET_ASSETS_RESPONSE_OK,
-  useAuthentication: true,
-});
+export const getAssets = (page = { page: 1, pageSize: 10 }, params = '') => makeRequest(
+  {
+    uri: `${getAssetsPath}${params}`,
+    method: METHODS.GET,
+    contentType: 'application/json',
+    mockResponse: GET_ASSETS_RESPONSE_OK,
+    useAuthentication: true,
+  },
+  page,
+);
 
 export const editAsset = (id, file, params = '') => makeRequest({
   uri: `${getAssetsPath}/${id}${params}`,

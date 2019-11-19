@@ -2,17 +2,20 @@ import {
   getActiveFilters,
   getAssetsView,
   getFileType,
-  getSort,
   getAssetsList,
   getFilteringCategories,
   getPaginationOptions,
   condenseAssetInfo,
   removePixelWord,
+  getAssetSearchKeyword,
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
-const a = { id: 'a', name: 'yo' };
-const b = { id: 'b', name: 'mama' };
+const groupdo = { code: 'groupdo', name: 'dodo' };
+const groupre = { code: 'groupre', name: 'rere' };
+
+const a = { id: 'a', name: 'yo', group: 'groupdo' };
+const b = { id: 'b', name: 'mama', group: 'groupre' };
 
 const TEST_STATE = {
   apps: {
@@ -28,6 +31,13 @@ const TEST_STATE = {
         fileType: 'image',
         paginationOptions: {
           page: 1,
+        },
+        keyword: 'kolokoks',
+      },
+      groups: {
+        map: {
+          groupdo,
+          groupre,
         },
       },
     },
@@ -63,13 +73,9 @@ it('verify getFileType selector', () => {
   expect(fileType).toEqual('image');
 });
 
-it('verify getSort selector', () => {
-  const sort = getSort(TEST_STATE);
-  expect(sort).toEqual({});
-});
 it('verify getAssetsList selector', () => {
   const assetsList = getAssetsList(TEST_STATE);
-  expect(assetsList).toEqual([a, b]);
+  expect(assetsList).toEqual([{ ...a, group: groupdo }, { ...b, group: groupre }]);
 });
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
@@ -78,4 +84,8 @@ it('verify getFilteringCategories selector', () => {
 it('verify getPaginationOptions selector', () => {
   const paginationOptions = getPaginationOptions(TEST_STATE);
   expect(paginationOptions).toEqual({ page: 1 });
+});
+it('verify getAssetSearchKeyword selector', () => {
+  const key = getAssetSearchKeyword(TEST_STATE);
+  expect(key).toEqual(TEST_STATE.apps.cms.assets.keyword);
 });

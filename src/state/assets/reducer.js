@@ -6,7 +6,8 @@ import {
   REMOVE_ACTIVE_FILTER,
   FILE_TYPE_CHANGE,
   ASSETS_VIEW_CHANGE,
-  APPLY_SORT,
+  SET_LIST_FILTER_PARAMS,
+  SET_ASSET_SEARCH_KEYWORD,
 } from 'state/assets/types';
 
 const defaultState = {
@@ -14,6 +15,8 @@ const defaultState = {
   assetsMap: {},
   filteringCategories: [],
   activeFilters: [],
+  filterParams: {},
+  keyword: '',
   assetsView: 'list',
   fileType: 'image',
   paginationOptions: {
@@ -65,6 +68,12 @@ const reducer = (state = defaultState, action = {}) => {
         assetsMap: newStateMap,
       };
     }
+    case SET_LIST_FILTER_PARAMS: {
+      return {
+        ...state,
+        filterParams: action.payload,
+      };
+    }
     case SET_ACTIVE_FILTERS: {
       const filters = action.payload;
       return {
@@ -80,6 +89,12 @@ const reducer = (state = defaultState, action = {}) => {
         activeFilters: activeFilters.filter(f => f.code !== filter.code),
       };
     }
+    case SET_ASSET_SEARCH_KEYWORD: {
+      return {
+        ...state,
+        keyword: action.payload,
+      };
+    }
     case FILE_TYPE_CHANGE: {
       const fileType = action.payload;
       return {
@@ -92,20 +107,6 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         assetsView,
-      };
-    }
-    case APPLY_SORT: {
-      const newSortName = action.payload;
-      const currentSort = Object.assign({}, state.sort);
-      if (currentSort.name === newSortName) {
-        currentSort.direction = currentSort.direction === 'ASC' ? 'DESC' : 'ASC';
-      } else {
-        currentSort.name = newSortName;
-        currentSort.direction = 'ASC';
-      }
-      return {
-        ...state,
-        sort: currentSort,
       };
     }
     default:
