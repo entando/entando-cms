@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
+import { getGroupsMap } from 'state/groups/selectors';
 
 export const removePixelWord = word => word.replace(' pixels', '');
 
@@ -42,10 +43,20 @@ export const getAssetsMap = createSelector(
   state => state.assetsMap,
 );
 
-
 export const getAssetsList = createSelector(
-  [getAssetsMap, getAssetsIdList],
-  (assetsMap, idList) => idList.map(id => (assetsMap[id])),
+  [getAssetsMap, getAssetsIdList, getGroupsMap],
+  (assetsMap, idList, groups) => idList.map((id) => {
+    const asset = assetsMap[id];
+    return {
+      ...asset,
+      group: groups[asset.group] || asset.group,
+    };
+  }),
+);
+
+export const getListFilterParams = createSelector(
+  getAssetsState,
+  state => state.filterParams,
 );
 
 export const getFilteringCategories = createSelector(
@@ -63,11 +74,6 @@ export const getAssetsView = createSelector(
   assets => assets.assetsView,
 );
 
-export const getSort = createSelector(
-  getAssetsState,
-  assets => assets.sort,
-);
-
 export const getPaginationOptions = createSelector(
   getAssetsState,
   assets => assets.paginationOptions,
@@ -76,4 +82,9 @@ export const getPaginationOptions = createSelector(
 export const getActiveFilters = createSelector(
   getAssetsState,
   assets => assets.activeFilters,
+);
+
+export const getAssetSearchKeyword = createSelector(
+  getAssetsState,
+  state => state.keyword,
 );

@@ -5,22 +5,28 @@ import {
   getFilteringCategories,
   getAssetsView,
   getFileType,
-  getSort,
   getActiveFilters,
   condenseAssetInfo,
+  getListFilterParams,
 } from 'state/assets/selectors';
 import {
+  applyAssetsFilter,
   fetchAssets,
   setActiveFilters,
+  setListFilterParams,
+  fetchAssetsPaged,
+  sortAssetsList,
   removeActiveFilter,
   changeFileType,
   changeAssetsView,
-  applySort,
+  makeFilter,
+  pageDefault,
+  filterAssetsBySearch,
 } from 'state/assets/actions';
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
 } from 'state/pagination/selectors';
-import { fetchGroup } from 'state/groups/actions';
+import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
@@ -38,7 +44,7 @@ export const mapStateToProps = state => ({
   assetsView: getAssetsView(state),
   fileType: getFileType(state),
   loading: getLoading(state).assets,
-  sort: getSort(state),
+  sort: getListFilterParams(state).sorting || {},
   lastPage: getLastPage(state),
   pageSize: getPageSize(state),
   totalItems: getTotalItems(state),
@@ -47,37 +53,58 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onDidMount: (params) => {
-    dispatch(fetchAssets(params));
+  onDidMount: () => {
+    dispatch(setListFilterParams({}));
+    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+    dispatch(fetchAssetsPaged());
     dispatch(fetchCategoryTree());
   },
-  onApplyFilteredSearch: (filters, filterParams) => {
+  onApplyFilteredSearch: (filters) => {
     dispatch(setActiveFilters(filters));
-    dispatch(fetchAssets(filterParams));
+    let filtprops = {};
+    if (filters.length) {
+      const values = filters.length > 1 ? filters.map(filter => filter.code) : filters[0].code;
+      filtprops = { categories: makeFilter(values) };
+    }
+    dispatch(applyAssetsFilter(filtprops));
   },
-  onRemoveActiveFilter: (filter) => {
-    dispatch(removeActiveFilter(filter));
+  onRemoveActiveFilter: (category, filteringCategories) => {
+    dispatch(removeActiveFilter(category));
+    const newFilters = filteringCategories.filter(c => c.code !== category.code).map(c => c.code);
+    const filtSend = newFilters.length ? {
+      categories: makeFilter(
+        newFilters.length > 1 ? newFilters : newFilters[0],
+      ),
+    } : {};
+    dispatch(applyAssetsFilter(filtSend));
   },
   onChangeFileType: (fileType) => {
     dispatch(changeFileType(fileType));
+    dispatch(fetchAssetsPaged());
   },
   onChangeAssetsView: (assetsView) => {
     dispatch(changeAssetsView(assetsView));
   },
+  onAssetSearch: keyword => dispatch(filterAssetsBySearch(keyword)),
+  fetchList: (page = pageDefault) => (
+    dispatch(fetchAssetsPaged(page))
+  ),
   refetchAssets: (params) => {
     dispatch(fetchAssets(params));
   },
   onApplySort: (sortName) => {
-    dispatch(applySort(sortName));
+    dispatch(sortAssetsList(sortName));
   },
   onRemoveAllActiveFilters: () => {
     dispatch(setActiveFilters([]));
+    dispatch(setListFilterParams({}));
+    dispatch(fetchAssetsPaged());
   },
   onAssetSelected: (item) => {
     dispatch(setVisibleModal(MODAL_ID));
     const asset = condenseAssetInfo(item);
     dispatch(setInfo(asset));
-    dispatch(fetchGroup(asset.group));
+    dispatch(setSelectedGroup(asset.group));
   },
   onClickDelete: (asset) => {
     dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));

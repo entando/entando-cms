@@ -22,7 +22,7 @@ describe('api/assets', () => {
         mockResponse: GET_ASSETS_RESPONSE_OK,
         contentType: 'application/json',
         useAuthentication: true,
-      });
+      }, { page: 1, pageSize: 10 });
       expect(response).toBeInstanceOf(Promise);
     });
   });

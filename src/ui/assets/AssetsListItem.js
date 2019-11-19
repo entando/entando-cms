@@ -37,7 +37,7 @@ const AssetsListItem = ({
       <td>{type}</td>
       <td>{owner || 'N/A'}</td>
       <td>{new Date(createdAt).toLocaleDateString()}</td>
-      <td>{group}</td>
+      <td>{group.name || group}</td>
       <td>{renderCategories}</td>
       <td>
         <DropdownKebab className="AssetsList__item-actions" id={asset.id}>

@@ -233,7 +233,7 @@ export default {
     'cms.assets.list.all': 'All',
     'cms.assets.list.image': 'Images',
     'cms.assets.list.file': 'Attachements',
-    'cms.assets.list.filterBy': 'Filter by',
+    'cms.assets.list.filterBy': 'Search',
     'cms.assets.list.activeFilters': 'Active Filters',
     'cms.assets.list.clearAll': 'Clear All',
     'cms.assets.list.nothingFound': 'No items found',
