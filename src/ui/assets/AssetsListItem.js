@@ -4,15 +4,14 @@ import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
 const AssetsListItem = ({
-  asset, domain, onEditClicked, onClickDelete,
+  asset, onEditClicked, onClickDelete,
 }) => {
   const {
-    createdAt, description, metadata = {}, group, categories, versions, owner, path,
+    createdAt, description, metadata = {}, group, categories, versions, owner,
   } = asset;
   const fileType = versions == null ? 'file' : 'image';
-  const downloadUrl = `${domain}${fileType === 'image' ? `${versions[0].path}` : `${path}`}`;
   const previewRender = fileType === 'image' ? (
-    <img src={`${domain}${versions[1].path}`} alt="Preview" />
+    <img src={asset.previewUrl} alt="Preview" />
   ) : (
     <div className="fa fa-file-text AssetsList__item-file" />
   );
@@ -29,7 +28,7 @@ const AssetsListItem = ({
   ));
   const onEditClickHandle = () => onEditClicked(asset);
   const onClickDeleteHandle = () => onClickDelete(asset);
-  const onDownloadHandle = () => window.open(downloadUrl);
+  const onDownloadHandle = () => window.open(asset.downloadUrl);
   return (
     <tr className="AssetsList__item" key={asset.id}>
       <td className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>
@@ -60,7 +59,6 @@ AssetsListItem.propTypes = {
   asset: PropTypes.shape({}).isRequired,
   onEditClicked: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
-  domain: PropTypes.string.isRequired,
 };
 
 export default AssetsListItem;

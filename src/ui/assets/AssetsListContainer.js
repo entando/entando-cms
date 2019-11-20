@@ -1,12 +1,10 @@
 import { connect } from 'react-redux';
-import { getDomain } from '@entando/apimanager';
 import {
   getAssetsList,
   getFilteringCategories,
   getAssetsView,
   getFileType,
   getActiveFilters,
-  condenseAssetInfo,
   getListFilterParams,
 } from 'state/assets/selectors';
 import {
@@ -49,7 +47,6 @@ export const mapStateToProps = state => ({
   pageSize: getPageSize(state),
   totalItems: getTotalItems(state),
   page: getCurrentPage(state),
-  apiUrl: getDomain(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -102,9 +99,8 @@ export const mapDispatchToProps = dispatch => ({
   },
   onAssetSelected: (item) => {
     dispatch(setVisibleModal(MODAL_ID));
-    const asset = condenseAssetInfo(item);
-    dispatch(setInfo(asset));
-    dispatch(setSelectedGroup(asset.group));
+    dispatch(setInfo(item));
+    dispatch(setSelectedGroup(item.group));
   },
   onClickDelete: (asset) => {
     dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
