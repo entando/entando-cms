@@ -4,9 +4,11 @@ import {
   FieldArray,
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
+import { Tabs, Tab } from 'patternfly-react';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import { TYPE_TIMESTAMP } from 'state/content-type/const';
+import { FormattedMessage } from 'react-intl';
 
 const AttributeFields = ({ attributes, fields, settings }) => {
   if (fields.length < attributes.length) {
@@ -51,15 +53,23 @@ class ContentAttributes extends Component {
     const { attributes, settings } = this.props;
 
     return (
-      <div>
-        <FieldArray
-          data-test-id="edit-content-content-attributes-field-array"
-          name="attributes"
-          component={AttributeFields}
-          attributes={attributes}
-          settings={settings}
-        />
-      </div>
+      <Tabs defaultActiveKey={1} animation={false}>
+        <Tab eventKey={1} title="English">
+          <FieldArray
+            data-test-id="edit-content-content-attributes-field-array"
+            name="attributes"
+            component={AttributeFields}
+            attributes={attributes}
+            settings={settings}
+          />
+        </Tab>
+        <Tab eventKey={2} title="Italiano">
+          <FormattedMessage
+            id="cms.contents.edit.contentAttributes.language"
+            defaultMessage="Attributes can only be edited in the default language section"
+          />
+        </Tab>
+      </Tabs>
     );
   }
 }

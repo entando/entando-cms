@@ -217,6 +217,7 @@ export default {
     'cms.contents.edit.titletip':
       'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.edit.contentAttributes': 'Content Attributes',
+    'cms.contents.edit.contentAttributes.language': 'Attributes can only be edited in the default language section',
     'cms.assets.title': 'Digital Assets',
     'cms.assets.tip':
       'The DIGITAL ASSETS section lets you manage existing resources, images and attachements, access resources list, add or delete resources.  Images and attachments can be uploaded to a digital assets archive and used in content.',

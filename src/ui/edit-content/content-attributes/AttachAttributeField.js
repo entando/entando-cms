@@ -14,8 +14,6 @@ const AttachAttributeField = ({
   attribute,
   ...rest
 }) => {
-  const { code } = attribute;
-
   const handleAddClick = () => {
     // TODO: route to Digital Assets page
   };

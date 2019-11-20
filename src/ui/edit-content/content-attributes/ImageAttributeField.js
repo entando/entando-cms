@@ -14,8 +14,6 @@ const ImageAttributeField = ({
   attribute,
   ...rest
 }) => {
-  const { code } = attribute;
-
   const handleAddClick = () => {
     // TODO: route to Images page
   };
