@@ -6,6 +6,7 @@ import {
 } from 'redux-form';
 
 import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
+import RenderRichTextEditor from 'ui/common/form/RenderRichTextEditor';
 
 const HypertextAttributeField = ({
   label,
@@ -19,18 +20,25 @@ const HypertextAttributeField = ({
     ...input,
     name,
     value: inputValue || '',
-    onChange: (event) => {
-      inputOnChange(event.target.value);
+    onChange: (data) => {
+      const value = data.target ? data.target.value : data;
+      inputOnChange(value);
     },
   };
 
   return (
-    <TextAreaInput
+    // <TextAreaInput
+    //   input={attrInput}
+    //   label={label}
+    //   meta={meta}
+    //   rows={3}
+    //   cols={50}
+    //   {...rest}
+    // />
+    <RenderRichTextEditor
       input={attrInput}
       label={label}
       meta={meta}
-      rows={3}
-      cols={50}
       {...rest}
     />
   );
