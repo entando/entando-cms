@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import ContentAttributes from 'ui/edit-content/content-attributes/ContentAttributes';
-import {
-  getSelectedContentTypeAttributes,
-} from 'state/content-type/selectors';
+import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
+import { getSettingsState } from 'state/content-settings/selectors';
 import { fetchContentType } from 'state/content-type/actions';
+import { fetchContentSettings } from 'state/content-settings/actions';
 
 // FIXME: Remove default attributes value when fetchContent() is fixed
 export const mapStateToProps = (state, { attributes = [] }) => ({
@@ -12,6 +12,7 @@ export const mapStateToProps = (state, { attributes = [] }) => ({
     ...attr,
     ...(attributes[i] || {}),
   })),
+  settings: getSettingsState(state),
 });
 
 // FIXME: Remove default typeCode value when fetchContent() is fixed
@@ -19,6 +20,7 @@ export const mapDispatchToProps = (dispatch, { typeCode = 'TES' }) => ({
   onDidMount: () => {
     // FIXME: use fetchContentTypeAttributes() when API endpoint is implemented
     dispatch(fetchContentType(typeCode));
+    dispatch(fetchContentSettings());
   },
 });
 

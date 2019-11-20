@@ -8,7 +8,7 @@ import {
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import { TYPE_TIMESTAMP } from 'state/content-type/const';
 
-const AttributeFields = ({ attributes, fields }) => {
+const AttributeFields = ({ attributes, fields, settings }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
     // as it cannot be set directly from props
@@ -30,6 +30,7 @@ const AttributeFields = ({ attributes, fields }) => {
       key={attributes[idx].code}
       name={attrRef}
       attribute={attributes[idx]}
+      settings={settings}
     />
   ));
 };
@@ -37,6 +38,7 @@ const AttributeFields = ({ attributes, fields }) => {
 AttributeFields.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
+  settings: PropTypes.shape({}).isRequired,
 };
 
 class ContentAttributes extends Component {
@@ -46,7 +48,7 @@ class ContentAttributes extends Component {
   }
 
   render() {
-    const { attributes } = this.props;
+    const { attributes, settings } = this.props;
 
     return (
       <div>
@@ -55,6 +57,7 @@ class ContentAttributes extends Component {
           name="attributes"
           component={AttributeFields}
           attributes={attributes}
+          settings={settings}
         />
       </div>
     );
@@ -64,6 +67,7 @@ class ContentAttributes extends Component {
 ContentAttributes.propTypes = {
   onDidMount: PropTypes.func.isRequired,
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  settings: PropTypes.shape({}).isRequired,
 };
 
 export default ContentAttributes;

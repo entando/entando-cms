@@ -12,6 +12,7 @@ const HypertextAttributeField = ({
   label,
   input,
   meta,
+  isRTE,
   ...rest
 }) => {
   const { name, value: inputValue, onChange: inputOnChange } = input;
@@ -26,19 +27,24 @@ const HypertextAttributeField = ({
     },
   };
 
+  if (isRTE) {
+    return (
+      <RenderRichTextEditor
+        input={attrInput}
+        label={label}
+        meta={meta}
+        {...rest}
+      />
+    );
+  }
+
   return (
-    // <TextAreaInput
-    //   input={attrInput}
-    //   label={label}
-    //   meta={meta}
-    //   rows={3}
-    //   cols={50}
-    //   {...rest}
-    // />
-    <RenderRichTextEditor
+    <TextAreaInput
       input={attrInput}
       label={label}
       meta={meta}
+      rows={3}
+      cols={50}
       {...rest}
     />
   );
@@ -48,6 +54,11 @@ HypertextAttributeField.propTypes = {
   label: PropTypes.node.isRequired,
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
   meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
+  isRTE: PropTypes.bool,
+};
+
+HypertextAttributeField.defaultProps = {
+  isRTE: false,
 };
 
 export default HypertextAttributeField;
