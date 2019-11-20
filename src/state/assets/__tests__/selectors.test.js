@@ -11,11 +11,25 @@ import {
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
+const { versions, metadata } = ASSET_RESPONSE;
+
 const groupdo = { code: 'groupdo', name: 'dodo' };
 const groupre = { code: 'groupre', name: 'rere' };
 
-const a = { id: 'a', name: 'yo', group: 'groupdo' };
-const b = { id: 'b', name: 'mama', group: 'groupre' };
+const a = {
+  id: 'a',
+  name: 'yo',
+  group: 'groupdo',
+  versions,
+  metadata,
+};
+const b = {
+  id: 'b',
+  name: 'mama',
+  group: 'groupre',
+  versions,
+  metadata,
+};
 
 const TEST_STATE = {
   apps: {
@@ -48,9 +62,9 @@ const TEST_STATE = {
 };
 
 it('verify condense function', () => {
-  const { metadata } = ASSET_RESPONSE;
-  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
-  const res = condenseAssetInfo(ASSET_RESPONSE);
+  const { metadata: met } = ASSET_RESPONSE;
+  const dimension = `${removePixelWord(met['Image Width'])}x${removePixelWord(met['Image Height'])} px`;
+  const res = condenseAssetInfo(ASSET_RESPONSE, TEST_STATE.api.domain);
   expect(res.versions[0].dimensions).toEqual(dimension);
   expect(res.metadata.dimension).toEqual(dimension);
   expect(res.versions[0].sizetype).toEqual('orig');
@@ -75,7 +89,19 @@ it('verify getFileType selector', () => {
 
 it('verify getAssetsList selector', () => {
   const assetsList = getAssetsList(TEST_STATE);
-  expect(assetsList).toEqual([{ ...a, group: groupdo }, { ...b, group: groupre }]);
+  const cA = condenseAssetInfo({ ...a, group: groupdo }, TEST_STATE.api.domain);
+  const cB = condenseAssetInfo({ ...b, group: groupre }, TEST_STATE.api.domain);
+  const isImg = atype => atype === 'image';
+  const addUrls = ast => ({
+    ...ast,
+    downloadUrl: isImg(ast.type) ? ast.versions[0].path : ast.path,
+    previewUrl: isImg(ast.type) ? ast.versions[1].path : null,
+    previewLgUrl: isImg(ast.type) ? ast.versions[3].path : null,
+  });
+  expect(assetsList).toEqual([
+    addUrls(cA),
+    addUrls(cB),
+  ]);
 });
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
