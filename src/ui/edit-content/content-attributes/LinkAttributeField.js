@@ -18,7 +18,6 @@ const LinkAttributeField = ({
 
   const handleAddClick = () => {
     // TODO: route to Configure Link Content page
-    console.log(code);
   };
 
   return (

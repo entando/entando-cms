@@ -18,7 +18,6 @@ const AttachAttributeField = ({
 
   const handleAddClick = () => {
     // TODO: route to Digital Assets page
-    console.log(code);
   };
 
   return (
