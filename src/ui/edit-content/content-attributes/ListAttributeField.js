@@ -5,8 +5,6 @@ import {
   fieldArrayMetaPropTypes,
 } from 'redux-form';
 
-// TODO: implement a better solution to avoid dependency cycle
-// eslint-disable-next-line import/no-cycle
 import ListField from 'ui/common/form/RenderListField';
 import attributeShape from './attributeShape';
 

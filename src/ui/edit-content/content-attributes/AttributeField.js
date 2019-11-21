@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, FieldArray } from 'redux-form';
+import { Field } from 'redux-form';
 import { required, isNumber } from '@entando/utils';
 
 import FormLabel from 'ui/common/form/FormLabel';
@@ -12,9 +12,6 @@ import {
   TYPE_DATE,
   TYPE_ENUMERATOR,
   TYPE_ENUMERATOR_MAP,
-  TYPE_COMPOSITE,
-  TYPE_LIST,
-  TYPE_MONOLIST,
   TYPE_NUMBER,
   TYPE_THREESTATE,
   TYPE_TIMESTAMP,
@@ -31,18 +28,6 @@ import CheckboxAttributeField from 'ui/edit-content/content-attributes/CheckboxA
 import DateAttributeField from 'ui/edit-content/content-attributes/DateAttributeField';
 import EnumeratorAttributeField from 'ui/edit-content/content-attributes/EnumeratorAttributeField';
 import EnumeratorMapAttributeField from 'ui/edit-content/content-attributes/EnumeratorMapAttributeField';
-
-// TODO: implement a better solution to avoid dependency cycle
-// eslint-disable-next-line import/no-cycle
-import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
-
-// TODO: implement a better solution to avoid dependency cycle
-// eslint-disable-next-line import/no-cycle
-import ListAttributeField from 'ui/edit-content/content-attributes/ListAttributeField';
-
-// TODO: implement a better solution to avoid dependency cycle
-// eslint-disable-next-line import/no-cycle
-import MonolistAttributeField from 'ui/edit-content/content-attributes/MonolistAttributeField';
 import NumberAttributeField from 'ui/edit-content/content-attributes/NumberAttributeField';
 import ThreeStateAttributeField from 'ui/edit-content/content-attributes/ThreeStateAttributeField';
 import TimestampAttributeField from 'ui/edit-content/content-attributes/TimestampAttributeField';
@@ -86,8 +71,6 @@ const AttributeField = ({
   const validate = getAttrValidators({ ...validationRules, mandatory });
   if (mandatory) validate.push(required);
 
-  let fieldName = name;
-  let FieldComp = Field;
   let AttributeFieldComp;
   const extraProps = {};
 
@@ -106,19 +89,6 @@ const AttributeField = ({
       break;
     case TYPE_ENUMERATOR_MAP:
       AttributeFieldComp = EnumeratorMapAttributeField;
-      break;
-    case TYPE_COMPOSITE:
-      AttributeFieldComp = CompositeAttributeField;
-      break;
-    case TYPE_LIST:
-      fieldName = `${name}.elements`;
-      FieldComp = FieldArray;
-      AttributeFieldComp = ListAttributeField;
-      break;
-    case TYPE_MONOLIST:
-      fieldName = `${name}.elements`;
-      FieldComp = FieldArray;
-      AttributeFieldComp = MonolistAttributeField;
       break;
     case TYPE_TIMESTAMP:
       AttributeFieldComp = TimestampAttributeField;
@@ -159,13 +129,13 @@ const AttributeField = ({
   }
 
   return (
-    <FieldComp
-      name={fieldName}
+    <Field
+      name={name}
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}
       hasLabel={hasLabel}
-      {...(FieldComp !== FieldArray ? { validate } : {})}
+      validate={validate}
       {...extraProps}
     />
   );

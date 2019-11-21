@@ -6,8 +6,6 @@ import { FormSection } from 'redux-form';
 
 import attributeShape from './attributeShape';
 
-// TODO: implement a better solution to avoid dependency cycle
-// eslint-disable-next-line import/no-cycle
 import AttributeField from './AttributeField';
 
 const CompositeAttributeField = ({
