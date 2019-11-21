@@ -150,7 +150,6 @@ class AssetsList extends Component {
       page,
       perPageOptions,
       onAssetSelected,
-      apiUrl,
       onClickDelete,
     } = this.props;
     const pagination = {
@@ -161,8 +160,6 @@ class AssetsList extends Component {
     const { mobile } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
-    const apiDomain = new URL(apiUrl);
-    const apiOrigin = apiDomain.origin;
     const renderHeader = headers.map((item, i) => (
       <th width={item.width} key={item.name}>
         <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
@@ -195,11 +192,12 @@ class AssetsList extends Component {
         {<FormattedMessage id={`cms.assets.list.${type.id}`} />}
       </div>
     ));
+    const optClassSel = 'AssetsList__view-option--selected';
     const gridViewClass = `fa fa-th AssetsList__view-option ${
-      assetsView === 'grid' ? 'AssetsList__view-option--selected' : ''
+      assetsView === 'grid' ? optClassSel : ''
     }`;
     const listViewClass = `fa fa-list AssetsList__view-option ${
-      assetsView === 'list' ? 'AssetsList__view-option--selected' : ''
+      assetsView === 'list' ? optClassSel : ''
     }`;
     const renderAppliedFilters = activeFilters && !loading && (
       <Toolbar.Results className="AssetsList__toolbar-results">
@@ -239,7 +237,6 @@ class AssetsList extends Component {
       <AssetsListItem
         key={asset.id}
         asset={asset}
-        domain={apiOrigin}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
       />
@@ -255,7 +252,6 @@ class AssetsList extends Component {
     const gridContent = (
       <AssetsListGridView
         assets={assets}
-        domain={apiOrigin}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
       />
@@ -383,7 +379,6 @@ AssetsList.propTypes = {
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
-  apiUrl: PropTypes.string.isRequired,
   onClickDelete: PropTypes.func.isRequired,
 };
 
