@@ -146,7 +146,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   if (workMode === WORK_MODE_ADD) {
     const requestObject = {
       ...enhancedValues,
-      typeCode: getNewContentsType(state),
+      typeCode: getNewContentsType(state).typeCode,
     };
     dispatch(sendPostAddContent(requestObject)).then(res => resolve(res));
   } else {

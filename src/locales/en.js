@@ -311,7 +311,7 @@ export default {
     'cms.contents.description': 'Name',
     'cms.contents.firstEditor': 'Created By',
     'cms.contents.lastModified': 'Last Edited',
-    'cms.contents.typeDescription': 'Type',
+    'cms.contents.typeCode': 'Type',
     'cms.contents.created': 'Created Date',
     'cms.contents.actions': 'Actions',
     'cms.contents.selectAll': 'Select All',

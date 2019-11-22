@@ -31,6 +31,10 @@ export const ADD_CONTENT_OPENED_OK = {
   language: undefined,
   saveType: undefined,
   selectedJoinGroups: undefined,
+  content: {
+    contentType: 'NEWS',
+    version: '0.0',
+  },
 };
 
 export const GET_CONTENT_RESPONSE_OK = {
@@ -61,5 +65,5 @@ export const POST_ADD_CONTENT_OK = {
 
 export const POST_CONTENT_ADD_RESPONSE_OK = {
   id: 10013,
-  contentType: 'Generic Content',
+  contentType: { typeCode: 'NEWS', typeDescription: 'News' },
 };

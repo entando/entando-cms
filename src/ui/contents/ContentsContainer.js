@@ -7,6 +7,7 @@ import {
   setQuickFilter, checkStatus, checkAccess, checkAuthor, sendCloneContent,
   setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow, fetchContentsPaged,
   setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
+  setTabSearch,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
@@ -30,6 +31,12 @@ import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
 import { JOIN_CATEGORIES_MODAL_ID } from 'ui/contents/JoinCategoriesModal';
 import { WORK_MODE_EDIT, WORK_MODE_ADD } from 'state/edit-content/types';
 import Contents from 'ui/contents/Contents';
+
+const paramsForStatusAndAuthor = (status, author) => {
+  const statusParams = status === 'published' ? '?status=published' : `?filters[0].attribute=status&filters[0].value=${status}`;
+  const authorParams = `${author === 'all' ? '' : `&filters[1].attribute=firstEditor&filters[1].value=${author}`}`;
+  return `${statusParams}${authorParams}`;
+};
 
 export const mapStateToProps = (state) => {
   const {
@@ -63,29 +70,24 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => {
     dispatch(fetchContentsPaged());
     dispatch(fetchCategoryTree());
-    dispatch(fetchGroups({ page: 1, pageSize: 100 }));
-    dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 100 }));
+    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+    dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
-  onFilteredSearch: (pagination, fetchParams) => dispatch(
-    fetchContentsPaged(fetchParams, pagination),
+  onFilteredSearch: (fetchParams, pagination, sortParams, tabSearch) => dispatch(
+    fetchContentsPaged(fetchParams, pagination, sortParams, tabSearch),
   ),
+  onSetTabSearch: tabSearch => dispatch(setTabSearch(tabSearch)),
   onCheckStatus: status => dispatch(checkStatus(status)),
   onCheckAccess: access => dispatch(checkAccess(access)),
   onCheckAuthor: author => dispatch(checkAuthor(author)),
   onSetCurrentAuthorShow: (author, status) => {
     dispatch(setCurrentAuthorShow(author));
-    const statusParams = `?filters[0].attribute=status&filters[0].value=${status}`;
-    const authorParams = `${author === 'all' ? '' : `&filters[1].attribute=firstEditor&filters[1].value=${author}`}`;
-    const fetchParams = `${statusParams}${authorParams}`;
-    dispatch(fetchContentsPaged(fetchParams));
+    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
   },
   onSetCurrentStatusShow: (status, author) => {
     dispatch(setCurrentStatusShow(status));
-    const statusParams = `?filters[0].attribute=status&filters[0].value=${status}`;
-    const authorParams = `${author === 'all' ? '' : `&filters[1].attribute=firstEditor&filters[1].value=${author}`}`;
-    const fetchParams = `${statusParams}${authorParams}`;
-    dispatch(fetchContentsPaged(fetchParams));
+    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
   },
   onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
   onSetContentType: contentType => dispatch(setContentType(contentType)),

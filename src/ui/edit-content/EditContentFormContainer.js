@@ -28,7 +28,7 @@ import { getLoading } from 'state/loading/selectors';
 import {
   ROUTE_CMS_CONTENTS,
 } from 'app-init/routes';
-import { CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
+import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE } from 'state/edit-content/types';
 
 const publishContentMsgs = defineMessages({
   published: {
@@ -62,14 +62,14 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onDidMount: (fetchContentParams) => {
     dispatch(fetchContent(fetchContentParams));
-    dispatch(fetchGroups({ page: 1, pageSize: 100 }));
+    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTree());
   },
   onWillUnmount: () => dispatch(clearEditContentForm()),
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
-    const { saveType } = values;
+    const { saveType, contentId } = values;
     dispatch(saveContent(values, categories)).then((res) => {
       if (res) {
         dispatch(
@@ -78,8 +78,13 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
             TOAST_SUCCESS,
           ),
         );
-        if (saveType !== CONTINUE_SAVE_TYPE) {
+        if (saveType === APPROVE_SAVE_TYPE) {
+          dispatch(sendPublishContent(contentId, 'published'));
           history.push(routeConverter(ROUTE_CMS_CONTENTS));
+        } else if (saveType !== CONTINUE_SAVE_TYPE) {
+          history.push(routeConverter(ROUTE_CMS_CONTENTS));
+        } else {
+          dispatch(fetchContent(`/${res.id}`));
         }
       }
     });
@@ -93,6 +98,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
           TOAST_SUCCESS,
         ),
       );
+      history.push(routeConverter(ROUTE_CMS_CONTENTS));
     }
   }),
 });

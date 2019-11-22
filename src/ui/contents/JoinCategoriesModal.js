@@ -19,7 +19,7 @@ const JoinCategoriesModal = ({
   const modifiedCategories = joiningCategories.map(c => c.code);
   const modifiedContents = contents && contents.map(
     content => Object.assign({},
-      { categories: modifiedCategories, id: content.id }),
+      { categories: modifiedCategories, id: content.id, typeCode: content.typeCode }),
   );
   const buttons = [
     <Button

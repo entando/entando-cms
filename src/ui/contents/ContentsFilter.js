@@ -61,15 +61,13 @@ class ContentsFilter extends Component {
   }
 
   onValueKeyPress(keyEvent) {
-    const { currentQuickFilter, onSetQuickFilter, onFilteredSearch } = this.props;
-    const { value: currentValue } = currentQuickFilter;
+    const { currentQuickFilter, onFilteredSearch } = this.props;
+    const { id, value: currentValue } = currentQuickFilter;
 
     if (keyEvent.key === 'Enter' && currentValue && currentValue.length > 0) {
-      currentQuickFilter.value = '';
-      onSetQuickFilter(currentQuickFilter);
       keyEvent.stopPropagation();
       keyEvent.preventDefault();
-      onFilteredSearch(`?filters[0].attribute=id&filters[0].value=${currentQuickFilter.value}`);
+      onFilteredSearch(`?filters[0].attribute=${id}&filters[0].value=${currentValue}`, null, null, false);
     }
   }
 
@@ -85,7 +83,7 @@ class ContentsFilter extends Component {
     const {
       currentQuickFilter, intl, contentTypes, groups, language, filteringCategories,
       statusChecked, onCheckStatus, accessChecked, onCheckAccess, authorChecked, onCheckAuthor,
-      onFilteredSearch, onSetContentType, onSetGroup, currentUsername,
+      onFilteredSearch, onSetContentType, onSetGroup, currentUsername, onSetTabSearch,
     } = this.props;
     const { showAdvancedFilters } = this.state;
     const advancedFilterIcon = (
@@ -289,7 +287,7 @@ class ContentsFilter extends Component {
         <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
           <Button
             className="ContentsFilter__search-button"
-            onClick={() => onFilteredSearch()}
+            onClick={() => { onFilteredSearch(null, null, null, false); onSetTabSearch(false); }}
           >
             <FormattedMessage id="cms.contents.search" defaultMessage="Search" />
           </Button>
@@ -316,6 +314,7 @@ ContentsFilter.propTypes = {
   onCheckAuthor: PropTypes.func.isRequired,
   onSetContentType: PropTypes.func.isRequired,
   onSetGroup: PropTypes.func.isRequired,
+  onSetTabSearch: PropTypes.func.isRequired,
   currentUsername: PropTypes.string.isRequired,
 };
 

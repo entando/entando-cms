@@ -71,3 +71,8 @@ export const getSelectedRows = createSelector(
   getContentsState,
   contents => contents.selectedRows,
 );
+
+export const getTabSearchEnabled = createSelector(
+  getContentsState,
+  contents => contents.tabSearchEnabled,
+);

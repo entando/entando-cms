@@ -84,7 +84,7 @@ class EditContentFormBody extends React.Component {
       onLine,
     } = content || {};
     const { contentType: newContentsType } = this.props;
-    const contentType = content.typeDescription || newContentsType;
+    const contentType = content.typeDescription || newContentsType.typeDescription;
     const groupsWithEmptyOption = [...groups];
 
     return (
@@ -243,7 +243,7 @@ EditContentFormBody.propTypes = {
   workMode: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,
   content: PropTypes.shape({}),
-  contentType: PropTypes.string,
+  contentType: PropTypes.shape({}),
   currentUser: PropTypes.string.isRequired,
   location: PropTypes.shape({}).isRequired,
   groups: PropTypes.arrayOf(
@@ -272,7 +272,10 @@ EditContentFormBody.defaultProps = {
   ownerGroupDisabled: false,
   selectedJoinGroups: [],
   content: {},
-  contentType: '',
+  contentType: {
+    typeDescription: '',
+    typeCode: '',
+  },
   invalid: false,
   submitting: false,
 };

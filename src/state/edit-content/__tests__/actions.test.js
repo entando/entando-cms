@@ -45,8 +45,8 @@ const SET_GROUPS_PARAMS = {
 jest.mock('api/editContent', () => ({
   getContent: jest.fn(mockApi({ payload: { content: { categories: ['home'] } } })),
   getGroups: jest.fn(mockApi({ payload: ['a', 'b'] })),
-  postAddContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
-  putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
+  postAddContent: jest.fn(mockApi({ payload: { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } })),
+  putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } })),
 }));
 
 it('test setContentModelList action', () => {
@@ -62,7 +62,9 @@ it('test clearEditContentForm action', () => {
 });
 
 it('test setNewContentsType action', () => {
-  expect(setNewContentsType('NEWS')).toEqual({ type: SET_NEW_CONTENTS_TYPE, payload: 'NEWS' });
+  expect(setNewContentsType({ typeCode: 'NEWS', typeDescription: 'News' })).toEqual(
+    { type: SET_NEW_CONTENTS_TYPE, payload: { typeCode: 'NEWS', typeDescription: 'News' } },
+  );
 });
 
 it('test setGroups action', () => {
@@ -121,7 +123,7 @@ describe('editContent thunks', () => {
       .catch(done.fail);
   });
   it('sendPostAddContent', (done) => {
-    const tosend = { a: 1, contentType: 'YO' };
+    const tosend = { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } };
     store
       .dispatch(sendPostAddContent(tosend))
       .then((res) => {
@@ -134,7 +136,7 @@ describe('editContent thunks', () => {
 
   it('sendPostContentModel error', (done) => {
     postAddContent.mockImplementationOnce(mockApi({ errors: true }));
-    const tosend = { a: 1, contentType: 'YO' };
+    const tosend = { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } };
     store
       .dispatch(sendPostAddContent(tosend))
       .then((res) => {
@@ -145,7 +147,7 @@ describe('editContent thunks', () => {
       .catch(done.fail);
   });
   it('sendPutEditContent', (done) => {
-    const tosend = { a: 1, contentType: 'YO' };
+    const tosend = { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } };
     store
       .dispatch(sendPutEditContent(1, tosend))
       .then((res) => {
@@ -158,7 +160,7 @@ describe('editContent thunks', () => {
 
   it('sendPutEditContent error', (done) => {
     putUpdateContent.mockImplementationOnce(mockApi({ errors: true }));
-    const tosend = { a: 1, contentType: 'YO' };
+    const tosend = { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } };
     store
       .dispatch(sendPutEditContent(1, tosend))
       .then((res) => {
@@ -172,7 +174,7 @@ describe('editContent thunks', () => {
   it('save new content', (done) => {
     store = createMockStore({
       apps:
-      { cms: { editContent: { workMode: WORK_MODE_ADD } } },
+      { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
       currentUser: { username: 'admin' },
       form: { editcontentform: { values: {} } },
     });
@@ -183,7 +185,7 @@ describe('editContent thunks', () => {
   it('save add content', (done) => {
     store = createMockStore({
       apps:
-      { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: 'NEW' } } } },
+      { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } } },
       currentUser: { username: 'admin' },
       form: { editcontentform: { values: {} } },
     });

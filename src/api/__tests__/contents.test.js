@@ -1,7 +1,7 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
-  getContents, deleteContent, publishContent, updateContents,
+  getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
 } from 'api/contents';
 import { makeRequest } from '@entando/apimanager';
 import { RESPONSE_CONTENTS_OK, RESPONSE_DELETE_OK, RESPONSE_PUBLISH_OK } from 'testutils/mocks/contents';
@@ -53,6 +53,21 @@ describe('api/contents', () => {
         contentType: 'application/json',
         useAuthentication: true,
         body: { status: 'published' },
+      });
+      expect(response).toBeInstanceOf(Promise);
+    });
+  });
+
+  describe('publish/unpublish multiple content', () => {
+    it('returns a promise', () => {
+      const response = publishMultipleContents(['id1', 'id2'], 'published');
+      expect(makeRequest).toHaveBeenCalledWith({
+        uri: '/api/plugins/cms/contents/status',
+        method: 'PUT',
+        mockResponse: RESPONSE_PUBLISH_OK,
+        contentType: 'application/json',
+        useAuthentication: true,
+        body: { status: 'published', codes: ['id1', 'id2'] },
       });
       expect(response).toBeInstanceOf(Promise);
     });

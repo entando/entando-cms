@@ -10,6 +10,7 @@ import {
   setOwnerGroupDisable,
   setWorkMode,
   saveContent,
+  fetchContent,
 } from 'state/edit-content/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -27,9 +28,10 @@ import {
   getNewContentsType,
   getOwnerGroupDisabled,
   getSaveType,
+  getContent,
 } from 'state/edit-content/selectors';
 import {
-  CONTINUE_SAVE_TYPE, WORK_MODE_ADD,
+  CONTINUE_SAVE_TYPE, WORK_MODE_ADD, WORK_MODE_EDIT, APPROVE_SAVE_TYPE,
 } from 'state/edit-content/types';
 
 const publishContentMsgs = defineMessages({
@@ -57,12 +59,13 @@ export const mapStateToProps = state => ({
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
   selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),
   saveType: getSaveType(state),
+  content: getContent(state),
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => {
     dispatch(setWorkMode(WORK_MODE_ADD));
-    dispatch(fetchGroups());
+    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTree());
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
@@ -79,8 +82,18 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
             TOAST_SUCCESS,
           ),
         );
-        if (saveType !== CONTINUE_SAVE_TYPE) {
+        if (saveType === APPROVE_SAVE_TYPE) {
+          const contentId = res.id ? res.id : res[0].id;
+          dispatch(sendPublishContent(contentId, 'published'));
           history.push(routeConverter(ROUTE_CMS_CONTENTS));
+        } else if (saveType !== CONTINUE_SAVE_TYPE) {
+          history.push(routeConverter(ROUTE_CMS_CONTENTS));
+        } else if (res && res[0]) {
+          dispatch(setWorkMode(WORK_MODE_EDIT));
+          dispatch(fetchContent(`/${res[0].id}`));
+        } else if (res && res.id) {
+          dispatch(setWorkMode(WORK_MODE_EDIT));
+          dispatch(fetchContent(`/${res.id}`));
         }
       }
     });

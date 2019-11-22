@@ -1,13 +1,13 @@
 import { toggleLoading } from 'state/loading/actions';
 import {
-  getContents, deleteContent, publishContent, updateContents,
+  getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
 } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
 import { getPagination } from 'state/pagination/selectors';
 import {
   getContentType, getGroup, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentQuickFilter,
-  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow,
+  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow, getTabSearchEnabled,
 } from 'state/contents/selectors';
 import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
@@ -15,7 +15,7 @@ import {
 import {
   SET_CONTENTS, SET_QUICK_FILTER, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
-  SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE,
+  SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
   SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
@@ -25,6 +25,11 @@ const pageDefault = { page: 1, pageSize: 10 };
 export const setContents = contents => ({
   type: SET_CONTENTS,
   payload: contents,
+});
+
+export const setTabSearch = tabSearch => ({
+  type: SET_TAB_SEARCH,
+  payload: tabSearch,
 });
 
 export const setQuickFilter = quickFilter => ({
@@ -115,6 +120,7 @@ export const fetchContents = (page = pageDefault,
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
         }
+        dispatch(selectAllRows(false));
         dispatch(toggleLoading('contents'));
         resolve();
       });
@@ -122,7 +128,9 @@ export const fetchContents = (page = pageDefault,
     .catch(() => {});
 });
 
-export const fetchContentsPaged = (params, newPagination) => (dispatch, getState) => {
+export const fetchContentsWithFilters = (
+  params, newPagination, newSort,
+) => (dispatch, getState) => {
   const state = getState();
   const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
   const sortingColumns = getSortingColumns(state);
@@ -130,7 +138,7 @@ export const fetchContentsPaged = (params, newPagination) => (dispatch, getState
   const { id, value: qfValue } = quickFilter;
   const columnKey = Object.keys(sortingColumns)[0];
   const sortDirection = sortingColumns[columnKey].direction;
-  const sortParams = `sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
+  const sortParams = newSort || `sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
   let filterParams = '';
   const filters = [];
   if (params) { filterParams = params; return dispatch(fetchContents(pagination, `${params}&${sortParams}`)); }
@@ -156,9 +164,36 @@ export const fetchContentsPaged = (params, newPagination) => (dispatch, getState
         (filter, j) => `&filters[${i + j}].attribute=categories&filters[${i + j}].value=${filter.code}`,
       ).join('');
     }
+    if (att === 'status' && value === 'published') {
+      return '&status=published';
+    }
     return `&filters[${i}].attribute=${att}&filters[${i}].value=${value}`;
   }).join('');
   return dispatch(fetchContents(pagination, `?${sortParams}${filterParams}`));
+};
+
+export const fetchContentsWithTabs = (
+) => (dispatch, getState) => {
+  const state = getState();
+  const pagination = getPagination(state, 'contents') || getPagination(state);
+  const sortingColumns = getSortingColumns(state);
+  const columnKey = Object.keys(sortingColumns)[0];
+  const sortDirection = sortingColumns[columnKey].direction;
+  const sortParams = `sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
+  const author = getCurrentAuthorShow(state);
+  const status = getCurrentStatusShow(state);
+  const statusParams = status === 'published' ? '&status=published' : `&filters[0].attribute=status&filters[0].value=${status}`;
+  const authorParams = author === 'all' ? '' : `&filters[0].attribute=author&filters[1].value=${author}`;
+  return dispatch(fetchContents(pagination, `?${sortParams}${statusParams}${authorParams}`));
+};
+
+export const fetchContentsPaged = (params, page, sort, tabSearch) => (dispatch, getState) => {
+  const state = getState();
+  const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
+  if (tabSearchEnabled) {
+    return dispatch(fetchContentsWithTabs());
+  }
+  return dispatch(fetchContentsWithFilters(params, page, sort));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
@@ -181,6 +216,24 @@ export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
 
 export const sendPublishContent = (id, status) => dispatch => new Promise((resolve) => {
   publishContent(id, status)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPublishMultipleContents = (id, status) => dispatch => new Promise((resolve) => {
+  publishMultipleContents(id, status)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {

@@ -258,7 +258,7 @@ export default {
     'cms.contents.description': 'Nome',
     'cms.contents.firstEditor': 'Creato da',
     'cms.contents.lastModified': 'Ultima Modifica',
-    'cms.contents.typeDescription': 'Tipo',
+    'cms.contents.typeCode': 'Tipo',
     'cms.contents.created': 'Data di Creazione',
     'cms.contents.actions': 'Azioni',
     'cms.contents.selectAll': 'Seleziona Tutto',

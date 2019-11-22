@@ -23,7 +23,7 @@ const AVAILABLE_COLUMNS = [
   },
   {
     name: 'Type',
-    code: 'typeDescription',
+    code: 'typeCode',
   },
   {
     name: 'Created Date',
@@ -90,6 +90,7 @@ class Contents extends Component {
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
+      onSetTabSearch,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -103,12 +104,23 @@ class Contents extends Component {
             defaultMessage="Select Categories to add"
           />
         </Button>
-        <Button onClick={() => onClickPublish(selectedRowsData, true)}>
-          <FormattedMessage
-            id="cms.contents.publish"
-            defaultMessage="Publish"
-          />
-        </Button>
+        {
+          currentStatusShow === 'published' ? (
+            <Button onClick={() => onClickPublish(selectedRowsData, false)}>
+              <FormattedMessage
+                id="cms.contents.unpublish"
+                defaultMessage="Unpublish"
+              />
+            </Button>
+          ) : (
+            <Button onClick={() => onClickPublish(selectedRowsData, true)}>
+              <FormattedMessage
+                id="cms.contents.publish"
+                defaultMessage="Publish"
+              />
+            </Button>
+          )
+        }
       </div>
     ) : null;
     return (
@@ -131,6 +143,7 @@ class Contents extends Component {
           onSetContentType={onSetContentType}
           onSetGroup={onSetGroup}
           currentUsername={currentUsername}
+          onSetTabSearch={onSetTabSearch}
         />
         <div className="Contents__body">
           <ContentsTabs
@@ -170,6 +183,7 @@ class Contents extends Component {
                 onClickDelete={onClickDelete}
                 onClickPublish={onClickPublish}
                 onClickClone={onClickClone}
+                groups={groups}
               />
             </Spinner>
           </div>
@@ -221,6 +235,7 @@ Contents.propTypes = {
   onClickJoinCategories: PropTypes.func.isRequired,
   currentUsername: PropTypes.string.isRequired,
   onClickClone: PropTypes.func.isRequired,
+  onSetTabSearch: PropTypes.func.isRequired,
 };
 
 Contents.defaultProps = {

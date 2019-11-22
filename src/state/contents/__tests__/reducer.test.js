@@ -5,6 +5,7 @@ import {
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
   setCurrentColumnsShow, selectRow, selectAllRows, setJoinContentCategory,
   resetJoinContentCategories,
+  setTabSearch,
 } from 'state/contents/actions';
 
 const CONTENTS = [{ id: 1 }, { id: 2 }];
@@ -26,6 +27,14 @@ describe('state/contents/reducer', () => {
       it('should correctly update quick filter state field', () => {
         newState = reducer(state, setQuickFilter({ name: 'code', value: 'NEW2' }));
         expect(newState.currentQuickFilter).toEqual({ name: 'code', value: 'NEW2' });
+      });
+    });
+
+    describe('after action setTabSearch', () => {
+      let newState;
+      it('should correctly update tabSearchEnabled state field', () => {
+        newState = reducer(state, setTabSearch(true));
+        expect(newState.tabSearchEnabled).toEqual(true);
       });
     });
     describe('after action setContents', () => {

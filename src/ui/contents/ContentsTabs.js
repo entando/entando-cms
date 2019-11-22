@@ -31,7 +31,7 @@ const ContentTabs = ({
         <NavItem eventKey="ready">
           <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
         </NavItem>
-        <NavItem eventKey="public">
+        <NavItem eventKey="published">
           <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
         </NavItem>
       </Nav>
@@ -46,7 +46,9 @@ const ContentTabs = ({
               <MenuItem
                 eventKey={contentType.code}
                 key={contentType.code}
-                onClick={() => onClickAddContent(contentType.code)}
+                onClick={() => onClickAddContent(
+                  { typeCode: contentType.code, typeDescription: contentType.name },
+                )}
               >
                 {contentType.name}
               </MenuItem>

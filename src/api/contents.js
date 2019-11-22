@@ -28,6 +28,15 @@ export const publishContent = (id, status) => makeRequest({
   body: { status },
 });
 
+export const publishMultipleContents = (contentIds, status) => makeRequest({
+  uri: `${contentsPath}/status`,
+  method: METHODS.PUT,
+  contentType: 'application/json',
+  mockResponse: RESPONSE_PUBLISH_OK,
+  useAuthentication: true,
+  body: { codes: contentIds, status },
+});
+
 export const updateContents = contents => makeRequest({
   uri: `${contentsPath}`,
   method: METHODS.PUT,

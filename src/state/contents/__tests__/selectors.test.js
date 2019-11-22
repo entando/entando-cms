@@ -11,6 +11,7 @@ import {
   getSortingColumns,
   getSelectedRows,
   getJoiningCategories,
+  getTabSearchEnabled,
 } from 'state/contents/selectors';
 
 const TEST_STATE = {
@@ -31,6 +32,7 @@ const TEST_STATE = {
         currentStatusShow: 'approved',
         selectedRows: ['row1', 'row2'],
         currentColumnsShow: ['col1', 'col2'],
+        tabSearchEnabled: true,
       },
     },
   },
@@ -44,6 +46,11 @@ it('verify getContents selector', () => {
 it('verify getCurrentQuickFilter selector', () => {
   const currentFilter = getCurrentQuickFilter(TEST_STATE);
   expect(currentFilter).toEqual({ name: 'code', value: 'new2' });
+});
+
+it('verify getTabSearchEnabled selector', () => {
+  const tabSearchEnabled = getTabSearchEnabled(TEST_STATE);
+  expect(tabSearchEnabled).toEqual(true);
 });
 
 it('verify getFilteringCategories selector', () => {

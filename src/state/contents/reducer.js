@@ -11,6 +11,7 @@ import {
   SELECT_ALL_ROWS,
   SET_JOIN_CONTENT_CATEGORY,
   RESET_JOIN_CONTENT_CATEGORIES,
+  SET_TAB_SEARCH,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -24,8 +25,8 @@ const defaultState = {
   filteringCategories: [],
   joiningCategories: [],
   sortingColumns: {
-    created: {
-      direction: TABLE_SORT_DIRECTION.ASC,
+    lastModified: {
+      direction: TABLE_SORT_DIRECTION.DESC,
       position: 0,
     },
   },
@@ -36,7 +37,8 @@ const defaultState = {
   selectedRows: [],
   currentAuthorShow: 'all',
   currentStatusShow: 'ready',
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeDescription', 'created', 'onLine', 'status', 'actions'],
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'status', 'actions'],
+  tabSearchEnabled: true,
 };
 
 const reducer = (state = defaultState, action = {}) => {
@@ -45,6 +47,12 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         contents: action.payload || [],
+      };
+    }
+    case SET_TAB_SEARCH: {
+      return {
+        ...state,
+        tabSearchEnabled: action.payload,
       };
     }
     case SET_QUICK_FILTER: {
@@ -90,12 +98,14 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         currentAuthorShow: action.payload,
+        tabSearchEnabled: !!action.payload,
       };
     }
     case SET_CURRENT_STATUS_SHOW: {
       return {
         ...state,
         currentStatusShow: action.payload,
+        tabSearchEnabled: !!action.payload,
       };
     }
     case SET_SORT: {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-import { sendPublishContent } from 'state/contents/actions';
+import { sendPublishMultipleContents, selectAllRows } from 'state/contents/actions';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import { defineMessages, injectIntl } from 'react-intl';
 
@@ -23,20 +23,20 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = (dispatch, { intl }) => ({
-  onConfirmPublish: (content, status) => {
-    dispatch(sendPublishContent(content.id, status)).then((res) => {
+  onConfirmPublish: (contentIds, status) => {
+    dispatch(sendPublishMultipleContents(contentIds, status)).then((res) => {
       if (res) {
         dispatch(
           addToast(
             intl.formatMessage(status === 'published'
               ? publishContentMsgs.published
-              : publishContentMsgs.unpublished,
-            { modelname: content.description }),
+              : publishContentMsgs.unpublished),
             TOAST_SUCCESS,
           ),
         );
       }
     });
+    dispatch(selectAllRows(false));
     dispatch(setVisibleModal(''));
   },
 });
