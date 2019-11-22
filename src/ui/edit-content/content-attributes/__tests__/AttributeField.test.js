@@ -11,7 +11,6 @@ import {
   TYPE_NUMBER,
   TYPE_THREESTATE,
   TYPE_TIMESTAMP,
-  TYPE_HYPERTEXT,
   TYPE_LONGTEXT,
   TYPE_TEXT,
   TYPE_ATTACH,
@@ -32,7 +31,6 @@ const attributeFields = {
   [TYPE_NUMBER]: 'NumberAttributeField',
   [TYPE_THREESTATE]: 'ThreeStateAttributeField',
   [TYPE_TIMESTAMP]: 'TimestampAttributeField',
-  [TYPE_HYPERTEXT]: 'HypertextAttributeField',
   [TYPE_LONGTEXT]: 'LongtextAttributeField',
   [TYPE_TEXT]: 'TextAttributeField',
   [TYPE_ATTACH]: 'AttachAttributeField',
@@ -50,8 +48,18 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
         code: 'Test attribute code',
       };
       const wrapper = shallow(<AttributeField attribute={attribute} />);
-
       expect(wrapper.prop('component').name).toEqual(attrCompName);
     });
+  });
+
+  it('should render a connected HypertextAttributeField component when type is Hypertext', () => {
+    const attrCompName = 'HypertextAttributeField';
+    const attribute = {
+      type: 'Hypertext',
+      code: 'Test attribute code',
+    };
+    const wrapper = shallow(<AttributeField attribute={attribute} />);
+    const connectedComp = wrapper.prop('component');
+    expect(connectedComp.WrappedComponent.name).toEqual(attrCompName);
   });
 });

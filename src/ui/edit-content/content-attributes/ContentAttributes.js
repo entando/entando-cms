@@ -15,7 +15,7 @@ class ContentAttributes extends Component {
   }
 
   render() {
-    const { attributes, settings } = this.props;
+    const { attributes } = this.props;
 
     return (
       <Tabs defaultActiveKey={1} animation={false} id="content-attributes-tabs">
@@ -25,7 +25,6 @@ class ContentAttributes extends Component {
             name="attributes"
             component={AttributeFields}
             attributes={attributes}
-            settings={settings}
           />
         </Tab>
         <Tab eventKey={2} title="Italiano">
@@ -42,7 +41,6 @@ class ContentAttributes extends Component {
 ContentAttributes.propTypes = {
   onDidMount: PropTypes.func.isRequired,
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  settings: PropTypes.shape({}).isRequired,
 };
 
 export default ContentAttributes;

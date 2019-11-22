@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   fieldInputPropTypes,
   fieldMetaPropTypes,
@@ -7,6 +8,7 @@ import {
 
 import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
 import RenderRichTextEditor from 'ui/common/form/RenderRichTextEditor';
+import { getEditorSettings } from 'state/content-settings/selectors';
 
 const HypertextAttributeField = ({
   label,
@@ -61,4 +63,8 @@ HypertextAttributeField.defaultProps = {
   isRTE: false,
 };
 
-export default HypertextAttributeField;
+export default connect(
+  state => ({
+    isRTE: getEditorSettings(state) && getEditorSettings(state).label !== 'None',
+  }),
+)(HypertextAttributeField);

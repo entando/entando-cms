@@ -18,7 +18,7 @@ import {
   TYPE_MONOLIST,
 } from 'state/content-type/const';
 
-const renderField = (name, idx, attribute, settings) => {
+const renderField = (name, idx, attribute) => {
   const {
     type, code, mandatory, listFilter, indexable,
   } = attribute;
@@ -59,7 +59,6 @@ const renderField = (name, idx, attribute, settings) => {
           key={code}
           name={name}
           attribute={attribute}
-          settings={settings}
         />
       );
   }
@@ -75,7 +74,7 @@ const renderField = (name, idx, attribute, settings) => {
   );
 };
 
-const AttributeFields = ({ attributes, fields, settings }) => {
+const AttributeFields = ({ attributes, fields }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
     // as it cannot be set directly from props
@@ -92,13 +91,12 @@ const AttributeFields = ({ attributes, fields, settings }) => {
     });
   }
 
-  return fields.map((name, idx) => renderField(name, idx, attributes[idx], settings));
+  return fields.map((name, idx) => renderField(name, idx, attributes[idx]));
 };
 
 AttributeFields.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
-  settings: PropTypes.shape({}).isRequired,
 };
 
 export default AttributeFields;

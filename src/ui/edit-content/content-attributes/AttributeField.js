@@ -44,7 +44,6 @@ const AttributeField = ({
   attribute,
   label,
   hasLabel,
-  settings,
 }) => {
   const {
     type,
@@ -94,9 +93,6 @@ const AttributeField = ({
       AttributeFieldComp = TimestampAttributeField;
       break;
     case TYPE_HYPERTEXT:
-      if (settings.editor) {
-        extraProps.isRTE = settings.editor.label !== 'None';
-      }
       AttributeFieldComp = HypertextAttributeField;
       break;
     case TYPE_NUMBER:
@@ -144,13 +140,11 @@ const AttributeField = ({
 AttributeField.propTypes = {
   name: PropTypes.string.isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
-  settings: PropTypes.shape({}),
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
 };
 
 AttributeField.defaultProps = {
-  settings: {},
   label: null,
   hasLabel: true,
 };
