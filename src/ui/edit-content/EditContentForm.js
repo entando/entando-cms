@@ -221,7 +221,7 @@ class EditContentFormBody extends React.Component {
             <SectionTitle nameId="cms.contents.edit.contentAttributes" />
             <ContentAttributesContainer
               attributes={content.attributes}
-              typeCode={content.typeCode}
+              typeCode={content.typeCode || contentType}
             />
           </Row>
         </div>

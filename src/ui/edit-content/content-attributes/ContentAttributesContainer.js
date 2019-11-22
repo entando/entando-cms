@@ -14,7 +14,7 @@ export const mapStateToProps = (state, { attributes = [] }) => ({
 });
 
 // FIXME: Remove default typeCode value when fetchContent() is fixed
-export const mapDispatchToProps = (dispatch, { typeCode = 'TES' }) => ({
+export const mapDispatchToProps = (dispatch, { typeCode }) => ({
   onDidMount: () => {
     // FIXME: use fetchContentTypeAttributes() when API endpoint is implemented
     dispatch(fetchContentType(typeCode));
