@@ -43,6 +43,7 @@ const EnumeratorAttributeField = ({
       label={label}
       meta={meta}
       options={options}
+      defaultOptionId="cms.label.chooseoption"
       {...optionKeys}
       {...rest}
     />
