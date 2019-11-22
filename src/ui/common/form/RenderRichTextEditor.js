@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
-import CKEditor from 'ckeditor4-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const RenderRichTextEditor = ({
   input, append, label, labelSize, placeholder, alignClass,
@@ -16,22 +17,11 @@ const RenderRichTextEditor = ({
       </Col>
     )}
     <Col xs={12 - labelSize} className="RenderRichTextEditor-content">
-      <CKEditor
-        data={input.value}
-        disabled={disabled}
+      <ReactQuill
+        {...input}
+        onBlur={(_, __, editor) => input.onBlur(editor.getHTML())}
         placeholder={placeholder}
-        config={{
-          height: 250,
-        }}
-        onChange={(event) => {
-          input.onChange(event.editor.getData());
-        }}
-        // Workaround for editor-element-conflict error according to:
-        // https://github.com/ckeditor/ckeditor4-react/issues/57#issuecomment-520377696
-        onBeforeLoad={(CKEDITOR) => {
-          // eslint-disable-next-line no-param-reassign
-          CKEDITOR.disableAutoInline = true;
-        }}
+        disabled={disabled}
       />
       {append && <span className="AppendedLabel">{append}</span>}
       {touched && ((error && <span className="help-block">{error}</span>))}
