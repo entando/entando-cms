@@ -4,7 +4,7 @@ import { configEnzymeAdapter, addReduxForm, mockRenderWithIntl } from 'testutils
 import { mount } from 'enzyme';
 import AttributeEnumMapSettingsBody, {
   elements as elementValidation,
-} from 'ui/common/attributes/AttributeEnumMapSettings';
+} from 'ui/common/contenttype-attributes/AttributeEnumMapSettings';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import { required } from '@entando/utils';

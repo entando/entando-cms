@@ -1,7 +1,7 @@
 import React from 'react';
 import { configEnzymeAdapter } from 'testutils/helpers';
 import { shallow } from 'enzyme';
-import AttributeListTable from 'ui/common/attributes/AttributeListTable';
+import AttributeListTable from 'ui/common/contenttype-attributes/AttributeListTable';
 
 configEnzymeAdapter();
 

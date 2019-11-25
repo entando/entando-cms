@@ -1,17 +1,17 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
-  CardGrid, Row, Col, Breadcrumb,
+  Grid, Row, Col, Breadcrumb,
 } from 'patternfly-react';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import ErrorsAlertContainer from 'ui/common/form/ErrorsAlertContainer';
 import AddAttributeFormContainer from 'ui/content-type/attributes/AddAttributeFormContainer';
 import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 
 const AddContentTypeAttributePage = () => (
-  <CardGrid fluid>
+  <Grid fluid>
     <Row>
       <Col xs={12}>
         <Breadcrumb>
@@ -29,9 +29,11 @@ const AddContentTypeAttributePage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <PageTitle
+        <CMSPageTitle
           titleId="cms.contenttype.editattribute.label"
           helpId="cms.contentType.helpattributes.label"
+          position="pull-right"
+          largeTitle
         />
       </Col>
     </Row>
@@ -45,7 +47,7 @@ const AddContentTypeAttributePage = () => (
         <AddAttributeFormContainer />
       </Col>
     </Row>
-  </CardGrid>
+  </Grid>
 );
 
 export default AddContentTypeAttributePage;

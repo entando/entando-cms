@@ -5,8 +5,10 @@
   }
 
   &__dropdownbutton {
-    width: 100%;
-    text-align: left;
+    &.btn { // sass-lint:disable-line class-name-format
+      width: 100%;
+      text-align: left;
+    }
 
     .caret { // sass-lint:disable-line class-name-format
       margin-top: 5px;

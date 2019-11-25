@@ -7,7 +7,7 @@ import {
 } from 'patternfly-react';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
-import AttributeCheckIcon from 'ui/common/attributes/AttributeCheckIcon';
+import AttributeCheckIcon from 'ui/common/contenttype-attributes/AttributeCheckIcon';
 
 import { TYPE_COMPOSITE } from 'state/content-type/const';
 
@@ -65,16 +65,16 @@ const AttributeListTableComposite = (props) => {
     const isMovableDown = index < compositeAttributes.length - 1;
     return (
       <tr key={attribute.code}>
-        <td className="AttributeListRow__td">{attribute.code}</td>
-        <td className="AttributeListRow__td">{attribute.type}</td>
-        <td className="AttributeListRow__td text-center">
+        <td className="ContTypeAttributeListRow__td">{attribute.code}</td>
+        <td className="ContTypeAttributeListRow__td">{attribute.type}</td>
+        <td className="ContTypeAttributeListRow__td text-center">
           <AttributeCheckIcon isChecked={attribute.mandatory || false} />
         </td>
-        <td className="AttributeListRow__td text-center">
+        <td className="ContTypeAttributeListRow__td text-center">
           <DropdownKebab pullRight id={`${attribute.code}-actions`}>
             {isMovableUp ? (
               <MenuItem
-                className="AttributeListMenuAction__menu-item-move-up"
+                className="ContTypeAttributeListMenuAction__menu-item-move-up"
                 onClick={() => {
                   fields.move(index - 1, index);
                   onMove(index, index - 1, isMonolistCompositeType);
@@ -85,7 +85,7 @@ const AttributeListTableComposite = (props) => {
             ) : null}
             {isMovableDown ? (
               <MenuItem
-                className="AttributeListMenuAction__menu-item-move-down"
+                className="ContTypeAttributeListMenuAction__menu-item-move-down"
                 onClick={() => {
                   fields.move(index, index + 1);
                   onMove(index, index + 1, isMonolistCompositeType);
@@ -95,7 +95,7 @@ const AttributeListTableComposite = (props) => {
               </MenuItem>
             ) : null}
             <MenuItem
-              className="AttributeListMenuAction__menu-item-delete"
+              className="ContTypeAttributeListMenuAction__menu-item-delete"
               onClick={() => {
                 fields.remove(index);
                 onClickDelete(attribute.code, isMonolistCompositeType);
@@ -111,19 +111,19 @@ const AttributeListTableComposite = (props) => {
 
   const renderTable = () => (
     <Col xs={10} xsOffset={2}>
-      <table className="AttributeListTableComposite__table table table-striped table-bordered">
+      <table className="ContTypeAttributeListTableComposite__table table table-striped table-bordered">
         <thead>
           <tr>
-            <th className="AttributeListTableComposite__th-md">
+            <th className="ContTypeAttributeListTableComposite__th-md">
               <FormattedMessage id="cms.contenttype.form.code" />
             </th>
-            <th className="AttributeListTableComposite__th-sm">
+            <th className="ContTypeAttributeListTableComposite__th-sm">
               <FormattedMessage id="cms.contenttype.form.type" />
             </th>
-            <th className="AttributeListTableComposite__th-xs text-center">
+            <th className="ContTypeAttributeListTableComposite__th-xs text-center">
               <FormattedMessage id="cms.contenttype.form.mandatory" />
             </th>
-            <th className="AttributeListTableComposite__th-xs text-center">
+            <th className="ContTypeAttributeListTableComposite__th-xs text-center">
               <FormattedMessage id="cms.contenttype.form.actions" />
             </th>
           </tr>

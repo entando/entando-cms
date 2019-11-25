@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { FieldArray } from 'redux-form';
 import { Col } from 'patternfly-react';
-import AttributeListTableActions from 'ui/common/attributes/AttributeListTableActions';
+import AttributeListTableActions from 'ui/common/contenttype-attributes/AttributeListTableActions';
 
 const AttributeListTable = ({
   attributes,
@@ -15,25 +15,25 @@ const AttributeListTable = ({
 }) => {
   const renderTable = () => (
     <Col xs={10} xsOffset={2}>
-      <table className="AttributeListTable__table table table-striped table-bordered">
+      <table className="ContTypeAttributeListTable__table table table-striped table-bordered">
         <thead>
           <tr>
-            <th className="AttributeListTable__th-md">
+            <th className="ContTypeAttributeListTable__th-md">
               <FormattedMessage id="cms.contenttype.form.code" />
             </th>
-            <th className="AttributeListTable__th-sm">
+            <th className="ContTypeAttributeListTable__th-sm">
               <FormattedMessage id="cms.contenttype.form.type" />
             </th>
-            <th className="AttributeListTable__th-md">
+            <th className="ContTypeAttributeListTable__th-md">
               <FormattedMessage id="cms.contenttype.form.roles" />
             </th>
-            <th className="AttributeListTable__th-xs text-center">
+            <th className="ContTypeAttributeListTable__th-xs text-center">
               <FormattedMessage id="cms.contenttype.form.mandatory" />
             </th>
-            <th className="AttributeListTable__th-xs text-center">
+            <th className="ContTypeAttributeListTable__th-xs text-center">
               <FormattedMessage id="cms.contenttype.form.filter" />
             </th>
-            <th className="AttributeListTable__th-xs text-center">
+            <th className="ContTypeAttributeListTable__th-xs text-center">
               <FormattedMessage id="cms.contenttype.form.actions" />
             </th>
           </tr>
@@ -55,7 +55,7 @@ const AttributeListTable = ({
     </Col>
   );
 
-  return <div className="AttributeListTable">{attributes.length > 0 ? renderTable() : null}</div>;
+  return <div className="ContTypeAttributeListTable">{attributes.length > 0 ? renderTable() : null}</div>;
 };
 
 AttributeListTable.propTypes = {
