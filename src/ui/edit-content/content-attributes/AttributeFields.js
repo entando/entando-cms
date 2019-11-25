@@ -41,6 +41,8 @@ const renderField = (name, idx, attribute) => {
 
   switch (type) {
     case TYPE_COMPOSITE:
+      fieldName = `${name}.compositeelements`;
+      FieldComp = FieldArray;
       AttributeFieldComp = CompositeAttributeField;
       break;
     case TYPE_LIST:
