@@ -14,8 +14,8 @@ const CheckboxAttributeField = ({
   ...rest
 }) => {
   const switchVals = {
-    trueValue: true,
-    falseValue: false,
+    trueValue: 'true',
+    falseValue: 'false',
   };
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
