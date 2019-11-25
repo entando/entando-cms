@@ -17,7 +17,7 @@ import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
 import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorContainer';
 
 import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
-import ContentAttributesContainer from './content-attributes/ContentAttributesContainer';
+import ContentAttributesContainer from 'ui/edit-content/content-attributes/ContentAttributesContainer';
 
 const messages = defineMessages({
   contentDesctiption: {

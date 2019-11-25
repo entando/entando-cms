@@ -71,6 +71,7 @@ const AttributeField = ({
   if (mandatory) validate.push(required);
 
   let AttributeFieldComp;
+  let actualName = `${name}.value`;
   const extraProps = {};
 
   switch (type) {
@@ -126,7 +127,7 @@ const AttributeField = ({
 
   return (
     <Field
-      name={name}
+      name={actualName}
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}

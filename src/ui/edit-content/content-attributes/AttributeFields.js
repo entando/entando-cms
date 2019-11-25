@@ -82,14 +82,15 @@ const AttributeFields = ({ attributes, fields }) => {
     // as it cannot be set directly from props
     attributes.forEach((attr) => {
       const {
-        value, elements, compositeelements, type,
+        code, value, values, elements, compositeelements,
       } = attr;
-      fields.push(
-        (type === TYPE_TIMESTAMP && {})
-        || (elements && { elements })
-        || (compositeelements && { compositeelements })
-        || value,
-      );
+      fields.push({
+        code,
+        value,
+        values,
+        elements,
+        compositeelements,
+      });
     });
   }
 

@@ -4,19 +4,17 @@ import ContentAttributes from 'ui/edit-content/content-attributes/ContentAttribu
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import { fetchContentType } from 'state/content-type/actions';
 import { fetchContentSettings } from 'state/content-settings/actions';
+import { getAttrInitialValue } from 'helpers/attrUtils';
 
-// FIXME: Remove default attributes value when fetchContent() is fixed
-export const mapStateToProps = (state, { attributes = [] }) => ({
+export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => ({
   attributes: (getSelectedContentTypeAttributes(state) || []).map((attr, i) => ({
     ...attr,
-    ...(attributes[i] || {}),
+    ...(contentAttributes[i] || (getAttrInitialValue(attr))),
   })),
 });
 
-// FIXME: Remove default typeCode value when fetchContent() is fixed
 export const mapDispatchToProps = (dispatch, { typeCode }) => ({
   onDidMount: () => {
-    // FIXME: use fetchContentTypeAttributes() when API endpoint is implemented
     dispatch(fetchContentType(typeCode));
     dispatch(fetchContentSettings());
   },

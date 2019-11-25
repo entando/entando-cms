@@ -7,7 +7,6 @@ import {
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
 
-import { TYPE_TIMESTAMP } from 'state/content-type/const';
 import attributeShape from './attributeShape';
 import AttributeField from './AttributeField';
 
@@ -18,22 +17,6 @@ const CompositeAttributeField = ({
 }) => {
   const { code, compositeAttributes } = attribute;
 
-  if (fields.length < compositeAttributes.length) {
-    // initialize fields with values from compositeAttributes prop through `.push()` method
-    // as it cannot be set directly from props
-    compositeAttributes.forEach((attr) => {
-      const {
-        value, elements, compositeelements, type,
-      } = attr;
-      fields.push(
-        (type === TYPE_TIMESTAMP && {})
-        || (elements && { elements })
-        || (compositeelements && { compositeelements })
-        || value,
-      );
-    });
-  }
-
   return (
     <Row key={code}>
       <label className="control-label col-xs-2">
@@ -42,15 +25,13 @@ const CompositeAttributeField = ({
       <Col xs={10}>
         <Panel>
           <Panel.Body>
-            <FormSection name={attribute.code}>
-              {fields.map((name, idx) => (
-                <AttributeField
-                  key={compositeAttributes[idx].code}
-                  name={name}
-                  attribute={compositeAttributes[idx]}
-                />
-              ))}
-            </FormSection>
+            {fields.map((name, idx) => (
+              <AttributeField
+                key={compositeAttributes[idx].code}
+                name={name}
+                attribute={compositeAttributes[idx]}
+              />
+            ))}
           </Panel.Body>
         </Panel>
       </Col>

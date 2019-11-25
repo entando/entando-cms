@@ -7,6 +7,7 @@ import {
 import Panel from 'react-bootstrap/lib/Panel';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
+import { getAttrInitialValue } from 'helpers/attrUtils';
 
 class RenderListField extends Component {
   buttonMoveUp(index) {
@@ -91,7 +92,7 @@ class RenderListField extends Component {
             <Button
               bsStyle="primary"
               title="Add"
-              onClick={() => fields.push()}
+              onClick={() => fields.push(getAttrInitialValue(rest.attribute))}
             >
               <FormattedMessage id="cms.label.add" />
             </Button>
