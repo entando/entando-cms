@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  Row, Col, CardGrid, Breadcrumb,
+  Row, Col, Grid, Breadcrumb,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentsContainer from 'ui/contents/ContentsContainer';
 
 const ContentsPage = () => (
-  <CardGrid>
+  <Grid fluid>
     <Row>
       <Col xs={12}>
         <Breadcrumb>
@@ -22,8 +22,13 @@ const ContentsPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col xs={4}>
-        <PageTitle titleId="cms.contents.title" helpId="cms.contents.tip" />
+      <Col xs={12}>
+        <CMSPageTitle
+          titleId="cms.contents.title"
+          helpId="cms.contents.tip"
+          position="pull-right"
+          largeTitle
+        />
       </Col>
     </Row>
     <Row>
@@ -31,7 +36,7 @@ const ContentsPage = () => (
         <ContentsContainer />
       </Col>
     </Row>
-  </CardGrid>
+  </Grid>
 );
 
 export default ContentsPage;

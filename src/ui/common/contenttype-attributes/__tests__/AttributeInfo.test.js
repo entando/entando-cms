@@ -2,7 +2,7 @@ import React from 'react';
 
 import { configEnzymeAdapter } from 'testutils/helpers';
 import { shallow } from 'enzyme';
-import AttributeInfo from 'ui/common/attributes/AttributeInfo';
+import AttributeInfo from 'ui/common/contenttype-attributes/AttributeInfo';
 
 configEnzymeAdapter();
 

@@ -15,8 +15,8 @@ describe('ContentTypeListPage', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('verify if component has CardGrid', () => {
-    expect(component.find('CardGrid').exists()).toBe(true);
+  it('verify if component has Grid', () => {
+    expect(component.find('Grid').exists()).toBe(true);
   });
 
   it('verify if has a breadcrumb', () => {

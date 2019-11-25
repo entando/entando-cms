@@ -54,8 +54,8 @@ describe('content-model/ContentModelListPage', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('has CardGrid', () => {
-    expect(component.find('CardGrid').exists()).toBe(true);
+  it('has Grid', () => {
+    expect(component.find('Grid').exists()).toBe(true);
   });
 
   it('contains ContentModelListContainer', () => {

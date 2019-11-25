@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { reduxForm, FormSection } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Button, Row, Col } from 'patternfly-react';
-import AttributeInfo from 'ui/common/attributes/AttributeInfo';
-import AttributeInfoComposite from 'ui/common/attributes/AttributeInfoComposite';
-import AttributeRole from 'ui/common/attributes/AttributeRole';
-import AttributeOgnlValidation from 'ui/common/attributes/AttributeOgnlValidation';
-import AttributeHypeLongMonoTextSettings from 'ui/common/attributes/AttributeHypeLongMonoTextSettings';
-import AttributeEnumSettings from 'ui/common/attributes/AttributeEnumSettings';
-import AttributeEnumMapSettings from 'ui/common/attributes/AttributeEnumMapSettings';
-import AttributeMonoListMonoSettings from 'ui/common/attributes/AttributeMonoListMonoSettings';
-import AttributesNumber from 'ui/common/attributes/AttributesNumber';
-import AttributesDateSettings from 'ui/common/attributes/AttributesDateSettings';
-import AttributeListTableComposite from 'ui/common/attributes/AttributeListTableComposite';
+import AttributeInfo from 'ui/common/contenttype-attributes/AttributeInfo';
+import AttributeInfoComposite from 'ui/common/contenttype-attributes/AttributeInfoComposite';
+import AttributeRole from 'ui/common/contenttype-attributes/AttributeRole';
+import AttributeOgnlValidation from 'ui/common/contenttype-attributes/AttributeOgnlValidation';
+import AttributeHypeLongMonoTextSettings from 'ui/common/contenttype-attributes/AttributeHypeLongMonoTextSettings';
+import AttributeEnumSettings from 'ui/common/contenttype-attributes/AttributeEnumSettings';
+import AttributeEnumMapSettings from 'ui/common/contenttype-attributes/AttributeEnumMapSettings';
+import AttributeMonoListMonoSettings from 'ui/common/contenttype-attributes/AttributeMonoListMonoSettings';
+import AttributesNumber from 'ui/common/contenttype-attributes/AttributesNumber';
+import AttributesDateSettings from 'ui/common/contenttype-attributes/AttributesDateSettings';
+import AttributeListTableComposite from 'ui/common/contenttype-attributes/AttributeListTableComposite';
 
 import {
   MODE_ADD_COMPOSITE,

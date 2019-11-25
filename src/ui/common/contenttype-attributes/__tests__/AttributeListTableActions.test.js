@@ -6,7 +6,7 @@ import {
   mockRenderWithRouter,
 } from 'testutils/helpers';
 import { mount } from 'enzyme';
-import AttributeListTableActions from 'ui/common/attributes/AttributeListTableActions';
+import AttributeListTableActions from 'ui/common/contenttype-attributes/AttributeListTableActions';
 
 configEnzymeAdapter();
 
@@ -71,7 +71,7 @@ describe('AttributeListTableActions', () => {
   describe('test moveUp/moveDown', () => {
     it('on item-move-up clicked should call onMoveUp', () => {
       component
-        .find('.AttributeListMenuAction__menu-item-move-up')
+        .find('.ContTypeAttributeListMenuAction__menu-item-move-up')
         .at(1)
         .simulate('click');
       expect(component.exists()).toBe(true);
@@ -79,7 +79,7 @@ describe('AttributeListTableActions', () => {
 
     it('on item-move-up clicked should call onMoveDown', () => {
       component
-        .find('.AttributeListMenuAction__menu-item-move-down')
+        .find('.ContTypeAttributeListMenuAction__menu-item-move-down')
         .at(1)
         .simulate('click');
       expect(component.exists()).toBe(true);
@@ -87,7 +87,7 @@ describe('AttributeListTableActions', () => {
 
     it('on item-delete clicked should call onClickDelete', () => {
       component
-        .find('.AttributeListMenuAction__menu-item-delete')
+        .find('.ContTypeAttributeListMenuAction__menu-item-delete')
         .at(1)
         .simulate('click');
       expect(component.exists()).toBe(true);
@@ -95,7 +95,7 @@ describe('AttributeListTableActions', () => {
 
     it('on item-delete clicked should call on edit', () => {
       component
-        .find('.AttributeListMenuAction__menu-item-edit')
+        .find('.ContTypeAttributeListMenuAction__menu-item-edit')
         .at(1)
         .simulate('click');
       expect(component.exists()).toBe(true);

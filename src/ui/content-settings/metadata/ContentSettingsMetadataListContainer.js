@@ -38,6 +38,10 @@ export const mapDispatchToProps = dispatch => ({
 const ContentSettingsMetadataListContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(ContentSettingsMetadataList);
 
 export default ContentSettingsMetadataListContainer;
