@@ -1,7 +1,10 @@
 import moment from 'moment';
 
 import {
-  TYPE_COMPOSITE, TYPE_LIST, TYPE_MONOLIST, TYPE_DATE, TYPE_TIMESTAMP, TYPE_BOOLEAN, TYPE_CHECKBOX, TYPE_THREESTATE,
+  TYPE_COMPOSITE, TYPE_LIST, TYPE_MONOLIST,
+  TYPE_DATE, TYPE_TIMESTAMP, TYPE_BOOLEAN,
+  TYPE_CHECKBOX, TYPE_THREESTATE, TYPE_TEXT,
+  TYPE_LONGTEXT, TYPE_HYPERTEXT,
 } from 'state/content-type/const';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -13,6 +16,10 @@ export const getAttrInitialValue = (attr) => {
       initialValue.compositeelements = compositeAttributes.map(getAttrInitialValue);
       break;
     case TYPE_LIST:
+      initialValue.listelements = {
+        en: [],
+      };
+      break;
     case TYPE_MONOLIST:
       initialValue.elements = [];
       break;
@@ -26,6 +33,13 @@ export const getAttrInitialValue = (attr) => {
       break;
     case TYPE_THREESTATE:
       initialValue.value = 'none';
+      break;
+    case TYPE_TEXT:
+    case TYPE_LONGTEXT:
+    case TYPE_HYPERTEXT:
+      initialValue.values = {
+        en: '',
+      };
       break;
     default:
       initialValue.value = '';

@@ -12,7 +12,6 @@ import ListAttributeField from 'ui/edit-content/content-attributes/ListAttribute
 import MonolistAttributeField from 'ui/edit-content/content-attributes/MonolistAttributeField';
 import FormLabel from 'ui/common/form/FormLabel';
 import {
-  TYPE_TIMESTAMP,
   TYPE_COMPOSITE,
   TYPE_LIST,
   TYPE_MONOLIST,
@@ -46,7 +45,7 @@ const renderField = (name, idx, attribute) => {
       AttributeFieldComp = CompositeAttributeField;
       break;
     case TYPE_LIST:
-      fieldName = `${name}.elements`;
+      fieldName = `${name}.listelements.en`;
       FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
       break;
@@ -82,7 +81,7 @@ const AttributeFields = ({ attributes, fields }) => {
     // as it cannot be set directly from props
     attributes.forEach((attr) => {
       const {
-        code, value, values, elements, compositeelements,
+        code, value, values, elements, compositeelements, listelements,
       } = attr;
       fields.push({
         code,
@@ -90,6 +89,7 @@ const AttributeFields = ({ attributes, fields }) => {
         values,
         elements,
         compositeelements,
+        listelements,
       });
     });
   }

@@ -95,6 +95,7 @@ const AttributeField = ({
       break;
     case TYPE_HYPERTEXT:
       AttributeFieldComp = HypertextAttributeField;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_NUMBER:
       validate.push(isNumber);
@@ -105,9 +106,11 @@ const AttributeField = ({
       break;
     case TYPE_LONGTEXT:
       AttributeFieldComp = LongtextAttributeField;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_TEXT:
       AttributeFieldComp = TextAttributeField;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeField;
