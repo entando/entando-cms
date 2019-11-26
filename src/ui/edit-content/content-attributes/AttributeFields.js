@@ -15,6 +15,7 @@ import {
   TYPE_COMPOSITE,
   TYPE_LIST,
   TYPE_MONOLIST,
+  TYPE_TIMESTAMP,
 } from 'state/content-type/const';
 
 const renderField = (name, idx, attribute) => {
@@ -81,11 +82,11 @@ const AttributeFields = ({ attributes, fields }) => {
     // as it cannot be set directly from props
     attributes.forEach((attr) => {
       const {
-        code, value, values, elements, compositeelements, listelements,
+        type, code, value, values, elements, compositeelements, listelements,
       } = attr;
       fields.push({
         code,
-        value,
+        value: type === TYPE_TIMESTAMP ? ({ date: value }) : value,
         values,
         elements,
         compositeelements,

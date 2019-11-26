@@ -26,15 +26,20 @@ const TimestampAttributeField = ({
   };
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
-  const { value: actualValue } = inputValue;
+
+  let actualValue = inputValue;
+  if (inputValue) {
+    let inputDateFormat = dateFormat;
+    if (inputValue.date.includes('-')) inputDateFormat = 'YYYY-MM-DD';
+    actualValue = { date: moment(inputValue.date, inputDateFormat).format(dateFormat) };
+  }
 
   const attrInput = {
     name,
-    value: actualValue || moment().format(dateFormat),
+    value: actualValue,
     onChange: (val) => {
       inputOnChange({
-        ...inputValue,
-        value: val,
+        date: val,
       });
     },
   };

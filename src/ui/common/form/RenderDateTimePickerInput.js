@@ -42,8 +42,9 @@ class RenderDateTimePickerInput extends Component {
             <Col xs={3}>
               <DatePicker
                 {...input}
+                value={input.value.date}
                 placeholder={placeholder}
-                selected={input.value ? moment(input.value, dateFormat) : null}
+                selected={input.value.date ? moment(input.value.date, dateFormat) : null}
                 onChange={this.handleChange}
                 disabledKeyboardNavigation
                 locale={locale}
@@ -104,7 +105,7 @@ RenderDateTimePickerInput.propTypes = {
   onWillMount: PropTypes.func,
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.object.isRequired,
   }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,

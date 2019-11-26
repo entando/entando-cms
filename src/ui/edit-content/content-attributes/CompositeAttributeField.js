@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'patternfly-react';
 import { Panel } from 'react-bootstrap';
 import {
-  FormSection,
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
 
