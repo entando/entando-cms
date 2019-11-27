@@ -10,9 +10,8 @@ const AssetsListGridView = ({
     const { versions } = asset;
     const fileType = versions == null ? 'file' : 'image';
     const previewRender = fileType === 'image' ? (
-      <img
-        src={asset.previewLgUrl}
-        alt="Preview"
+      <div
+        style={{ backgroundImage: `url("${asset.previewLgUrl}")` }}
         className="AssetsListGridView__image"
       />
     ) : (

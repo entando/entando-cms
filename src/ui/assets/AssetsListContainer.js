@@ -111,6 +111,10 @@ export const mapDispatchToProps = dispatch => ({
 const AssetsListContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AssetsList);
 
 export default AssetsListContainer;
