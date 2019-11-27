@@ -32,6 +32,16 @@ export const MYCATEGORY2_PAYLOAD = {
   children: [],
 };
 
+export const MYCATEGORY2_PAYLOAD_WITHSUB = {
+  code: 'mycategory2',
+  parentCode: 'home',
+  titles: {
+    it: 'Mia Categoria 2',
+    en: 'My Category 2',
+  },
+  children: ['mycategory3'],
+};
+
 export const GET_SELENIUM_CATEGORY_RESPONSE_OK = {
   code: 'seleniumtest_donttouch',
   parentCode: 'home',
@@ -66,6 +76,22 @@ export const SUBCATEGORY_PAYLOAD = {
   },
   children: [],
 };
+
+export const HOME_PAYLOAD_FORSUB = {
+  code: 'home',
+  parentCode: null,
+  titles: {
+    it: 'Tutte',
+    en: 'All',
+  },
+  children: ['mycategory1', 'mycategory2'],
+};
+
+export const CATEGORY_TREE_ROOT_WITHSUB = [
+  MYCATEGORY1_PAYLOAD,
+  MYCATEGORY2_PAYLOAD,
+  MYCATEGORY3_PAYLOAD,
+];
 
 export const CATEGORY_TREE_MYCATEGORY1 = [MYCATEGORY1_PAYLOAD, SUBCATEGORY_PAYLOAD];
 

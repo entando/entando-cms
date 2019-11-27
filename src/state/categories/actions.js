@@ -45,28 +45,37 @@ export const setCategoryLoaded = categoryCode => ({
   },
 });
 
-export const wrapApiCall = apiFunc => (...args) => async (dispatch) => {
-  const response = await apiFunc(...args);
-  const json = await response.json();
-  if (response.ok) {
-    return json;
-  }
-  dispatch(addErrors(json.errors.map(e => e.message)));
-  throw json;
-};
+export const fetchCategoryNode = code => dispatch => new Promise((resolve) => {
+  getCategory(code).then((response) => {
+    response.json().then((json) => {
+      if (!response.ok) {
+        dispatch(addErrors(json.errors.map(e => e.message)));
+      }
+      resolve(json);
+    });
+  }).catch(() => {});
+});
 
-export const fetchCategoryNode = wrapApiCall(getCategory);
-export const fetchCategoryChildren = wrapApiCall(getCategoryTree);
+export const fetchCategoryChildren = code => dispatch => new Promise((resolve) => {
+  getCategoryTree(code).then((response) => {
+    response.json().then((json) => {
+      if (!response.ok) {
+        dispatch(addErrors(json.errors.map(e => e.message)));
+      }
+      resolve(json);
+    });
+  }).catch(() => {});
+});
 
-export const fetchCategoryTree = (categoryCode = ROOT_CODE) => async (dispatch, getState) => {
-  let categoryTree;
-  try {
-    if (categoryCode === ROOT_CODE) {
-      dispatch(toggleLoading('categories'));
-      const responses = await Promise.all([
-        fetchCategoryNode(categoryCode)(dispatch),
-        fetchCategoryChildren(categoryCode)(dispatch),
-      ]);
+export const fetchCategoryTree = (
+  categoryCode = ROOT_CODE,
+) => (dispatch, getState) => new Promise((resolve) => {
+  if (categoryCode === ROOT_CODE) {
+    dispatch(toggleLoading('categories'));
+    Promise.all([
+      dispatch(fetchCategoryNode(categoryCode)),
+      dispatch(fetchCategoryChildren(categoryCode)),
+    ]).then((responses) => {
       dispatch(setCategoryLoaded(categoryCode));
       const categoryStatus = getStatusMap(getState())[categoryCode];
       const toExpand = !categoryStatus || !categoryStatus.expanded;
@@ -74,44 +83,45 @@ export const fetchCategoryTree = (categoryCode = ROOT_CODE) => async (dispatch, 
         dispatch(toggleCategoryExpanded(categoryCode, true));
       }
       dispatch(toggleLoading('categories'));
-      categoryTree = [responses[0].payload].concat(responses[1].payload);
-    } else {
-      const response = await fetchCategoryChildren(categoryCode)(dispatch);
-      categoryTree = response.payload;
-    }
-
-    dispatch(setCategories(categoryTree));
-  } catch (e) {
-    // do nothing
+      dispatch(setCategories([responses[0].payload].concat(responses[1].payload)));
+      resolve();
+    }).catch(() => {});
+  } else {
+    dispatch(fetchCategoryChildren(categoryCode)).then((response) => {
+      dispatch(setCategories(response.payload));
+      resolve();
+    }).catch(() => {});
   }
-};
+});
 
-export const fetchCategoryTreeAll = () => async (dispatch) => {
-  try {
-    const fetchBranch = async (categoryCode) => {
-      const response = await fetchCategoryChildren(categoryCode)(dispatch);
-      return response.payload;
-    };
-    const loadChildrenBranch = async catArr => (
-      Promise.all(catArr.map((cat) => {
-        if (cat.children.length > 0) {
-          return fetchBranch(cat.code).then(res => (
-            loadChildrenBranch(res)
-          )).then(loadedres => (
-            [cat, ...loadedres]
-          ));
-        }
-        return Promise.resolve(cat);
-      }))
-    );
-    const rootCat = await fetchCategoryNode(ROOT_CODE)(dispatch);
-    const catResult = await fetchBranch(ROOT_CODE);
-    const fullResult = await loadChildrenBranch(catResult);
-    dispatch(setCategories([rootCat, ...flattenDeep(fullResult)]));
-  } catch (e) {
-    // do nothing
-  }
-};
+export const fetchCategoryTreeAll = () => dispatch => new Promise((resolve) => {
+  const fetchBranch = categoryCode => (
+    dispatch(fetchCategoryChildren(categoryCode)).then(response => response.payload)
+  );
+
+  const loadChildrenBranch = catArr => (
+    Promise.all(catArr.map((cat) => {
+      if (cat.children.length > 0) {
+        return fetchBranch(cat.code).then(res => (
+          loadChildrenBranch(res)
+        )).then(loadedres => (
+          [cat, ...loadedres]
+        ));
+      }
+      return Promise.resolve(cat);
+    }))
+  );
+
+  dispatch(fetchCategoryNode(ROOT_CODE)).then((rootCat) => {
+    fetchBranch(ROOT_CODE).then((catResult) => {
+      loadChildrenBranch(catResult).then((fullResult) => {
+        const allCats = [rootCat, ...flattenDeep(fullResult)];
+        dispatch(setCategories(allCats));
+        resolve(allCats);
+      });
+    });
+  }).catch(() => {});
+});
 
 export const handleExpandCategory = (categoryCode = ROOT_CODE) => (
   dispatch, getState,
