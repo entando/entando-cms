@@ -102,7 +102,6 @@ class RenderDateTimePickerInput extends Component {
 }
 
 RenderDateTimePickerInput.propTypes = {
-  onWillMount: PropTypes.func,
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object.isRequired,
@@ -126,7 +125,6 @@ RenderDateTimePickerInput.propTypes = {
 };
 
 RenderDateTimePickerInput.defaultProps = {
-  onWillMount: () => {},
   name: '',
   placeholder: '',
   label: '',
