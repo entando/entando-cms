@@ -40,6 +40,8 @@ export default {
     'cms.label.modal.confirmdelete': 'Do you really want to delete {code}?',
     'cms.label.modal.confirmpublish': 'Do you really want to publish {code}?',
     'cms.label.modal.confirmunpublish': 'Do you really want to unpublish {code}?',
+    'cms.label.yes': 'Yes',
+    'cms.label.no': 'No',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Content List',

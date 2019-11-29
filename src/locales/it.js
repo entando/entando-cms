@@ -38,6 +38,8 @@ export default {
     'cms.label.date.placeholder': 'gg/mm/anno',
     'cms.label.pressenter.placeholder': 'Premere il tasto Invio per salvare le modifiche',
     'cms.label.modal.confirmdelete': 'Sei sicuro di voler rimuovere {code}?',
+    'cms.label.yes': 'sì',
+    'cms.label.no': 'no',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Contenuti',

@@ -4,6 +4,7 @@ import {
   fieldInputPropTypes,
   fieldMetaPropTypes,
 } from 'redux-form';
+import { FormattedMessage } from 'react-intl';
 
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
@@ -14,8 +15,8 @@ const BooleanAttributeField = ({
   ...rest
 }) => {
   const toggleElements = [
-    { id: 'true', label: 'Yes' },
-    { id: 'false', label: 'No' },
+    { id: 'true', label: <FormattedMessage id="cms.label.yes" /> },
+    { id: 'false', label: <FormattedMessage id="cms.label.no" /> },
   ];
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
