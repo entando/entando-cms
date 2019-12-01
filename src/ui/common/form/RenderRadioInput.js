@@ -54,7 +54,7 @@ RenderRadioInput.propTypes = {
   toggleElement: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      label: PropTypes.string,
+      label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     }),
   ),
   input: PropTypes.shape({}).isRequired,

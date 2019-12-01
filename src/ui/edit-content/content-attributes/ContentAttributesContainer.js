@@ -4,18 +4,22 @@ import ContentAttributes from 'ui/edit-content/content-attributes/ContentAttribu
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import { fetchContentType, setSelectedContentType } from 'state/content-type/actions';
 import { fetchContentSettings } from 'state/content-settings/actions';
+import { fetchLanguages } from 'state/languages/actions';
 import { getAttrInitialValue } from 'helpers/attrUtils';
+import { getActiveLanguages, getLanguages } from 'state/languages/selectors';
 
 export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => ({
   attributes: (getSelectedContentTypeAttributes(state) || []).map((attr, i) => ({
     ...attr,
     ...(contentAttributes[i] || (getAttrInitialValue(attr))),
   })),
+  languages: (getLanguages(state) && getActiveLanguages(state)) || [],
 });
 
 export const mapDispatchToProps = (dispatch, { typeCode }) => ({
   onDidMount: () => {
     dispatch(fetchContentType(typeCode));
+    dispatch(fetchLanguages({ page: 1, pageSize: 0 }));
     dispatch(fetchContentSettings());
   },
   onWillUnmount: () => {

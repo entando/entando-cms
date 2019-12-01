@@ -20,24 +20,32 @@ class ContentAttributes extends Component {
   }
 
   render() {
-    const { attributes } = this.props;
+    const { attributes, languages } = this.props;
 
     return (
-      <Tabs defaultActiveKey={1} animation={false} id="content-attributes-tabs">
-        <Tab eventKey={1} title="English">
-          <FieldArray
-            data-test-id="edit-content-content-attributes-field-array"
-            name="attributes"
-            component={AttributeFields}
-            attributes={attributes}
-          />
-        </Tab>
-        <Tab eventKey={2} title="Italiano">
-          <FormattedMessage
-            id="cms.contents.edit.contentAttributes.language"
-            defaultMessage="Attributes can only be edited in the default language section"
-          />
-        </Tab>
+      <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
+        {languages.map(({ code, name }) => (
+          <Tab key={code} eventKey={code} title={name}>
+            {/* FIXME: Handle other languages other than english. */}
+            {/* It is currently assumed that it doesn't change. */}
+            {code === 'en'
+              ? (
+                <FieldArray
+                  data-test-id="edit-content-content-attributes-field-array"
+                  name="attributes"
+                  component={AttributeFields}
+                  attributes={attributes}
+                />
+              )
+              : (
+                <FormattedMessage
+                  id="cms.contents.edit.contentAttributes.language"
+                  defaultMessage="Attributes can only be edited in the default language section"
+                />
+              )
+            }
+          </Tab>
+        ))}
       </Tabs>
     );
   }
@@ -47,6 +55,7 @@ ContentAttributes.propTypes = {
   onDidMount: PropTypes.func.isRequired,
   onWillUnmount: PropTypes.func.isRequired,
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ContentAttributes;
