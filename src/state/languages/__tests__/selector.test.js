@@ -25,24 +25,28 @@ const LANGUAGES_LIST = [
   'en',
 ];
 const STATE = {
-  languages: {
-    map: LANGUAGES_MAP,
-    list: LANGUAGES_LIST,
+  apps: {
+    cms: {
+      languages: {
+        map: LANGUAGES_MAP,
+        list: LANGUAGES_LIST,
+      },
+    },
   },
 };
 
 
 describe('state/languages/selectors', () => {
   it('getLanguages returns the languages state', () => {
-    expect(getLanguages(STATE)).toEqual(STATE.languages);
+    expect(getLanguages(STATE)).toEqual(STATE.apps.cms.languages);
   });
 
   it('getLanguagesIdList returns the languages id list', () => {
-    expect(getLanguagesIdList(STATE)).toEqual(STATE.languages.list);
+    expect(getLanguagesIdList(STATE)).toEqual(STATE.apps.cms.languages.list);
   });
 
   it('getLanguagesMap returns the languages map', () => {
-    expect(getLanguagesMap(STATE)).toEqual(STATE.languages.map);
+    expect(getLanguagesMap(STATE)).toEqual(STATE.apps.cms.languages.map);
   });
 
   it('getLanguagesList returns the languages list', () => {
@@ -64,7 +68,7 @@ describe('state/languages/selectors', () => {
   });
 
   it('getDefaultLanguage returns the default lang', () => {
-    STATE.languages.map.it.isDefault = false;
+    STATE.apps.cms.languages.map.it.isDefault = false;
     expect(getDefaultLanguage(STATE)).toEqual('');
   });
 });
