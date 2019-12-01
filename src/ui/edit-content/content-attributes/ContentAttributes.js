@@ -14,6 +14,11 @@ class ContentAttributes extends Component {
     onDidMount();
   }
 
+  componentWillUnmount() {
+    const { onWillUnmount } = this.props;
+    onWillUnmount();
+  }
+
   render() {
     const { attributes } = this.props;
 
@@ -40,6 +45,7 @@ class ContentAttributes extends Component {
 
 ContentAttributes.propTypes = {
   onDidMount: PropTypes.func.isRequired,
+  onWillUnmount: PropTypes.func.isRequired,
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

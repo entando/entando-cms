@@ -15,11 +15,12 @@ export const mapStateToProps = (state, { attributes: contentAttributes = [] }) =
 
 export const mapDispatchToProps = (dispatch, { typeCode }) => ({
   onDidMount: () => {
-    // Clear selected content type before fetching next values to avoid using previous one.
-    // This can also be done in componentWillUnmount.
-    dispatch(setSelectedContentType({}));
     dispatch(fetchContentType(typeCode));
     dispatch(fetchContentSettings());
+  },
+  onWillUnmount: () => {
+    // Clear selected content type to avoid using previous one when the component remounts.
+    dispatch(setSelectedContentType({}));
   },
 });
 
