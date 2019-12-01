@@ -40,6 +40,7 @@ export default {
     'cms.label.modal.confirmdelete': 'Sei sicuro di voler rimuovere {code}?',
     'cms.label.yes': 'sì',
     'cms.label.no': 'no',
+    'cms.label.both': 'entrambi',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Contenuti',

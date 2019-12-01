@@ -42,6 +42,7 @@ export default {
     'cms.label.modal.confirmunpublish': 'Do you really want to unpublish {code}?',
     'cms.label.yes': 'Yes',
     'cms.label.no': 'No',
+    'cms.label.both': 'Both',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Content List',
