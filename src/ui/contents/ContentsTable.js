@@ -156,28 +156,22 @@ class ContentsTable extends Component {
                       <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
                     </MenuItem>
                     {
-                      !rowData.onLine ? (
-                        <MenuItem onClick={() => onClickDelete(rowData)}>
-                          <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-                        </MenuItem>
-                      ) : null
+                      <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
+                        <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                      </MenuItem>
                     }
                     {
-                      rowData.status !== 'PUBLIC' ? (
-                        <MenuItem onClick={() => onClickPublish([rowData], true)}>
-                          <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
-                        </MenuItem>
-                      ) : null
+                      <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
+                        <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                      </MenuItem>
                     }
                     <MenuItem onClick={() => onClickClone(rowData)}>
                       <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
                     </MenuItem>
                     {
-                      rowData.status === 'PUBLIC' || rowData.onLine ? (
-                        <MenuItem onClick={() => onClickPublish([rowData], false)}>
-                          <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
-                        </MenuItem>
-                      ) : null
+                      <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
+                        <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                      </MenuItem>
                     }
                   </Table.DropdownKebab>
                 </div>
