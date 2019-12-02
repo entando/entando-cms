@@ -2,72 +2,65 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
 
-const RenderTextInput = ({
-  input,
-  append,
-  label,
-  labelSize,
-  inputSize,
-  alignClass,
-  placeholder,
-  meta: { touched, error },
-  help,
-  disabled,
-  type,
+const RenderTextAreaInput = ({
+  input, append, label, labelSize, placeholder, alignClass,
+  meta: { touched, error }, help, disabled, cols, rows,
   hasLabel,
-  ...others
 }) => (
-  <div className={touched && error ? 'form-group has-error' : 'form-group'}>
-    {hasLabel && labelSize > 0 && (
-      <Col xs={12} sm={labelSize} className={alignClass}>
+
+  <div className={`RenderTextAreaInput ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
+    {hasLabel && (
+      <Col xs={labelSize} className={`RenderTextAreaInput-label ${alignClass}`}>
         <ControlLabel htmlFor={input.name}>
           {label} {help}
         </ControlLabel>
       </Col>
     )}
-    <Col xs={12} sm={inputSize || 12 - labelSize}>
-      <input
+    <Col xs={12 - labelSize} className="RenderTextAreaInput-content">
+      <textarea
         {...input}
-        type={type}
-        id={input.name}
+        cols={cols}
+        rows={rows}
         placeholder={placeholder}
-        className="form-control RenderTextInput"
+        className="form-control RenderTextAreaInput-textarea"
         disabled={disabled}
-        {...others}
       />
       {append && <span className="AppendedLabel">{append}</span>}
-      {touched && (error && <span className="help-block">{error}</span>)}
+      {touched && ((error && <span className="help-block">{error}</span>))}
     </Col>
   </div>
+
 );
 
-RenderTextInput.propTypes = {
+RenderTextAreaInput.propTypes = {
   input: PropTypes.shape({}),
+  name: PropTypes.string,
   label: PropTypes.node,
   placeholder: PropTypes.string,
   meta: PropTypes.shape({}),
   help: PropTypes.node,
   disabled: PropTypes.bool,
-  type: PropTypes.string,
   labelSize: PropTypes.number,
-  inputSize: PropTypes.number,
   append: PropTypes.string,
   alignClass: PropTypes.string,
+  cols: PropTypes.number,
+  rows: PropTypes.number,
   hasLabel: PropTypes.bool,
 };
 
-RenderTextInput.defaultProps = {
+RenderTextAreaInput.defaultProps = {
   input: {},
+  name: '',
   label: '',
   placeholder: '',
   meta: {},
   help: null,
   disabled: false,
-  type: 'text',
   labelSize: 2,
-  inputSize: null,
   append: '',
   alignClass: 'text-right',
+  cols: 20,
+  rows: 20,
   hasLabel: true,
 };
-export default RenderTextInput;
+export default RenderTextAreaInput;

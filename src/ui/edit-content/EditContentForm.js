@@ -17,6 +17,7 @@ import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
 import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorContainer';
 
 import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
+import ContentAttributesContainer from 'ui/edit-content/content-attributes/ContentAttributesContainer';
 
 const messages = defineMessages({
   contentDesctiption: {
@@ -218,6 +219,12 @@ class EditContentFormBody extends React.Component {
           </Row>
           <Row>
             <SectionTitle nameId="cms.contents.edit.contentAttributes" />
+            {(content.attributes || contentType) && (
+              <ContentAttributesContainer
+                attributes={content.attributes}
+                typeCode={content.typeCode || contentType}
+              />
+            )}
           </Row>
         </div>
         <div className="AssetsList__footer">
