@@ -17,6 +17,7 @@ import {
   TYPE_MONOLIST,
   TYPE_TIMESTAMP,
 } from 'state/content-type/const';
+import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
 const renderField = (name, idx, attribute) => {
   const {
@@ -86,7 +87,7 @@ const AttributeFields = ({ attributes, fields }) => {
       } = attr;
       fields.push({
         code,
-        value: type === TYPE_TIMESTAMP ? ({ date: value }) : value,
+        value: type === TYPE_TIMESTAMP ? (getDateTimeObjFromStr(value)) : value,
         values,
         elements,
         compositeelements,

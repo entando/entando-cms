@@ -1,7 +1,6 @@
 import { isFSA } from 'flux-standard-action';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { ADD_ERRORS } from '@entando/messages';
 
 import {
   setLanguages, setLanguageActiveSync, fetchLanguages, activateLanguage,
@@ -13,6 +12,7 @@ import { getLanguages, putLanguage } from 'api/languages';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { LANGUAGES_LIST } from 'testutils/mocks/languages';
 
+const ADD_ERRORS = 'errors/add-errors';
 
 const mockStore = configureMockStore([thunk]);
 const INITIAL_STATE = {

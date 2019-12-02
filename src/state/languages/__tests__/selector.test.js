@@ -2,7 +2,7 @@
 import {
   getLanguages, getLanguagesIdList, getLanguagesList,
   getLanguagesMap, getLanguagesOptions, getActiveLanguages,
-  getDefaultLanguage,
+  getDefaultLanguage, getActiveNonDefaultLanguages,
 } from 'state/languages/selectors';
 
 
@@ -70,5 +70,9 @@ describe('state/languages/selectors', () => {
   it('getDefaultLanguage returns the default lang', () => {
     STATE.apps.cms.languages.map.it.isDefault = false;
     expect(getDefaultLanguage(STATE)).toEqual('');
+  });
+
+  it('getActiveNonDefaultLanguages returns the active non default languages', () => {
+    expect(getActiveNonDefaultLanguages(STATE)).toHaveLength(0);
   });
 });

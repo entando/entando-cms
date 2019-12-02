@@ -7,7 +7,6 @@ import {
   TYPE_LONGTEXT, TYPE_HYPERTEXT,
 } from 'state/content-type/const';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getAttrInitialValue = (attr) => {
   const { type, code, compositeAttributes = [] } = attr;
   const initialValue = { code };
@@ -46,4 +45,25 @@ export const getAttrInitialValue = (attr) => {
   }
 
   return initialValue;
+};
+
+/**
+ * Converts a date string to an object with date, minutes, hours, seconds properties
+ * @example
+ * const dtObj = getDateTimeObjFromStr('2019-11-26 14:46:07');
+ * // { date: '2019-11-26', hours: '14', minutes: '46', seconds: '07' }
+ */
+export const getDateTimeObjFromStr = (dateStr) => {
+  const dtSegments = dateStr.split(' ');
+  const date = dtSegments[0];
+  const tSegments = dtSegments[1].split(':');
+  const hours = tSegments[0];
+  const minutes = tSegments[1];
+  const seconds = tSegments[2];
+  return {
+    date,
+    hours,
+    minutes,
+    seconds,
+  };
 };

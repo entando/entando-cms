@@ -140,7 +140,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
   const {
-    joinGroups = [], ownerGroup, contentDescription, contentStatus, attributes,
+    joinGroups = [], ownerGroup, contentDescription, contentStatus, attributes = [],
   } = values;
 
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);

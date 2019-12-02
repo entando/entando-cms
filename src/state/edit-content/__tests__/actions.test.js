@@ -20,6 +20,7 @@ import {
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
+import * as selectors from 'state/content-type/selectors';
 
 const SET_CONTENT = {
   type: SET_CONTENT_ENTRY,
@@ -48,6 +49,8 @@ jest.mock('api/editContent', () => ({
   postAddContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
   putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: 'YO' } })),
 }));
+
+selectors.getSelectedContentTypeAttributes = jest.fn();
 
 it('test setContentModelList action', () => {
   expect(setContentEntry(GET_CONTENT_RESPONSE_OK)).toEqual(SET_CONTENT);
@@ -168,6 +171,8 @@ describe('editContent thunks', () => {
       })
       .catch(done.fail);
   });
+
+  selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
 
   it('save new content', (done) => {
     store = createMockStore({
