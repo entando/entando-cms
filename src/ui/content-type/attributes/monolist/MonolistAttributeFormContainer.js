@@ -29,7 +29,7 @@ import {
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
 } from 'app-init/routes';
 
-import MonolistAttributeForm from 'ui/common/form/MonolistAttributeForm';
+import ContentTypeMonolistAttributeForm from 'ui/common/form/ContentTypeMonolistAttributeForm';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state),
@@ -92,5 +92,9 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(MonolistAttributeForm),
+    null,
+    {
+      pure: false,
+    },
+  )(ContentTypeMonolistAttributeForm),
 );

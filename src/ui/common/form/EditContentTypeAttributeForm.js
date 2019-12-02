@@ -5,17 +5,17 @@ import { FormattedMessage } from 'react-intl';
 import {
   Button, Row, Col, Alert,
 } from 'patternfly-react';
-import AttributeInfo from 'ui/common/attributes/AttributeInfo';
-import AttributeInfoComposite from 'ui/common/attributes/AttributeInfoComposite';
-import AttributeRole from 'ui/common/attributes/AttributeRole';
-import AttributeOgnlValidation from 'ui/common/attributes/AttributeOgnlValidation';
-import AttributeHypeLongMonoTextSettings from 'ui/common/attributes/AttributeHypeLongMonoTextSettings';
-import AttributeEnumSettings from 'ui/common/attributes/AttributeEnumSettings';
-import AttributeEnumMapSettings from 'ui/common/attributes/AttributeEnumMapSettings';
-import AttributeMonoListMonoSettings from 'ui/common/attributes/AttributeMonoListMonoSettings';
-import AttributesNumber from 'ui/common/attributes/AttributesNumber';
-import AttributesDateSettings from 'ui/common/attributes/AttributesDateSettings';
-import AttributeListTableComposite from 'ui/common/attributes/AttributeListTableComposite';
+import AttributeInfo from 'ui/common/contenttype-attributes/AttributeInfo';
+import AttributeInfoComposite from 'ui/common/contenttype-attributes/AttributeInfoComposite';
+import AttributeRole from 'ui/common/contenttype-attributes/AttributeRole';
+import AttributeOgnlValidation from 'ui/common/contenttype-attributes/AttributeOgnlValidation';
+import AttributeHypeLongMonoTextSettings from 'ui/common/contenttype-attributes/AttributeHypeLongMonoTextSettings';
+import AttributeEnumSettings from 'ui/common/contenttype-attributes/AttributeEnumSettings';
+import AttributeEnumMapSettings from 'ui/common/contenttype-attributes/AttributeEnumMapSettings';
+import AttributeMonoListMonoSettings from 'ui/common/contenttype-attributes/AttributeMonoListMonoSettings';
+import AttributesNumber from 'ui/common/contenttype-attributes/AttributesNumber';
+import AttributesDateSettings from 'ui/common/contenttype-attributes/AttributesDateSettings';
+import AttributeListTableComposite from 'ui/common/contenttype-attributes/AttributeListTableComposite';
 
 import {
   MODE_ADD_COMPOSITE,
@@ -35,7 +35,7 @@ import {
   TYPE_TIMESTAMP,
 } from 'state/content-type/const';
 
-export class EditAttributeFormBody extends Component {
+export class EditContentTypeAttributeFormBody extends Component {
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount(this.props);
@@ -195,8 +195,8 @@ export class EditAttributeFormBody extends Component {
   }
 }
 
-EditAttributeFormBody.propTypes = {
-  onDidMount: PropTypes.func.isRequired,
+EditContentTypeAttributeFormBody.propTypes = {
+  onDidMount: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   contentTypeAttributeCode: PropTypes.string,
@@ -220,7 +220,8 @@ EditAttributeFormBody.propTypes = {
   isIndexable: PropTypes.bool,
 };
 
-EditAttributeFormBody.defaultProps = {
+EditContentTypeAttributeFormBody.defaultProps = {
+  onDidMount: () => {},
   invalid: false,
   submitting: false,
   contentTypeAttributeCode: '',
@@ -233,8 +234,8 @@ EditAttributeFormBody.defaultProps = {
   isIndexable: false,
 };
 
-const EditAttributeForm = reduxForm({
+const EditContentTypeAttributeForm = reduxForm({
   form: 'attribute',
-})(EditAttributeFormBody);
+})(EditContentTypeAttributeFormBody);
 
-export default EditAttributeForm;
+export default EditContentTypeAttributeForm;

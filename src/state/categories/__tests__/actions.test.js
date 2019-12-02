@@ -2,7 +2,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mockApi } from 'testutils/helpers';
 import {
-  wrapApiCall,
   setCategories,
   setCategoryLoaded,
   fetchCategoryTree,
@@ -10,19 +9,25 @@ import {
   handleJoinCategory,
   handleExpandCategory,
   toggleCategoryExpanded,
+  fetchCategoryTreeAll,
 } from 'state/categories/actions';
 
-import { getCategoryTree } from 'api/categories';
+import { getCategoryTree, getCategory } from 'api/categories';
 
 import {
   SET_CATEGORIES,
   TOGGLE_CATEGORY_EXPANDED,
   SET_CATEGORY_LOADING,
   SET_CATEGORY_LOADED,
-  ADD_ERRORS,
 } from 'state/categories/types';
 
-import { CATEGORY_TREE_HOME, STATE_NORMALIZED, BODY_OK } from 'testutils/mocks/categories';
+import {
+  CATEGORY_TREE_HOME,
+  STATE_NORMALIZED,
+  HOME_PAYLOAD_FORSUB,
+  SUBCATEGORY_PAYLOAD,
+  CATEGORY_TREE_ROOT_WITHSUB,
+} from 'testutils/mocks/categories';
 
 import { TOGGLE_LOADING } from 'state/loading/types';
 
@@ -164,36 +169,26 @@ describe('state/categories/actions', () => {
     });
   });
 
-  describe('wrapApiCall()', () => {
-    it('when wrapApiCall succeeds should call api function, the returns a json', (done) => {
-      const genericApi = jest.fn().mockImplementation(mockApi({ payload: BODY_OK }));
-      store
-        .dispatch(wrapApiCall(genericApi)(BODY_OK))
+  describe('fetchCategoryTreeAll', () => {
+    beforeEach(() => {
+      getCategoryTree.mockImplementation((code) => {
+        if (code === 'mycategory1') {
+          return mockApi({ payload: [SUBCATEGORY_PAYLOAD] })();
+        }
+        return mockApi({ payload: CATEGORY_TREE_ROOT_WITHSUB })();
+      });
+      getCategory.mockImplementation(mockApi({ payload: HOME_PAYLOAD_FORSUB }));
+    });
+
+    it('return complete tree', (done) => {
+      store.dispatch(fetchCategoryTreeAll())
         .then(() => {
-          expect(genericApi).toHaveBeenCalledWith(BODY_OK);
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toHaveProperty('type', SET_CATEGORIES);
           done();
         })
         .catch(done.fail);
-    });
-
-    it('when wrapApiCall fails should dispatch addErros function', async () => {
-      const genericApi = jest.fn().mockImplementation(mockApi({ errors: true }));
-      return store.dispatch(wrapApiCall(genericApi)(BODY_OK)).catch((e) => {
-        const actions = store.getActions();
-        expect(actions).toHaveLength(1);
-        expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-        expect(e).toHaveProperty('errors');
-        e.errors.forEach((error, index) => {
-          expect(error.message).toEqual(actions[0].payload.errors[index]);
-        });
-      });
-    });
-
-    it('when api does not return json, wrapApiCall throws a TypeError', async () => {
-      const genericApi = jest.fn().mockReturnValue('error_result, error_result');
-      return store.dispatch(wrapApiCall(genericApi)(BODY_OK)).catch((e) => {
-        expect(e instanceof TypeError).toBe(true);
-      });
     });
   });
 });

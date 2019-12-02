@@ -5,7 +5,7 @@ import { METHODS } from '@entando/apimanager';
 import { clearErrors } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 
-import EditAttributeForm from 'ui/common/form/EditAttributeForm';
+import EditContentTypeAttributeForm from 'ui/common/form/EditContentTypeAttributeForm';
 import {
   fetchAttributeFromContentType,
   handlerAttributeFromContentType,
@@ -85,9 +85,13 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   },
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(EditAttributeForm),
-);
+const EditContentTypeAttributeFormContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
+)(EditContentTypeAttributeForm);
+
+export default withRouter(EditContentTypeAttributeFormContainer);

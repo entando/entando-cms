@@ -44,8 +44,10 @@
   }
 
   &__view-option {
-    margin: 8px;
-    font-size: 15px;
+    &.fa {  // sass-lint:disable-line class-name-format
+      margin: 8px;
+      font-size: 15px;
+    }
 
     &--selected {
       color: $color-mid-grey;
@@ -78,9 +80,11 @@
   }
 
   &__filter-info {
+    min-height: 40px;
     margin-bottom: 5px;
     margin-left: 15px;
     @media (max-width: 991px) {
+      margin-top: 15px;
       margin-bottom: 25px;
     }
   }
@@ -112,7 +116,7 @@
     cursor: pointer;
   }
 
-  &__toolbar-results {
+  &__toolbar-results.toolbar-pf-results {  // sass-lint:disable-line class-name-format force-element-nesting
     border-top: 0;
   }
 

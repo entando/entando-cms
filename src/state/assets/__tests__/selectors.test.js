@@ -2,17 +2,34 @@ import {
   getActiveFilters,
   getAssetsView,
   getFileType,
-  getSort,
   getAssetsList,
   getFilteringCategories,
   getPaginationOptions,
   condenseAssetInfo,
   removePixelWord,
+  getAssetSearchKeyword,
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
-const a = { id: 'a', name: 'yo' };
-const b = { id: 'b', name: 'mama' };
+const { versions, metadata } = ASSET_RESPONSE;
+
+const groupdo = { code: 'groupdo', name: 'dodo' };
+const groupre = { code: 'groupre', name: 'rere' };
+
+const a = {
+  id: 'a',
+  name: 'yo',
+  group: 'groupdo',
+  versions,
+  metadata,
+};
+const b = {
+  id: 'b',
+  name: 'mama',
+  group: 'groupre',
+  versions,
+  metadata,
+};
 
 const TEST_STATE = {
   apps: {
@@ -29,6 +46,13 @@ const TEST_STATE = {
         paginationOptions: {
           page: 1,
         },
+        keyword: 'kolokoks',
+      },
+      groups: {
+        map: {
+          groupdo,
+          groupre,
+        },
       },
     },
   },
@@ -38,9 +62,9 @@ const TEST_STATE = {
 };
 
 it('verify condense function', () => {
-  const { metadata } = ASSET_RESPONSE;
-  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
-  const res = condenseAssetInfo(ASSET_RESPONSE);
+  const { metadata: met } = ASSET_RESPONSE;
+  const dimension = `${removePixelWord(met['Image Width'])}x${removePixelWord(met['Image Height'])} px`;
+  const res = condenseAssetInfo(ASSET_RESPONSE, TEST_STATE.api.domain);
   expect(res.versions[0].dimensions).toEqual(dimension);
   expect(res.metadata.dimension).toEqual(dimension);
   expect(res.versions[0].sizetype).toEqual('orig');
@@ -63,13 +87,21 @@ it('verify getFileType selector', () => {
   expect(fileType).toEqual('image');
 });
 
-it('verify getSort selector', () => {
-  const sort = getSort(TEST_STATE);
-  expect(sort).toEqual({});
-});
 it('verify getAssetsList selector', () => {
   const assetsList = getAssetsList(TEST_STATE);
-  expect(assetsList).toEqual([a, b]);
+  const cA = condenseAssetInfo({ ...a, group: groupdo }, TEST_STATE.api.domain);
+  const cB = condenseAssetInfo({ ...b, group: groupre }, TEST_STATE.api.domain);
+  const isImg = atype => atype === 'image';
+  const addUrls = ast => ({
+    ...ast,
+    downloadUrl: isImg(ast.type) ? ast.versions[0].path : ast.path,
+    previewUrl: isImg(ast.type) ? ast.versions[1].path : null,
+    previewLgUrl: isImg(ast.type) ? ast.versions[3].path : null,
+  });
+  expect(assetsList).toEqual([
+    addUrls(cA),
+    addUrls(cB),
+  ]);
 });
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
@@ -78,4 +110,8 @@ it('verify getFilteringCategories selector', () => {
 it('verify getPaginationOptions selector', () => {
   const paginationOptions = getPaginationOptions(TEST_STATE);
   expect(paginationOptions).toEqual({ page: 1 });
+});
+it('verify getAssetSearchKeyword selector', () => {
+  const key = getAssetSearchKeyword(TEST_STATE);
+  expect(key).toEqual(TEST_STATE.apps.cms.assets.keyword);
 });

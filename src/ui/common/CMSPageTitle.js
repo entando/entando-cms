@@ -17,20 +17,20 @@ const helpIcon = (helpId, position) => (helpId ? (
       trigger={['click']}
       rootClose
     >
-      <i className="PageTitle__icon fa pficon-help" />
+      <i className="CMSPageTitle__icon fa pficon-help" />
     </OverlayTrigger>
   </span>
 ) : null);
 
-const PageTitle = ({
+const CMSPageTitle = ({
   titleId, helpId, titleParam, position, noHeaderMargin, largeTitle,
 }) => (
-  <div className="PageTitle">
+  <div className="CMSPageTitle">
     <div
-      className="PageTitle__header"
+      className="CMSPageTitle__header"
       style={noHeaderMargin ? { marginTop: 0, marginBottom: 0 } : {}}
     >
-      <h1 className="PageTitle__title" style={largeTitle ? { fontSize: '24px' } : {}}>
+      <h1 className="CMSPageTitle__title" style={largeTitle ? { fontSize: '24px' } : {}}>
         <FormattedMessage id={titleId} defaultMessage="Title" values={titleParam} />
         {helpIcon(helpId, position)}
       </h1>
@@ -38,7 +38,7 @@ const PageTitle = ({
   </div>
 );
 
-PageTitle.propTypes = {
+CMSPageTitle.propTypes = {
   titleId: PropTypes.string.isRequired,
   helpId: PropTypes.string,
   titleParam: PropTypes.shape({}),
@@ -47,7 +47,7 @@ PageTitle.propTypes = {
   largeTitle: PropTypes.bool,
 };
 
-PageTitle.defaultProps = {
+CMSPageTitle.defaultProps = {
   helpId: '',
   titleParam: {},
   position: '',
@@ -55,4 +55,4 @@ PageTitle.defaultProps = {
   largeTitle: false,
 };
 
-export default PageTitle;
+export default CMSPageTitle;

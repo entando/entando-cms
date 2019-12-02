@@ -5,9 +5,11 @@ import {
   setActiveFilters,
   setAssets,
   removeActiveFilter,
+  setListFilterParams,
+  setAssetChanged,
+  setSearchKeyword,
   changeFileType,
   changeAssetsView,
-  applySort,
 } from 'state/assets/actions';
 
 const ASSETS = [{
@@ -70,18 +72,25 @@ describe('state/assets/reducer', () => {
         newState = reducer(state, changeAssetsView('grid'));
         expect(newState.assetsView).toEqual('grid');
       });
-      it('should correctly change sorting mechanics', () => {
-        newState = reducer(state, applySort('name'));
-        expect(newState.sort).toEqual({ name: 'name', direction: 'ASC' });
+    });
+    describe('list filter reducers', () => {
+      let newState;
+      it('should correctly change an asset', () => {
+        const theAsset = { ...ASSETS[0], filename: 'doggo.png' };
+        newState = reducer(state, setAssetChanged(theAsset));
+        expect(newState.assetsMap[theAsset.id]).toEqual(theAsset);
+      });
 
-        newState = reducer(newState, applySort('name'));
-        expect(newState.sort).toEqual({ name: 'name', direction: 'DESC' });
+      it('should correctly set filterparams', () => {
+        const filt = { cat: 1 };
+        newState = reducer(state, setListFilterParams(filt));
+        expect(newState.filterParams).toEqual(filt);
+      });
 
-        newState = reducer(newState, applySort('name'));
-        expect(newState.sort).toEqual({ name: 'name', direction: 'ASC' });
-
-        newState = reducer(newState, applySort('otherName'));
-        expect(newState.sort).toEqual({ name: 'otherName', direction: 'ASC' });
+      it('should correctly set search keyword', () => {
+        const keyword = 'oi oi';
+        newState = reducer(state, setSearchKeyword(keyword));
+        expect(newState.keyword).toEqual(keyword);
       });
     });
   });

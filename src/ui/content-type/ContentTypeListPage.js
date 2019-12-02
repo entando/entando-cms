@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Row, Col, CardGrid, Breadcrumb, Button,
+  Row, Col, Grid, Breadcrumb, Button,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentTypeListContainer from 'ui/content-type/ContentTypeListContainer';
 import { ROUTE_CMS_CONTENTTYPE_ADD } from 'app-init/routes';
 
 const ContentTypeListPage = () => (
-  <CardGrid>
+  <Grid fluid>
     <Row>
       <Col xs={12}>
         <Breadcrumb>
@@ -24,8 +24,13 @@ const ContentTypeListPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col xs={4}>
-        <PageTitle titleId="cms.contenttype.title" helpId="cms.contenttype.titletip" />
+      <Col xs={12}>
+        <CMSPageTitle
+          titleId="cms.contenttype.title"
+          helpId="cms.contenttype.titletip"
+          position="pull-right"
+          largeTitle
+        />
       </Col>
     </Row>
     <Row className="ContentTypeList__filter">
@@ -43,7 +48,7 @@ const ContentTypeListPage = () => (
         <ContentTypeListContainer />
       </Col>
     </Row>
-  </CardGrid>
+  </Grid>
 );
 
 export default ContentTypeListPage;

@@ -5,17 +5,17 @@ import { FormattedMessage } from 'react-intl';
 import {
   Button, Row, Col, FormGroup, Alert,
 } from 'patternfly-react';
-import AttributeOgnlValidation from 'ui/common/attributes/AttributeOgnlValidation';
-import AttributeHypeLongMonoTextSettings from 'ui/common/attributes/AttributeHypeLongMonoTextSettings';
-import AttributeEnumMapSettings from 'ui/common/attributes/AttributeEnumMapSettings';
-import AttributesNumber from 'ui/common/attributes/AttributesNumber';
-import AttributesDateSettings from 'ui/common/attributes/AttributesDateSettings';
-import AttributeEnumSettings from 'ui/common/attributes/AttributeEnumSettings';
+import AttributeOgnlValidation from 'ui/common/contenttype-attributes/AttributeOgnlValidation';
+import AttributeHypeLongMonoTextSettings from 'ui/common/contenttype-attributes/AttributeHypeLongMonoTextSettings';
+import AttributeEnumMapSettings from 'ui/common/contenttype-attributes/AttributeEnumMapSettings';
+import AttributesNumber from 'ui/common/contenttype-attributes/AttributesNumber';
+import AttributesDateSettings from 'ui/common/contenttype-attributes/AttributesDateSettings';
+import AttributeEnumSettings from 'ui/common/contenttype-attributes/AttributeEnumSettings';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import SwitchRenderer from 'ui/common/form/SwitchRenderer';
 import FormLabel from 'ui/common/form/FormLabel';
-import AttributeListTableComposite from 'ui/common/attributes/AttributeListTableComposite';
-import AttributeInfoComposite from 'ui/common/attributes/AttributeInfoComposite';
+import AttributeListTableComposite from 'ui/common/contenttype-attributes/AttributeListTableComposite';
+import AttributeInfoComposite from 'ui/common/contenttype-attributes/AttributeInfoComposite';
 
 import {
   TYPE_BOOLEAN,

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { METHODS } from '@entando/apimanager';
 import { clearErrors } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
-import AttributeForm from 'ui/common/form/AttributeForm';
+import AddContentTypeAttributeForm from 'ui/common/form/AddContentTypeAttributeForm';
 import {
   setActionMode,
   fetchContentTypeAttributes,
@@ -85,5 +85,9 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(AttributeForm),
+    null,
+    {
+      pure: false,
+    },
+  )(AddContentTypeAttributeForm),
 );

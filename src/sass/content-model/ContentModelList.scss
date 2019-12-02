@@ -22,7 +22,7 @@
     }
   }
 
-  &__filter-searchby-label {
+  &__filter-searchby-label.label.label-default { // sass-lint:disable-line class-name-format force-element-nesting
     display: block;
     position: absolute;
     top: -18px;
@@ -34,7 +34,7 @@
     z-index: 1;
   }
 
-  &__filter-searchby-dropdown {
+  &__filter-searchby-dropdown.btn { // sass-lint:disable-line class-name-format force-element-nesting
     width: calc(100% - 1px);
     margin-right: 5px;
     text-align: left;

@@ -1,16 +1,16 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
-  CardGrid, Row, Col, Breadcrumb,
+  Grid, Row, Col, Breadcrumb,
 } from 'patternfly-react';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import ErrorsAlertContainer from 'ui/common/form/ErrorsAlertContainer';
-import EditAttributeFormContainer from 'ui/content-type/attributes/EditAttributeFormContainer';
+import EditContentTypeAttributeFormContainer from 'ui/content-type/attributes/EditContentTypeAttributeFormContainer';
 import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 
 const EditContentTypeAttributePage = () => (
-  <CardGrid>
+  <Grid>
     <Row>
       <Col xs={12}>
         <Breadcrumb>
@@ -28,7 +28,11 @@ const EditContentTypeAttributePage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <PageTitle titleId="cms.contenttype.attribute.edit.title" />
+        <CMSPageTitle
+          titleId="cms.contenttype.attribute.edit.title"
+          position="pull-right"
+          largeTitle
+        />
       </Col>
     </Row>
     <Row>
@@ -38,10 +42,10 @@ const EditContentTypeAttributePage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <EditAttributeFormContainer />
+        <EditContentTypeAttributeFormContainer />
       </Col>
     </Row>
-  </CardGrid>
+  </Grid>
 );
 
 export default EditContentTypeAttributePage;

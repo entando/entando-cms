@@ -10,7 +10,7 @@ import { required, maxLength } from '@entando/utils';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
-import AttributeListTable from 'ui/common/attributes/AttributeListTable';
+import AttributeListTable from 'ui/common/contenttype-attributes/AttributeListTable';
 import DeleteAttributeModalContainer from 'ui/content-type/attributes/DeleteAttributeModalContainer';
 
 const uppercaseThreeLetters = value => (value && !/[A-Z]$/g.test(value) ? <FormattedMessage id="validateForm.element.code" /> : undefined);

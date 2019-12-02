@@ -2,7 +2,7 @@ import React from 'react';
 
 import { configEnzymeAdapter } from 'testutils/helpers';
 import { shallow } from 'enzyme';
-import AttributeListTableComposite from 'ui/common/attributes/AttributeListTableComposite';
+import AttributeListTableComposite from 'ui/common/contenttype-attributes/AttributeListTableComposite';
 
 configEnzymeAdapter();
 

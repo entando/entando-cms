@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  Row, Col, CardGrid, Breadcrumb,
+  Row, Col, Grid, Breadcrumb,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
 import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
 
-const ContentModelListPage = () => (
-  <CardGrid>
+const AssetsListPage = () => (
+  <Grid fluid>
     <Row>
       <Col xs={12}>
         <Breadcrumb>
@@ -24,8 +24,13 @@ const ContentModelListPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col xs={4}>
-        <PageTitle titleId="cms.assets.title" helpId="cms.assets.tip" />
+      <Col xs={12}>
+        <CMSPageTitle
+          titleId="cms.assets.title"
+          helpId="cms.assets.tip"
+          position="pull-right"
+          largeTitle
+        />
       </Col>
     </Row>
     <Row>
@@ -35,7 +40,7 @@ const ContentModelListPage = () => (
     </Row>
     <EditAssetFormModalContainer />
     <DeleteAssetModalContainer />
-  </CardGrid>
+  </Grid>
 );
 
-export default ContentModelListPage;
+export default AssetsListPage;

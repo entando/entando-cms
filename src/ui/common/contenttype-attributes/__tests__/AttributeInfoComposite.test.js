@@ -2,13 +2,13 @@ import React from 'react';
 
 import { configEnzymeAdapter } from 'testutils/helpers';
 import { shallow } from 'enzyme';
-import AttributeHypeLongMonoTextSettings from 'ui/common/attributes/AttributeHypeLongMonoTextSettings';
+import AttributeInfoComposite from 'ui/common/contenttype-attributes/AttributeInfoComposite';
 
 configEnzymeAdapter();
 
-describe('AttributeInfo', () => {
+describe('AttributeInfoComposite', () => {
   it('renders without crashing', () => {
-    const component = shallow(<AttributeHypeLongMonoTextSettings />);
+    const component = shallow(<AttributeInfoComposite />);
     expect(component.exists()).toEqual(true);
   });
 });

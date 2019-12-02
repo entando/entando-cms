@@ -4,13 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { routeConverter } from '@entando/utils';
 import { LinkMenuItem } from '@entando/menu';
-import AttributeCheckIcon from 'ui/common/attributes/AttributeCheckIcon';
+import AttributeCheckIcon from 'ui/common/contenttype-attributes/AttributeCheckIcon';
 import { TYPE_LIST, TYPE_MONOLIST } from 'state/content-type/const';
 
 const renderRoles = (roles) => {
   if (roles.length > 0) {
     return (
-      <ul className="AttributeListTable__role-list">
+      <ul className="ContTypeAttributeListTable__role-list">
         {roles.map(role => (
           <li key={role.code}>{role.descr}</li>
         ))}
@@ -35,29 +35,29 @@ const AttributeListTableActions = ({
 
   return (
     <tr key={attribute.code}>
-      <td className="AttributeListRow__td">{attribute.code}</td>
-      <td className="AttributeListRow__td">
+      <td className="ContTypeAttributeListRow__td">{attribute.code}</td>
+      <td className="ContTypeAttributeListRow__td">
         {type === TYPE_LIST || type === TYPE_MONOLIST ? `${type}: ${nestedAttribute.type}` : type}
       </td>
-      <td className="AttributeListRow__td">{renderRoles(attribute.roles)}</td>
-      <td className="AttributeListRow__td text-center">
+      <td className="ContTypeAttributeListRow__td">{renderRoles(attribute.roles)}</td>
+      <td className="ContTypeAttributeListRow__td text-center">
         <AttributeCheckIcon isChecked={attribute.mandatory || false} />
       </td>
-      <td className="AttributeListRow__td text-center">
+      <td className="ContTypeAttributeListRow__td text-center">
         <AttributeCheckIcon isChecked={attribute.listFilter || false} />
       </td>
 
-      <td className="AttributeListRow__td text-center">
+      <td className="ContTypeAttributeListRow__td text-center">
         <DropdownKebab pullRight id={`${attribute.code}-actions`}>
           <LinkMenuItem
             id={`edit-${attribute.code}`}
             to={routeConverter(routeToEdit, { entityCode, attributeCode: attribute.code })}
             label={<FormattedMessage id="cms.label.edit" />}
-            className="AttributeListMenuAction__menu-item-edit"
+            className="ContTypeAttributeListMenuAction__menu-item-edit"
           />
           {isMovableUp ? (
             <MenuItem
-              className="AttributeListMenuAction__menu-item-move-up"
+              className="ContTypeAttributeListMenuAction__menu-item-move-up"
               onClick={() => {
                 onMoveUp(entityCode, attribute.code, index);
                 fields.move(index, index - 1);
@@ -68,7 +68,7 @@ const AttributeListTableActions = ({
           ) : null}
           {isMovableDown ? (
             <MenuItem
-              className="AttributeListMenuAction__menu-item-move-down"
+              className="ContTypeAttributeListMenuAction__menu-item-move-down"
               onClick={() => {
                 onMoveDown(entityCode, attribute.code, index);
                 fields.move(index, index + 1);
@@ -78,7 +78,7 @@ const AttributeListTableActions = ({
             </MenuItem>
           ) : null}
           <MenuItem
-            className="AttributeListMenuAction__menu-item-delete"
+            className="ContTypeAttributeListMenuAction__menu-item-delete"
             onClick={() => {
               fields.remove(index);
               onClickDelete(attribute.code);

@@ -1,10 +1,20 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
+import { getGroupsMap } from 'state/groups/selectors';
+import { getDomain } from '@entando/apimanager';
 
 export const removePixelWord = word => word.replace(' pixels', '');
 
-export const condenseAssetInfo = (asset) => {
-  const domain = new URL(process.env.REACT_APP_DOMAIN);
+const getURLAbsolute = (domain, url) => {
+  const isAbs = /^(?:[a-z]+:)?\/\//i.test(domain);
+  if (!isAbs) {
+    return url;
+  }
+  const theURL = new URL(domain);
+  return `${theURL.origin}${url}`;
+};
+
+export const condenseAssetInfo = (asset, domain) => {
   const { versions, metadata } = asset;
   const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
   const origpath = versions[0].path;
@@ -12,7 +22,7 @@ export const condenseAssetInfo = (asset) => {
   const newVersions = versions.map((img, i) => ({
     ...img,
     sizetype: sizes[i],
-    path: `${domain.origin}${get(img, 'path', '')}`,
+    path: getURLAbsolute(domain, get(img, 'path', '')),
     dimensions: i === 0 ? dimension : img.dimensions,
   }));
   const filestrparts = origpath.split('/');
@@ -42,10 +52,25 @@ export const getAssetsMap = createSelector(
   state => state.assetsMap,
 );
 
-
 export const getAssetsList = createSelector(
-  [getAssetsMap, getAssetsIdList],
-  (assetsMap, idList) => idList.map(id => (assetsMap[id])),
+  [getAssetsMap, getAssetsIdList, getGroupsMap, getDomain],
+  (assetsMap, idList, groups, domain) => idList.map((id) => {
+    const asset = condenseAssetInfo(assetsMap[id], domain);
+    const isImg = asset.type === 'image';
+    const { versions } = asset;
+    return {
+      ...asset,
+      downloadUrl: isImg ? versions[0].path : asset.path,
+      previewUrl: isImg ? versions[1].path : null,
+      previewLgUrl: isImg ? versions[3].path : null,
+      group: groups[asset.group] || asset.group,
+    };
+  }),
+);
+
+export const getListFilterParams = createSelector(
+  getAssetsState,
+  state => state.filterParams,
 );
 
 export const getFilteringCategories = createSelector(
@@ -63,11 +88,6 @@ export const getAssetsView = createSelector(
   assets => assets.assetsView,
 );
 
-export const getSort = createSelector(
-  getAssetsState,
-  assets => assets.sort,
-);
-
 export const getPaginationOptions = createSelector(
   getAssetsState,
   assets => assets.paginationOptions,
@@ -76,4 +96,9 @@ export const getPaginationOptions = createSelector(
 export const getActiveFilters = createSelector(
   getAssetsState,
   assets => assets.activeFilters,
+);
+
+export const getAssetSearchKeyword = createSelector(
+  getAssetsState,
+  state => state.keyword,
 );
