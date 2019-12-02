@@ -3,7 +3,12 @@ import { withRouter } from 'react-router-dom';
 import { injectIntl, defineMessages } from 'react-intl';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
-import { fetchContentTypeAttributes, sendPostContentType } from 'state/content-type/actions';
+import {
+  fetchContentTypeAttributes,
+  sendPostContentType,
+  setSelectedAttribute,
+  setSelectedAttributeContentType,
+} from 'state/content-type/actions';
 import { getContentTypeAttributesIdList } from 'state/content-type/selectors';
 import AddContentTypeForm from 'ui/content-type/AddContentTypeForm';
 import { ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
@@ -21,6 +26,8 @@ const msgs = defineMessages({
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onDidMount: () => {
+    dispatch(setSelectedAttribute({}));
+    dispatch(setSelectedAttributeContentType());
     dispatch(fetchContentTypeAttributes());
   },
   onSubmit: (values) => {
