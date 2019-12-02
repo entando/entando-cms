@@ -219,11 +219,11 @@ class EditContentFormBody extends React.Component {
           </Row>
           <Row>
             <SectionTitle nameId="cms.contents.edit.contentAttributes" />
-            {content.attributes && (
-            <ContentAttributesContainer
-              attributes={content.attributes}
-              typeCode={content.typeCode || contentType}
-            />
+            {(content.attributes || contentType) && (
+              <ContentAttributesContainer
+                attributes={content.attributes}
+                typeCode={content.typeCode || contentType}
+              />
             )}
           </Row>
         </div>
