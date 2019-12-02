@@ -56,14 +56,19 @@ export const getAttrInitialValue = (attr) => {
 export const getDateTimeObjFromStr = (dateStr) => {
   const dtSegments = dateStr.split(' ');
   const date = dtSegments[0];
-  const tSegments = dtSegments[1].split(':');
-  const hours = tSegments[0];
-  const minutes = tSegments[1];
-  const seconds = tSegments[2];
+  if (dtSegments[1]) {
+    const tSegments = dtSegments[1].split(':');
+    const hours = tSegments[0];
+    const minutes = tSegments[1];
+    const seconds = tSegments[2];
+    return {
+      date,
+      hours,
+      minutes,
+      seconds,
+    };
+  }
   return {
     date,
-    hours,
-    minutes,
-    seconds,
   };
 };
