@@ -15,6 +15,7 @@ import {
   resetJoinContentCategories, sendUpdateContents, fetchContentsPaged, setTabSearch,
   sendPublishMultipleContents,
   sendCloneContent,
+  resetAuthorStatus,
 } from 'state/contents/actions';
 import { postAddContent } from 'api/editContent';
 import {
@@ -22,7 +23,7 @@ import {
   SET_SORT, SET_CONTENT_CATEGORY_FILTER, CHECK_STATUS, CHECK_ACCESS,
   CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW, SET_CURRENT_STATUS_SHOW,
   SET_CURRENT_COLUMNS_SHOW, SELECT_ROW, SELECT_ALL_ROWS, SET_CONTENTS,
-  SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES, SET_TAB_SEARCH,
+  SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES, SET_TAB_SEARCH, RESET_AUTHOR_STATUS,
 } from '../types';
 
 const middlewares = [thunk];
@@ -127,6 +128,11 @@ describe('state/contents/actions', () => {
     const action = setCurrentStatusShow('approved');
     expect(action).toHaveProperty('type', SET_CURRENT_STATUS_SHOW);
     expect(action.payload).toEqual('approved');
+  });
+
+  it('resetAuthorStatus() should return a well formed action', () => {
+    const action = resetAuthorStatus();
+    expect(action).toHaveProperty('type', RESET_AUTHOR_STATUS);
   });
 
   it('setCurrentColumnsShow() should return a well formed action', () => {

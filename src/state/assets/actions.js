@@ -101,7 +101,6 @@ export const fetchAssetsPaged = (
   const state = getState();
   const fileType = getFileType(state);
   let filters = getListFilterParams(state);
-
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
   if (filters && Object.keys(filters).length === 0) {
     filters = { formValues: {}, operators: {} };

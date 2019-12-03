@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
   FormattedMessage, intlShape, defineMessages,
 } from 'react-intl';
@@ -61,13 +62,20 @@ class ContentsFilter extends Component {
   }
 
   onValueKeyPress(keyEvent) {
-    const { currentQuickFilter, onFilteredSearch } = this.props;
+    const { currentQuickFilter, onAdvancedFilterSearch } = this.props;
     const { id, value: currentValue } = currentQuickFilter;
 
     if (keyEvent.key === 'Enter' && currentValue && currentValue.length > 0) {
       keyEvent.stopPropagation();
       keyEvent.preventDefault();
-      onFilteredSearch(`?filters[0].attribute=${id}&filters[0].value=${currentValue}`, null, null, false);
+      const formValues = {
+        [id]: currentValue,
+      };
+      const operators = {
+        [id]: FILTER_OPERATORS.LIKE,
+      };
+      const query = convertToQueryString({ formValues, operators }).slice(1);
+      onAdvancedFilterSearch(query);
     }
   }
 
@@ -83,7 +91,7 @@ class ContentsFilter extends Component {
     const {
       currentQuickFilter, intl, contentTypes, groups, language, filteringCategories,
       statusChecked, onCheckStatus, accessChecked, onCheckAccess, authorChecked, onCheckAuthor,
-      onFilteredSearch, onSetContentType, onSetGroup, currentUsername, onSetTabSearch,
+      onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch,
     } = this.props;
     const { showAdvancedFilters } = this.state;
     const advancedFilterIcon = (
@@ -287,7 +295,7 @@ class ContentsFilter extends Component {
         <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
           <Button
             className="ContentsFilter__search-button"
-            onClick={() => { onFilteredSearch(null, null, null, false); onSetTabSearch(false); }}
+            onClick={() => onAdvancedFilterSearch()}
           >
             <FormattedMessage id="cms.contents.search" defaultMessage="Search" />
           </Button>
@@ -302,7 +310,6 @@ ContentsFilter.propTypes = {
   language: PropTypes.string.isRequired,
   currentQuickFilter: PropTypes.shape({}).isRequired,
   onSetQuickFilter: PropTypes.func.isRequired,
-  onFilteredSearch: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -314,8 +321,8 @@ ContentsFilter.propTypes = {
   onCheckAuthor: PropTypes.func.isRequired,
   onSetContentType: PropTypes.func.isRequired,
   onSetGroup: PropTypes.func.isRequired,
-  onSetTabSearch: PropTypes.func.isRequired,
   currentUsername: PropTypes.string.isRequired,
+  onAdvancedFilterSearch: PropTypes.func.isRequired,
 };
 
 export default ContentsFilter;

@@ -1,4 +1,5 @@
 import { toggleLoading } from 'state/loading/actions';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
   getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
 } from 'api/contents';
@@ -17,6 +18,7 @@ import {
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
   SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
+  RESET_AUTHOR_STATUS,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
 
@@ -106,6 +108,10 @@ export const selectAllRows = checked => ({
   payload: checked,
 });
 
+export const resetAuthorStatus = () => ({
+  type: RESET_AUTHOR_STATUS,
+});
+
 export const fetchContents = (page = pageDefault,
   params) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contents'));
@@ -138,60 +144,90 @@ export const fetchContentsWithFilters = (
   const { id, value: qfValue } = quickFilter;
   const columnKey = Object.keys(sortingColumns)[0];
   const sortDirection = sortingColumns[columnKey].direction;
-  const sortParams = newSort || `sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
-  let filterParams = '';
+  const sorting = newSort || { attribute: columnKey, direction: sortDirection.toUpperCase() };
+  let query = '';
   const filters = [];
-  if (params) { filterParams = params; return dispatch(fetchContents(pagination, `${params}&${sortParams}`)); }
+  const eq = FILTER_OPERATORS.EQUAL;
+  const like = FILTER_OPERATORS.LIKE;
+  if (params) {
+    query = `${convertToQueryString({ sorting })}&${params}`;
+    return dispatch(fetchContents(pagination, query));
+  }
   if (qfValue) {
-    filters.push({ att: id, value: qfValue });
+    filters.push({ att: id, value: qfValue, operator: FILTER_OPERATORS.LIKE });
   } else {
     const contentType = getContentType(state);
     const group = getGroup(state);
     const filteringCategories = getFilteringCategories(state);
-    const status = getStatusChecked(state) || getCurrentStatusShow(state);
+    const status = getStatusChecked(state);
     const access = getAccessChecked(state);
-    const author = getAuthorChecked(state) || getCurrentAuthorShow(state);
+    const author = getAuthorChecked(state);
     if (contentType) filters.push({ att: 'typeCode', value: contentType });
     if (group) filters.push({ att: 'mainGroup', value: group });
-    if (status) filters.push({ att: 'status', value: status });
-    if (access) filters.push({ att: 'access', value: access === 'free' ? 'free' : 'closed' });
+    if (status) filters.push({ att: 'status', value: status, operator: like });
+    if (access) filters.push({ att: 'restrictions', value: access === 'free' ? 'OPEN' : 'RESTRICTED' });
     if (author && author !== 'all') filters.push({ att: 'firstEditor', value: author });
     if (filteringCategories && filteringCategories.length) filters.push({ att: 'categories', value: filteringCategories });
   }
-  filterParams = filters.map(({ att, value }, i) => {
+  const formValues = {};
+  const operators = {};
+  let published = '';
+  let categories = '';
+  filters.forEach(({ att, value, operator }) => {
     if (att === 'categories') {
-      return value.map(
-        (filter, j) => `&filters[${i + j}].attribute=categories&filters[${i + j}].value=${filter.code}`,
-      ).join('');
+      value.forEach(
+        (filter, i) => {
+          categories += `&categories[${i}]=${filter.code}`;
+        },
+      );
+      categories += '&orClauseCategoryFilter=true';
+      return null;
+    } if (att === 'status' && value === 'published') {
+      published = '&status=published';
+      return null;
     }
-    if (att === 'status' && value === 'published') {
-      return '&status=published';
-    }
-    return `&filters[${i}].attribute=${att}&filters[${i}].value=${value}`;
-  }).join('');
-  return dispatch(fetchContents(pagination, `?${sortParams}${filterParams}`));
+    formValues[att] = value;
+    operators[att] = operator || eq;
+    return null;
+  });
+  query = `${convertToQueryString({ formValues, operators, sorting })}${published}${categories}`;
+  return dispatch(fetchContents(pagination, query));
 };
 
-export const fetchContentsWithTabs = (
-) => (dispatch, getState) => {
+export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => {
   const state = getState();
-  const pagination = getPagination(state, 'contents') || getPagination(state);
+  const pagination = page || getPagination(state, 'contents') || getPagination(state);
   const sortingColumns = getSortingColumns(state);
   const columnKey = Object.keys(sortingColumns)[0];
   const sortDirection = sortingColumns[columnKey].direction;
-  const sortParams = `sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
+  const sorting = newSort || { attribute: columnKey, direction: sortDirection.toUpperCase() };
   const author = getCurrentAuthorShow(state);
   const status = getCurrentStatusShow(state);
-  const statusParams = status === 'published' ? '&status=published' : `&filters[0].attribute=status&filters[0].value=${status}`;
-  const authorParams = author === 'all' ? '' : `&filters[0].attribute=author&filters[1].value=${author}`;
-  return dispatch(fetchContents(pagination, `?${sortParams}${statusParams}${authorParams}`));
+  const published = status === 'published';
+  const all = author === 'all';
+  const eq = FILTER_OPERATORS.LIKE;
+  const like = FILTER_OPERATORS.LIKE;
+  const formValues = {
+    ...(!published && status && { status }),
+    ...(!all && author && { author }),
+  };
+  const operators = {
+    ...(!published && status && { status: like }),
+    ...(!all && author && { author: eq }),
+  };
+  const query = [convertToQueryString({
+    formValues,
+    operators,
+    sorting,
+  }), published ? '&status=published' : ''].join('');
+  return dispatch(fetchContents(pagination, query));
 };
 
 export const fetchContentsPaged = (params, page, sort, tabSearch) => (dispatch, getState) => {
   const state = getState();
   const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
   if (tabSearchEnabled) {
-    return dispatch(fetchContentsWithTabs());
+    return dispatch(fetchContentsWithTabs(page, sort));
   }
   return dispatch(fetchContentsWithFilters(params, page, sort));
 };

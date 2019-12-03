@@ -43,7 +43,7 @@ const AVAILABLE_COLUMNS = [
   },
   {
     name: 'Restrictions',
-    code: 'status',
+    code: 'restrictions',
   },
   {
     name: 'Actions',
@@ -90,7 +90,7 @@ class Contents extends Component {
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
-      onSetTabSearch,
+      onAdvancedFilterSearch,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -130,7 +130,6 @@ class Contents extends Component {
           language={language}
           currentQuickFilter={currentQuickFilter}
           onSetQuickFilter={onSetQuickFilter}
-          onFilteredSearch={onFilteredSearch}
           contentTypes={contentTypes}
           groups={groups}
           filteringCategories={filteringCategories}
@@ -143,7 +142,7 @@ class Contents extends Component {
           onSetContentType={onSetContentType}
           onSetGroup={onSetGroup}
           currentUsername={currentUsername}
-          onSetTabSearch={onSetTabSearch}
+          onAdvancedFilterSearch={onAdvancedFilterSearch}
         />
         <div className="Contents__body">
           <ContentsTabs
@@ -235,7 +234,7 @@ Contents.propTypes = {
   onClickJoinCategories: PropTypes.func.isRequired,
   currentUsername: PropTypes.string.isRequired,
   onClickClone: PropTypes.func.isRequired,
-  onSetTabSearch: PropTypes.func.isRequired,
+  onAdvancedFilterSearch: PropTypes.func.isRequired,
 };
 
 Contents.defaultProps = {

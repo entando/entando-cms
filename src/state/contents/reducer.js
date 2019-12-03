@@ -12,6 +12,7 @@ import {
   SET_JOIN_CONTENT_CATEGORY,
   RESET_JOIN_CONTENT_CATEGORIES,
   SET_TAB_SEARCH,
+  RESET_AUTHOR_STATUS,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -37,7 +38,7 @@ const defaultState = {
   selectedRows: [],
   currentAuthorShow: 'all',
   currentStatusShow: 'ready',
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'status', 'actions'],
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restrictions', 'actions'],
   tabSearchEnabled: true,
 };
 
@@ -106,6 +107,14 @@ const reducer = (state = defaultState, action = {}) => {
         ...state,
         currentStatusShow: action.payload,
         tabSearchEnabled: !!action.payload,
+      };
+    }
+    case RESET_AUTHOR_STATUS: {
+      return {
+        ...state,
+        currentStatusShow: '',
+        tabSearchEnabled: false,
+        currentAuthorShow: 'all',
       };
     }
     case SET_SORT: {

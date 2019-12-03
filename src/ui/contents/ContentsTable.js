@@ -60,9 +60,9 @@ class ContentsTable extends Component {
       page: 1,
       pageSize,
     };
-    const sortParams = `?sort=${column.property}&direction=${newSortDirection.toUpperCase()}`;
     onSetSort(updatedSortingColumns);
-    onFilteredSearch(null, newPagination, sortParams);
+    onFilteredSearch(null, newPagination,
+      { attribute: column.property, direction: newSortDirection.toUpperCase() });
   }
 
   onTableRowSelect(e, row) {
@@ -114,7 +114,7 @@ class ContentsTable extends Component {
               return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupNames && groupNames.join(', ')}</td>;
             };
             break;
-          case 'status':
+          case 'restrictions':
             rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center">{<span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />}</td>;
             break;
           case 'typeCode':

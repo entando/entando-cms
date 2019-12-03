@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { routeConverter } from '@entando/utils';
+import { routeConverter, convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
   setQuickFilter, checkStatus, checkAccess, checkAuthor, sendCloneContent,
   setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow, fetchContentsPaged,
   setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
   setTabSearch,
+  resetAuthorStatus,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
@@ -33,9 +34,24 @@ import { WORK_MODE_EDIT, WORK_MODE_ADD } from 'state/edit-content/types';
 import Contents from 'ui/contents/Contents';
 
 const paramsForStatusAndAuthor = (status, author) => {
-  const statusParams = status === 'published' ? '?status=published' : `?filters[0].attribute=status&filters[0].value=${status}`;
-  const authorParams = `${author === 'all' ? '' : `&filters[1].attribute=firstEditor&filters[1].value=${author}`}`;
-  return `${statusParams}${authorParams}`;
+  const published = status === 'published';
+  const all = author === 'all';
+  const eq = FILTER_OPERATORS.EQUAL;
+
+  const formValues = {
+    ...(!published && { status }),
+    ...(!all && { author }),
+  };
+  const operators = {
+    ...(!published && { status: eq }),
+    ...(!all && { author: eq }),
+  };
+  const query = `${convertToQueryString({
+    formValues,
+    operators,
+  })}${published ? '&status=published' : ''}`;
+
+  return query.slice(1);
 };
 
 export const mapStateToProps = (state) => {
@@ -88,6 +104,10 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onSetCurrentStatusShow: (status, author) => {
     dispatch(setCurrentStatusShow(status));
     dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
+  },
+  onAdvancedFilterSearch: () => {
+    dispatch(fetchContentsPaged(null, null, null, false));
+    dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
