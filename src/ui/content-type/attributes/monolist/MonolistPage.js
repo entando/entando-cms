@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
-  CardGrid, Row, Col, Breadcrumb,
+  Grid, Row, Col, Breadcrumb,
 } from 'patternfly-react';
 import { routeConverter } from '@entando/utils';
 
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import MonolistAttributeFormContainer from 'ui/content-type/attributes/monolist/MonolistAttributeFormContainer';
 import { ROUTE_CMS_CONTENTTYPE_LIST, ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT } from 'app-init/routes';
 
@@ -44,7 +44,7 @@ class MonolistPage extends Component {
     const lastBreadcrumbLabel = type === TYPE_COMPOSITE ? TYPE_MONOLIST : selectedAttribute;
 
     return (
-      <CardGrid>
+      <Grid>
         <Row>
           <Col xs={12}>
             <Breadcrumb>
@@ -64,7 +64,12 @@ class MonolistPage extends Component {
         </Row>
         <Row>
           <Col xs={12}>
-            <PageTitle titleId={titleId} helpId="cms.contentType.helpattributes.label" />
+            <CMSPageTitle
+              titleId={titleId}
+              helpId="cms.contentType.helpattributes.label"
+              position="pull-right"
+              largeTitle
+            />
           </Col>
         </Row>
         <Row>
@@ -72,7 +77,7 @@ class MonolistPage extends Component {
             <MonolistAttributeFormContainer />
           </Col>
         </Row>
-      </CardGrid>
+      </Grid>
     );
   }
 }

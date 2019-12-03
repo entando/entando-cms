@@ -12,6 +12,11 @@ export const TYPE_TIMESTAMP = 'Timestamp';
 export const TYPE_HYPERTEXT = 'Hypertext';
 export const TYPE_LONGTEXT = 'Longtext';
 export const TYPE_TEXT = 'Text';
+export const TYPE_ATTACH = 'Attach';
+export const TYPE_IMAGE = 'Image';
+export const TYPE_LINK = 'Link';
+export const TYPE_MONOTEXT = 'Monotext';
+
 
 export const MODE_ADD = 'add';
 export const MODE_EDIT = 'edit';

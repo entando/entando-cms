@@ -5,6 +5,7 @@ import {
 } from 'react-intl';
 import {
   Spinner,
+  CardGrid,
   Grid,
   Row,
   Col,
@@ -267,7 +268,7 @@ class AssetsList extends Component {
       bodyContent = assetsView === 'list' ? tableContent : gridContent;
     }
     const content = (
-      <Grid fluid>
+      <CardGrid>
         <div className="AssetsList__files-header">
           {renderFileTypes}
           {mobile ? null : (
@@ -322,7 +323,7 @@ class AssetsList extends Component {
             </Col>
           </Row>
         ) : null}
-      </Grid>
+      </CardGrid>
     );
     return (
       <div className="AssetsList__wrap">

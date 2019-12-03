@@ -2,10 +2,15 @@ import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
 } from '@entando/messages';
 import { initialize } from 'redux-form';
+import moment from 'moment';
 
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
+import {
+  TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP,
+} from 'state/content-type/const';
+import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import {
   SET_CONTENT_ENTRY,
   SET_OWNER_GROUP_DISABLE,
@@ -133,14 +138,53 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
   const {
-    joinGroups = [], ownerGroup, contentDescription, contentStatus,
+    joinGroups = [], ownerGroup, contentDescription, contentStatus, attributes = [],
   } = values;
+
+  const contentTypeAttributes = getSelectedContentTypeAttributes(state);
+  const transformedAttributes = attributes.map((attribute, i) => {
+    const { value } = attribute;
+    const { type } = contentTypeAttributes[i];
+    if (type === TYPE_DATE) {
+      if (value.includes('-')) return attribute;
+      const fromFormat = 'DD/MM/YYYY';
+      const toFormat = 'YYYY-MM-DD';
+      return {
+        ...attribute,
+        value: `${moment(value, fromFormat).format(toFormat)} 00:00:00`,
+      };
+    }
+    if (type === TYPE_TIMESTAMP) {
+      if (value.includes('-')) return attribute;
+      const fromFormat = 'DD/MM/YYYY';
+      const toFormat = 'YYYY-MM-DD';
+      const {
+        date, hours, minutes, seconds,
+      } = value;
+      const newDate = moment(date, fromFormat).format(toFormat);
+      return {
+        ...attribute,
+        value: `${newDate} ${hours}:${minutes}:${seconds}`,
+      };
+    }
+    if (type === TYPE_CHECKBOX || type === TYPE_BOOLEAN || type === TYPE_THREESTATE) {
+      let newValue = null;
+      if (value === 'true') newValue = true;
+      else if (value === 'false') newValue = false;
+      return {
+        ...attribute,
+        value: newValue,
+      };
+    }
+    return attribute;
+  });
+
   const enhancedValues = {
     groups: joinGroups,
     mainGroup: ownerGroup,
     description: contentDescription,
     categories,
-    attributes: [],
+    attributes: transformedAttributes,
     ...(contentStatus != null && { status: contentStatus }),
   };
   if (workMode === WORK_MODE_ADD) {

@@ -7,6 +7,8 @@ import {
   fetchContentType,
   fetchContentTypeAttribute,
   sendPutContentType,
+  setSelectedAttribute,
+  setSelectedAttributeContentType,
   sendMoveAttributeUp,
   sendMoveAttributeDown,
 } from 'state/content-type/actions';
@@ -35,6 +37,8 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: ({ contentTypeCode }) => {
+    dispatch(setSelectedAttribute({}));
+    dispatch(setSelectedAttributeContentType());
     dispatch(fetchContentType(contentTypeCode));
     dispatch(fetchContentTypeAttributes());
   },

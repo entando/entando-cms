@@ -33,15 +33,19 @@ class RenderDatePickerInput extends Component {
       dateFormat,
       placeholder,
       meta: { touched, error },
+      isClearable,
+      hasLabel,
     } = this.props;
 
     const errorblock = touched ? error : '';
 
     return (
       <div className="form-group">
-        <label htmlFor={name} className="col-xs-2 control-label">
-          {label} {help}
-        </label>
+        {hasLabel && (
+          <label htmlFor={name} className="col-xs-2 control-label">
+            {label} {help}
+          </label>
+        )}
         <Col xs={10}>
           <DatePicker
             {...input}
@@ -51,7 +55,7 @@ class RenderDatePickerInput extends Component {
             disabledKeyboardNavigation
             locale={locale}
             dateFormat={dateFormat}
-            isClearable
+            isClearable={isClearable}
             calendarClassName="RenderDatePickerInput__calendar"
           />
           <div className="help-block help-block-error">{errorblock}</div>
@@ -69,7 +73,7 @@ RenderDatePickerInput.propTypes = {
   }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.bool,
+    error: PropTypes.shape({}),
   }),
   name: PropTypes.string,
   placeholder: PropTypes.string,
@@ -78,6 +82,8 @@ RenderDatePickerInput.propTypes = {
   language: PropTypes.string,
   dateFormat: PropTypes.string,
   locale: PropTypes.string,
+  isClearable: PropTypes.bool,
+  hasLabel: PropTypes.bool,
 };
 
 RenderDatePickerInput.defaultProps = {
@@ -90,5 +96,7 @@ RenderDatePickerInput.defaultProps = {
   dateFormat: 'DD/MM/YYYY',
   locale: 'en',
   meta: {},
+  isClearable: true,
+  hasLabel: true,
 };
 export default RenderDatePickerInput;

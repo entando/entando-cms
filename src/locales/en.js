@@ -40,6 +40,9 @@ export default {
     'cms.label.modal.confirmdelete': 'Do you really want to delete {code}?',
     'cms.label.modal.confirmpublish': 'Do you really want to publish {code}?',
     'cms.label.modal.confirmunpublish': 'Do you really want to unpublish {code}?',
+    'cms.label.yes': 'Yes',
+    'cms.label.no': 'No',
+    'cms.label.both': 'Both',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Content List',
@@ -217,6 +220,7 @@ export default {
     'cms.contents.edit.titletip':
       'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.edit.contentAttributes': 'Content Attributes',
+    'cms.contents.edit.contentAttributes.language': 'Attributes can only be edited in the default language section',
     'cms.assets.title': 'Digital Assets',
     'cms.assets.tip':
       'The DIGITAL ASSETS section lets you manage existing resources, images and attachements, access resources list, add or delete resources.  Images and attachments can be uploaded to a digital assets archive and used in content.',
@@ -239,6 +243,9 @@ export default {
     'cms.assets.list.nothingFound': 'No items found',
     'cms.assets.list.of': 'of',
     'cms.assets.list.items': 'items',
+    'cms.datetimepicker.label.hours': 'Pick an hour',
+    'cms.datetimepicker.label.minutes': 'Pick a minute',
+    'cms.datetimepicker.label.seconds': 'Pick a second',
     'cms.assets.form.name': 'Name',
     'cms.assets.form.categories': 'Categories',
     'cms.assets.form.desc': 'Description',

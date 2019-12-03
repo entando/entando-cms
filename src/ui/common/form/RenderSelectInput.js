@@ -19,6 +19,7 @@ const RenderSelectInput = ({
   inputSize,
   disabled,
   intl,
+  hasLabel,
 }) => {
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -44,11 +45,13 @@ const RenderSelectInput = ({
 
   return (
     <div className={containerClasses}>
-      <Col xs={labelSize} className={alignClass}>
-        <ControlLabel htmlFor={input.name}>
-          {label} {help}
-        </ControlLabel>
-      </Col>
+      {hasLabel && (
+        <Col xs={labelSize} className={alignClass}>
+          <ControlLabel htmlFor={input.name}>
+            {label} {help}
+          </ControlLabel>
+        </Col>
+      )}
       <Col xs={inputSize || 12 - labelSize}>
         <select
           {...input}
@@ -89,6 +92,7 @@ RenderSelectInput.propTypes = {
   size: PropTypes.number,
   inputSize: PropTypes.number,
   disabled: PropTypes.bool,
+  hasLabel: PropTypes.bool,
 };
 
 RenderSelectInput.defaultProps = {
@@ -109,5 +113,6 @@ RenderSelectInput.defaultProps = {
   size: null,
   inputSize: null,
   disabled: false,
+  hasLabel: true,
 };
 export default injectIntl(RenderSelectInput);

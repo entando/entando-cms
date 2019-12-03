@@ -1,5 +1,7 @@
 .AssetPhotoCropper {
-  width: 1040px;
+  &.modal-dialog { // sass-lint:disable-line class-name-format
+    width: 1040px;
+  }
 
   &__crop-preview {
     margin-right: .5rem;

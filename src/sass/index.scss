@@ -3,12 +3,12 @@
 @import "patternfly";
 @import "modules";
 @import "common/CMSShell";
-@import "common/PageTitle";
+@import "common/CMSPageTitle";
 @import "common/SectionTitle";
 @import "common/form/FormLabel";
 @import "common/form/SearchForm";
-@import "common/attributes/AttributeCheckIcon";
-@import "common/attributes/AttributeListTable";
+@import "common/contenttype-attributes/AttributeCheckIcon";
+@import "common/contenttype-attributes/AttributeListTable";
 @import "common/form/DropdownTypeahead";
 @import "content-model/ContentModelList";
 @import "content-model/AddContentModelForm";
