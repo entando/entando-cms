@@ -1,4 +1,7 @@
-import { mapStateToProps, mapDispatchToProps } from 'ui/content-settings/ContentSettingsGeneralContainer';
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from 'ui/content-settings/ContentSettingsGeneralContainer';
 import { CONTENT_SETTINGS_OK as C_OK } from 'testutils/mocks/contentSettings';
 
 const state = {

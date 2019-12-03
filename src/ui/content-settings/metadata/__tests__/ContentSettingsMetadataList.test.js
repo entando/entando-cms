@@ -5,10 +5,7 @@ import {
   CONTENT_SETTINGS_OK_FORMED as initialValues,
 } from 'testutils/mocks/contentSettings';
 
-import {
-  configEnzymeAdapter,
-  mockRenderWithIntl,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
 
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import ContentSettingsMetadataList from 'ui/content-settings/metadata/ContentSettingsMetadataList';
@@ -33,12 +30,7 @@ const STATE = {
 };
 
 describe('content-settings/metadata/ContentSettingsMetadataList', () => {
-  const component = mount(
-    mockRenderWithIntl(
-      <ContentSettingsMetadataList {...PROPS} />,
-      STATE,
-    ),
-  );
+  const component = mount(mockRenderWithIntl(<ContentSettingsMetadataList {...PROPS} />, STATE));
 
   it('renders without crashing', () => {
     expect(component.exists()).toEqual(true);

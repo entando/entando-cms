@@ -1,6 +1,9 @@
 import { createMockHistory } from 'testutils/helpers';
 
-import { mapStateToProps, mapDispatchToProps } from 'ui/content-type/ContentTypeReferenceStatusContainer';
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from 'ui/content-type/ContentTypeReferenceStatusContainer';
 import { fetchContentTypeReferenceStatus } from 'state/content-type/actions';
 
 jest.mock('state/content-type/selectors', () => ({
@@ -17,8 +20,7 @@ const dispatchMock = jest.fn();
 describe('ui/content-type/ContentTypeReferenceStatusContainer', () => {
   describe('mapStateToProps', () => {
     it('maps info property from state', () => {
-      expect(mapStateToProps({}))
-        .toHaveProperty('status');
+      expect(mapStateToProps({})).toHaveProperty('status');
     });
   });
 

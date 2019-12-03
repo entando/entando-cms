@@ -1,0 +1,15 @@
+.CategoryTreeInput {
+  &__search {
+    width: 100%;
+    border: 1px solid $color-de-list-icon;
+  }
+
+  &__treebody {
+    min-height: 45px;
+    max-height: 214px;
+    padding: 5px;
+    border: 1px solid $color-de-list-icon;
+    border-top: 0;
+    overflow: scroll;
+  }
+}

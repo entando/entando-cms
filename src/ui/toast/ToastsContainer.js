@@ -11,4 +11,7 @@ export const mapDispatchToProps = dispatch => ({
   onDismiss: id => dispatch(removeToast(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toasts);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Toasts);

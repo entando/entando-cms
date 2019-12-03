@@ -18,9 +18,7 @@ class ContentModelListItem extends Component {
   }
 
   render() {
-    const {
-      descr, contentType, id,
-    } = this.props;
+    const { descr, contentType, id } = this.props;
 
     return (
       <tr className="ContentModelList">
@@ -34,14 +32,10 @@ class ContentModelListItem extends Component {
               label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
               className="ContentModelList__menu-item-edit"
             />
-            <MenuItem
-              className="ContentModelList__menu-item-delete"
-              onClick={this.onClickDelete}
-            >
+            <MenuItem className="ContentModelList__menu-item-delete" onClick={this.onClickDelete}>
               <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
             </MenuItem>
           </DropdownKebab>
-
         </td>
       </tr>
     );

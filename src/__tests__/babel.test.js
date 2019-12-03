@@ -28,9 +28,7 @@ describe('exports cms', () => {
 
   describe('the routes key', () => {
     const history = createMockHistory();
-    const component = mount(
-      mockRenderWithRouter(<>{cms.routes}</>, history),
-    );
+    const component = mount(mockRenderWithRouter(<>{cms.routes}</>, history));
     it('contains <Route> elements', () => {
       expect(component.find(Route).exists()).toBe(true);
     });

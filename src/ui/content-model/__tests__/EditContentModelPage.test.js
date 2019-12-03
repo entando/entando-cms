@@ -19,8 +19,8 @@ describe('ui/content-model/EditContentModelPage', () => {
     expect(component.exists()).toBe(true);
   });
 
-  it('is CardGrid', () => {
-    expect(component.is('CardGrid')).toBe(true);
+  it('is Grid', () => {
+    expect(component.is('Grid')).toBe(true);
   });
 
   it('contains AddContentModelFormContainer', () => {

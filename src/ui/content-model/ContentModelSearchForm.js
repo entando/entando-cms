@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Row,
-  Col,
-  Grid,
-  Button,
-  DropdownButton,
-  MenuItem,
-  Label,
-  Icon,
+  Row, Col, Grid, Button, DropdownButton, MenuItem, Label, Icon,
 } from 'patternfly-react';
 import { Field, reduxForm } from 'redux-form';
 import {
-  defineMessages,
-  injectIntl,
-  intlShape,
-  FormattedMessage,
+  defineMessages, injectIntl, intlShape, FormattedMessage,
 } from 'react-intl';
 import RenderSearchFormInput from 'ui/common/form/RenderSearchFormInput';
 
@@ -35,6 +25,11 @@ class ContentModelSearchFormBody extends Component {
     });
   }
 
+  componentDidMount() {
+    const { onDidMount } = this.props;
+    onDidMount();
+  }
+
   clearSearch() {
     const { reset, submit, searchTerm } = this.props;
     reset();
@@ -42,33 +37,45 @@ class ContentModelSearchFormBody extends Component {
   }
 
   render() {
-    const { intl, handleSubmit } = this.props;
+    const {
+      intl,
+      handleSubmit,
+      selectOptions,
+      onChangeSearchType,
+      selectedAttribute,
+    } = this.props;
     return (
       <form className="ContentModelList__searchform" onSubmit={handleSubmit}>
         <Grid fluid>
           <Row>
             <Col xs={3} className="ContentModelList__filter-searchby">
               <Label className="ContentModelList__filter-searchby-label">
-                <FormattedMessage id="cms.contentmodel.searchFilter.label" defaultMessage="Search By" />
+                <FormattedMessage
+                  id="cms.contentmodel.searchFilter.label"
+                  defaultMessage="Search By"
+                />
               </Label>
-              <DropdownButton title={intl.formatMessage(this.messages.valueName)} id="" className="ContentModelList__filter-searchby-dropdown">
-                <MenuItem eventKey="1" active>
-                  <FormattedMessage id="cms.contentmodel.searchFilter.valueName" />
-                </MenuItem>
+              <DropdownButton
+                title={selectedAttribute.label}
+                id="attribute"
+                onSelect={onChangeSearchType}
+                className="ContentModelList__filter-searchby-dropdown"
+              >
+                {selectOptions.map((option, idx) => (
+                  <MenuItem key={option.value} eventKey={idx + 1}>{option.label}</MenuItem>
+                ))}
               </DropdownButton>
             </Col>
             <Col xs={8}>
               <Field
                 name="keyword"
                 component={RenderSearchFormInput}
+                onClear={this.clearSearch}
                 placeholder={intl.formatMessage(this.messages.searchPlaceholder)}
               />
             </Col>
             <Col xs={1}>
-              <Button
-                className="SearchForm__button"
-                type="submit"
-              >
+              <Button className="SearchForm__button" type="submit">
                 <Icon name="search" />
               </Button>
             </Col>
@@ -81,10 +88,17 @@ class ContentModelSearchFormBody extends Component {
 
 ContentModelSearchFormBody.propTypes = {
   intl: intlShape.isRequired,
+  onDidMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   searchTerm: PropTypes.string,
+  selectOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onChangeSearchType: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  selectedAttribute: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
 };
 
 ContentModelSearchFormBody.defaultProps = {

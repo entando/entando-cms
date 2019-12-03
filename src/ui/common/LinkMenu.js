@@ -1,19 +1,22 @@
 import React from 'react';
-import {
-  LinkMenuItem,
-} from '@entando/menu';
+import { LinkMenuItem } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
 import {
-  ROUTE_CMS_CONTENTMODEL_LIST,
-  ROUTE_CMS_CONTENTTYPE_LIST,
+  ROUTE_CMS_CONTENTMODEL_LIST, ROUTE_CMS_CONTENTTYPE_LIST,
+  ROUTE_CMS_CONTENTS, ROUTE_CMS_ASSETS_LIST,
 } from 'app-init/routes';
 
 const LinkMenu = () => (
   <>
     <LinkMenuItem
-      id="menu-content-list"
-      label={<FormattedMessage id="cms.menu.contentlist" defaultMessage="Content List" />}
-      to="/cms/content-list"
+      id="menu-contents"
+      label={<FormattedMessage id="cms.menu.contents" defaultMessage="Contents" />}
+      to={ROUTE_CMS_CONTENTS}
+    />
+    <LinkMenuItem
+      id="menu-assets"
+      label={<FormattedMessage id="cms.assets.title" defaultMessage="Digital Assets" />}
+      to={ROUTE_CMS_ASSETS_LIST}
     />
     <LinkMenuItem
       id="menu-content-type"

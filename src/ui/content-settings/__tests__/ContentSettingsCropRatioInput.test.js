@@ -71,11 +71,7 @@ describe('ContentSettingsCropRatioInput', () => {
     const mockOnSaveCallback = jest.fn();
     const value = '4:9';
     const wrapper = shallow(
-      <RatioInput
-        value={value}
-        onDelete={mockOnDeleteCallback}
-        onSave={mockOnSaveCallback}
-      />,
+      <RatioInput value={value} onDelete={mockOnDeleteCallback} onSave={mockOnSaveCallback} />,
     );
 
     it('should have a value derived from props', () => {

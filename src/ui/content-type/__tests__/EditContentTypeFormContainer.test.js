@@ -11,13 +11,19 @@ jest.mock('state/content-type/actions', () => ({
   fetchContentTypeAttributes: jest.fn().mockReturnValue('fetchContentTypeAttributes_result'),
   fetchContentType: jest.fn().mockReturnValue('fetchContentType_result'),
   fetchContentTypeAttribute: jest.fn().mockReturnValue('fetchContentTypeAttribute_result'),
+  setSelectedAttribute: jest.fn().mockReturnValue('setSelectedAttribute_result'),
+  setSelectedAttributeContentType: jest.fn().mockReturnValue('setSelectedAttributeContentType_result'),
   sendMoveAttributeUp: jest.fn().mockReturnValue('sendMoveAttributeUp_result'),
   sendMoveAttributeDown: jest.fn().mockReturnValue('sendMoveAttributeDown_result'),
 }));
 
 jest.mock('state/content-type/selectors', () => ({
-  getSelectedContentTypeAttributes: jest.fn().mockReturnValue('getSelectedContentTypeAttributes_result'),
-  getContentTypeAttributesIdList: jest.fn().mockReturnValue('getContentTypeAttributesIdList_result'),
+  getSelectedContentTypeAttributes: jest
+    .fn()
+    .mockReturnValue('getSelectedContentTypeAttributes_result'),
+  getContentTypeAttributesIdList: jest
+    .fn()
+    .mockReturnValue('getContentTypeAttributesIdList_result'),
 }));
 
 const ownProps = {
@@ -57,6 +63,8 @@ describe('EditContentTypeFormContainer', () => {
     it('maps the "onDidMount" prop a "fetchContentType" and "fetchContentTypeAttributes" dispatch', () => {
       expect(props.onDidMount).toBeDefined();
       props.onDidMount('contenttypeCode_code');
+      expect(dispatchMock).toHaveBeenCalledWith('setSelectedAttribute_result');
+      expect(dispatchMock).toHaveBeenCalledWith('setSelectedAttributeContentType_result');
       expect(dispatchMock).toHaveBeenCalledWith('fetchContentType_result');
       expect(dispatchMock).toHaveBeenCalledWith('fetchContentTypeAttributes_result');
     });

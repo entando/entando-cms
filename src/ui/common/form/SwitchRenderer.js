@@ -11,22 +11,32 @@ const switchField = (input, switchValue, trueValue, falseValue) => (
 );
 
 const SwitchRenderer = ({
-  input, append, label, labelSize, alignClass,
-  meta: { touched, error }, help, trueValue, falseValue,
+  input,
+  append,
+  label,
+  labelSize,
+  alignClass,
+  meta: { touched, error },
+  help,
+  trueValue,
+  falseValue,
+  hasLabel,
 }) => {
   const switchValue = input.value === 'true' || input.value === true || input.value === trueValue;
   if (label) {
     return (
-      <div className={`SwitchRenderer ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
-        <Col xs={labelSize} className={alignClass}>
-          <ControlLabel htmlFor={input.name}>
-            {label} {help}
-          </ControlLabel>
-        </Col>
+      <div className={`SwitchRenderer ${touched && error ? 'form-group has-error' : 'form-group'}`}>
+        {hasLabel && (
+          <Col xs={labelSize} className={alignClass}>
+            <ControlLabel htmlFor={input.name}>
+              {label} {help}
+            </ControlLabel>
+          </Col>
+        )}
         <Col xs={12 - labelSize}>
           {switchField(input, switchValue, trueValue, falseValue)}
           {append && <span className="AppendedLabel">{append}</span>}
-          {touched && ((error && <span className="help-block">{error}</span>))}
+          {touched && (error && <span className="help-block">{error}</span>)}
         </Col>
       </div>
     );
@@ -53,6 +63,7 @@ SwitchRenderer.propTypes = {
   labelSize: PropTypes.number,
   append: PropTypes.string,
   alignClass: PropTypes.string,
+  hasLabel: PropTypes.bool,
 };
 
 SwitchRenderer.defaultProps = {
@@ -66,6 +77,7 @@ SwitchRenderer.defaultProps = {
   labelSize: 2,
   append: '',
   alignClass: 'text-right',
+  hasLabel: true,
 };
 
 export default SwitchRenderer;

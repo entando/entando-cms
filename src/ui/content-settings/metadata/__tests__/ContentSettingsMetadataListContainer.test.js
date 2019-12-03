@@ -1,4 +1,7 @@
-import { mapStateToProps, mapDispatchToProps } from 'ui/content-settings/metadata/ContentSettingsMetadataListContainer';
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from 'ui/content-settings/metadata/ContentSettingsMetadataListContainer';
 import {
   CONTENT_SETTINGS_OK as C_OK,
   CONTENT_SETTINGS_OK_MAPPED as maplist,

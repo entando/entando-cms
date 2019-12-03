@@ -8,7 +8,6 @@ import { MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE } from 'state/content-type/const'
 
 import MonolistPage from 'ui/content-type/attributes/monolist/MonolistPage';
 
-
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state) || '',
   attributeCode: params.attributeCode,
@@ -27,4 +26,9 @@ export const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MonolistPage));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(MonolistPage),
+);

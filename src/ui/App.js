@@ -9,6 +9,7 @@ import {
   ROUTE_CMS_ADD_CONTENT,
   ROUTE_CMS_EDIT_CONTENT,
   ROUTE_CMS_CONTENTMODEL_EDIT,
+  ROUTE_CMS_ASSETS_LIST,
   ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTTYPE_ADD,
   ROUTE_CMS_CONTENTTYPE_EDIT,
@@ -16,6 +17,7 @@ import {
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
   ROUTE_CMS_CONTENT_SETTINGS,
+  ROUTE_CMS_CONTENTS,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
@@ -24,6 +26,7 @@ import AddContentModelPage from 'ui/content-model/AddContentModelPage';
 import AddContentPage from 'ui/add-content/AddContentPage';
 import EditContentPage from 'ui/edit-content/EditContentPage';
 import EditContentModelPage from 'ui/content-model/EditContentModelPage';
+import AssetsListPage from 'ui/assets/AssetsListPage';
 import ContentTypeListPage from 'ui/content-type/ContentTypeListPage';
 import AddContentTypePage from 'ui/content-type/AddContentTypePage';
 import EditContentTypePage from 'ui/content-type/EditContentTypePage';
@@ -31,6 +34,7 @@ import AddContentTypeAttributePage from 'ui/content-type/attributes/AddContentTy
 import EditContentTypeAttributePage from 'ui/content-type/attributes/EditContentTypeAttributePage';
 import MonolistPageContainer from 'ui/content-type/attributes/monolist/MonolistPageContainer';
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
+import ContentsPage from 'ui/contents/ContentsPage';
 
 import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
@@ -87,8 +91,16 @@ export const routesDir = [
     component: EditContentPage,
   },
   {
+    path: ROUTE_CMS_ASSETS_LIST,
+    component: AssetsListPage,
+  },
+  {
     path: ROUTE_CMS_CONTENT_SETTINGS,
     component: ContentSettingsPage,
+  },
+  {
+    path: ROUTE_CMS_CONTENTS,
+    component: ContentsPage,
   },
 ];
 

@@ -1,7 +1,11 @@
 import React from 'react';
-import { Row, Col, Button } from 'patternfly-react';
+import {
+  Row, Col, Button, Grid,
+} from 'patternfly-react';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
+import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
+import { REGULAR_SAVE_TYPE, APPROVE_SAVE_TYPE, CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
 
 const messages = defineMessages({
   chooseOption: {
@@ -9,6 +13,12 @@ const messages = defineMessages({
   },
   new: {
     id: 'cms.new',
+  },
+  draft: {
+    id: 'cms.contents.draft',
+  },
+  ready: {
+    id: 'cms.contents.ready',
   },
   save: {
     id: 'cms.save',
@@ -30,69 +40,128 @@ const messages = defineMessages({
   },
 });
 
-const StickySave = ({ lastAutoSaveTime, intl }) => (
-  <Col xs={12} className="StickySave no-padding">
-    <Row className="toolbar-pf table-view-pf-toolbar">
-      <Col xs={12}>
-        <Row className="StickySave__row">
-          <Col xs={12} className="StickySave__column">
-            <strong>
-              <FormattedMessage
-                id="cms.stickySave.lastAutoSave"
-                defaultMessage="Last autosave was:"
-              />
-              {lastAutoSaveTime}
-            </strong>
-          </Col>
-        </Row>
-        <Row className="toolbar-pf-actions">
-          <Col xs={12} md={6} className="StickySave__column">
-            <Col xs={12} className="no-padding">
+const StickySave = ({
+  lastAutoSaveTime, intl, onCancel, invalid, submitting, onLine, onSubmit, handleSubmit,
+  onUnpublish, content,
+}) => (
+  <Grid className="no-padding">
+    <Col xs={12} className="StickySave no-padding">
+      <Row className="toolbar-pf table-view-pf-toolbar">
+        <Col xs={12}>
+          <Row className="StickySave__row">
+            <Col xs={12} className="StickySave__column">
               <strong>
-                <FormattedMessage id="cms.stickySave.status" defaultMessage="Status" />
+                <FormattedMessage
+                  id="cms.stickySave.lastAutoSave"
+                  defaultMessage="Last autosave was:"
+                />
+                {lastAutoSaveTime}
               </strong>
-              <select className="form-control StickySave__select" disabled={false}>
-                <option value="Choose an option">{intl.formatMessage(messages.chooseOption)}</option>
-                <option value="Select Option">{intl.formatMessage(messages.new)}</option>
-              </select>
             </Col>
-          </Col>
-          <Col xs={12} md={6} className="no-padding text-right">
-            <Button bsStyle="primary">{intl.formatMessage(messages.save)}</Button>
-          </Col>
-        </Row>
-        <Row className="toolbar-pf-results">
-          <Col xs={12} md={8} lg={6} lgOffset={6} mdOffset={4} className="no-padding">
-            <Col xs={12} className="text-right">
-              <strong className="StickySave__saveText">
-                <FormattedMessage id="rame" defaultMessage="Set content as" />
-              </strong>
-              <Button className="StickySave__actionButton">{intl.formatMessage(messages.saveAndContinue)}</Button>
-              <Button className="StickySave__actionButton" bsStyle="success">
-                {intl.formatMessage(messages.saveAndApprove)}
-              </Button>
-              <Button className="StickySave__actionButton" bsStyle="warning">
-                <span className="icon fa fa-pause" />
-                {` ${intl.formatMessage(messages.unpublish)}`}
-              </Button>
-              <Button className="StickySave__actionButton--last" bsStyle="danger">
-                {intl.formatMessage(messages.cancel)}
+          </Row>
+          <Row className="toolbar-pf-actions">
+            <Col xs={12} md={6} className="StickySave__column">
+              <Col xs={12} className="no-padding">
+                <strong>
+                  <FormattedMessage id="cms.stickySave.status" defaultMessage="Status" />
+                </strong>
+                <Field name="contentStatus" component="select" className="form-control StickySave__select">
+                  <option value="">
+                    {intl.formatMessage(messages.chooseOption)}
+                  </option>
+                  <option key="draft" value="draft">{intl.formatMessage(messages.draft)}</option>
+                  <option key="ready" value="ready">{intl.formatMessage(messages.ready)}</option>
+                </Field>
+              </Col>
+            </Col>
+            <Col xs={12} md={6} className="no-padding text-right">
+              <Button
+                bsStyle="primary"
+                type="submit"
+                onClick={handleSubmit(values => onSubmit({
+                  ...values,
+                  saveType: REGULAR_SAVE_TYPE,
+                }))}
+                disabled={invalid || submitting}
+              >
+                {intl.formatMessage(messages.save)}
               </Button>
             </Col>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </Col>
+          </Row>
+          <Row className="toolbar-pf-results">
+            <Col xs={12} md={8} lg={6} lgOffset={6} mdOffset={4} className="no-padding">
+              <Col xs={12} className="text-right">
+                <strong className="StickySave__saveText">
+                  <FormattedMessage id="rame" defaultMessage="Set content as" />
+                </strong>
+                <Button
+                  type="submit"
+                  disabled={invalid || submitting}
+                  className="StickySave__actionButton"
+                  onClick={handleSubmit(values => onSubmit({
+                    ...values,
+                    saveType: CONTINUE_SAVE_TYPE,
+                  }))}
+                >
+                  {intl.formatMessage(messages.saveAndContinue)}
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={invalid || submitting}
+                  className="StickySave__actionButton"
+                  bsStyle="success"
+                  onClick={handleSubmit(values => onSubmit({
+                    ...values,
+                    saveType: APPROVE_SAVE_TYPE,
+                  }))}
+                >
+                  {intl.formatMessage(messages.saveAndApprove)}
+                </Button>
+                {
+                    onLine ? (
+                      <Button
+                        className="StickySave__actionButton"
+                        bsStyle="warning"
+                        onClick={() => onUnpublish(content)}
+                      >
+                        <span className="icon fa fa-pause" />
+                        {` ${intl.formatMessage(messages.unpublish)}`}
+                      </Button>
+                    ) : null
+                  }
+                <Button className="StickySave__actionButton--last" bsStyle="danger" onClick={() => onCancel()}>
+                  {intl.formatMessage(messages.cancel)}
+                </Button>
+              </Col>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Col>
+  </Grid>
 );
 
 StickySave.propTypes = {
   intl: intlShape.isRequired,
+  content: PropTypes.shape({}),
   lastAutoSaveTime: PropTypes.string,
+  onCancel: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onUnpublish: PropTypes.func.isRequired,
+  invalid: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  onLine: PropTypes.bool,
 };
 
 StickySave.defaultProps = {
   lastAutoSaveTime: ' skipped',
+  onLine: false,
+  content: {},
 };
 
-export default StickySave;
+const StickySaveContainer = reduxForm({
+  form: 'editcontentform',
+})(StickySave);
+
+export default StickySaveContainer;

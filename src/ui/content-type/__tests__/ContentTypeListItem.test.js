@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  configEnzymeAdapter,
-  mockRenderWithIntl,
-  mockRenderWithRouter,
-} from 'testutils/helpers';
+import { configEnzymeAdapter, mockRenderWithIntl, mockRenderWithRouter } from 'testutils/helpers';
 import { mount } from 'enzyme';
 import { DropdownKebab } from 'patternfly-react';
 
@@ -17,9 +13,19 @@ const onClickReload = jest.fn();
 describe('ContentTypeListItem', () => {
   let component;
   beforeEach(() => {
-    component = mount(mockRenderWithRouter(mockRenderWithIntl(
-      <ContentTypeListItem code="code" name="maw" status="0" onDelete={onClickDelete} onReload={onClickReload} />,
-    )));
+    component = mount(
+      mockRenderWithRouter(
+        mockRenderWithIntl(
+          <ContentTypeListItem
+            code="code"
+            name="maw"
+            status="0"
+            onDelete={onClickDelete}
+            onReload={onClickReload}
+          />,
+        ),
+      ),
+    );
   });
 
   it('renders without crashing', () => {

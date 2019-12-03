@@ -7,6 +7,8 @@ import {
   fetchContentType,
   fetchContentTypeAttribute,
   sendPutContentType,
+  setSelectedAttribute,
+  setSelectedAttributeContentType,
   sendMoveAttributeUp,
   sendMoveAttributeDown,
 } from 'state/content-type/actions';
@@ -33,24 +35,19 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   routeToEdit: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
 });
 
-
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: ({ contentTypeCode }) => {
+    dispatch(setSelectedAttribute({}));
+    dispatch(setSelectedAttributeContentType());
     dispatch(fetchContentType(contentTypeCode));
     dispatch(fetchContentTypeAttributes());
   },
   onAddAttribute: ({ attributeCode, contentTypeCode }) => {
-    dispatch(fetchContentTypeAttribute(
-      attributeCode,
-      () => (
-        history.push(
-          routeConverter(
-            ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode: contentTypeCode },
-          ),
-        )
-      ),
-    ));
+    dispatch(
+      fetchContentTypeAttribute(attributeCode, () => history.push(
+        routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
+      )),
+    );
   },
 
   onMoveUp: (entityCode, attributeCode, attributeIndex) => {
@@ -70,12 +67,15 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
       }
     });
   },
-
 });
 
 const EditContentTypeFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AddContentTypeForm);
 
 export default withRouter(EditContentTypeFormContainer);

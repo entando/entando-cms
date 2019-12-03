@@ -1,10 +1,7 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
-  getGroups,
-  getContent,
-  getCategories,
-  postAddContent,
+  getGroups, getContent, getCategories, postAddContent,
 } from 'api/editContent';
 import { makeRequest } from '@entando/apimanager';
 import { GET_GROUPS_RESPONSE_OK, GET_CATEGORIES_RESPONSE_OK } from 'testutils/mocks/contentType';
@@ -60,12 +57,13 @@ describe('api/editContent', () => {
   });
   describe('api/postAddContent', () => {
     it('postAddContent returns a promise with correct params', () => {
-      const body = { a: 1, b: 2 };
+      const body = [{ a: 1, b: 2 }];
       const response = postAddContent({ a: 1, b: 2 });
       expect(makeRequest).toHaveBeenCalledWith({
-        uri: '/api/plugins/cms/contents/',
+        uri: '/api/plugins/cms/contents',
         body,
         method: 'POST',
+        contentType: 'application/json',
         mockResponse: POST_CONTENT_ADD_RESPONSE_OK,
         useAuthentication: true,
       });

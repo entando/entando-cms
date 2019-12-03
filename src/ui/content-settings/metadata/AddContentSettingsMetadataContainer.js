@@ -24,13 +24,7 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(sendPostMetadataMap(key, mapping)).then((res) => {
       if (res) {
         dispatch(reset('addsettingsmetadata'));
-        dispatch(addToast(
-          intl.formatMessage(
-            metadataMsgs.saved,
-            { name: key },
-          ),
-          TOAST_SUCCESS,
-        ));
+        dispatch(addToast(intl.formatMessage(metadataMsgs.saved, { name: key }), TOAST_SUCCESS));
       }
     });
   },

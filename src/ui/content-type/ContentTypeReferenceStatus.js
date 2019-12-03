@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Alert } from 'patternfly-react';
 
-
 class ContentTypeReferenceStatus extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +21,9 @@ class ContentTypeReferenceStatus extends Component {
 
   render() {
     const { status } = this.props;
-    if (status.type === 'success') { return null; }
+    if (status.type === 'success') {
+      return null;
+    }
     return (
       <Alert type={status.type} className="ContentTypeReferenceStatus">
         <FormattedMessage id="cms.contenttype.reference.text" values={{ count: status.count }} />
@@ -40,7 +41,6 @@ class ContentTypeReferenceStatus extends Component {
             ),
           }}
         />
-
       </Alert>
     );
   }
@@ -55,6 +55,5 @@ ContentTypeReferenceStatus.propTypes = {
     contentTypesCodes: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
-
 
 export default ContentTypeReferenceStatus;

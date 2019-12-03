@@ -159,9 +159,9 @@ describe('state/content-type/selectors', () => {
   });
 
   it('verify getContentTypeSelectedAttribute selector', () => {
-    expect(
-      getContentTypeSelectedAttribute(STATE_ATTRIBUTES),
-    ).toEqual(STATE_ATTRIBUTES.apps.cms.contentType.attributes.selected);
+    expect(getContentTypeSelectedAttribute(STATE_ATTRIBUTES)).toEqual(
+      STATE_ATTRIBUTES.apps.cms.contentType.attributes.selected,
+    );
   });
 
   it('verify getContentTypeSelectedAttributeIsList selector', () => {
@@ -190,7 +190,10 @@ describe('state/content-type/selectors', () => {
 
   it('verify getContentTypeReferencesStatus selector', () => {
     expect(getContentTypeReferencesStatus(TEST_STATE)).toMatchObject({
-      type: 'warning', status: 'toRefresh', contentTypeCodes: ['CCC'], count: 1,
+      type: 'warning',
+      status: 'toRefresh',
+      contentTypeCodes: ['CCC'],
+      count: 1,
     });
     const anotherState = {
       apps: {
@@ -198,10 +201,7 @@ describe('state/content-type/selectors', () => {
           contentType: {
             references: {
               status: {
-                ready: [
-                  'AAA',
-                  'BBB',
-                ],
+                ready: ['AAA', 'BBB'],
                 toRefresh: [],
                 refreshing: [],
               },
@@ -211,7 +211,9 @@ describe('state/content-type/selectors', () => {
       },
     };
     expect(getContentTypeReferencesStatus(anotherState)).toMatchObject({
-      type: 'success', status: 'ready', contentTypeCode: [],
+      type: 'success',
+      status: 'ready',
+      contentTypeCode: [],
     });
   });
 
@@ -243,10 +245,7 @@ describe('state/content-type/selectors', () => {
   it('verify getContentTypeAttributesIdList returning list except selected attribute', () => {
     const LIST_SELECTED = { ...TEST_STATE_HAS_BLANKSELECTED };
     LIST_SELECTED.apps.cms.contentType.attributes.selected = { code: 'List' };
-    expect(getContentTypeAttributesIdList(LIST_SELECTED)).toEqual([
-      'Enumerator',
-      'Monotext',
-    ]);
+    expect(getContentTypeAttributesIdList(LIST_SELECTED)).toEqual(['Enumerator', 'Monotext']);
   });
 
   it('verify getContentTypeSelectedAttributeType selector is defined', () => {
@@ -275,9 +274,9 @@ describe('state/content-type/selectors', () => {
 
   it('verify getSelectedCompositeAttributes selector is defined', () => {
     expect(getSelectedCompositeAttributes(TEST_STATE_HAS_BLANKSELECTED)).toEqual([]);
-    expect(
-      getSelectedCompositeAttributes(STATE_ATTRIBUTES_MONOLIST)[0],
-    ).toEqual(ATTRIBUTE_MONOLIST_COMPOSITE.nestedAttribute.compositeAttributes[0]);
+    expect(getSelectedCompositeAttributes(STATE_ATTRIBUTES_MONOLIST)[0]).toEqual(
+      ATTRIBUTE_MONOLIST_COMPOSITE.nestedAttribute.compositeAttributes[0],
+    );
     const noCompAttr = {
       apps: {
         cms: {
@@ -319,11 +318,7 @@ describe('state/content-type/selectors', () => {
       },
     };
     const res = getContentTypeAttributesIdList(LIST_SELECTED2);
-    expect(res).toEqual([
-      'Enumerator',
-      'Monotext',
-      'Text',
-    ]);
+    expect(res).toEqual(['Enumerator', 'Monotext', 'Text']);
   });
 
   it('verify getMonolistAttributeType', () => {

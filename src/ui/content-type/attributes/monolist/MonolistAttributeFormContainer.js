@@ -24,9 +24,12 @@ import {
   MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE,
 } from 'state/content-type/const';
 
-import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD } from 'app-init/routes';
+import {
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
+} from 'app-init/routes';
 
-import MonolistAttributeForm from 'ui/common/form/MonolistAttributeForm';
+import ContentTypeMonolistAttributeForm from 'ui/common/form/ContentTypeMonolistAttributeForm';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state),
@@ -40,24 +43,23 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   compositeAttributes: getSelectedCompositeAttributes(state),
 });
 
-
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
   onDidMount: ({ attributeCode, contentTypeCode, mode }) => {
     dispatch(clearErrors());
     if (mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
-      dispatch(fetchContentTypeAttribute(
-        TYPE_COMPOSITE,
-        () => (
-          history.push(
-            routeConverter(
-              ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
-              { entityCode: contentTypeCode, attributeCode },
-            ),
-          )
+      dispatch(
+        fetchContentTypeAttribute(
+          TYPE_COMPOSITE,
+          () => history.push(
+            routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
+              entityCode: contentTypeCode,
+              attributeCode,
+            }),
+          ),
+          '',
+          'monoListAttribute',
         ),
-        '',
-        'monoListAttribute',
-      ));
+      );
     } else {
       dispatch(fetchAttributeFromContentType('monoListAttribute', contentTypeCode, attributeCode));
     }
@@ -67,19 +69,16 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   },
   onAddAttribute: ({ contentTypeCode, type }) => {
     dispatch(setActionMode(MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE));
-    dispatch(fetchContentTypeAttribute(
-      type,
-      () => (
-        history.push(
-          routeConverter(
-            ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
-            { entityCode: contentTypeCode },
-          ),
-        )
+    dispatch(
+      fetchContentTypeAttribute(
+        type,
+        () => history.push(
+          routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
+        ),
+        type,
+        'addAttribute',
       ),
-      type,
-      'addAttribute',
-    ));
+    );
   },
   onClickDelete: (attributeCode) => {
     dispatch(removeAttributeFromComposite(attributeCode));
@@ -89,4 +88,13 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MonolistAttributeForm));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    null,
+    {
+      pure: false,
+    },
+  )(ContentTypeMonolistAttributeForm),
+);

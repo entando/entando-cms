@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  BrandMenu,
-  FirstLevelMenuItem,
-  LinkMenuItem,
-} from '@entando/menu';
+import { BrandMenu, FirstLevelMenuItem, LinkMenuItem } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
 
 import LinkMenu from 'ui/common/LinkMenu';

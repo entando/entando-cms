@@ -65,19 +65,10 @@ const getDepth = (categories, categoryCode) => {
 };
 
 export const getCategoryTree = createSelector(
-  [
-    getCategoriesMap,
-    getChildrenMap,
-    getStatusMap,
-    getTitlesMap,
-    getLocale],
-  (
-    categories,
+  [getCategoriesMap, getChildrenMap, getStatusMap, getTitlesMap, getLocale],
+  (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(
     categoryChildren,
-    categoriesStatus,
-    categoriesTitles,
-    locale,
-  ) => getCategoriesOrder(categoryChildren)
+  )
     .filter(categoryCode => isVisible(categoryCode, categories, categoriesStatus))
     .map(categoryCode => ({
       ...categories[categoryCode],
@@ -91,17 +82,10 @@ export const getCategoryTree = createSelector(
 );
 
 export const getAllCategories = createSelector(
-  [
-    getCategoriesMap,
-    getChildrenMap,
-    getStatusMap,
-    getTitlesMap,
-    getLocale],
-  (
-    categories,
+  [getCategoriesMap, getChildrenMap, getStatusMap, getTitlesMap, getLocale],
+  (categories, categoryChildren, categoriesStatus) => getCategoriesOrder(
     categoryChildren,
-    categoriesStatus,
-  ) => getCategoriesOrder(categoryChildren).map(categoryCode => ({
+  ).map(categoryCode => ({
     ...categories[categoryCode],
     ...CATEGORY_STATUS_DEFAULTS,
     ...categoriesStatus[categoryCode],

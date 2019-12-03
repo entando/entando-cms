@@ -37,10 +37,7 @@ describe('content-settings/ContentSettingsPage', () => {
   beforeEach(() => {
     component = mount(
       mockRenderWithRouter(
-        mockRenderWithIntl(
-          <ContentSettingsPage />,
-          initState,
-        ),
+        mockRenderWithIntl(<ContentSettingsPage />, initState),
         createMockHistory(),
       ),
     );

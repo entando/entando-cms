@@ -1,6 +1,4 @@
-import {
-  configEnzymeAdapter,
-} from 'testutils/helpers';
+import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
   getContentSettings,

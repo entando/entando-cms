@@ -11,14 +11,22 @@ import loading from 'state/loading/reducer';
 import modal from 'state/modal/reducer';
 import pagination from 'state/pagination/reducer';
 import categories from 'state/categories/reducer';
+import assets from 'state/assets/reducer';
 import contentSettings from 'state/content-settings/reducer';
+import groups from 'state/groups/reducer';
+import contents from 'state/contents/reducer';
+import languages from 'state/languages/reducer';
 
 export const cms = combineReducers({
   contentModel,
   contentType,
   editContent,
   categories,
+  assets,
   contentSettings,
+  groups,
+  contents,
+  languages,
 });
 
 export default combineReducers({
@@ -30,5 +38,6 @@ export default combineReducers({
   locale,
   messages,
   modal,
+  categories,
   pagination,
 });

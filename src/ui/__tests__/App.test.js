@@ -47,10 +47,7 @@ configEnzymeAdapter();
 describe('App', () => {
   const history = createMockHistory();
   const component = mount(
-    mockRenderWithStore(
-      mockRenderWithRouter(<App {...props} />, history),
-      STATE,
-    ),
+    mockRenderWithStore(mockRenderWithRouter(<App {...props} />, history), STATE),
   );
 
   it('renders without crashing', () => {

@@ -5,41 +5,44 @@ import { Col, ControlLabel } from 'patternfly-react';
 
 const buttonToolbar = (input, toggleElement, defaultValue) => (
   <ButtonToolbar className="RenderRadioInput">
-    <ToggleButtonGroup
-      type="radio"
-      {...input}
-      value={input.value ? input.value : defaultValue}
-    >
-      { toggleElement.map(item => (
-        <ToggleButton
-          key={item.id}
-          value={item.id}
-          className="RenderRadioInput__toggle-btn"
-        >
+    <ToggleButtonGroup type="radio" {...input} value={input.value ? input.value : defaultValue}>
+      {toggleElement.map(item => (
+        <ToggleButton key={item.id} value={item.id} className="RenderRadioInput__toggle-btn">
           {item.label}
         </ToggleButton>
-      ))
-      }
+      ))}
     </ToggleButtonGroup>
   </ButtonToolbar>
 );
 
 const RenderRadioInput = ({
-  input, append, label, labelSize, alignClass,
-  meta: { touched, error }, help, toggleElement, defaultValue,
+  input,
+  append,
+  label,
+  labelSize,
+  alignClass,
+  meta: { touched, error },
+  help,
+  toggleElement,
+  defaultValue,
+  hasLabel,
 }) => {
   if (label) {
     return (
-      <div className={`RadioInputRenderer ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
-        <Col xs={labelSize} className={alignClass}>
-          <ControlLabel htmlFor={input.name}>
-            {label} {help}
-          </ControlLabel>
-        </Col>
+      <div
+        className={`RadioInputRenderer ${touched && error ? 'form-group has-error' : 'form-group'}`}
+      >
+        {hasLabel && (
+          <Col xs={labelSize} className={alignClass}>
+            <ControlLabel htmlFor={input.name}>
+              {label} {help}
+            </ControlLabel>
+          </Col>
+        )}
         <Col xs={12 - labelSize}>
           {buttonToolbar(input, toggleElement, defaultValue)}
           {append && <span className="AppendedLabel">{append}</span>}
-          {touched && ((error && <span className="help-block">{error}</span>))}
+          {touched && (error && <span className="help-block">{error}</span>)}
         </Col>
       </div>
     );
@@ -48,23 +51,29 @@ const RenderRadioInput = ({
 };
 
 RenderRadioInput.propTypes = {
-  toggleElement: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    label: PropTypes.string,
-  })),
+  toggleElement: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    }),
+  ),
   input: PropTypes.shape({}).isRequired,
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   alignClass: PropTypes.string,
   labelSize: PropTypes.number,
+  hasLabel: PropTypes.bool,
 };
 RenderRadioInput.defaultProps = {
-  toggleElement: [{
-    id: '',
-    label: '',
-  }],
+  toggleElement: [
+    {
+      id: '',
+      label: '',
+    },
+  ],
   defaultValue: '',
   alignClass: 'text-right',
   labelSize: 2,
+  hasLabel: true,
 };
 
 export default RenderRadioInput;

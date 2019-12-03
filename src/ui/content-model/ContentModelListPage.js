@@ -1,21 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Row,
-  Col,
-  CardGrid,
-  Breadcrumb,
-  Button,
+  Row, Col, Grid, Breadcrumb, Button,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
-import PageTitle from 'ui/common/PageTitle';
+import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentModelSearchForm from 'ui/content-model/ContentModelSearchForm';
+import ContentModelSearchFormContainer from 'ui/content-model/ContentModelSearchFormContainer';
 import ContentModelListContainer from 'ui/content-model/ContentModelListContainer';
 import { ROUTE_CMS_CONTENTMODEL_ADD } from 'app-init/routes';
 
 const ContentModelListPage = () => (
-  <CardGrid>
+  <Grid fluid>
     <Row>
       <Col xs={12}>
         <Breadcrumb>
@@ -29,13 +25,18 @@ const ContentModelListPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col xs={4}>
-        <PageTitle titleId="cms.contentmodel.title" helpId="cms.contentmodel.titletip" />
+      <Col xs={12}>
+        <CMSPageTitle
+          titleId="cms.contentmodel.title"
+          helpId="cms.contentmodel.titletip"
+          position="pull-right"
+          largeTitle
+        />
       </Col>
     </Row>
     <Row className="ContentModelList__filter">
       <Col xs={9}>
-        <ContentModelSearchForm />
+        <ContentModelSearchFormContainer />
       </Col>
       <Col xs={1} />
       <Col xs={2}>
@@ -51,7 +52,7 @@ const ContentModelListPage = () => (
         <ContentModelListContainer />
       </Col>
     </Row>
-  </CardGrid>
+  </Grid>
 );
 
 export default ContentModelListPage;

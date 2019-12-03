@@ -6,6 +6,9 @@ export const mapDispatchToProps = dispatch => ({
   setupLanguage: lang => dispatch(setLanguage(lang)),
 });
 
-const AppContainer = connect(null, mapDispatchToProps)(App);
+const AppContainer = connect(
+  null,
+  mapDispatchToProps,
+)(App);
 
 export default AppContainer;

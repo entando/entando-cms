@@ -11,9 +11,7 @@ export const CONTENT_SETTINGS_OK = {
     description: [],
     title: [],
   },
-  cropRatios: [
-    '4:9',
-  ],
+  cropRatios: ['4:9'],
   editor: {
     label: 'CKEditor',
     key: 'fckeditor',
@@ -46,9 +44,7 @@ export const CONTENT_SETTINGS_EDITOR_OK = {
 };
 
 export const CONTENT_SETTINGS_CROP_RATIOS_OK = {
-  payload: [
-    '4:9',
-  ],
+  payload: ['4:9'],
   metaData: {},
   errors: [],
 };

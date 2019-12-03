@@ -11,6 +11,9 @@ export const mapDispatchToProps = dispatch => ({
   onCloseModal: () => dispatch(setVisibleModal('')),
 });
 
-const GenericModalContainer = connect(mapStateToProps, mapDispatchToProps)(GenericModal);
+const GenericModalContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(GenericModal);
 
 export default GenericModalContainer;

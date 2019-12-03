@@ -1,6 +1,6 @@
 {
   "name": "@entando/cms",
-  "version": "0.2.10",
+  "version": "0.2.17",
   "license": "LGPL-2.1",
   "description": "entando CMS app",
   "keywords": [
@@ -23,7 +23,12 @@
     "brace": "^0.11.1",
     "react-ace": "^7.0.2",
     "react-bootstrap-typeahead": "^3.4.6",
-    "react-draggable": "^3.3.0"
+    "react-cropper": "^1.3.0",
+    "react-csv": "^1.1.1",
+    "react-draggable": "^3.3.0",
+    "react-excel-workbook": "0.0.4",
+    "react-html-table-to-excel": "^2.0.0",
+    "react-quill": "^1.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,7 +41,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage"
+      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage "
     }
   },
   "babel": {
@@ -159,8 +164,11 @@
     "@babel/preset-react": "^7.0.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "husky": "^1.3.1",
     "node-sass": "^4.11.0",
+    "prettier": "^1.18.2",
     "sass-lint": "^1.12.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
@@ -179,7 +187,7 @@
     "reselect": "^4.0.0"
   },
   "peerDependencies": {
-    "@entando/apimanager": "^3.0.2",
+    "@entando/apimanager": "^4.2.0",
     "@entando/messages": "^1.0.4",
     "@entando/menu": "^2.0.0",
     "@entando/utils": "^2.0.0",

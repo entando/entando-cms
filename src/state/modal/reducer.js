@@ -6,7 +6,8 @@ export const visibleModal = (state = '', action = {}) => {
     case SET_VISIBLE_MODAL: {
       return action.payload.visibleModal;
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 
@@ -15,7 +16,8 @@ export const info = (state = {}, action = {}) => {
     case SET_INFO: {
       return action.payload.info;
     }
-    default: return state;
+    default:
+      return state;
   }
 };
 

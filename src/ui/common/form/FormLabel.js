@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  defineMessages,
-  injectIntl,
-  intlShape,
-  FormattedMessage,
+  defineMessages, injectIntl, intlShape, FormattedMessage,
 } from 'react-intl';
 import { FieldLevelHelp } from 'patternfly-react';
 
@@ -20,7 +17,9 @@ const FormLabel = ({
   intl,
 }) => {
   const requiredIcon = required ? (
-    <sup><i className="fa fa-asterisk required-icon FormLabel__required-icon" /></sup>
+    <sup>
+      <i className="fa fa-asterisk required-icon FormLabel__required-icon" />
+    </sup>
   ) : null;
 
   const langLabel = langLabelId ? (
@@ -30,9 +29,7 @@ const FormLabel = ({
   ) : null;
 
   const langLabelWithText = langLabelText ? (
-    <span className="label FormLabel__language-label">
-      {langLabelText}
-    </span>
+    <span className="label FormLabel__language-label">{langLabelText}</span>
   ) : null;
 
   let fieldHelpId = null;
@@ -46,17 +43,11 @@ const FormLabel = ({
     fieldHelpId = <FieldLevelHelp content={intl.formatMessage(msg.helpId, helpValues)} />;
   }
 
-
-  const fieldHelpText = helpText ? (
-    <FieldLevelHelp content={helpText} />
-  ) : null;
+  const fieldHelpText = helpText ? <FieldLevelHelp content={helpText} /> : null;
 
   const fieldHelp = helpId ? fieldHelpId : fieldHelpText;
 
-  const label = labelId ? (
-    <FormattedMessage id={labelId} />
-  ) : labelText;
-
+  const label = labelId ? <FormattedMessage id={labelId} /> : labelText;
 
   return (
     <span className="FormLabel">

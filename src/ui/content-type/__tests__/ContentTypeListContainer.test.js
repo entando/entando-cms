@@ -25,7 +25,6 @@ const TEST_STATE = {
 
 const dispatchMock = jest.fn();
 
-
 jest.mock('state/content-type/actions', () => ({
   fetchContentTypeListPaged: jest.fn(),
   sendPostRefreshContentType: jest.fn(),
@@ -76,7 +75,6 @@ describe('ContentTypeListContainer', () => {
       expect(props.onClickDelete).toBeDefined();
       expect(props.onClickReload).toBeDefined();
     });
-
 
     it('should dispatch an action if onDidMount is called', () => {
       props.onDidMount({});

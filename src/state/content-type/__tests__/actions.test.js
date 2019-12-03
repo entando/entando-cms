@@ -91,7 +91,6 @@ import {
   CONTENT_TYPE_REFERENCES_STATUS,
   ATTRIBUTE_COMPOSITE,
   ATTRIBUTE_MONOLIST_COMPOSITE,
-
 } from 'testutils/mocks/contentType';
 
 import {
@@ -269,51 +268,66 @@ describe('state/content-type/actions ', () => {
   describe('thunk', () => {
     describe('fetchContentTypeReferenceStatus', () => {
       it('when fetchContentTypeReferenceStatus succeeds, should dispatch SET_CONTENT_TYPE_REFERENCE_STATUS', (done) => {
-        getContentTypesStatus
-          .mockImplementationOnce(mockApi({ payload: CONTENT_TYPE_REFERENCES_STATUS }));
-        store.dispatch(fetchContentTypeReferenceStatus(GET_CONTENT_TYPE_RESPONSE_OK)).then(() => {
-          expect(getContentTypesStatus).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions[0]).toHaveProperty('type', SET_CONTENT_TYPE_REFERENCE_STATUS);
-          expect(actions[0]).toHaveProperty('payload.contentTypeStatus', CONTENT_TYPE_REFERENCES_STATUS);
+        getContentTypesStatus.mockImplementationOnce(
+          mockApi({ payload: CONTENT_TYPE_REFERENCES_STATUS }),
+        );
+        store
+          .dispatch(fetchContentTypeReferenceStatus(GET_CONTENT_TYPE_RESPONSE_OK))
+          .then(() => {
+            expect(getContentTypesStatus).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions[0]).toHaveProperty('type', SET_CONTENT_TYPE_REFERENCE_STATUS);
+            expect(actions[0]).toHaveProperty(
+              'payload.contentTypeStatus',
+              CONTENT_TYPE_REFERENCES_STATUS,
+            );
 
-          done();
-        }).catch(done.fail);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('when fetchContentTypeReferenceStatus get error, should dispatch addError', (done) => {
         getContentTypesStatus.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(fetchContentTypeReferenceStatus(CONTENT_TYPE_REFERENCES_STATUS)).then(() => {
-          expect(getContentTypesStatus).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeReferenceStatus(CONTENT_TYPE_REFERENCES_STATUS))
+          .then(() => {
+            expect(getContentTypesStatus).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendPostContentTypeReferenceStatus', () => {
       const ContenttypesCodes = ['AAA'];
       it('when sendPostContentTypeReferenceStatus succeeds, should call router', (done) => {
-        postContentTypesStatus
-          .mockImplementationOnce(mockApi({ payload: { ContenttypesCodes } }));
-        store.dispatch(sendPostContentTypeReferenceStatus({ ContenttypesCodes })).then(() => {
-          expect(postContentTypesStatus).toHaveBeenCalled();
-          // expect(history.push).toHaveBeenCalledWith(ROUTE_CONTENT_TYPE_LIST);
-          done();
-        }).catch(done.fail);
+        postContentTypesStatus.mockImplementationOnce(mockApi({ payload: { ContenttypesCodes } }));
+        store
+          .dispatch(sendPostContentTypeReferenceStatus({ ContenttypesCodes }))
+          .then(() => {
+            expect(postContentTypesStatus).toHaveBeenCalled();
+            // expect(history.push).toHaveBeenCalledWith(ROUTE_CONTENT_TYPE_LIST);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('when sendPostContentTypeReferenceStatus get error, should dispatch addError', (done) => {
         postContentTypesStatus.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPostContentTypeReferenceStatus({ ContenttypesCodes })).then(() => {
-          expect(postContentTypesStatus).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostContentTypeReferenceStatus({ ContenttypesCodes }))
+          .then(() => {
+            expect(postContentTypesStatus).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -322,154 +336,195 @@ describe('state/content-type/actions ', () => {
 
       it('when sendPostRefreshContentType succeeds, show toast message', (done) => {
         postRefreshContentType.mockImplementationOnce(mockApi({ payload }));
-        store.dispatch(sendPostRefreshContentType(payload)).then(() => {
-          expect(postRefreshContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_TOAST);
-          expect(actions[0].payload).toHaveProperty('type', 'success');
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostRefreshContentType(payload))
+          .then(() => {
+            expect(postRefreshContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_TOAST);
+            expect(actions[0].payload).toHaveProperty('type', 'success');
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('when postContentType get error, should dispatch addError', (done) => {
         postRefreshContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPostRefreshContentType(payload)).then(() => {
-          expect(postRefreshContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(3);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          expect(actions[1]).toHaveProperty('type', ADD_TOAST);
-          expect(actions[1].payload).toHaveProperty('type', 'error');
-          expect(actions[2]).toHaveProperty('type', CLEAR_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostRefreshContentType(payload))
+          .then(() => {
+            expect(postRefreshContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(3);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            expect(actions[1]).toHaveProperty('type', ADD_TOAST);
+            expect(actions[1].payload).toHaveProperty('type', 'error');
+            expect(actions[2]).toHaveProperty('type', CLEAR_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendPostContentType', () => {
       it('when postContentType succeeds, should call router', (done) => {
         postContentType.mockImplementationOnce(mockApi({ payload: GET_CONTENT_TYPES_RESPONSE_OK }));
-        store.dispatch(sendPostContentType(GET_CONTENT_TYPES_RESPONSE_OK)).then(() => {
-          expect(postContentType).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostContentType(GET_CONTENT_TYPES_RESPONSE_OK))
+          .then(() => {
+            expect(postContentType).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('when postContentType get error, should dispatch addError', (done) => {
         postContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPostContentType(GET_CONTENT_TYPES_RESPONSE_OK)).then(() => {
-          expect(postContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(3);
-          expect(actions[1]).toHaveProperty('type', ADD_TOAST);
-          expect(actions[1].payload).toHaveProperty('type', 'error');
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostContentType(GET_CONTENT_TYPES_RESPONSE_OK))
+          .then(() => {
+            expect(postContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(3);
+            expect(actions[1]).toHaveProperty('type', ADD_TOAST);
+            expect(actions[1].payload).toHaveProperty('type', 'error');
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendPutContentType', () => {
       it('when putContentType succeeds, should call router', (done) => {
         putContentType.mockImplementationOnce(mockApi({ payload: GET_CONTENT_TYPES_RESPONSE_OK }));
-        store.dispatch(sendPutContentType(GET_CONTENT_TYPES_RESPONSE_OK)).then(() => {
-          // expect(history.push).toHaveBeenCalledWith(ROUTE_CONTENT_TYPE_LIST);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPutContentType(GET_CONTENT_TYPES_RESPONSE_OK))
+          .then(() => {
+            // expect(history.push).toHaveBeenCalledWith(ROUTE_CONTENT_TYPE_LIST);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('when putContentType get error, should dispatch addError', (done) => {
         putContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPutContentType(GET_CONTENT_TYPES_RESPONSE_OK)).then(() => {
-          expect(putContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPutContentType(GET_CONTENT_TYPES_RESPONSE_OK))
+          .then(() => {
+            expect(putContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendDeleteContentType', () => {
       it('when deleteContentType succeeds, should call router', (done) => {
         deleteContentType.mockImplementationOnce(mockApi({ payload: 'AAA' }));
-        store.dispatch(sendDeleteContentType('AAA')).then(() => {
-          expect(deleteContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions[0]).toHaveProperty('type', REMOVE_CONTENT_TYPE);
-          expect(actions[0]).toHaveProperty('payload', { contentTypeCode: 'AAA' });
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendDeleteContentType('AAA'))
+          .then(() => {
+            expect(deleteContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions[0]).toHaveProperty('type', REMOVE_CONTENT_TYPE);
+            expect(actions[0]).toHaveProperty('payload', { contentTypeCode: 'AAA' });
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('when deleteContentType get error, should dispatch addError', (done) => {
         deleteContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendDeleteContentType('AAA')).then(() => {
-          expect(deleteContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendDeleteContentType('AAA'))
+          .then(() => {
+            expect(deleteContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('fetchContentType', () => {
       it('fetchContentType calls setSelectedContentType', (done) => {
         getContentType.mockImplementationOnce(mockApi({ payload: GET_CONTENT_TYPES_RESPONSE_OK }));
-        store.dispatch(fetchContentType('AAA')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(2);
-          expect(actions[0]).toHaveProperty('type', SET_SELECTED_CONTENT_TYPE);
-          expect(actions[0]).toHaveProperty('payload');
-          expect(actions[0].payload).toMatchObject({ contentType: GET_CONTENT_TYPES_RESPONSE_OK });
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentType('AAA'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+            expect(actions[0]).toHaveProperty('type', SET_SELECTED_CONTENT_TYPE);
+            expect(actions[0]).toHaveProperty('payload');
+            expect(actions[0].payload).toMatchObject({
+              contentType: GET_CONTENT_TYPES_RESPONSE_OK,
+            });
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchContentType get error, should dispatch addError', (done) => {
         getContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(fetchContentType('AAA')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentType('AAA'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('fetchContentTypeListPaged', () => {
       it('fetchContentTypeListPaged calls fetchContentTypeListPaged and setPage actions', (done) => {
-        store.dispatch(fetchContentTypeListPaged()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(4);
-          expect(actions[1].type).toEqual(SET_CONTENT_TYPES);
-          expect(actions[2].type).toEqual(SET_PAGE);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeListPaged())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(4);
+            expect(actions[1].type).toEqual(SET_CONTENT_TYPES);
+            expect(actions[2].type).toEqual(SET_PAGE);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('ContentTypes is defined and properly valued', (done) => {
         getContentTypes.mockImplementationOnce(mockApi({ payload: CONTENT_TYPES_MOCK }));
-        store.dispatch(fetchContentTypeListPaged()).then(() => {
-          const actions = store.getActions();
-          const actionPayload = actions[1].payload;
-          expect(actionPayload.list).toHaveLength(2);
-          const ContentType = actionPayload.list[0];
-          expect(ContentType).toHaveProperty('name', 'contentType1');
-          expect(ContentType).toHaveProperty('code', 'ABC');
-          expect(ContentType).toHaveProperty('status', '0');
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeListPaged())
+          .then(() => {
+            const actions = store.getActions();
+            const actionPayload = actions[1].payload;
+            expect(actionPayload.list).toHaveLength(2);
+            const ContentType = actionPayload.list[0];
+            expect(ContentType).toHaveProperty('name', 'contentType1');
+            expect(ContentType).toHaveProperty('code', 'ABC');
+            expect(ContentType).toHaveProperty('status', '0');
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchContentTypeListPaged calls ADD_ERROR actions', (done) => {
         getContentTypes.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(fetchContentTypeListPaged()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(3);
-          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeListPaged())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(3);
+            expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -479,14 +534,17 @@ describe('state/content-type/actions ', () => {
         getAttributeFromContentType.mockImplementationOnce(
           mockApi({ payload: GET_CONTENT_TYPES_RESPONSE_OK }),
         );
-        store.dispatch(fetchAttributeFromContentType('attribute', 'AAA', 'Text')).then(() => {
-          expect(getAttributeFromContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(2);
-          expect(actions[0]).toHaveProperty('type', '@@redux-form/INITIALIZE');
-          expect(actions[1]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchAttributeFromContentType('attribute', 'AAA', 'Text'))
+          .then(() => {
+            expect(getAttributeFromContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+            expect(actions[0]).toHaveProperty('type', '@@redux-form/INITIALIZE');
+            expect(actions[1]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchAttributeFromContentType with type date', (done) => {
@@ -519,25 +577,31 @@ describe('state/content-type/actions ', () => {
         getAttributeFromContentType.mockImplementationOnce(
           mockApi({ payload: ATTRIBUTE_TYPE_DATE }),
         );
-        store.dispatch(fetchAttributeFromContentType('attribute', 'AAA', 'mlstc')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(2);
-          expect(actions[1]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE);
-          expect(actions[1].payload.attribute.type).toEqual('Date');
-          expect(actions[1].payload.attribute.code).toEqual('mlstc');
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchAttributeFromContentType('attribute', 'AAA', 'mlstc'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+            expect(actions[1]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE);
+            expect(actions[1].payload.attribute.type).toEqual('Date');
+            expect(actions[1].payload.attribute.code).toEqual('mlstc');
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchAttributeFromContentType calls ADD_ERROR actions', (done) => {
         getAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(fetchAttributeFromContentType('AAA')).then(() => {
-          expect(getAttributeFromContentType).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchAttributeFromContentType('AAA'))
+          .then(() => {
+            expect(getAttributeFromContentType).toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -548,28 +612,37 @@ describe('state/content-type/actions ', () => {
       });
       it('sendPostAttributeFromContentType calls route ROUTE_ATTRIBUTE_MONOLIST_ADD', (done) => {
         getContentTypeSelectedAttributeType.mockReturnValue({ code: 'Monolist' });
-        store.dispatch(sendPostAttributeFromContentType({ code: 'AAA' }, 'Monolist', history)).then(() => {
-          expect(postAttributeFromContentType).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostAttributeFromContentType({ code: 'AAA' }, 'Monolist', history))
+          .then(() => {
+            expect(postAttributeFromContentType).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendPostAttributeFromContentType calls route ROUTE_CONTENT_TYPE_EDIT', (done) => {
         getContentTypeSelectedAttributeType.mockReturnValue(null);
-        store.dispatch(sendPostAttributeFromContentType({ code: 'AAA' }, 'Monolist', history)).then(() => {
-          expect(postAttributeFromContentType).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostAttributeFromContentType({ code: 'AAA' }, 'Monolist', history))
+          .then(() => {
+            expect(postAttributeFromContentType).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendPostAttributeFromContentType calls ADD_ERROR actions', (done) => {
         postAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPostAttributeFromContentType('AAA')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPostAttributeFromContentType('AAA'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -579,29 +652,42 @@ describe('state/content-type/actions ', () => {
         history = createMockHistory();
       });
       it('sendPutAttributeFromContentType calls route ROUTE_ATTRIBUTE_MONOLIST_ADD', (done) => {
-        putAttributeFromContentType.mockImplementationOnce(mockApi({ payload: { type: 'Monolist' } }));
-        store.dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monolist', history)).then(() => {
-          expect(putAttributeFromContentType).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        putAttributeFromContentType.mockImplementationOnce(
+          mockApi({ payload: { type: 'Monolist' } }),
+        );
+        store
+          .dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monolist', history))
+          .then(() => {
+            expect(putAttributeFromContentType).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendPutAttributeFromContentType calls route ROUTE_CONTENT_TYPE_EDIT', (done) => {
-        putAttributeFromContentType.mockImplementationOnce(mockApi({ payload: { type: 'Monotext' } }));
-        store.dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monotext', history)).then(() => {
-          expect(putAttributeFromContentType).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        putAttributeFromContentType.mockImplementationOnce(
+          mockApi({ payload: { type: 'Monotext' } }),
+        );
+        store
+          .dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monotext', history))
+          .then(() => {
+            expect(putAttributeFromContentType).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendPutAttributeFromContentType calls ADD_ERROR actions', (done) => {
         putAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPutAttributeFromContentType('AAA'), 'Monolist', history).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPutAttributeFromContentType('AAA'), 'Monolist', history)
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -611,42 +697,56 @@ describe('state/content-type/actions ', () => {
         history = createMockHistory();
       });
       it('sendPutAttributeFromContentTypeMonolist calls router ROUTE_CONTENT_TYPE_EDIT', (done) => {
-        putAttributeFromContentType.mockImplementationOnce(mockApi({ payload: { type: 'Monolist' } }));
-        store.dispatch(sendPutAttributeFromContentTypeMonolist({ code: 'AAA' }, 'Monolist', history)).then(() => {
-          expect(putAttributeFromContentType).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        putAttributeFromContentType.mockImplementationOnce(
+          mockApi({ payload: { type: 'Monolist' } }),
+        );
+        store
+          .dispatch(sendPutAttributeFromContentTypeMonolist({ code: 'AAA' }, 'Monolist', history))
+          .then(() => {
+            expect(putAttributeFromContentType).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendPutAttributeFromContentTypeMonolist calls ADD_ERROR actions', (done) => {
         putAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendPutAttributeFromContentTypeMonolist('AAA')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendPutAttributeFromContentTypeMonolist('AAA'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendDeleteAttributeFromContentType', () => {
       it('sendDeleteAttributeFromContentType calls setSelectedAttributeContentType', (done) => {
-        store.dispatch(sendDeleteAttributeFromContentType('AAA', 'attr')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', REMOVE_ATTRIBUTE);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendDeleteAttributeFromContentType('AAA', 'attr'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', REMOVE_ATTRIBUTE);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendDeleteAttributeFromContentType calls ADD_ERROR actions', (done) => {
         deleteAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendDeleteAttributeFromContentType('AAA', 'attr')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendDeleteAttributeFromContentType('AAA', 'attr'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -655,17 +755,20 @@ describe('state/content-type/actions ', () => {
         getContentTypeAttributes.mockImplementationOnce(
           mockApi({ payload: CONTENT_TYPES_ATTRIBUTES }),
         );
-        store.dispatch(fetchContentTypeAttributes()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(3);
-          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', SET_ATTRIBUTES);
-          expect(actions[1]).toHaveProperty('payload');
-          expect(actions[1]).toHaveProperty('payload.attributes');
-          expect(actions[1]).toHaveProperty('payload.attributes', CONTENT_TYPES_ATTRIBUTES);
-          expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttributes())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(3);
+            expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+            expect(actions[1]).toHaveProperty('type', SET_ATTRIBUTES);
+            expect(actions[1]).toHaveProperty('payload');
+            expect(actions[1]).toHaveProperty('payload.attributes');
+            expect(actions[1]).toHaveProperty('payload.attributes', CONTENT_TYPES_ATTRIBUTES);
+            expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchContentTypeAttributes not call setAttributes actions', (done) => {
@@ -673,25 +776,31 @@ describe('state/content-type/actions ', () => {
         getContentTypeAttributes.mockImplementationOnce(
           mockApi({ payload: CONTENT_TYPES_ATTRIBUTES }),
         );
-        store.dispatch(fetchContentTypeAttributes()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(2);
-          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttributes())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+            expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+            expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchContentTypeAttributes calls ADD_ERROR actions', (done) => {
         getContentTypeAttributes.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(fetchContentTypeAttributes()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(3);
-          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
-          expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttributes())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(3);
+            expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+            expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+            expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -700,15 +809,19 @@ describe('state/content-type/actions ', () => {
         getContentTypeAttribute.mockImplementationOnce(
           mockApi({ payload: CONTENT_TYPE_ATTRIBUTE }),
         );
-        store.dispatch(fetchContentTypeAttribute()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE);
-          expect(actions[0]).toHaveProperty('payload.attribute');
-          expect(actions[0].payload.attribute)
-            .toMatchObject(expect.objectContaining(CONTENT_TYPE_ATTRIBUTE));
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttribute())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE);
+            expect(actions[0]).toHaveProperty('payload.attribute');
+            expect(actions[0].payload.attribute).toMatchObject(
+              expect.objectContaining(CONTENT_TYPE_ATTRIBUTE),
+            );
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('not call router if attribute is Composite and actionMode is AddCompositeAttribute ', (done) => {
@@ -716,15 +829,20 @@ describe('state/content-type/actions ', () => {
 
         getFormTypeValue.mockReturnValue(TYPE_COMPOSITE);
         getActionModeContentTypeSelectedAttribute.mockReturnValue(MODE_ADD_ATTRIBUTE_COMPOSITE);
-        store.dispatch(fetchContentTypeAttribute('TYPE_COMPOSITE', routeFunc, TYPE_COMPOSITE)).then(() => {
-          expect(getContentTypeAttribute).not.toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD_ATTRIBUTE_COMPOSITE });
-          expect(routeFunc).not.toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttribute('TYPE_COMPOSITE', routeFunc, TYPE_COMPOSITE))
+          .then(() => {
+            expect(getContentTypeAttribute).not.toHaveBeenCalled();
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
+            expect(actions[0]).toHaveProperty('payload', {
+              actionMode: MODE_ADD_ATTRIBUTE_COMPOSITE,
+            });
+            expect(routeFunc).not.toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('dispatch initialize if actionMode is AddCompositeAttribute ', (done) => {
@@ -734,78 +852,99 @@ describe('state/content-type/actions ', () => {
         );
         getActionModeContentTypeSelectedAttribute.mockReturnValue(MODE_ADD_ATTRIBUTE_COMPOSITE);
         getFormTypeValue.mockReturnValueOnce(TYPE_COMPOSITE);
-        store.dispatch(fetchContentTypeAttribute('attribute_code', routeFunc)).then(() => {
-          const actions = store.getActions(MODE_ADD_ATTRIBUTE_COMPOSITE);
-          expect(getContentTypeAttribute).toHaveBeenCalled();
-          expect(actions).toHaveLength(2);
-          expect(actions[0]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE);
-          expect(actions[1]).toHaveProperty('type', '@@redux-form/INITIALIZE');
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttribute('attribute_code', routeFunc))
+          .then(() => {
+            const actions = store.getActions(MODE_ADD_ATTRIBUTE_COMPOSITE);
+            expect(getContentTypeAttribute).toHaveBeenCalled();
+            expect(actions).toHaveLength(2);
+            expect(actions[0]).toHaveProperty('type', SET_SELECTED_ATTRIBUTE);
+            expect(actions[1]).toHaveProperty('type', '@@redux-form/INITIALIZE');
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchContentTypeAttribute calls router if route exists', (done) => {
         const routeFunc = jest.fn();
         getContentTypeAttribute.mockImplementation(mockApi({ payload: CONTENT_TYPE_ATTRIBUTE }));
         getActionModeContentTypeSelectedAttribute.mockReturnValue(MODE_ADD);
-        store.dispatch(fetchContentTypeAttribute('attribute_code', routeFunc)).then(() => {
-          expect(routeFunc).toHaveBeenCalled();
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttribute('attribute_code', routeFunc))
+          .then(() => {
+            expect(routeFunc).toHaveBeenCalled();
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('fetchContentTypeAttribute calls ADD_ERROR action', (done) => {
         getContentTypeAttribute.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(fetchContentTypeAttribute()).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(fetchContentTypeAttribute())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendMoveAttributeUp', () => {
       it('sendMoveAttributeUp calls moveAttributeUpSync actions', (done) => {
         moveAttributeUp.mockImplementationOnce(mockApi({ payload: ATTRIBUTE_MOVE_UP }));
-        store.dispatch(sendMoveAttributeUp('attributeCode')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', MOVE_ATTRIBUTE_UP);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendMoveAttributeUp('attributeCode'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', MOVE_ATTRIBUTE_UP);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendMoveAttributeUp calls ADD_ERROR actions', (done) => {
         moveAttributeUp.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendMoveAttributeUp({ attributeCode: 'attr_code', attributeIndex: 1 })).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendMoveAttributeUp({ attributeCode: 'attr_code', attributeIndex: 1 }))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
     describe('sendMoveAttributeDown', () => {
       it('sendMoveAttributeDown calls moveAttributeUpSync actions', (done) => {
         moveAttributeDown.mockImplementationOnce(mockApi({ payload: ATTRIBUTE_MOVE_DOWN }));
-        store.dispatch(sendMoveAttributeDown('attributeCode')).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', MOVE_ATTRIBUTE_DOWN);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendMoveAttributeDown('attributeCode'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', MOVE_ATTRIBUTE_DOWN);
+            done();
+          })
+          .catch(done.fail);
       });
 
       it('sendMoveAttributeDown calls ADD_ERROR actions', (done) => {
         moveAttributeDown.mockImplementationOnce(mockApi({ errors: true }));
-        store.dispatch(sendMoveAttributeDown({ attributeCode: 'attr_code', attributeIndex: 1 })).then(() => {
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        }).catch(done.fail);
+        store
+          .dispatch(sendMoveAttributeDown({ attributeCode: 'attr_code', attributeIndex: 1 }))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+            done();
+          })
+          .catch(done.fail);
       });
     });
 
@@ -814,13 +953,11 @@ describe('state/content-type/actions ', () => {
 
       describe('action POST', () => {
         it('default action', (done) => {
-          postAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          postAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(TYPE_TEXT);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.POST,
-            CONTENT_TYPE_ATTRIBUTE,
-            allowedRoles,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(METHODS.POST, CONTENT_TYPE_ATTRIBUTE, allowedRoles),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -854,12 +991,10 @@ describe('state/content-type/actions ', () => {
               equalDateAttribute: equalDate,
             },
           };
-          postAttributeFromContentType.mockImplementationOnce(mockApi({ }));
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.POST,
-            ATTRIBUTE_TYPE_DATE,
-            allowedRoles,
-          ));
+          postAttributeFromContentType.mockImplementationOnce(mockApi({}));
+          store.dispatch(
+            handlerAttributeFromContentType(METHODS.POST, ATTRIBUTE_TYPE_DATE, allowedRoles),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -868,13 +1003,11 @@ describe('state/content-type/actions ', () => {
         });
 
         it('action add sub attribute to Composite attribute', (done) => {
-          postAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          postAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(ATTRIBUTE_COMPOSITE);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.POST,
-            CONTENT_TYPE_ATTRIBUTE,
-            allowedRoles,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(METHODS.POST, CONTENT_TYPE_ATTRIBUTE, allowedRoles),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -884,13 +1017,11 @@ describe('state/content-type/actions ', () => {
         });
 
         it('action new Composite attribute', () => {
-          postAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          postAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(CONTENT_TYPE_ATTRIBUTE);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.POST,
-            ATTRIBUTE_COMPOSITE,
-            allowedRoles,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(METHODS.POST, ATTRIBUTE_COMPOSITE, allowedRoles),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(3);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -902,16 +1033,18 @@ describe('state/content-type/actions ', () => {
 
         it('action new Monolist Composite attribute', () => {
           const history = createMockHistory();
-          postAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          postAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(CONTENT_TYPE_ATTRIBUTE);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.POST,
-            ATTRIBUTE_MONOLIST_COMPOSITE,
-            allowedRoles,
-            null,
-            'Monolist',
-            history,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(
+              METHODS.POST,
+              ATTRIBUTE_MONOLIST_COMPOSITE,
+              allowedRoles,
+              null,
+              'Monolist',
+              history,
+            ),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(4);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -920,19 +1053,19 @@ describe('state/content-type/actions ', () => {
           expect(actions[1]).toHaveProperty('payload', { actionMode: MODE_ADD_COMPOSITE });
           expect(actions[2]).toHaveProperty('type', SET_NEW_ATTRIBUTE_COMPOSITE);
           expect(actions[3]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[3]).toHaveProperty('payload', { actionMode: MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE });
+          expect(actions[3]).toHaveProperty('payload', {
+            actionMode: MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE,
+          });
         });
       });
 
       describe('action PUT', () => {
         it('default action', (done) => {
-          putAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          putAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValue(TYPE_TEXT);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.PUT,
-            CONTENT_TYPE_ATTRIBUTE,
-            allowedRoles,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(METHODS.PUT, CONTENT_TYPE_ATTRIBUTE, allowedRoles),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -943,11 +1076,9 @@ describe('state/content-type/actions ', () => {
 
         it('Composite attribute', (done) => {
           getAttributeSelectFromContentType.mockReturnValueOnce(ATTRIBUTE_COMPOSITE);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.PUT,
-            ATTRIBUTE_COMPOSITE,
-            allowedRoles,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(METHODS.PUT, ATTRIBUTE_COMPOSITE, allowedRoles),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -958,14 +1089,16 @@ describe('state/content-type/actions ', () => {
         });
 
         it('Composite attribute is mode is MODE_EDIT_COMPOSITE call sendPutAttributeFromContentType', (done) => {
-          putAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          putAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(ATTRIBUTE_COMPOSITE);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.PUT,
-            ATTRIBUTE_COMPOSITE,
-            allowedRoles,
-            MODE_EDIT_COMPOSITE,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(
+              METHODS.PUT,
+              ATTRIBUTE_COMPOSITE,
+              allowedRoles,
+              MODE_EDIT_COMPOSITE,
+            ),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
@@ -977,14 +1110,16 @@ describe('state/content-type/actions ', () => {
         });
 
         it('if mode MODE_ADD_ATTRIBUTE_COMPOSITE dispatch setActionMode and sendPutAttributeFromContentType', (done) => {
-          putAttributeFromContentType.mockImplementationOnce(mockApi({ }));
+          putAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(ATTRIBUTE_COMPOSITE);
-          store.dispatch(handlerAttributeFromContentType(
-            METHODS.PUT,
-            CONTENT_TYPE_ATTRIBUTE,
-            allowedRoles,
-            MODE_ADD_ATTRIBUTE_COMPOSITE,
-          ));
+          store.dispatch(
+            handlerAttributeFromContentType(
+              METHODS.PUT,
+              CONTENT_TYPE_ATTRIBUTE,
+              allowedRoles,
+              MODE_ADD_ATTRIBUTE_COMPOSITE,
+            ),
+          );
           const actions = store.getActions();
           expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);

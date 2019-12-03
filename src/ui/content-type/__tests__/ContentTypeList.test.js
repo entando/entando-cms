@@ -18,19 +18,20 @@ const props = {
   onClickDelete: jest.fn(),
   onClickReload: jest.fn(),
   status: '0',
-
 };
 
 describe('ContentTypeList', () => {
   let component;
   beforeEach(() => {
-    component = shallow(<ContentTypeList
-      {...props}
-      contentTypes={contentTypes}
-      page={1}
-      pageSize={1}
-      totalItems={1}
-    />);
+    component = shallow(
+      <ContentTypeList
+        {...props}
+        contentTypes={contentTypes}
+        page={1}
+        pageSize={1}
+        totalItems={1}
+      />,
+    );
   });
 
   it('renders without crashing', () => {
@@ -63,13 +64,15 @@ describe('ContentTypeList', () => {
 
   describe('test table component', () => {
     beforeEach(() => {
-      component = shallow(<ContentTypeList
-        contentTypes={contentTypes}
-        page={1}
-        pageSize={1}
-        totalItems={1}
-        {...props}
-      />);
+      component = shallow(
+        <ContentTypeList
+          contentTypes={contentTypes}
+          page={1}
+          pageSize={1}
+          totalItems={1}
+          {...props}
+        />,
+      );
     });
 
     describe('with contentTypes', () => {
