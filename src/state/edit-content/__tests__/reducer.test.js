@@ -31,11 +31,11 @@ describe('state/edit-content/reducer', () => {
   describe('after action setNewContentsType', () => {
     let state;
     beforeEach(() => {
-      state = reducer({ workMode: null }, setNewContentsType('NEWS'));
+      state = reducer({ workMode: null }, setNewContentsType({ typeCode: 'NEWS', typeDescription: 'News' }));
     });
     it('setNewContentsType should add a content type', () => {
       expect(state).toHaveProperty('contentType');
-      expect(state.contentType).toEqual('NEWS');
+      expect(state.contentType).toEqual({ typeCode: 'NEWS', typeDescription: 'News' });
     });
   });
   describe('after action clearEditContentForm', () => {

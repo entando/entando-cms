@@ -10,6 +10,8 @@ import {
   getCurrentColumnsShow,
   getSortingColumns,
   getSelectedRows,
+  getJoiningCategories,
+  getTabSearchEnabled,
 } from 'state/contents/selectors';
 
 const TEST_STATE = {
@@ -20,6 +22,7 @@ const TEST_STATE = {
         contents: ['a', 'b'],
         currentQuickFilter: { name: 'code', value: 'new2' },
         filteringCategories: [{ code: 'a' }],
+        joiningCategories: [{ code: 'a' }],
         contentType: 'NEWS',
         group: 'free',
         statusChecked: 'approved',
@@ -29,6 +32,7 @@ const TEST_STATE = {
         currentStatusShow: 'approved',
         selectedRows: ['row1', 'row2'],
         currentColumnsShow: ['col1', 'col2'],
+        tabSearchEnabled: true,
       },
     },
   },
@@ -44,9 +48,19 @@ it('verify getCurrentQuickFilter selector', () => {
   expect(currentFilter).toEqual({ name: 'code', value: 'new2' });
 });
 
+it('verify getTabSearchEnabled selector', () => {
+  const tabSearchEnabled = getTabSearchEnabled(TEST_STATE);
+  expect(tabSearchEnabled).toEqual(true);
+});
+
 it('verify getFilteringCategories selector', () => {
   const filteringCategories = getFilteringCategories(TEST_STATE);
   expect(filteringCategories).toEqual([{ code: 'a' }]);
+});
+
+it('verify getJoiningCategories selector', () => {
+  const joiningCategories = getJoiningCategories(TEST_STATE);
+  expect(joiningCategories).toEqual([{ code: 'a' }]);
 });
 
 it('verify getStatusChecked selector', () => {

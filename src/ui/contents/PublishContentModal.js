@@ -23,9 +23,8 @@ const PublishContentModal = ({ onConfirmPublish, info }) => {
       bsStyle={isPublish ? 'success' : 'warning'}
       id="PublishContentModal__button-publish"
       onClick={() => {
-        contents.forEach((content) => {
-          onConfirmPublish(content, urlParam);
-        });
+        const contentIds = contents.map(content => content.id);
+        onConfirmPublish(contentIds, urlParam);
       }}
     >
       <FormattedMessage id={title} />

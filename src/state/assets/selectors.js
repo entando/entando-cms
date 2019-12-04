@@ -16,6 +16,10 @@ const getURLAbsolute = (domain, url) => {
 
 export const condenseAssetInfo = (asset, domain) => {
   const { versions, metadata } = asset;
+  if (!metadata) {
+    const newAsset = Object.assign(asset, { path: getURLAbsolute(domain, get(asset, 'path', '')) });
+    return newAsset;
+  }
   const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
   const origpath = versions[0].path;
   const sizes = ['orig', 'sm', 'md', 'lg'];

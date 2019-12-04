@@ -1,24 +1,37 @@
 import { toggleLoading } from 'state/loading/actions';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
-  getContents, deleteContent, publishContent,
+  getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
 } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
 import { getPagination } from 'state/pagination/selectors';
+import {
+  getContentType, getGroup, getFilteringCategories,
+  getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentQuickFilter,
+  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow, getTabSearchEnabled,
+} from 'state/contents/selectors';
 import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
 } from '@entando/messages';
 import {
   SET_CONTENTS, SET_QUICK_FILTER, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
-  SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE,
-  SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS,
+  SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
+  SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
+  RESET_AUTHOR_STATUS,
 } from 'state/contents/types';
+import { postAddContent } from 'api/editContent';
 
 const pageDefault = { page: 1, pageSize: 10 };
 
 export const setContents = contents => ({
   type: SET_CONTENTS,
   payload: contents,
+});
+
+export const setTabSearch = tabSearch => ({
+  type: SET_TAB_SEARCH,
+  payload: tabSearch,
 });
 
 export const setQuickFilter = quickFilter => ({
@@ -44,6 +57,15 @@ export const setSort = sort => ({
 export const setContentCategoryFilter = category => ({
   type: SET_CONTENT_CATEGORY_FILTER,
   payload: category,
+});
+
+export const setJoinContentCategory = category => ({
+  type: SET_JOIN_CONTENT_CATEGORY,
+  payload: category,
+});
+
+export const resetJoinContentCategories = () => ({
+  type: RESET_JOIN_CONTENT_CATEGORIES,
 });
 
 export const checkStatus = status => ({
@@ -86,6 +108,10 @@ export const selectAllRows = checked => ({
   payload: checked,
 });
 
+export const resetAuthorStatus = () => ({
+  type: RESET_AUTHOR_STATUS,
+});
+
 export const fetchContents = (page = pageDefault,
   params) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contents'));
@@ -100,6 +126,7 @@ export const fetchContents = (page = pageDefault,
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
         }
+        dispatch(selectAllRows(false));
         dispatch(toggleLoading('contents'));
         resolve();
       });
@@ -107,10 +134,102 @@ export const fetchContents = (page = pageDefault,
     .catch(() => {});
 });
 
-export const fetchContentsPaged = () => (dispatch, getState) => {
-  const pagination = getPagination(getState(), 'contents');
-  // @ TODO get filter properties and convert to query string and add as param
-  return dispatch(fetchContents(pagination));
+export const fetchContentsWithFilters = (
+  params, newPagination, newSort,
+) => (dispatch, getState) => {
+  const state = getState();
+  const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
+  const sortingColumns = getSortingColumns(state);
+  const quickFilter = getCurrentQuickFilter(state);
+  const { id, value: qfValue } = quickFilter;
+  const columnKey = Object.keys(sortingColumns)[0];
+  const sortDirection = sortingColumns[columnKey].direction;
+  const sorting = newSort || { attribute: columnKey, direction: sortDirection.toUpperCase() };
+  let query = '';
+  const filters = [];
+  const eq = FILTER_OPERATORS.EQUAL;
+  const like = FILTER_OPERATORS.LIKE;
+  if (params) {
+    query = `${convertToQueryString({ sorting })}&${params}`;
+    return dispatch(fetchContents(pagination, query));
+  }
+  if (qfValue) {
+    filters.push({ att: id, value: qfValue, operator: FILTER_OPERATORS.LIKE });
+  } else {
+    const contentType = getContentType(state);
+    const group = getGroup(state);
+    const filteringCategories = getFilteringCategories(state);
+    const status = getStatusChecked(state);
+    const access = getAccessChecked(state);
+    const author = getAuthorChecked(state);
+    if (contentType) filters.push({ att: 'typeCode', value: contentType });
+    if (group) filters.push({ att: 'mainGroup', value: group });
+    if (status) filters.push({ att: 'status', value: status, operator: like });
+    if (access) filters.push({ att: 'restrictions', value: access === 'free' ? 'OPEN' : 'RESTRICTED' });
+    if (author && author !== 'all') filters.push({ att: 'firstEditor', value: author });
+    if (filteringCategories && filteringCategories.length) filters.push({ att: 'categories', value: filteringCategories });
+  }
+  const formValues = {};
+  const operators = {};
+  let published = '';
+  let categories = '';
+  filters.forEach(({ att, value, operator }) => {
+    if (att === 'categories') {
+      value.forEach(
+        (filter, i) => {
+          categories += `&categories[${i}]=${filter.code}`;
+        },
+      );
+      categories += '&orClauseCategoryFilter=true';
+      return null;
+    } if (att === 'status' && value === 'published') {
+      published = '&status=published';
+      return null;
+    }
+    formValues[att] = value;
+    operators[att] = operator || eq;
+    return null;
+  });
+  query = `${convertToQueryString({ formValues, operators, sorting })}${published}${categories}`;
+  return dispatch(fetchContents(pagination, query));
+};
+
+export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => {
+  const state = getState();
+  const pagination = page || getPagination(state, 'contents') || getPagination(state);
+  const sortingColumns = getSortingColumns(state);
+  const columnKey = Object.keys(sortingColumns)[0];
+  const sortDirection = sortingColumns[columnKey].direction;
+  const sorting = newSort || { attribute: columnKey, direction: sortDirection.toUpperCase() };
+  const author = getCurrentAuthorShow(state);
+  const status = getCurrentStatusShow(state);
+  const published = status === 'published';
+  const all = author === 'all';
+  const eq = FILTER_OPERATORS.LIKE;
+  const like = FILTER_OPERATORS.LIKE;
+  const formValues = {
+    ...(!published && status && { status }),
+    ...(!all && author && { author }),
+  };
+  const operators = {
+    ...(!published && status && { status: like }),
+    ...(!all && author && { author: eq }),
+  };
+  const query = [convertToQueryString({
+    formValues,
+    operators,
+    sorting,
+  }), published ? '&status=published' : ''].join('');
+  return dispatch(fetchContents(pagination, query));
+};
+
+export const fetchContentsPaged = (params, page, sort, tabSearch) => (dispatch, getState) => {
+  const state = getState();
+  const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
+  if (tabSearchEnabled) {
+    return dispatch(fetchContentsWithTabs(page, sort));
+  }
+  return dispatch(fetchContentsWithFilters(params, page, sort));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
@@ -138,6 +257,59 @@ export const sendPublishContent = (id, status) => dispatch => new Promise((resol
         if (response.ok) {
           resolve(json.payload);
           dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPublishMultipleContents = (id, status) => dispatch => new Promise((resolve) => {
+  publishMultipleContents(id, status)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendUpdateContents = contents => dispatch => new Promise((resolve) => {
+  updateContents(contents)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+          dispatch(fetchContentsPaged());
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendCloneContent = content => dispatch => new Promise((resolve) => {
+  postAddContent(content)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));

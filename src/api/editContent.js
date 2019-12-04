@@ -15,13 +15,13 @@ export const getContent = (params = '') => makeRequest({
   useAuthentication: true,
 });
 
-export const getGroups = (params = '') => makeRequest({
+export const getGroups = (params = '', page) => makeRequest({
   uri: `${getGroupsPath}${params}`,
   method: METHODS.GET,
   contentType: 'application/json',
   mockResponse: GET_GROUPS_RESPONSE_OK,
   useAuthentication: true,
-});
+}, page);
 
 export const getCategories = (params = '') => makeRequest({
   uri: `${getCategoriesPath}${params}`,

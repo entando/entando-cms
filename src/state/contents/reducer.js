@@ -9,6 +9,10 @@ import {
   SET_GROUP,
   SELECT_ROW,
   SELECT_ALL_ROWS,
+  SET_JOIN_CONTENT_CATEGORY,
+  RESET_JOIN_CONTENT_CATEGORIES,
+  SET_TAB_SEARCH,
+  RESET_AUTHOR_STATUS,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -20,9 +24,10 @@ const defaultState = {
     value: '',
   },
   filteringCategories: [],
+  joiningCategories: [],
   sortingColumns: {
-    created: {
-      direction: TABLE_SORT_DIRECTION.ASC,
+    lastModified: {
+      direction: TABLE_SORT_DIRECTION.DESC,
       position: 0,
     },
   },
@@ -31,9 +36,10 @@ const defaultState = {
   accessChecked: '',
   authorChecked: '',
   selectedRows: [],
-  currentAuthorShow: 'allContents',
-  currentStatusShow: 'toApprove',
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeDescription', 'created', 'onLine', 'status', 'actions'],
+  currentAuthorShow: 'all',
+  currentStatusShow: 'ready',
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restrictions', 'actions'],
+  tabSearchEnabled: true,
 };
 
 const reducer = (state = defaultState, action = {}) => {
@@ -42,6 +48,12 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         contents: action.payload || [],
+      };
+    }
+    case SET_TAB_SEARCH: {
+      return {
+        ...state,
+        tabSearchEnabled: action.payload,
       };
     }
     case SET_QUICK_FILTER: {
@@ -87,12 +99,22 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         currentAuthorShow: action.payload,
+        tabSearchEnabled: !!action.payload,
       };
     }
     case SET_CURRENT_STATUS_SHOW: {
       return {
         ...state,
         currentStatusShow: action.payload,
+        tabSearchEnabled: !!action.payload,
+      };
+    }
+    case RESET_AUTHOR_STATUS: {
+      return {
+        ...state,
+        currentStatusShow: '',
+        tabSearchEnabled: false,
+        currentAuthorShow: 'all',
       };
     }
     case SET_SORT: {
@@ -159,6 +181,27 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         filteringCategories: newFilters,
+      };
+    }
+    case SET_JOIN_CONTENT_CATEGORY: {
+      const { joiningCategories } = state;
+      let newFilters = joiningCategories.slice(0);
+      const category = action.payload;
+      const contains = newFilters.filter(cat => cat.code === category.code).length !== 0;
+      if (!contains) {
+        newFilters.push(category);
+      } else {
+        newFilters = newFilters.filter(c => c.code !== category.code);
+      }
+      return {
+        ...state,
+        joiningCategories: newFilters,
+      };
+    }
+    case RESET_JOIN_CONTENT_CATEGORIES: {
+      return {
+        ...state,
+        joiningCategories: [],
       };
     }
     default:

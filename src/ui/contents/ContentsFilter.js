@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
   FormattedMessage, intlShape, defineMessages,
 } from 'react-intl';
@@ -18,7 +19,7 @@ const QUICK_FILTERS = [
     filterType: 'text',
   },
   {
-    id: 'code',
+    id: 'id',
     title: 'Code',
     filterType: 'text',
   },
@@ -30,6 +31,13 @@ const messages = defineMessages({
     defaultValue: 'Search Content',
   },
 });
+
+const PUBLISHED = 'published';
+const READY = 'ready';
+const UNPUBLISHED = 'draft';
+const OPEN = 'free';
+const RESTRICTED = 'restricted';
+const ALL = 'all';
 
 class ContentsFilter extends Component {
   constructor(props) {
@@ -54,15 +62,20 @@ class ContentsFilter extends Component {
   }
 
   onValueKeyPress(keyEvent) {
-    const { currentQuickFilter, onSetQuickFilter, onFilteredSearch } = this.props;
-    const { value: currentValue } = currentQuickFilter;
+    const { currentQuickFilter, onAdvancedFilterSearch } = this.props;
+    const { id, value: currentValue } = currentQuickFilter;
 
     if (keyEvent.key === 'Enter' && currentValue && currentValue.length > 0) {
-      currentQuickFilter.value = '';
-      onSetQuickFilter(currentQuickFilter);
       keyEvent.stopPropagation();
       keyEvent.preventDefault();
-      onFilteredSearch(`?filters[0].attribute=id&filters[0].value=${currentQuickFilter.value}`);
+      const formValues = {
+        [id]: currentValue,
+      };
+      const operators = {
+        [id]: FILTER_OPERATORS.LIKE,
+      };
+      const query = convertToQueryString({ formValues, operators }).slice(1);
+      onAdvancedFilterSearch(query);
     }
   }
 
@@ -78,7 +91,7 @@ class ContentsFilter extends Component {
     const {
       currentQuickFilter, intl, contentTypes, groups, language, filteringCategories,
       statusChecked, onCheckStatus, accessChecked, onCheckAccess, authorChecked, onCheckAuthor,
-      onFilteredSearch, onSetContentType, onSetGroup,
+      onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch,
     } = this.props;
     const { showAdvancedFilters } = this.state;
     const advancedFilterIcon = (
@@ -179,9 +192,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-2}
                 readOnly
-                checked={statusChecked === 'published'}
-                onClick={() => onCheckStatus('published')}
-                onKeyDown={() => onCheckStatus('published')}
+                checked={statusChecked === PUBLISHED}
+                onClick={() => onCheckStatus(PUBLISHED)}
+                onKeyDown={() => onCheckStatus(PUBLISHED)}
               >
                 <div className="ContentsFilter__status ContentsFilter__status--published" />
                 <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
@@ -191,9 +204,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-3}
                 readOnly
-                checked={statusChecked === 'review'}
-                onClick={() => onCheckStatus('review')}
-                onKeyDown={() => onCheckStatus('review')}
+                checked={statusChecked === READY}
+                onClick={() => onCheckStatus(READY)}
+                onKeyDown={() => onCheckStatus(READY)}
               >
                 <div className="ContentsFilter__status ContentsFilter__status--review" />
                 <FormattedMessage id="cms.contents.toReview" defaultMessage="To Review" />
@@ -205,9 +218,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-4}
                 readOnly
-                checked={statusChecked === 'unpublished'}
-                onClick={() => onCheckStatus('unpublished')}
-                onKeyDown={() => onCheckStatus('unpublished')}
+                checked={statusChecked === UNPUBLISHED}
+                onClick={() => onCheckStatus(UNPUBLISHED)}
+                onKeyDown={() => onCheckStatus(UNPUBLISHED)}
               >
                 <div className="ContentsFilter__status ContentsFilter__status--unpublished" />
                 <FormattedMessage id="cms.contents.unpublished" defaultMessage="Unpublished" />
@@ -226,9 +239,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-5}
                 readOnly
-                checked={accessChecked === 'open'}
-                onClick={() => onCheckAccess('open')}
-                onKeyDown={() => onCheckAccess('open')}
+                checked={accessChecked === OPEN}
+                onClick={() => onCheckAccess(OPEN)}
+                onKeyDown={() => onCheckAccess(OPEN)}
               >
                 <i className="fa fa-unlock ContentsFilter__access-icon" />
                 <FormattedMessage id="cms.contents.open" defaultMessage="Open" />
@@ -238,9 +251,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-5}
                 readOnly
-                checked={accessChecked === 'restricted'}
-                onClick={() => onCheckAccess('restricted')}
-                onKeyDown={() => onCheckAccess('restricted')}
+                checked={accessChecked === RESTRICTED}
+                onClick={() => onCheckAccess(RESTRICTED)}
+                onKeyDown={() => onCheckAccess(RESTRICTED)}
               >
                 <i className="fa fa-lock ContentsFilter__access-icon" />
                 <FormattedMessage id="cms.contents.restricted" defaultMessage="Restricted" />
@@ -259,9 +272,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-7}
                 readOnly
-                checked={authorChecked === 'all'}
-                onClick={() => onCheckAuthor('all')}
-                onKeyDown={() => onCheckAuthor('all')}
+                checked={authorChecked === ALL}
+                onClick={() => onCheckAuthor(ALL)}
+                onKeyDown={() => onCheckAuthor(ALL)}
               >
                 <FormattedMessage id="cms.contents.allContents" defaultMessage="All Contents" />
               </Checkbox>
@@ -270,9 +283,9 @@ class ContentsFilter extends Component {
                 role="button"
                 tabIndex={-8}
                 readOnly
-                checked={authorChecked === 'me'}
-                onClick={() => onCheckAuthor('me')}
-                onKeyDown={() => onCheckAuthor('me')}
+                checked={authorChecked === currentUsername}
+                onClick={() => onCheckAuthor(currentUsername)}
+                onKeyDown={() => onCheckAuthor(currentUsername)}
               >
                 <FormattedMessage id="cms.contents.byMe" defaultMessage="By me" />
               </Checkbox>
@@ -282,7 +295,7 @@ class ContentsFilter extends Component {
         <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
           <Button
             className="ContentsFilter__search-button"
-            onClick={() => onFilteredSearch()}
+            onClick={() => onAdvancedFilterSearch()}
           >
             <FormattedMessage id="cms.contents.search" defaultMessage="Search" />
           </Button>
@@ -297,7 +310,6 @@ ContentsFilter.propTypes = {
   language: PropTypes.string.isRequired,
   currentQuickFilter: PropTypes.shape({}).isRequired,
   onSetQuickFilter: PropTypes.func.isRequired,
-  onFilteredSearch: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -309,6 +321,8 @@ ContentsFilter.propTypes = {
   onCheckAuthor: PropTypes.func.isRequired,
   onSetContentType: PropTypes.func.isRequired,
   onSetGroup: PropTypes.func.isRequired,
+  currentUsername: PropTypes.string.isRequired,
+  onAdvancedFilterSearch: PropTypes.func.isRequired,
 };
 
 export default ContentsFilter;

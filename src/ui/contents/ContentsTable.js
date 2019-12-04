@@ -11,6 +11,7 @@ import {
 import * as resolve from 'table-resolver';
 import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
 import PublishContentModalContainer from 'ui/contents/PublishContentModalContainer';
+import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
 
 class ContentsTable extends Component {
   constructor(props) {
@@ -25,30 +26,24 @@ class ContentsTable extends Component {
   }
 
   onPerPageSelect(eventKey) {
-    const { sortingColumns, onFilteredSearch } = this.props;
-    const columnKey = Object.keys(sortingColumns)[0];
-    const sortDirection = sortingColumns[columnKey].direction;
+    const { onFilteredSearch } = this.props;
     const newPagination = {
       page: 1,
       pageSize: eventKey,
     };
-    const sortParams = `?sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
-    onFilteredSearch(newPagination, sortParams);
+    onFilteredSearch(null, newPagination);
   }
 
   onPageChange(newPage) {
     const {
-      lastPage, pageSize, onFilteredSearch, sortingColumns,
+      lastPage, pageSize, onFilteredSearch,
     } = this.props;
     if (newPage < 1 || newPage > lastPage) return 0;
-    const columnKey = Object.keys(sortingColumns)[0];
-    const sortDirection = sortingColumns[columnKey].direction;
-    const sortParams = `?sort=${columnKey}&direction=${sortDirection.toUpperCase()}`;
     const newPagination = {
       page: newPage,
       pageSize,
     };
-    return onFilteredSearch(newPagination, sortParams);
+    return onFilteredSearch(null, newPagination);
   }
 
   onSort(e, column, sortDirection) {
@@ -65,9 +60,9 @@ class ContentsTable extends Component {
       page: 1,
       pageSize,
     };
-    const sortParams = `?sort=${column.property}&direction=${newSortDirection.toUpperCase()}`;
     onSetSort(updatedSortingColumns);
-    onFilteredSearch(newPagination, sortParams);
+    onFilteredSearch(null, newPagination,
+      { attribute: column.property, direction: newSortDirection.toUpperCase() });
   }
 
   onTableRowSelect(e, row) {
@@ -86,7 +81,7 @@ class ContentsTable extends Component {
   showingColumns() {
     const {
       activeColumns, availableColumns, intl, onEditContent, onClickDelete,
-      onClickPublish,
+      onClickPublish, onClickClone, groups,
     } = this.props;
     const currentActiveColumns = ['selectAll', ...activeColumns];
     const allColumns = [{ code: 'selectAll' }, ...availableColumns];
@@ -94,6 +89,8 @@ class ContentsTable extends Component {
       .map((ac, i) => {
         let rowCellFormatter = tableCellFormatter;
         let headerCellFormatter = sortableHeaderCellFormatter;
+        const { code } = ac;
+        let newCode = code;
         switch (ac.code) {
           case 'description':
             rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
@@ -103,17 +100,38 @@ class ContentsTable extends Component {
           case 'lastModified':
             rowCellFormatter = date => <td>{new Date(date).toLocaleDateString()}</td>;
             break;
-          case 'groups':
-            rowCellFormatter = groups => <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groups && groups.join(', ')}</td>;
+          case 'mainGroup':
+            rowCellFormatter = (mainGroup) => {
+              const groupName = groups.filter(g => g.code === mainGroup)[0].name;
+              return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupName || ''}</td>;
+            };
             break;
-          case 'status':
+          case 'groups':
+            headerCellFormatter = actionHeaderCellFormatter;
+            rowCellFormatter = (currentGroups) => {
+              const groupNames = currentGroups
+              && currentGroups.map(cg => groups.filter(g => g.code === cg)[0].name);
+              return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupNames && groupNames.join(', ')}</td>;
+            };
+            break;
+          case 'restrictions':
             rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center">{<span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />}</td>;
             break;
+          case 'typeCode':
+            rowCellFormatter = (typeCode, { rowData: { typeDescription } }) => (
+              <td>
+                {typeDescription}
+              </td>
+            );
+            break;
           case 'onLine':
+            newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
-              // eslint-disable-next-line no-unused-vars
               const { status } = rowData;
-              const statusColor = onLine ? 'published' : 'unpublished';
+              let statusColor = '';
+              if (status === 'PUBLIC') statusColor = 'published';
+              else if (status === 'ready') statusColor = 'review';
+              else statusColor = 'unpublished';
               return (
                 <td className="text-center">
                   <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />
@@ -137,15 +155,24 @@ class ContentsTable extends Component {
                     <MenuItem onClick={() => onEditContent(rowData.id)}>
                       <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
                     </MenuItem>
-                    <MenuItem onClick={() => onClickDelete(rowData)}>
-                      <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                    {
+                      <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
+                        <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                      </MenuItem>
+                    }
+                    {
+                      <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
+                        <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                      </MenuItem>
+                    }
+                    <MenuItem onClick={() => onClickClone(rowData)}>
+                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
                     </MenuItem>
-                    <MenuItem onClick={() => onClickPublish([rowData], true)}>
-                      <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
-                    </MenuItem>
-                    <MenuItem onClick={() => onClickPublish([rowData], false)}>
-                      <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
-                    </MenuItem>
+                    {
+                      <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
+                        <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                      </MenuItem>
+                    }
                   </Table.DropdownKebab>
                 </div>
               </Table.Actions>];
@@ -154,15 +181,15 @@ class ContentsTable extends Component {
             break;
         }
         return {
-          property: ac.code,
+          property: newCode,
           header: {
-            label: intl.formatMessage({ id: `cms.contents.${ac.code}` }),
+            label: intl.formatMessage({ id: `cms.contents.${code}` }),
             props: {
               index: i,
               rowSpan: 1,
               colSpan: 1,
             },
-            [ac.code === 'actions' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
+            [code === 'actions' || code === 'groups' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
           },
           cell: {
             props: {
@@ -196,7 +223,7 @@ class ContentsTable extends Component {
     const contents = this.markSelectedContents();
     return (
       <div>
-        <div className="table-responsive Contents__table">
+        <div className="Contents__table">
           <Table.PfProvider
             striped
             bordered
@@ -237,6 +264,7 @@ class ContentsTable extends Component {
           />
           <DeleteContentModalContainer />
           <PublishContentModalContainer />
+          <JoinCategoriesModalContainer />
         </div>
       </div>
     );
@@ -248,6 +276,7 @@ ContentsTable.propTypes = {
   activeColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
   availableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   page: PropTypes.number.isRequired,
   lastPage: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
@@ -262,6 +291,7 @@ ContentsTable.propTypes = {
   onEditContent: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
+  onClickClone: PropTypes.func.isRequired,
 };
 
 ContentsTable.defaultProps = {
