@@ -286,7 +286,7 @@ export default {
     'cms.contents.toUpdate': 'To Update',
     'cms.contents.toReview': 'To Review',
     'cms.contents.unpublished': 'Unpublished',
-    'cms.contents.restrictions': 'Restrictions',
+    'cms.contents.restriction': 'Restrictions',
     'cms.contents.open': 'Open',
     'cms.contents.restricted': 'Restricted',
     'cms.contents.showMe': 'Show me',

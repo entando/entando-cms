@@ -43,7 +43,7 @@ const AVAILABLE_COLUMNS = [
   },
   {
     name: 'Restrictions',
-    code: 'restrictions',
+    code: 'restriction',
   },
   {
     name: 'Actions',

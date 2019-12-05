@@ -114,7 +114,7 @@ class ContentsTable extends Component {
               return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupNames && groupNames.join(', ')}</td>;
             };
             break;
-          case 'restrictions':
+          case 'restriction':
             rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center">{<span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />}</td>;
             break;
           case 'typeCode':
