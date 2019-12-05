@@ -233,7 +233,6 @@ class AddContentModelFormBody extends Component {
 )}
                 options={contentTypes}
                 labelKey="name"
-                disabled={mode === EDIT_MODE}
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
               />
