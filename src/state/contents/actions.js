@@ -165,7 +165,7 @@ export const fetchContentsWithFilters = (
     if (contentType) filters.push({ att: 'typeCode', value: contentType });
     if (group) filters.push({ att: 'mainGroup', value: group });
     if (status) filters.push({ att: 'status', value: status, operator: like });
-    if (access) filters.push({ att: 'restrictions', value: access === 'free' ? 'OPEN' : 'RESTRICTED' });
+    if (access) filters.push({ att: 'restriction', value: access === 'free' ? 'OPEN' : 'RESTRICTED' });
     if (author && author !== 'all') filters.push({ att: 'firstEditor', value: author });
     if (filteringCategories && filteringCategories.length) filters.push({ att: 'categories', value: filteringCategories });
   }

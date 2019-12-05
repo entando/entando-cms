@@ -230,7 +230,7 @@ export default {
     'cms.contents.toUpdate': 'Aggiornare',
     'cms.contents.toReview': 'Revisionare',
     'cms.contents.unpublished': 'Inedito',
-    'cms.contents.restrictions': 'Restrizioni',
+    'cms.contents.restriction': 'Restrizioni',
     'cms.contents.open': 'Aperto',
     'cms.contents.restricted': 'Limitato',
     'cms.contents.showMe': 'Fammi vedere',

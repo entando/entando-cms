@@ -38,7 +38,7 @@ const defaultState = {
   selectedRows: [],
   currentAuthorShow: 'all',
   currentStatusShow: 'ready',
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restrictions', 'actions'],
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
   tabSearchEnabled: true,
 };
 

@@ -230,7 +230,7 @@ class ContentsFilter extends Component {
           <div className="ContentsFilter__advanced-filter">
             <Col xs={12} sm={2} className="text-right mobile-left">
               <ControlLabel>
-                <FormLabel labelId="cms.contents.restrictions" defaultMessage="Restrictions" />
+                <FormLabel labelId="cms.contents.restriction" defaultMessage="Restrictions" />
               </ControlLabel>
             </Col>
             <Col xs={12} sm={10}>
