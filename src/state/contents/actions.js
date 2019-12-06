@@ -162,9 +162,10 @@ export const fetchContentsWithFilters = (
     const status = getStatusChecked(state);
     const access = getAccessChecked(state);
     const author = getAuthorChecked(state);
+    const statusValue = status === 'draft' ? ['new', 'draft'] : status;
     if (contentType) filters.push({ att: 'typeCode', value: contentType });
     if (group) filters.push({ att: 'mainGroup', value: group });
-    if (status) filters.push({ att: 'status', value: status, operator: like });
+    if (status) filters.push({ att: 'status', value: statusValue, operator: like });
     if (access) filters.push({ att: 'restriction', value: access === 'free' ? 'OPEN' : 'RESTRICTED' });
     if (author && author !== 'all') filters.push({ att: 'firstEditor', value: author });
     if (filteringCategories && filteringCategories.length) filters.push({ att: 'categories', value: filteringCategories });
@@ -207,13 +208,14 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
   const all = author === 'all';
   const eq = FILTER_OPERATORS.LIKE;
   const like = FILTER_OPERATORS.LIKE;
+  const statusValue = status === 'draft' ? ['new', 'draft'] : status;
   const formValues = {
-    ...(!published && status && { status }),
-    ...(!all && author && { author }),
+    ...(!published && status && { status: statusValue }),
+    ...(!all && author && { firstEditor: author }),
   };
   const operators = {
     ...(!published && status && { status: like }),
-    ...(!all && author && { author: eq }),
+    ...(!all && author && { firstEditor: eq }),
   };
   const query = [convertToQueryString({
     formValues,
