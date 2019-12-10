@@ -8,7 +8,7 @@ import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import AddContentFormContainer from 'ui/add-content/AddContentFormContainer';
 
 const AddContentPage = () => (
-  <Grid fluid>
+  <Grid>
     <Row>
       <Col>
         <Breadcrumb>

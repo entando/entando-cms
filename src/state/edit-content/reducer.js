@@ -33,11 +33,16 @@ const reducer = (state = defaultState, action = {}) => {
         ...state,
         workMode: action.payload,
       };
-    case SET_NEW_CONTENTS_TYPE:
+    case SET_NEW_CONTENTS_TYPE: {
+      const { typeCode, typeDescription } = action.payload;
       return {
         ...state,
-        contentType: action.payload,
+        contentType: {
+          typeCode,
+          typeDescription,
+        },
       };
+    }
     case SET_GROUPS:
       return {
         ...state,

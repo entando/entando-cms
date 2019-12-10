@@ -7,7 +7,6 @@ import moment from 'moment';
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
-import { getUsername } from '@entando/apimanager';
 import {
   TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP,
 } from 'state/content-type/const';
@@ -85,8 +84,8 @@ export const setGroups = groups => ({
   payload: { groups },
 });
 
-export const fetchGroups = params => dispatch => new Promise((resolve) => {
-  getGroups(params)
+export const fetchGroups = (page, params) => dispatch => new Promise((resolve) => {
+  getGroups(params, page)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
@@ -136,7 +135,6 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
 
 export const saveContent = values => (dispatch, getState) => new Promise((resolve) => {
   const state = getState();
-  const currentUser = getUsername(state);
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
   const {
@@ -187,14 +185,12 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
     description: contentDescription,
     categories,
     attributes: transformedAttributes,
-    lastEditor: currentUser,
     ...(contentStatus != null && { status: contentStatus }),
   };
   if (workMode === WORK_MODE_ADD) {
     const requestObject = {
       ...enhancedValues,
-      firstEditor: currentUser,
-      typeCode: getNewContentsType(state),
+      typeCode: getNewContentsType(state).typeCode,
     };
     dispatch(sendPostAddContent(requestObject)).then(res => resolve(res));
   } else {

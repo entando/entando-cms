@@ -1,4 +1,3 @@
-import { compact } from 'lodash';
 import {
   addErrors,
   addToast,
@@ -6,7 +5,6 @@ import {
   clearErrors,
 } from '@entando/messages';
 import {
-  convertToQueryString,
   FILTER_OPERATORS,
   SORT_DIRECTIONS,
 } from '@entando/utils';
@@ -101,14 +99,19 @@ export const fetchAssetsPaged = (
   const state = getState();
   const fileType = getFileType(state);
   let filters = getListFilterParams(state);
-
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
   if (filters && Object.keys(filters).length === 0) {
     filters = { formValues: {}, operators: {} };
   }
+  let categories = filters.formValues.categories || [];
+  if (!Array.isArray(categories)) {
+    categories = [categories];
+  }
+  const categoryParams = categories.map(
+    (c, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${c}`,
+  ).join('');
 
-  const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&');
-  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
+  return dispatch(fetchAssets(paginationMetadata, `?${typeParams}${categoryParams}`));
 };
 
 export const makeFilter = (value, op = FILTER_OPERATORS.EQUAL) => ({ value, op });

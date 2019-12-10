@@ -17,9 +17,24 @@ export const getFilteringCategories = createSelector(
   contents => contents.filteringCategories,
 );
 
+export const getJoiningCategories = createSelector(
+  getContentsState,
+  contents => contents.joiningCategories,
+);
+
 export const getStatusChecked = createSelector(
   getContentsState,
   contents => contents.statusChecked,
+);
+
+export const getContentType = createSelector(
+  getContentsState,
+  contents => contents.contentType,
+);
+
+export const getGroup = createSelector(
+  getContentsState,
+  contents => contents.group,
 );
 
 export const getAccessChecked = createSelector(
@@ -55,4 +70,9 @@ export const getSortingColumns = createSelector(
 export const getSelectedRows = createSelector(
   getContentsState,
   contents => contents.selectedRows,
+);
+
+export const getTabSearchEnabled = createSelector(
+  getContentsState,
+  contents => contents.tabSearchEnabled,
 );

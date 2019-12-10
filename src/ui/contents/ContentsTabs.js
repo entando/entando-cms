@@ -14,7 +14,7 @@ import MultiSelectMenuItem from 'ui/common/form/MultiSelectMenuItem';
 const ContentTabs = ({
   intl, availableColumns, messages, contentTypes, currentColumnsShow, currentAuthorShow,
   currentStatusShow, onSetCurrentColumnsShow, onSetCurrentStatusShow, onSetCurrentAuthorShow,
-  onClickAddContent, contents,
+  onClickAddContent, contents, currentUsername,
 }) => {
   const filteredAvailableColumns = availableColumns.filter(
     column => currentColumnsShow.includes(column.code),
@@ -28,14 +28,11 @@ const ContentTabs = ({
         <NavItem eventKey="draft">
           <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
         </NavItem>
-        <NavItem eventKey="toApprove">
+        <NavItem eventKey="ready">
           <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
         </NavItem>
-        <NavItem eventKey="approved">
+        <NavItem eventKey="published">
           <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
-        </NavItem>
-        <NavItem eventKey="rejected">
-          <FormattedMessage id="cms.contents.rejected" defaultMessage="Rejected" />
         </NavItem>
       </Nav>
       <div className="Contents__main-action-button">
@@ -49,7 +46,9 @@ const ContentTabs = ({
               <MenuItem
                 eventKey={contentType.code}
                 key={contentType.code}
-                onClick={() => onClickAddContent(contentType.code)}
+                onClick={() => onClickAddContent(
+                  { typeCode: contentType.code, typeDescription: contentType.name },
+                )}
               >
                 {contentType.name}
               </MenuItem>
@@ -115,32 +114,32 @@ const ContentTabs = ({
     <TabContainer
       id="secondary-tabs"
       activeKey={currentAuthorShow}
-      onSelect={author => onSetCurrentAuthorShow(author)}
+      onSelect={author => onSetCurrentAuthorShow(author, currentStatusShow)}
     >
       <div>
         <Nav bsStyle="tabs">
-          <NavItem eventKey="allContents" title="All Contents">
+          <NavItem eventKey="all" title="All Contents">
             <FormattedMessage id="cms.contents.allContents" defaultMessage="All Contents" />
           </NavItem>
-          <NavItem eventKey="onlyMine" title="Only Mine">
+          <NavItem eventKey={currentUsername} title="Only Mine">
             <FormattedMessage id="cms.contents.onlyMine" defaultMessage="Only Mine" />
           </NavItem>
         </Nav>
         <TabContent>
-          <TabPane eventKey="allContents">
+          <TabPane eventKey="all">
             <TabContainer
               id="secondary-tabs-1"
               activeKey={currentStatusShow}
-              onSelect={status => onSetCurrentStatusShow(status)}
+              onSelect={status => onSetCurrentStatusShow(status, currentAuthorShow)}
             >
               {navItems}
             </TabContainer>
           </TabPane>
-          <TabPane eventKey="onlyMine">
+          <TabPane eventKey={currentUsername}>
             <TabContainer
               id="secondary-tabs-2"
               activeKey={currentStatusShow}
-              onSelect={status => onSetCurrentStatusShow(status)}
+              onSelect={status => onSetCurrentStatusShow(status, currentAuthorShow)}
             >
               {navItems}
             </TabContainer>
@@ -164,6 +163,7 @@ ContentTabs.propTypes = {
   onSetCurrentStatusShow: PropTypes.func.isRequired,
   onSetCurrentColumnsShow: PropTypes.func.isRequired,
   onClickAddContent: PropTypes.func.isRequired,
+  currentUsername: PropTypes.string.isRequired,
 };
 
 export default ContentTabs;

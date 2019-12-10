@@ -23,7 +23,7 @@ const AVAILABLE_COLUMNS = [
   },
   {
     name: 'Type',
-    code: 'typeDescription',
+    code: 'typeCode',
   },
   {
     name: 'Created Date',
@@ -43,7 +43,7 @@ const AVAILABLE_COLUMNS = [
   },
   {
     name: 'Restrictions',
-    code: 'status',
+    code: 'restriction',
   },
   {
     name: 'Actions',
@@ -89,7 +89,8 @@ class Contents extends Component {
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
-      onClickAddContent,
+      onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
+      onAdvancedFilterSearch,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -97,24 +98,29 @@ class Contents extends Component {
     const renderSelectedRows = selectedRows.length > 0 ? (
       <div className="Contents__selected-contents">
         {intl.formatMessage(selectedContents, { number: selectedRows.length })}
-        <Button>
-          <FormattedMessage
-            id="cms.contents.reloadReferences"
-            defaultMessage="Reload References"
-          />
-        </Button>
-        <Button>
+        <Button onClick={() => onClickJoinCategories(selectedRowsData)}>
           <FormattedMessage
             id="cms.contents.categoriesToAdd"
             defaultMessage="Select Categories to add"
           />
         </Button>
-        <Button onClick={() => onClickPublish(selectedRowsData, true)}>
-          <FormattedMessage
-            id="cms.contents.publish"
-            defaultMessage="Publish"
-          />
-        </Button>
+        {
+          currentStatusShow === 'published' ? (
+            <Button onClick={() => onClickPublish(selectedRowsData, false)}>
+              <FormattedMessage
+                id="cms.contents.unpublish"
+                defaultMessage="Unpublish"
+              />
+            </Button>
+          ) : (
+            <Button onClick={() => onClickPublish(selectedRowsData, true)}>
+              <FormattedMessage
+                id="cms.contents.publish"
+                defaultMessage="Publish"
+              />
+            </Button>
+          )
+        }
       </div>
     ) : null;
     return (
@@ -124,7 +130,6 @@ class Contents extends Component {
           language={language}
           currentQuickFilter={currentQuickFilter}
           onSetQuickFilter={onSetQuickFilter}
-          onFilteredSearch={onFilteredSearch}
           contentTypes={contentTypes}
           groups={groups}
           filteringCategories={filteringCategories}
@@ -136,6 +141,8 @@ class Contents extends Component {
           authorChecked={authorChecked}
           onSetContentType={onSetContentType}
           onSetGroup={onSetGroup}
+          currentUsername={currentUsername}
+          onAdvancedFilterSearch={onAdvancedFilterSearch}
         />
         <div className="Contents__body">
           <ContentsTabs
@@ -151,6 +158,7 @@ class Contents extends Component {
             onSetCurrentStatusShow={onSetCurrentStatusShow}
             onSetCurrentColumnsShow={onSetCurrentColumnsShow}
             onClickAddContent={onClickAddContent}
+            currentUsername={currentUsername}
           />
           {renderSelectedRows}
           <div>
@@ -173,6 +181,8 @@ class Contents extends Component {
                 onEditContent={onEditContent}
                 onClickDelete={onClickDelete}
                 onClickPublish={onClickPublish}
+                onClickClone={onClickClone}
+                groups={groups}
               />
             </Spinner>
           </div>
@@ -221,6 +231,10 @@ Contents.propTypes = {
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
   onClickAddContent: PropTypes.func.isRequired,
+  onClickJoinCategories: PropTypes.func.isRequired,
+  currentUsername: PropTypes.string.isRequired,
+  onClickClone: PropTypes.func.isRequired,
+  onAdvancedFilterSearch: PropTypes.func.isRequired,
 };
 
 Contents.defaultProps = {

@@ -112,6 +112,7 @@ const StickySave = ({
                   bsStyle="success"
                   onClick={handleSubmit(values => onSubmit({
                     ...values,
+                    contentId: content.id,
                     saveType: APPROVE_SAVE_TYPE,
                   }))}
                 >
