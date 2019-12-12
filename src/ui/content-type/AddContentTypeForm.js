@@ -45,18 +45,6 @@ export class AddContentTypeFormBody extends Component {
       text: item,
     }));
 
-    const selectViewPageOptions = [{ value: '', text: 'None' }]
-      .concat(viewPages.map(({ code }) => ({
-        value: code,
-        text: code,
-      })));
-
-    const selectContentModelOptions = [{ value: '', text: 'No model' }]
-      .concat(contentModels.map(({ contentShape }) => ({
-        value: contentShape,
-        text: contentShape,
-      })));
-
     const renderAttributeTable = () => {
       if (isEdit) {
         return (
@@ -104,6 +92,18 @@ export class AddContentTypeFormBody extends Component {
 
     const renderMetadataSection = () => {
       if (isEdit) {
+        const selectViewPageOptions = [{ value: '', text: 'None' }]
+          .concat(viewPages.map(({ code }) => ({
+            value: code,
+            text: code,
+          })));
+
+        const selectContentModelOptions = [{ value: '', text: 'No model' }]
+          .concat(contentModels.map(({ contentShape }) => ({
+            value: contentShape,
+            text: contentShape,
+          })));
+
         return (
           <div>
             <legend>
@@ -210,8 +210,8 @@ AddContentTypeFormBody.propTypes = {
   submitting: PropTypes.bool,
   mode: PropTypes.string,
   contentTypeCode: PropTypes.string,
-  viewPages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  contentModels: PropTypes.arrayOf(PropTypes.object).isRequired,
+  viewPages: PropTypes.arrayOf(PropTypes.object),
+  contentModels: PropTypes.arrayOf(PropTypes.object),
 };
 
 AddContentTypeFormBody.defaultProps = {
@@ -221,6 +221,8 @@ AddContentTypeFormBody.defaultProps = {
   submitting: false,
   mode: 'add',
   contentTypeCode: '',
+  viewPages: [],
+  contentModels: [],
 };
 
 const AddContentTypeForm = reduxForm({
