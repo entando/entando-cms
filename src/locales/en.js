@@ -124,6 +124,7 @@ export default {
     'cms.contenttype.form.filterList': 'Can be used as a filter in lists',
     'cms.contenttype.form.metadata.defaultContentModel': 'Default content model',
     'cms.contenttype.form.metadata.defaultContentModelLists': 'Default content model for lists',
+    'cms.contenttype.form.metadata.viewPage': 'Page for on-the-fly publishing',
     'cms.contenttype.alert.created': 'Content type created successfully',
     'cms.contenttype.attribute.edit.title': 'Edit attribute',
     'cms.contenttype.enumeratorStaticItems': 'Elements',

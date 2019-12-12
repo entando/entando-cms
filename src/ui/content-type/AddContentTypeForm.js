@@ -34,6 +34,8 @@ export class AddContentTypeFormBody extends Component {
       invalid,
       submitting,
       contentTypeCode,
+      viewPages,
+      contentModels,
     } = this.props;
 
     const isEdit = mode === 'edit';
@@ -42,6 +44,18 @@ export class AddContentTypeFormBody extends Component {
       value: item,
       text: item,
     }));
+
+    const selectViewPageOptions = [{ value: '', text: 'None' }]
+      .concat(viewPages.map(({ code }) => ({
+        value: code,
+        text: code,
+      })));
+
+    const selectContentModelOptions = [{ value: '', text: 'No model' }]
+      .concat(contentModels.map(({ contentShape }) => ({
+        value: contentShape,
+        text: contentShape,
+      })));
 
     const renderAttributeTable = () => {
       if (isEdit) {
@@ -97,8 +111,15 @@ export class AddContentTypeFormBody extends Component {
             </legend>
             <Field
               component={RenderSelectInput}
-              options={[]}
-              defaultOptionId="cms.label.select"
+              options={selectViewPageOptions}
+              label={
+                <FormLabel labelId="cms.contenttype.form.metadata.viewPage" />
+              }
+              name="viewPage"
+            />
+            <Field
+              component={RenderSelectInput}
+              options={selectContentModelOptions}
               label={
                 <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModel" />
               }
@@ -106,8 +127,7 @@ export class AddContentTypeFormBody extends Component {
             />
             <Field
               component={RenderSelectInput}
-              options={[]}
-              defaultOptionId="cms.label.select"
+              options={selectContentModelOptions}
               label={
                 <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModelLists" />
               }
@@ -190,6 +210,8 @@ AddContentTypeFormBody.propTypes = {
   submitting: PropTypes.bool,
   mode: PropTypes.string,
   contentTypeCode: PropTypes.string,
+  viewPages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  contentModels: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 AddContentTypeFormBody.defaultProps = {
