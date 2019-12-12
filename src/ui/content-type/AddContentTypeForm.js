@@ -99,9 +99,9 @@ export class AddContentTypeFormBody extends Component {
           })));
 
         const selectContentModelOptions = [{ value: '', text: 'No model' }]
-          .concat(contentModels.map(({ contentShape }) => ({
-            value: contentShape,
-            text: contentShape,
+          .concat(contentModels.map(({ id, descr }) => ({
+            value: id,
+            text: descr,
           })));
 
         return (
