@@ -1,4 +1,4 @@
-import { SET_VIEWPAGES } from './types';
+import { SET_VIEWPAGES } from 'state/pages/types';
 
 const initialState = {
   viewPages: [],

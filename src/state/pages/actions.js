@@ -1,7 +1,7 @@
 import { addErrors } from '@entando/messages';
 
 import { getViewPages } from 'api/pages';
-import { SET_VIEWPAGES } from './types';
+import { SET_VIEWPAGES } from 'state/pages/types';
 
 export const setViewPages = pages => ({
   type: SET_VIEWPAGES,
