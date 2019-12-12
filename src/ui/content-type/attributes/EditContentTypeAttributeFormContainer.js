@@ -23,6 +23,8 @@ import {
   getActionModeContentTypeSelectedAttribute,
   getContentTypeSelectedAttribute,
   getIsMonolistCompositeAttributeType,
+  getContentTypeSelectedAttributeSearchable,
+  getContentTypeSelectedAttributeIndexable,
 } from 'state/content-type/selectors';
 
 import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD } from 'app-init/routes';
@@ -37,6 +39,8 @@ export const mapStateToProps = (state, { match: { params } }) => ({
     || [],
   selectedAttributeType: getSelectedAttributeType(state),
   selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
+  isSearchable: getContentTypeSelectedAttributeIndexable(state),
+  isIndexable: getContentTypeSelectedAttributeSearchable(state),
   attributesList: getContentTypeAttributesIdList(state),
   allowedRoles: getContentTypeSelectedAttributeAllowedRoles(state),
   compositeAttributes: getSelectedCompositeAttributes(state),

@@ -59,8 +59,8 @@ export class AttributeFormBody extends Component {
       <AttributeInfoComposite />
     ) : (
       <AttributeInfo
-        isSearchable={selectedAttributeType.searchableOptionSupported}
-        isIndexable={selectedAttributeType.indexableOptionSupported}
+        isIndexable={selectedAttributeType.searchableOptionSupported}
+        isSearchable={selectedAttributeType.indexableOptionSupported}
       />
     ));
 
