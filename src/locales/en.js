@@ -336,6 +336,7 @@ export default {
     'cms.contents.selectGroup': 'Select a Group',
     'cms.contents.selectedContents': 'You have selected {number} content(s), you can',
     'cms.contents.saved': 'Saved',
+    'cms.linkconfig.title': 'Configure Link Content',
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Code must be 3 uppercase letters',
