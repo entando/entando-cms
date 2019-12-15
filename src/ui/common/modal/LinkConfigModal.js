@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'patternfly-react';
+import {
+  Modal,
+  Tabs,
+  Tab,
+  Icon,
+} from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
 import GenericModal from 'ui/common/modal/GenericModal';
+import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
 
 const ID = 'LinkConfigModal';
 
@@ -14,6 +20,27 @@ const LinkConfigModal = ({ isVisible, onClose }) => {
     </Modal.Title>
   );
 
+  const renderedUrlTabTitle = (
+    <>
+      <Icon name="globe" />&nbsp;
+      <span>Link to an URL</span>
+    </>
+  );
+
+  const renderedPageTabTitle = (
+    <>
+      <Icon name="folder" />&nbsp;
+      <span>Link to a page</span>
+    </>
+  );
+
+  const renderedContentTabTitle = (
+    <>
+      <Icon name="file-text-o" />&nbsp;
+      <span>Link to a content</span>
+    </>
+  );
+
   return (
     <GenericModal
       visibleModal={isVisible ? ID : null}
@@ -21,7 +48,22 @@ const LinkConfigModal = ({ isVisible, onClose }) => {
       modalTitle={renderedModalTitle}
       onCloseModal={onClose}
     >
-    link
+      <Tabs
+        defaultActiveKey="url"
+        id="LinkConfigModal-Tabs"
+        animation={false}
+        mountOnEnter
+      >
+        <Tab eventKey="url" title={renderedUrlTabTitle}>
+          <LinkConfigUrlForm />
+        </Tab>
+        <Tab eventKey="page" title={renderedPageTabTitle}>
+          page
+        </Tab>
+        <Tab eventKey="content" title={renderedContentTabTitle}>
+          content
+        </Tab>
+      </Tabs>
     </GenericModal>
   );
 };
