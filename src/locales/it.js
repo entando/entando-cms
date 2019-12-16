@@ -332,6 +332,7 @@ export default {
     'cms.assets.form.cropcancel': 'Ritornare',
     'cms.assets.form.updated': '"{name}" dell\'asset aggiornato.',
     'cms.linkconfig.title': 'Configurare il contenuto del collegamento',
+    'cms.linkconfig.attributes.heading': 'Attributi aggiuntivi',
     'validateForm.elements': "inserire un valore tipo 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "inserire un valore tipo 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Il Codice deve essere  3 lettere maiuscole',
