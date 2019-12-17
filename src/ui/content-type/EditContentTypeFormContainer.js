@@ -25,6 +25,10 @@ import {
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
 } from 'app-init/routes';
+import { fetchContentModelsByContentType } from 'state/content-model/actions';
+import { getViewPages } from 'state/pages/selectors';
+import { fetchViewPages } from 'state/pages/actions';
+import { getContentModelList } from 'state/content-model/selectors';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: 'edit',
@@ -33,6 +37,8 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   attributesType: getContentTypeAttributesIdList(state),
   attributeCode: formValueSelector('ContentType')(state, 'type'),
   routeToEdit: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
+  viewPages: getViewPages(state),
+  contentModels: getContentModelList(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
@@ -41,6 +47,8 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(setSelectedAttributeContentType());
     dispatch(fetchContentType(contentTypeCode));
     dispatch(fetchContentTypeAttributes());
+    dispatch(fetchContentModelsByContentType(contentTypeCode));
+    dispatch(fetchViewPages());
   },
   onAddAttribute: ({ attributeCode, contentTypeCode }) => {
     dispatch(

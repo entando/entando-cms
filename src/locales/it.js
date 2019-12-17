@@ -44,6 +44,7 @@ export default {
     'cms.label.dropFilesHere': 'Drop files here', // TODO: TRANSLATION NEEDED!
     'cms.label.dragAndDrop': 'Drag and drop or ', // TODO: TRANSLATION NEEDED!
     'cms.label.browseYourComputer': 'Browse your computer', // TODO: TRANSLATION NEEDED!
+    'cms.label.metadata': 'Metadati',
     'cms.label.yes': 'sì',
     'cms.label.no': 'no',
     'cms.label.both': 'entrambi',
@@ -94,7 +95,7 @@ export default {
     'cms.contentmodel.delete.messageprompt':
       'Sei sicuro di voler rimuovere <strong>{id} ({descr})</strong>?',
     'cms.contenttype.title': 'Tipi di Contenuto',
-    'cms.contenttype.titletip': 'Puoi creare un tipi di contenuto qui',
+    'cms.contenttype.titletip': 'La sezione Tipi di contenuto consente all\'amministratore di aggiungere nuovi tipi di contenuto o modificare quelli già esistentiPuoi creare un tipi di contenuto qui.',
     'cms.contenttype.add.label': 'Aggiungere',
     'cms.contenttype.edit.label': 'Modificare',
     'cms.contenttype.list.contentTypeNameHeader': 'Nome',
@@ -127,6 +128,9 @@ export default {
     'cms.contenttype.form.filter': 'Filtro',
     'cms.contenttype.form.actions': 'Azioni',
     'cms.contenttype.form.filterList': 'Può essere usato come filtro nelle liste',
+    'cms.contenttype.form.metadata.defaultContentModel': 'Modello di contenuto predefinito',
+    'cms.contenttype.form.metadata.defaultContentModelLists': 'Modello di contenuto predefinito per elenchi',
+    'cms.contenttype.form.metadata.viewPage': 'Pagina per la pubblicazione al volo',
     'cms.contenttype.alert.created': 'tipo di contenuto creato con successo',
     'cms.contenttype.attribute.edit.title': 'Modificare',
     'cms.contenttype.enumeratorStaticItems': 'Elementi',

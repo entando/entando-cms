@@ -16,6 +16,7 @@ import contentSettings from 'state/content-settings/reducer';
 import groups from 'state/groups/reducer';
 import contents from 'state/contents/reducer';
 import languages from 'state/languages/reducer';
+import pages from 'state/pages/reducer';
 
 export const cms = combineReducers({
   contentModel,
@@ -27,6 +28,7 @@ export const cms = combineReducers({
   groups,
   contents,
   languages,
+  pages,
 });
 
 export default combineReducers({

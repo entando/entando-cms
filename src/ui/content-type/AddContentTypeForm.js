@@ -34,6 +34,8 @@ export class AddContentTypeFormBody extends Component {
       invalid,
       submitting,
       contentTypeCode,
+      viewPages,
+      contentModels,
     } = this.props;
 
     const isEdit = mode === 'edit';
@@ -88,6 +90,55 @@ export class AddContentTypeFormBody extends Component {
       return '';
     };
 
+    const renderMetadataSection = () => {
+      if (isEdit) {
+        const selectViewPageOptions = [{ value: '', text: 'None' }]
+          .concat(viewPages.map(({ code }) => ({
+            value: code,
+            text: code,
+          })));
+
+        const selectContentModelOptions = [{ value: '', text: 'No model' }]
+          .concat(contentModels.map(({ id, descr }) => ({
+            value: id,
+            text: descr,
+          })));
+
+        return (
+          <div>
+            <legend>
+              <FormattedMessage id="cms.label.metadata" />
+            </legend>
+            <Field
+              component={RenderSelectInput}
+              options={selectViewPageOptions}
+              label={
+                <FormLabel labelId="cms.contenttype.form.metadata.viewPage" />
+              }
+              name="viewPage"
+            />
+            <Field
+              component={RenderSelectInput}
+              options={selectContentModelOptions}
+              label={
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModel" />
+              }
+              name="defaultContentModel"
+            />
+            <Field
+              component={RenderSelectInput}
+              options={selectContentModelOptions}
+              label={
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModelLists" />
+              }
+              name="defaultContentModelLists"
+            />
+          </div>
+        );
+      }
+      return '';
+    };
+
     return (
       <form onSubmit={handleSubmit} className="form-horizontal ContentTypeForm">
         <Row>
@@ -125,6 +176,7 @@ export class AddContentTypeFormBody extends Component {
 )}
                 validate={[required, maxLength50]}
               />
+              {renderMetadataSection()}
               {renderSelectOption()}
               {renderAttributeTable()}
             </fieldset>
@@ -158,6 +210,8 @@ AddContentTypeFormBody.propTypes = {
   submitting: PropTypes.bool,
   mode: PropTypes.string,
   contentTypeCode: PropTypes.string,
+  viewPages: PropTypes.arrayOf(PropTypes.object),
+  contentModels: PropTypes.arrayOf(PropTypes.object),
 };
 
 AddContentTypeFormBody.defaultProps = {
@@ -167,6 +221,8 @@ AddContentTypeFormBody.defaultProps = {
   submitting: false,
   mode: 'add',
   contentTypeCode: '',
+  viewPages: [],
+  contentModels: [],
 };
 
 const AddContentTypeForm = reduxForm({
