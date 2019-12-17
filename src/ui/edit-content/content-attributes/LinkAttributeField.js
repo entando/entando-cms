@@ -20,6 +20,7 @@ class LinkAttributeField extends Component {
 
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   handleAddClick() {
@@ -32,6 +33,10 @@ class LinkAttributeField extends Component {
     this.setState({
       modalVisible: false,
     });
+  }
+
+  handleSave(values) {
+    console.log(values);
   }
 
   render() {
@@ -58,6 +63,7 @@ class LinkAttributeField extends Component {
         <LinkConfigModal
           isVisible={modalVisible}
           onClose={this.handleModalClose}
+          onSave={this.handleSave}
         />
       </>
     );

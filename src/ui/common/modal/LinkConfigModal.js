@@ -13,7 +13,7 @@ import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
 
 const ID = 'LinkConfigModal';
 
-const LinkConfigModal = ({ isVisible, onClose }) => {
+const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
   const renderedModalTitle = (
     <Modal.Title>
       <FormattedMessage id="cms.linkconfig.title" />
@@ -43,9 +43,11 @@ const LinkConfigModal = ({ isVisible, onClose }) => {
 
   return (
     <GenericModal
+      modalClassName="LinkConfigModal"
       visibleModal={isVisible ? ID : null}
       modalId={ID}
       modalTitle={renderedModalTitle}
+      modalFooter={<></>}
       onCloseModal={onClose}
     >
       <Tabs
@@ -55,7 +57,7 @@ const LinkConfigModal = ({ isVisible, onClose }) => {
         mountOnEnter
       >
         <Tab eventKey="url" title={renderedUrlTabTitle}>
-          <LinkConfigUrlForm />
+          <LinkConfigUrlForm onSubmit={onSave} onCancel={onClose} />
         </Tab>
         <Tab eventKey="page" title={renderedPageTabTitle}>
           page
@@ -71,6 +73,7 @@ const LinkConfigModal = ({ isVisible, onClose }) => {
 LinkConfigModal.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default LinkConfigModal;
