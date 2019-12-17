@@ -6,7 +6,7 @@ export default {
     'cms.label.edit': 'Modificare',
     'cms.label.delete': 'Elimina',
     'cms.label.download': 'Scaricare',
-    'cms.label.upload': 'Upload', // TODO: TRANSLATION NEEDED!
+    'cms.label.upload': 'Caricare',
     'cms.label.back': 'Indietro',
     'cms.label.cancel': 'Cancella',
     'cms.label.save': 'Salva',
@@ -39,11 +39,11 @@ export default {
     'cms.label.date.placeholder': 'gg/mm/anno',
     'cms.label.presenter.placeholder': 'Premere il tasto Invio per salvare le modifiche',
     'cms.label.modal.confirmdelete': 'Sei sicuro di voler rimuovere {code}?',
-    'cms.label.addFile': 'Add file', // TODO: TRANSLATION NEEDED!
-    'cms.label.addFilePlural': 'Add files', // TODO: TRANSLATION NEEDED!
-    'cms.label.dropFilesHere': 'Drop files here', // TODO: TRANSLATION NEEDED!
-    'cms.label.dragAndDrop': 'Drag and drop or ', // TODO: TRANSLATION NEEDED!
-    'cms.label.browseYourComputer': 'Browse your computer', // TODO: TRANSLATION NEEDED!
+    'cms.label.addFile': 'Aggiungi file',
+    'cms.label.addFilePlural': 'Aggiungere i file',
+    'cms.label.dropFilesHere': 'Trascina i file qui',
+    'cms.label.dragAndDrop': 'Trascina e rilascia o ',
+    'cms.label.browseYourComputer': 'Sfoglia il tuo computer',
     'cms.label.metadata': 'Metadati',
     'cms.label.yes': 'sì',
     'cms.label.no': 'no',
@@ -337,8 +337,8 @@ export default {
     'cms.assets.form.cropsave': 'Applicare',
     'cms.assets.form.cropcancel': 'Ritornare',
     'cms.assets.form.updated': '"{name}" dell\'asset aggiornato.',
-    'cms.assets.form.uploaded': 'Asset "{name}" uploaded.', // TODO: TRANSLATION NEEDED
-    'cms.assets.form.failedUpload': 'Failed to upload asset "{name}".', // TODO: TRANSLATION NEEDED
+    'cms.assets.form.uploaded': 'Asset "{name}" caricato.',
+    'cms.assets.form.failedUpload': 'Caricamento dell\'asset "{name}" non riuscito.',
     'validateForm.elements': "inserire un valore tipo 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "inserire un valore tipo 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Il Codice deve essere  3 lettere maiuscole',
