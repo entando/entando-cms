@@ -14,6 +14,15 @@ export const getAssets = (page = { page: 1, pageSize: 10 }, params = '') => make
   page,
 );
 
+export const createAsset = (file, params = '') => makeRequest({
+  uri: `${getAssetsPath}/${params}`,
+  body: file,
+  method: METHODS.POST,
+  contentType: 'multipart/form-data',
+  mockResponse: GET_ASSETS_RESPONSE_OK,
+  useAuthentication: true,
+});
+
 export const editAsset = (id, file, params = '') => makeRequest({
   uri: `${getAssetsPath}/${id}${params}`,
   body: file,

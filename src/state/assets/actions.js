@@ -25,7 +25,9 @@ import {
   getFileType,
   getListFilterParams,
 } from 'state/assets/selectors';
-import { getAssets, editAsset, deleteAsset } from 'api/assets';
+import {
+  getAssets, createAsset, editAsset, deleteAsset,
+} from 'api/assets';
 
 export const setAssetCategoryFilter = category => ({
   type: SET_ASSET_CATEGORY_FILTER,
@@ -90,7 +92,7 @@ export const fetchAssets = (page, params) => dispatch => new Promise((resolve) =
         resolve();
       });
     })
-    .catch(() => {});
+    .catch(() => { });
 });
 
 export const fetchAssetsPaged = (
@@ -199,7 +201,7 @@ export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
         }
       });
     })
-    .catch(() => {});
+    .catch(() => { });
 });
 
 export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Promise((resolve) => {
@@ -224,5 +226,35 @@ export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Pr
         }
       });
     })
-    .catch(() => {});
+    .catch(() => { });
+});
+
+export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
+  const { fileObject, group, categories } = file;
+  const type = fileObject.type.startsWith('image') ? 'image' : 'file';
+  const formData = new FormData();
+  formData.append('file', fileObject);
+
+  const params = {
+    type,
+    group,
+    categories: categories.join(','),
+  };
+  createAsset(
+    formData,
+    `?${new URLSearchParams(params).toString()}`,
+  )
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+      });
+    })
+    .catch(() => { });
 });

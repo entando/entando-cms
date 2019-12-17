@@ -53,14 +53,14 @@ class ContentSettingsMetadataListBody extends Component {
                       helpId="cms.contentsettings.form.metadatamapping.help"
                       helpValues={{ key: meta.key }}
                     />
-)}
+                  )}
                 />
                 <span className="ContentSettingsMetadata__list-input-right-placeholder">
                   <FormattedMessage
                     id={
                       loadings[meta.key]
                         ? 'cms.label.savingdot'
-                        : 'cms.label.pressenter.placeholder'
+                        : 'cms.label.presenter.placeholder'
                     }
                   />
                 </span>

@@ -5,6 +5,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
+import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
 import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
@@ -31,6 +32,11 @@ const AssetsListPage = () => (
           position="pull-right"
           largeTitle
         />
+      </Col>
+    </Row>
+    <Row>
+      <Col xs={12}>
+        <AssetsUploadContainer />
       </Col>
     </Row>
     <Row>
