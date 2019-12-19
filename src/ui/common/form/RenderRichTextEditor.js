@@ -4,6 +4,53 @@ import { Col, ControlLabel } from 'patternfly-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+const renderToolbarButton = (format, value) => (
+  <button className={`ql-${format}`} value={value} type="button" />
+);
+
+const EditorToolbar = () => (
+  <div id="editor-toolbar" style={{ borderBottom: 'none' }}>
+    <span className="ql-formats">
+      {renderToolbarButton('bold')}
+      {renderToolbarButton('italic')}
+      {renderToolbarButton('strike')}
+    </span>
+    <span className="ql-formats">
+      {renderToolbarButton('clean')}
+    </span>
+    <span className="ql-formats">
+      {renderToolbarButton('list', 'ordered')}
+      {renderToolbarButton('list', 'bullet')}
+    </span>
+    <span className="ql-formats">
+      {renderToolbarButton('indent', '-1')}
+      {renderToolbarButton('indent', '+1')}
+    </span>
+    <span className="ql-formats">
+      {renderToolbarButton('blockquote')}
+    </span>
+  </div>
+);
+
+const modules = {
+  toolbar: {
+    container: '#editor-toolbar',
+    // handlers: {
+
+    // },
+  },
+};
+
+const formats = [
+  'bold',
+  'italic',
+  'strike',
+  'clean',
+  'list',
+  'indent',
+  'blockquote',
+];
+
 const RenderRichTextEditor = ({
   input, append, label, labelSize, placeholder, alignClass,
   meta: { touched, error }, help, disabled, hasLabel,
@@ -17,11 +64,14 @@ const RenderRichTextEditor = ({
       </Col>
     )}
     <Col xs={12 - labelSize} className="RenderRichTextEditor-content">
+      <EditorToolbar />
       <ReactQuill
         {...input}
         onBlur={(_, __, editor) => input.onBlur(editor.getHTML())}
         placeholder={placeholder}
         disabled={disabled}
+        modules={modules}
+        formats={formats}
       />
       {append && <span className="AppendedLabel">{append}</span>}
       {touched && ((error && <span className="help-block">{error}</span>))}
