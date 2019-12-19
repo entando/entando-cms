@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Col, ControlLabel } from 'patternfly-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const renderToolbarButton = (format, value) => (
-  <button className={`ql-${format}`} value={value} type="button" />
+import LinkConfigModal from 'ui/common/modal/LinkConfigModal';
+import store from 'state/store';
+import { setVisibleModal } from 'state/modal/actions';
+import { getVisibleModal } from 'state/modal/selectors';
+
+const renderToolbarButton = (format, value, icon) => (
+  <button className={`ql-${format}`} value={value} type="button">
+    {icon}
+  </button>
 );
 
 const EditorToolbar = () => (
@@ -29,15 +37,28 @@ const EditorToolbar = () => (
     <span className="ql-formats">
       {renderToolbarButton('blockquote')}
     </span>
+    <span className="ql-formats">
+      {renderToolbarButton('enlink', 'link', <img src="/images/editor/entandolink-icon.png" alt="Entando Link" />)}
+      {renderToolbarButton('enlink', 'unlink', <img src="/images/editor/entandounlink-icon.png" alt="Entando Unlink" />)}
+    </span>
   </div>
 );
+
+function enlink(value) {
+  const selection = this.quill.getSelection();
+  if (value === 'link' && selection.length > 0) {
+    store.dispatch(setVisibleModal(this.quill.id));
+  } else {
+    this.quill.format('link', false);
+  }
+}
 
 const modules = {
   toolbar: {
     container: '#editor-toolbar',
-    // handlers: {
-
-    // },
+    handlers: {
+      enlink,
+    },
   },
 };
 
@@ -49,36 +70,82 @@ const formats = [
   'list',
   'indent',
   'blockquote',
+  'link',
 ];
 
-const RenderRichTextEditor = ({
-  input, append, label, labelSize, placeholder, alignClass,
-  meta: { touched, error }, help, disabled, hasLabel,
-}) => (
-  <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
-    {hasLabel && (
-      <Col xs={labelSize} className={`RenderRichTextEditor-label ${alignClass}`}>
-        <ControlLabel htmlFor={input.name}>
-          {label} {help}
-        </ControlLabel>
-      </Col>
-    )}
-    <Col xs={12 - labelSize} className="RenderRichTextEditor-content">
-      <EditorToolbar />
-      <ReactQuill
-        {...input}
-        onBlur={(_, __, editor) => input.onBlur(editor.getHTML())}
-        placeholder={placeholder}
-        disabled={disabled}
-        modules={modules}
-        formats={formats}
-      />
-      {append && <span className="AppendedLabel">{append}</span>}
-      {touched && ((error && <span className="help-block">{error}</span>))}
-    </Col>
-  </div>
+class RenderRichTextEditor extends Component {
+  constructor() {
+    super();
 
-);
+    this.state = {};
+    this.reactQuill = createRef();
+    this.quill = null;
+
+    this.handleLinkConfigSave = this.handleLinkConfigSave.bind(this);
+  }
+
+  componentDidMount() {
+    this.attachQuillRefs();
+  }
+
+  componentDidUpdate() {
+    this.attachQuillRefs();
+  }
+
+  attachQuillRefs() {
+    if (typeof this.reactQuill.current.getEditor !== 'function') return;
+    this.quill = this.reactQuill.current.getEditor();
+    const { input: { name } } = this.props;
+    this.quill.id = name;
+  }
+
+  handleLinkConfigSave(values) {
+    console.log(values);
+    const { url } = values;
+    this.quill.format('link', url);
+    const { onLinkModalClose } = this.props;
+    onLinkModalClose();
+  }
+
+  render() {
+    const {
+      input, append, label, labelSize, placeholder, alignClass,
+      meta: { touched, error }, help, disabled, hasLabel,
+      linkModalVisible, onLinkModalClose,
+    } = this.props;
+
+    return (
+      <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
+        {hasLabel && (
+        <Col xs={labelSize} className={`RenderRichTextEditor-label ${alignClass}`}>
+          <ControlLabel htmlFor={input.name}>
+            {label} {help}
+          </ControlLabel>
+        </Col>
+        )}
+        <Col xs={12 - labelSize} className="RenderRichTextEditor-content">
+          <EditorToolbar />
+          <ReactQuill
+            {...input}
+            ref={this.reactQuill}
+            onBlur={(_, __, editor) => input.onBlur(editor.getHTML())}
+            placeholder={placeholder}
+            disabled={disabled}
+            modules={modules}
+            formats={formats}
+          />
+          {append && <span className="AppendedLabel">{append}</span>}
+          {touched && ((error && <span className="help-block">{error}</span>))}
+        </Col>
+        <LinkConfigModal
+          isVisible={linkModalVisible}
+          onSave={this.handleLinkConfigSave}
+          onClose={onLinkModalClose}
+        />
+      </div>
+    );
+  }
+}
 
 RenderRichTextEditor.propTypes = {
   input: PropTypes.shape({}),
@@ -91,6 +158,8 @@ RenderRichTextEditor.propTypes = {
   append: PropTypes.string,
   alignClass: PropTypes.string,
   hasLabel: PropTypes.bool,
+  linkModalVisible: PropTypes.bool.isRequired,
+  onLinkModalClose: PropTypes.func.isRequired,
 };
 
 RenderRichTextEditor.defaultProps = {
@@ -105,4 +174,7 @@ RenderRichTextEditor.defaultProps = {
   alignClass: 'text-right',
   hasLabel: true,
 };
-export default RenderRichTextEditor;
+export default connect(
+  (state, props) => ({ linkModalVisible: getVisibleModal(state) === props.input.name }),
+  dispatch => ({ onLinkModalClose: () => dispatch(setVisibleModal('')) }),
+)(RenderRichTextEditor);
