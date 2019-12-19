@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 
 import GenericModal from 'ui/common/modal/GenericModal';
 import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
+import LinkConfigPageForm from 'ui/common/link-config/LinkConfigPageForm';
 
 const ID = 'LinkConfigModal';
 
@@ -60,7 +61,7 @@ const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
           <LinkConfigUrlForm onSubmit={onSave} onCancel={onClose} />
         </Tab>
         <Tab eventKey="page" title={renderedPageTabTitle}>
-          page
+          <LinkConfigPageForm onSubmit={onSave} onCancel={onClose} />
         </Tab>
         <Tab eventKey="content" title={renderedContentTabTitle}>
           content
