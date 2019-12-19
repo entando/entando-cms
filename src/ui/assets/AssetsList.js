@@ -144,9 +144,11 @@ class AssetsList extends Component {
       onApplyFilteredSearch,
       onChangeAssetsView,
       onApplySort,
+      onUseAsset,
       activeFilters,
       lastPage,
       totalItems,
+      browseMode,
       pageSize: perPage,
       page,
       perPageOptions,
@@ -240,6 +242,8 @@ class AssetsList extends Component {
         asset={asset}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
+        browseMode={browseMode}
+        onItemSelected={onUseAsset}
       />
     ));
     const tableContent = (
@@ -270,7 +274,7 @@ class AssetsList extends Component {
     const content = (
       <CardGrid>
         <div className="AssetsList__files-header">
-          {renderFileTypes}
+          {!browseMode ? renderFileTypes : null}
           {mobile ? null : (
             <div className="AssetsList__view-options">
               <span
@@ -373,6 +377,7 @@ AssetsList.propTypes = {
   onChangeAssetsView: PropTypes.func.isRequired,
   onRemoveAllActiveFilters: PropTypes.func.isRequired,
   onChangeFileType: PropTypes.func.isRequired,
+  onUseAsset: PropTypes.func,
   fetchList: PropTypes.func.isRequired,
   lastPage: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
@@ -381,6 +386,7 @@ AssetsList.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
+  browseMode: PropTypes.bool,
 };
 
 AssetsList.defaultProps = {
@@ -393,6 +399,8 @@ AssetsList.defaultProps = {
     direction: 'ASC',
   },
   perPageOptions: [5, 10, 15, 25, 50],
+  browseMode: false,
+  onUseAsset: null,
 };
 
 export default AssetsList;

@@ -1,4 +1,13 @@
 .AssetsList {
+  &.modal-dialog { // sass-lint:disable-line class-name-format
+    width: 1040px;
+    height: 90vh;
+  }
+
+  & > .modal-content { // sass-lint:disable-line class-name-format
+    height: 90vh;
+  }
+
   &__wrap {
     margin-top: 3.4rem;
 
@@ -7,12 +16,17 @@
     }
   }
 
+  &.modal-dialog .AssetsList__wrap { // sass-lint:disable-line class-name-format force-element-nesting
+    margin-top: 0;
+  }
+
   &__sort {
     margin-top: .5rem;
     float: right;
   }
 
   &__files-header {
+    height: 32px;
     border-bottom: 1px solid $color-ultra-grey-border;
   }
 
@@ -141,6 +155,10 @@
     @media (max-width: 991px) {
       font-size: 10rem;
     }
+  }
+
+  &__item-desc {
+    word-break: break-all;
   }
 
   &__item {

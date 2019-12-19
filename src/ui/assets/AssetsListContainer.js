@@ -49,10 +49,13 @@ export const mapStateToProps = state => ({
   page: getCurrentPage(state),
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
     dispatch(setListFilterParams({}));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+    if (ownProps.assetType) {
+      dispatch(changeFileType(ownProps.assetType));
+    }
     dispatch(fetchAssetsPaged());
     dispatch(fetchCategoryTree());
   },
