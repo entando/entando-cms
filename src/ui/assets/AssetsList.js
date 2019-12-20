@@ -123,8 +123,8 @@ class AssetsList extends Component {
   }
 
   handleRemoveActiveFilter(item) {
-    const { onRemoveActiveFilter, filteringCategories } = this.props;
-    onRemoveActiveFilter(item, filteringCategories);
+    const { onRemoveActiveFilter, activeFilters } = this.props;
+    onRemoveActiveFilter(item, activeFilters);
   }
 
   removeAllActiveFilters() {

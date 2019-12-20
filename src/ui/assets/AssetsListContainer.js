@@ -19,7 +19,6 @@ import {
   changeAssetsView,
   makeFilter,
   pageDefault,
-  filterAssetsBySearch,
 } from 'state/assets/actions';
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
@@ -82,7 +81,6 @@ export const mapDispatchToProps = dispatch => ({
   onChangeAssetsView: (assetsView) => {
     dispatch(changeAssetsView(assetsView));
   },
-  onAssetSearch: keyword => dispatch(filterAssetsBySearch(keyword)),
   fetchList: (page = pageDefault) => (
     dispatch(fetchAssetsPaged(page))
   ),
