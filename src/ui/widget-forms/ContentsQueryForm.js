@@ -13,7 +13,7 @@ import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
-import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
+import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
 
 const maxLength70 = maxLength(70);
@@ -287,7 +287,7 @@ export class ContentsQueryFormBody extends Component {
                       </label>
                       <Col xs={12} sm={10}>
                         <FieldArray
-                          component={MultiSelectRenderer}
+                          component={MultiFilterSelectRenderer}
                           name="categories"
                           options={allCategories}
                           selectedValues={renderCategories}

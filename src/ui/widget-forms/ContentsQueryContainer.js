@@ -40,7 +40,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(fetchLanguages(nopage));
     dispatch(fetchContentTypeListPaged(nopage));
     dispatch(fetchCategoryTree());
-    dispatch(fetchSearchPages(nopage));
+    // dispatch(fetchSearchPages(nopage));
   },
   onSubmit: (values) => {
     const {

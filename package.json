@@ -42,8 +42,7 @@
     "prepublish": "npm run babel"
   },
   "husky": {
-    "hooks": {
-    }
+    "hooks": {}
   },
   "babel": {
     "presets": [
