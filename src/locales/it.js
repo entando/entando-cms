@@ -387,5 +387,12 @@ export default {
     'widget.page.create.code.placeholder': 'Codice',
     'widget.page.create.title': 'Titolo',
     'widget.update.success': 'Il widget è stato aggiornato!',
+    'contentPicker.description': 'Descrizione',
+    'contentPicker.status': 'Stato',
+    'contentPicker.type': 'Tipo',
+    'contentPicker.allStatuses': 'Tutti',
+    'contentPicker.allTypes': 'Tutti',
+    'widget.singleContent.config.content': 'Contenuto',
+    'widget.singleContent.config.contentModel': 'Modello di contenuto',
   },
 };

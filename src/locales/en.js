@@ -394,5 +394,12 @@ export default {
     'widget.page.create.code.placeholder': 'Code',
     'widget.page.create.title': 'Title',
     'widget.update.success': 'Widget has been updated!',
+    'contentPicker.description': 'Description',
+    'contentPicker.status': 'Status',
+    'contentPicker.type': 'Type',
+    'contentPicker.allStatuses': 'All',
+    'contentPicker.allTypes': 'All',
+    'widget.singleContent.config.content': 'Content',
+    'widget.singleContent.config.contentModel': 'Content model',
   },
 };
