@@ -272,7 +272,7 @@ class AssetsList extends Component {
       bodyContent = assetsView === 'list' ? tableContent : gridContent;
     }
     const content = (
-      <CardGrid>
+      <CardGrid className="AssetsList__files-grid">
         <div className="AssetsList__files-header">
           {!browseMode ? renderFileTypes : null}
           {mobile ? null : (

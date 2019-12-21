@@ -1,16 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
-  Grid,
-  Row,
   Col,
   ControlLabel,
   Button,
-  FormGroup,
-  InputGroup,
-  FormControl,
 } from 'patternfly-react';
+import AssetAttributeFieldInfo from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfo';
 
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
@@ -23,8 +19,17 @@ const ImageAttributeField = ({
   alignClass,
   help,
   onClickAdd,
+  assetListBegin,
 }) => {
-  const handleAssetSelected = asset => input.onChange(asset);
+  const [value, setValue] = useState({ info: null });
+
+  const setInputValue = (val) => {
+    const newVal = { ...value, ...val };
+    setValue(newVal);
+    input.onChange(newVal);
+  };
+
+  const handleAssetSelected = info => setInputValue({ info });
 
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -39,74 +44,16 @@ const ImageAttributeField = ({
           <FormattedMessage id="cms.label.add" defaultMessage="Add" />
         </Button>
         {errorBox}
-        <AssetBrowserModal assetType="image" onAssetSelected={handleAssetSelected} />
+        <AssetBrowserModal assetType="image" onModalOpened={assetListBegin} onAssetSelected={handleAssetSelected} />
       </>
     );
   };
 
-  const renderAssetSelected = () => {
-    const { value } = input;
-    const { metadata } = value;
-    const tfs = [
-      {
-        name: 'text',
-        label: 'Text',
-        value: value.description,
-      },
-      {
-        name: 'alt',
-        label: 'alt',
-      },
-      {
-        name: 'description',
-        label: 'description',
-      },
-      {
-        name: 'legend',
-        label: 'legend',
-      },
-      {
-        name: 'title',
-        label: 'title',
-      },
-    ];
+  const renderAssetSelected = () => (
+    <AssetAttributeFieldInfo inputValue={input.value.info} onChange={setInputValue} />
+  );
 
-    return (
-      <>
-        <Col xs={12} sm={5} md={4} lg={3}>
-          <img src={value.previewUrl} alt="Preview" />
-        </Col>
-        <Col xs={12} sm={7} md={8} lg={9}>
-          <Grid fluid>
-            <Row>
-              <Col xs={2} className="lbl"><FormattedMessage id="cms.assets.form.name" /></Col>
-              <Col xs={10} className="inf">{value.description}</Col>
-            </Row>
-            <Row>
-              <Col xs={2} className="lbl"><FormattedMessage id="cms.assets.form.filename" /></Col>
-              <Col xs={10} className="inf">{metadata && metadata.filename}</Col>
-            </Row>
-            {tfs.map(tf => (
-              <Row>
-                <Col xs={4} className="lbl">{tf.label}</Col>
-                <Col xs={8}>
-                  <FormGroup>
-                    <InputGroup>
-                      <FormControl type="text" name={tf.name} value={tf.value || ''} />
-                    </InputGroup>
-                  </FormGroup>
-                </Col>
-              </Row>
-            ))}
-          </Grid>
-        </Col>
-      </>
-    );
-  };
-
-  const hasValue = !!input.value;
-
-  const fieldAreaClass = hasValue ? 'AssetAttributeField__imgSelected' : '';
+  const hasValue = !!input.value.info;
 
   return (
     <div className={containerClasses}>
@@ -115,7 +62,7 @@ const ImageAttributeField = ({
           {label} {help}
         </ControlLabel>
       </Col>
-      <Col xs={inputSize || 12 - labelSize} className={fieldAreaClass}>
+      <Col xs={inputSize || 12 - labelSize}>
         {hasValue ? renderAssetSelected() : renderChoose()}
       </Col>
     </div>
@@ -134,6 +81,7 @@ ImageAttributeField.propTypes = {
     error: PropTypes.shape({}),
   }),
   onClickAdd: PropTypes.func.isRequired,
+  assetListBegin: PropTypes.func.isRequired,
 };
 
 ImageAttributeField.defaultProps = {

@@ -1,23 +1,10 @@
 .AssetsList {
-  &.modal-dialog { // sass-lint:disable-line class-name-format
-    width: 1040px;
-    height: 90vh;
-  }
-
-  & > .modal-content { // sass-lint:disable-line class-name-format
-    height: 90vh;
-  }
-
   &__wrap {
     margin-top: 3.4rem;
 
     @media screen and (max-width: 991px) {
       margin-bottom: 5.5rem;
     }
-  }
-
-  &.modal-dialog .AssetsList__wrap { // sass-lint:disable-line class-name-format force-element-nesting
-    margin-top: 0;
   }
 
   &__sort {
@@ -183,4 +170,38 @@
       }
     }
   }
+
+  // sass-lint:disable class-name-format
+  &.modal-dialog {
+    width: 1210px;
+    height: 90vh;
+
+    .AssetsList__wrap {
+      height: calc(90vh - 96px);
+      margin-top: 0;
+    }
+
+    .AssetsList__files-grid {
+      height: 100%;
+      margin-top: 0;
+    }
+
+    .AssetsList__body {
+      height: calc(90vh - 128px);
+    }
+
+    .AssetsList__files-container {
+      padding-bottom: 0;
+      overflow: auto;
+    }
+  }
+
+  & > .modal-content {
+    height: 90vh;
+  }
+
+  & > .modal-body {
+    height: calc(90vh - 42px);
+  }
+  // sass-lint:enable class-name-format
 }

@@ -46,13 +46,13 @@ const AssetsListItem = ({
       <td>{renderCategories}</td>
       <td>
         {browseMode ? (
-          <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
+          <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
             <MenuItem onClick={onClickSelectHandle}>
               <FormattedMessage id="cms.label.use" defaultMessage="Use" />
             </MenuItem>
           </DropdownKebab>
         ) : (
-          <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
+          <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
             <MenuItem onClick={onEditClickHandle}>
               <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
             </MenuItem>

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttributeField';
+import AttachAttributeField from 'ui/edit-content/content-attributes/AttachAttributeField';
 import { setVisibleModal } from 'state/modal/actions';
 import {
   setListFilterParams,
   fetchAssetsPaged,
-  changeFileType,
+  pageDefault,
 } from 'state/assets/actions';
 import { fetchGroups } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -15,16 +15,15 @@ export const mapDispatchToProps = dispatch => ({
   assetListBegin: () => {
     dispatch(setListFilterParams({}));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(changeFileType('image'));
-    dispatch(fetchAssetsPaged());
+    dispatch(fetchAssetsPaged(pageDefault, 'file'));
     dispatch(fetchCategoryTree());
   },
   onClickAdd: () => dispatch(dispatch(setVisibleModal(MODAL_ID))),
 });
 
-const ImageAttributeFieldContainer = connect(
+const AttachAttributeFieldContainer = connect(
   null,
   mapDispatchToProps,
-)(ImageAttributeField);
+)(AttachAttributeField);
 
-export default ImageAttributeFieldContainer;
+export default AttachAttributeFieldContainer;

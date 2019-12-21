@@ -97,9 +97,10 @@ export const fetchAssets = (page, params) => dispatch => new Promise((resolve) =
 
 export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
+  assetType = null,
 ) => (dispatch, getState) => {
   const state = getState();
-  const fileType = getFileType(state);
+  const fileType = assetType || getFileType(state);
   let filters = getListFilterParams(state);
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
   if (filters && Object.keys(filters).length === 0) {
@@ -112,7 +113,8 @@ export const fetchAssetsPaged = (
   const categoryParams = categories.map(
     (c, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${c}`,
   ).join('');
-
+  
+  console.log('typeParams', typeParams);
   return dispatch(fetchAssets(paginationMetadata, `?${typeParams}${categoryParams}`));
 };
 

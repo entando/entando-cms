@@ -12,6 +12,7 @@ export const MODAL_ID = 'AssetBrowserModal';
 const AssetBrowserModal = ({
   assetType,
   onAssetSelected,
+  onModalOpened,
 }) => {
   const modalTitle = (
     <Modal.Title>
@@ -24,6 +25,7 @@ const AssetBrowserModal = ({
       modalTitle={modalTitle}
       modalFooter={<span />}
       modalClassName="AssetsList"
+      onOpenModal={onModalOpened}
     >
       <AssetsListContainer
         assetType={assetType}
@@ -37,6 +39,7 @@ const AssetBrowserModal = ({
 AssetBrowserModal.propTypes = {
   assetType: PropTypes.string.isRequired,
   onAssetSelected: PropTypes.func.isRequired,
+  onModalOpened: PropTypes.func.isRequired,
 };
 
 export default AssetBrowserModal;

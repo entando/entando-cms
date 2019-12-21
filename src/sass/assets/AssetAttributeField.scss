@@ -1,0 +1,23 @@
+.AssetAttributeField {
+  &__selected-info {
+    padding: 10px;
+    border: 1px solid $color-vertical-grey;
+  }
+
+  &__img-preview {
+    width: 130px;
+  }
+
+  &__lbl {
+    font-weight: bold;
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+
+    &--inner.form-control {
+      z-index: initial;
+    }
+  }
+}

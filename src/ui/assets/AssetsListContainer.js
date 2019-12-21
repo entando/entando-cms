@@ -51,13 +51,14 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
-    dispatch(setListFilterParams({}));
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    if (ownProps.assetType) {
+    if (ownProps.browseMode) {
       dispatch(changeFileType(ownProps.assetType));
+    } else {
+      dispatch(setListFilterParams({}));
+      dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+      dispatch(fetchAssetsPaged());
+      dispatch(fetchCategoryTree());
     }
-    dispatch(fetchAssetsPaged());
-    dispatch(fetchCategoryTree());
   },
   onApplyFilteredSearch: (filters) => {
     dispatch(setActiveFilters(filters));
