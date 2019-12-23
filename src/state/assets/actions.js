@@ -4,7 +4,9 @@ import {
   TOAST_ERROR,
   clearErrors,
 } from '@entando/messages';
+import _, { compact } from 'lodash';
 import {
+  convertToQueryString,
   FILTER_OPERATORS,
   SORT_DIRECTIONS,
 } from '@entando/utils';
@@ -106,14 +108,17 @@ export const fetchAssetsPaged = (
     filters = { formValues: {}, operators: {} };
   }
   let categories = filters.formValues.categories || [];
+  const newFilters = _.cloneDeep(filters);
+  delete newFilters.formValues.categories;
   if (!Array.isArray(categories)) {
     categories = [categories];
   }
+  const startIndex = Object.keys(newFilters.formValues || []).length;
   const categoryParams = categories.map(
-    (c, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${c}`,
+    (c, i) => `&filters[${i + startIndex}].attribute=categories&filters[${i + startIndex}].value=${c}`,
   ).join('');
-
-  return dispatch(fetchAssets(paginationMetadata, `?${typeParams}${categoryParams}`));
+  const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
+  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
 
 export const makeFilter = (value, op = FILTER_OPERATORS.EQUAL) => ({ value, op });
@@ -175,6 +180,8 @@ export const filterAssetsBySearch = (
   } else {
     delete formValues.description;
     delete operators.description;
+    delete formValues.categories;
+    delete operators.categories;
   }
   if (keyword !== '') {
     formValues.description = keyword;
