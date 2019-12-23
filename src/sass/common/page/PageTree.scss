@@ -21,6 +21,10 @@
       visibility: hidden;
     }
   }
+
+  &__row--selected {
+    background-color: #def3ff;
+  }
 }
 
 

@@ -8,13 +8,29 @@ import RowSpinner from 'ui/common/RowSpinner';
 
 
 class PageTree extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedPage: null,
+    };
+  }
+
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
   }
 
+  handleRowClick(pageCode) {
+    this.setState({
+      selectedPage: pageCode,
+    });
+    const { onPageSelect } = this.props;
+    onPageSelect(pageCode);
+  }
+
   renderRows() {
     const { pages, onExpandPage } = this.props;
+    const { selectedPage } = this.state;
 
     return pages.map((page, i) => {
       const onClickExpand = () => {
@@ -27,8 +43,14 @@ class PageTree extends Component {
         className.push('PageTree__tree-column-td--empty');
       }
 
+      const isPageSelected = selectedPage === page.code;
+
       return (
-        <tr key={`${page.code}`}>
+        <tr
+          key={`${page.code}`}
+          className={`PageTree__row${isPageSelected ? '--selected' : ''}`}
+          onClick={() => this.handleRowClick(page.code)}
+        >
           <td className={className.join(' ')}>
             <span
               role="button"
@@ -83,12 +105,14 @@ PageTree.propTypes = {
   })),
   onExpandPage: PropTypes.func,
   onDidMount: PropTypes.func,
+  onPageSelect: PropTypes.func,
 };
 
 PageTree.defaultProps = {
   pages: [],
   onExpandPage: () => {},
   onDidMount: () => {},
+  onPageSelect: () => {},
 };
 
 export default PageTree;
