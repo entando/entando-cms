@@ -36,6 +36,8 @@ class LinkAttributeField extends Component {
   }
 
   handleSave(values) {
+    const { input } = this.props;
+    console.log(input);
     console.log(values);
   }
 
