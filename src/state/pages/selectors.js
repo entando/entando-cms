@@ -9,9 +9,6 @@ export const getPagesMap = state => state.apps.cms.pages.map;
 export const getChildrenMap = state => state.apps.cms.pages.childrenMap;
 export const getStatusMap = state => state.apps.cms.pages.statusMap;
 export const getTitlesMap = state => state.apps.cms.pages.titlesMap;
-export const getSelectedPage = state => state.apps.cms.pages.selected;
-export const getSearchPages = state => state.apps.cms.pages.search;
-
 export const getViewPages = state => state.apps.cms.pages.viewPages;
 
 export const getFreePages = createSelector(
@@ -127,26 +124,3 @@ export const getContentTypes = () => ([
   'text/html',
   'text/xml',
 ]);
-
-export const getSelectedPageIsPublished = createSelector(
-  [getSelectedPage],
-  selectedPage => !!(selectedPage && selectedPage.status === PAGE_STATUS_PUBLISHED),
-);
-
-export const getReferencesFromSelectedPage = createSelector([getSelectedPage], (selectedPage) => {
-  if (selectedPage && selectedPage.references) {
-    return Object.keys(selectedPage.references).filter(key => selectedPage.references[key]);
-  }
-  return [];
-});
-
-
-export const getSelectedPageLocaleTitle = createSelector(
-  [getSelectedPage, getLocale],
-  (selectedPage, locale) => {
-    if (selectedPage) {
-      return selectedPage.titles[locale] || selectedPage.titles.en;
-    }
-    return '';
-  },
-);
