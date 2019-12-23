@@ -65,7 +65,7 @@ export class ContentsQueryFormBody extends Component {
   render() {
     const {
       contentTypes, contentModels, categories, pages,
-      onChangeContentType, selectedContentType, selectedCategories,
+      onResetModelId, selectedContentType, selectedCategories,
       intl, onResetFilterOption, languages, onToggleInclusiveOr,
       selectedInclusiveOr, handleSubmit, invalid, submitting,
     } = this.props;
@@ -185,7 +185,7 @@ export class ContentsQueryFormBody extends Component {
       category: allCategories,
     };
 
-    const handleContentTypeChange = ev => onChangeContentType(ev.currentTarget.value);
+    const handleContentTypeChange = () => onResetModelId();
     const handleCollapsePublishingSettings = () => this.collapseSection('publishingSettings');
     const handleCollapseFilters = () => this.collapseSection('filters');
     const handleCollapseExtraOptions = () => this.collapseSection('extraOptions');
@@ -418,6 +418,7 @@ ContentsQueryFormBody.propTypes = {
   onResetFilterOption: PropTypes.func.isRequired,
   onChangeContentType: PropTypes.func.isRequired,
   onToggleInclusiveOr: PropTypes.func.isRequired,
+  onResetModelId: PropTypes.func.isRequired,
   selectedContentType: PropTypes.string,
   selectedInclusiveOr: PropTypes.string,
 };

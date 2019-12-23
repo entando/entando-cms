@@ -8,7 +8,7 @@ import { fetchContentModelListPaged } from 'state/content-model/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
-import { getSearchPages } from 'state/pages/selectors';
+import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
@@ -22,13 +22,15 @@ export const mapStateToProps = (state, ownProps) => {
   if (multipleContentsMode) {
     widgetConfig = propWidgetConfig;
   } else {
-    widgetConfig = propWidgetConfig != null ? { contents: [propWidgetConfig] } : null;
+    delete propWidgetConfig.contents;
+    widgetConfig = propWidgetConfig != null
+      ? { contents: [propWidgetConfig], maxElemForItem: propWidgetConfig.maxElemForItem } : null;
   }
   return ({
     contentModels: getContentModelList(state),
     initialValues: widgetConfig,
     languages: getActiveLanguages(state),
-    pages: getSearchPages(state),
+    pages: getSearchPagesRaw(state),
     language: getLocale(state),
     widgetCode: ownProps.widgetCode,
   });
@@ -55,7 +57,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
         contentDescription: cc.contentDescription,
       },
     ));
-    const payload = multipleContentsMode ? { contents: configContents } : configContents[0];
+    // eslint-disable-next-line no-param-reassign
+    delete values.contents;
+    const payload = multipleContentsMode
+      ? { contents: configContents, ...values } : { ...configContents[0], ...values };
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
     dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {

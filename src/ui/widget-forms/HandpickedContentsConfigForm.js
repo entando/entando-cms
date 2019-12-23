@@ -112,7 +112,7 @@ class HandpickedContentsConfigFormBody extends PureComponent {
                 {renderTitleFields}
                 <Field
                   component={RenderSelectInput}
-                  name="Page"
+                  name="pageLink"
                   label={
                     <FormLabel labelId="widget.form.page" />
               }

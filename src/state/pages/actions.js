@@ -1,6 +1,5 @@
 import { addErrors } from '@entando/messages';
 import { getViewPages, getSearchPages } from 'api/pages';
-import { setPage } from 'state/pagination/actions';
 import { SET_VIEWPAGES, SEARCH_PAGES } from 'state/pages/types';
 
 export const setViewPages = pages => ({
@@ -28,17 +27,15 @@ export const fetchViewPages = () => dispatch => new Promise((resolve) => {
   }).catch(() => {});
 });
 
-export const fetchSearchPages = (page = { page: 1, pageSize: 10 }, params = '') => async (dispatch) => {
-  try {
-    const response = await getSearchPages(page, params);
-    const json = await response.json();
-    if (response.ok) {
-      dispatch(setSearchPages(json.payload));
-      dispatch(setPage(json.metaData));
-    } else {
-      dispatch(addErrors(json.errors.map(e => e.message)));
-    }
-  } catch (e) {
-    // do nothing
-  }
-};
+export const fetchSearchPages = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+  getSearchPages(page, params).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setSearchPages(json.payload));
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+      }
+      resolve();
+    });
+  }).catch(() => {});
+});

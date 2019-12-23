@@ -42,7 +42,9 @@
     "prepublish": "npm run babel"
   },
   "husky": {
-    "hooks": {}
+    "hooks": {
+      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage "
+    }
   },
   "babel": {
     "presets": [

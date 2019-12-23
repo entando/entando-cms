@@ -1,10 +1,13 @@
 import { createMockStore, mockApi } from 'testutils/helpers';
-import { fetchViewPages, setViewPages } from 'state/pages/actions';
-import { SET_VIEWPAGES } from 'state/pages/types';
-import { getViewPages } from 'api/pages';
+import {
+  fetchViewPages, setViewPages, setSearchPages, fetchSearchPages,
+} from 'state/pages/actions';
+import { SET_VIEWPAGES, SEARCH_PAGES } from 'state/pages/types';
+import { getViewPages, getSearchPages } from 'api/pages';
 
 jest.mock('api/pages', () => ({
   getViewPages: jest.fn(mockApi({ payload: [] })),
+  getSearchPages: jest.fn(mockApi({ payload: [] })),
 }));
 
 describe('state/pages/actions', () => {
@@ -15,7 +18,15 @@ describe('state/pages/actions', () => {
       payload,
     });
   });
+  it('setSearchPages should return correct object', () => {
+    const payload = { pages: ['a', 'b'] };
+    expect(setSearchPages(['a', 'b'])).toEqual({
+      type: SEARCH_PAGES,
+      payload,
+    });
+  });
 });
+
 
 describe('state/pages/actions thunks', () => {
   let store;
@@ -25,6 +36,7 @@ describe('state/pages/actions thunks', () => {
         cms: {
           pages: {
             viewPages: [],
+            searchPages: [],
           },
         },
       },
@@ -51,6 +63,34 @@ describe('state/pages/actions thunks', () => {
         .dispatch(fetchViewPages())
         .then(() => {
           expect(getViewPages).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('fetchSearchPages', () => {
+    it('should dispatch correct actions when api call is successful', (done) => {
+      store
+        .dispatch(fetchSearchPages())
+        .then(() => {
+          expect(getSearchPages).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toHaveProperty('type', SEARCH_PAGES);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      getSearchPages.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(fetchSearchPages())
+        .then(() => {
+          expect(getSearchPages).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
           done();

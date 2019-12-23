@@ -1,8 +1,9 @@
 import reducer from 'state/pages/reducer';
-import { setViewPages } from 'state/pages/actions';
+import { setViewPages, setSearchPages } from 'state/pages/actions';
 
 const initialState = {
   viewPages: [],
+  searchPages: [],
 };
 
 describe('state/pages/reducer', () => {
@@ -12,6 +13,14 @@ describe('state/pages/reducer', () => {
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
       viewPages: payload,
+    });
+  });
+  it('should return correct state with setSearchPages action', () => {
+    const payload = [{ pages: ['a', 'b'] }];
+    const action = setSearchPages(payload);
+    expect(reducer(initialState, action)).toEqual({
+      ...initialState,
+      searchPages: payload,
     });
   });
 });
