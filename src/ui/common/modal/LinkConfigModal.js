@@ -12,9 +12,27 @@ import GenericModal from 'ui/common/modal/GenericModal';
 import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
 import LinkConfigPageForm from 'ui/common/link-config/LinkConfigPageForm';
 
+const getLinkUrl = (type, value) => `#!${type};${value}!#`;
+
 const ID = 'LinkConfigModal';
 
 const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
+  const handleSubmit = (values) => {
+    const linkObj = { ...values.attributes };
+
+    if (values.url) {
+      linkObj.url = getLinkUrl('U', values.url);
+    } else if (values.page) {
+      linkObj.url = getLinkUrl('P', values.page);
+    } else if (values.content) {
+      linkObj.url = getLinkUrl('C', values.content);
+    } else {
+      linkObj.url = getLinkUrl('R', values.resource);
+    }
+
+    onSave(linkObj);
+  };
+
   const renderedModalTitle = (
     <Modal.Title>
       <FormattedMessage id="cms.linkconfig.title" />
@@ -58,10 +76,10 @@ const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
         mountOnEnter
       >
         <Tab eventKey="url" title={renderedUrlTabTitle}>
-          <LinkConfigUrlForm onSubmit={onSave} onCancel={onClose} />
+          <LinkConfigUrlForm onSubmit={handleSubmit} onCancel={onClose} />
         </Tab>
         <Tab eventKey="page" title={renderedPageTabTitle}>
-          <LinkConfigPageForm onSubmit={onSave} onCancel={onClose} />
+          <LinkConfigPageForm onSubmit={handleSubmit} onCancel={onClose} />
         </Tab>
         <Tab eventKey="content" title={renderedContentTabTitle}>
           content

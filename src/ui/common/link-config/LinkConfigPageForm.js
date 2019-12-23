@@ -4,6 +4,7 @@ import {
   reduxForm,
   Field,
   FormSection,
+  fieldInputPropTypes,
 } from 'redux-form';
 import { Col, Button } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
@@ -12,16 +13,24 @@ import PageTreeContainer from 'ui/common/page/PageTreeContainer';
 import FormLabel from 'ui/common/form/FormLabel';
 import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 
+const PageTreeField = ({ input }) => (
+  <PageTreeContainer onPageSelect={input.onChange} />
+);
+
+PageTreeField.propTypes = {
+  input: PropTypes.shape(fieldInputPropTypes).isRequired,
+};
+
 const label = <FormLabel labelText="Choose a page" />;
 
 const LinkConfigPageForm = ({ onCancel, handleSubmit }) => (
   <form className="form-horizontal" onSubmit={handleSubmit}>
     <Col xs={2} className="text-right">
-      {label}
+      <label>{label}</label>
     </Col>
     <Col xs={10}>
       <Field
-        component={PageTreeContainer}
+        component={PageTreeField}
         name="page"
       />
     </Col>
