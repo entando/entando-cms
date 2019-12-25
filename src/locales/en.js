@@ -326,6 +326,7 @@ export default {
     'cms.contents.typeCode': 'Type',
     'cms.contents.created': 'Created Date',
     'cms.contents.actions': 'Actions',
+    'cms.contents.select': 'Select',
     'cms.contents.selectAll': 'Select All',
     'cms.contents.mainGroup': 'Owner Group',
     'cms.contents.groups': 'Join Groups',

@@ -269,6 +269,7 @@ export default {
     'cms.contents.typeCode': 'Tipo',
     'cms.contents.created': 'Data di Creazione',
     'cms.contents.actions': 'Azioni',
+    'cms.contents.select': 'Selezionare',
     'cms.contents.selectAll': 'Seleziona Tutto',
     'cms.contents.mainGroup': 'Gruppo Proprietario',
     'cms.contents.groups': 'Unisciti ai Gruppi',
