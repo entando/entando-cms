@@ -254,6 +254,7 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
+          dispatch(fetchAssetsPaged());
           resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -263,5 +264,7 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
         }
       });
     })
-    .catch(() => { });
+    .catch((error) => {
+      resolve({ error, hasError: true });
+    });
 });

@@ -4,10 +4,13 @@ import { Field } from 'redux-form';
 import { Row, Col } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
+import { required } from '@entando/utils';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderCategoryTreeInput from 'ui/common/category/RenderCategoryTreeInput';
 import FormLabel from 'ui/common/form/FormLabel';
-import { required } from '@entando/utils';
+import RowSpinner from 'ui/common/RowSpinner';
+
+import { LOADING_GROUP } from 'ui/assets/modals/upload-assets/constants';
 
 const UploadAssetModalFiles = (props) => {
   const {
@@ -15,6 +18,7 @@ const UploadAssetModalFiles = (props) => {
     group,
     categories,
     language,
+    loading,
   } = props;
 
   return (
@@ -23,6 +27,9 @@ const UploadAssetModalFiles = (props) => {
         const fileFieldGroup = fields.get(index);
         const isImg = fileFieldGroup.fileObject.type
           && fileFieldGroup.fileObject.type.startsWith('image/');
+        const uploading = (
+          loading[LOADING_GROUP] && loading[LOADING_GROUP][fileFieldGroup.fileId]
+        ) || false;
 
         return (
           <div className="UploadAssetModal__file" key={file}>
@@ -39,12 +46,13 @@ const UploadAssetModalFiles = (props) => {
             )}
             <div className="UploadAssetModal__file-info">
               <div>{fileFieldGroup.filename}</div>
-              {isImg && (
-                <div>
-                  <img className="UploadAssetModal__file-preview" src={fileFieldGroup.filePreview} alt="file preview" />
-                </div>
-              )}
+              <RowSpinner loading={uploading} />
             </div>
+            {isImg && (
+              <div>
+                <img className="UploadAssetModal__file-preview" src={fileFieldGroup.filePreview} alt="file preview" />
+              </div>
+            )}
             <Row>
               <Col>
                 <Field
@@ -87,6 +95,7 @@ UploadAssetModalFiles.propTypes = {
   })),
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   fields: PropTypes.shape({}).isRequired,
+  loading: PropTypes.shape({}).isRequired,
 };
 
 UploadAssetModalFiles.defaultProps = {
