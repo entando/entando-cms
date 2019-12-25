@@ -10,6 +10,20 @@ import store from 'state/store';
 import { setVisibleModal } from 'state/modal/actions';
 import { getVisibleModal } from 'state/modal/selectors';
 
+const undoIcon = (
+  <svg viewBox="0 0 18 18">
+    <polygon className="ql-fill ql-stroke" points="6 10 4 12 2 10 6 10" />
+    <path className="ql-stroke" d="M8.09,13.91A4.6,4.6,0,0,0,9,14,5,5,0,1,0,4,9" />
+  </svg>
+);
+
+const redoIcon = (
+  <svg viewBox="0 0 18 18">
+    <polygon className="ql-fill ql-stroke" points="12 10 14 12 16 10 12 10" />
+    <path className="ql-stroke" d="M9.91,13.91A4.6,4.6,0,0,1,9,14a5,5,0,1,1,5-5" />
+  </svg>
+);
+
 const renderToolbarButton = (format, value, icon) => (
   <button className={`ql-${format}`} value={value} type="button">
     {icon}
@@ -18,6 +32,10 @@ const renderToolbarButton = (format, value, icon) => (
 
 const EditorToolbar = () => (
   <div id="editor-toolbar" style={{ borderBottom: 'none' }}>
+    <span className="ql-formats">
+      {renderToolbarButton('history', 'undo', undoIcon)}
+      {renderToolbarButton('history', 'redo', redoIcon)}
+    </span>
     <span className="ql-formats">
       {renderToolbarButton('bold')}
       {renderToolbarButton('italic')}
@@ -44,6 +62,14 @@ const EditorToolbar = () => (
   </div>
 );
 
+function history(value) {
+  if (value === 'undo') {
+    this.quill.history.undo();
+  } else {
+    this.quill.history.redo();
+  }
+}
+
 function enlink(value) {
   const selection = this.quill.getSelection();
   if (value === 'link' && selection.length > 0) {
@@ -58,6 +84,7 @@ const modules = {
     container: '#editor-toolbar',
     handlers: {
       enlink,
+      history,
     },
   },
 };
