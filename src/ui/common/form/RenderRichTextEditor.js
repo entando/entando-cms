@@ -2,8 +2,8 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Col, ControlLabel } from 'patternfly-react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-2';
+import 'react-quill-2/dist/quill.snow.css';
 
 import LinkConfigModal from 'ui/common/modal/LinkConfigModal';
 import store from 'state/store';
@@ -24,6 +24,88 @@ const redoIcon = (
   </svg>
 );
 
+const tableIcon = (
+  <svg viewbox="0 0 18 18">
+    <rect className="ql-stroke-miter" height="12" width="12" x="3" y="3" />
+    <line className="ql-stroke-miter" x1="9" x2="9" y1="3" y2="15" />
+    <line className="ql-stroke-miter" x1="15" x2="3" y1="9" y2="9" />
+  </svg>
+);
+
+const tableInsertRowIcon = (
+  <svg viewbox="0 0 18 18">
+    <g className="ql-fill ql-stroke ql-thin ql-transparent">
+      <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="2.5" />
+      <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="12.5" />
+    </g>
+    <rect className="ql-fill ql-stroke ql-thin" height="3" rx="0.5" ry="0.5" width="7" x="8.5" y="7.5" />
+    <polygon className="ql-fill ql-stroke ql-thin" points="4.5 11 2.5 9 4.5 7 4.5 11" />
+    <line className="ql-stroke" x1="6" x2="4" y1="9" y2="9" />
+  </svg>
+);
+
+const tableInsertColumnIcon = (
+  <svg viewbox="0 0 18 18">
+    <g className="ql-fill ql-transparent">
+      <rect height="10" rx="1" ry="1" width="4" x="12" y="2" />
+      <rect height="10" rx="1" ry="1" width="4" x="2" y="2" />
+    </g>
+    <path className="ql-fill" d="M11.354,4.146l-2-2a0.5,0.5,0,0,0-.707,0l-2,2A0.5,0.5,0,0,0,7,5H8V6a1,1,0,0,0,2,0V5h1A0.5,0.5,0,0,0,11.354,4.146Z" />
+    <rect className="ql-fill" height="8" rx="1" ry="1" width="4" x="7" y="8" />
+  </svg>
+);
+
+const tableDeleteRowIcon = (
+  <svg viewbox="0 0 18 18">
+    <g className="ql-fill ql-stroke ql-thin ql-transparent">
+      <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="2.5" />
+      <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="12.5" />
+    </g>
+    <rect className="ql-fill ql-stroke ql-thin" height="3" rx="0.5" ry="0.5" width="7" x="8.5" y="7.5" />
+    <line className="ql-stroke ql-thin" x1="6.5" x2="3.5" y1="7.5" y2="10.5" />
+    <line className="ql-stroke ql-thin" x1="3.5" x2="6.5" y1="7.5" y2="10.5" />
+  </svg>
+);
+
+const tableDeleteColumnIcon = (
+  <svg viewbox="0 0 18 18">
+    <g className="ql-fill ql-transparent">
+      <rect height="10" rx="1" ry="1" width="4" x="2" y="6" />
+      <rect height="10" rx="1" ry="1" width="4" x="12" y="6" />
+    </g>
+    <rect className="ql-fill" height="8" rx="1" ry="1" width="4" x="7" y="2" />
+    <path className="ql-fill" d="M9.707,13l1.146-1.146a0.5,0.5,0,0,0-.707-0.707L9,12.293,7.854,11.146a0.5,0.5,0,0,0-.707.707L8.293,13,7.146,14.146a0.5,0.5,0,1,0,.707.707L9,13.707l1.146,1.146a0.5,0.5,0,0,0,.707-0.707Z" />
+  </svg>
+);
+
+const tableDeleteIcon = (
+  <svg viewbox="0 0 18 18">
+    <g className="ql-fill ql-transparent">
+      <rect height="2" width="2" x="2" y="2" />
+      <rect height="2" width="2" x="5" y="2" />
+      <rect height="2" width="2" x="8" y="2" />
+      <rect height="2" width="2" x="14" y="2" />
+      <rect height="2" width="2" x="11" y="2" />
+      <rect height="2" width="2" x="2" y="14" />
+      <rect height="2" width="2" x="5" y="14" />
+      <rect height="2" width="2" x="8" y="14" />
+      <rect height="2" width="2" x="14" y="14" />
+      <rect height="2" width="2" x="11" y="14" />
+      <rect height="2" transform="translate(-9 15) rotate(-90)" width="2" x="2" y="11" />
+      <rect height="2" transform="translate(-6 12) rotate(-90)" width="2" x="2" y="8" />
+      <rect height="2" transform="translate(-3 9) rotate(-90)" width="2" x="2" y="5" />
+      <rect height="2" transform="translate(3 27) rotate(-90)" width="2" x="14" y="11" />
+      <rect height="2" transform="translate(6 24) rotate(-90)" width="2" x="14" y="8" />
+      <rect height="2" transform="translate(3 21) rotate(-90)" width="2" x="11" y="8" />
+      <rect height="2" transform="translate(0 18) rotate(-90)" width="2" x="8" y="8" />
+      <rect height="2" transform="translate(-3 15) rotate(-90)" width="2" x="5" y="8" />
+      <rect height="2" width="2" x="8" y="11" />
+      <rect height="2" width="2" x="8" y="5" />
+      <rect height="2" transform="translate(9 21) rotate(-90)" width="2" x="14" y="5" />
+    </g>
+  </svg>
+);
+
 const renderToolbarButton = (format, value, icon) => (
   <button className={`ql-${format}`} value={value} type="button">
     {icon}
@@ -35,6 +117,14 @@ const EditorToolbar = () => (
     <span className="ql-formats">
       {renderToolbarButton('history', 'undo', undoIcon)}
       {renderToolbarButton('history', 'redo', redoIcon)}
+    </span>
+    <span className="ql-formats">
+      {renderToolbarButton('entable', 'table', tableIcon)}
+      {renderToolbarButton('entable', 'table-insert-row', tableInsertRowIcon)}
+      {renderToolbarButton('entable', 'table-insert-column', tableInsertColumnIcon)}
+      {renderToolbarButton('entable', 'table-delete-row', tableDeleteRowIcon)}
+      {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon)}
+      {renderToolbarButton('entable', 'table-delete', tableDeleteIcon)}
     </span>
     <span className="ql-formats">
       {renderToolbarButton('bold')}
@@ -79,14 +169,43 @@ function enlink(value) {
   }
 }
 
+function entable(value) {
+  const table = this.quill.getModule('table');
+  const rows = 2;
+  const cols = 2;
+  switch (value) {
+    case 'table':
+      table.insertTable(rows, cols);
+      break;
+    case 'table-insert-row':
+      table.insertRow();
+      break;
+    case 'table-insert-column':
+      table.insertColumn();
+      break;
+    case 'table-delete-row':
+      table.deleteRow();
+      break;
+    case 'table-delete-column':
+      table.deleteColumn();
+      break;
+    case 'table-delete':
+      table.deleteTable();
+      break;
+    default:
+  }
+}
+
 const modules = {
   toolbar: {
     container: '#editor-toolbar',
     handlers: {
       enlink,
+      entable,
       history,
     },
   },
+  table: true,
 };
 
 const formats = [
@@ -98,6 +217,7 @@ const formats = [
   'indent',
   'blockquote',
   'link',
+  'table',
 ];
 
 class RenderRichTextEditor extends Component {
