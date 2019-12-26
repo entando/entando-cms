@@ -300,6 +300,7 @@ class AssetsList extends Component {
                 filteringCategories={filteringCategories}
                 assetType={fileType}
                 mobile={mobile}
+                hideIfEmpty
                 filterSubject="asset"
               />
             </div>
