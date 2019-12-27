@@ -1,5 +1,5 @@
 import reducer from 'state/loading/reducer';
-import { toggleLoading } from 'state/loading/actions';
+import { toggleLoading, toggleGroupItemLoading } from 'state/loading/actions';
 
 describe('state/loading/reducer', () => {
   const INITIAL_STATE = reducer();
@@ -25,6 +25,31 @@ describe('state/loading/reducer', () => {
     it('should "id" defined as return false', () => {
       newState = reducer(newState, toggleLoading('test'));
       expect(newState.test).toBe(false);
+    });
+
+    it('should not change existing "id" after group loading is fired', () => {
+      newState = reducer(newState, toggleGroupItemLoading('itemId', 'test'));
+      expect(newState.test).toBe(true);
+    });
+  });
+
+  describe('after action TOGGLE_GROUP_ITEM_LOADING', () => {
+    let newState;
+    beforeEach(() => {
+      newState = reducer(INITIAL_STATE, toggleGroupItemLoading('itemId', 'groupId'));
+    });
+
+    it('should have "group" defined', () => {
+      expect(newState.groupId).toBeDefined();
+    });
+
+    it('should have "id" set to true', () => {
+      expect(newState.groupId.itemId).toBe(true);
+    });
+
+    it('should have "id" set as false', () => {
+      newState = reducer(newState, toggleGroupItemLoading('itemId', 'groupId'));
+      expect(newState.groupId.itemId).toBe(false);
     });
   });
 });

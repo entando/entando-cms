@@ -17,6 +17,7 @@ import {
   sendDeleteAsset,
   setAssetsCount,
   fetchAssetsCount,
+  fetchAssetsPaged,
 } from 'state/assets/actions';
 import { SORT_DIRECTIONS } from '@entando/utils';
 import {
@@ -280,6 +281,31 @@ describe('state/assets/actions', () => {
           },
           sorting: undefined,
         });
+        done();
+      });
+    });
+
+    it('fetchAssetsPaged with categories', (done) => {
+      const filterParams = {
+        formValues: { categories: ['yo', 'aa'] },
+        operators: { categories: 'like' },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'image',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(fetchAssetsPaged()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
         done();
       });
     });

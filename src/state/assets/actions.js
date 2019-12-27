@@ -127,16 +127,20 @@ export const fetchAssetsPaged = (
   if (filters && Object.keys(filters).length === 0) {
     filters = { formValues: {}, operators: {} };
   }
-  let categories = filters.formValues.categories || [];
+  const categoryFilterExists = filters.formValues && filters.formValues.categories;
+  let categoryParams = '';
   const newFilters = _.cloneDeep(filters);
-  delete newFilters.formValues.categories;
-  if (!Array.isArray(categories)) {
-    categories = [categories];
+  if (categoryFilterExists) {
+    let { categories } = filters.formValues;
+    delete newFilters.formValues.categories;
+    if (!Array.isArray(categories)) {
+      categories = [categories];
+    }
+    const startIndex = Object.keys(newFilters.formValues || []).length;
+    categoryParams = categories.map(
+      (c, i) => `&filters[${i + startIndex}].attribute=categories&filters[${i + startIndex}].value=${c}`,
+    ).join('');
   }
-  const startIndex = Object.keys(newFilters.formValues || []).length;
-  const categoryParams = categories.map(
-    (c, i) => `&filters[${i + startIndex}].attribute=categories&filters[${i + startIndex}].value=${c}`,
-  ).join('');
   const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
   return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
@@ -274,6 +278,7 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
+          dispatch(fetchAssetsPaged());
           resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -283,5 +288,7 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
         }
       });
     })
-    .catch(() => { });
+    .catch((error) => {
+      resolve({ error, hasError: true });
+    });
 });
