@@ -37,6 +37,7 @@ const headers = [
   {
     name: 'uploadedBy',
     width: '17%',
+    id: 'owner',
   },
   {
     name: 'uploadedAt',
@@ -51,6 +52,7 @@ const headers = [
   {
     name: 'categories',
     width: '12%',
+    id: 'categories',
   },
   {
     name: 'actions',
