@@ -25,7 +25,7 @@ const redoIcon = (
 );
 
 const tableIcon = (
-  <svg viewbox="0 0 18 18">
+  <svg viewBox="0 0 18 18">
     <rect className="ql-stroke-miter" height="12" width="12" x="3" y="3" />
     <line className="ql-stroke-miter" x1="9" x2="9" y1="3" y2="15" />
     <line className="ql-stroke-miter" x1="15" x2="3" y1="9" y2="9" />
@@ -33,7 +33,7 @@ const tableIcon = (
 );
 
 const tableInsertRowIcon = (
-  <svg viewbox="0 0 18 18">
+  <svg viewBox="0 0 18 18">
     <g className="ql-fill ql-stroke ql-thin ql-transparent">
       <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="2.5" />
       <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="12.5" />
@@ -45,7 +45,7 @@ const tableInsertRowIcon = (
 );
 
 const tableInsertColumnIcon = (
-  <svg viewbox="0 0 18 18">
+  <svg viewBox="0 0 18 18">
     <g className="ql-fill ql-transparent">
       <rect height="10" rx="1" ry="1" width="4" x="12" y="2" />
       <rect height="10" rx="1" ry="1" width="4" x="2" y="2" />
@@ -56,7 +56,7 @@ const tableInsertColumnIcon = (
 );
 
 const tableDeleteRowIcon = (
-  <svg viewbox="0 0 18 18">
+  <svg viewBox="0 0 18 18">
     <g className="ql-fill ql-stroke ql-thin ql-transparent">
       <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="2.5" />
       <rect height="3" rx="0.5" ry="0.5" width="7" x="4.5" y="12.5" />
@@ -68,7 +68,7 @@ const tableDeleteRowIcon = (
 );
 
 const tableDeleteColumnIcon = (
-  <svg viewbox="0 0 18 18">
+  <svg viewBox="0 0 18 18">
     <g className="ql-fill ql-transparent">
       <rect height="10" rx="1" ry="1" width="4" x="2" y="6" />
       <rect height="10" rx="1" ry="1" width="4" x="12" y="6" />
@@ -79,7 +79,7 @@ const tableDeleteColumnIcon = (
 );
 
 const tableDeleteIcon = (
-  <svg viewbox="0 0 18 18">
+  <svg viewBox="0 0 18 18">
     <g className="ql-fill ql-transparent">
       <rect height="2" width="2" x="2" y="2" />
       <rect height="2" width="2" x="5" y="2" />
@@ -106,6 +106,8 @@ const tableDeleteIcon = (
   </svg>
 );
 
+const maximizeIcon = <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="expand-arrows-alt" className="svg-inline--fa fa-expand-arrows-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 344v112a23.94 23.94 0 0 1-24 24H312c-21.39 0-32.09-25.9-17-41l36.2-36.2L224 295.6 116.77 402.9 153 439c15.09 15.1 4.39 41-17 41H24a23.94 23.94 0 0 1-24-24V344c0-21.4 25.89-32.1 41-17l36.19 36.2L184.46 256 77.18 148.7 41 185c-15.1 15.1-41 4.4-41-17V56a23.94 23.94 0 0 1 24-24h112c21.39 0 32.09 25.9 17 41l-36.2 36.2L224 216.4l107.23-107.3L295 73c-15.09-15.1-4.39-41 17-41h112a23.94 23.94 0 0 1 24 24v112c0 21.4-25.89 32.1-41 17l-36.19-36.2L263.54 256l107.28 107.3L407 327.1c15.1-15.2 41-4.5 41 16.9z" /></svg>;
+
 const renderToolbarButton = (format, value, icon) => (
   <button className={`ql-${format}`} value={value} type="button">
     {icon}
@@ -125,6 +127,9 @@ const EditorToolbar = () => (
       {renderToolbarButton('entable', 'table-delete-row', tableDeleteRowIcon)}
       {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon)}
       {renderToolbarButton('entable', 'table-delete', tableDeleteIcon)}
+    </span>
+    <span className="ql-formats">
+      {renderToolbarButton('maximize', undefined, maximizeIcon)}
     </span>
     <span className="ql-formats">
       {renderToolbarButton('bold')}
@@ -158,6 +163,13 @@ function history(value) {
   } else {
     this.quill.history.redo();
   }
+}
+
+function maximize() {
+  const blockElementClass = 'RenderRichTextEditor__content';
+  const editorContainer = document.querySelector(`.${blockElementClass}`);
+  editorContainer.classList.toggle(`${blockElementClass}--maximize`);
+  document.body.classList.toggle('no-scroll');
 }
 
 function enlink(value) {
@@ -203,6 +215,7 @@ const modules = {
       enlink,
       entable,
       history,
+      maximize,
     },
   },
   table: true,
@@ -264,13 +277,13 @@ class RenderRichTextEditor extends Component {
     return (
       <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
         {hasLabel && (
-        <Col xs={labelSize} className={`RenderRichTextEditor-label ${alignClass}`}>
+        <Col xs={labelSize} className={`RenderRichTextEditor__label ${alignClass}`}>
           <ControlLabel htmlFor={input.name}>
             {label} {help}
           </ControlLabel>
         </Col>
         )}
-        <Col xs={12 - labelSize} className="RenderRichTextEditor-content">
+        <Col xs={12 - labelSize} className="RenderRichTextEditor__content">
           <EditorToolbar />
           <ReactQuill
             {...input}
