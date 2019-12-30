@@ -31,6 +31,7 @@ import {
 import {
   getAssets, createAsset, editAsset, deleteAsset,
 } from 'api/assets';
+import { getPagination } from 'state/pagination/selectors';
 
 export const resetFilteringCategories = () => ({
   type: RESET_FILTERING_CATEGORIES,
@@ -150,7 +151,8 @@ export const applyAssetsFilter = (
   }), { formValues: {}, operators: {}, sorting });
 
   dispatch(setListFilterParams(filter));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const sortAssetsList = (
@@ -171,9 +173,9 @@ export const sortAssetsList = (
     ...others,
     sorting: newSorting,
   };
-
   dispatch(setListFilterParams(filter));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const filterAssetsBySearch = (
@@ -199,7 +201,8 @@ export const filterAssetsBySearch = (
   dispatch(setSearchKeyword(keyword));
   const filters = { formValues, operators, sorting };
   dispatch(setListFilterParams(filters));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
