@@ -55,6 +55,7 @@ class CategoryTreeFilter extends React.Component {
       onCheckCategory,
       minimal,
       filterSubject,
+      hideIfEmpty,
     } = this.props;
 
     const { treeExpanded } = this.state;
@@ -73,10 +74,14 @@ class CategoryTreeFilter extends React.Component {
       />
     ));
 
+    const showNothing = hideIfEmpty
+    && (!categoriesWithoutRoot || categoriesWithoutRoot.length === 0);
+
     return (
-      <div>
-        <table className="CategoryTreeFilter">
-          {
+      showNothing ? null : (
+        <div>
+          <table className="CategoryTreeFilter">
+            {
             minimal ? null : (
               <thead>
                 <tr>
@@ -95,11 +100,11 @@ class CategoryTreeFilter extends React.Component {
               </thead>
             )
           }
-          <tbody>{categoryRows}</tbody>
-        </table>
-        <br />
-      </div>
-    );
+            <tbody>{categoryRows}</tbody>
+          </table>
+          <br />
+        </div>
+      ));
   }
 }
 
@@ -114,6 +119,7 @@ CategoryTreeFilter.propTypes = {
   assetType: PropTypes.string.isRequired,
   minimal: PropTypes.bool,
   filterSubject: PropTypes.string.isRequired,
+  hideIfEmpty: PropTypes.bool,
 };
 
 CategoryTreeFilter.defaultProps = {
@@ -122,6 +128,7 @@ CategoryTreeFilter.defaultProps = {
   onCheckCategory: () => {},
   onApplyFilteredSearch: () => {},
   minimal: false,
+  hideIfEmpty: false,
 };
 
 export default CategoryTreeFilter;
