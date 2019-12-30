@@ -20,6 +20,7 @@ import {
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  RESET_FILTERING_CATEGORIES,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -30,6 +31,10 @@ import {
 import {
   getAssets, createAsset, editAsset, deleteAsset,
 } from 'api/assets';
+
+export const resetFilteringCategories = () => ({
+  type: RESET_FILTERING_CATEGORIES,
+});
 
 export const setAssetCategoryFilter = category => ({
   type: SET_ASSET_CATEGORY_FILTER,

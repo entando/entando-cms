@@ -128,8 +128,9 @@ class AssetsList extends Component {
   }
 
   removeAllActiveFilters() {
-    const { onRemoveAllActiveFilters } = this.props;
+    const { onRemoveAllActiveFilters, onResetFilterinCategories } = this.props;
     onRemoveAllActiveFilters();
+    onResetFilterinCategories();
   }
 
   render() {
@@ -381,6 +382,7 @@ AssetsList.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
+  onResetFilterinCategories: PropTypes.func.isRequired,
 };
 
 AssetsList.defaultProps = {

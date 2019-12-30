@@ -42,7 +42,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage "
+      
     }
   },
   "babel": {

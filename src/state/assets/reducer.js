@@ -8,6 +8,7 @@ import {
   ASSETS_VIEW_CHANGE,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  RESET_FILTERING_CATEGORIES,
 } from 'state/assets/types';
 
 const defaultState = {
@@ -49,6 +50,12 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         filteringCategories: newFilters,
+      };
+    }
+    case RESET_FILTERING_CATEGORIES: {
+      return {
+        ...state,
+        filteringCategories: [],
       };
     }
     case SET_ASSETS: {

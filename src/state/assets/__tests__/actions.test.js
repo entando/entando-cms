@@ -15,6 +15,7 @@ import {
   fetchAssets,
   sendPostAssetEdit,
   sendDeleteAsset,
+  resetFilteringCategories,
 } from 'state/assets/actions';
 import { SORT_DIRECTIONS } from '@entando/utils';
 import {
@@ -27,6 +28,7 @@ import {
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  RESET_FILTERING_CATEGORIES,
 } from 'state/assets/types';
 import { SET_PAGE } from 'state/pagination/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
@@ -71,6 +73,12 @@ describe('state/assets/actions', () => {
     const action = setActiveFilters(['fifa_18', 'news']);
     expect(action).toHaveProperty('type', SET_ACTIVE_FILTERS);
     expect(action.payload).toEqual(['fifa_18', 'news']);
+  });
+
+  it('resetFilteringCategories() should return a well formed action', () => {
+    const action = resetFilteringCategories();
+    expect(action).toHaveProperty('type', RESET_FILTERING_CATEGORIES);
+    expect(action.payload).toEqual(undefined);
   });
 
   it('setAssets() should return a well formed action', () => {
