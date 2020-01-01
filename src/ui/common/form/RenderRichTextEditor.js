@@ -154,8 +154,15 @@ const EditorToolbar = () => (
       {renderToolbarButton('enlink', 'link', <img src="/images/editor/entandolink-icon.png" alt="Entando Link" />)}
       {renderToolbarButton('enlink', 'unlink', <img src="/images/editor/entandounlink-icon.png" alt="Entando Unlink" />)}
     </span>
+    <span className="ql-formats">
+      {renderToolbarButton('viewSource')}
+    </span>
   </div>
 );
+
+const txtArea = document.createElement('textarea');
+txtArea.classList.add('html-editor');
+txtArea.style.display = 'none';
 
 function history(value) {
   if (value === 'undo') {
@@ -170,6 +177,14 @@ function maximize() {
   const editorContainer = document.querySelector(`.${blockElementClass}`);
   editorContainer.classList.toggle(`${blockElementClass}--maximize`);
   document.body.classList.toggle('no-scroll');
+}
+
+function viewSource() {
+  if (txtArea.style.display === '') {
+    const html = txtArea.value;
+    this.quill.clipboard.dangerouslyPasteHTML(html);
+  }
+  txtArea.style.display = txtArea.style.display === 'none' ? '' : 'none';
 }
 
 function enlink(value) {
@@ -216,6 +231,7 @@ const modules = {
       entable,
       history,
       maximize,
+      viewSource,
     },
   },
   table: true,
@@ -246,6 +262,15 @@ class RenderRichTextEditor extends Component {
 
   componentDidMount() {
     this.attachQuillRefs();
+
+    const htmlEditor = this.quill.addContainer('ql-custom');
+    htmlEditor.appendChild(txtArea);
+
+    const myEditor = document.querySelector('.ql-editor');
+    this.quill.on('text-change', () => {
+      const html = myEditor.innerHTML;
+      txtArea.value = html;
+    });
   }
 
   componentDidUpdate() {
