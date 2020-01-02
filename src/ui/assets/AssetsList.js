@@ -132,7 +132,7 @@ class AssetsList extends Component {
   removeAllActiveFilters() {
     const { onRemoveAllActiveFilters, onResetFilterinCategories } = this.props;
     onRemoveAllActiveFilters();
-    onResetFilterinCategories();
+    onResetFilteringCategories();
   }
 
   render() {
