@@ -47,6 +47,7 @@ class CategoryTreeFilter extends React.Component {
       onCheckCategory,
       minimal,
       filterSubject,
+      hideIfEmpty,
     } = this.props;
 
     const { treeExpanded } = this.state;
@@ -65,10 +66,14 @@ class CategoryTreeFilter extends React.Component {
       />
     ));
 
+    const showNothing = hideIfEmpty
+    && (!categoriesWithoutRoot || categoriesWithoutRoot.length === 0);
+
     return (
-      <div>
-        <table className="CategoryTreeFilter">
-          {
+      showNothing ? null : (
+        <div>
+          <table className="CategoryTreeFilter">
+            {
             minimal ? null : (
               <thead>
                 <tr>
@@ -87,17 +92,17 @@ class CategoryTreeFilter extends React.Component {
               </thead>
             )
           }
-          <tbody>{categoryRows}</tbody>
-        </table>
-        {mobile ? null : <div className="CategoryTreeFilter__separator" />}
-        { minimal ? null : (
-          <Button className="CategoryTreeFilter__apply-button" onClick={() => this.onApply()}>
-            <FormattedMessage id="cms.assets.list.apply" />
-          </Button>
-        )}
-        <br />
-      </div>
-    );
+            <tbody>{categoryRows}</tbody>
+          </table>
+          {mobile ? null : <div className="CategoryTreeFilter__separator" />}
+          { minimal ? null : (
+            <Button className="CategoryTreeFilter__apply-button" onClick={() => this.onApply()}>
+              <FormattedMessage id="cms.assets.list.apply" />
+            </Button>
+          )}
+          <br />
+        </div>
+      ));
   }
 }
 
@@ -113,6 +118,7 @@ CategoryTreeFilter.propTypes = {
   mobile: PropTypes.bool,
   minimal: PropTypes.bool,
   filterSubject: PropTypes.string.isRequired,
+  hideIfEmpty: PropTypes.bool,
 };
 
 CategoryTreeFilter.defaultProps = {
@@ -122,6 +128,7 @@ CategoryTreeFilter.defaultProps = {
   onApplyFilteredSearch: () => {},
   mobile: false,
   minimal: false,
+  hideIfEmpty: false,
 };
 
 export default CategoryTreeFilter;
