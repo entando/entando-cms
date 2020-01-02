@@ -39,6 +39,8 @@ export default {
     'cms.label.date.placeholder': 'gg/mm/anno',
     'cms.label.presenter.placeholder': 'Premeri INVIO per salvare le modifiche',
     'cms.label.modal.confirmdelete': 'Sei sicuro di voler rimuovere {code}?',
+    'cms.label.files': 'File',
+    'cms.label.images': 'Immagini',
     'cms.label.addFile': 'Aggiungi file',
     'cms.label.addFilePlural': 'Aggiungi file',
     'cms.label.dropFilesHere': 'Trascina i file qui',

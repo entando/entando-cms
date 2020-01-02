@@ -106,3 +106,8 @@ export const getAssetSearchKeyword = createSelector(
   getAssetsState,
   state => state.keyword,
 );
+
+export const getAssetsCount = createSelector(
+  getAssetsState,
+  state => state.assetsCount,
+);
