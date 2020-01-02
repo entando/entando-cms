@@ -385,7 +385,7 @@ AssetsList.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
-  onResetFilterinCategories: PropTypes.func.isRequired,
+  onResetFilteringCategories: PropTypes.func.isRequired,
 };
 
 AssetsList.defaultProps = {
