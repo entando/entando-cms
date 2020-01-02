@@ -9,6 +9,7 @@ import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
 import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
+import AssetsAdvancedSearchContainer from 'ui/assets/AssetsAdvancedSearchContainer';
 
 const AssetsListPage = () => (
   <Grid fluid>
@@ -37,6 +38,11 @@ const AssetsListPage = () => (
     <Row>
       <Col xs={12}>
         <AssetsUploadContainer />
+      </Col>
+    </Row>
+    <Row>
+      <Col xs={12}>
+        <AssetsAdvancedSearchContainer />
       </Col>
     </Row>
     <Row>

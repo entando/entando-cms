@@ -1,0 +1,61 @@
+.AssetsAdvancedFilter {
+  margin-top: 30px;
+  padding-top: 40px;
+  padding-bottom: 10px;
+  background-color: $color-ultra-grey-border;
+  overflow: visible;
+
+  & > div > div > .input-group { // sass-lint:disable-line class-name-format
+    display: block;
+  }
+
+  &__left-column {
+    padding-right: 5px;
+    @media (max-width: 768px) {
+      padding-left: 0;
+    }
+  }
+
+  // &__right-column {
+  //   @media (max-width: 768px) {
+  //     margin-top: 10px;
+  //   }
+  // }
+
+  &__advanced-filters-text {
+    margin-bottom: 15px;
+    outline: 0;
+    font-family: "Open Sans";
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  &__advanced-icon {
+    min-width: 10px;
+    margin-right: 5px;
+  }
+
+  &__advanced-filters {
+    clear: both;
+
+    .form-group { // sass-lint:disable-line class-name-format
+      clear: both;
+    }
+  }
+
+  &__advanced-filter {
+    margin-top: 10px;
+    overflow: visible;
+
+    &--close {
+      margin-top: -10px;
+    }
+  }
+
+  &__search-button {
+    width: 10rem;
+    margin-top: 1rem;
+    font-family: "Open Sans";
+    font-weight: normal;
+  }
+}

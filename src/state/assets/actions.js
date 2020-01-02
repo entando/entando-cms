@@ -197,6 +197,57 @@ export const filterAssetsBySearch = (
   return dispatch(fetchAssetsPaged(paginationMetadata));
 };
 
+export const advancedSearchFilter = (
+  values, paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
+  const filt = getListFilterParams(getState());
+  const { formValues, operators } = filt;
+  const { sorting } = filt;
+  const filters = { formValues, operators, sorting };
+  if (!formValues) {
+    filters.formValues = {};
+    filters.operators = {};
+  }
+  const {
+    group, owner, fromDate, toDate,
+  } = values;
+  const valuesFilters = {
+    ...(group && {
+      group: {
+        value: group,
+        op: FILTER_OPERATORS.LIKE,
+      },
+    }),
+    ...(owner && {
+      owner: {
+        value: owner,
+        op: FILTER_OPERATORS.LIKE,
+      },
+    }),
+    ...(fromDate && {
+      createdAt: {
+        value: fromDate,
+        op: FILTER_OPERATORS.GREATER_THAN,
+      },
+    }),
+    ...(toDate && {
+      createdAt: {
+        value: toDate,
+        op: FILTER_OPERATORS.LESS_THAN,
+      },
+    }),
+  };
+  Object.keys(valuesFilters).map((key) => {
+    const val = valuesFilters[key];
+    filters.formValues[key] = {};
+    filters.formValues[key] = val.value;
+    filters.operators[key] = val.op;
+    return null;
+  });
+  const params = compact([convertToQueryString(filters).slice(1)]).join('&');
+  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
+};
+
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
   deleteAsset(id)
     .then((response) => {

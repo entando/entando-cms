@@ -16,6 +16,7 @@ import {
   sendPostAssetEdit,
   sendDeleteAsset,
   fetchAssetsPaged,
+  advancedSearchFilter,
 } from 'state/assets/actions';
 import { SORT_DIRECTIONS } from '@entando/utils';
 import {
@@ -230,6 +231,61 @@ describe('state/assets/actions', () => {
           },
           sorting: undefined,
         });
+        done();
+      });
+    });
+
+    it('filterAssetsBy advanced Search', (done) => {
+      const values = { owner: 'admin' };
+      store.dispatch(advancedSearchFilter(values)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[2]).toHaveProperty('type', SET_PAGE);
+        expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
+        done();
+      });
+    });
+
+    it('filterAssetsBy advanced Search', (done) => {
+      const values = { fromDate: '01/10/2020', toDate: '01/11/2010' };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: { filterParams: {} },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(advancedSearchFilter(values)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[2]).toHaveProperty('type', SET_PAGE);
+        expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
+        done();
+      });
+    });
+
+    it('filterAssetsBy advanced Search', (done) => {
+      const values = { group: 'free' };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: { filterParams: {} },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(advancedSearchFilter(values)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[2]).toHaveProperty('type', SET_PAGE);
+        expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
         done();
       });
     });
