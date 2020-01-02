@@ -66,7 +66,7 @@ export const mapDispatchToProps = dispatch => ({
     }
     dispatch(applyAssetsFilter(filtprops));
   },
-  onResetFilterinCategories: () => dispatch(resetFilteringCategories()),
+  onResetFilteringCategories: () => dispatch(resetFilteringCategories()),
   onRemoveActiveFilter: (category, filteringCategories) => {
     dispatch(removeActiveFilter(category));
     dispatch(setAssetCategoryFilter(category));
