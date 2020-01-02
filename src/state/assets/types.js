@@ -8,3 +8,4 @@ export const ASSETS_VIEW_CHANGE = 'assets/assets-view-change';
 export const SET_ASSET_SYNC = 'assets/set-asset-sync';
 export const SET_ASSET_SEARCH_KEYWORD = 'assets/set-assets-search-keyword';
 export const RESET_FILTERING_CATEGORIES = 'assets/reset-filtering-categories';
+export const SET_ASSET_COUNT = 'assets/set-asset-count';
