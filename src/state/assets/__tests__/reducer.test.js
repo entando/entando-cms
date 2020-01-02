@@ -10,6 +10,7 @@ import {
   setSearchKeyword,
   changeFileType,
   changeAssetsView,
+  resetFilteringCategories,
   setAssetsCount,
 } from 'state/assets/actions';
 
@@ -46,6 +47,13 @@ describe('state/assets/reducer', () => {
         expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
 
         newState = reducer(newState, setAssetCategoryFilter({ code: 'fifa_18' }));
+        expect(newState.filteringCategories).toEqual([]);
+
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
+        expect(newState.filteringCategories).toEqual([{ code: 'a' }]);
+
+        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
+        resetFilteringCategories();
         expect(newState.filteringCategories).toEqual([]);
       });
 

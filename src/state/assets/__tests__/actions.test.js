@@ -15,6 +15,7 @@ import {
   fetchAssets,
   sendPostAssetEdit,
   sendDeleteAsset,
+  resetFilteringCategories,
   setAssetsCount,
   fetchAssetsCount,
   fetchAssetsPaged,
@@ -30,6 +31,7 @@ import {
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  RESET_FILTERING_CATEGORIES,
   SET_ASSET_COUNT,
 } from 'state/assets/types';
 import { SET_PAGE } from 'state/pagination/types';
@@ -81,6 +83,12 @@ describe('state/assets/actions', () => {
     const action = setActiveFilters(['fifa_18', 'news']);
     expect(action).toHaveProperty('type', SET_ACTIVE_FILTERS);
     expect(action.payload).toEqual(['fifa_18', 'news']);
+  });
+
+  it('resetFilteringCategories() should return a well formed action', () => {
+    const action = resetFilteringCategories();
+    expect(action).toHaveProperty('type', RESET_FILTERING_CATEGORIES);
+    expect(action.payload).toEqual(undefined);
   });
 
   it('setAssets() should return a well formed action', () => {
@@ -213,8 +221,64 @@ describe('state/assets/actions', () => {
       }).catch(done.fail);
     });
 
+    it('applyAssetsFilter', (done) => {
+      const filters = { categories: makeFilter(['news', 'bits']) };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], filterParams: {}, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { },
+      });
+      store.dispatch(applyAssetsFilter(filters)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(5);
+        expect(actions[0]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[0]).toHaveProperty('payload', {
+          formValues: { categories: ['news', 'bits'] },
+          operators: { categories: 'eq' },
+          sorting: undefined,
+        });
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[3]).toHaveProperty('type', SET_PAGE);
+        expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
+        done();
+      }).catch(done.fail);
+    });
+
     it('sortAssetsList', (done) => {
       const attribute = 'name';
+      store.dispatch(sortAssetsList(attribute)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(5);
+        expect(actions[0]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[0]).toHaveProperty('payload', {
+          sorting: { attribute, direction: SORT_DIRECTIONS.ASCENDANT },
+        });
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2]).toHaveProperty('type', SET_ASSETS);
+        expect(actions[3]).toHaveProperty('type', SET_PAGE);
+        expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
+        done();
+      });
+    });
+
+    it('sortAssetsList', (done) => {
+      const attribute = 'name';
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], filterParams: {}, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { },
+      });
       store.dispatch(sortAssetsList(attribute)).then(() => {
         const actions = store.getActions();
         expect(actions).toHaveLength(5);
@@ -328,6 +392,39 @@ describe('state/assets/actions', () => {
           },
         },
         pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(filterAssetsBySearch(keyword)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(6);
+        expect(actions[0]).toHaveProperty('type', SET_ASSET_SEARCH_KEYWORD);
+        expect(actions[1]).toHaveProperty('type', SET_LIST_FILTER_PARAMS);
+        expect(actions[1]).toHaveProperty('payload', {
+          formValues: {},
+          operators: {},
+          sorting: undefined,
+        });
+        done();
+      });
+    });
+
+    it('filterAssetsBySearch on clearing', (done) => {
+      const keyword = '';
+      const filterParams = {
+        formValues: { description: 'yo' },
+        operators: { description: 'like' },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'image',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { },
       });
       store.dispatch(filterAssetsBySearch(keyword)).then(() => {
         const actions = store.getActions();
