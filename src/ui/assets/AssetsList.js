@@ -37,6 +37,7 @@ const headers = [
   {
     name: 'uploadedBy',
     width: '17%',
+    id: 'owner',
   },
   {
     name: 'uploadedAt',
@@ -51,6 +52,7 @@ const headers = [
   {
     name: 'categories',
     width: '12%',
+    id: 'categories',
   },
   {
     name: 'actions',
@@ -123,8 +125,8 @@ class AssetsList extends Component {
   }
 
   handleRemoveActiveFilter(item) {
-    const { onRemoveActiveFilter, filteringCategories } = this.props;
-    onRemoveActiveFilter(item, filteringCategories);
+    const { onRemoveActiveFilter, activeFilters } = this.props;
+    onRemoveActiveFilter(item, activeFilters);
   }
 
   removeAllActiveFilters() {
@@ -304,6 +306,7 @@ class AssetsList extends Component {
                 filteringCategories={filteringCategories}
                 assetType={fileType}
                 mobile={mobile}
+                hideIfEmpty
                 filterSubject="asset"
               />
             </div>
