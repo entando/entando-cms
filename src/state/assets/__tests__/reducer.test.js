@@ -10,6 +10,7 @@ import {
   setSearchKeyword,
   changeFileType,
   changeAssetsView,
+  setAssetsCount,
 } from 'state/assets/actions';
 
 const ASSETS = [{
@@ -29,7 +30,7 @@ describe('state/assets/reducer', () => {
   describe('after action SET_ASSETS', () => {
     let state;
     beforeEach(() => {
-      state = reducer({ filteringCategories: [] }, setAssets(ASSETS));
+      state = reducer({ filteringCategories: [], assetsCount: {} }, setAssets(ASSETS));
     });
 
     describe('action setCategoryFilter', () => {
@@ -46,6 +47,11 @@ describe('state/assets/reducer', () => {
 
         newState = reducer(newState, setAssetCategoryFilter({ code: 'fifa_18' }));
         expect(newState.filteringCategories).toEqual([]);
+      });
+
+      it('should correctly update assetsCount field', () => {
+        newState = reducer(state, setAssetsCount('image', 5));
+        expect(newState.assetsCount).toEqual({ image: 5 });
       });
 
       it('should correctly change assets state field', () => {

@@ -15,6 +15,8 @@ import {
   fetchAssets,
   sendPostAssetEdit,
   sendDeleteAsset,
+  setAssetsCount,
+  fetchAssetsCount,
   fetchAssetsPaged,
 } from 'state/assets/actions';
 import { SORT_DIRECTIONS } from '@entando/utils';
@@ -28,6 +30,7 @@ import {
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  SET_ASSET_COUNT,
 } from 'state/assets/types';
 import { SET_PAGE } from 'state/pagination/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
@@ -68,6 +71,12 @@ describe('state/assets/actions', () => {
     expect(action.payload).toEqual('fifa_18');
   });
 
+  it('setAssetsCount() should return a well formed action', () => {
+    const action = setAssetsCount('image', 5);
+    expect(action).toHaveProperty('type', SET_ASSET_COUNT);
+    expect(action.payload).toEqual({ type: 'image', count: 5 });
+  });
+
   it('setActiveFilters() should return a well formed action', () => {
     const action = setActiveFilters(['fifa_18', 'news']);
     expect(action).toHaveProperty('type', SET_ACTIVE_FILTERS);
@@ -98,7 +107,7 @@ describe('state/assets/actions', () => {
     expect(action.payload).toEqual('grid');
   });
 
-  describe('handleExpandCategory()', () => {
+  describe('fetchAssets()', () => {
     it('when fetching assets it fires all the appropriate actions', (done) => {
       getAssets.mockImplementationOnce(mockApi({ payload: ['a', 'b'], ok: true }));
       store = mockStore({
@@ -125,6 +134,48 @@ describe('state/assets/actions', () => {
         expect(actions).toHaveLength(3);
         expect(actions.includes(TOGGLE_LOADING)).toBe(true);
         expect(actions[1]).toEqual(ADD_ERRORS);
+        done();
+      });
+    });
+  });
+
+  describe('fetchAssetsCount()', () => {
+    it('when fetching assets count it fires all the appropriate actions', (done) => {
+      getAssets.mockImplementationOnce(mockApi({ metaData: { totalItems: 10 }, ok: true }));
+      store = mockStore({
+        assets: { assets: [], assetsCount: {} },
+      });
+      store
+        .dispatch(fetchAssetsCount('image'))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when fetching assets count it fires all the appropriate actions', (done) => {
+      getAssets.mockImplementationOnce(mockApi({ ok: true, metaData: null }));
+      store = mockStore({
+        assets: { assets: [], assetsCount: {} },
+      });
+      store
+        .dispatch(fetchAssetsCount('image'))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(1);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('when fetching assets count it resolves still successfully', (done) => {
+      getAssets.mockImplementationOnce(mockApi({ errors: true }));
+      store = mockStore({
+        assets: { assets: [] },
+      });
+      store.dispatch(fetchAssetsCount()).then(() => {
+        const actions = store.getActions().map(action => action.type);
+        expect(actions).toHaveLength(0);
         done();
       });
     });

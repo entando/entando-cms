@@ -8,6 +8,7 @@ import {
   ASSETS_VIEW_CHANGE,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  SET_ASSET_COUNT,
 } from 'state/assets/types';
 
 const defaultState = {
@@ -26,6 +27,7 @@ const defaultState = {
     totalItems: 0,
     perPageOptions: [5, 10, 15, 25, 50],
   },
+  assetsCount: {},
 };
 
 export const toMap = array => array.reduce((acc, asset) => {
@@ -107,6 +109,15 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         assetsView,
+      };
+    }
+    case SET_ASSET_COUNT: {
+      const { type, count } = action.payload;
+      const currentCount = state.assetsCount;
+      currentCount[type] = count;
+      return {
+        ...state,
+        assetsCount: currentCount,
       };
     }
     default:
