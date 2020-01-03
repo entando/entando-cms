@@ -20,6 +20,8 @@ import {
   makeFilter,
   pageDefault,
   fetchRawAssetInfo,
+  resetFilteringCategories,
+  setAssetCategoryFilter,
 } from 'state/assets/actions';
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
@@ -69,8 +71,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     }
     dispatch(applyAssetsFilter(filtprops));
   },
+  onResetFilteringCategories: () => dispatch(resetFilteringCategories()),
   onRemoveActiveFilter: (category, filteringCategories) => {
     dispatch(removeActiveFilter(category));
+    dispatch(setAssetCategoryFilter(category));
     const newFilters = filteringCategories.filter(c => c.code !== category.code).map(c => c.code);
     const filtSend = newFilters.length ? {
       categories: makeFilter(

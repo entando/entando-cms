@@ -20,6 +20,8 @@ import {
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  RESET_FILTERING_CATEGORIES,
+  SET_ASSET_COUNT,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -31,10 +33,20 @@ import {
 import {
   getAssets, createAsset, editAsset, deleteAsset,
 } from 'api/assets';
+import { getPagination } from 'state/pagination/selectors';
+
+export const resetFilteringCategories = () => ({
+  type: RESET_FILTERING_CATEGORIES,
+});
 
 export const setAssetCategoryFilter = category => ({
   type: SET_ASSET_CATEGORY_FILTER,
   payload: category,
+});
+
+export const setAssetsCount = (type, count) => ({
+  type: SET_ASSET_COUNT,
+  payload: { type, count },
 });
 
 export const setAssets = assets => ({
@@ -98,6 +110,20 @@ export const fetchAssets = (page, params) => dispatch => new Promise((resolve) =
     .catch(() => { });
 });
 
+export const fetchAssetsCount = type => dispatch => new Promise((resolve) => {
+  getAssets({ page: 1, pageSize: 0 }, `?type=${type}`)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setAssetsCount(type, json.metaData && json.metaData.totalItems
+            ? json.metaData.totalItems : 0));
+        }
+        resolve();
+      });
+    })
+    .catch(() => { });
+});
+
 export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
   assetType = null,
@@ -148,7 +174,8 @@ export const applyAssetsFilter = (
   }), { formValues: {}, operators: {}, sorting });
 
   dispatch(setListFilterParams(filter));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const sortAssetsList = (
@@ -169,9 +196,9 @@ export const sortAssetsList = (
     ...others,
     sorting: newSorting,
   };
-
   dispatch(setListFilterParams(filter));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const filterAssetsBySearch = (
@@ -197,7 +224,8 @@ export const filterAssetsBySearch = (
   dispatch(setSearchKeyword(keyword));
   const filters = { formValues, operators, sorting };
   dispatch(setListFilterParams(filters));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
