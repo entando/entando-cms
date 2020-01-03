@@ -262,6 +262,8 @@ class AssetsList extends Component {
         assets={assets}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
+        browseMode={browseMode}
+        onItemSelected={onUseAssetClicked}
       />
     );
     const emptyContent = (
