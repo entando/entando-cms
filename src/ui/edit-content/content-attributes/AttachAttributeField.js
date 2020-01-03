@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -6,7 +6,7 @@ import {
   ControlLabel,
   Button,
 } from 'patternfly-react';
-import AssetAttributeFieldInfo from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfo';
+import AssetAttributeFieldInfoContainer from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfoContainer';
 
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
@@ -21,15 +21,8 @@ const AttachAttributeField = ({
   onClickAdd,
   assetListBegin,
 }) => {
-  const [value, setValue] = useState({ info: null });
-
-  const setInputValue = (val) => {
-    const newVal = { ...value, ...val };
-    setValue(newVal);
-    input.onChange(newVal);
-  };
-
-  const handleAssetSelected = info => setInputValue({ info });
+  const handleAssetSelected = info => input.onChange(info);
+  const updateInputValue = val => input.onChange({ ...input.value, ...val });
 
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -50,10 +43,10 @@ const AttachAttributeField = ({
   };
 
   const renderAssetSelected = () => (
-    <AssetAttributeFieldInfo inputValue={input.value.info} onChange={setInputValue} />
+    <AssetAttributeFieldInfoContainer inputValue={input.value} onChange={updateInputValue} />
   );
 
-  const hasValue = !!input.value.info;
+  const hasValue = !!input.value;
 
   return (
     <div className={containerClasses}>

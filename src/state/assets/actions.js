@@ -26,6 +26,7 @@ import { toggleLoading } from 'state/loading/actions';
 import {
   getFileType,
   getListFilterParams,
+  getAssetsMap,
 } from 'state/assets/selectors';
 import {
   getAssets, createAsset, editAsset, deleteAsset,
@@ -273,4 +274,9 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
     .catch((error) => {
       resolve({ error, hasError: true });
     });
+});
+
+export const fetchRawAssetInfo = assetId => (dispatch, getState) => new Promise((resolve) => {
+  const assetsMap = getAssetsMap(getState());
+  resolve(assetsMap[assetId]);
 });

@@ -37,10 +37,14 @@ export const condenseAssetInfo = (asset, domain) => {
     dimension,
     filename,
   };
+  const isImg = asset.type === 'image';
   return {
     ...asset,
     versions: newVersions,
     metadata: newMetadata,
+    downloadUrl: isImg ? newVersions[0].path : asset.path,
+    previewUrl: isImg ? newVersions[1].path : null,
+    previewLgUrl: isImg ? newVersions[3].path : null,
   };
 };
 
@@ -60,13 +64,8 @@ export const getAssetsList = createSelector(
   [getAssetsMap, getAssetsIdList, getGroupsMap, getDomain],
   (assetsMap, idList, groups, domain) => idList.map((id) => {
     const asset = condenseAssetInfo(assetsMap[id], domain);
-    const isImg = asset.type === 'image';
-    const { versions } = asset;
     return {
       ...asset,
-      downloadUrl: isImg ? versions[0].path : asset.path,
-      previewUrl: isImg ? versions[1].path : null,
-      previewLgUrl: isImg ? versions[3].path : null,
       group: groups[asset.group] || asset.group,
     };
   }),

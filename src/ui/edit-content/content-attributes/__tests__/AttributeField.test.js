@@ -13,8 +13,6 @@ import {
   TYPE_TIMESTAMP,
   TYPE_LONGTEXT,
   TYPE_TEXT,
-  TYPE_ATTACH,
-  TYPE_IMAGE,
   TYPE_LINK,
   TYPE_MONOTEXT,
 } from 'state/content-type/const';
@@ -33,8 +31,6 @@ const attributeFields = {
   [TYPE_TIMESTAMP]: 'TimestampAttributeField',
   [TYPE_LONGTEXT]: 'LongtextAttributeField',
   [TYPE_TEXT]: 'TextAttributeField',
-  [TYPE_ATTACH]: 'AttachAttributeField',
-  [TYPE_IMAGE]: 'ImageAttributeField',
   [TYPE_LINK]: 'LinkAttributeField',
   [TYPE_MONOTEXT]: 'MonotextAttributeField',
 };
@@ -50,6 +46,28 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
       const wrapper = shallow(<AttributeField attribute={attribute} />);
       expect(wrapper.prop('component').name).toEqual(attrCompName);
     });
+  });
+
+  it('should render a connected AttachAttributeField component when type is Attach', () => {
+    const attrCompName = 'AttachAttributeField';
+    const attribute = {
+      type: 'Attach',
+      code: 'Test attribute code',
+    };
+    const wrapper = shallow(<AttributeField attribute={attribute} />);
+    const connectedComp = wrapper.prop('component');
+    expect(connectedComp.WrappedComponent.name).toEqual(attrCompName);
+  });
+
+  it('should render a connected ImageAttributeField component when type is Image', () => {
+    const attrCompName = 'ImageAttributeField';
+    const attribute = {
+      type: 'Image',
+      code: 'Test attribute code',
+    };
+    const wrapper = shallow(<AttributeField attribute={attribute} />);
+    const connectedComp = wrapper.prop('component');
+    expect(connectedComp.WrappedComponent.name).toEqual(attrCompName);
   });
 
   it('should render a connected HypertextAttributeField component when type is Hypertext', () => {

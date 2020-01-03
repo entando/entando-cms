@@ -146,7 +146,7 @@ class AssetsList extends Component {
       onApplyFilteredSearch,
       onChangeAssetsView,
       onApplySort,
-      onUseAsset,
+      onUseAssetClicked,
       activeFilters,
       lastPage,
       totalItems,
@@ -245,7 +245,7 @@ class AssetsList extends Component {
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
         browseMode={browseMode}
-        onItemSelected={onUseAsset}
+        onItemSelected={onUseAssetClicked}
       />
     ));
     const tableContent = (
@@ -380,7 +380,7 @@ AssetsList.propTypes = {
   onChangeAssetsView: PropTypes.func.isRequired,
   onRemoveAllActiveFilters: PropTypes.func.isRequired,
   onChangeFileType: PropTypes.func.isRequired,
-  onUseAsset: PropTypes.func,
+  onUseAssetClicked: PropTypes.func,
   fetchList: PropTypes.func.isRequired,
   lastPage: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
@@ -403,7 +403,7 @@ AssetsList.defaultProps = {
   },
   perPageOptions: [5, 10, 15, 25, 50],
   browseMode: false,
-  onUseAsset: null,
+  onUseAssetClicked: null,
 };
 
 export default AssetsList;

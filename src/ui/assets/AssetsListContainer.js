@@ -19,6 +19,7 @@ import {
   changeAssetsView,
   makeFilter,
   pageDefault,
+  fetchRawAssetInfo,
 } from 'state/assets/actions';
 import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
@@ -108,6 +109,9 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
     dispatch(setInfo(asset));
   },
+  onUseAssetClicked: asset => (
+    dispatch(fetchRawAssetInfo(asset.id)).then(ownProps.onUseAsset)
+  ),
 });
 
 const AssetsListContainer = connect(

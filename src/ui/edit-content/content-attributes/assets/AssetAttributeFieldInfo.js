@@ -11,47 +11,19 @@ import {
 import { FormattedMessage } from 'react-intl';
 
 const AssetAttributeFieldInfo = ({
-  inputValue,
+  metaProps,
+  metaValues,
+  assetInfo,
   onChange,
 }) => {
   const [value, setValue] = useState({});
   const [fields, setFields] = useState([]);
-  const { metadata, type: assetType } = inputValue;
+  // console.log(metaProps, assetInfo);
+  const { metadata } = assetInfo;
   useEffect(() => {
-    let tfs = [
-      {
-        name: 'text',
-        label: 'Text',
-        value: inputValue.description,
-      },
-    ];
-
-    if (assetType === 'image') {
-      tfs = [...tfs, ...[{
-        name: 'alt',
-        label: 'alt',
-      },
-      {
-        name: 'description',
-        label: 'description',
-      },
-      {
-        name: 'legend',
-        label: 'legend',
-      },
-      {
-        name: 'title',
-        label: 'title',
-      }]];
-    }
-    setFields(tfs);
-    // const fields = tfs.map(tf => tf.name);
-    const values = tfs.reduce((prev, curr) => ({
-      ...prev,
-      [curr.name]: curr.value || '',
-    }), {});
-    setValue(values);
-    onChange(values);
+    setFields(metaProps);
+    setValue(metaValues);
+    // onChange(metaValues);
   }, []);
 
   const onMetaChangeEvent = (e) => {
@@ -61,17 +33,23 @@ const AssetAttributeFieldInfo = ({
     onChange(newVal);
   };
 
+  const previewRender = assetInfo.type === 'image' ? (
+    <img src={assetInfo.previewUrl} alt="Preview" className="img-thumbnail AssetAttributeField__img-preview" />
+  ) : (
+    <div className="fa fa-file-text img-thumbnail AssetAttributeField__attach-preview" />
+  );
+
   return (
     <Grid fluid className="AssetAttributeField__selected-info">
       <Row>
         <Col xs={12} sm={5} md={4} className="text-center">
-          <img src={inputValue.previewUrl} alt="Preview" className="img-thumbnail AssetAttributeField__img-preview" />
+          {previewRender}
         </Col>
         <Col xs={12} sm={7} md={8}>
           <Grid fluid>
             <Row>
               <Col xs={2} className="AssetAttributeField__lbl"><FormattedMessage id="cms.assets.form.name" /></Col>
-              <Col xs={10} className="inf">{inputValue.description}</Col>
+              <Col xs={10} className="inf">{assetInfo.description}</Col>
             </Row>
             <Row className="form-group">
               <Col xs={2} className="AssetAttributeField__lbl"><FormattedMessage id="cms.assets.form.filename" /></Col>
@@ -97,8 +75,16 @@ const AssetAttributeFieldInfo = ({
 };
 
 AssetAttributeFieldInfo.propTypes = {
-  inputValue: PropTypes.shape({}).isRequired,
+  metaProps: PropTypes.arrayOf(PropTypes.shape({})),
+  metaValues: PropTypes.shape({}),
+  assetInfo: PropTypes.shape({}),
   onChange: PropTypes.func.isRequired,
+};
+
+AssetAttributeFieldInfo.defaultProps = {
+  metaProps: [],
+  metaValues: {},
+  assetInfo: {},
 };
 
 export default AssetAttributeFieldInfo;

@@ -9,7 +9,7 @@ import {
 import { fetchGroups } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 
-import { MODAL_ID } from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
+import { IMAGE_MODAL_ID } from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
 export const mapDispatchToProps = dispatch => ({
   assetListBegin: () => {
@@ -19,7 +19,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchAssetsPaged());
     dispatch(fetchCategoryTree());
   },
-  onClickAdd: () => dispatch(dispatch(setVisibleModal(MODAL_ID))),
+  onClickAdd: () => dispatch(dispatch(setVisibleModal(IMAGE_MODAL_ID))),
 });
 
 const ImageAttributeFieldContainer = connect(

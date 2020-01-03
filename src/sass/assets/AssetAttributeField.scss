@@ -8,6 +8,12 @@
     width: 130px;
   }
 
+  &__attach-preview {
+    width: 130px;
+    padding: 10px;
+    font-size: 64px;
+  }
+
   &__lbl {
     font-weight: bold;
   }
@@ -16,7 +22,7 @@
     display: block;
     width: 100%;
 
-    &--inner.form-control {
+    &--inner.form-control { // sass-lint:disable-line class-name-format force-element-nesting
       z-index: initial;
     }
   }

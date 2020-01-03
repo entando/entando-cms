@@ -114,9 +114,11 @@ const AttributeField = ({
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_IMAGE:
       AttributeFieldComp = ImageAttributeFieldContainer;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;

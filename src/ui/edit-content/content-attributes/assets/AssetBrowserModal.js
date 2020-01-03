@@ -7,7 +7,8 @@ import {
 import GenericModalContainer from 'ui/common/modal/GenericModalContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 
-export const MODAL_ID = 'AssetBrowserModal';
+export const ATTACH_MODAL_ID = 'AssetBrowserModal_attach';
+export const IMAGE_MODAL_ID = 'AssetBrowserModal_image';
 
 const AssetBrowserModal = ({
   assetType,
@@ -19,6 +20,7 @@ const AssetBrowserModal = ({
       <FormattedMessage id="cms.assets.label.assetbrowser" defaultMessage="Browse Asset" />
     </Modal.Title>
   );
+  const MODAL_ID = assetType === 'image' ? IMAGE_MODAL_ID : ATTACH_MODAL_ID;
   return (
     <GenericModalContainer
       modalId={MODAL_ID}
