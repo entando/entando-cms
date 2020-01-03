@@ -307,6 +307,8 @@ export default {
     'cms.assets.list.nothingFound': 'Nessun articolo trovato',
     'cms.assets.list.of': 'di',
     'cms.assets.list.items': 'elementi',
+    'cms.assets.label.imagedetails': 'Dettagli Dell\'immagine',
+    'cms.assets.label.attachdetails': 'Dettagli Dell\'allegato',
     'cms.datetimepicker.label.hours': 'Scegli un\'ora',
     'cms.datetimepicker.label.minutes': 'Scegli un minuto',
     'cms.datetimepicker.label.seconds': 'Scegli un secondo',

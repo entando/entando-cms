@@ -26,6 +26,7 @@ const maxLength50 = maxLength(50);
 
 const EditAssetFormModalBody = ({
   assetInfo,
+  isImg,
   imgSrc,
   handleSubmit,
   group,
@@ -36,7 +37,7 @@ const EditAssetFormModalBody = ({
 }) => {
   const modalTitle = (
     <Modal.Title>
-      <FormattedMessage id="cms.assets.label.imagedetails" defaultMessage="Image Details" />
+      <FormattedMessage id={`cms.assets.label.${isImg ? 'imagedetails' : 'attachdetails'}`} defaultMessage="Image Details" />
     </Modal.Title>
   );
 
@@ -54,12 +55,14 @@ const EditAssetFormModalBody = ({
     >
       <form onSubmit={handleSubmit}>
         <Grid fluid>
-          <Field
-            name="file"
-            component={AssetPhotoCropperContainer}
-            assetInfo={assetInfo}
-            imgSrc={imgSrc}
-          />
+          {isImg ? (
+            <Field
+              name="file"
+              component={AssetPhotoCropperContainer}
+              assetInfo={assetInfo}
+              imgSrc={imgSrc}
+            />
+          ) : null}
           <Row className="form-horizontal">
             <Col xs={12}>
               <fieldset className="no-padding">
@@ -122,6 +125,7 @@ const EditAssetFormModalBody = ({
 };
 
 EditAssetFormModalBody.propTypes = {
+  isImg: PropTypes.bool.isRequired,
   imgSrc: PropTypes.string.isRequired,
   onModalOpen: PropTypes.func.isRequired,
   assetInfo: PropTypes.shape({}).isRequired,
