@@ -27,8 +27,10 @@ const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
       linkObj.url = getLinkUrl('P', values.page);
     } else if (values.content) {
       linkObj.url = getLinkUrl('C', values.content);
-    } else {
+    } else if (values.resource) {
       linkObj.url = getLinkUrl('R', values.resource);
+    } else {
+      return;
     }
 
     onSave(linkObj);
