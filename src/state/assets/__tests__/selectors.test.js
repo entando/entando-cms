@@ -8,6 +8,7 @@ import {
   condenseAssetInfo,
   removePixelWord,
   getAssetSearchKeyword,
+  getAssetsCount,
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
@@ -35,6 +36,10 @@ const TEST_STATE = {
   apps: {
     cms: {
       assets: {
+        assetsCount: {
+          image: 10,
+          file: 10,
+        },
         sort: {},
         assets: ['a', 'b'],
         assetsMap: { a, b },
@@ -114,4 +119,8 @@ it('verify getPaginationOptions selector', () => {
 it('verify getAssetSearchKeyword selector', () => {
   const key = getAssetSearchKeyword(TEST_STATE);
   expect(key).toEqual(TEST_STATE.apps.cms.assets.keyword);
+});
+it('verify getAssetsCount selector', () => {
+  const ac = getAssetsCount(TEST_STATE);
+  expect(ac).toEqual({ image: 10, file: 10 });
 });

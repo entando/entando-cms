@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { initialize } from 'redux-form';
 import { injectIntl, defineMessages } from 'react-intl';
-import { addToast, TOAST_SUCCESS } from '@entando/messages';
+import { addToast, TOAST_SUCCESS, TOAST_ERROR } from '@entando/messages';
 
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
@@ -9,22 +9,26 @@ import { getGroupsList } from 'state/groups/selectors';
 import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { getCategoryTree } from 'state/categories/selectors';
 import { getLocale } from 'state/locale/selectors';
+import { getLoading } from 'state/loading/selectors';
+import { toggleGroupItemLoading } from 'state/loading/actions';
 import { sendUploadAsset } from 'state/assets/actions';
 
-import UploadAssetModal, { FORM_NAME } from 'ui/assets/modals/upload-assets/UploadAssetModal';
+import UploadAssetModal from 'ui/assets/modals/upload-assets/UploadAssetModal';
+import { FORM_NAME, LOADING_GROUP } from 'ui/assets/modals/upload-assets/constants';
 
 const uploadAssetMsgs = defineMessages({
   uploaded: {
     id: 'cms.assets.form.uploaded',
     defaultMessage: '{name} uploaded.',
   },
-  failedUpload: {
-    id: 'cms.assets.form.failedUpload',
-    defaultMessage: 'Failed to upload {name}.',
+  uploadFailed: {
+    id: 'cms.assets.errors.failedToUpload',
+    defaultMessage: 'Failed to upload an asset, server error has occurred.',
   },
 });
 
 export const mapStateToProps = state => ({
+  loading: getLoading(state),
   files: getInfo(state).files || [],
   group: getGroupsList(state),
   language: getLocale(state),
@@ -37,25 +41,34 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(initialize(FORM_NAME, payload));
   },
   onSubmit: ({ files }) => {
-    const uploadPromises = files.map((file, index) => dispatch(sendUploadAsset(file, index))
-      .then((res) => {
-        if (res) {
-          dispatch(
-            addToast(
-              intl.formatMessage(uploadAssetMsgs.uploaded, { name: res.name }),
-              TOAST_SUCCESS,
-            ),
-          );
-        }
-        return res;
-      })
-      .catch(res => res)); // Passing through to manage it on Promise.all() catch
+    const uploadPromises = files.map(({ fileId, ...file }, index) => {
+      dispatch(toggleGroupItemLoading(fileId, LOADING_GROUP));
+      return dispatch(sendUploadAsset(file, index))
+        .then((res) => {
+          dispatch(toggleGroupItemLoading(fileId, LOADING_GROUP));
+
+          if (res && !res.hasError) {
+            dispatch(
+              addToast(
+                intl.formatMessage(uploadAssetMsgs.uploaded, { name: res.name }),
+                TOAST_SUCCESS,
+              ),
+            );
+          }
+          if (res && res.hasError) {
+            dispatch(
+              addToast(
+                intl.formatMessage(uploadAssetMsgs.uploadFailed),
+                TOAST_ERROR,
+              ),
+            );
+          }
+          return res;
+        });
+    });
 
     Promise.all(uploadPromises)
       .then(() => {
-        dispatch(setVisibleModal(''));
-      })
-      .catch(() => {
         dispatch(setVisibleModal(''));
       });
   },

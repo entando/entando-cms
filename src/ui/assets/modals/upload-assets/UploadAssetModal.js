@@ -7,8 +7,7 @@ import { reduxForm, FieldArray } from 'redux-form';
 
 import UploadAssetModalFiles from 'ui/assets/modals/upload-assets/UploadAssetModalFiles';
 
-export const FORM_NAME = 'uploadAssetsModalForm';
-export const UPLOAD_ASSET_MODAL_ID = 'UploadAssetModal';
+import { FORM_NAME, UPLOAD_ASSET_MODAL_ID } from 'ui/assets/modals/upload-assets/constants';
 
 const UploadAssetModal = (props) => {
   const {

@@ -20,6 +20,8 @@ import {
   SET_ASSET_SYNC,
   SET_LIST_FILTER_PARAMS,
   SET_ASSET_SEARCH_KEYWORD,
+  RESET_FILTERING_CATEGORIES,
+  SET_ASSET_COUNT,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -30,10 +32,20 @@ import {
 import {
   getAssets, createAsset, editAsset, deleteAsset,
 } from 'api/assets';
+import { getPagination } from 'state/pagination/selectors';
+
+export const resetFilteringCategories = () => ({
+  type: RESET_FILTERING_CATEGORIES,
+});
 
 export const setAssetCategoryFilter = category => ({
   type: SET_ASSET_CATEGORY_FILTER,
   payload: category,
+});
+
+export const setAssetsCount = (type, count) => ({
+  type: SET_ASSET_COUNT,
+  payload: { type, count },
 });
 
 export const setAssets = assets => ({
@@ -97,6 +109,20 @@ export const fetchAssets = (page, params) => dispatch => new Promise((resolve) =
     .catch(() => { });
 });
 
+export const fetchAssetsCount = type => dispatch => new Promise((resolve) => {
+  getAssets({ page: 1, pageSize: 0 }, `?type=${type}`)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setAssetsCount(type, json.metaData && json.metaData.totalItems
+            ? json.metaData.totalItems : 0));
+        }
+        resolve();
+      });
+    })
+    .catch(() => { });
+});
+
 export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
 ) => (dispatch, getState) => {
@@ -107,16 +133,20 @@ export const fetchAssetsPaged = (
   if (filters && Object.keys(filters).length === 0) {
     filters = { formValues: {}, operators: {} };
   }
-  let categories = filters.formValues.categories || [];
+  const categoryFilterExists = filters.formValues && filters.formValues.categories;
+  let categoryParams = '';
   const newFilters = _.cloneDeep(filters);
-  delete newFilters.formValues.categories;
-  if (!Array.isArray(categories)) {
-    categories = [categories];
+  if (categoryFilterExists) {
+    let { categories } = filters.formValues;
+    delete newFilters.formValues.categories;
+    if (!Array.isArray(categories)) {
+      categories = [categories];
+    }
+    const startIndex = Object.keys(newFilters.formValues || []).length;
+    categoryParams = categories.map(
+      (c, i) => `&filters[${i + startIndex}].attribute=categories&filters[${i + startIndex}].value=${c}`,
+    ).join('');
   }
-  const startIndex = Object.keys(newFilters.formValues || []).length;
-  const categoryParams = categories.map(
-    (c, i) => `&filters[${i + startIndex}].attribute=categories&filters[${i + startIndex}].value=${c}`,
-  ).join('');
   const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
   return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
@@ -141,7 +171,8 @@ export const applyAssetsFilter = (
   }), { formValues: {}, operators: {}, sorting });
 
   dispatch(setListFilterParams(filter));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const sortAssetsList = (
@@ -162,9 +193,9 @@ export const sortAssetsList = (
     ...others,
     sorting: newSorting,
   };
-
   dispatch(setListFilterParams(filter));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const filterAssetsBySearch = (
@@ -190,7 +221,8 @@ export const filterAssetsBySearch = (
   dispatch(setSearchKeyword(keyword));
   const filters = { formValues, operators, sorting };
   dispatch(setListFilterParams(filters));
-  return dispatch(fetchAssetsPaged(paginationMetadata));
+  const page = getPagination(getState()) || paginationMetadata;
+  return dispatch(fetchAssetsPaged(page));
 };
 
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
@@ -254,6 +286,7 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
+          dispatch(fetchAssetsPaged());
           resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -263,5 +296,7 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
         }
       });
     })
-    .catch(() => { });
+    .catch((error) => {
+      resolve({ error, hasError: true });
+    });
 });

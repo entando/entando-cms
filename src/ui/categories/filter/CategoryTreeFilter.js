@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Button } from 'patternfly-react';
 
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
 import CategoryTreeFileItem from 'ui/categories/filter/CategoryTreeFilterItem';
@@ -13,6 +12,7 @@ class CategoryTreeFilter extends React.Component {
       treeExpanded: true,
     };
     this.onExpandTree = this.onExpandTree.bind(this);
+    this.onApply = this.onApply.bind(this);
   }
 
   onExpandTree() {
@@ -24,22 +24,30 @@ class CategoryTreeFilter extends React.Component {
     onExpandCategory('home');
   }
 
-  onApply() {
+  onApply(cat, fileType) {
     const {
       onApplyFilteredSearch, filteringCategories, assetType, paginationOptions,
+      onCheckCategory,
     } = this.props;
+    let categories = filteringCategories.slice(0);
+    const contains = filteringCategories.filter(c => c.code === cat.code).length !== 0;
+    if (contains) {
+      categories = filteringCategories.filter(c => c.code !== cat.code);
+    } else {
+      categories.push(cat);
+    }
     const { perPage } = paginationOptions;
-    const filteringParams = filteringCategories.map(
+    const filteringParams = categories.map(
       (filter, i) => `&filters[${i}].attribute=categories&filters[${i}].value=${filter.code}`,
     ).join('');
     const typeParams = assetType === 'all' ? '' : `type=${assetType}`;
     const fetchParams = `?${typeParams}${`&page=${1}&pageSize=${perPage}`}${filteringParams}`;
-    onApplyFilteredSearch(filteringCategories, fetchParams);
+    onCheckCategory(cat, fileType);
+    onApplyFilteredSearch(categories, fetchParams);
   }
 
   render() {
     const {
-      mobile,
       language,
       categories,
       onExpandCategory,
@@ -47,6 +55,7 @@ class CategoryTreeFilter extends React.Component {
       onCheckCategory,
       minimal,
       filterSubject,
+      hideIfEmpty,
     } = this.props;
 
     const { treeExpanded } = this.state;
@@ -60,15 +69,19 @@ class CategoryTreeFilter extends React.Component {
         i={i}
         language={language}
         onExpandCategory={onExpandCategory}
-        onCheckCategory={onCheckCategory}
+        onCheckCategory={minimal ? onCheckCategory : this.onApply}
         filterSubject={filterSubject}
       />
     ));
 
+    const showNothing = hideIfEmpty
+    && (!categoriesWithoutRoot || categoriesWithoutRoot.length === 0);
+
     return (
-      <div>
-        <table className="CategoryTreeFilter">
-          {
+      showNothing ? null : (
+        <div>
+          <table className="CategoryTreeFilter">
+            {
             minimal ? null : (
               <thead>
                 <tr>
@@ -87,17 +100,11 @@ class CategoryTreeFilter extends React.Component {
               </thead>
             )
           }
-          <tbody>{categoryRows}</tbody>
-        </table>
-        {mobile ? null : <div className="CategoryTreeFilter__separator" />}
-        { minimal ? null : (
-          <Button className="CategoryTreeFilter__apply-button" onClick={() => this.onApply()}>
-            <FormattedMessage id="cms.assets.list.apply" />
-          </Button>
-        )}
-        <br />
-      </div>
-    );
+            <tbody>{categoryRows}</tbody>
+          </table>
+          <br />
+        </div>
+      ));
   }
 }
 
@@ -110,9 +117,9 @@ CategoryTreeFilter.propTypes = {
   onApplyFilteredSearch: PropTypes.func,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   assetType: PropTypes.string.isRequired,
-  mobile: PropTypes.bool,
   minimal: PropTypes.bool,
   filterSubject: PropTypes.string.isRequired,
+  hideIfEmpty: PropTypes.bool,
 };
 
 CategoryTreeFilter.defaultProps = {
@@ -120,8 +127,8 @@ CategoryTreeFilter.defaultProps = {
   onExpandCategory: () => {},
   onCheckCategory: () => {},
   onApplyFilteredSearch: () => {},
-  mobile: false,
   minimal: false,
+  hideIfEmpty: false,
 };
 
 export default CategoryTreeFilter;

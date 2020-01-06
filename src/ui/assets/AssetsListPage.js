@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  Row, Col, Grid, Breadcrumb,
+  Row, Col, Grid, Breadcrumb, CardGrid,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
+import AssetsCountContainer from 'ui/assets/AssetsCountContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
 import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
@@ -35,9 +36,14 @@ const AssetsListPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col xs={12}>
-        <AssetsUploadContainer />
-      </Col>
+      <CardGrid>
+        <Col xs={6}>
+          <AssetsUploadContainer />
+        </Col>
+        <Col xs={6}>
+          <AssetsCountContainer />
+        </Col>
+      </CardGrid>
     </Row>
     <Row>
       <Col xs={12}>

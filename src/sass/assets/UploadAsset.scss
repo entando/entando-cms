@@ -45,7 +45,12 @@
   }
 
   &__file-info {
+    display: flex;
     margin-bottom: 10px;
+
+    > div + div {
+      padding-left: 10px;
+    }
   }
 
   &__file-preview {
