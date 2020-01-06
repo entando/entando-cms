@@ -45,6 +45,42 @@ const EditAssetFormModalBody = ({
 
   const groupItems = group && JSON.stringify(group) !== '{}' ? [group] : [];
 
+  const metadata = assetInfo.metadata || {};
+
+  const renderMetadataRows = Object.keys(metadata).map(k => metadata[k] && (
+    <tr>
+      <td>
+        {k}
+      </td>
+      <td>
+        {metadata[k]}
+      </td>
+    </tr>
+  ));
+
+  const renderMetadata = isImg ? (
+    <Row>
+      <Col xs={12}>
+        <h2 className="AssetPhotoCropper__metadata"><FormattedMessage id="cms.label.metadata" defaultMessage="Metadata" /></h2>
+        <table className="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th width="50%">
+                <FormattedMessage id="cms.label.name" />
+              </th>
+              <th width="50%">
+                <FormattedMessage id="cms.label.value" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {renderMetadataRows}
+          </tbody>
+        </table>
+      </Col>
+    </Row>
+  ) : null;
+
   return (
     <GenericModalContainer
       modalId={MODAL_ID}
@@ -104,6 +140,7 @@ const EditAssetFormModalBody = ({
               </fieldset>
             </Col>
           </Row>
+          {renderMetadata}
           <Row className="form-horizontal">
             <Col xs={12} className="text-right modal-footer">
               <Button bsStyle="default" className="btn-cancel" onClick={onModalClose}>
