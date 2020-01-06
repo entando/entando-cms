@@ -269,10 +269,13 @@ export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Pr
 });
 
 export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
-  const { fileObject, group, categories } = file;
+  const {
+    fileObject, group, categories, filename,
+  } = file;
   const type = fileObject.type.startsWith('image') ? 'image' : 'file';
+  const namedFile = new File([fileObject], filename, { type: fileObject.type });
   const formData = new FormData();
-  formData.append('file', fileObject);
+  formData.append('file', namedFile);
 
   const params = {
     type,
