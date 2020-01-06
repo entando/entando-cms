@@ -51,6 +51,7 @@ export default {
     'cms.label.yes': 'Yes',
     'cms.label.no': 'No',
     'cms.label.both': 'Both',
+    'cms.label.value': 'Value',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Content List',

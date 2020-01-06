@@ -3,6 +3,7 @@ export default {
   messages: {
     'cms.title': 'CMS',
     'cms.label.name': 'Nome',
+    'cms.label.value': 'Valore',
     'cms.label.edit': 'Modificare',
     'cms.label.delete': 'Elimina',
     'cms.label.download': 'Scaricare',
