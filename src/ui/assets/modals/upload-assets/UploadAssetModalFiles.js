@@ -4,13 +4,16 @@ import { Field } from 'redux-form';
 import { Row, Col } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
-import { required } from '@entando/utils';
+import { required, maxLength } from '@entando/utils';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderCategoryTreeInput from 'ui/common/category/RenderCategoryTreeInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import RowSpinner from 'ui/common/RowSpinner';
+import RenderTextInput from 'ui/common/form/RenderTextInput';
 
 import { LOADING_GROUP } from 'ui/assets/modals/upload-assets/constants';
+
+const maxLength50 = maxLength(50);
 
 const UploadAssetModalFiles = (props) => {
   const {
@@ -56,10 +59,32 @@ const UploadAssetModalFiles = (props) => {
             <Row>
               <Col>
                 <Field
+                  component={RenderTextInput}
+                  name={`${file}.alt`}
+                  labelSize={2}
+                  label={<FormLabel labelId="cms.label.alt" helpId="cms.contentmodel.form.nameHelp" />}
+                  validate={[maxLength50]}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Field
+                  component={RenderTextInput}
+                  name={`${file}.legend`}
+                  labelSize={2}
+                  label={<FormLabel labelId="cms.label.legend" helpId="cms.contentmodel.form.nameHelp" />}
+                  validate={[maxLength50]}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Field
                   component={RenderSelectInput}
                   name={`${file}.group`}
                   labelSize={2}
-                  label={<FormLabel labelId="cms.assets.form.group" />}
+                  label={<FormLabel labelId="cms.assets.form.group" required />}
                   defaultOptionId="cms.label.chooseoption"
                   optionDisplayName="name"
                   optionValue="code"

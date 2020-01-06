@@ -48,11 +48,15 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     categories,
     type,
     metadata,
+    alt,
+    legend,
   }) => {
     let editValues = {
       id,
       description,
       categories,
+      alt,
+      legend,
     };
     if (type === 'image') {
       editValues = { ...editValues, filename: metadata.filename };

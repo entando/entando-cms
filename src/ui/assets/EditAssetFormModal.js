@@ -81,6 +81,20 @@ const EditAssetFormModalBody = ({
                       validate={[required, maxLength50]}
                     />
                     <Field
+                      component={RenderTextInput}
+                      name="alt"
+                      labelSize={4}
+                      label={<FormLabel labelId="cms.label.alt" helpId="cms.contentmodel.form.nameHelp" />}
+                      validate={[maxLength50]}
+                    />
+                    <Field
+                      component={RenderTextInput}
+                      name="legend"
+                      labelSize={4}
+                      label={<FormLabel labelId="cms.label.legend" helpId="cms.contentmodel.form.nameHelp" />}
+                      validate={[maxLength50]}
+                    />
+                    <Field
                       component={RenderSelectInput}
                       name="group"
                       labelSize={4}

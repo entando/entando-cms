@@ -374,6 +374,55 @@ describe('state/assets/actions', () => {
       });
     });
 
+    it('fetchAssetsPaged with categories and all type', (done) => {
+      const filterParams = {
+        formValues: { categories: 'only_string' },
+        operators: { categories: 'like' },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'all',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(fetchAssetsPaged()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
+        done();
+      });
+    });
+
+    it('fetchAssetsPaged without categories and formValues property', (done) => {
+      const filterParams = {
+        operators: { },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'all',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(fetchAssetsPaged()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
+        done();
+      });
+    });
+
     it('filterAssetsBySearch on clearing', (done) => {
       const keyword = '';
       const filterParams = {

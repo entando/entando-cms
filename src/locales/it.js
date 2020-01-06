@@ -35,6 +35,8 @@ export default {
     'cms.label.list': 'Lista',
     'cms.label.from': 'Da',
     'cms.label.to': 'A',
+    'cms.label.alt': 'Alt',
+    'cms.label.legend': 'Leggenda',
     'cms.label.equal': 'Uguale a',
     'cms.label.date.placeholder': 'gg/mm/anno',
     'cms.label.presenter.placeholder': 'Premeri INVIO per salvare le modifiche',
