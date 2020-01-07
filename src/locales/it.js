@@ -343,6 +343,7 @@ export default {
     'cms.linkconfig.title': 'Configurare il contenuto del collegamento',
     'cms.linkconfig.attributes.heading': 'Attributi aggiuntivi',
     'cms.linkconfig.pagetree': 'Albero delle Pagine',
+    'cms.linkconfig.pageSelect': 'Scegli una pagina',
     'cms.assets.form.uploaded': 'File "{name}" caricato.',
     'cms.assets.errors.failedToUpload': 'Impossibile caricare una risorsa, si è verificato un errore del server.',
     'validateForm.elements': "inserire un valore tipo 'key1=value1,key2=value2,key3=value3'",

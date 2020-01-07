@@ -21,7 +21,7 @@ PageTreeField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
 };
 
-const label = <FormLabel labelText="Choose a page" />;
+const label = <FormLabel labelId="cms.linkconfig.pageSelect" />;
 
 const LinkConfigPageForm = ({ onCancel, handleSubmit }) => (
   <form className="form-horizontal" onSubmit={handleSubmit}>

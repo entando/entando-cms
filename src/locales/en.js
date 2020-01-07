@@ -349,6 +349,7 @@ export default {
     'cms.linkconfig.title': 'Configure Link Content',
     'cms.linkconfig.attributes.heading': 'Additional Attributes',
     'cms.linkconfig.pagetree': 'Page tree',
+    'cms.linkconfig.pageSelect': 'Choose a page',
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'lable1,lable2,lable3'",
     'validateForm.element.code': 'Code must be 3 uppercase letters',
