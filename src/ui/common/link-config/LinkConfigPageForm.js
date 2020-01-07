@@ -9,7 +9,7 @@ import {
 import { Col, Button } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
-import PageTreeContainer from 'ui/common/page/PageTreeContainer';
+import PageTreeContainer from 'ui/common/page/PageTreeSelectContainer';
 import FormLabel from 'ui/common/form/FormLabel';
 import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 
