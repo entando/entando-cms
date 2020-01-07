@@ -1,4 +1,4 @@
-.PageTree {
+.PageTreeSelect {
   &__page-name,
   .TreeNodeExpandedIcon,
   .TreeNodeFolderIcon,
@@ -30,7 +30,7 @@
 
 // Bootstrap overrides
 // sass-lint:disable force-element-nesting, no-qualifying-elements, class-name-format
-.table-bordered > tbody > tr > td.PageTree__tree-column-td {
+.table-bordered > tbody > tr > td.PageTreeSelect__tree-column-td {
   padding: 0;
 }
 // sass-lint:enable force-element-nesting, no-qualifying-elements, class-name-format
