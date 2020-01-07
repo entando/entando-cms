@@ -29,7 +29,7 @@
     "react-dropzone": "^10.2.1",
     "react-excel-workbook": "0.0.4",
     "react-html-table-to-excel": "^2.0.0",
-    "react-quill": "^1.3.3"
+    "react-quill-2": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
