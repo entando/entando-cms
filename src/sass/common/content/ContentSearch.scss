@@ -1,3 +1,4 @@
+// sass-lint:disable class-name-format
 .ContentSearch {
   margin-top: 30px;
   padding-top: 40px;
@@ -5,7 +6,7 @@
   background-color: $color-ultra-grey-border;
   overflow: auto;
 
-  & > div > div > .input-group { // sass-lint:disable-line class-name-format
+  & > div > div > .input-group {
     display: block;
   }
 
@@ -76,7 +77,7 @@
       margin-top: -10px;
     }
 
-    & .text-right { // sass-lint:disable-line class-name-format
+    & .text-right {
       padding-right: 0;
 
       & ~ div {
@@ -132,19 +133,19 @@
     font-weight: normal;
   }
 
-  & .form-group { // sass-lint:disable-line class-name-format
+  & .form-group {
     margin-right: 0;
     margin-left: 0;
   }
 }
 
-.mobile-left { // sass-lint:disable-line class-name-format
+.mobile-left {
   @media (max-width: 768px) {
     text-align: left;
   }
 }
 
-.mobile-center { // sass-lint:disable-line class-name-format
+.mobile-center {
   @media (max-width: 768px) {
     text-align: center;
   }
