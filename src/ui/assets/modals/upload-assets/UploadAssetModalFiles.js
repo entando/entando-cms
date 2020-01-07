@@ -9,8 +9,8 @@ import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderCategoryTreeInput from 'ui/common/category/RenderCategoryTreeInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import RowSpinner from 'ui/common/RowSpinner';
-
 import { LOADING_GROUP } from 'ui/assets/modals/upload-assets/constants';
+import RenderTextInput from 'ui/common/form/RenderTextInput';
 
 const UploadAssetModalFiles = (props) => {
   const {
@@ -45,7 +45,6 @@ const UploadAssetModalFiles = (props) => {
               </div>
             )}
             <div className="UploadAssetModal__file-info">
-              <div>{fileFieldGroup.filename}</div>
               <RowSpinner loading={uploading} />
             </div>
             {isImg && (
@@ -53,6 +52,16 @@ const UploadAssetModalFiles = (props) => {
                 <img className="UploadAssetModal__file-preview" src={fileFieldGroup.filePreview} alt="file preview" />
               </div>
             )}
+            <Row>
+              <Col>
+                <Field
+                  component={RenderTextInput}
+                  name={`${file}.filename`}
+                  label={<FormLabel labelId="cms.label.name" required />}
+                  validate={[required]}
+                />
+              </Col>
+            </Row>
             <Row>
               <Col>
                 <Field

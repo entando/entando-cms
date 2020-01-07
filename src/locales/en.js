@@ -44,6 +44,7 @@ export default {
     'cms.label.modal.confirmunpublish': 'Do you really want to unpublish {code}?',
     'cms.label.files': 'Files',
     'cms.label.images': 'Images',
+    'cms.label.addFile': 'Add file',
     'cms.label.addFilePlural': 'Add files',
     'cms.label.dropFilesHere': 'Drop files here',
     'cms.label.dragAndDrop': 'Drag and drop or ',
