@@ -57,10 +57,9 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
         contentDescription: cc.contentDescription,
       },
     ));
-    // eslint-disable-next-line no-param-reassign
-    delete values.contents;
     const payload = multipleContentsMode
-      ? { contents: configContents, ...values } : { ...configContents[0], ...values };
+      ? { ...values, contents: configContents }
+      : { ...values, ...configContents[0], contents: undefined };
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
     dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {

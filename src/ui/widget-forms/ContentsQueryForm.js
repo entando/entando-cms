@@ -45,8 +45,7 @@ export class ContentsQueryFormBody extends Component {
 
 
   collapseSection(sectionName) {
-    // eslint-disable-next-line react/destructuring-assignment
-    const currentVisibility = this.state[sectionName];
+    const { [sectionName]: currentVisibility } = this.state;
     this.setState({
       [sectionName]: !currentVisibility,
     });
