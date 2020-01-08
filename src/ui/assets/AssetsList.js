@@ -37,6 +37,7 @@ const headers = [
   {
     name: 'uploadedBy',
     width: '17%',
+    id: 'owner',
   },
   {
     name: 'uploadedAt',
@@ -51,6 +52,7 @@ const headers = [
   {
     name: 'categories',
     width: '12%',
+    id: 'categories',
   },
   {
     name: 'actions',
@@ -68,7 +70,7 @@ const fileTypes = [
     id: 'image',
   },
   {
-    name: 'Attachements',
+    name: 'Attachments',
     id: 'file',
   },
 ];
@@ -128,8 +130,9 @@ class AssetsList extends Component {
   }
 
   removeAllActiveFilters() {
-    const { onRemoveAllActiveFilters } = this.props;
+    const { onRemoveAllActiveFilters, onResetFilteringCategories } = this.props;
     onRemoveAllActiveFilters();
+    onResetFilteringCategories();
   }
 
   render() {
@@ -300,6 +303,7 @@ class AssetsList extends Component {
                 filteringCategories={filteringCategories}
                 assetType={fileType}
                 mobile={mobile}
+                hideIfEmpty
                 filterSubject="asset"
               />
             </div>
@@ -381,6 +385,7 @@ AssetsList.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
+  onResetFilteringCategories: PropTypes.func.isRequired,
 };
 
 AssetsList.defaultProps = {
