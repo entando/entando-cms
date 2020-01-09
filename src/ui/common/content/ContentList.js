@@ -83,7 +83,7 @@ class ContentList extends Component {
             break;
           case 'created':
           case 'lastModified':
-            rowCellFormatter = date => <td>{new Date(date).toLocaleDateString()}</td>;
+            rowCellFormatter = date => <td>{new Date(date).toLocaleString()}</td>;
             break;
           case 'typeCode':
             rowCellFormatter = (typeCode, { rowData: { typeDescription } }) => (
