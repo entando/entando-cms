@@ -164,6 +164,7 @@ class AssetsList extends Component {
     const { mobile } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
+
     const notSortable = ['actions', 'preview', 'categories'];
     const headerSorter = item => (notSortable.indexOf(item.name) === -1
       ? onApplySort(item.id) : null);
@@ -173,8 +174,6 @@ class AssetsList extends Component {
         key={item.name}
         role="button"
         onClick={() => headerSorter(item)}
-        // onKeyDown={() => onApplySort(item.id)}
-        // tabIndex={i}
       >
         <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
         {item.name !== 'actions' && item.name !== 'preview' ? (
