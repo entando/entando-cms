@@ -348,6 +348,7 @@ export default {
     'cms.linkconfig.pagetree': 'Albero delle Pagine',
     'cms.linkconfig.pageSelect': 'Scegli una pagina',
     'cms.assets.form.uploaded': 'File "{name}" caricato.',
+    'cms.assets.form.advsettings': 'Impostazioni Avanzate',
     'cms.assets.errors.failedToUpload': 'Impossibile caricare una risorsa, si è verificato un errore del server.',
     'validateForm.elements': "inserire un valore tipo 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "inserire un valore tipo 'lable1,lable2,lable3'",

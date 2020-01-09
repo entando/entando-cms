@@ -156,7 +156,7 @@ class AssetPhotoCropper extends Component {
 
     const renderDiffSizes = () => (
       (versions && versions.length > 0) ? (
-        <Grid fluid className="AssetPhotoCropper__imginfo dim">
+        <Grid fluid className="AssetForm__imginfo dim">
           <Row>
             <Col xs={12}>
               <h5 className="caption"><FormattedMessage id="cms.assets.form.details" /></h5>
@@ -174,7 +174,7 @@ class AssetPhotoCropper extends Component {
     );
 
     const renderAssetInfo = () => (
-      <Grid fluid className="AssetPhotoCropper__imginfo">
+      <Grid fluid className="AssetForm__imginfo">
         <Row>
           <Col xs={4} className="lbl"><FormattedMessage id="cms.assets.form.filetype" /></Col>
           <Col xs={8} className="inf">{metadata && metadata.type}</Col>
@@ -195,10 +195,10 @@ class AssetPhotoCropper extends Component {
     );
 
     const renderCropCoords = () => (
-      <div className="AssetPhotoCropper__previews">
+      <div className="AssetForm__previews">
         <FormGroup>
           <InputGroup>
-            <InputGroup.Addon className="AssetPhotoCropper__input-prelabel">
+            <InputGroup.Addon className="AssetForm__input-prelabel">
               <FormattedMessage id="cms.assets.form.x" />
             </InputGroup.Addon>
             <FormControl type="text" value={dataX} readOnly />
@@ -207,7 +207,7 @@ class AssetPhotoCropper extends Component {
         </FormGroup>
         <FormGroup>
           <InputGroup>
-            <InputGroup.Addon className="AssetPhotoCropper__input-prelabel">
+            <InputGroup.Addon className="AssetForm__input-prelabel">
               <FormattedMessage id="cms.assets.form.y" />
             </InputGroup.Addon>
             <FormControl type="text" value={dataY} readOnly />
@@ -216,7 +216,7 @@ class AssetPhotoCropper extends Component {
         </FormGroup>
         <FormGroup>
           <InputGroup>
-            <InputGroup.Addon className="AssetPhotoCropper__input-prelabel">
+            <InputGroup.Addon className="AssetForm__input-prelabel">
               <FormattedMessage id="cms.assets.form.width" />
             </InputGroup.Addon>
             <FormControl type="text" value={dataW} readOnly />
@@ -225,7 +225,7 @@ class AssetPhotoCropper extends Component {
         </FormGroup>
         <FormGroup>
           <InputGroup>
-            <InputGroup.Addon className="AssetPhotoCropper__input-prelabel">
+            <InputGroup.Addon className="AssetForm__input-prelabel">
               <FormattedMessage id="cms.assets.form.height" />
             </InputGroup.Addon>
             <FormControl type="text" value={dataH} readOnly />
@@ -234,14 +234,17 @@ class AssetPhotoCropper extends Component {
         </FormGroup>
         <FormGroup>
           <InputGroup>
-            <InputGroup.Addon className="AssetPhotoCropper__input-prelabel">
+            <InputGroup.Addon className="AssetForm__input-prelabel">
+              <FormattedMessage id="cms.assets.form.rotate" />
+            </InputGroup.Addon>
+            <InputGroup.Addon className="AssetForm__input-prelabel">
               <FormattedMessage id="cms.assets.form.rotate" />
             </InputGroup.Addon>
             <FormControl type="text" value={dataRotate} readOnly />
             <InputGroup.Addon>deg</InputGroup.Addon>
           </InputGroup>
         </FormGroup>
-        <div className="AssetPhotoCropper__two-inputs">
+        <div className="AssetForm__two-inputs">
           <FormGroup>
             <InputGroup>
               <InputGroup.Addon>
@@ -263,48 +266,48 @@ class AssetPhotoCropper extends Component {
     );
 
     const renderCropToolbar = () => (
-      <Row className="AssetPhotoCropper__tool-row">
+      <Row className="AssetForm__tool-row">
         <Col xs={12} md={8}>
-          <ButtonGroup title="move" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="move" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.move" /></span>
             <Button data-action="move" onClick={this.cropCommand}><span className="fa fa-arrows" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="crop" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="crop" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.crop" /></span>
             <Button data-action="crop" onClick={this.cropCommand}><span className="fa fa-crop" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="scale" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="scale" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.scale" /></span>
             <Button data-action="scaley" onClick={this.cropCommand}><span className="fa fa-arrows-v" /></Button>
             <Button data-action="scalex" onClick={this.cropCommand}><span className="fa fa-arrows-h" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="move" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="move" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.pan" /></span>
             <Button data-action="panleft" onClick={this.cropCommand}><span className="fa fa-arrow-left" /></Button>
             <Button data-action="panright" onClick={this.cropCommand}><span className="fa fa-arrow-right" /></Button>
             <Button data-action="pandown" onClick={this.cropCommand}><span className="fa fa-arrow-down" /></Button>
             <Button data-action="panup" onClick={this.cropCommand}><span className="fa fa-arrow-up" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="rotate" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="rotate" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.rotate" /></span>
             <Button data-action="rotateleft" onClick={this.cropCommand}><span className="fa fa-rotate-left" /></Button>
             <Button data-action="rotateright" onClick={this.cropCommand}><span className="fa fa-rotate-right" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="zoom" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="zoom" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.zoom" /></span>
             <Button data-action="zoomin" onClick={this.cropCommand}><span className="fa fa-search-plus" /></Button>
             <Button data-action="zoomout" onClick={this.cropCommand}><span className="fa fa-search-minus" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="save" bsSize="large" className="AssetPhotoCropper__tool no-sep">
+          <ButtonGroup title="save" bsSize="large" className="AssetForm__tool no-sep">
             <span><FormattedMessage id="cms.assets.form.cropsave" /></span>
             <Button data-action="save" onClick={this.cropCommand}><span className="fa fa-check" /></Button>
           </ButtonGroup>
-          <ButtonGroup title="cancel" bsSize="large" className="AssetPhotoCropper__tool">
+          <ButtonGroup title="cancel" bsSize="large" className="AssetForm__tool">
             <span><FormattedMessage id="cms.assets.form.cropcancel" /></span>
             <Button data-action="cancel" onClick={this.cropCommand}><span className="fa fa-times" /></Button>
           </ButtonGroup>
         </Col>
-        <Col xs={12} md={4} className="AssetPhotoCropper__aspect-ratio-bar">
+        <Col xs={12} md={4} className="AssetForm__aspect-ratio-bar">
           <ToggleButtonGroup type="radio" name="aspectRatio" title="aspect ratio" defaultValue={0}>
             {cropRatios.map((ratio, i) => (
               <ToggleButton key={`ratio${ratio}`} value={i} data-value={ratio} onClick={this.aspectRatioClicked}>{ratio}</ToggleButton>
@@ -323,21 +326,21 @@ class AssetPhotoCropper extends Component {
               ref={this.cropper}
               aspectRatio={aspectRatio}
               src={croppedImg || imgSrc}
-              preview=".AssetPhotoCropper__crop-preview"
+              preview=".AssetForm__crop-preview"
               style={{ height: 400 }}
               crop={this.onCropDetailsChange}
             />
           </Col>
-          <Col xs={12} md={6} className="AssetPhotoCropper__rightinfo">
-            <div className="AssetPhotoCropper__previews">
-              <div className="AssetPhotoCropper__crop-preview preview-lg" />
-              <div className="AssetPhotoCropper__crop-preview preview-md" />
-              <div className="AssetPhotoCropper__crop-preview preview-sm" />
-              <div className="AssetPhotoCropper__crop-preview preview-xs" />
+          <Col xs={12} md={6} className="AssetForm__rightinfo">
+            <div className="AssetForm__previews">
+              <div className="AssetForm__crop-preview preview-lg" />
+              <div className="AssetForm__crop-preview preview-md" />
+              <div className="AssetForm__crop-preview preview-sm" />
+              <div className="AssetForm__crop-preview preview-xs" />
             </div>
             {renderAssetInfo()}
           </Col>
-          <Col xs={12} md={6} className="AssetPhotoCropper__rightinfo">
+          <Col xs={12} md={6} className="AssetForm__rightinfo">
             {renderCropCoords()}
             {renderDiffSizes()}
           </Col>
