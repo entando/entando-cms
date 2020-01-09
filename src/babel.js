@@ -3,6 +3,8 @@ import { cms as state } from 'state/rootReducer';
 import { routes, routesDir } from 'ui/App';
 import en from 'locales/en';
 import it from 'locales/it';
+import HandpickedContentsConfigFormContainer from 'ui/widget-forms/HandpickedContentsConfigFormContainer';
+import ContentsQueryContainer from 'ui/widget-forms/ContentsQueryContainer';
 
 const cms = {
   id: 'cms',
@@ -13,6 +15,12 @@ const cms = {
   locales: {
     en,
     it,
+  },
+  widgetForms: {
+    content_viewer: HandpickedContentsConfigFormContainer,
+    content_viewer_list: ContentsQueryContainer,
+    row_content_viewer_list: HandpickedContentsConfigFormContainer,
+    search_result: null,
   },
 };
 

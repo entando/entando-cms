@@ -36,9 +36,13 @@
 @import "contents/ContentsFilter";
 @import "contents/Contents";
 @import "common/form/MultiSelectMenuItem";
+@import "contents/JoinCategoriesModal.scss";
+@import "common/form/FormSectionTitle";
+@import "common/form/FiltersSelectRenderer.scss";
 @import "contents/JoinCategoriesModal";
 @import "common/modal/LinkConfigModal";
 @import "common/page/PageTreeSelect";
 @import "common/content/ContentSearch";
 @import "common/form/RenderRichTextEditor";
 @import "assets/AssetsCount";
+@import "assets/AssetsCount.scss";
