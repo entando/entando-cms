@@ -39,3 +39,11 @@ export const deleteAsset = id => makeRequest({
   mockResponse: GET_ASSETS_RESPONSE_OK,
   useAuthentication: true,
 });
+
+export const cloneAsset = id => makeRequest({
+  uri: `${getAssetsPath}/${id}/clone`,
+  method: METHODS.GET,
+  contentType: 'application/json',
+  mockResponse: GET_ASSETS_RESPONSE_OK,
+  useAuthentication: true,
+});

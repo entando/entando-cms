@@ -294,6 +294,7 @@ export default {
     'cms.assets.form.updated': 'Asset "{name}" updated.',
     'cms.assets.form.duplicated': 'Asset "{name}" duplicated.',
     'cms.assets.form.uploaded': 'Asset "{name}" uploaded.',
+    'cms.assets.form.duplicateConfirm': 'Do you really want to duplicate "{name}" ?',
     'cms.assets.errors.failedToUpload': 'Failed to upload an asset, server error has occurred.',
     'cms.menu.contents': 'Contents',
     'cms.contents.tip': 'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',

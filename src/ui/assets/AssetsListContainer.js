@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import { injectIntl, defineMessages } from 'react-intl';
-import { addToast, TOAST_SUCCESS, TOAST_ERROR } from '@entando/messages';
+import { injectIntl } from 'react-intl';
 import {
   getAssetsList,
   getFilteringCategories,
@@ -21,7 +20,6 @@ import {
   changeAssetsView,
   makeFilter,
   pageDefault,
-  sendUploadAsset,
   resetFilteringCategories,
   setAssetCategoryFilter,
 } from 'state/assets/actions';
@@ -30,7 +28,6 @@ import {
 } from 'state/pagination/selectors';
 import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
-import { toggleLoading } from 'state/loading/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import AssetsList from 'ui/assets/AssetsList';
@@ -38,17 +35,7 @@ import AssetsList from 'ui/assets/AssetsList';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
-
-const uploadAssetMsgs = defineMessages({
-  uploaded: {
-    id: 'cms.assets.form.duplicated',
-    defaultMessage: '{name} uploaded.',
-  },
-  uploadFailed: {
-    id: 'cms.assets.errors.failedToUpload',
-    defaultMessage: 'Failed to upload an asset, server error has occurred.',
-  },
-});
+import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
@@ -65,7 +52,7 @@ export const mapStateToProps = state => ({
   page: getCurrentPage(state),
 });
 
-export const mapDispatchToProps = (dispatch, { intl }) => ({
+export const mapDispatchToProps = dispatch => ({
   onDidMount: () => {
     dispatch(setListFilterParams({}));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
@@ -124,32 +111,8 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(setInfo(asset));
   },
   onDuplicateClicked: (asset) => {
-    dispatch(toggleLoading('assets'));
-    const { group, categories } = asset;
-    const fileObject = Object.assign({}, asset);
-    fileObject.path = asset.versions[0].path;
-    const configObject = Object.assign({}, { fileObject, group: group.code, categories });
-    dispatch(sendUploadAsset(configObject))
-      .then((res) => {
-        dispatch(toggleLoading('assets'));
-        if (res && !res.hasError) {
-          dispatch(
-            addToast(
-              intl.formatMessage(uploadAssetMsgs.uploaded, { name: res.name }),
-              TOAST_SUCCESS,
-            ),
-          );
-        }
-        if (res && res.hasError) {
-          dispatch(
-            addToast(
-              intl.formatMessage(uploadAssetMsgs.uploadFailed),
-              TOAST_ERROR,
-            ),
-          );
-        }
-        dispatch(fetchAssetsPaged());
-      });
+    dispatch(setVisibleModal(CLONE_ASSET_MODAL_ID));
+    dispatch(setInfo(Object.assign({}, { id: asset.id, name: asset.name })));
   },
 });
 

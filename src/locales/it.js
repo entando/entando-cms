@@ -346,6 +346,7 @@ export default {
     'cms.assets.form.updated': '"{name}" dell\'asset aggiornato.',
     'cms.assets.form.duplicated': 'Asset "{name}" duplicato.',
     'cms.assets.form.uploaded': 'Asset "{name}" caricato.',
+    'cms.assets.form.duplicateConfirm': 'Vuoi davvero duplicare "{name}" ?',
     'cms.linkconfig.title': 'Configurare il contenuto del collegamento',
     'cms.linkconfig.attributes.heading': 'Attributi aggiuntivi',
     'cms.linkconfig.pagetree': 'Albero delle Pagine',
