@@ -227,7 +227,7 @@ export default {
     'cms.contents.edit.version.label': 'Versione',
     'cms.contents.edit.version.creator': 'creato da',
     'cms.contents.edit.version.modifier': 'modificato da',
-    'cms.stickySave.lastAutoSave': 'L\'ultimo salvataggio automatico è stato:',
+    'cms.stickySave.lastAutoSave': 'L\'ultimo salvataggio è stato: ',
     'cms.stickySave.status': 'Stato',
     'cms.contents.edit.titletip': 'La sezione INDICE ti consente di gestire i contenuti esistenti, accedere all\'elenco dei contenuti, aggiungere nuovi contenuti. Puoi anche approvare, sospendere o eliminare i contenuti. In Entando, un contenuto è un elemento strutturato che rappresenta un insieme di informazioni costruite utilizzando gli attributi del contenuto.',
     'cms.contents.edit.contentAttributes': 'Attributi del Contenuto',

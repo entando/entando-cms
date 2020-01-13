@@ -127,14 +127,30 @@ class ContentsTable extends Component {
           case 'onLine':
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
-              const { status } = rowData;
+              const { status, onLine: hasPublicVersion } = rowData;
               let statusColor = '';
-              if (status === 'PUBLIC') statusColor = 'published';
-              else if (status === 'ready') statusColor = 'review';
-              else statusColor = 'unpublished';
+              let statusTitle = '';
+              if (status === 'PUBLIC') {
+                statusColor = 'published';
+                statusTitle = 'Published';
+              } else if (status === 'ready') {
+                statusColor = 'review';
+                if (hasPublicVersion) {
+                  statusTitle = 'Public ≠ Ready';
+                } else {
+                  statusTitle = 'Ready';
+                }
+              } else {
+                statusColor = 'unpublished';
+                if (hasPublicVersion) {
+                  statusTitle = 'Public ≠ Draft';
+                } else {
+                  statusTitle = 'Unpublished';
+                }
+              }
               return (
                 <td className="text-center">
-                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />
+                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} title={statusTitle} />
                 </td>
               );
             };
