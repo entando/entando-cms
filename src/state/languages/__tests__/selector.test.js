@@ -19,10 +19,17 @@ const LANGUAGES_MAP = {
     isActive: false,
     isDefault: false,
   },
+  nl: {
+    code: 'nl',
+    description: 'Dutch',
+    isActive: true,
+    isDefault: false,
+  },
 };
 const LANGUAGES_LIST = [
   'it',
   'en',
+  'nl',
 ];
 const STATE = {
   apps: {
@@ -50,9 +57,10 @@ describe('state/languages/selectors', () => {
   });
 
   it('getLanguagesList returns the languages list', () => {
-    expect(getLanguagesList(STATE)).toHaveLength(2);
+    expect(getLanguagesList(STATE)).toHaveLength(3);
     expect(getLanguagesList(STATE)[0]).toEqual(LANGUAGES_MAP.it);
     expect(getLanguagesList(STATE)[1]).toEqual(LANGUAGES_MAP.en);
+    expect(getLanguagesList(STATE)[2]).toEqual(LANGUAGES_MAP.nl);
   });
 
   it('getLanguagesOptions returns the not active languages list', () => {
@@ -62,9 +70,11 @@ describe('state/languages/selectors', () => {
   });
 
   it('getActiveLanguages returns the active languages list', () => {
-    expect(getActiveLanguages(STATE)).toHaveLength(1);
+    expect(getActiveLanguages(STATE)).toHaveLength(2);
     expect(getActiveLanguages(STATE)[0]).toHaveProperty('code', 'it');
     expect(getActiveLanguages(STATE)[0]).toHaveProperty('name', 'Italiano');
+    expect(getActiveLanguages(STATE)[1]).toHaveProperty('code', 'nl');
+    expect(getActiveLanguages(STATE)[1]).toHaveProperty('name', 'Dutch');
   });
 
   it('getDefaultLanguage returns the default lang', () => {
@@ -73,6 +83,6 @@ describe('state/languages/selectors', () => {
   });
 
   it('getActiveNonDefaultLanguages returns the active non default languages', () => {
-    expect(getActiveNonDefaultLanguages(STATE)).toHaveLength(0);
+    expect(getActiveNonDefaultLanguages(STATE)).toHaveLength(1);
   });
 });
