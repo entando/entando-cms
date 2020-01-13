@@ -229,7 +229,7 @@ export default {
     'cms.contents.edit.version.label': 'Version',
     'cms.contents.edit.version.creator': 'created - by',
     'cms.contents.edit.version.modifier': 'modified by',
-    'cms.stickySave.lastAutoSave': 'Last autosave was:',
+    'cms.stickySave.lastAutoSave': 'Last save was: ',
     'cms.stickySave.status': 'Status',
     'cms.contents.edit.titletip':
       'The CONTENTS section lets you manage existing contents, access contents list, add new contents. You can also approve, suspend, or delete contents. In Entando, a Content is a structured element that represents a set of information built using Content Attributes.',

@@ -9,6 +9,8 @@
     margin-left: 10px;
     padding-top: 5px;
     float: right;
+    font-family: "Open Sans";
+    font-size: 12px;
   }
 
   &__main-tab-bar {
@@ -34,6 +36,8 @@
   }
 
   &__table {
+    font-family: "Open Sans";
+    font-size: 12px;
     @media (min-width: 991px) {
       overflow: visible;
     }
