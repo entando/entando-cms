@@ -35,7 +35,7 @@ const AssetsListItem = ({
       <td>{description}</td>
       <td>{type}</td>
       <td>{owner || 'N/A'}</td>
-      <td>{new Date(createdAt).toLocaleDateString()}</td>
+      <td>{new Date(createdAt).toLocaleString()}</td>
       <td>{group.name || group}</td>
       <td>{renderCategories}</td>
       <td>

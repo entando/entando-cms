@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import PageTree from 'ui/common/page/PageTree';
+
+import PageTreeSelect from 'ui/common/page/PageTreeSelect';
 import { handleExpandPage } from 'state/pages/actions';
 import { getPageTreePages } from 'state/pages/selectors';
 
@@ -13,7 +14,7 @@ export const mapDispatchToProps = dispatch => ({
 });
 
 
-const PageTreeContainer = connect(mapStateToProps, mapDispatchToProps)(PageTree);
+const PageTreeSelectContainer = connect(mapStateToProps, mapDispatchToProps)(PageTreeSelect);
 
 
-export default PageTreeContainer;
+export default PageTreeSelectContainer;

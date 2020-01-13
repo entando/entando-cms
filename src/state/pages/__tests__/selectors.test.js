@@ -5,7 +5,7 @@ import {
 
 import {
   getPages, getPagesMap, getChildrenMap, getTitlesMap, getStatusMap, getPositionMap,
-  getPageTreePages, getCharsets, getContentTypes, getFreePages, getViewPages,
+  getPageTreePages, getCharsets, getContentTypes, getFreePages, getViewPages, getSearchPagesRaw,
 } from 'state/pages/selectors';
 
 const MOCK_STATE = {
@@ -50,6 +50,7 @@ const MOCK_STATE = {
         freePages: [],
         selected: { ...HOMEPAGE_PAYLOAD, references: { jacmsContentManager: true } },
         viewPages: VIEWPAGES_PAYLOAD,
+        searchPages: ['a', 'b'],
       },
     },
   },
@@ -172,5 +173,8 @@ describe('state/pages/selectors', () => {
 
   it('getViewPages should return correct data from state', () => {
     expect(getViewPages(MOCK_STATE)).toEqual(VIEWPAGES_PAYLOAD);
+  });
+  it('getSearchPagesRaw should return correct data from state', () => {
+    expect(getSearchPagesRaw(MOCK_STATE)).toEqual(['a', 'b']);
   });
 });

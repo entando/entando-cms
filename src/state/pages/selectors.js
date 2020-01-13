@@ -1,3 +1,4 @@
+
 import { createSelector } from 'reselect';
 
 import { getLocale } from 'state/locale/selectors';
@@ -10,6 +11,7 @@ export const getChildrenMap = state => state.apps.cms.pages.childrenMap;
 export const getStatusMap = state => state.apps.cms.pages.statusMap;
 export const getTitlesMap = state => state.apps.cms.pages.titlesMap;
 export const getViewPages = state => state.apps.cms.pages.viewPages;
+export const getSearchPagesRaw = state => state.apps.cms.pages.searchPages;
 
 export const getFreePages = createSelector(
   getPages,

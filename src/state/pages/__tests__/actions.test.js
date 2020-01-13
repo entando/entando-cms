@@ -2,21 +2,23 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { createMockStore, mockApi } from 'testutils/helpers';
+
 import {
-  addPages, setPageLoading, setPageLoaded, togglePageExpanded,
-  handleExpandPage, fetchViewPages, setViewPages,
-} from 'state/pages/actions';
-import {
-  ADD_PAGES, SET_PAGE_LOADING, SET_PAGE_LOADED, TOGGLE_PAGE_EXPANDED, SET_VIEWPAGES,
+  ADD_PAGES, SET_PAGE_LOADING, SET_PAGE_LOADED, TOGGLE_PAGE_EXPANDED, SET_VIEWPAGES, SEARCH_PAGES,
 } from 'state/pages/types';
 import {
   HOMEPAGE_PAYLOAD, DASHBOARD_PAYLOAD, SERVICE_PAYLOAD, CONTACTS_PAYLOAD, ERROR_PAYLOAD,
   LOGIN_PAYLOAD, NOTFOUND_PAYLOAD, FREE_PAGES_PAYLOAD,
 } from 'testutils/mocks/pages';
 import {
-  getPage, getPageChildren, getViewPages,
+  getPage, getPageChildren, getViewPages, getSearchPages,
 } from 'api/pages';
 import { getStatusMap } from 'state/pages/selectors';
+
+import {
+  addPages, setPageLoading, setPageLoaded, togglePageExpanded,
+  handleExpandPage, fetchViewPages, setViewPages, setSearchPages, fetchSearchPages,
+} from 'state/pages/actions';
 
 jest.mock('state/pages/selectors', () => ({
   getStatusMap: jest.fn(),
@@ -24,6 +26,7 @@ jest.mock('state/pages/selectors', () => ({
 
 jest.mock('api/pages', () => ({
   getViewPages: jest.fn(mockApi({ payload: [] })),
+  getSearchPages: jest.fn(mockApi({ payload: [] })),
   getPage: jest.fn(),
   getPageChildren: jest.fn(),
 }));
@@ -156,6 +159,14 @@ describe('state/pages/actions', () => {
     });
   });
 
+  it('setSearchPages should return correct object', () => {
+    const payload = { pages: ['a', 'b'] };
+    expect(setSearchPages(['a', 'b'])).toEqual({
+      type: SEARCH_PAGES,
+      payload,
+    });
+  });
+
   describe('fetchViewPages', () => {
     let store;
     beforeEach(() => {
@@ -164,6 +175,7 @@ describe('state/pages/actions', () => {
           cms: {
             pages: {
               viewPages: [],
+              searchPages: [],
             },
           },
         },
@@ -189,6 +201,48 @@ describe('state/pages/actions', () => {
         .dispatch(fetchViewPages())
         .then(() => {
           expect(getViewPages).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('fetchSearchPages', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        apps: {
+          cms: {
+            pages: {
+              viewPages: [],
+              searchPages: [],
+            },
+          },
+        },
+      });
+    });
+
+    it('should dispatch correct actions when api call is successful', (done) => {
+      store
+        .dispatch(fetchSearchPages())
+        .then(() => {
+          expect(getSearchPages).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toHaveProperty('type', SEARCH_PAGES);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      getSearchPages.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(fetchSearchPages())
+        .then(() => {
+          expect(getSearchPages).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
           done();

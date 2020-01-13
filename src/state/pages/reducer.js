@@ -5,6 +5,7 @@ import {
   SET_PAGE_LOADING,
   SET_PAGE_LOADED,
   SET_VIEWPAGES,
+  SEARCH_PAGES,
 } from 'state/pages/types';
 
 // creates a map from an array
@@ -99,10 +100,22 @@ const viewPages = (state = [], { type, payload } = {}) => {
   }
 };
 
+const searchPages = (state = [], { type, payload } = {}) => {
+  switch (type) {
+    case SEARCH_PAGES: {
+      const { pages } = payload;
+      return pages;
+    }
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   map: reducer,
   childrenMap,
   titlesMap,
   statusMap,
   viewPages,
+  searchPages,
 });

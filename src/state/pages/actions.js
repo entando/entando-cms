@@ -1,11 +1,11 @@
 import { addErrors } from '@entando/messages';
 
 import {
-  getPage, getPageChildren, getViewPages,
+  getPage, getPageChildren, getViewPages, getSearchPages,
 } from 'api/pages';
 import {
   ADD_PAGES, SET_PAGE_LOADING, SET_PAGE_LOADED,
-  TOGGLE_PAGE_EXPANDED, SET_VIEWPAGES,
+  TOGGLE_PAGE_EXPANDED, SET_VIEWPAGES, SEARCH_PAGES,
 } from 'state/pages/types';
 import { getStatusMap } from 'state/pages/selectors';
 
@@ -16,6 +16,13 @@ const noopPromise = arg => new Promise(resolve => resolve(arg));
 export const setViewPages = pages => ({
   type: SET_VIEWPAGES,
   payload: pages,
+});
+
+export const setSearchPages = pages => ({
+  type: SEARCH_PAGES,
+  payload: {
+    pages,
+  },
 });
 
 export const setPageLoading = pageCode => ({
@@ -66,6 +73,19 @@ export const fetchViewPages = () => dispatch => new Promise((resolve) => {
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setViewPages(json.payload));
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+      }
+      resolve();
+    });
+  }).catch(() => {});
+});
+
+export const fetchSearchPages = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+  getSearchPages(page, params).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setSearchPages(json.payload));
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
       }

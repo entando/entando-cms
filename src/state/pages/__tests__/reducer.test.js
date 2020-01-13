@@ -7,8 +7,17 @@ import {
 
 import {
   addPages, togglePageExpanded, setPageLoading,
-  setPageLoaded, setViewPages,
+  setPageLoaded, setViewPages, setSearchPages,
 } from 'state/pages/actions';
+
+const initialState = {
+  viewPages: [],
+  searchPages: [],
+  childrenMap: {},
+  map: {},
+  statusMap: {},
+  titlesMap: {},
+};
 
 const PAGES = [
   HOMEPAGE_PAYLOAD, DASHBOARD_PAYLOAD, SERVICE_PAYLOAD, CONTACTS_PAYLOAD, ERROR_PAYLOAD,
@@ -95,6 +104,14 @@ describe('state/pages/reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       viewPages: payload,
+    });
+  });
+  it('should return correct state with setSearchPages action', () => {
+    const payload = [{ pages: ['a', 'b'] }];
+    const action = setSearchPages(payload);
+    expect(reducer(initialState, action)).toEqual({
+      ...initialState,
+      searchPages: payload,
     });
   });
 });

@@ -7,7 +7,7 @@ import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
 import RowSpinner from 'ui/common/RowSpinner';
 
 
-class PageTree extends Component {
+class PageTreeSelect extends Component {
   constructor() {
     super();
     this.state = {
@@ -38,9 +38,9 @@ class PageTree extends Component {
           onExpandPage(page.code);
         }
       };
-      const className = ['PageTree__tree-column-td'];
+      const className = ['PageTreeSelect__tree-column-td'];
       if (page.isEmpty) {
-        className.push('PageTree__tree-column-td--empty');
+        className.push('PageTreeSelect__tree-column-td--empty');
       }
 
       const isPageSelected = selectedPage === page.code;
@@ -48,21 +48,21 @@ class PageTree extends Component {
       return (
         <tr
           key={`${page.code}`}
-          className={`PageTree__row${isPageSelected ? '--selected' : ''}`}
+          className={`PageTreeSelect__row${isPageSelected ? '--selected' : ''}`}
           onClick={() => this.handleRowClick(page.code)}
         >
           <td className={className.join(' ')}>
             <span
               role="button"
               tabIndex={i}
-              className="PageTree__icons-label"
+              className="PageTreeSelect__icons-label"
               style={{ marginLeft: page.depth * 24 }}
               onClick={onClickExpand}
               onKeyDown={onClickExpand}
             >
               <TreeNodeExpandedIcon expanded={page.expanded} />
               <TreeNodeFolderIcon empty={page.isEmpty} />
-              <span className="PageTree__page-name">
+              <span className="PageTreeSelect__page-name">
                 { page.title }
               </span>
               <RowSpinner loading={!!page.loading} />
@@ -76,7 +76,7 @@ class PageTree extends Component {
   render() {
     return (
       <div>
-        <table className="PageTree table table-bordered table-hover table-treegrid">
+        <table className="PageTreeSelect table table-bordered table-hover table-treegrid">
           <thead>
             <tr>
               <th width="70%">
@@ -93,7 +93,7 @@ class PageTree extends Component {
   }
 }
 
-PageTree.propTypes = {
+PageTreeSelect.propTypes = {
   pages: PropTypes.arrayOf(PropTypes.shape({
     code: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
@@ -108,11 +108,11 @@ PageTree.propTypes = {
   onPageSelect: PropTypes.func,
 };
 
-PageTree.defaultProps = {
+PageTreeSelect.defaultProps = {
   pages: [],
   onExpandPage: () => {},
   onDidMount: () => {},
   onPageSelect: () => {},
 };
 
-export default PageTree;
+export default PageTreeSelect;

@@ -70,7 +70,7 @@ const fileTypes = [
     id: 'image',
   },
   {
-    name: 'Attachements',
+    name: 'Attachments',
     id: 'file',
   },
 ];
@@ -164,20 +164,25 @@ class AssetsList extends Component {
     const { mobile } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
+
+    const notSortable = ['actions', 'preview', 'categories'];
+    const headerSorter = item => (notSortable.indexOf(item.name) === -1
+      ? onApplySort(item.id) : null);
     const renderHeader = headers.map((item, i) => (
-      <th width={item.width} key={item.name}>
+      <th
+        width={item.width}
+        key={item.name}
+        role="button"
+        onClick={() => headerSorter(item)}
+      >
         <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
         {item.name !== 'actions' && item.name !== 'preview' ? (
           <i
             className={`fa ${
-              sort && sort.attribute === item.id && sort.direction === 'ASC'
+              (sort && sort.attribute === item.id) && (sort.direction === 'ASC'
                 ? 'fa-angle-up'
-                : 'fa-angle-down'
+                : 'fa-angle-down')
             } AssetsList__sort`}
-            role="button"
-            onClick={() => onApplySort(item.id)}
-            onKeyDown={() => onApplySort(item.id)}
-            tabIndex={i}
           />
         ) : null}
       </th>

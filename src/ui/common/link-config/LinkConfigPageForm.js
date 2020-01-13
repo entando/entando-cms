@@ -9,7 +9,7 @@ import {
 import { Col, Button } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
-import PageTreeContainer from 'ui/common/page/PageTreeContainer';
+import PageTreeContainer from 'ui/common/page/PageTreeSelectContainer';
 import FormLabel from 'ui/common/form/FormLabel';
 import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 
@@ -21,7 +21,7 @@ PageTreeField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
 };
 
-const label = <FormLabel labelText="Choose a page" />;
+const label = <FormLabel labelId="cms.linkconfig.pageSelect" />;
 
 const LinkConfigPageForm = ({ onCancel, handleSubmit }) => (
   <form className="form-horizontal" onSubmit={handleSubmit}>
