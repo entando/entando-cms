@@ -4,7 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
 const AssetsListItem = ({
-  asset, onEditClicked, onClickDelete, showColumns, onSelect, selected,
+  asset, onEditClicked, onClickDelete, onDuplicateClicked,
+  showColumns, onSelect, selected,
 }) => {
   const {
     createdAt, description, metadata = {}, group, categories, versions, owner,
@@ -27,6 +28,7 @@ const AssetsListItem = ({
     </span>
   ));
   const onEditClickHandle = () => onEditClicked(asset);
+  const onDuplicateClickHandle = () => onDuplicateClicked(asset);
   const onClickDeleteHandle = () => onClickDelete(asset);
   const onDownloadHandle = () => window.open(asset.downloadUrl);
 
@@ -49,6 +51,9 @@ const AssetsListItem = ({
             <MenuItem onClick={onEditClickHandle}>
               <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
             </MenuItem>
+            <MenuItem onClick={onDuplicateClickHandle}>
+              <FormattedMessage id="cms.label.duplicate" defaultMessage="Duplicate" />
+            </MenuItem>
             <MenuItem onClick={onDownloadHandle}>
               <FormattedMessage id="cms.label.download" defaultMessage="Download" />
             </MenuItem>
@@ -65,6 +70,7 @@ const AssetsListItem = ({
 AssetsListItem.propTypes = {
   asset: PropTypes.shape({}).isRequired,
   onEditClicked: PropTypes.func.isRequired,
+  onDuplicateClicked: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   showColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelect: PropTypes.func.isRequired,

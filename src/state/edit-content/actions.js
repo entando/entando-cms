@@ -52,12 +52,15 @@ export const fetchContent = params => dispatch => new Promise((resolve) => {
           const content = json.payload;
           dispatch(setContentEntry(content));
           dispatch(setJoinedCategories(content.categories));
-          const { mainGroup, groups, description } = content;
+          const {
+            mainGroup, groups, description, status,
+          } = content;
           dispatch(
             initialize('editcontentform', {
               ownerGroup: mainGroup,
               joinGroups: groups,
               contentDescription: description,
+              ...(status !== 'PUBLIC' && { status }),
             }),
           );
         } else {
@@ -138,7 +141,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
   const {
-    joinGroups = [], ownerGroup, contentDescription, contentStatus, attributes = [],
+    joinGroups = [], ownerGroup, contentDescription, status, attributes = [],
   } = values;
 
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);
@@ -185,7 +188,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
     description: contentDescription,
     categories,
     attributes: transformedAttributes,
-    ...(contentStatus != null && { status: contentStatus }),
+    ...(status != null && { status }),
   };
   if (workMode === WORK_MODE_ADD) {
     const requestObject = {

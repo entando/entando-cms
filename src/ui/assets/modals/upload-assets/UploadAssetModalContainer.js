@@ -11,7 +11,7 @@ import { getCategoryTree } from 'state/categories/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getLoading } from 'state/loading/selectors';
 import { toggleGroupItemLoading } from 'state/loading/actions';
-import { sendUploadAsset } from 'state/assets/actions';
+import { sendUploadAsset, fetchAssetsCount } from 'state/assets/actions';
 
 import UploadAssetModal from 'ui/assets/modals/upload-assets/UploadAssetModal';
 import { FORM_NAME, LOADING_GROUP } from 'ui/assets/modals/upload-assets/constants';
@@ -70,6 +70,8 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
     Promise.all(uploadPromises)
       .then(() => {
         dispatch(setVisibleModal(''));
+        dispatch(fetchAssetsCount('image'));
+        dispatch(fetchAssetsCount('file'));
       });
   },
 });

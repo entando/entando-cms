@@ -170,6 +170,7 @@ class AssetsList extends Component {
       showColumns,
       hideFooter,
       singleView,
+      onDuplicateClicked,
     } = this.props;
     const pagination = {
       page,
@@ -266,6 +267,7 @@ class AssetsList extends Component {
         showColumns={showColumns}
         onSelect={this.handleAssetSelect}
         selected={selectedAsset === asset.id}
+        onDuplicateClicked={onDuplicateClicked}
       />
     ));
     const tableContent = (
@@ -281,6 +283,7 @@ class AssetsList extends Component {
         assets={assets}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
+        onDuplicateClicked={onDuplicateClicked}
       />
     );
     const emptyContent = (
@@ -408,6 +411,7 @@ AssetsList.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
+  onDuplicateClicked: PropTypes.func.isRequired,
   onResetFilteringCategories: PropTypes.func.isRequired,
   showColumns: PropTypes.arrayOf(PropTypes.string),
   hideFooter: PropTypes.bool,

@@ -1,7 +1,7 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
-  getAssets, editAsset, deleteAsset, createAsset,
+  getAssets, editAsset, deleteAsset, createAsset, cloneAsset,
 } from 'api/assets';
 import { makeRequest } from '@entando/apimanager';
 import { GET_ASSETS_RESPONSE_OK } from 'testutils/mocks/assets';
@@ -93,6 +93,20 @@ describe('api/assets', () => {
       expect(makeRequest).toHaveBeenCalledWith({
         uri: '/api/plugins/cms/assets/1',
         method: 'DELETE',
+        mockResponse: GET_ASSETS_RESPONSE_OK,
+        contentType: 'application/json',
+        useAuthentication: true,
+      });
+      expect(response).toBeInstanceOf(Promise);
+    });
+  });
+  describe('cloneAsset', () => {
+    it('returns a promise', () => {
+      const response = cloneAsset(1);
+      expect(makeRequest).toHaveBeenCalledWith({
+        uri: '/api/plugins/cms/assets/1/clone',
+        method: 'POST',
+        body: {},
         mockResponse: GET_ASSETS_RESPONSE_OK,
         contentType: 'application/json',
         useAuthentication: true,
