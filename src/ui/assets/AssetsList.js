@@ -78,7 +78,10 @@ const fileTypes = [
 class AssetsList extends Component {
   constructor(props) {
     super(props);
-    this.state = { mobile: window.innerWidth < 992 };
+    this.state = {
+      mobile: window.innerWidth < 992,
+      selectedAsset: null,
+    };
     this.messages = defineMessages({
       filterPlaceholder: {
         id: 'cms.assets.list.filterBy',
@@ -87,6 +90,7 @@ class AssetsList extends Component {
     });
     this.onPerPageSelect = this.onPerPageSelect.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.handleAssetSelect = this.handleAssetSelect.bind(this);
   }
 
   componentDidMount() {
@@ -129,6 +133,14 @@ class AssetsList extends Component {
     onRemoveActiveFilter(item, activeFilters);
   }
 
+  handleAssetSelect(code) {
+    this.setState({
+      selectedAsset: code,
+    });
+    const { onSelect } = this.props;
+    onSelect(code);
+  }
+
   removeAllActiveFilters() {
     const { onRemoveAllActiveFilters, onResetFilteringCategories } = this.props;
     onRemoveAllActiveFilters();
@@ -155,6 +167,9 @@ class AssetsList extends Component {
       perPageOptions,
       onAssetSelected,
       onClickDelete,
+      showColumns,
+      hideFooter,
+      singleView,
       onDuplicateClicked,
     } = this.props;
     const pagination = {
@@ -162,14 +177,14 @@ class AssetsList extends Component {
       perPage,
       perPageOptions,
     };
-    const { mobile } = this.state;
+    const { mobile, selectedAsset } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
 
     const notSortable = ['actions', 'preview', 'categories'];
     const headerSorter = item => (notSortable.indexOf(item.name) === -1
       ? onApplySort(item.id) : null);
-    const renderHeader = headers.map((item, i) => (
+    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map((item, i) => (
       <th
         width={item.width}
         key={item.name}
@@ -249,6 +264,9 @@ class AssetsList extends Component {
         asset={asset}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
+        showColumns={showColumns}
+        onSelect={this.handleAssetSelect}
+        selected={selectedAsset === asset.id}
         onDuplicateClicked={onDuplicateClicked}
       />
     ));
@@ -282,7 +300,7 @@ class AssetsList extends Component {
       <CardGrid>
         <div className="AssetsList__files-header">
           {renderFileTypes}
-          {mobile ? null : (
+          {mobile || singleView ? null : (
             <div className="AssetsList__view-options">
               <span
                 className={gridViewClass}
@@ -340,7 +358,7 @@ class AssetsList extends Component {
     return (
       <div className="AssetsList__wrap">
         {content}
-        {!loading && (
+        {!loading && !hideFooter && (
           <div className="AssetsList__footer">
             <Grid>
               <PaginationRow
@@ -395,6 +413,10 @@ AssetsList.propTypes = {
   onClickDelete: PropTypes.func.isRequired,
   onDuplicateClicked: PropTypes.func.isRequired,
   onResetFilteringCategories: PropTypes.func.isRequired,
+  showColumns: PropTypes.arrayOf(PropTypes.string),
+  hideFooter: PropTypes.bool,
+  singleView: PropTypes.bool,
+  onSelect: PropTypes.func,
 };
 
 AssetsList.defaultProps = {
@@ -407,6 +429,10 @@ AssetsList.defaultProps = {
     direction: 'ASC',
   },
   perPageOptions: [5, 10, 15, 25, 50],
+  showColumns: headers.map(({ name }) => name),
+  hideFooter: false,
+  singleView: false,
+  onSelect: () => {},
 };
 
 export default AssetsList;
