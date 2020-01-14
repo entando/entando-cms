@@ -44,9 +44,6 @@ const CloneAssetModal = ({ onConfirmClone, info }) => {
         <EmptyStateIcon name="exclamation" type="fa" className="DeleteContentModal__icon" />
         <EmptyStateTitle>
           <FormattedMessage id={title} />
-          <div style={{ whiteSpace: 'pre-line' }}>
-            &nbsp;{name}
-          </div>
         </EmptyStateTitle>
         <EmptyStateInfo className="DeleteContentModal__info">
           <FormattedMessage

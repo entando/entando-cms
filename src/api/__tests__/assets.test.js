@@ -105,7 +105,8 @@ describe('api/assets', () => {
       const response = cloneAsset(1);
       expect(makeRequest).toHaveBeenCalledWith({
         uri: '/api/plugins/cms/assets/1/clone',
-        method: 'GET',
+        method: 'POST',
+        body: {},
         mockResponse: GET_ASSETS_RESPONSE_OK,
         contentType: 'application/json',
         useAuthentication: true,
