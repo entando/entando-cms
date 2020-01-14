@@ -12,12 +12,15 @@ import GenericModal from 'ui/common/modal/GenericModal';
 import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
 import LinkConfigPageForm from 'ui/common/link-config/LinkConfigPageForm';
 import LinkConfigContentForm from 'ui/common/link-config/LinkConfigContentForm';
+import LinkConfigResourceForm from 'ui/common/link-config/LinkConfigResourceForm';
 
 const getLinkUrl = (type, value) => `#!${type};${value}!#`;
 
 const ID = 'LinkConfigModal';
 
-const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
+const LinkConfigModal = ({
+  isVisible, hasResourceTab, onClose, onSave,
+}) => {
   const handleSubmit = (values) => {
     const linkObj = { ...values.attributes };
 
@@ -63,6 +66,13 @@ const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
     </>
   );
 
+  const renderedResourceTabTitle = (
+    <>
+      <Icon name="book" />&nbsp;
+      <span>Link to a resource</span>
+    </>
+  );
+
   return (
     <GenericModal
       modalClassName="LinkConfigModal"
@@ -87,6 +97,11 @@ const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
         <Tab eventKey="content" title={renderedContentTabTitle}>
           <LinkConfigContentForm onSubmit={handleSubmit} onCancel={onClose} />
         </Tab>
+        {hasResourceTab && (
+          <Tab eventKey="resource" title={renderedResourceTabTitle}>
+            <LinkConfigResourceForm onSubmit={handleSubmit} onCancel={onClose} />
+          </Tab>
+        )}
       </Tabs>
     </GenericModal>
   );
@@ -94,8 +109,13 @@ const LinkConfigModal = ({ isVisible, onClose, onSave }) => {
 
 LinkConfigModal.propTypes = {
   isVisible: PropTypes.bool.isRequired,
+  hasResourceTab: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+};
+
+LinkConfigModal.defaultProps = {
+  hasResourceTab: false,
 };
 
 export default LinkConfigModal;
