@@ -10,6 +10,7 @@ import AssetsCountContainer from 'ui/assets/AssetsCountContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
 import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
+import CloneAssetModalContainer from 'ui/assets/modals/clone-asset/CloneAssetModalContainer';
 
 const AssetsListPage = () => (
   <Grid fluid>
@@ -52,6 +53,7 @@ const AssetsListPage = () => (
     </Row>
     <EditAssetFormModalContainer />
     <DeleteAssetModalContainer />
+    <CloneAssetModalContainer />
   </Grid>
 );
 

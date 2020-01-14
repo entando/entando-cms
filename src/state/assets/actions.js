@@ -30,7 +30,7 @@ import {
   getListFilterParams,
 } from 'state/assets/selectors';
 import {
-  getAssets, createAsset, editAsset, deleteAsset,
+  getAssets, createAsset, editAsset, deleteAsset, cloneAsset,
 } from 'api/assets';
 import { getPagination } from 'state/pagination/selectors';
 
@@ -302,4 +302,25 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
     .catch((error) => {
       resolve({ error, hasError: true });
     });
+});
+
+
+export const sendCloneAsset = id => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('assets'));
+  cloneAsset(id)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(fetchAssetsPaged());
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+        dispatch(toggleLoading('assets'));
+      });
+    })
+    .catch(() => { });
 });

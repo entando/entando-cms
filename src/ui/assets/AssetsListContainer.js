@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import {
   getAssetsList,
   getFilteringCategories,
@@ -34,6 +35,7 @@ import AssetsList from 'ui/assets/AssetsList';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
+import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
@@ -108,6 +110,10 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
     dispatch(setInfo(asset));
   },
+  onDuplicateClicked: (asset) => {
+    dispatch(setVisibleModal(CLONE_ASSET_MODAL_ID));
+    dispatch(setInfo(Object.assign({}, { id: asset.id, name: asset.name })));
+  },
 });
 
 const AssetsListContainer = connect(
@@ -119,4 +125,4 @@ const AssetsListContainer = connect(
   },
 )(AssetsList);
 
-export default AssetsListContainer;
+export default injectIntl(AssetsListContainer);
