@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import { getGroupsMap } from 'state/groups/selectors';
+import { getCategoriesMap } from 'state/categories/selectors';
 import { getDomain } from '@entando/apimanager';
 
 export const removePixelWord = word => word.replace(' pixels', '');
@@ -57,17 +58,19 @@ export const getAssetsMap = createSelector(
 );
 
 export const getAssetsList = createSelector(
-  [getAssetsMap, getAssetsIdList, getGroupsMap, getDomain],
-  (assetsMap, idList, groups, domain) => idList.map((id) => {
+  [getAssetsMap, getAssetsIdList, getGroupsMap, getDomain, getCategoriesMap],
+  (assetsMap, idList, groups, domain, categoriesMap) => idList.map((id) => {
     const asset = condenseAssetInfo(assetsMap[id], domain);
     const isImg = asset.type === 'image';
-    const { versions } = asset;
+    const { versions, categories = [] } = asset;
+    const namedCategories = categories.map(c => categoriesMap[c] || c);
     return {
       ...asset,
       downloadUrl: isImg ? versions[0].path : asset.path,
       previewUrl: isImg ? versions[1].path : null,
       previewLgUrl: isImg ? versions[3].path : null,
       group: groups[asset.group] || asset.group,
+      categories: namedCategories,
     };
   }),
 );

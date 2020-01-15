@@ -115,7 +115,7 @@ export const fetchCategoryTreeAll = () => dispatch => new Promise((resolve) => {
   dispatch(fetchCategoryNode(ROOT_CODE)).then((rootCat) => {
     fetchBranch(ROOT_CODE).then((catResult) => {
       loadChildrenBranch(catResult).then((fullResult) => {
-        const allCats = [rootCat, ...flattenDeep(fullResult)];
+        const allCats = [rootCat.payload, ...flattenDeep(fullResult)];
         dispatch(setCategories(allCats));
         resolve(allCats);
       });

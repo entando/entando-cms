@@ -36,7 +36,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, { intl }) => ({
   onModalOpen: (info) => {
     dispatch(fetchCategoryTreeAll());
-    dispatch(initialize('editassetformmodal', info));
+    dispatch(initialize('editassetformmodal', Object.assign({}, info, { categories: info.categories.map(c => c.code) })));
   },
   onModalClose: () => {
     dispatch(setVisibleModal(''));

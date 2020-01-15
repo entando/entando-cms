@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CategoryTreeFilter from 'ui/categories/filter/CategoryTreeFilter';
 
-import { handleExpandCategory } from 'state/categories/actions';
+import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { setAssetCategoryFilter } from 'state/assets/actions';
 import { setContentCategoryFilter, setJoinContentCategory } from 'state/contents/actions';
 import { getCategoryTree } from 'state/categories/selectors';
@@ -13,7 +13,7 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onExpandCategory: categoryCode => dispatch(handleExpandCategory(categoryCode)),
+  onDidMount: () => dispatch(fetchCategoryTreeAll()),
   onCheckCategory: (category, filterSubject) => {
     if (filterSubject === 'content') {
       dispatch(setContentCategoryFilter(category));

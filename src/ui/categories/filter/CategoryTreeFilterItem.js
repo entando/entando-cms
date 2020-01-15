@@ -13,6 +13,7 @@ const CategoryTreeFilterItem = ({
   onExpandCategory,
   onCheckCategory,
   filterSubject,
+  expanded,
 }) => {
   const onClickExpand = () => {
     if (!category.isEmpty) {
@@ -51,7 +52,7 @@ const CategoryTreeFilterItem = ({
           onClick={onClickExpand}
           onKeyDown={onClickExpand}
         >
-          {category.isEmpty ? null : <TreeNodeExpandedIcon expanded={category.expanded} />}
+          {category.isEmpty ? null : <TreeNodeExpandedIcon expanded={expanded} />}
         </span>
       </td>
     </tr>
@@ -66,11 +67,13 @@ CategoryTreeFilterItem.propTypes = {
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
   filterSubject: PropTypes.string.isRequired,
+  expanded: PropTypes.bool,
 };
 
 CategoryTreeFilterItem.defaultProps = {
   onExpandCategory: () => {},
   onCheckCategory: () => {},
+  expanded: false,
 };
 
 export default CategoryTreeFilterItem;

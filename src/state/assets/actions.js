@@ -4,6 +4,8 @@ import {
   TOAST_ERROR,
   clearErrors,
 } from '@entando/messages';
+import moment from 'moment';
+import { formValueSelector } from 'redux-form';
 import _, { compact } from 'lodash';
 import {
   convertToQueryString,
@@ -203,43 +205,55 @@ export const filterAssetsBySearch = (
   paginationMetadata = pageDefault,
 ) => (dispatch, getState) => {
   const filt = getListFilterParams(getState());
-  let { formValues, operators } = filt;
-  const { sorting } = filt;
-  if (!formValues) {
-    formValues = {};
-    operators = {};
-  } else {
-    delete formValues.description;
-    delete operators.description;
-    delete formValues.categories;
-    delete operators.categories;
-  }
-  if (keyword !== '') {
-    formValues.description = keyword;
-    operators.description = FILTER_OPERATORS.LIKE;
-  }
-  dispatch(setSearchKeyword(keyword));
-  const filters = { formValues, operators, sorting };
-  dispatch(setListFilterParams(filters));
-  const page = getPagination(getState()) || paginationMetadata;
-  return dispatch(fetchAssetsPaged(page));
-};
-
-export const advancedSearchFilter = (
-  values, paginationMetadata = pageDefault,
-) => (dispatch, getState) => {
-  const filt = getListFilterParams(getState());
-  const { formValues, operators } = filt;
-  const { sorting } = filt;
+  const { formValues, operators, sorting } = filt;
   const filters = { formValues, operators, sorting };
   if (!formValues) {
     filters.formValues = {};
     filters.operators = {};
   }
+  if (keyword) {
+    filters.formValues.description = keyword;
+    filters.operators.description = FILTER_OPERATORS.LIKE;
+  } else {
+    delete formValues.description;
+    delete operators.description;
+  }
+  dispatch(setSearchKeyword(keyword));
+  dispatch(setListFilterParams(filters));
+  const page = getPagination(getState()) || paginationMetadata;
+  const params = compact([convertToQueryString(filters).slice(1)]).join('&').replace('toDateTimeString', 'createdAt');
+  return dispatch(fetchAssets(page, `?${params}`));
+};
+
+export const advancedSearchFilter = (
+  values, paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
+  const state = getState();
+  const filt = getListFilterParams(state);
+  const { formValues = {}, operators = {}, sorting } = filt;
+  const fileType = getFileType(state);
+  const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
+  const filters = { formValues, operators, sorting };
+  const keyword = formValueSelector('assetSearchForm')(state, 'keyword');
+
+  if (keyword) {
+    filters.formValues.description = keyword;
+    filters.operators.description = FILTER_OPERATORS.LIKE;
+  } else {
+    delete filters.formValues.description;
+    delete filters.operators.description;
+  }
   const {
     group, owner, fromDate, toDate,
   } = values;
+  const getDateTime = date => moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD-hh.mm.ss');
   const valuesFilters = {
+    ...(toDate && {
+      toDateTimeString: {
+        value: getDateTime(toDate),
+        op: FILTER_OPERATORS.LESS_THAN,
+      },
+    }),
     ...(group && {
       group: {
         value: group,
@@ -254,14 +268,8 @@ export const advancedSearchFilter = (
     }),
     ...(fromDate && {
       createdAt: {
-        value: fromDate,
+        value: getDateTime(fromDate),
         op: FILTER_OPERATORS.GREATER_THAN,
-      },
-    }),
-    ...(toDate && {
-      createdAt: {
-        value: toDate,
-        op: FILTER_OPERATORS.LESS_THAN,
       },
     }),
   };
@@ -272,7 +280,8 @@ export const advancedSearchFilter = (
     filters.operators[key] = val.op;
     return null;
   });
-  const params = compact([convertToQueryString(filters).slice(1)]).join('&');
+  dispatch(setListFilterParams(filters));
+  const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&').replace('toDateTimeString', 'createdAt');
   return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
 
