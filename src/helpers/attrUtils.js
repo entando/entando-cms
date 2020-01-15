@@ -4,7 +4,7 @@ import {
   TYPE_COMPOSITE, TYPE_LIST, TYPE_MONOLIST,
   TYPE_DATE, TYPE_TIMESTAMP, TYPE_BOOLEAN,
   TYPE_CHECKBOX, TYPE_THREESTATE, TYPE_TEXT,
-  TYPE_LONGTEXT, TYPE_HYPERTEXT,
+  TYPE_LONGTEXT, TYPE_HYPERTEXT, TYPE_LINK,
 } from 'state/content-type/const';
 
 export const getAttrInitialValue = (attr) => {
@@ -36,6 +36,12 @@ export const getAttrInitialValue = (attr) => {
     case TYPE_TEXT:
     case TYPE_LONGTEXT:
     case TYPE_HYPERTEXT:
+      initialValue.values = {
+        en: '',
+      };
+      break;
+    case TYPE_LINK:
+      initialValue.value = {};
       initialValue.values = {
         en: '',
       };

@@ -155,7 +155,6 @@ class RichTextEditor extends Component {
   }
 
   handleLinkConfigSave(values) {
-    console.log(values);
     const { url } = values;
     this.quill.format('link', url);
     const { onLinkModalClose } = this.props;
@@ -182,6 +181,7 @@ class RichTextEditor extends Component {
         />
         <LinkConfigModal
           isVisible={linkModalVisible}
+          hasResourceTab
           onSave={this.handleLinkConfigSave}
           onClose={onLinkModalClose}
         />

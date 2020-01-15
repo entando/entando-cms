@@ -4,7 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
 const AssetsListItem = ({
-  asset, onEditClicked, onClickDelete,
+  asset, onEditClicked, onClickDelete, onDuplicateClicked,
+  showColumns, onSelect, selected,
 }) => {
   const {
     createdAt, description, metadata = {}, group, categories, versions, owner,
@@ -27,30 +28,41 @@ const AssetsListItem = ({
     </span>
   ));
   const onEditClickHandle = () => onEditClicked(asset);
+  const onDuplicateClickHandle = () => onDuplicateClicked(asset);
   const onClickDeleteHandle = () => onClickDelete(asset);
   const onDownloadHandle = () => window.open(asset.downloadUrl);
+
+  const handleItemClick = () => {
+    onSelect(asset.id);
+  };
+
   return (
-    <tr className="AssetsList__item" key={asset.id}>
-      <td className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>
-      <td>{description}</td>
-      <td>{type}</td>
-      <td>{owner || 'N/A'}</td>
-      <td>{new Date(createdAt).toLocaleString()}</td>
-      <td>{group.name || group}</td>
-      <td>{renderCategories}</td>
-      <td>
-        <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
-          <MenuItem onClick={onEditClickHandle}>
-            <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
-          </MenuItem>
-          <MenuItem onClick={onDownloadHandle}>
-            <FormattedMessage id="cms.label.download" defaultMessage="Download" />
-          </MenuItem>
-          <MenuItem onClick={onClickDeleteHandle}>
-            <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-          </MenuItem>
-        </DropdownKebab>
-      </td>
+    <tr className={`AssetsList__item ${selected ? 'selected' : ''}`} key={asset.id} onClick={handleItemClick}>
+      {[
+        <td key="preview" className={fileType === 'file' ? 'text-center' : ''}>{previewRender}</td>,
+        <td key="name">{description}</td>,
+        <td key="type">{type}</td>,
+        <td key="uploadedBy">{owner || 'N/A'}</td>,
+        <td key="uploadedAt">{new Date(createdAt).toLocaleString()}</td>,
+        <td key="group">{group.name || group}</td>,
+        <td key="categories">{renderCategories}</td>,
+        <td key="actions">
+          <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
+            <MenuItem onClick={onEditClickHandle}>
+              <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+            </MenuItem>
+            <MenuItem onClick={onDuplicateClickHandle}>
+              <FormattedMessage id="cms.label.duplicate" defaultMessage="Duplicate" />
+            </MenuItem>
+            <MenuItem onClick={onDownloadHandle}>
+              <FormattedMessage id="cms.label.download" defaultMessage="Download" />
+            </MenuItem>
+            <MenuItem onClick={onClickDeleteHandle}>
+              <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+            </MenuItem>
+          </DropdownKebab>
+        </td>,
+      ].filter(({ key }) => showColumns.includes(key))}
     </tr>
   );
 };
@@ -58,7 +70,15 @@ const AssetsListItem = ({
 AssetsListItem.propTypes = {
   asset: PropTypes.shape({}).isRequired,
   onEditClicked: PropTypes.func.isRequired,
+  onDuplicateClicked: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
+  showColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onSelect: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
+};
+
+AssetsListItem.defaultProps = {
+  selected: false,
 };
 
 export default AssetsListItem;

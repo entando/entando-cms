@@ -19,6 +19,7 @@ import {
   setAssetsCount,
   fetchAssetsCount,
   fetchAssetsPaged,
+  sendCloneAsset,
 } from 'state/assets/actions';
 import { SORT_DIRECTIONS } from '@entando/utils';
 import {
@@ -36,7 +37,9 @@ import {
 } from 'state/assets/types';
 import { SET_PAGE } from 'state/pagination/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
-import { getAssets, editAsset, deleteAsset } from 'api/assets';
+import {
+  getAssets, editAsset, deleteAsset, cloneAsset,
+} from 'api/assets';
 
 const ADD_ERRORS = 'errors/add-errors';
 const CLEAR_ERRORS = 'errors/clear-errors';
@@ -50,6 +53,7 @@ jest.mock('api/assets', () => ({
   getAssets: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
   editAsset: jest.fn(res => mockApi({ payload: res })()),
   deleteAsset: jest.fn(id => mockApi({ payload: { id } })()),
+  cloneAsset: jest.fn(id => mockApi({ payload: { id } })()),
 }));
 
 describe('state/assets/actions', () => {
@@ -510,6 +514,46 @@ describe('state/assets/actions', () => {
       store.dispatch(sendDeleteAsset(2)).then(() => {
         const actions = store.getActions().map(action => action.type);
         expect(actions).toHaveLength(3);
+        expect(actions.includes(ADD_ERRORS)).toBe(true);
+        expect(actions.includes(CLEAR_ERRORS)).toBe(true);
+        expect(actions.includes(ADD_TOAST)).toBe(true);
+        done();
+      }).catch(done.fail);
+    });
+  });
+
+
+  describe('cloneAsset()', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], filterParams: {}, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+    });
+    it('clone asset', (done) => {
+      store
+        .dispatch(sendCloneAsset(1))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(3);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('when cloning asset it reports errors succesfully', (done) => {
+      cloneAsset.mockImplementationOnce(mockApi({ errors: true }));
+      store.dispatch(sendCloneAsset(2)).then(() => {
+        const actions = store.getActions().map(action => action.type);
+        expect(actions).toHaveLength(5);
         expect(actions.includes(ADD_ERRORS)).toBe(true);
         expect(actions.includes(CLEAR_ERRORS)).toBe(true);
         expect(actions.includes(ADD_TOAST)).toBe(true);
