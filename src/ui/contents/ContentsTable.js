@@ -115,7 +115,7 @@ class ContentsTable extends Component {
             };
             break;
           case 'restriction':
-            rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center">{<span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />}</td>;
+            rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center"><span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} /></td>;
             break;
           case 'typeCode':
             rowCellFormatter = (typeCode, { rowData: { typeDescription } }) => (
@@ -171,24 +171,18 @@ class ContentsTable extends Component {
                     <MenuItem onClick={() => onEditContent(rowData.id)}>
                       <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
                     </MenuItem>
-                    {
-                      <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
-                        <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-                      </MenuItem>
-                    }
-                    {
-                      <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
-                        <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
-                      </MenuItem>
-                    }
+                    <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
+                      <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                    </MenuItem>
+                    <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
+                      <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                    </MenuItem>
                     <MenuItem onClick={() => onClickClone(rowData)}>
                       <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
                     </MenuItem>
-                    {
-                      <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
-                        <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
-                      </MenuItem>
-                    }
+                    <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
+                      <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                    </MenuItem>
                   </Table.DropdownKebab>
                 </div>
               </Table.Actions>];

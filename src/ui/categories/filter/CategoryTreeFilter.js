@@ -111,7 +111,9 @@ class CategoryTreeFilter extends React.Component {
 CategoryTreeFilter.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   onExpandCategory: PropTypes.func,
-  paginationOptions: PropTypes.shape({}).isRequired,
+  paginationOptions: PropTypes.shape({
+    perPage: PropTypes.number,
+  }).isRequired,
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
   onApplyFilteredSearch: PropTypes.func,

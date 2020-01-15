@@ -58,7 +58,10 @@ const CloneAssetModal = ({ onConfirmClone, info }) => {
 
 CloneAssetModal.propTypes = {
   onConfirmClone: PropTypes.func.isRequired,
-  info: PropTypes.shape({}),
+  info: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+  }),
 };
 
 CloneAssetModal.defaultProps = {

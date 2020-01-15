@@ -8,7 +8,7 @@ import UploadAssetModalContainer from 'ui/assets/modals/upload-assets/UploadAsse
 const AssetsUpload = ({ onDrop }) => {
   const handleDrop = useCallback((acceptedFiles) => {
     onDrop(acceptedFiles);
-  }, []);
+  }, [onDrop]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: handleDrop });
 

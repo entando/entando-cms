@@ -102,7 +102,11 @@ class MultiFilterSelectRenderer extends Component {
 
 
 MultiFilterSelectRenderer.propTypes = {
-  fields: PropTypes.shape({}).isRequired,
+  fields: PropTypes.shape({
+    removeAll: PropTypes.func,
+    push: PropTypes.func,
+    remove: PropTypes.func,
+  }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   selectedValues: PropTypes.arrayOf(PropTypes.string),
   valueKey: PropTypes.string,

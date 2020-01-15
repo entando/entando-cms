@@ -61,7 +61,14 @@ const CategoryTreeFilterItem = ({
 CategoryTreeFilterItem.propTypes = {
   i: PropTypes.number.isRequired,
   checked: PropTypes.bool.isRequired,
-  category: PropTypes.shape({}).isRequired,
+  category: PropTypes.shape({
+    isEmpty: PropTypes.bool,
+    code: PropTypes.string,
+    expanded: PropTypes.bool,
+    titles: PropTypes.shape({}),
+    depth: PropTypes.number,
+    loading: PropTypes.bool,
+  }).isRequired,
   onExpandCategory: PropTypes.func,
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,

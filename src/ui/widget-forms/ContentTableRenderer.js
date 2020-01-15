@@ -109,7 +109,14 @@ const ContentTableRenderer = ({
 
 ContentTableRenderer.propTypes = {
   intl: intlShape.isRequired,
-  fields: PropTypes.shape({}).isRequired,
+  fields: PropTypes.shape({
+    push: PropTypes.func,
+    get: PropTypes.func,
+    remove: PropTypes.func,
+    swap: PropTypes.func,
+    map: PropTypes.func,
+    length: PropTypes.number,
+  }).isRequired,
   multipleContentsMode: PropTypes.bool,
   contentModels: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

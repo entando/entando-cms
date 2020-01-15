@@ -165,7 +165,9 @@ EditAssetFormModalBody.propTypes = {
   isImg: PropTypes.bool.isRequired,
   imgSrc: PropTypes.string.isRequired,
   onModalOpen: PropTypes.func.isRequired,
-  assetInfo: PropTypes.shape({}).isRequired,
+  assetInfo: PropTypes.shape({
+    metadata: PropTypes.shape({}),
+  }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   group: PropTypes.shape({}).isRequired,
   language: PropTypes.string.isRequired,

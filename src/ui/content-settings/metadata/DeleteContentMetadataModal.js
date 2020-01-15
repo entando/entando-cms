@@ -56,6 +56,7 @@ DeleteContentMetadataModal.propTypes = {
   info: PropTypes.shape({
     id: PropTypes.number,
     descr: PropTypes.string,
+    key: PropTypes.string,
   }),
 };
 

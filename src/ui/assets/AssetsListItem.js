@@ -68,7 +68,20 @@ const AssetsListItem = ({
 };
 
 AssetsListItem.propTypes = {
-  asset: PropTypes.shape({}).isRequired,
+  asset: PropTypes.shape({
+    categories: PropTypes.arrayOf(PropTypes.string),
+    description: PropTypes.string,
+    createdAt: PropTypes.string,
+    id: PropTypes.string,
+    owner: PropTypes.string,
+    previewUrl: PropTypes.string,
+    downloadUrl: PropTypes.string,
+    metadata: PropTypes.shape({}),
+    group: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+    versions: PropTypes.arrayOf(PropTypes.shape({})),
+  }).isRequired,
   onEditClicked: PropTypes.func.isRequired,
   onDuplicateClicked: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,

@@ -189,6 +189,7 @@ AttributeFormBody.propTypes = {
     listAttribute: PropTypes.bool,
     enumeratorExtractorBeans: PropTypes.arrayOf(PropTypes.string),
     enumeratorMapExtractorBeans: PropTypes.arrayOf(PropTypes.shape({})),
+    code: PropTypes.string,
   }).isRequired,
   validation: PropTypes.shape({
     minLength: PropTypes.string,

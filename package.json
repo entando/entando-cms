@@ -38,9 +38,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "coverage": "react-scripts test --coverage",
+    "coverage": "react-scripts test --coverage --watchAll=false",
     "babel": "babel src -d dist && node-sass --output-style compressed src/sass/index.scss -o dist/css",
     "prepublish": "npm run babel",
     "jenkins": "node commands/publish.js"
@@ -186,7 +186,7 @@
     "react-dom": "^16.8.6",
     "react-intl": "^2.8.0",
     "react-redux": "^7.0.1",
-    "react-scripts": "2.1.8",
+    "react-scripts": "3.3.0",
     "redux": "^4.0.1",
     "redux-form": "^8.2.0",
     "redux-mock-store": "^1.5.3",
