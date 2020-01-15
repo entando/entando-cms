@@ -174,9 +174,8 @@ describe('editContent thunks', () => {
       .catch(done.fail);
   });
 
-  selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
-
   it('save new content', (done) => {
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
@@ -184,10 +183,11 @@ describe('editContent thunks', () => {
       form: { editcontentform: { values: {} } },
     });
     store
-      .dispatch(saveContent({})).then(() => done());
+      .dispatch(saveContent({ attributes: [{ value: 'test' }] })).then(() => done());
   });
 
   it('save add content', (done) => {
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Boolean' }]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } } },
@@ -195,6 +195,6 @@ describe('editContent thunks', () => {
       form: { editcontentform: { values: {} } },
     });
     store
-      .dispatch(saveContent({ contentStatus: 'ready' })).then(() => done());
+      .dispatch(saveContent({ contentStatus: 'ready', attributes: [{ value: 'test' }] })).then(() => done());
   });
 });

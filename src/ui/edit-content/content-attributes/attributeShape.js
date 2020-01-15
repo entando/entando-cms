@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 const attributeShape = {
   // contentType attribute properties
+
   code: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   name: PropTypes.string,
@@ -48,11 +49,13 @@ const attributeShape = {
   nestedAttribute: PropTypes.object,
   compositeAttributes: PropTypes.array,
 
-  // content attribute properties,
+  // content attribute properties
+
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
     PropTypes.bool,
+    PropTypes.object,
   ]),
   values: PropTypes.object,
   elements: PropTypes.array,

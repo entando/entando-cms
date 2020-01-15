@@ -120,6 +120,7 @@ const AttributeField = ({
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
+      actualName = name;
       break;
     case TYPE_MONOTEXT:
       AttributeFieldComp = MonotextAttributeField;
