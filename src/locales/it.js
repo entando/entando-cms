@@ -39,7 +39,7 @@ export default {
     'cms.label.to': 'A',
     'cms.label.equal': 'Uguale a',
     'cms.label.date.placeholder': 'gg/mm/anno',
-    'cms.label.presenter.placeholder': 'Premeri INVIO per salvare le modifiche',
+    'cms.label.presenter.placeholder': 'Premere INVIO per salvare le modifiche',
     'cms.label.modal.confirmdelete': 'Sei sicuro di voler rimuovere {code}?',
     'cms.label.files': 'File',
     'cms.label.images': 'Immagini',
@@ -144,7 +144,7 @@ export default {
       "Inserisci una configuration tipo 'key1=value1,key2=value2,key3=value3'",
     'cms.contenttype.enumeratorStaticItemsSeparator': 'Separatore',
     'cms.contenttype.enumeratorExtractorBean': 'Estrattore del bean name',
-    'cms.contenttype.ognl.validation': 'Validazion - OGNL',
+    'cms.contenttype.ognl.validation': 'Validazione - OGNL',
     'cms.contenttype.ognl.validation.help1':
       "In questa sezione puoi inserire le validazioni sull'Attributo. ",
     'cms.contenttype.ognl.validation.help2':
@@ -153,7 +153,7 @@ export default {
       "Sono disponibili: la mappa delle lingue del sistema (#langs) e l'Entità a cui è associato (#entity).",
     'cms.contenttype.ognl.validation.help4':
       "Inoltre per gli elementi di una Lista o di un Composito è possibile accedere al padre dell'attributo (#parent) e per gli elementi di una Lista si ha a disposizione l'indice (#index).",
-    'cms.contenttype.ognl.expression': 'OGNL Expression ',
+    'cms.contenttype.ognl.expression': 'Espressione OGNL ',
     'cms.contenttype.apply.expression': "Usa l'espressione solo se l'attributo è valorizzato",
     'cms.contenttype.ognl.validation.add.message.help':
       "Si possono inserire sia un messagio d'aiuto che un messagio di errore, oppure una chiave per collegarli alle etichette di sistema",
@@ -341,6 +341,9 @@ export default {
     'cms.assets.form.move': 'Mossa',
     'cms.assets.form.pan': 'Pan',
     'cms.assets.form.zoom': 'Zoom',
+    'cms.assets.list.updatedBy': 'Aggiornato da',
+    'cms.assets.list.uploadedFrom': 'Caricato da',
+    'cms.assets.list.searchByUsername': 'Cerca per nome utente',
     'cms.assets.form.cropsave': 'Applicare',
     'cms.assets.form.cropcancel': 'Ritornare',
     'cms.assets.form.updated': '"{name}" dell\'asset aggiornato.',

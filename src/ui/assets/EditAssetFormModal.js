@@ -47,8 +47,8 @@ const EditAssetFormModalBody = ({
 
   const metadata = assetInfo.metadata || {};
 
-  const renderMetadataRows = Object.keys(metadata).map(k => metadata[k] && (
-    <tr>
+  const renderMetadataRows = Object.keys(metadata).map(k => (metadata[k] ? (
+    <tr key={k}>
       <td>
         {k}
       </td>
@@ -56,7 +56,7 @@ const EditAssetFormModalBody = ({
         {metadata[k]}
       </td>
     </tr>
-  ));
+  ) : null));
 
   const renderMetadata = isImg ? (
     <Row>

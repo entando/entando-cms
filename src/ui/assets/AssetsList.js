@@ -14,7 +14,6 @@ import {
   Filter,
   Toolbar,
 } from 'patternfly-react';
-import AssetSearchFormContainer from 'ui/assets/search/AssetSearchFormContainer';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 import AssetsListItem from 'ui/assets/AssetsListItem';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
@@ -261,6 +260,7 @@ class AssetsList extends Component {
     const assetsListItems = assets.map(asset => (
       <AssetsListItem
         key={asset.id}
+        language={language}
         asset={asset}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
@@ -321,7 +321,6 @@ class AssetsList extends Component {
         </div>
         <Row className="AssetsList__body">
           <Col xs={mobile ? 12 : 2} className="no-padding">
-            <AssetSearchFormContainer />
             <div className="AssetsList__tree-container">
               <CategoryTreeFilterContainer
                 language={language}

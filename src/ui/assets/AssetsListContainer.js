@@ -27,7 +27,6 @@ import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
 } from 'state/pagination/selectors';
 import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
-import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import AssetsList from 'ui/assets/AssetsList';
@@ -57,7 +56,6 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setListFilterParams({}));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchAssetsPaged());
-    dispatch(fetchCategoryTree());
   },
   onApplyFilteredSearch: (filters) => {
     dispatch(setActiveFilters(filters));

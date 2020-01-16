@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
+import SearchFormInput from 'ui/common/form/RenderSearchFormInput';
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
 import CategoryTreeFileItem from 'ui/categories/filter/CategoryTreeFilterItem';
 
@@ -10,18 +11,25 @@ class CategoryTreeFilter extends React.Component {
     super(props);
     this.state = {
       treeExpanded: true,
+      searchFilter: null,
     };
-    this.onExpandTree = this.onExpandTree.bind(this);
     this.onApply = this.onApply.bind(this);
+    this.onExpandTree = this.onExpandTree.bind(this);
+    this.onClearSearch = this.onClearSearch.bind(this);
+    this.onSearchValueChange = this.onSearchValueChange.bind(this);
   }
 
+  componentDidMount() {
+    const { onDidMount } = this.props;
+    onDidMount();
+  }
+
+
   onExpandTree() {
-    const { onExpandCategory } = this.props;
     const { treeExpanded } = this.state;
     this.setState({
       treeExpanded: !treeExpanded,
     });
-    onExpandCategory('home');
   }
 
   onApply(cat, fileType) {
@@ -46,11 +54,22 @@ class CategoryTreeFilter extends React.Component {
     onApplyFilteredSearch(categories, fetchParams);
   }
 
+  onSearchValueChange(keyword) {
+    this.setState({
+      searchFilter: keyword === '' ? keyword : new RegExp(`${keyword}`, 'i'),
+    });
+  }
+
+  onClearSearch() {
+    this.setState({
+      searchFilter: '',
+    });
+  }
+
   render() {
     const {
       language,
       categories,
-      onExpandCategory,
       filteringCategories,
       onCheckCategory,
       minimal,
@@ -58,17 +77,20 @@ class CategoryTreeFilter extends React.Component {
       hideIfEmpty,
     } = this.props;
 
-    const { treeExpanded } = this.state;
+    const { treeExpanded, searchFilter } = this.state;
 
     const categoriesWithoutRoot = categories.filter(c => c.code !== 'home');
-    const categoryRows = categoriesWithoutRoot.map((category, i) => (
+    const categoriesFiltered = searchFilter
+      ? categoriesWithoutRoot.filter(c => searchFilter.test(c.titles[language]))
+      : categoriesWithoutRoot;
+    const categoryRows = categoriesFiltered.map((category, i) => (
       <CategoryTreeFileItem
         category={category}
         checked={filteringCategories.filter(fc => fc.code === category.code).length > 0}
         key={category.code}
         i={i}
+        expanded
         language={language}
-        onExpandCategory={onExpandCategory}
         onCheckCategory={minimal ? onCheckCategory : this.onApply}
         filterSubject={filterSubject}
       />
@@ -80,6 +102,19 @@ class CategoryTreeFilter extends React.Component {
     return (
       showNothing ? null : (
         <div>
+          {
+            minimal ? null : (
+              <div className="CategorySearchInputWrapper">
+                <SearchFormInput
+                  name="searchCategory"
+                  textfieldClass="CategoryTreeInput__search"
+                  onValueChange={this.onSearchValueChange}
+                  onClear={this.onClearSearch}
+                  placeholder="Search Category"
+                />
+              </div>
+            )
+          }
           <table className="CategoryTreeFilter">
             {
             minimal ? null : (
@@ -100,7 +135,9 @@ class CategoryTreeFilter extends React.Component {
               </thead>
             )
           }
-            <tbody>{categoryRows}</tbody>
+            {
+            treeExpanded ? <tbody>{categoryRows}</tbody> : null
+          }
           </table>
           <br />
         </div>
@@ -114,6 +151,7 @@ CategoryTreeFilter.propTypes = {
   paginationOptions: PropTypes.shape({
     perPage: PropTypes.number,
   }).isRequired,
+  onDidMount: PropTypes.func,
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
   onApplyFilteredSearch: PropTypes.func,
@@ -126,7 +164,7 @@ CategoryTreeFilter.propTypes = {
 
 CategoryTreeFilter.defaultProps = {
   categories: [],
-  onExpandCategory: () => {},
+  onDidMount: () => {},
   onCheckCategory: () => {},
   onApplyFilteredSearch: () => {},
   minimal: false,

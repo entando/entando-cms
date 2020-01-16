@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Col } from 'patternfly-react';
+import { Col, Icon } from 'patternfly-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -31,18 +31,24 @@ class RenderDatePickerInput extends Component {
       help,
       locale,
       dateFormat,
+      alignClass,
       placeholder,
       meta: { touched, error },
       isClearable,
+      hasCalendarIcon,
       hasLabel,
     } = this.props;
 
     const errorblock = touched ? error : '';
-
+    const calendar = hasCalendarIcon ? (
+      <span className="SearchForm__button" type="submit">
+        <Icon name="calendar" />
+      </span>
+    ) : null;
     return (
       <div className="form-group">
         {hasLabel && (
-          <label htmlFor={name} className="col-xs-2 control-label">
+          <label htmlFor={name} className={`col-xs-2 control-label ${alignClass}`}>
             {label} {help}
           </label>
         )}
@@ -57,7 +63,9 @@ class RenderDatePickerInput extends Component {
             dateFormat={dateFormat}
             isClearable={isClearable}
             calendarClassName="RenderDatePickerInput__calendar"
+            style={{ after: 'fa fa-calendar' }}
           />
+          {calendar}
           <div className="help-block help-block-error">{errorblock}</div>
         </Col>
       </div>
@@ -77,6 +85,7 @@ RenderDatePickerInput.propTypes = {
   }),
   name: PropTypes.string,
   placeholder: PropTypes.string,
+  alignClass: PropTypes.string,
   label: PropTypes.node,
   help: PropTypes.node,
   language: PropTypes.string,
@@ -84,6 +93,7 @@ RenderDatePickerInput.propTypes = {
   locale: PropTypes.string,
   isClearable: PropTypes.bool,
   hasLabel: PropTypes.bool,
+  hasCalendarIcon: PropTypes.bool,
 };
 
 RenderDatePickerInput.defaultProps = {
@@ -98,5 +108,7 @@ RenderDatePickerInput.defaultProps = {
   meta: {},
   isClearable: true,
   hasLabel: true,
+  alignClass: '',
+  hasCalendarIcon: false,
 };
 export default RenderDatePickerInput;

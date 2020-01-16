@@ -10,6 +10,7 @@ import AssetsCountContainer from 'ui/assets/AssetsCountContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 import EditAssetFormModalContainer from 'ui/assets/EditAssetFormModalContainer';
 import DeleteAssetModalContainer from 'ui/assets/DeleteAssetModalContainer';
+import AssetsAdvancedSearchContainer from 'ui/assets/AssetsAdvancedSearchContainer';
 import CloneAssetModalContainer from 'ui/assets/modals/clone-asset/CloneAssetModalContainer';
 
 const AssetsListPage = () => (
@@ -45,6 +46,11 @@ const AssetsListPage = () => (
           <AssetsCountContainer />
         </Col>
       </CardGrid>
+    </Row>
+    <Row>
+      <Col xs={12}>
+        <AssetsAdvancedSearchContainer />
+      </Col>
     </Row>
     <Row>
       <Col xs={12}>

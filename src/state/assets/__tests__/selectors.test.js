@@ -59,6 +59,9 @@ const TEST_STATE = {
           groupre,
         },
       },
+      categories: {
+        map: {},
+      },
     },
   },
   api: {
@@ -102,6 +105,7 @@ it('verify getAssetsList selector', () => {
     downloadUrl: isImg(ast.type) ? ast.versions[0].path : ast.path,
     previewUrl: isImg(ast.type) ? ast.versions[1].path : null,
     previewLgUrl: isImg(ast.type) ? ast.versions[3].path : null,
+    categories: [],
   });
   expect(assetsList).toEqual([
     addUrls(cA),

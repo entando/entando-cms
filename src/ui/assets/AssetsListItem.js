@@ -5,7 +5,7 @@ import { DropdownKebab, MenuItem } from 'patternfly-react';
 
 const AssetsListItem = ({
   asset, onEditClicked, onClickDelete, onDuplicateClicked,
-  showColumns, onSelect, selected,
+  showColumns, onSelect, selected, language,
 }) => {
   const {
     createdAt, description, metadata = {}, group, categories, versions, owner,
@@ -22,8 +22,8 @@ const AssetsListItem = ({
       .slice(-1)[0]
       .toUpperCase();
   const renderCategories = categories.map(cat => (
-    <span key={cat}>
-      {cat}
+    <span key={cat.code || cat}>
+      {cat && cat.titles && cat.titles[language]}
       <br />
     </span>
   ));
@@ -88,6 +88,7 @@ AssetsListItem.propTypes = {
   showColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.bool,
+  language: PropTypes.string.isRequired,
 };
 
 AssetsListItem.defaultProps = {
