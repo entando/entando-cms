@@ -26,12 +26,10 @@ class CategoryTreeFilter extends React.Component {
 
 
   onExpandTree() {
-    // const { onExpandCategory } = this.props;
     const { treeExpanded } = this.state;
     this.setState({
       treeExpanded: !treeExpanded,
     });
-    // onExpandCategory('home');
   }
 
   onApply(cat, fileType) {
