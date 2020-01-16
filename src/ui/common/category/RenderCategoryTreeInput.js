@@ -20,7 +20,7 @@ const RenderCategoryTreeInput = ({
   const [searchFilter, setSearchFilter] = useState('');
   const categoriesWithoutRoot = categories.filter(c => c.code !== 'home');
   const categoriesFiltered = searchFilter
-    ? categoriesWithoutRoot.filter(c => searchFilter.test(c.code))
+    ? categoriesWithoutRoot.filter(c => searchFilter.test(c.titles[language]))
     : categoriesWithoutRoot;
 
   const onCheckCategory = (catselected) => {
