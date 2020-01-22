@@ -153,7 +153,11 @@ const ContentTabs = ({
 ContentTabs.propTypes = {
   intl: intlShape.isRequired,
   availableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  messages: PropTypes.shape({}).isRequired,
+  messages: PropTypes.shape({
+    addContent: PropTypes.shape({}),
+    downloadButton: PropTypes.shape({}),
+    columns: PropTypes.shape({}),
+  }).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -88,7 +88,7 @@ CategoryTreeSelector.propTypes = {
   getJoinedCategoriesByCodes: PropTypes.arrayOf(PropTypes.shape({})),
 
   input: PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     onChange: PropTypes.func.isRequired,
   }).isRequired,
 };

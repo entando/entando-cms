@@ -101,9 +101,18 @@ class RenderContentModelInput extends Component {
 }
 
 RenderContentModelInput.propTypes = {
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    name: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+  }),
   label: PropTypes.node,
-  meta: PropTypes.shape({}),
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+  }),
   dictionary: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   help: PropTypes.node,
   labelSize: PropTypes.number,

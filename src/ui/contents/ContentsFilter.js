@@ -308,7 +308,12 @@ class ContentsFilter extends Component {
 ContentsFilter.propTypes = {
   intl: intlShape.isRequired,
   language: PropTypes.string.isRequired,
-  currentQuickFilter: PropTypes.shape({}).isRequired,
+  currentQuickFilter: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    value: PropTypes.string,
+    filterType: PropTypes.string,
+  }).isRequired,
   onSetQuickFilter: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

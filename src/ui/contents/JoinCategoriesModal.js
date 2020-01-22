@@ -80,7 +80,9 @@ const JoinCategoriesModal = ({
 
 JoinCategoriesModal.propTypes = {
   onConfirmJoinCategories: PropTypes.func.isRequired,
-  info: PropTypes.shape({}),
+  info: PropTypes.shape({
+    contents: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
   language: PropTypes.string.isRequired,
   joiningCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };

@@ -44,7 +44,14 @@ const CategoryTreeItem = ({
 CategoryTreeItem.propTypes = {
   i: PropTypes.number.isRequired,
   checked: PropTypes.bool.isRequired,
-  category: PropTypes.shape({}).isRequired,
+  category: PropTypes.shape({
+    isEmpty: PropTypes.bool,
+    code: PropTypes.string,
+    expanded: PropTypes.bool,
+    titles: PropTypes.shape({}),
+    depth: PropTypes.number,
+    loading: PropTypes.bool,
+  }).isRequired,
   onCheckCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
 };

@@ -70,7 +70,9 @@ const RenderSelectInput = ({
 
 RenderSelectInput.propTypes = {
   intl: intlShape.isRequired,
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    name: PropTypes.string,
+  }),
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.shape({}),

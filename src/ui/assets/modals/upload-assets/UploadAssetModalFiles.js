@@ -103,7 +103,12 @@ UploadAssetModalFiles.propTypes = {
     name: PropTypes.string,
   })),
   categories: PropTypes.arrayOf(PropTypes.shape({})),
-  fields: PropTypes.shape({}).isRequired,
+  fields: PropTypes.shape({
+    map: PropTypes.func,
+    get: PropTypes.func,
+    length: PropTypes.number,
+    remove: PropTypes.func,
+  }).isRequired,
   loading: PropTypes.shape({}).isRequired,
 };
 

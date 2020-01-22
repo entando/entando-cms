@@ -26,10 +26,15 @@ const RenderRichTextEditor = ({
 );
 
 RenderRichTextEditor.propTypes = {
-  input: PropTypes.shape({}).isRequired,
+  input: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
   label: PropTypes.node,
   placeholder: PropTypes.string,
-  meta: PropTypes.shape({}),
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+  }),
   help: PropTypes.node,
   disabled: PropTypes.bool,
   labelSize: PropTypes.number,

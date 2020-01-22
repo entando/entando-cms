@@ -53,6 +53,7 @@ ContentTypeReferenceStatus.propTypes = {
     status: PropTypes.string,
     type: PropTypes.string,
     contentTypesCodes: PropTypes.arrayOf(PropTypes.string),
+    count: PropTypes.number,
   }).isRequired,
 };
 

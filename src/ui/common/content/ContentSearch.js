@@ -134,7 +134,12 @@ class ContentSearch extends Component {
 
 ContentSearch.propTypes = {
   intl: intlShape.isRequired,
-  currentQuickFilter: PropTypes.shape({}).isRequired,
+  currentQuickFilter: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    value: PropTypes.string,
+    filterType: PropTypes.string,
+  }).isRequired,
   onSetQuickFilter: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onSetContentType: PropTypes.func.isRequired,

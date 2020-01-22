@@ -213,7 +213,7 @@ class AssetsList extends Component {
           fileType === type.id ? 'AssetsList__file-type--selected' : ''
         }`}
       >
-        {<FormattedMessage id={`cms.assets.list.${type.id}`} />}
+        <FormattedMessage id={`cms.assets.list.${type.id}`} />
       </div>
     ));
     const optClassSel = 'AssetsList__view-option--selected';
