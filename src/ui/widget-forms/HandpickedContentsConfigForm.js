@@ -58,11 +58,13 @@ class HandpickedContentsConfigFormBody extends PureComponent {
       pages,
       intl,
       widgetCode,
+      chosenContents,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_WIDGET;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
+    const noContents = chosenContents.length === 0;
 
     const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 50, 100, 500]
       .map(i => Object.assign({}, { code: i, name: i }));
@@ -75,7 +77,6 @@ class HandpickedContentsConfigFormBody extends PureComponent {
           name={`title_${langCode}`}
           label={<FormLabel langLabelText={langCode} labelId="app.title" />}
           validate={[maxLength70]}
-          className="clearfix"
         />
       )) : null;
 
@@ -176,7 +177,7 @@ class HandpickedContentsConfigFormBody extends PureComponent {
                 className="pull-right"
                 type="submit"
                 bsStyle="primary"
-                disabled={invalid || submitting}
+                disabled={invalid || submitting || noContents}
               >
                 <FormattedMessage id="app.save" />
               </Button>
@@ -199,11 +200,13 @@ HandpickedContentsConfigFormBody.propTypes = {
   submitting: PropTypes.bool.isRequired,
   language: PropTypes.string.isRequired,
   widgetCode: PropTypes.string.isRequired,
+  chosenContents: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 HandpickedContentsConfigFormBody.defaultProps = {
   languages: [],
   pages: [],
+  chosenContents: [],
 };
 
 const HandpickedContentsConfigForm = reduxForm({

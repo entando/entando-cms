@@ -12,6 +12,7 @@ import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
+import { formValueSelector } from 'redux-form';
 
 const MULTIPLE_CONTENTS_WIDGET = 'row_content_viewer_list';
 
@@ -22,7 +23,9 @@ export const mapStateToProps = (state, ownProps) => {
   if (multipleContentsMode) {
     widgetConfig = propWidgetConfig;
   } else {
-    delete propWidgetConfig.contents;
+    if (propWidgetConfig != null) {
+      delete propWidgetConfig.contents;
+    }
     widgetConfig = propWidgetConfig != null
       ? { contents: [propWidgetConfig], maxElemForItem: propWidgetConfig.maxElemForItem } : null;
   }
@@ -33,6 +36,7 @@ export const mapStateToProps = (state, ownProps) => {
     pages: getSearchPagesRaw(state),
     language: getLocale(state),
     widgetCode: ownProps.widgetCode,
+    chosenContents: formValueSelector('widgets.singleContentConfig')(state, 'contents'),
   });
 };
 

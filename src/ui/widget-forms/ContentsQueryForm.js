@@ -343,7 +343,7 @@ export class ContentsQueryFormBody extends Component {
                       {renderTitleFields}
                       <Field
                         component={RenderSelectInput}
-                        name="Page"
+                        name="pageLink"
                         label={
                           <FormLabel labelId="widget.form.page" />
                       }

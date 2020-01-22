@@ -54,7 +54,7 @@ class ContentPickerBody extends Component {
     const searchPlaceholderMsg = intl.formatMessage({ id: 'contentPicker.searchPlaceholder' });
     let addButtonDisabled = false;
     if (multipleContentsMode) {
-      addButtonDisabled = this.selectedContent != null;
+      addButtonDisabled = selectedContent == null;
     } else {
       addButtonDisabled = (contentsNumber === 0 && selectedContent == null)
       || contentsNumber > 0;

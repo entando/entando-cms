@@ -415,6 +415,7 @@ export default {
     'contentPicker.type': 'Type',
     'contentPicker.allStatuses': 'All',
     'contentPicker.allTypes': 'All',
+    'contentPicker.searchPlaceholder': 'Search for a content',
     'widget.singleContent.config.content': 'Content',
     'widget.singleContent.config.contentModel': 'Content model',
   },
