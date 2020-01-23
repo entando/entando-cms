@@ -18,16 +18,20 @@ const MULTIPLE_CONTENTS_WIDGET = 'row_content_viewer_list';
 
 export const mapStateToProps = (state, ownProps) => {
   const multipleContentsMode = ownProps.widgetCode === MULTIPLE_CONTENTS_WIDGET;
-  const propWidgetConfig = ownProps.widgetConfig;
+  let propWidgetConfig = ownProps.widgetConfig;
   let widgetConfig = null;
   if (multipleContentsMode) {
     widgetConfig = propWidgetConfig;
   } else {
-    if (propWidgetConfig != null) {
-      delete propWidgetConfig.contents;
+    if (propWidgetConfig !== null && propWidgetConfig !== undefined) {
+      const { contents, ...rest } = propWidgetConfig;
+      propWidgetConfig = rest;
     }
-    widgetConfig = propWidgetConfig != null
-      ? { contents: [propWidgetConfig], maxElemForItem: propWidgetConfig.maxElemForItem } : null;
+    widgetConfig = propWidgetConfig !== null && propWidgetConfig !== undefined
+      ? {
+        contents: [propWidgetConfig],
+        maxElemForItem: propWidgetConfig.maxElemForItem,
+      } : null;
   }
   return ({
     contentModels: getContentModelList(state),
