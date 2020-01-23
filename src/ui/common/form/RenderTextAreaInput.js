@@ -33,11 +33,16 @@ const RenderTextAreaInput = ({
 );
 
 RenderTextAreaInput.propTypes = {
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    name: PropTypes.string,
+  }),
   name: PropTypes.string,
   label: PropTypes.node,
   placeholder: PropTypes.string,
-  meta: PropTypes.shape({}),
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+  }),
   help: PropTypes.node,
   disabled: PropTypes.bool,
   labelSize: PropTypes.number,

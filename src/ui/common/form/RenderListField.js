@@ -109,6 +109,7 @@ RenderListField.propTypes = {
     map: PropTypes.func,
     remove: PropTypes.func,
     length: PropTypes.number,
+    swap: PropTypes.func,
   }).isRequired,
   label: PropTypes.node,
 };

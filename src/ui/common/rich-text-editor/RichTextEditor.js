@@ -191,7 +191,10 @@ class RichTextEditor extends Component {
 }
 
 RichTextEditor.propTypes = {
-  input: PropTypes.shape({}).isRequired,
+  input: PropTypes.shape({
+    name: PropTypes.string,
+    onBlur: PropTypes.func,
+  }).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
   linkModalVisible: PropTypes.bool.isRequired,

@@ -86,11 +86,17 @@ const RenderCategoryTreeInput = ({
 };
 
 RenderCategoryTreeInput.propTypes = {
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    onChange: PropTypes.func,
+  }),
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   language: PropTypes.string.isRequired,
   append: PropTypes.string,
-  meta: PropTypes.shape({}),
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+  }),
   help: PropTypes.node,
   label: PropTypes.node,
   alignClass: PropTypes.string,

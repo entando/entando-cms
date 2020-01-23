@@ -144,7 +144,9 @@ const StickySave = ({
 
 StickySave.propTypes = {
   intl: intlShape.isRequired,
-  content: PropTypes.shape({}),
+  content: PropTypes.shape({
+    id: PropTypes.string,
+  }),
   lastAutoSaveTime: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

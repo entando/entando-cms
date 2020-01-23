@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { defineMessages } from 'react-intl';
+import { defineMessages, intlShape } from 'react-intl';
 import { InputGroup, Button, Label } from 'patternfly-react';
 
 class MultiSelectRenderer extends Component {
@@ -95,13 +95,16 @@ class MultiSelectRenderer extends Component {
 }
 
 MultiSelectRenderer.propTypes = {
-  fields: PropTypes.shape({}).isRequired,
+  fields: PropTypes.shape({
+    push: PropTypes.func,
+    remove: PropTypes.func,
+  }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   selectedValues: PropTypes.arrayOf(PropTypes.string),
   valueKey: PropTypes.string,
   labelKey: PropTypes.string,
   emptyOptionTextId: PropTypes.string,
-  intl: PropTypes.shape({}),
+  intl: intlShape,
 };
 
 MultiSelectRenderer.defaultProps = {

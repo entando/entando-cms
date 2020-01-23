@@ -135,7 +135,14 @@ class FiltersSelectRenderer extends Component {
 
 FiltersSelectRenderer.propTypes = {
   intl: intlShape.isRequired,
-  fields: PropTypes.shape({}).isRequired,
+  fields: PropTypes.shape({
+    push: PropTypes.func,
+    map: PropTypes.func,
+    get: PropTypes.func,
+    remove: PropTypes.func,
+    length: PropTypes.number,
+    swap: PropTypes.func,
+  }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   suboptions: PropTypes.shape({}),
   onResetFilterOption: PropTypes.func.isRequired,
