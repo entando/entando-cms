@@ -15,6 +15,7 @@ import FormLabel from 'ui/common/form/FormLabel';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
+import { CONTENTS_QUERY_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 const CATEGORY_HOME = 'home';
@@ -436,7 +437,7 @@ ContentsQueryFormBody.defaultProps = {
 };
 
 const ContentsQueryForm = reduxForm({
-  form: 'widgets.contentsQuery',
+  form: `widgets.${CONTENTS_QUERY_WIDGET_CONFIG_ID}`,
 })(ContentsQueryFormBody);
 
 export default ContentsQueryForm;

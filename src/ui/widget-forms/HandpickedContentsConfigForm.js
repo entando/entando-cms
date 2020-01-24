@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'react-intl';
-import { FieldArray, Field, reduxForm } from 'redux-form';
+import { FieldArray, Field } from 'redux-form';
 import {
   Button, Row, Col, Alert,
 } from 'patternfly-react';
@@ -13,11 +13,11 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
+import { MULTIPLE_CONTENTS_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
-const MULTIPLE_CONTENTS_WIDGET = 'row_content_viewer_list';
 
-class HandpickedContentsConfigFormBody extends PureComponent {
+export default class HandpickedContentsConfigFormBody extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,7 +61,7 @@ class HandpickedContentsConfigFormBody extends PureComponent {
       chosenContents,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
-    const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_WIDGET;
+    const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_WIDGET_CONFIG_ID;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
     const noContents = chosenContents.length === 0;
@@ -208,9 +208,3 @@ HandpickedContentsConfigFormBody.defaultProps = {
   pages: [],
   chosenContents: [],
 };
-
-const HandpickedContentsConfigForm = reduxForm({
-  form: 'widgets.singleContentConfig',
-})(HandpickedContentsConfigFormBody);
-
-export default HandpickedContentsConfigForm;
