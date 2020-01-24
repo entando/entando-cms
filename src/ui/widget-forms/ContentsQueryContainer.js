@@ -19,6 +19,9 @@ import { getContentModelList } from 'state/content-model/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
+import { CONTENTS_QUERY_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+
+const contentsQueryWidgetReduxFormId = `widgets.${CONTENTS_QUERY_WIDGET_CONFIG_ID}`;
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -30,9 +33,9 @@ export const mapStateToProps = (state, ownProps) => ({
   pages: getSearchPagesRaw(state),
   categories: getCategoryTree(state),
   contentModels: getContentModelList(state),
-  selectedContentType: formValueSelector('widgets.contentsQuery')(state, 'contentType'),
-  selectedCategories: formValueSelector('widgets.contentsQuery')(state, 'categories'),
-  selectedInclusiveOr: formValueSelector('widgets.contentsQuery')(state, 'orClauseCategoryFilter'),
+  selectedContentType: formValueSelector(contentsQueryWidgetReduxFormId)(state, 'contentType'),
+  selectedCategories: formValueSelector(contentsQueryWidgetReduxFormId)(state, 'categories'),
+  selectedInclusiveOr: formValueSelector(contentsQueryWidgetReduxFormId)(state, 'orClauseCategoryFilter'),
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -61,12 +64,12 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     });
   },
-  onResetFilterOption: (name, i) => dispatch(change('widgets.contentsQuery', `${name}.[${i}].option`, '')),
+  onResetFilterOption: (name, i) => dispatch(change(contentsQueryWidgetReduxFormId, `${name}.[${i}].option`, '')),
   onChangeContentType: (contentType) => {
     if (contentType) dispatch(fetchContentModelsByContentType(contentType));
   },
-  onResetModelId: () => dispatch(change('widgets.contentsQuery', 'modelId', '')),
-  onToggleInclusiveOr: value => dispatch(change('widgets.contentsQuery', 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),
+  onResetModelId: () => dispatch(change(contentsQueryWidgetReduxFormId, 'modelId', '')),
+  onToggleInclusiveOr: value => dispatch(change(contentsQueryWidgetReduxFormId, 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {

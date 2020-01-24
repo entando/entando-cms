@@ -3,7 +3,8 @@ import { cms as state } from 'state/rootReducer';
 import { routes, routesDir } from 'ui/App';
 import en from 'locales/en';
 import it from 'locales/it';
-import HandpickedContentsConfigFormContainer from 'ui/widget-forms/HandpickedContentsConfigFormContainer';
+import HandpickedContentConfigFormContainer from 'ui/widget-forms/HandpickedContentConfigFormContainer';
+import HandpickedContentListConfigFormContainer from 'ui/widget-forms/HandpickedContentListConfigFormContainer';
 import ContentsQueryContainer from 'ui/widget-forms/ContentsQueryContainer';
 
 const cms = {
@@ -17,9 +18,9 @@ const cms = {
     it,
   },
   widgetForms: {
-    content_viewer: HandpickedContentsConfigFormContainer,
+    content_viewer: HandpickedContentConfigFormContainer,
     content_viewer_list: ContentsQueryContainer,
-    row_content_viewer_list: HandpickedContentsConfigFormContainer,
+    row_content_viewer_list: HandpickedContentListConfigFormContainer,
     search_result: null,
   },
 };

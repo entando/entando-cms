@@ -12,20 +12,23 @@ import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
+import { formValueSelector, reduxForm } from 'redux-form';
+import { SINGLE_CONTENT_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
 
-const MULTIPLE_CONTENTS_WIDGET = 'row_content_viewer_list';
+const singleContentWidgetReduxFormId = `widgets.${SINGLE_CONTENT_WIDGET_CONFIG_ID}`;
 
 export const mapStateToProps = (state, ownProps) => {
-  const multipleContentsMode = ownProps.widgetCode === MULTIPLE_CONTENTS_WIDGET;
-  const propWidgetConfig = ownProps.widgetConfig;
+  let propWidgetConfig = ownProps.widgetConfig;
   let widgetConfig = null;
-  if (multipleContentsMode) {
-    widgetConfig = propWidgetConfig;
-  } else {
-    delete propWidgetConfig.contents;
-    widgetConfig = propWidgetConfig != null
-      ? { contents: [propWidgetConfig], maxElemForItem: propWidgetConfig.maxElemForItem } : null;
+  if (propWidgetConfig !== null && propWidgetConfig !== undefined) {
+    const { contents, ...rest } = propWidgetConfig;
+    propWidgetConfig = rest;
   }
+  widgetConfig = propWidgetConfig !== null && propWidgetConfig !== undefined
+    ? {
+      contents: [propWidgetConfig],
+      maxElemForItem: propWidgetConfig.maxElemForItem,
+    } : null;
   return ({
     contentModels: getContentModelList(state),
     initialValues: widgetConfig,
@@ -33,6 +36,7 @@ export const mapStateToProps = (state, ownProps) => {
     pages: getSearchPagesRaw(state),
     language: getLocale(state),
     widgetCode: ownProps.widgetCode,
+    chosenContents: formValueSelector(singleContentWidgetReduxFormId)(state, 'contents'),
   });
 };
 
@@ -48,7 +52,6 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       pageCode, frameId, intl, history,
     } = ownProps;
     const contents = values.contents || [];
-    const multipleContentsMode = ownProps.widgetCode === MULTIPLE_CONTENTS_WIDGET;
     const configContents = contents.map(cc => Object.assign(
       {},
       {
@@ -57,9 +60,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
         contentDescription: cc.contentDescription,
       },
     ));
-    const payload = multipleContentsMode
-      ? { ...values, contents: configContents }
-      : { ...values, ...configContents[0], contents: undefined };
+    const payload = { ...values, ...configContents[0], contents: undefined };
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
     dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {
@@ -74,4 +75,6 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
-})(injectIntl(HandpickedContentsConfigForm));
+})(injectIntl(reduxForm({
+  form: singleContentWidgetReduxFormId,
+})(HandpickedContentsConfigForm)));
