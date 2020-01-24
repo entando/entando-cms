@@ -20,6 +20,7 @@ const RenderSelectInput = ({
   disabled,
   intl,
   hasLabel,
+  xsClass,
 }) => {
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -46,13 +47,13 @@ const RenderSelectInput = ({
   return (
     <div className={containerClasses}>
       {hasLabel && (
-        <Col xs={labelSize} className={alignClass}>
+        <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
           <ControlLabel htmlFor={input.name}>
             {label} {help}
           </ControlLabel>
         </Col>
       )}
-      <Col xs={inputSize || 12 - labelSize}>
+      <Col xs={12} sm={inputSize || 12 - labelSize}>
         <select
           {...input}
           size={size}
@@ -87,6 +88,7 @@ RenderSelectInput.propTypes = {
   label: PropTypes.node,
   labelSize: PropTypes.number,
   alignClass: PropTypes.string,
+  xsClass: PropTypes.string,
   help: PropTypes.node,
   optionReducer: PropTypes.func,
   optionValue: PropTypes.string,
@@ -108,6 +110,7 @@ RenderSelectInput.defaultProps = {
   label: null,
   labelSize: 2,
   alignClass: 'text-right',
+  xsClass: 'mobile-left',
   help: null,
   optionReducer: null,
   optionValue: 'value',

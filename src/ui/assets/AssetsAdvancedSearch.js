@@ -83,22 +83,34 @@ class AssetsAdvancedSearchForm extends Component {
             />
           </div>
           <div className="AssetsAdvancedFilter__advanced-filter clearfix">
-            <Field
-              component={RenderDatePickerInput}
-              name="fromDate"
-              dateFormat="DD/MM/YYYY"
-              label={<FormLabel labelId="cms.assets.list.uploadedFrom" defaultMessage="Uploaded from" />}
-              alignClass="text-right"
-              hasCalendarIcon
-            />
-            <Field
-              component={RenderDatePickerInput}
-              name="toDate"
-              dateFormat="DD/MM/YYYY"
-              label={<FormLabel labelId="cms.label.to" />}
-              alignClass="text-right"
-              hasCalendarIcon
-            />
+            <Col sm={6} className="no-padding">
+              <Field
+                component={RenderDatePickerInput}
+                name="fromDate"
+                dateFormat="DD/MM/YYYY"
+                label={<FormLabel labelId="cms.assets.list.uploadedFrom" defaultMessage="Uploaded from" />}
+                alignClass="text-right"
+                xsClass="mobile-left"
+                hasCalendarIcon
+                labelSize={4}
+              />
+            </Col>
+            <Col
+              sm={6}
+              className="no-padding"
+            >
+              <Field
+                component={RenderDatePickerInput}
+                name="toDate"
+                dateFormat="DD/MM/YYYY"
+                label={<FormLabel labelId="cms.label.to" />}
+                alignClass="text-right"
+                xsClass="mobile-left"
+                hasCalendarIcon
+                inputSize={8}
+                labelSize={1}
+              />
+            </Col>
           </div>
           <div className="AssetsAdvancedFilter__advanced-filter clearfix">
             <Field
@@ -107,8 +119,15 @@ class AssetsAdvancedSearchForm extends Component {
               onClear={this.clearSearch}
               inputSize={4}
               labelSize={2}
-              label={<FormLabel labelId="cms.contents.group" defaultMessage="Group" />}
+              label={(
+                <FormLabel
+                  labelId="cms.contents.group"
+                  helpId="cms.contents.edit.groups.ownerGroup.tooltip"
+                  defaultMessage="Group"
+                />
+)}
               alignClass="text-right"
+              xsClass="mobile-left"
               options={groups}
               optionValue="code"
               optionDisplayName="name"
