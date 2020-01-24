@@ -44,6 +44,25 @@
     &--close {
       margin-top: -10px;
     }
+
+    // sass-lint:disable force-element-nesting, no-qualifying-elements, class-name-format
+    .react-datepicker-wrapper {
+      width: 82%;
+
+      // sass-lint:disable force-element-nesting, no-qualifying-elements, class-name-format
+      .react-datepicker__input-container {
+        width: 100%;
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    .calendar-icon {
+      padding-left: 12px;
+      box-shadow: none;
+    }
   }
 
   &__search-button {

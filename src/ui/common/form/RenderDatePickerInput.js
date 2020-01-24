@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Icon } from 'patternfly-react';
+import { Col, Icon, ControlLabel } from 'patternfly-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -37,22 +37,27 @@ class RenderDatePickerInput extends Component {
       isClearable,
       hasCalendarIcon,
       hasLabel,
+      labelSize,
+      inputSize,
+      xsClass,
     } = this.props;
 
     const errorblock = touched ? error : '';
     const calendar = hasCalendarIcon ? (
-      <span className="SearchForm__button" type="submit">
+      <span className="calendar-icon" type="submit">
         <Icon name="calendar" />
       </span>
     ) : null;
     return (
       <div className="form-group">
         {hasLabel && (
-          <label htmlFor={name} className={`col-xs-2 control-label ${alignClass}`}>
+        <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
+          <ControlLabel htmlFor={name}>
             {label} {help}
-          </label>
+          </ControlLabel>
+        </Col>
         )}
-        <Col xs={10}>
+        <Col xs={12} sm={inputSize || 12 - labelSize}>
           <DatePicker
             {...input}
             placeholder={placeholder}
@@ -86,6 +91,7 @@ RenderDatePickerInput.propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
   alignClass: PropTypes.string,
+  xsClass: PropTypes.string,
   label: PropTypes.node,
   help: PropTypes.node,
   language: PropTypes.string,
@@ -94,6 +100,8 @@ RenderDatePickerInput.propTypes = {
   isClearable: PropTypes.bool,
   hasLabel: PropTypes.bool,
   hasCalendarIcon: PropTypes.bool,
+  labelSize: PropTypes.number,
+  inputSize: PropTypes.number,
 };
 
 RenderDatePickerInput.defaultProps = {
@@ -110,5 +118,8 @@ RenderDatePickerInput.defaultProps = {
   hasLabel: true,
   alignClass: '',
   hasCalendarIcon: false,
+  labelSize: 2,
+  inputSize: null,
+  xsClass: 'mobile-left',
 };
 export default RenderDatePickerInput;
