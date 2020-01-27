@@ -1,5 +1,6 @@
 .RenderRichTextEditor__content {
-  &--maximize {
+  // duplicate base class selector to increase specificity
+  &.RenderRichTextEditor__content--maximize {
     position: fixed;
     width: 100vw;
     height: 100vh;
