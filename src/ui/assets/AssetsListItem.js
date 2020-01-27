@@ -69,7 +69,7 @@ const AssetsListItem = ({
 
 AssetsListItem.propTypes = {
   asset: PropTypes.shape({
-    categories: PropTypes.arrayOf(PropTypes.string),
+    categories: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape({}), PropTypes.string])),
     description: PropTypes.string,
     createdAt: PropTypes.string,
     id: PropTypes.string,
