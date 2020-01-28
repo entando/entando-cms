@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const enlinkIcon = (
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xmlSpace="preserve">  <image id="image0" width="16" height="16" x="0" y="0"
+  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enableBackground="new 0 0 16 16" xmlSpace="preserve">  <image id="image0" width="16" height="16" x="0" y="0"
     xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
 AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAMFBMVEUeQ0MDTcdT7GJE3VNR
 7F5U7mAEWPQTW9oMNzcNODj///+/v8ADMDCjpKTg4OAkRUUj2p/SAAAAAXRSTlMAQObYZgAAAAFi
@@ -16,7 +16,7 @@ SUVORK5CYII=" />
 );
 
 const enunlinkIcon = (
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xmlSpace="preserve">  <image id="image0" width="16" height="16" x="0" y="0"
+  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enableBackground="new 0 0 16 16" xmlSpace="preserve">  <image id="image0" width="16" height="16" x="0" y="0"
     xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
 AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAJ1BMVEUeQ0MDTcdT7GJE3VNR
 7F5U7mANODj///8MNzcDMDCjpKTg4OAkRUXjqwDkAAAAAXRSTlMAQObYZgAAAAFiS0dEBxZhiOsA
