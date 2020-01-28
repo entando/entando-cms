@@ -133,8 +133,8 @@ ToolbarGroup.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const renderToolbarButton = (format, value, icon) => (
-  <button className={`ql-${format}`} value={value} type="button">
+const renderToolbarButton = (format, value, icon, tooltipText) => (
+  <button className={`ql-${format}`} value={value} type="button" title={tooltipText}>
     {icon}
   </button>
 );
@@ -142,46 +142,46 @@ const renderToolbarButton = (format, value, icon) => (
 const EditorToolbar = () => (
   <div id="editor-toolbar" style={{ borderBottom: 'none' }}>
     <ToolbarGroup>
-      {renderToolbarButton('history', 'undo', undoIcon)}
-      {renderToolbarButton('history', 'redo', redoIcon)}
+      {renderToolbarButton('history', 'undo', undoIcon, 'Undo (Ctrl + Z)')}
+      {renderToolbarButton('history', 'redo', redoIcon, 'Redo (Ctrl + Y)')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('entable', 'table', tableIcon)}
-      {renderToolbarButton('entable', 'table-insert-row', tableInsertRowIcon)}
-      {renderToolbarButton('entable', 'table-insert-column', tableInsertColumnIcon)}
-      {renderToolbarButton('entable', 'table-delete-row', tableDeleteRowIcon)}
-      {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon)}
-      {renderToolbarButton('entable', 'table-delete', tableDeleteIcon)}
-      {renderToolbarButton('divider', undefined, hrIcon)}
+      {renderToolbarButton('entable', 'table', tableIcon, 'Insert Table')}
+      {renderToolbarButton('entable', 'table-insert-row', tableInsertRowIcon, 'Insert Table Row')}
+      {renderToolbarButton('entable', 'table-insert-column', tableInsertColumnIcon, 'Insert Table Column')}
+      {renderToolbarButton('entable', 'table-delete-row', tableDeleteRowIcon, 'Delete Table Row')}
+      {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon, 'Delete Table Column')}
+      {renderToolbarButton('entable', 'table-delete', tableDeleteIcon, 'Delete Table')}
+      {renderToolbarButton('divider', undefined, hrIcon, 'Insert Horizontal Line')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('maximize', undefined, maximizeIcon)}
+      {renderToolbarButton('maximize', undefined, maximizeIcon, 'Maximize')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('bold')}
-      {renderToolbarButton('italic')}
-      {renderToolbarButton('strike')}
+      {renderToolbarButton('bold', undefined, undefined, 'Bold (Ctrl + B)')}
+      {renderToolbarButton('italic', undefined, undefined, 'Italic (Ctrl + I)')}
+      {renderToolbarButton('strike', undefined, undefined, 'Strikethrough')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('clean')}
+      {renderToolbarButton('clean', undefined, undefined, 'Remove Format')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('list', 'ordered')}
-      {renderToolbarButton('list', 'bullet')}
+      {renderToolbarButton('list', 'ordered', undefined, 'Insert/Remove Numbered List')}
+      {renderToolbarButton('list', 'bullet', undefined, 'Insert/Remove Bulleted List')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('indent', '-1')}
-      {renderToolbarButton('indent', '+1')}
+      {renderToolbarButton('indent', '-1', undefined, 'Decrease Indent')}
+      {renderToolbarButton('indent', '+1', undefined, 'Increase Indent')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('blockquote')}
+      {renderToolbarButton('blockquote', undefined, undefined, 'Block Quote')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('enlink', 'link', enlinkIcon)}
-      {renderToolbarButton('enlink', 'unlink', enunlinkIcon)}
+      {renderToolbarButton('enlink', 'link', enlinkIcon, 'Link')}
+      {renderToolbarButton('enlink', 'unlink', enunlinkIcon, 'Unlink')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('viewSource')}
+      {renderToolbarButton('viewSource', undefined, undefined, 'Source')}
     </ToolbarGroup>
   </div>
 );
