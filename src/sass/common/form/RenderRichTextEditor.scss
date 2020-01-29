@@ -35,6 +35,11 @@
     width: 100%;
   }
 
+  .ql-specialChar { // sass-lint:disable-line class-name-format
+    font-size: 20px;
+    line-height: 20px;
+  }
+
   .ql-viewSource:after { // sass-lint:disable-line class-name-format
     content: "Source";
   }

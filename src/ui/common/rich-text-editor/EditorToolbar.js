@@ -2,30 +2,68 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const enlinkIcon = (
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enableBackground="new 0 0 16 16" xmlSpace="preserve">  <image id="image0" width="16" height="16" x="0" y="0"
-    xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAMFBMVEUeQ0MDTcdT7GJE3VNR
-7F5U7mAEWPQTW9oMNzcNODj///+/v8ADMDCjpKTg4OAkRUUj2p/SAAAAAXRSTlMAQObYZgAAAAFi
-S0dECmjQ9FYAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkARwLHiiLD0pnAAAAe0lEQVQI
-10XKsQ3CQAwF0E9zUFBgM4G9SxahYQ3KEwrQnrMBQexw5SnyCIyCBA4psPT1n/QN/G9FtDTLon0n
-LLsAq7AGUqfEGlvSGQKsD/HLgXQMUGCTjcwMKOPdhkc5wbzZxXPFkKfx2c4V5dq7t1dFvr3dP16x
-df/lC9PiJtEPoGmfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI4VDExOjMwOjQwKzAzOjAw
-M9UWxAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yOFQxMTozMDo0MCswMzowMEKIrngAAAAA
-SUVORK5CYII=" />
-</svg>
+  <svg
+    version="1.1"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    enableBackground="new 0 0 16 16"
+    xmlSpace="preserve"
+  >
+    <image
+      id="image0"
+      width="16"
+      height="16"
+      x="0"
+      y="0"
+      xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+        AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAMFBMVEUeQ0MDTcdT7GJE3VNR
+        7F5U7mAEWPQTW9oMNzcNODj///+/v8ADMDCjpKTg4OAkRUUj2p/SAAAAAXRSTlMAQObYZgAAAAFi
+        S0dECmjQ9FYAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkARwLHiiLD0pnAAAAe0lEQVQI
+        10XKsQ3CQAwF0E9zUFBgM4G9SxahYQ3KEwrQnrMBQexw5SnyCIyCBA4psPT1n/QN/G9FtDTLon0n
+        LLsAq7AGUqfEGlvSGQKsD/HLgXQMUGCTjcwMKOPdhkc5wbzZxXPFkKfx2c4V5dq7t1dFvr3dP16x
+        df/lC9PiJtEPoGmfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI4VDExOjMwOjQwKzAzOjAw
+        M9UWxAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yOFQxMTozMDo0MCswMzowMEKIrngAAAAA
+        SUVORK5CYII="
+    />
+  </svg>
 );
 
 const enunlinkIcon = (
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enableBackground="new 0 0 16 16" xmlSpace="preserve">  <image id="image0" width="16" height="16" x="0" y="0"
-    xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAJ1BMVEUeQ0MDTcdT7GJE3VNR
-7F5U7mANODj///8MNzcDMDCjpKTg4OAkRUXjqwDkAAAAAXRSTlMAQObYZgAAAAFiS0dEBxZhiOsA
-AAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkARwLIhtHLFKOAAAAdElEQVQI10XLsQ3CUAwE
-0PtNpHSckdLbEqOwB5XDBERs8AMUdMQSCzBKtsJfQcLNPenOwP8KuaXopv1RRXcJMRVLlINRLLti
-DfrbSgMT7a1z5+B+gk8XcuoqPBbys8wY6ytRrzjfZzJugfpYgfca6COAiOcX/1wZvr9xoxEAAAAl
-dEVYdGRhdGU6Y3JlYXRlADIwMjAtMDEtMjhUMTE6MzQ6MjcrMDM6MDA59oG3AAAAJXRFWHRkYXRl
-Om1vZGlmeQAyMDIwLTAxLTI4VDExOjM0OjI3KzAzOjAwSKs5CwAAAABJRU5ErkJggg==" />
-</svg>
+  <svg
+    version="1.1"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    enableBackground="new 0 0 16 16"
+    xmlSpace="preserve"
+  >
+    <image
+      id="image0"
+      width="16"
+      height="16"
+      x="0"
+      y="0"
+      xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+        AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAJ1BMVEUeQ0MDTcdT7GJE3VNR
+        7F5U7mANODj///8MNzcDMDCjpKTg4OAkRUXjqwDkAAAAAXRSTlMAQObYZgAAAAFiS0dEBxZhiOsA
+        AAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkARwLIhtHLFKOAAAAdElEQVQI10XLsQ3CUAwE
+        0PtNpHSckdLbEqOwB5XDBERs8AMUdMQSCzBKtsJfQcLNPenOwP8KuaXopv1RRXcJMRVLlINRLLti
+        DfrbSgMT7a1z5+B+gk8XcuoqPBbys8wY6ytRrzjfZzJugfpYgfca6COAiOcX/1wZvr9xoxEAAAAl
+        dEVYdGRhdGU6Y3JlYXRlADIwMjAtMDEtMjhUMTE6MzQ6MjcrMDM6MDA59oG3AAAAJXRFWHRkYXRl
+        Om1vZGlmeQAyMDIwLTAxLTI4VDExOjM0OjI3KzAzOjAwSKs5CwAAAABJRU5ErkJggg=="
+    />
+  </svg>
 );
 
 const undoIcon = (
@@ -98,16 +136,16 @@ const tableDeleteColumnIcon = (
 
 const tableDeleteIcon = (
   <svg viewBox="0 0 18 18">
-    <path className="ql-fill" d="M15.707,7l1.146-1.146a0.5,0.5,0,1,0-.707-0.707L15,6.293,13.854,5.146a0.5,0.5,0,0,0-.707.707L14.293,7,13.146,8.146a0.5,0.5,0,1,0,.707.707L15,7.707l1.146,1.146a0.5,0.5,0,1,0,.707-0.707Z"></path>
-    <path className="ql-fill" d="M6,5H3A1,1,0,0,0,2,6V8A1,1,0,0,0,3,9H6V5Z"></path>
-    <path className="ql-fill" d="M10,5H7V9h3a1,1,0,0,0,1-1V6A1,1,0,0,0,10,5Z"></path>
+    <path className="ql-fill" d="M15.707,7l1.146-1.146a0.5,0.5,0,1,0-.707-0.707L15,6.293,13.854,5.146a0.5,0.5,0,0,0-.707.707L14.293,7,13.146,8.146a0.5,0.5,0,1,0,.707.707L15,7.707l1.146,1.146a0.5,0.5,0,1,0,.707-0.707Z" />
+    <path className="ql-fill" d="M6,5H3A1,1,0,0,0,2,6V8A1,1,0,0,0,3,9H6V5Z" />
+    <path className="ql-fill" d="M10,5H7V9h3a1,1,0,0,0,1-1V6A1,1,0,0,0,10,5Z" />
     <g className="ql-fill ql-transparent">
-      <path d="M8,11h4V9a1,1,0,0,0-1-1H8v3Z"></path>
-      <path d="M7,11V8H4A1,1,0,0,0,3,9v2H7Z"></path>
-      <path d="M7,12H3v2a1,1,0,0,0,1,1H7V12Z"></path>
-      <path d="M8,12v3h3a1,1,0,0,0,1-1V12H8Z"></path>
-      <path d="M8,6h3a1,1,0,0,0,1-1V3a1,1,0,0,0-1-1H8V6Z"></path>
-      <path d="M4,6H7V2H4A1,1,0,0,0,3,3V5A1,1,0,0,0,4,6Z"></path>
+      <path d="M8,11h4V9a1,1,0,0,0-1-1H8v3Z" />
+      <path d="M7,11V8H4A1,1,0,0,0,3,9v2H7Z" />
+      <path d="M7,12H3v2a1,1,0,0,0,1,1H7V12Z" />
+      <path d="M8,12v3h3a1,1,0,0,0,1-1V12H8Z" />
+      <path d="M8,6h3a1,1,0,0,0,1-1V3a1,1,0,0,0-1-1H8V6Z" />
+      <path d="M4,6H7V2H4A1,1,0,0,0,3,3V5A1,1,0,0,0,4,6Z" />
     </g>
   </svg>
 );
@@ -153,6 +191,7 @@ const EditorToolbar = () => (
       {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon, 'Delete Table Column')}
       {renderToolbarButton('entable', 'table-delete', tableDeleteIcon, 'Delete Table')}
       {renderToolbarButton('divider', undefined, hrIcon, 'Insert Horizontal Line')}
+      {renderToolbarButton('specialChar', undefined, 'Ω', 'Insert Special Character')}
     </ToolbarGroup>
     <ToolbarGroup>
       {renderToolbarButton('maximize', undefined, maximizeIcon, 'Maximize')}
