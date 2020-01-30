@@ -1,14 +1,11 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ReactQuill, { Quill } from 'react-quill-2';
 import 'react-quill-2/dist/quill.snow.css';
 
 import EditorToolbar from 'ui/common/rich-text-editor/EditorToolbar';
 import LinkConfigModal from 'ui/common/modal/LinkConfigModal';
-import store from 'state/store';
-import { setVisibleModal } from 'state/modal/actions';
-import { getVisibleModal } from 'state/modal/selectors';
+import SpecialCharSelectorModal from 'ui/common/rich-text-editor/SpecialCharSelectorModal';
 
 const BlockEmbed = Quill.import('blots/block/embed');
 
@@ -56,15 +53,6 @@ function viewSource() {
   txtArea.style.display = txtArea.style.display === 'none' ? '' : 'none';
 }
 
-function enlink(value) {
-  const selection = this.quill.getSelection();
-  if (value === 'link' && selection.length > 0) {
-    store.dispatch(setVisibleModal(this.quill.id));
-  } else {
-    this.quill.format('link', false);
-  }
-}
-
 function entable(value) {
   const table = this.quill.getModule('table');
   const rows = 2;
@@ -92,42 +80,47 @@ function entable(value) {
   }
 }
 
-const modules = {
-  toolbar: {
-    container: '#editor-toolbar',
-    handlers: {
-      enlink,
-      entable,
-      divider,
-      history,
-      maximize,
-      viewSource,
-    },
-  },
-  table: true,
-};
-
-const formats = [
-  'bold',
-  'italic',
-  'strike',
-  'clean',
-  'list',
-  'indent',
-  'blockquote',
-  'link',
-  'table',
-];
-
 class RichTextEditor extends Component {
   constructor() {
     super();
 
-    this.state = {};
+    this.state = {
+      modal: '',
+    };
     this.reactQuill = createRef();
     this.quill = null;
 
+    this.modules = {
+      toolbar: {
+        container: '#editor-toolbar',
+        handlers: {
+          enlink: this.enlinkHandler.bind(this),
+          entable,
+          divider,
+          specialChar: this.specialCharHandler.bind(this),
+          history,
+          maximize,
+          viewSource,
+        },
+      },
+      table: true,
+    };
+
+    this.formats = [
+      'bold',
+      'italic',
+      'strike',
+      'clean',
+      'list',
+      'indent',
+      'blockquote',
+      'link',
+      'table',
+    ];
+
     this.handleLinkConfigSave = this.handleLinkConfigSave.bind(this);
+    this.handleInsertSpecialChar = this.handleInsertSpecialChar.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
   componentDidMount() {
@@ -155,17 +148,52 @@ class RichTextEditor extends Component {
   }
 
   handleLinkConfigSave(values) {
+    this.handleModalClose();
     const { url } = values;
     this.quill.format('link', url);
-    const { onLinkModalClose } = this.props;
-    onLinkModalClose();
+  }
+
+  handleInsertSpecialChar(char) {
+    this.handleModalClose();
+    const cursor = this.quill.getSelection().index;
+    this.quill.insertText(cursor, char);
+
+    // circumvents inconsistent selection updates
+    setTimeout(() => {
+      this.quill.focus();
+      this.quill.setSelection(cursor + 1);
+    }, 0);
+  }
+
+  handleModalClose() {
+    this.setState({
+      modal: '',
+    });
+  }
+
+  enlinkHandler(value) {
+    const selection = this.quill.getSelection();
+    if (value === 'link' && selection.length >= 1) {
+      this.setState({
+        modal: 'enlink',
+      });
+    } else {
+      this.quill.format('link', false);
+    }
+  }
+
+  specialCharHandler() {
+    this.setState({
+      modal: 'specialChar',
+    });
   }
 
   render() {
     const {
       placeholder, disabled, input,
-      linkModalVisible, onLinkModalClose,
     } = this.props;
+
+    const { modal } = this.state;
 
     return (
       <div>
@@ -176,14 +204,19 @@ class RichTextEditor extends Component {
           onBlur={(_, __, editor) => input.onBlur(editor.getHTML())}
           placeholder={placeholder}
           disabled={disabled}
-          modules={modules}
-          formats={formats}
+          modules={this.modules}
+          formats={this.formats}
         />
         <LinkConfigModal
-          isVisible={linkModalVisible}
+          isVisible={modal === 'enlink'}
           hasResourceTab
           onSave={this.handleLinkConfigSave}
-          onClose={onLinkModalClose}
+          onClose={this.handleModalClose}
+        />
+        <SpecialCharSelectorModal
+          isVisible={modal === 'specialChar'}
+          onSelect={this.handleInsertSpecialChar}
+          onClose={this.handleModalClose}
         />
       </div>
     );
@@ -197,8 +230,6 @@ RichTextEditor.propTypes = {
   }).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
-  linkModalVisible: PropTypes.bool.isRequired,
-  onLinkModalClose: PropTypes.func.isRequired,
 };
 
 RichTextEditor.defaultProps = {
@@ -206,7 +237,4 @@ RichTextEditor.defaultProps = {
   disabled: false,
 };
 
-export default connect(
-  (state, props) => ({ linkModalVisible: getVisibleModal(state) === props.input.name }),
-  dispatch => ({ onLinkModalClose: () => dispatch(setVisibleModal('')) }),
-)(RichTextEditor);
+export default RichTextEditor;

@@ -1,5 +1,6 @@
 .RenderRichTextEditor__content {
-  &--maximize {
+  // duplicate base class selector to increase specificity
+  &.RenderRichTextEditor__content--maximize {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -32,6 +33,11 @@
     position: absolute;
     top: 0;
     width: 100%;
+  }
+
+  .ql-specialChar { // sass-lint:disable-line class-name-format
+    font-size: 20px;
+    line-height: 20px;
   }
 
   .ql-viewSource:after { // sass-lint:disable-line class-name-format

@@ -1,6 +1,71 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const enlinkIcon = (
+  <svg
+    version="1.1"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    enableBackground="new 0 0 16 16"
+    xmlSpace="preserve"
+  >
+    <image
+      id="image0"
+      width="16"
+      height="16"
+      x="0"
+      y="0"
+      xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+        AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAMFBMVEUeQ0MDTcdT7GJE3VNR
+        7F5U7mAEWPQTW9oMNzcNODj///+/v8ADMDCjpKTg4OAkRUUj2p/SAAAAAXRSTlMAQObYZgAAAAFi
+        S0dECmjQ9FYAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkARwLHiiLD0pnAAAAe0lEQVQI
+        10XKsQ3CQAwF0E9zUFBgM4G9SxahYQ3KEwrQnrMBQexw5SnyCIyCBA4psPT1n/QN/G9FtDTLon0n
+        LLsAq7AGUqfEGlvSGQKsD/HLgXQMUGCTjcwMKOPdhkc5wbzZxXPFkKfx2c4V5dq7t1dFvr3dP16x
+        df/lC9PiJtEPoGmfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI4VDExOjMwOjQwKzAzOjAw
+        M9UWxAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yOFQxMTozMDo0MCswMzowMEKIrngAAAAA
+        SUVORK5CYII="
+    />
+  </svg>
+);
+
+const enunlinkIcon = (
+  <svg
+    version="1.1"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    enableBackground="new 0 0 16 16"
+    xmlSpace="preserve"
+  >
+    <image
+      id="image0"
+      width="16"
+      height="16"
+      x="0"
+      y="0"
+      xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+        AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAJ1BMVEUeQ0MDTcdT7GJE3VNR
+        7F5U7mANODj///8MNzcDMDCjpKTg4OAkRUXjqwDkAAAAAXRSTlMAQObYZgAAAAFiS0dEBxZhiOsA
+        AAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkARwLIhtHLFKOAAAAdElEQVQI10XLsQ3CUAwE
+        0PtNpHSckdLbEqOwB5XDBERs8AMUdMQSCzBKtsJfQcLNPenOwP8KuaXopv1RRXcJMRVLlINRLLti
+        DfrbSgMT7a1z5+B+gk8XcuoqPBbys8wY6ytRrzjfZzJugfpYgfca6COAiOcX/1wZvr9xoxEAAAAl
+        dEVYdGRhdGU6Y3JlYXRlADIwMjAtMDEtMjhUMTE6MzQ6MjcrMDM6MDA59oG3AAAAJXRFWHRkYXRl
+        Om1vZGlmeQAyMDIwLTAxLTI4VDExOjM0OjI3KzAzOjAwSKs5CwAAAABJRU5ErkJggg=="
+    />
+  </svg>
+);
+
 const undoIcon = (
   <svg viewBox="0 0 18 18">
     <polygon className="ql-fill ql-stroke" points="6 10 4 12 2 10 6 10" />
@@ -71,28 +136,16 @@ const tableDeleteColumnIcon = (
 
 const tableDeleteIcon = (
   <svg viewBox="0 0 18 18">
+    <path className="ql-fill" d="M15.707,7l1.146-1.146a0.5,0.5,0,1,0-.707-0.707L15,6.293,13.854,5.146a0.5,0.5,0,0,0-.707.707L14.293,7,13.146,8.146a0.5,0.5,0,1,0,.707.707L15,7.707l1.146,1.146a0.5,0.5,0,1,0,.707-0.707Z" />
+    <path className="ql-fill" d="M6,5H3A1,1,0,0,0,2,6V8A1,1,0,0,0,3,9H6V5Z" />
+    <path className="ql-fill" d="M10,5H7V9h3a1,1,0,0,0,1-1V6A1,1,0,0,0,10,5Z" />
     <g className="ql-fill ql-transparent">
-      <rect height="2" width="2" x="2" y="2" />
-      <rect height="2" width="2" x="5" y="2" />
-      <rect height="2" width="2" x="8" y="2" />
-      <rect height="2" width="2" x="14" y="2" />
-      <rect height="2" width="2" x="11" y="2" />
-      <rect height="2" width="2" x="2" y="14" />
-      <rect height="2" width="2" x="5" y="14" />
-      <rect height="2" width="2" x="8" y="14" />
-      <rect height="2" width="2" x="14" y="14" />
-      <rect height="2" width="2" x="11" y="14" />
-      <rect height="2" transform="translate(-9 15) rotate(-90)" width="2" x="2" y="11" />
-      <rect height="2" transform="translate(-6 12) rotate(-90)" width="2" x="2" y="8" />
-      <rect height="2" transform="translate(-3 9) rotate(-90)" width="2" x="2" y="5" />
-      <rect height="2" transform="translate(3 27) rotate(-90)" width="2" x="14" y="11" />
-      <rect height="2" transform="translate(6 24) rotate(-90)" width="2" x="14" y="8" />
-      <rect height="2" transform="translate(3 21) rotate(-90)" width="2" x="11" y="8" />
-      <rect height="2" transform="translate(0 18) rotate(-90)" width="2" x="8" y="8" />
-      <rect height="2" transform="translate(-3 15) rotate(-90)" width="2" x="5" y="8" />
-      <rect height="2" width="2" x="8" y="11" />
-      <rect height="2" width="2" x="8" y="5" />
-      <rect height="2" transform="translate(9 21) rotate(-90)" width="2" x="14" y="5" />
+      <path d="M8,11h4V9a1,1,0,0,0-1-1H8v3Z" />
+      <path d="M7,11V8H4A1,1,0,0,0,3,9v2H7Z" />
+      <path d="M7,12H3v2a1,1,0,0,0,1,1H7V12Z" />
+      <path d="M8,12v3h3a1,1,0,0,0,1-1V12H8Z" />
+      <path d="M8,6h3a1,1,0,0,0,1-1V3a1,1,0,0,0-1-1H8V6Z" />
+      <path d="M4,6H7V2H4A1,1,0,0,0,3,3V5A1,1,0,0,0,4,6Z" />
     </g>
   </svg>
 );
@@ -118,8 +171,8 @@ ToolbarGroup.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const renderToolbarButton = (format, value, icon) => (
-  <button className={`ql-${format}`} value={value} type="button">
+const renderToolbarButton = (format, value, icon, tooltipText) => (
+  <button className={`ql-${format}`} value={value} type="button" title={tooltipText}>
     {icon}
   </button>
 );
@@ -127,46 +180,47 @@ const renderToolbarButton = (format, value, icon) => (
 const EditorToolbar = () => (
   <div id="editor-toolbar" style={{ borderBottom: 'none' }}>
     <ToolbarGroup>
-      {renderToolbarButton('history', 'undo', undoIcon)}
-      {renderToolbarButton('history', 'redo', redoIcon)}
+      {renderToolbarButton('history', 'undo', undoIcon, 'Undo (Ctrl + Z)')}
+      {renderToolbarButton('history', 'redo', redoIcon, 'Redo (Ctrl + Y)')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('entable', 'table', tableIcon)}
-      {renderToolbarButton('entable', 'table-insert-row', tableInsertRowIcon)}
-      {renderToolbarButton('entable', 'table-insert-column', tableInsertColumnIcon)}
-      {renderToolbarButton('entable', 'table-delete-row', tableDeleteRowIcon)}
-      {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon)}
-      {renderToolbarButton('entable', 'table-delete', tableDeleteIcon)}
-      {renderToolbarButton('divider', undefined, hrIcon)}
+      {renderToolbarButton('entable', 'table', tableIcon, 'Insert Table')}
+      {renderToolbarButton('entable', 'table-insert-row', tableInsertRowIcon, 'Insert Table Row')}
+      {renderToolbarButton('entable', 'table-insert-column', tableInsertColumnIcon, 'Insert Table Column')}
+      {renderToolbarButton('entable', 'table-delete-row', tableDeleteRowIcon, 'Delete Table Row')}
+      {renderToolbarButton('entable', 'table-delete-column', tableDeleteColumnIcon, 'Delete Table Column')}
+      {renderToolbarButton('entable', 'table-delete', tableDeleteIcon, 'Delete Table')}
+      {renderToolbarButton('divider', undefined, hrIcon, 'Insert Horizontal Line')}
+      {renderToolbarButton('specialChar', undefined, 'Ω', 'Insert Special Character')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('maximize', undefined, maximizeIcon)}
+      {renderToolbarButton('maximize', undefined, maximizeIcon, 'Maximize')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('bold')}
-      {renderToolbarButton('italic')}
-      {renderToolbarButton('strike')}
+      {renderToolbarButton('bold', undefined, undefined, 'Bold (Ctrl + B)')}
+      {renderToolbarButton('italic', undefined, undefined, 'Italic (Ctrl + I)')}
+      {renderToolbarButton('strike', undefined, undefined, 'Strikethrough')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('clean')}
+      {renderToolbarButton('clean', undefined, undefined, 'Remove Format')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('list', 'ordered')}
-      {renderToolbarButton('list', 'bullet')}
+      {renderToolbarButton('list', 'ordered', undefined, 'Insert/Remove Numbered List')}
+      {renderToolbarButton('list', 'bullet', undefined, 'Insert/Remove Bulleted List')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('indent', '-1')}
-      {renderToolbarButton('indent', '+1')}
+      {renderToolbarButton('indent', '-1', undefined, 'Decrease Indent')}
+      {renderToolbarButton('indent', '+1', undefined, 'Increase Indent')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('blockquote')}
+      {renderToolbarButton('blockquote', undefined, undefined, 'Block Quote')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('enlink', 'link', <img src="/images/editor/entandolink-icon.png" alt="Entando Link" />)}
-      {renderToolbarButton('enlink', 'unlink', <img src="/images/editor/entandounlink-icon.png" alt="Entando Unlink" />)}
+      {renderToolbarButton('enlink', 'link', enlinkIcon, 'Link')}
+      {renderToolbarButton('enlink', 'unlink', enunlinkIcon, 'Unlink')}
     </ToolbarGroup>
     <ToolbarGroup>
-      {renderToolbarButton('viewSource')}
+      {renderToolbarButton('viewSource', undefined, undefined, 'Source')}
     </ToolbarGroup>
   </div>
 );

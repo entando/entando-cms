@@ -54,15 +54,17 @@ export const setPageLoaded = pageCode => ({
   },
 });
 
-const wrapApiCall = apiFunc => (...args) => async (dispatch) => {
-  const response = await apiFunc(...args);
-  const json = await response.json();
-  if (response.ok) {
-    return json;
-  }
-  dispatch(addErrors(json.errors.map(e => e.message)));
-  throw json;
-};
+const wrapApiCall = apiFunc => (...args) => dispatch => new Promise((resolve, reject) => {
+  apiFunc(...args).then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        resolve(json);
+      }
+      dispatch(addErrors(json.errors.map(e => e.message)));
+      reject(json);
+    });
+  });
+});
 
 
 export const fetchPage = wrapApiCall(getPage);
@@ -94,17 +96,19 @@ export const fetchSearchPages = (page = { page: 1, pageSize: 10 }, params = '') 
   }).catch(() => {});
 });
 
-export const fetchPageTree = pageCode => async (dispatch) => {
+export const fetchPageTree = pageCode => dispatch => new Promise((resolve) => {
   if (pageCode === HOMEPAGE_CODE) {
-    const responses = await Promise.all([
+    Promise.all([
       fetchPage(pageCode)(dispatch),
       fetchPageChildren(pageCode)(dispatch),
-    ]);
-    return [responses[0].payload].concat(responses[1].payload);
+    ]).then((responses) => {
+      resolve([responses[0].payload].concat(responses[1].payload));
+    });
   }
-  const response = await fetchPageChildren(pageCode)(dispatch);
-  return response.payload;
-};
+  fetchPageChildren(pageCode)(dispatch).then((response) => {
+    resolve(response.payload);
+  });
+});
 
 export const handleExpandPage = (pageCode = HOMEPAGE_CODE) => (dispatch, getState) => {
   const pageStatus = getStatusMap(getState())[pageCode];
