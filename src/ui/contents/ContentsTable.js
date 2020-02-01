@@ -96,6 +96,9 @@ class ContentsTable extends Component {
             rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
             );
             break;
+          case 'code':
+            rowCellFormatter = (_, { rowData }) => <td>{rowData.id}</td>;
+            break;
           case 'created':
           case 'lastModified':
             rowCellFormatter = date => <td>{new Date(date).toLocaleString()}</td>;

@@ -79,7 +79,7 @@ class AssetsAdvancedSearchForm extends Component {
               labelSize={2}
               placeholder={intl.formatMessage({ id: 'cms.assets.list.searchByUsername', defaultMessage: 'Search by Username' })}
               label={<FormLabel labelId="cms.assets.list.updatedBy" defaultMessage="Updated By" />}
-              alignClass="text-right mobile-left"
+              alignClass="text-right"
             />
           </div>
           <div className="AssetsAdvancedFilter__advanced-filter clearfix">
@@ -90,7 +90,6 @@ class AssetsAdvancedSearchForm extends Component {
                 dateFormat="DD/MM/YYYY"
                 label={<FormLabel labelId="cms.assets.list.uploadedFrom" defaultMessage="Uploaded from" />}
                 alignClass="text-right"
-                xsClass="mobile-left"
                 hasCalendarIcon
                 labelSize={4}
               />
@@ -105,7 +104,6 @@ class AssetsAdvancedSearchForm extends Component {
                 dateFormat="DD/MM/YYYY"
                 label={<FormLabel labelId="cms.label.to" />}
                 alignClass="text-right"
-                xsClass="mobile-left"
                 hasCalendarIcon
                 inputSize={8}
                 labelSize={1}
@@ -127,7 +125,6 @@ class AssetsAdvancedSearchForm extends Component {
                 />
 )}
               alignClass="text-right"
-              xsClass="mobile-left"
               options={groups}
               optionValue="code"
               optionDisplayName="name"

@@ -41,7 +41,7 @@ const ContentModelListPage = () => (
       <Col xs={1} />
       <Col xs={2}>
         <Link to={ROUTE_CMS_CONTENTMODEL_ADD}>
-          <Button className="ContentModelList__addbutton">
+          <Button bsStyle="primary" className="ContentModelList__addbutton">
             <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Model" />
           </Button>
         </Link>

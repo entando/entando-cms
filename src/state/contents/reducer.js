@@ -37,7 +37,7 @@ const defaultState = {
   authorChecked: '',
   selectedRows: [],
   currentAuthorShow: 'all',
-  currentStatusShow: 'ready',
+  currentStatusShow: 'all',
   currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
   tabSearchEnabled: true,
 };

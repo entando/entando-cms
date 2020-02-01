@@ -16,6 +16,7 @@ const RenderCategoryTreeInput = ({
   alignClass,
   meta: { touched, error },
   help,
+  xsClass,
 }) => {
   const [searchFilter, setSearchFilter] = useState('');
   const categoriesWithoutRoot = categories.filter(c => c.code !== 'home');
@@ -55,7 +56,7 @@ const RenderCategoryTreeInput = ({
   return (
     <div className={touched && error ? 'form-group has-error' : 'form-group'}>
       {labelSize > 0 ? (
-        <Col xs={12} sm={labelSize} className={alignClass}>
+        <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
           <ControlLabel>
             {label} {help}
           </ControlLabel>
@@ -100,6 +101,7 @@ RenderCategoryTreeInput.propTypes = {
   help: PropTypes.node,
   label: PropTypes.node,
   alignClass: PropTypes.string,
+  xsClass: PropTypes.string,
   labelSize: PropTypes.number,
   inputSize: PropTypes.number,
 };
@@ -114,6 +116,7 @@ RenderCategoryTreeInput.defaultProps = {
   inputSize: null,
   append: '',
   alignClass: 'text-right',
+  xsClass: 'mobile-left',
 };
 
 export default RenderCategoryTreeInput;

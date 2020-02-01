@@ -126,13 +126,13 @@
   }
 }
 
-.mobile-left { // sass-lint:disable-line class-name-format
+.form-group .mobile-left { // sass-lint:disable-line class-name-format, force-element-nesting
   @media (max-width: 768px) {
     text-align: left;
   }
 }
 
-.mobile-center { // sass-lint:disable-line class-name-format
+.form-group .mobile-center { // sass-lint:disable-line class-name-format, force-element-nesting
   @media (max-width: 768px) {
     text-align: center;
   }

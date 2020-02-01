@@ -25,6 +25,9 @@ const ContentTabs = ({
   const navItems = (
     <div>
       <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
+        <NavItem eventKey="all">
+          <FormattedMessage id="cms.assets.list.all" defaultMessage="All" />
+        </NavItem>
         <NavItem eventKey="draft">
           <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
         </NavItem>
