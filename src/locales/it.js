@@ -342,7 +342,6 @@ export default {
     'cms.assets.form.move': 'Mossa',
     'cms.assets.form.pan': 'Pan',
     'cms.assets.form.zoom': 'Zoom',
-    'cms.assets.list.updatedBy': 'Aggiornato da',
     'cms.assets.list.uploadedFrom': 'Caricato da',
     'cms.assets.list.searchByUsername': 'Cerca per nome utente',
     'cms.assets.form.cropsave': 'Applicare',
