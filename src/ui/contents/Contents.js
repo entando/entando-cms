@@ -46,6 +46,10 @@ const AVAILABLE_COLUMNS = [
     code: 'restriction',
   },
   {
+    name: 'Code',
+    code: 'code',
+  },
+  {
     name: 'Actions',
     code: 'actions',
   },

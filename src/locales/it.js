@@ -211,6 +211,7 @@ export default {
     'cms.setContentAs': 'Imposta Contenuto Come',
     'cms.chooseAnOption': 'Scegliere un\'opzione',
     'cms.contents.title': 'Contenuto',
+    'cms.contents.code': 'Codice',
     'cms.contents.edit.title': 'Modificare',
     'cms.contents.edit.info': 'Info',
     'cms.contents.edit.groups': 'Gruppi',

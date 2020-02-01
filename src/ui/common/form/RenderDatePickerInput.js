@@ -68,7 +68,7 @@ class RenderDatePickerInput extends Component {
             dateFormat={dateFormat}
             isClearable={isClearable}
             calendarClassName="RenderDatePickerInput__calendar"
-            style={{ after: 'fa fa-calendar' }}
+            style={{ after: 'fa fa-calendar', display: 'inline-block' }}
           />
           {calendar}
           <div className="help-block help-block-error">{errorblock}</div>

@@ -138,15 +138,3 @@
     margin-left: 0;
   }
 }
-
-.mobile-left {
-  @media (max-width: 768px) {
-    text-align: left;
-  }
-}
-
-.mobile-center {
-  @media (max-width: 768px) {
-    text-align: center;
-  }
-}

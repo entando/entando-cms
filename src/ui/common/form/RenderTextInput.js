@@ -15,11 +15,12 @@ const RenderTextInput = ({
   disabled,
   type,
   hasLabel,
+  xsClass,
   ...others
 }) => (
   <div className={touched && error ? 'form-group has-error' : 'form-group'}>
     {hasLabel && labelSize > 0 && (
-      <Col xs={12} sm={labelSize} className={alignClass}>
+      <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
         <ControlLabel htmlFor={input.name}>
           {label} {help}
         </ControlLabel>
@@ -58,6 +59,7 @@ RenderTextInput.propTypes = {
   inputSize: PropTypes.number,
   append: PropTypes.string,
   alignClass: PropTypes.string,
+  xsClass: PropTypes.string,
   hasLabel: PropTypes.bool,
 };
 
@@ -74,5 +76,6 @@ RenderTextInput.defaultProps = {
   append: '',
   alignClass: 'text-right',
   hasLabel: true,
+  xsClass: 'mobile-left',
 };
 export default RenderTextInput;

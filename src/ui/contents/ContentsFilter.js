@@ -137,7 +137,7 @@ class ContentsFilter extends Component {
           </div>
         </Col>
         <div className="ContentsFilter__advanced-filters" style={{ display: advancedFiltersVisibility }}>
-          <div className="ContentsFilter__advanced-filter">
+          <div className="ContentsFilter__advanced-filter form-group">
             <RenderSelectInput
               inputSize={9}
               labelSize={2}
@@ -150,7 +150,7 @@ class ContentsFilter extends Component {
               input={{ onChange: e => onSetContentType(e.target.value) }}
             />
           </div>
-          <div className="ContentsFilter__advanced-filter">
+          <div className="ContentsFilter__advanced-filter form-group">
             <RenderSelectInput
               inputSize={9}
               labelSize={2}
@@ -163,7 +163,7 @@ class ContentsFilter extends Component {
               input={{ onChange: e => onSetGroup(e.target.value) }}
             />
           </div>
-          <div className="ContentsFilter__advanced-filter">
+          <div className="ContentsFilter__advanced-filter form-group">
             <Col xs={12} sm={2} className="text-right mobile-left">
               <ControlLabel>
                 <FormLabel labelId="cms.contents.edit.categories" />
@@ -180,7 +180,7 @@ class ContentsFilter extends Component {
               />
             </Col>
           </div>
-          <div className="ContentsFilter__advanced-filter ContentsFilter__advanced-filter--close">
+          <div className="ContentsFilter__advanced-filter ContentsFilter__advanced-filter--close form-group">
             <Col xs={12} sm={2} className="text-right mobile-left">
               <ControlLabel>
                 <FormLabel labelId="cms.contents.statusMain" />
@@ -197,7 +197,7 @@ class ContentsFilter extends Component {
                 onKeyDown={() => onCheckStatus(PUBLISHED)}
               >
                 <div className="ContentsFilter__status ContentsFilter__status--published" />
-                <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
+                <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
               </Checkbox>
               <Checkbox
                 className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
@@ -209,9 +209,7 @@ class ContentsFilter extends Component {
                 onKeyDown={() => onCheckStatus(READY)}
               >
                 <div className="ContentsFilter__status ContentsFilter__status--review" />
-                <FormattedMessage id="cms.contents.toReview" defaultMessage="To Review" />
-                {' \\ '}
-                <FormattedMessage id="cms.contents.toUpdate" defaultMessage="To Update" />
+                <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
               </Checkbox>
               <Checkbox
                 className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
@@ -223,11 +221,11 @@ class ContentsFilter extends Component {
                 onKeyDown={() => onCheckStatus(UNPUBLISHED)}
               >
                 <div className="ContentsFilter__status ContentsFilter__status--unpublished" />
-                <FormattedMessage id="cms.contents.unpublished" defaultMessage="Unpublished" />
+                <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
               </Checkbox>
             </Col>
           </div>
-          <div className="ContentsFilter__advanced-filter">
+          <div className="ContentsFilter__advanced-filter form-group">
             <Col xs={12} sm={2} className="text-right mobile-left">
               <ControlLabel>
                 <FormLabel labelId="cms.contents.restriction" defaultMessage="Restrictions" />
@@ -260,7 +258,7 @@ class ContentsFilter extends Component {
               </Checkbox>
             </Col>
           </div>
-          <div className="ContentsFilter__advanced-filter">
+          <div className="ContentsFilter__advanced-filter form-group">
             <Col xs={12} sm={2} className="text-right mobile-left">
               <ControlLabel>
                 <FormLabel labelId="cms.contents.showMe" defaultMessage="Show me" />
@@ -287,19 +285,21 @@ class ContentsFilter extends Component {
                 onClick={() => onCheckAuthor(currentUsername)}
                 onKeyDown={() => onCheckAuthor(currentUsername)}
               >
-                <FormattedMessage id="cms.contents.byMe" defaultMessage="By me" />
+                <FormattedMessage id="cms.contents.onlyMine" defaultMessage="Only Mine" />
               </Checkbox>
             </Col>
           </div>
         </div>
-        <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
-          <Button
-            className="ContentsFilter__search-button"
-            onClick={() => onAdvancedFilterSearch()}
-          >
-            <FormattedMessage id="cms.contents.search" defaultMessage="Search" />
-          </Button>
-        </Col>
+        <div className="form-group">
+          <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
+            <Button
+              className="ContentsFilter__search-button"
+              onClick={() => onAdvancedFilterSearch()}
+            >
+              <FormattedMessage id="cms.contents.search" defaultMessage="Search" />
+            </Button>
+          </Col>
+        </div>
       </div>
     );
   }
