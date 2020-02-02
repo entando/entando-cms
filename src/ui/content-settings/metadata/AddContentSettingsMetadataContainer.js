@@ -33,6 +33,10 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
 const AddContentSettingsMetadataContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(AddContentSettingsMetadata);
 
 export default injectIntl(AddContentSettingsMetadataContainer);
