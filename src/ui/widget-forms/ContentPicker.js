@@ -59,7 +59,6 @@ class ContentPickerBody extends Component {
       addButtonDisabled = (contentsNumber === 0 && selectedContent == null)
       || contentsNumber > 0;
     }
-    const typeAheadDisabled = !multipleContentsMode && contentsNumber > 0;
     const renderAddButton = (
       <Button
         bsStyle="primary"
@@ -106,7 +105,6 @@ class ContentPickerBody extends Component {
               onChange={this.handleContentChange}
               labelKey={option => `${option.id} - ${option.description}`}
               useCache={false}
-              disabled={typeAheadDisabled}
             />
           </Col>
           <Col xs={2}>

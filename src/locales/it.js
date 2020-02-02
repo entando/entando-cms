@@ -410,7 +410,7 @@ export default {
     'contentPicker.type': 'Tipo',
     'contentPicker.allStatuses': 'Tutti',
     'contentPicker.allTypes': 'Tutti',
-    'contentPicker.searchPlaceholder': 'Cerca un contenuto',
+    'contentPicker.searchPlaceholder': 'Cerca un contenuto per nome o codice',
     'widget.singleContent.config.content': 'Contenuto',
     'widget.singleContent.config.contentModel': 'Modello di contenuto',
   },
