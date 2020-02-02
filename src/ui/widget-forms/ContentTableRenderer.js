@@ -58,20 +58,24 @@ const ContentTableRenderer = ({
             {contentModelOptions}
           </Field>
         </td>
-        <td className="text-center">
-          <ButtonGroup bsSize="small">
-            {i !== 0 && (
+        {
+          multipleContentsMode && (
+          <td className="text-center">
+            <ButtonGroup bsSize="small">
+              {i !== 0 && (
               <Button onClick={() => fields.swap(i, i - 1)}>
                 <span className="icon fa fa-sort-asc" />
               </Button>
-            )}
-            {i !== fields.length - 1 && (
+              )}
+              {i !== fields.length - 1 && (
               <Button onClick={() => fields.swap(i, i + 1)}>
                 <span className="icon fa fa-sort-desc" />
               </Button>
-            )}
-          </ButtonGroup>
-        </td>
+              )}
+            </ButtonGroup>
+          </td>
+          )
+        }
       </tr>
     );
   });
@@ -96,9 +100,13 @@ const ContentTableRenderer = ({
             <th width="25%">
               <FormattedMessage id="widget.form.contentModel" />
             </th>
-            <th width="5%">
-              <FormattedMessage id="widget.form.reorder" />
-            </th>
+            {
+              multipleContentsMode && (
+              <th width="5%">
+                <FormattedMessage id="widget.form.reorder" />
+              </th>
+              )
+            }
           </tr>
         </thead>
         <tbody>{renderContentRows}</tbody>
