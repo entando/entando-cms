@@ -78,7 +78,7 @@ class AssetsAdvancedSearchForm extends Component {
               inputSize={4}
               labelSize={2}
               placeholder={intl.formatMessage({ id: 'cms.assets.list.searchByUsername', defaultMessage: 'Search by Username' })}
-              label={<FormLabel labelId="cms.assets.list.updatedBy" defaultMessage="Updated By" />}
+              label={<FormLabel labelId="cms.assets.list.uploadedBy" defaultMessage="Uploaded By" />}
               alignClass="text-right"
             />
           </div>
