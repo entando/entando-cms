@@ -349,9 +349,19 @@ class AssetPhotoCropper extends Component {
 }
 
 AssetPhotoCropper.propTypes = {
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    onChange: PropTypes.func,
+  }),
   onDidMount: PropTypes.func.isRequired,
-  assetInfo: PropTypes.shape({}).isRequired,
+  assetInfo: PropTypes.shape({
+    metadata: PropTypes.shape({
+      dimension: PropTypes.string,
+      filename: PropTypes.string,
+      type: PropTypes.string,
+    }),
+    versions: PropTypes.arrayOf(PropTypes.shape({})),
+    description: PropTypes.string,
+  }).isRequired,
   cropRatios: PropTypes.arrayOf(PropTypes.string).isRequired,
   imgSrc: PropTypes.string.isRequired,
 };

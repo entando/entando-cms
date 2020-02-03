@@ -5,6 +5,10 @@
     @media screen and (max-width: 991px) {
       margin-bottom: 5.5rem;
     }
+
+    .container { // sass-lint:disable-line class-name-format
+      max-width: 100%;
+    }
   }
 
   &__sort {
@@ -104,6 +108,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
+    z-index: 1020;
   }
 
   &__nothing-found {
@@ -168,6 +173,10 @@
       .AssetsList__item-actions {
         margin-left: 0;
       }
+    }
+
+    &.selected { // sass-lint:disable-line class-name-format
+      background: #def3ff;
     }
   }
 

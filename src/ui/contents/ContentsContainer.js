@@ -117,6 +117,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onSelectAllRows: checked => dispatch(selectAllRows(checked)),
   onEditContent: (contentId) => {
     dispatch(setWorkMode(WORK_MODE_EDIT));
+    dispatch(setCurrentStatusShow('all'));
     history.push(
       routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
     );
@@ -131,6 +132,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   },
   onClickAddContent: (contentType) => {
     dispatch(setWorkMode(WORK_MODE_ADD));
+    dispatch(setCurrentStatusShow('all'));
     dispatch(setNewContentsType(contentType));
     history.push(
       routeConverter(ROUTE_CMS_ADD_CONTENT),

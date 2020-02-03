@@ -205,16 +205,17 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
   const author = getCurrentAuthorShow(state);
   const status = getCurrentStatusShow(state);
   const published = status === 'published';
+  const statusAll = status === 'all';
   const all = author === 'all';
   const eq = FILTER_OPERATORS.LIKE;
   const like = FILTER_OPERATORS.LIKE;
   const statusValue = status === 'draft' ? ['new', 'draft'] : status;
   const formValues = {
-    ...(!published && status && { status: statusValue }),
+    ...(!published && !statusAll && status && { status: statusValue }),
     ...(!all && author && { firstEditor: author }),
   };
   const operators = {
-    ...(!published && status && { status: like }),
+    ...(!published && !statusAll && status && { status: like }),
     ...(!all && author && { firstEditor: eq }),
   };
   const query = [convertToQueryString({

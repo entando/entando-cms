@@ -53,7 +53,7 @@ const StickySave = ({
               <strong>
                 <FormattedMessage
                   id="cms.stickySave.lastAutoSave"
-                  defaultMessage="Last autosave was:"
+                  defaultMessage="Last save was:"
                 />
                 {lastAutoSaveTime}
               </strong>
@@ -65,7 +65,7 @@ const StickySave = ({
                 <strong>
                   <FormattedMessage id="cms.stickySave.status" defaultMessage="Status" />
                 </strong>
-                <Field name="contentStatus" component="select" className="form-control StickySave__select">
+                <Field name="status" component="select" className="form-control StickySave__select">
                   <option value="">
                     {intl.formatMessage(messages.chooseOption)}
                   </option>
@@ -144,7 +144,9 @@ const StickySave = ({
 
 StickySave.propTypes = {
   intl: intlShape.isRequired,
-  content: PropTypes.shape({}),
+  content: PropTypes.shape({
+    id: PropTypes.string,
+  }),
   lastAutoSaveTime: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

@@ -4,6 +4,8 @@ import {
   TOAST_ERROR,
   clearErrors,
 } from '@entando/messages';
+import moment from 'moment';
+import { formValueSelector } from 'redux-form';
 import _, { compact } from 'lodash';
 import {
   convertToQueryString,
@@ -31,7 +33,7 @@ import {
   getAssetsMap,
 } from 'state/assets/selectors';
 import {
-  getAssets, createAsset, editAsset, deleteAsset,
+  getAssets, createAsset, editAsset, deleteAsset, cloneAsset,
 } from 'api/assets';
 import { getPagination } from 'state/pagination/selectors';
 
@@ -206,26 +208,84 @@ export const filterAssetsBySearch = (
   paginationMetadata = pageDefault,
 ) => (dispatch, getState) => {
   const filt = getListFilterParams(getState());
-  let { formValues, operators } = filt;
-  const { sorting } = filt;
+  const { formValues, operators, sorting } = filt;
+  const filters = { formValues, operators, sorting };
   if (!formValues) {
-    formValues = {};
-    operators = {};
+    filters.formValues = {};
+    filters.operators = {};
+  }
+  if (keyword) {
+    filters.formValues.description = keyword;
+    filters.operators.description = FILTER_OPERATORS.LIKE;
   } else {
     delete formValues.description;
     delete operators.description;
-    delete formValues.categories;
-    delete operators.categories;
-  }
-  if (keyword !== '') {
-    formValues.description = keyword;
-    operators.description = FILTER_OPERATORS.LIKE;
   }
   dispatch(setSearchKeyword(keyword));
-  const filters = { formValues, operators, sorting };
   dispatch(setListFilterParams(filters));
   const page = getPagination(getState()) || paginationMetadata;
-  return dispatch(fetchAssetsPaged(page));
+  const params = compact([convertToQueryString(filters).slice(1)]).join('&').replace('toDateTimeString', 'createdAt');
+  return dispatch(fetchAssets(page, `?${params}`));
+};
+
+export const advancedSearchFilter = (
+  values, paginationMetadata = pageDefault,
+) => (dispatch, getState) => {
+  const state = getState();
+  const filt = getListFilterParams(state);
+  const { formValues = {}, operators = {}, sorting } = filt;
+  const fileType = getFileType(state);
+  const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
+  const filters = { formValues, operators, sorting };
+  const keyword = formValueSelector('assetSearchForm')(state, 'keyword');
+
+  if (keyword) {
+    filters.formValues.description = keyword;
+    filters.operators.description = FILTER_OPERATORS.LIKE;
+  } else {
+    delete filters.formValues.description;
+    delete filters.operators.description;
+  }
+  const {
+    group, owner, fromDate, toDate,
+  } = values;
+  const getDateTime = date => moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD-hh.mm.ss');
+  const valuesFilters = {
+    ...(toDate && {
+      toDateTimeString: {
+        value: getDateTime(toDate),
+        op: FILTER_OPERATORS.LESS_THAN,
+      },
+    }),
+    ...(group && {
+      group: {
+        value: group,
+        op: FILTER_OPERATORS.LIKE,
+      },
+    }),
+    ...(owner && {
+      owner: {
+        value: owner,
+        op: FILTER_OPERATORS.LIKE,
+      },
+    }),
+    ...(fromDate && {
+      createdAt: {
+        value: getDateTime(fromDate),
+        op: FILTER_OPERATORS.GREATER_THAN,
+      },
+    }),
+  };
+  Object.keys(valuesFilters).map((key) => {
+    const val = valuesFilters[key];
+    filters.formValues[key] = {};
+    filters.formValues[key] = val.value;
+    filters.operators[key] = val.op;
+    return null;
+  });
+  dispatch(setListFilterParams(filters));
+  const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&').replace('toDateTimeString', 'createdAt');
+  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
 
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
@@ -272,10 +332,13 @@ export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Pr
 });
 
 export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
-  const { fileObject, group, categories } = file;
+  const {
+    fileObject, group, categories, filename,
+  } = file;
   const type = fileObject.type.startsWith('image') ? 'image' : 'file';
+  const namedFile = new File([fileObject], filename, { type: fileObject.type });
   const formData = new FormData();
-  formData.append('file', fileObject);
+  formData.append('file', namedFile);
 
   const params = {
     type,
@@ -307,4 +370,24 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
 export const fetchRawAssetInfo = assetId => (dispatch, getState) => new Promise((resolve) => {
   const assetsMap = getAssetsMap(getState());
   resolve(assetsMap[assetId]);
+});
+
+export const sendCloneAsset = id => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('assets'));
+  cloneAsset(id)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(fetchAssetsPaged());
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+          resolve();
+        }
+        dispatch(toggleLoading('assets'));
+      });
+    })
+    .catch(() => { });
 });

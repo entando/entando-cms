@@ -9,6 +9,7 @@ const AssetsListGridView = ({
   onEditClicked,
   onClickDelete,
   onItemSelected,
+  onDuplicateClicked,
 }) => {
   const gridItems = assets.map((asset) => {
     const { versions } = asset;
@@ -23,6 +24,7 @@ const AssetsListGridView = ({
     );
     const onEditClickHandle = () => onEditClicked(asset);
     const onClickDeleteHandle = () => onClickDelete(asset);
+    const onDuplicateClickHandle = () => onDuplicateClicked(asset);
     const onDownloadHandle = () => window.open(asset.downloadUrl);
     const onClickSelectHandle = () => onItemSelected(asset);
     return (
@@ -39,6 +41,9 @@ const AssetsListGridView = ({
             <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
               <MenuItem onClick={onEditClickHandle}>
                 <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+              </MenuItem>
+              <MenuItem onClick={onDuplicateClickHandle}>
+                <FormattedMessage id="cms.label.duplicate" defaultMessage="Duplicate" />
               </MenuItem>
               <MenuItem onClick={onDownloadHandle}>
                 <FormattedMessage id="cms.label.download" defaultMessage="Download" />
@@ -62,6 +67,7 @@ AssetsListGridView.propTypes = {
   onItemSelected: PropTypes.func,
   onClickDelete: PropTypes.func.isRequired,
   browseMode: PropTypes.bool,
+  onDuplicateClicked: PropTypes.func.isRequired,
 };
 
 AssetsListGridView.defaultProps = {

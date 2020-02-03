@@ -54,7 +54,9 @@ RenderVersionText.propTypes = {
   currentUserName: PropTypes.string.isRequired,
   creatorUserName: PropTypes.string.isRequired,
   modifierUserName: PropTypes.string.isRequired,
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    name: PropTypes.string,
+  }),
   label: PropTypes.node,
   labelSize: PropTypes.number,
   inputSize: PropTypes.number,

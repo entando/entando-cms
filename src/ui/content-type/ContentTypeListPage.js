@@ -37,7 +37,7 @@ const ContentTypeListPage = () => (
       <Col xs={10} />
       <Col xs={2}>
         <Link to={ROUTE_CMS_CONTENTTYPE_ADD}>
-          <Button className="ContentTypeList__addbutton">
+          <Button bsStyle="primary" className="ContentTypeList__addbutton">
             <FormattedMessage id="cms.contenttype.add.label" defaultMessage="Add" />
           </Button>
         </Link>

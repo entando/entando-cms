@@ -25,6 +25,9 @@ const ContentTabs = ({
   const navItems = (
     <div>
       <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
+        <NavItem eventKey="all">
+          <FormattedMessage id="cms.assets.list.all" defaultMessage="All" />
+        </NavItem>
         <NavItem eventKey="draft">
           <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
         </NavItem>
@@ -153,7 +156,11 @@ const ContentTabs = ({
 ContentTabs.propTypes = {
   intl: intlShape.isRequired,
   availableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  messages: PropTypes.shape({}).isRequired,
+  messages: PropTypes.shape({
+    addContent: PropTypes.shape({}),
+    downloadButton: PropTypes.shape({}),
+    columns: PropTypes.shape({}),
+  }).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,

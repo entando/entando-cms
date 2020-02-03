@@ -26,6 +26,7 @@ const maxLength50 = maxLength(50);
 
 const EditAssetFormModalBody = ({
   assetInfo,
+  isImg,
   imgSrc,
   handleSubmit,
   group,
@@ -36,13 +37,49 @@ const EditAssetFormModalBody = ({
 }) => {
   const modalTitle = (
     <Modal.Title>
-      <FormattedMessage id="cms.assets.label.imagedetails" defaultMessage="Image Details" />
+      <FormattedMessage id={`cms.assets.label.${isImg ? 'imagedetails' : 'attachdetails'}`} defaultMessage="Image Details" />
     </Modal.Title>
   );
 
   const toOpenModal = () => onModalOpen(assetInfo);
 
   const groupItems = group && JSON.stringify(group) !== '{}' ? [group] : [];
+
+  const metadata = assetInfo.metadata || {};
+
+  const renderMetadataRows = Object.keys(metadata).map(k => (metadata[k] ? (
+    <tr key={k}>
+      <td>
+        {k}
+      </td>
+      <td>
+        {metadata[k]}
+      </td>
+    </tr>
+  ) : null));
+
+  const renderMetadata = isImg ? (
+    <Row>
+      <Col xs={12}>
+        <h2 className="AssetPhotoCropper__metadata"><FormattedMessage id="cms.label.metadata" defaultMessage="Metadata" /></h2>
+        <table className="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th width="50%">
+                <FormattedMessage id="cms.label.name" />
+              </th>
+              <th width="50%">
+                <FormattedMessage id="cms.label.value" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {renderMetadataRows}
+          </tbody>
+        </table>
+      </Col>
+    </Row>
+  ) : null;
 
   return (
     <GenericModalContainer
@@ -54,12 +91,14 @@ const EditAssetFormModalBody = ({
     >
       <form onSubmit={handleSubmit}>
         <Grid fluid>
-          <Field
-            name="file"
-            component={AssetPhotoCropperContainer}
-            assetInfo={assetInfo}
-            imgSrc={imgSrc}
-          />
+          {isImg ? (
+            <Field
+              name="file"
+              component={AssetPhotoCropperContainer}
+              assetInfo={assetInfo}
+              imgSrc={imgSrc}
+            />
+          ) : null}
           <Row className="form-horizontal">
             <Col xs={12}>
               <fieldset className="no-padding">
@@ -101,6 +140,7 @@ const EditAssetFormModalBody = ({
               </fieldset>
             </Col>
           </Row>
+          {renderMetadata}
           <Row className="form-horizontal">
             <Col xs={12} className="text-right modal-footer">
               <Button bsStyle="default" className="btn-cancel" onClick={onModalClose}>
@@ -122,9 +162,12 @@ const EditAssetFormModalBody = ({
 };
 
 EditAssetFormModalBody.propTypes = {
+  isImg: PropTypes.bool.isRequired,
   imgSrc: PropTypes.string.isRequired,
   onModalOpen: PropTypes.func.isRequired,
-  assetInfo: PropTypes.shape({}).isRequired,
+  assetInfo: PropTypes.shape({
+    metadata: PropTypes.shape({}),
+  }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   group: PropTypes.shape({}).isRequired,
   language: PropTypes.string.isRequired,

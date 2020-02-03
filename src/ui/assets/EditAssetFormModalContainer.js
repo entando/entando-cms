@@ -26,6 +26,7 @@ const mapStateToProps = (state) => {
   return {
     assetInfo,
     imgSrc,
+    isImg: get(assetInfo, 'type', '') === 'image',
     group: getSelectedGroup(state),
     language: getLocale(state),
     categories: getCategoryTree(state),
@@ -35,7 +36,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, { intl }) => ({
   onModalOpen: (info) => {
     dispatch(fetchCategoryTreeAll());
-    dispatch(initialize('editassetformmodal', info));
+    dispatch(initialize('editassetformmodal', Object.assign({}, info, { categories: info.categories.map(c => c.code) })));
   },
   onModalClose: () => {
     dispatch(setVisibleModal(''));
@@ -45,14 +46,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     id,
     description,
     categories,
-    metadata: { filename },
+    type,
+    metadata,
   }) => {
-    dispatch(sendPostAssetEdit({
+    let editValues = {
       id,
       description,
       categories,
-      filename,
-    }, file)).then((res) => {
+    };
+    if (type === 'image') {
+      editValues = { ...editValues, filename: metadata.filename };
+    }
+    dispatch(sendPostAssetEdit(editValues, file)).then((res) => {
       if (res) {
         dispatch(setVisibleModal(''));
         dispatch(

@@ -87,11 +87,18 @@ class RenderDropdownTypeaheadInput extends Component {
 }
 
 RenderDropdownTypeaheadInput.propTypes = {
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    onChange: PropTypes.func,
+    name: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  }),
   label: PropTypes.node,
   labelSize: PropTypes.number,
   labelKey: PropTypes.string,
-  meta: PropTypes.shape({}),
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+  }),
   help: PropTypes.node,
   disabled: PropTypes.bool,
   inputSize: PropTypes.number,

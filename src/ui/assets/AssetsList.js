@@ -14,7 +14,6 @@ import {
   Filter,
   Toolbar,
 } from 'patternfly-react';
-import AssetSearchFormContainer from 'ui/assets/search/AssetSearchFormContainer';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 import AssetsListItem from 'ui/assets/AssetsListItem';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
@@ -70,7 +69,7 @@ const fileTypes = [
     id: 'image',
   },
   {
-    name: 'Attachements',
+    name: 'Attachments',
     id: 'file',
   },
 ];
@@ -78,7 +77,10 @@ const fileTypes = [
 class AssetsList extends Component {
   constructor(props) {
     super(props);
-    this.state = { mobile: window.innerWidth < 992 };
+    this.state = {
+      mobile: window.innerWidth < 992,
+      selectedAsset: null,
+    };
     this.messages = defineMessages({
       filterPlaceholder: {
         id: 'cms.assets.list.filterBy',
@@ -87,6 +89,7 @@ class AssetsList extends Component {
     });
     this.onPerPageSelect = this.onPerPageSelect.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.handleAssetSelect = this.handleAssetSelect.bind(this);
   }
 
   componentDidMount() {
@@ -129,6 +132,14 @@ class AssetsList extends Component {
     onRemoveActiveFilter(item, activeFilters);
   }
 
+  handleAssetSelect(code) {
+    this.setState({
+      selectedAsset: code,
+    });
+    const { onSelect } = this.props;
+    onSelect(code);
+  }
+
   removeAllActiveFilters() {
     const { onRemoveAllActiveFilters, onResetFilteringCategories } = this.props;
     onRemoveAllActiveFilters();
@@ -157,29 +168,38 @@ class AssetsList extends Component {
       perPageOptions,
       onAssetSelected,
       onClickDelete,
+      showColumns,
+      hideFooter,
+      singleView,
+      onDuplicateClicked,
     } = this.props;
     const pagination = {
       page,
       perPage,
       perPageOptions,
     };
-    const { mobile } = this.state;
+    const { mobile, selectedAsset } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
-    const renderHeader = headers.map((item, i) => (
-      <th width={item.width} key={item.name}>
+
+    const notSortable = ['actions', 'preview', 'categories'];
+    const headerSorter = item => (notSortable.indexOf(item.name) === -1
+      ? onApplySort(item.id) : null);
+    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map((item, i) => (
+      <th
+        width={item.width}
+        key={item.name}
+        role="button"
+        onClick={() => headerSorter(item)}
+      >
         <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
         {item.name !== 'actions' && item.name !== 'preview' ? (
           <i
             className={`fa ${
-              sort && sort.attribute === item.id && sort.direction === 'ASC'
+              (sort && sort.attribute === item.id) && (sort.direction === 'ASC'
                 ? 'fa-angle-up'
-                : 'fa-angle-down'
+                : 'fa-angle-down')
             } AssetsList__sort`}
-            role="button"
-            onClick={() => onApplySort(item.id)}
-            onKeyDown={() => onApplySort(item.id)}
-            tabIndex={i}
           />
         ) : null}
       </th>
@@ -195,7 +215,7 @@ class AssetsList extends Component {
           fileType === type.id ? 'AssetsList__file-type--selected' : ''
         }`}
       >
-        {<FormattedMessage id={`cms.assets.list.${type.id}`} />}
+        <FormattedMessage id={`cms.assets.list.${type.id}`} />
       </div>
     ));
     const optClassSel = 'AssetsList__view-option--selected';
@@ -242,11 +262,16 @@ class AssetsList extends Component {
     const assetsListItems = assets.map(asset => (
       <AssetsListItem
         key={asset.id}
+        language={language}
         asset={asset}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
         browseMode={browseMode}
         onItemSelected={onUseAssetClicked}
+        showColumns={showColumns}
+        onSelect={this.handleAssetSelect}
+        selected={selectedAsset === asset.id}
+        onDuplicateClicked={onDuplicateClicked}
       />
     ));
     const tableContent = (
@@ -264,6 +289,7 @@ class AssetsList extends Component {
         onClickDelete={onClickDelete}
         browseMode={browseMode}
         onItemSelected={onUseAssetClicked}
+        onDuplicateClicked={onDuplicateClicked}
       />
     );
     const emptyContent = (
@@ -279,8 +305,9 @@ class AssetsList extends Component {
     const content = (
       <CardGrid className="AssetsList__files-grid">
         <div className="AssetsList__files-header">
-          {!browseMode ? renderFileTypes : null}
-          {mobile ? null : (
+          {!browseMode ? renderFileTypes : null}(
+          {renderFileTypes}
+          {mobile || singleView ? null : (
             <div className="AssetsList__view-options">
               <span
                 className={gridViewClass}
@@ -301,7 +328,6 @@ class AssetsList extends Component {
         </div>
         <Row className="AssetsList__body">
           <Col xs={mobile ? 12 : 2} className="no-padding">
-            <AssetSearchFormContainer />
             <div className="AssetsList__tree-container">
               <CategoryTreeFilterContainer
                 language={language}
@@ -338,7 +364,7 @@ class AssetsList extends Component {
     return (
       <div className="AssetsList__wrap">
         {content}
-        {!loading && (
+        {!loading && !hideFooter && (
           <div className="AssetsList__footer">
             <Grid>
               <PaginationRow
@@ -393,7 +419,12 @@ AssetsList.propTypes = {
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   browseMode: PropTypes.bool,
+  onDuplicateClicked: PropTypes.func.isRequired,
   onResetFilteringCategories: PropTypes.func.isRequired,
+  showColumns: PropTypes.arrayOf(PropTypes.string),
+  hideFooter: PropTypes.bool,
+  singleView: PropTypes.bool,
+  onSelect: PropTypes.func,
 };
 
 AssetsList.defaultProps = {
@@ -408,6 +439,10 @@ AssetsList.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
   browseMode: false,
   onUseAssetClicked: null,
+  showColumns: headers.map(({ name }) => name),
+  hideFooter: false,
+  singleView: false,
+  onSelect: () => {},
 };
 
 export default AssetsList;

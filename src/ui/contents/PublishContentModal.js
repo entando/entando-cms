@@ -67,7 +67,10 @@ const PublishContentModal = ({ onConfirmPublish, info }) => {
 
 PublishContentModal.propTypes = {
   onConfirmPublish: PropTypes.func.isRequired,
-  info: PropTypes.shape({}),
+  info: PropTypes.shape({
+    onLine: PropTypes.bool,
+    contents: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
 };
 
 PublishContentModal.defaultProps = {

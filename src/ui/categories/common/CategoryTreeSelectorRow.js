@@ -70,12 +70,19 @@ const CategoryTreeSelectorRow = ({
 
 CategoryTreeSelectorRow.propTypes = {
   i: PropTypes.number.isRequired,
-  category: PropTypes.shape({}).isRequired,
+  category: PropTypes.shape({
+    isEmpty: PropTypes.bool,
+    code: PropTypes.string,
+    expanded: PropTypes.bool,
+    titles: PropTypes.shape({}),
+    depth: PropTypes.number,
+    loading: PropTypes.bool,
+  }).isRequired,
   onExpandCategory: PropTypes.func,
   onJoinCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
   input: PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     onChange: PropTypes.func.isRequired,
   }).isRequired,
 };

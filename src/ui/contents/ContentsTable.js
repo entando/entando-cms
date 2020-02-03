@@ -96,9 +96,12 @@ class ContentsTable extends Component {
             rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
             );
             break;
+          case 'code':
+            rowCellFormatter = (_, { rowData }) => <td>{rowData.id}</td>;
+            break;
           case 'created':
           case 'lastModified':
-            rowCellFormatter = date => <td>{new Date(date).toLocaleDateString()}</td>;
+            rowCellFormatter = date => <td>{new Date(date).toLocaleString()}</td>;
             break;
           case 'mainGroup':
             rowCellFormatter = (mainGroup) => {
@@ -115,7 +118,7 @@ class ContentsTable extends Component {
             };
             break;
           case 'restriction':
-            rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center">{<span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />}</td>;
+            rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center"><span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} /></td>;
             break;
           case 'typeCode':
             rowCellFormatter = (typeCode, { rowData: { typeDescription } }) => (
@@ -127,14 +130,30 @@ class ContentsTable extends Component {
           case 'onLine':
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
-              const { status } = rowData;
+              const { status, onLine: hasPublicVersion } = rowData;
               let statusColor = '';
-              if (status === 'PUBLIC') statusColor = 'published';
-              else if (status === 'ready') statusColor = 'review';
-              else statusColor = 'unpublished';
+              let statusTitle = '';
+              if (status === 'PUBLIC') {
+                statusColor = 'published';
+                statusTitle = 'Published';
+              } else if (status === 'ready') {
+                statusColor = 'review';
+                if (hasPublicVersion) {
+                  statusTitle = 'Public ≠ Ready';
+                } else {
+                  statusTitle = 'Ready';
+                }
+              } else {
+                statusColor = 'unpublished';
+                if (hasPublicVersion) {
+                  statusTitle = 'Public ≠ Draft';
+                } else {
+                  statusTitle = 'Unpublished';
+                }
+              }
               return (
                 <td className="text-center">
-                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} />
+                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} title={statusTitle} />
                 </td>
               );
             };
@@ -155,24 +174,18 @@ class ContentsTable extends Component {
                     <MenuItem onClick={() => onEditContent(rowData.id)}>
                       <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
                     </MenuItem>
-                    {
-                      <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
-                        <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-                      </MenuItem>
-                    }
-                    {
-                      <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
-                        <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
-                      </MenuItem>
-                    }
+                    <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
+                      <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                    </MenuItem>
+                    <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
+                      <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                    </MenuItem>
                     <MenuItem onClick={() => onClickClone(rowData)}>
                       <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
                     </MenuItem>
-                    {
-                      <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
-                        <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
-                      </MenuItem>
-                    }
+                    <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
+                      <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                    </MenuItem>
                   </Table.DropdownKebab>
                 </div>
               </Table.Actions>];

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import {
   getAssetsList,
   getFilteringCategories,
@@ -27,7 +28,6 @@ import {
   getLastPage, getPageSize, getTotalItems, getCurrentPage,
 } from 'state/pagination/selectors';
 import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
-import { fetchCategoryTree } from 'state/categories/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import AssetsList from 'ui/assets/AssetsList';
@@ -35,6 +35,7 @@ import AssetsList from 'ui/assets/AssetsList';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
+import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetModal';
 
 export const mapStateToProps = state => ({
   assets: getAssetsList(state),
@@ -59,7 +60,6 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch(setListFilterParams({}));
       dispatch(fetchGroups({ page: 1, pageSize: 0 }));
       dispatch(fetchAssetsPaged());
-      dispatch(fetchCategoryTree());
     }
   },
   onApplyFilteredSearch: (filters) => {
@@ -116,6 +116,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   onUseAssetClicked: asset => (
     dispatch(fetchRawAssetInfo(asset.id)).then(ownProps.onUseAsset)
   ),
+  onDuplicateClicked: (asset) => {
+    dispatch(setVisibleModal(CLONE_ASSET_MODAL_ID));
+    dispatch(setInfo(Object.assign({}, { id: asset.id, name: asset.name })));
+  },
 });
 
 const AssetsListContainer = connect(
@@ -127,4 +131,4 @@ const AssetsListContainer = connect(
   },
 )(AssetsList);
 
-export default AssetsListContainer;
+export default injectIntl(AssetsListContainer);
