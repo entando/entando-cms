@@ -104,7 +104,9 @@ class RenderDateTimePickerInput extends Component {
 RenderDateTimePickerInput.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.shape({
+      date: PropTypes.string,
+    })]),
     name: PropTypes.string,
   }).isRequired,
   meta: PropTypes.shape({
