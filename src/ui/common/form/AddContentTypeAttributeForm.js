@@ -45,6 +45,7 @@ export class AttributeFormBody extends Component {
       mode,
       attributesList,
       handleSubmit,
+      onCancel,
       onSubmit,
       allowedRoles,
       invalid,
@@ -153,12 +154,20 @@ export class AttributeFormBody extends Component {
         <Row>
           <Col xs={12}>
             <Button
-              className="pull-right AttributeForm__continue--btn"
+              className="pull-right ContentTypeAttributeForm__continue-btn"
               type="submit"
               bsStyle="primary"
               disabled={invalid || submitting}
             >
               <FormattedMessage id={labelsubmit} />
+            </Button>
+            <Button
+              onClick={onCancel}
+              className="pull-right ContentTypeAttributeForm__cancel-btn"
+              type="reset"
+              disabled={submitting}
+            >
+              <FormattedMessage id="cms.label.cancel" />
             </Button>
           </Col>
         </Row>
@@ -170,6 +179,7 @@ export class AttributeFormBody extends Component {
 AttributeFormBody.propTypes = {
   onDidMount: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   contentTypeAttributeCode: PropTypes.string,
   invalid: PropTypes.bool,

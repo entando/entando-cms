@@ -114,7 +114,6 @@ export default {
       'Reload the references for these entity types. Number of type to reload: {count}. ',
     'cms.contenttype.reference.reload': 'Click {link} to reload all content types.',
     'cms.contenttype.attributes.label': 'Attributes',
-    'cms.contenttype.editattribute.label': 'Edit Content Type Attribute',
     'cms.contentType.helpattributes.label':
       'This content types section let the administrator add new selected content type attributes or edit those already existing.',
     'cms.contenttype.datatype.label': 'Type',
@@ -136,7 +135,8 @@ export default {
     'cms.contenttype.form.metadata.defaultContentModelLists': 'Default content model for lists',
     'cms.contenttype.form.metadata.viewPage': 'Page for on-the-fly publishing',
     'cms.contenttype.alert.created': 'Content type created successfully',
-    'cms.contenttype.attribute.edit.title': 'Edit attribute',
+    'cms.contenttype.attribute.add.title': 'Add Content Type Attribute',
+    'cms.contenttype.attribute.edit.title': 'Edit Content Type Attribute',
     'cms.contenttype.enumeratorStaticItems': 'Elements',
     'cms.contenttype.enumeratorStaticItems.help':
       "Insert a configuration like 'lable1,lable2,lable3'",
@@ -199,7 +199,6 @@ export default {
     'cms.contentsettings.metadata.infoDeleted': '{name} removed',
     'cms.new': 'New',
     'cms.save': 'Save',
-    'cms.cancel': 'Cancel',
     'cms.contents.edit.contentCategoryList': 'Content Category List',
     'cms.categories.expandAll': 'Expand All',
     'cms.categories.collapseAll': 'Collapse All',
@@ -395,7 +394,7 @@ export default {
     'widget.form.default': 'Default',
     'widget.form.inclusiveOr': 'Use inclusive filter (OR)',
     'widget.form.inclusiveOrTip':
-        'When active, filter the contents with an inclusive filter over the selected categories',
+      'When active, filter the contents with an inclusive filter over the selected categories',
     'widget.form.creationDate': 'Creation date',
     'widget.form.lastModify': 'Last modify',
     'widget.form.asc': 'Ascending',
@@ -405,7 +404,7 @@ export default {
     'widget.form.reorder': 'Reorder',
     'widget.form.selectFilter': 'Select Filter',
     'widget.form.extraOptionsDescription':
-        'If you want, you can customize the title of the widget or add a link to a page.',
+      'If you want, you can customize the title of the widget or add a link to a page.',
     'widget.page.create.pageTitle': 'Info',
     'widget.page.create.code': 'Code',
     'widget.page.create.code.placeholder': 'Code',

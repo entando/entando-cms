@@ -23,7 +23,7 @@ import {
   getSelectedCompositeAttributes,
 } from 'state/content-type/selectors';
 
-import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD } from 'app-init/routes';
+import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
 import { TYPE_COMPOSITE, MODE_ADD } from 'state/content-type/const';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
@@ -45,6 +45,9 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(clearErrors());
     dispatch(fetchContentTypeAttributes());
   },
+  onCancel: () => history.push(
+    routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode }),
+  ),
   onSubmit: (values, allowedRoles, mode) => {
     dispatch(
       handlerAttributeFromContentType(
