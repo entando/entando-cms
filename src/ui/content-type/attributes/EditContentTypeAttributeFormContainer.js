@@ -27,7 +27,7 @@ import {
   getContentTypeSelectedAttributeIndexable,
 } from 'state/content-type/selectors';
 
-import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD } from 'app-init/routes';
+import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state) || 'edit',
@@ -54,6 +54,9 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(fetchAttributeFromContentType('attribute', contentTypeAttributeCode, attributeCode));
     dispatch(fetchContentTypeAttributes());
   },
+  onCancel: () => history.push(
+    routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode }),
+  ),
   onSubmit: (values, allowedRoles, mode) => {
     dispatch(
       handlerAttributeFromContentType(
@@ -71,11 +74,9 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(
       fetchContentTypeAttribute(
         attributeCode,
-        () => history.push(
-          routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
-            entityCode: contentTypeAttributeCode,
-          }),
-        ),
+        () => history.push(routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
+          entityCode: contentTypeAttributeCode,
+        })),
         selectedAttributeType,
         'attribute',
       ),

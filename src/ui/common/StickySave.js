@@ -33,7 +33,7 @@ const messages = defineMessages({
     id: 'cms.setContentAs',
   },
   cancel: {
-    id: 'cms.cancel',
+    id: 'cms.label.cancel',
   },
   saveAndContinue: {
     id: 'cms.saveAndContinue',

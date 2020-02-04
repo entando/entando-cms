@@ -52,6 +52,7 @@ export class EditContentTypeAttributeFormBody extends Component {
       isIndexable,
       attributesList,
       onSubmit,
+      onCancel,
       allowedRoles,
       handleSubmit,
       invalid,
@@ -162,7 +163,7 @@ export class EditContentTypeAttributeFormBody extends Component {
     return (
       <form
         onSubmit={handleSubmit(values => onSubmit(values, allowedRoles, mode))}
-        className="form-horizontal"
+        className="EditContentTypeAttributeForm form-horizontal"
       >
         <Row>
           <Col xs={12}>{header()}</Col>
@@ -181,12 +182,20 @@ export class EditContentTypeAttributeFormBody extends Component {
         <Row>
           <Col xs={12}>
             <Button
-              className="pull-right EditAttributeForm__continue--btn"
+              className="pull-right ContentTypeAttributeForm__continue-btn"
               type="submit"
               bsStyle="primary"
               disabled={invalid || submitting}
             >
               <FormattedMessage id={labelsubmit} />
+            </Button>
+            <Button
+              onClick={onCancel}
+              className="pull-right ContentTypeAttributeForm__cancel-btn"
+              type="reset"
+              disabled={submitting}
+            >
+              <FormattedMessage id="cms.label.cancel" />
             </Button>
           </Col>
         </Row>
@@ -198,6 +207,7 @@ export class EditContentTypeAttributeFormBody extends Component {
 EditContentTypeAttributeFormBody.propTypes = {
   onDidMount: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   contentTypeAttributeCode: PropTypes.string,
   invalid: PropTypes.bool,
