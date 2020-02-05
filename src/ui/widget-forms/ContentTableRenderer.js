@@ -15,6 +15,7 @@ const ContentTableRenderer = ({
 
   const renderContentRows = fields.map((field, i) => {
     const content = fields.get(i);
+    console.log('content', content);
     const contentTypeCode = content.typeCode || content.contentId.substr(0, 3);
     const filterByCode = contentModel => contentModel.contentType === contentTypeCode;
     const contentModelsByContentType = [{ id: 'default', descr: intl.formatMessage({ id: 'widget.form.default' }) },
