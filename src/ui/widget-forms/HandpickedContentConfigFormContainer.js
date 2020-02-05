@@ -29,6 +29,7 @@ export const mapStateToProps = (state, ownProps) => {
       contents: [propWidgetConfig],
       maxElemForItem: propWidgetConfig.maxElemForItem,
     } : null;
+  console.log('widgetConfig', widgetConfig);
   return ({
     contentModels: getContentModelList(state),
     initialValues: widgetConfig,
