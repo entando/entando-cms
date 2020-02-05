@@ -16,7 +16,7 @@ const optionMap = [
   },
   {
     label: 'cms.contentmodel.form.code',
-    value: 'contentType',
+    value: 'id',
   },
 ];
 
