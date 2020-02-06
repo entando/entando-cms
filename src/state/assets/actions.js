@@ -30,6 +30,7 @@ import { toggleLoading } from 'state/loading/actions';
 import {
   getFileType,
   getListFilterParams,
+  getAssetsMap,
 } from 'state/assets/selectors';
 import {
   getAssets, createAsset, editAsset, deleteAsset, cloneAsset,
@@ -127,9 +128,10 @@ export const fetchAssetsCount = type => dispatch => new Promise((resolve) => {
 
 export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
+  assetType = null,
 ) => (dispatch, getState) => {
   const state = getState();
-  const fileType = getFileType(state);
+  const fileType = assetType || getFileType(state);
   let filters = getListFilterParams(state);
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
   if (filters && Object.keys(filters).length === 0) {
@@ -149,6 +151,7 @@ export const fetchAssetsPaged = (
       (c, i) => `&filters[${i + startIndex}].attribute=categories&filters[${i + startIndex}].value=${c}`,
     ).join('');
   }
+
   const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
   return dispatch(fetchAssets(paginationMetadata, `?${params}`));
 };
@@ -364,6 +367,10 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
     });
 });
 
+export const fetchRawAssetInfo = assetId => (dispatch, getState) => new Promise((resolve) => {
+  const assetsMap = getAssetsMap(getState());
+  resolve(assetsMap[assetId]);
+});
 
 export const sendCloneAsset = id => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('assets'));

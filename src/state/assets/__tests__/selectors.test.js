@@ -100,13 +100,21 @@ it('verify getAssetsList selector', () => {
   const cA = condenseAssetInfo({ ...a, group: groupdo }, TEST_STATE.api.domain);
   const cB = condenseAssetInfo({ ...b, group: groupre }, TEST_STATE.api.domain);
   const isImg = atype => atype === 'image';
-  const addUrls = ast => ({
-    ...ast,
-    downloadUrl: isImg(ast.type) ? ast.versions[0].path : ast.path,
-    previewUrl: isImg(ast.type) ? ast.versions[1].path : null,
-    previewLgUrl: isImg(ast.type) ? ast.versions[3].path : null,
-    categories: [],
-  });
+  const addUrls = (ast) => {
+    let newAsset = {
+      ...ast,
+      downloadUrl: isImg(ast.type) ? ast.versions[0].path : ast.path,
+      categories: [],
+    };
+    if (isImg(ast.type)) {
+      newAsset = {
+        ...newAsset,
+        previewUrl: ast.versions[1].path,
+        previewLgUrl: ast.versions[3].path,
+      };
+    }
+    return newAsset;
+  };
   expect(assetsList).toEqual([
     addUrls(cA),
     addUrls(cB),

@@ -4,7 +4,12 @@ import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 
 const AssetsListGridView = ({
-  assets, onEditClicked, onClickDelete, onDuplicateClicked,
+  assets,
+  browseMode,
+  onEditClicked,
+  onClickDelete,
+  onItemSelected,
+  onDuplicateClicked,
 }) => {
   const gridItems = assets.map((asset) => {
     const { versions } = asset;
@@ -21,24 +26,33 @@ const AssetsListGridView = ({
     const onClickDeleteHandle = () => onClickDelete(asset);
     const onDuplicateClickHandle = () => onDuplicateClicked(asset);
     const onDownloadHandle = () => window.open(asset.downloadUrl);
+    const onClickSelectHandle = () => onItemSelected(asset);
     return (
       <div className="AssetsListGridView__item" key={asset.id}>
         <div className="AssetsListGridView__header">
           <span className="AssetsListGridView__name">{asset.description}</span>
-          <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
-            <MenuItem onClick={onEditClickHandle}>
-              <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
-            </MenuItem>
-            <MenuItem onClick={onDuplicateClickHandle}>
-              <FormattedMessage id="cms.label.duplicate" defaultMessage="Duplicate" />
-            </MenuItem>
-            <MenuItem onClick={onDownloadHandle}>
-              <FormattedMessage id="cms.label.download" defaultMessage="Download" />
-            </MenuItem>
-            <MenuItem onClick={onClickDeleteHandle}>
-              <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-            </MenuItem>
-          </DropdownKebab>
+          {browseMode ? (
+            <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
+              <MenuItem onClick={onClickSelectHandle}>
+                <FormattedMessage id="cms.label.use" defaultMessage="Use" />
+              </MenuItem>
+            </DropdownKebab>
+          ) : (
+            <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
+              <MenuItem onClick={onEditClickHandle}>
+                <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+              </MenuItem>
+              <MenuItem onClick={onDuplicateClickHandle}>
+                <FormattedMessage id="cms.label.duplicate" defaultMessage="Duplicate" />
+              </MenuItem>
+              <MenuItem onClick={onDownloadHandle}>
+                <FormattedMessage id="cms.label.download" defaultMessage="Download" />
+              </MenuItem>
+              <MenuItem onClick={onClickDeleteHandle}>
+                <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+              </MenuItem>
+            </DropdownKebab>
+          )}
         </div>
         <div className="AssetsListGridView__image-wrapper">{previewRender}</div>
       </div>
@@ -50,8 +64,15 @@ const AssetsListGridView = ({
 AssetsListGridView.propTypes = {
   assets: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onEditClicked: PropTypes.func.isRequired,
+  onItemSelected: PropTypes.func,
   onClickDelete: PropTypes.func.isRequired,
+  browseMode: PropTypes.bool,
   onDuplicateClicked: PropTypes.func.isRequired,
+};
+
+AssetsListGridView.defaultProps = {
+  browseMode: false,
+  onItemSelected: null,
 };
 
 export default AssetsListGridView;

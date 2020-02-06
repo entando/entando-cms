@@ -158,9 +158,11 @@ class AssetsList extends Component {
       onApplyFilteredSearch,
       onChangeAssetsView,
       onApplySort,
+      onUseAssetClicked,
       activeFilters,
       lastPage,
       totalItems,
+      browseMode,
       pageSize: perPage,
       page,
       perPageOptions,
@@ -183,7 +185,7 @@ class AssetsList extends Component {
     const notSortable = ['actions', 'preview', 'categories'];
     const headerSorter = item => (notSortable.indexOf(item.name) === -1
       ? onApplySort(item.id) : null);
-    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map((item, i) => (
+    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map(item => (
       <th
         width={item.width}
         key={item.name}
@@ -264,6 +266,8 @@ class AssetsList extends Component {
         asset={asset}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
+        browseMode={browseMode}
+        onItemSelected={onUseAssetClicked}
         showColumns={showColumns}
         onSelect={this.handleAssetSelect}
         selected={selectedAsset === asset.id}
@@ -283,6 +287,8 @@ class AssetsList extends Component {
         assets={assets}
         onEditClicked={onAssetSelected}
         onClickDelete={onClickDelete}
+        browseMode={browseMode}
+        onItemSelected={onUseAssetClicked}
         onDuplicateClicked={onDuplicateClicked}
       />
     );
@@ -297,9 +303,9 @@ class AssetsList extends Component {
       bodyContent = assetsView === 'list' ? tableContent : gridContent;
     }
     const content = (
-      <CardGrid>
+      <CardGrid className="AssetsList__files-grid">
         <div className="AssetsList__files-header">
-          {renderFileTypes}
+          {!browseMode ? renderFileTypes : null}
           {mobile || singleView ? null : (
             <div className="AssetsList__view-options">
               <span
@@ -402,6 +408,7 @@ AssetsList.propTypes = {
   onChangeAssetsView: PropTypes.func.isRequired,
   onRemoveAllActiveFilters: PropTypes.func.isRequired,
   onChangeFileType: PropTypes.func.isRequired,
+  onUseAssetClicked: PropTypes.func,
   fetchList: PropTypes.func.isRequired,
   lastPage: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
@@ -410,6 +417,7 @@ AssetsList.propTypes = {
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   onAssetSelected: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
+  browseMode: PropTypes.bool,
   onDuplicateClicked: PropTypes.func.isRequired,
   onResetFilteringCategories: PropTypes.func.isRequired,
   showColumns: PropTypes.arrayOf(PropTypes.string),
@@ -428,6 +436,8 @@ AssetsList.defaultProps = {
     direction: 'ASC',
   },
   perPageOptions: [5, 10, 15, 25, 50],
+  browseMode: false,
+  onUseAssetClicked: null,
   showColumns: headers.map(({ name }) => name),
   hideFooter: false,
   singleView: false,

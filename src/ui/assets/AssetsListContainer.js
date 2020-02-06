@@ -20,6 +20,7 @@ import {
   changeAssetsView,
   makeFilter,
   pageDefault,
+  fetchRawAssetInfo,
   resetFilteringCategories,
   setAssetCategoryFilter,
 } from 'state/assets/actions';
@@ -51,11 +52,15 @@ export const mapStateToProps = state => ({
   page: getCurrentPage(state),
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
-    dispatch(setListFilterParams({}));
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchAssetsPaged());
+    if (ownProps.browseMode) {
+      dispatch(changeFileType(ownProps.assetType));
+    } else {
+      dispatch(setListFilterParams({}));
+      dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+      dispatch(fetchAssetsPaged());
+    }
   },
   onApplyFilteredSearch: (filters) => {
     dispatch(setActiveFilters(filters));
@@ -108,6 +113,9 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
     dispatch(setInfo(asset));
   },
+  onUseAssetClicked: asset => (
+    dispatch(fetchRawAssetInfo(asset.id)).then(ownProps.onUseAsset)
+  ),
   onDuplicateClicked: (asset) => {
     dispatch(setVisibleModal(CLONE_ASSET_MODAL_ID));
     dispatch(setInfo(Object.assign({}, { id: asset.id, name: asset.name })));

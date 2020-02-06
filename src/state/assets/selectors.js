@@ -15,21 +15,37 @@ const getURLAbsolute = (domain, url) => {
   return `${theURL.origin}${url}`;
 };
 
-export const condenseAssetInfo = (asset, domain) => {
-  const { versions, metadata } = asset;
-  if (!metadata) {
-    const newAsset = Object.assign(asset, { path: getURLAbsolute(domain, get(asset, 'path', '')) });
-    return newAsset;
-  }
-  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
-  const origpath = versions[0].path;
+const refineImageVersions = (versions, domain, dimension) => {
   const sizes = ['orig', 'sm', 'md', 'lg'];
   const newVersions = versions.map((img, i) => ({
     ...img,
     sizetype: sizes[i],
     path: getURLAbsolute(domain, get(img, 'path', '')),
-    dimensions: i === 0 ? dimension : img.dimensions,
+    dimensions: i === 0 && dimension ? dimension : img.dimensions,
   }));
+  return {
+    versions: newVersions,
+    downloadUrl: newVersions[0].path,
+    previewUrl: newVersions[1].path,
+    previewLgUrl: newVersions[3].path,
+  };
+};
+
+export const condenseAssetInfo = (asset, domain) => {
+  const { versions, metadata } = asset;
+  const isImg = asset.type === 'image';
+  if (!metadata || !('Image Width' in metadata)) {
+    const newAsset = Object.assign(asset, { path: getURLAbsolute(domain, get(asset, 'path', '')) });
+    if (isImg && versions) {
+      const newVersions = refineImageVersions(versions, domain);
+      return { ...newAsset, ...newVersions };
+    }
+    return newAsset;
+  }
+
+  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
+  const origpath = versions[0].path;
+  const newVersions = isImg ? refineImageVersions(versions, domain, dimension) : {};
   const filestrparts = origpath.split('/');
   const filename = filestrparts[filestrparts.length - 1];
   const newMetadata = {
@@ -40,8 +56,9 @@ export const condenseAssetInfo = (asset, domain) => {
   };
   return {
     ...asset,
-    versions: newVersions,
+    ...newVersions,
     metadata: newMetadata,
+    downloadUrl: isImg ? newVersions.versions[0].path : asset.path,
   };
 };
 
@@ -61,14 +78,10 @@ export const getAssetsList = createSelector(
   [getAssetsMap, getAssetsIdList, getGroupsMap, getDomain, getCategoriesMap],
   (assetsMap, idList, groups, domain, categoriesMap) => idList.map((id) => {
     const asset = condenseAssetInfo(assetsMap[id], domain);
-    const isImg = asset.type === 'image';
-    const { versions, categories = [] } = asset;
+    const { categories = [] } = asset;
     const namedCategories = categories.map(c => categoriesMap[c] || c);
     return {
       ...asset,
-      downloadUrl: isImg ? versions[0].path : asset.path,
-      previewUrl: isImg ? versions[1].path : null,
-      previewLgUrl: isImg ? versions[3].path : null,
       group: groups[asset.group] || asset.group,
       categories: namedCategories,
     };

@@ -34,8 +34,8 @@ import TimestampAttributeField from 'ui/edit-content/content-attributes/Timestam
 import HypertextAttributeField from 'ui/edit-content/content-attributes/HypertextAttributeField';
 import LongtextAttributeField from 'ui/edit-content/content-attributes/LongtextAttributeField';
 import TextAttributeField from 'ui/edit-content/content-attributes/TextAttributeField';
-import AttachAttributeField from 'ui/edit-content/content-attributes/AttachAttributeField';
-import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttributeField';
+import AttachAttributeFieldContainer from 'ui/edit-content/content-attributes/AttachAttributeFieldContainer';
+import ImageAttributeFieldContainer from 'ui/edit-content/content-attributes/ImageAttributeFieldContainer';
 import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
 
@@ -113,10 +113,12 @@ const AttributeField = ({
       actualName = `${name}.values.en`;
       break;
     case TYPE_ATTACH:
-      AttributeFieldComp = AttachAttributeField;
+      AttributeFieldComp = AttachAttributeFieldContainer;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_IMAGE:
-      AttributeFieldComp = ImageAttributeField;
+      AttributeFieldComp = ImageAttributeFieldContainer;
+      actualName = `${name}.values.en`;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
