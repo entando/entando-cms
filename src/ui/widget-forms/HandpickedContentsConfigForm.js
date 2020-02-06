@@ -129,6 +129,36 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
       </Row>
     ) : null;
 
+    const renderPublishingSettings = multipleContentsMode ? (
+      <Row>
+        <Col xs={12}>
+          <fieldset className="no-padding">
+            <FormSectionTitle
+              titleId="widget.form.publishingSettings"
+              requireFields={false}
+              collapsable
+              onClick={handleCollapsePublishingSettings}
+            />
+            <Collapse isOpened={publishingSettingsOpen}>
+              <div>
+                <Field
+                  component={RenderSelectInput}
+                  name="maxElemForItem"
+                  label={
+                    <FormLabel labelId="widget.form.elementsPP" />
+                }
+                  options={elementNumbers}
+                  optionValue="code"
+                  optionDisplayName="name"
+                  defaultOptionId="user.profile.all"
+                />
+              </div>
+            </Collapse>
+          </fieldset>
+        </Col>
+      </Row>
+    ) : null;
+
     return (
       <Fragment>
         <form onSubmit={handleSubmit} className="form-horizontal">
@@ -143,33 +173,7 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
               />
             </Col>
           </Row>
-          <Row>
-            <Col xs={12}>
-              <fieldset className="no-padding">
-                <FormSectionTitle
-                  titleId="widget.form.publishingSettings"
-                  requireFields={false}
-                  collapsable
-                  onClick={handleCollapsePublishingSettings}
-                />
-                <Collapse isOpened={publishingSettingsOpen}>
-                  <div>
-                    <Field
-                      component={RenderSelectInput}
-                      name="maxElemForItem"
-                      label={
-                        <FormLabel labelId="widget.form.elementsPP" />
-                      }
-                      options={elementNumbers}
-                      optionValue="code"
-                      optionDisplayName="name"
-                      defaultOptionId="user.profile.all"
-                    />
-                  </div>
-                </Collapse>
-              </fieldset>
-            </Col>
-          </Row>
+          {renderPublishingSettings}
           {renderExtraOptions}
           <Row>
             <Col xs={12}>

@@ -7,7 +7,7 @@ import {
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import ErrorsAlertContainer from 'ui/common/form/ErrorsAlertContainer';
-import AddAttributeFormContainer from 'ui/content-type/attributes/AddAttributeFormContainer';
+import AddContentTypeAttributeFormContainer from 'ui/content-type/attributes/AddContentTypeAttributeFormContainer';
 import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 
 const AddContentTypeAttributePage = () => (
@@ -22,7 +22,7 @@ const AddContentTypeAttributePage = () => (
             <FormattedMessage id="cms.contenttype.title" defaultMessage="Content Types" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contenttype.editattribute.label" defaultMessage="Edit" />
+            <FormattedMessage id="cms.contenttype.edit.label" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>
@@ -30,8 +30,7 @@ const AddContentTypeAttributePage = () => (
     <Row>
       <Col xs={12}>
         <CMSPageTitle
-          titleId="cms.contenttype.editattribute.label"
-          helpId="cms.contentType.helpattributes.label"
+          titleId="cms.contenttype.attribute.add.title"
           position="pull-right"
           largeTitle
         />
@@ -44,7 +43,7 @@ const AddContentTypeAttributePage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <AddAttributeFormContainer />
+        <AddContentTypeAttributeFormContainer />
       </Col>
     </Row>
   </Grid>

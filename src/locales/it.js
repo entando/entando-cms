@@ -115,7 +115,6 @@ export default {
       "Le referenze per i seguenti Tipi di Entita' hanno bisogno di essere ricaricate. Totale da ricaricare: {count}. ",
     'cms.contenttype.reference.reload': 'Clicca {link} per ricaricare tutti i content types.',
     'cms.contenttype.attributes.label': 'Attributi',
-    'cms.contenttype.editattribute.label': 'Modificare',
     'cms.contentType.helpattributes.label':
       "Dalla sezione tipi di contenuto l'amministratore può creare nuovi tipi di dati o modificare quelli già esistenti.",
     'cms.contenttype.datatype.label': 'Tipo',
@@ -137,7 +136,8 @@ export default {
     'cms.contenttype.form.metadata.defaultContentModelLists': 'Modello di contenuto predefinito per elenchi',
     'cms.contenttype.form.metadata.viewPage': 'Pagina per la pubblicazione al volo',
     'cms.contenttype.alert.created': 'tipo di contenuto creato con successo',
-    'cms.contenttype.attribute.edit.title': 'Modificare',
+    'cms.contenttype.attribute.edit.title': 'Modifica attributo per un tipo di contenuto',
+    'cms.contenttype.attribute.add.title': 'Aggiungi attributo per un tipo di contenuto',
     'cms.contenttype.enumeratorStaticItems': 'Elementi',
     'cms.contenttype.enumeratorStaticItems.help':
       "Inserisci una configuration tipo 'lable1,lable2,lable3'",
@@ -201,7 +201,6 @@ export default {
     'cms.contentsettings.metadata.infoDeleted': '{name} rimosso',
     'cms.new': 'Nuova',
     'cms.save': 'Salva',
-    'cms.cancel': 'Cancella',
     'cms.contents.edit.contentCategoryList': 'Elenco Delle Dategorie Di Contenuti',
     'cms.categories.expandAll': 'Espandi Tutto',
     'cms.categories.collapseAll': 'Comprimi Tutto',

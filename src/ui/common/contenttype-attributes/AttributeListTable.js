@@ -18,8 +18,11 @@ const AttributeListTable = ({
       <table className="ContTypeAttributeListTable__table table table-striped table-bordered">
         <thead>
           <tr>
-            <th className="ContTypeAttributeListTable__th-md">
+            <th className="ContTypeAttributeListTable__th-sm">
               <FormattedMessage id="cms.contenttype.form.code" />
+            </th>
+            <th className="ContTypeAttributeListTable__th-md">
+              <FormattedMessage id="cms.contenttype.form.name" />
             </th>
             <th className="ContTypeAttributeListTable__th-sm">
               <FormattedMessage id="cms.contenttype.form.type" />

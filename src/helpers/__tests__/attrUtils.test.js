@@ -1,5 +1,7 @@
 import { getDateTimeObjFromStr, getAttrInitialValue } from 'helpers/attrUtils';
-import { TYPE_BOOLEAN, TYPE_CHECKBOX, TYPE_THREESTATE } from 'state/content-type/const';
+import {
+  TYPE_BOOLEAN, TYPE_CHECKBOX, TYPE_THREESTATE, TYPE_TEXT, TYPE_LINK, TYPE_LONGTEXT, TYPE_LIST,
+} from 'state/content-type/const';
 
 describe('helpers/attrUtils', () => {
   describe('getAttrInitialValue', () => {
@@ -25,6 +27,39 @@ describe('helpers/attrUtils', () => {
       const expectedValue = {
         code: attribute.code,
         value: 'none',
+      };
+      expect(getAttrInitialValue(attribute)).toEqual(expectedValue);
+    });
+    it('should return correct initial value for Text attributes', () => {
+      const attribute = { type: TYPE_TEXT, code: 'test' };
+      const expectedValue = {
+        code: attribute.code,
+        values: {
+          en: '',
+        },
+      };
+      expect(getAttrInitialValue(attribute)).toEqual(expectedValue);
+      attribute.type = TYPE_LONGTEXT;
+      expect(getAttrInitialValue(attribute)).toEqual(expectedValue);
+    });
+    it('should return correct initial value for Link attributes', () => {
+      const attribute = { type: TYPE_LINK, code: 'test' };
+      const expectedValue = {
+        code: attribute.code,
+        value: {},
+        values: {
+          en: '',
+        },
+      };
+      expect(getAttrInitialValue(attribute)).toEqual(expectedValue);
+    });
+    it('should return correct initial value for List attributes', () => {
+      const attribute = { type: TYPE_LIST, code: 'test' };
+      const expectedValue = {
+        code: attribute.code,
+        listelements: {
+          en: [],
+        },
       };
       expect(getAttrInitialValue(attribute)).toEqual(expectedValue);
     });

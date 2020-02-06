@@ -158,16 +158,18 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       };
     }
     if (type === TYPE_TIMESTAMP) {
-      if (value.includes('-')) return attribute;
-      const fromFormat = 'DD/MM/YYYY';
-      const toFormat = 'YYYY-MM-DD';
       const {
         date, hours, minutes, seconds,
       } = value;
-      const newDate = moment(date, fromFormat).format(toFormat);
+      let newDate = date;
+      if (!date.includes('-')) {
+        const fromFormat = 'DD/MM/YYYY';
+        const toFormat = 'YYYY-MM-DD';
+        newDate = moment(date, fromFormat).format(toFormat);
+      }
       return {
         ...attribute,
-        value: `${newDate} ${hours}:${minutes}:${seconds}`,
+        value: `${newDate} ${hours || '00'}:${minutes || '00'}:${seconds || '00'}`,
       };
     }
     if (type === TYPE_CHECKBOX || type === TYPE_BOOLEAN || type === TYPE_THREESTATE) {
