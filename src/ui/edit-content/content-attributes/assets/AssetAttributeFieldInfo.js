@@ -90,7 +90,9 @@ const AssetAttributeFieldInfo = ({
             ))}
             <Row>
               <Col xs={12} className="AssetAttributeField__input text-right">
-                <Button bsStyle="danger" onClick={onRemoveValue}>Delete</Button>
+                <Button bsStyle="danger" onClick={onRemoveValue}>
+                  <FormattedMessage id="cms.label.delete" defaultValue="Remove" />
+                </Button>
               </Col>
             </Row>
           </Grid>
