@@ -18,6 +18,10 @@
     font-weight: bold;
   }
 
+  &__inf {
+    word-break: break-all;
+  }
+
   &__input {
     display: block;
     width: 100%;

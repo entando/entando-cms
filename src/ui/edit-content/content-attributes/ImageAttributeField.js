@@ -23,7 +23,6 @@ const ImageAttributeField = ({
   assetListBegin,
 }) => {
   const handleAssetSelected = info => input.onChange(info);
-  const updateInputValue = val => input.onChange({ ...input.value, ...val });
 
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -44,7 +43,7 @@ const ImageAttributeField = ({
   };
 
   const renderAssetSelected = () => (
-    <AssetAttributeFieldInfoContainer inputValue={input.value} onChange={updateInputValue} />
+    <AssetAttributeFieldInfoContainer input={input} />
   );
 
   const hasValue = !!input.value;
@@ -64,7 +63,13 @@ const ImageAttributeField = ({
 };
 
 ImageAttributeField.propTypes = {
-  input: PropTypes.shape({}),
+  input: PropTypes.shape({
+    value: PropTypes.oneOfType([
+      PropTypes.shape({}),
+      PropTypes.string,
+    ]),
+    onChange: PropTypes.func.isRequired,
+  }),
   labelSize: PropTypes.number,
   alignClass: PropTypes.string,
   help: PropTypes.node,

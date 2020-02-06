@@ -1,51 +1,81 @@
 import { connect } from 'react-redux';
+import { compact, get } from 'lodash';
 import { condenseAssetInfo } from 'state/assets/selectors';
+import { getMetadataMapping } from 'state/content-settings/selectors';
 import { getDomain } from '@entando/apimanager';
 import AssetAttributeFieldInfo from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfo';
 
-export const mapStateToProps = (state, { inputValue }) => {
+export const mapStateToProps = (state, { input }) => {
   const domain = getDomain(state);
-  const assetInfo = condenseAssetInfo(inputValue, domain);
-  const { type: assetType } = assetInfo;
-  let tfs = [
-    {
-      name: 'text',
+  const mapping = getMetadataMapping(state);
+  const assetInfo = condenseAssetInfo(input.value, domain);
+  const { type } = assetInfo;
+
+  const fields = {
+    name: {
+      name: 'name',
       label: 'Text',
-      value: assetInfo.description,
+      value: assetInfo.name || assetInfo.description,
     },
-  ];
+  };
 
-  if (assetType === 'image') {
-    tfs = [...tfs, ...[{
-      name: 'alt',
-      label: 'alt',
-    },
-    {
-      name: 'description',
-      label: 'description',
-    },
-    {
-      name: 'legend',
-      label: 'legend',
-    },
-    {
-      name: 'title',
-      label: 'title',
-    }]];
+  const mapnames = mapping ? Object.keys(mapping) : [];
+  if (type === 'image' && mapnames.length > 0) {
+    fields.metadata = mapnames.map((mapname) => {
+      const returnValues = {
+        name: mapname,
+        label: mapname,
+      };
+      if (get(assetInfo, `metadata.${mapname}`, false)) {
+        return {
+          ...returnValues,
+          value: assetInfo.metadata[mapname],
+        };
+      }
+
+      const metadefaults = mapping[mapname] || [];
+      const metavals = compact(
+        metadefaults.map(meta => (
+          get(assetInfo, `metadata.${meta}`, '')
+        )),
+      ).join(', ');
+
+      return {
+        ...returnValues,
+        value: metavals,
+      };
+    });
   }
-
-  const metaValues = tfs.reduce((prev, curr) => ({
-    ...prev,
-    [curr.name]: curr.value || '',
-  }), {});
 
   return {
     assetInfo,
-    metaProps: tfs,
-    metaValues,
+    fields,
+    mapping,
   };
 };
 
-const AssetAttributeFieldInfoContainer = connect(mapStateToProps, null)(AssetAttributeFieldInfo);
+export const mapDispatchToProps = (dispatch, { input }) => ({
+  onUpdateValue: (name, value) => {
+    if (name === 'name') {
+      const ch = { ...input.value, name: value };
+      input.onChange(ch);
+    } else {
+      const ch = {
+        ...input.value,
+        metadata: {
+          ...input.value.metadata,
+          [name]: value,
+        },
+      };
+      input.onChange(ch);
+    }
+  },
+  onRemoveValue: () => input.onChange(null),
+});
+
+const AssetAttributeFieldInfoContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AssetAttributeFieldInfo);
 
 export default AssetAttributeFieldInfoContainer;

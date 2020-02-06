@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import {
   Grid,
   Row,
@@ -7,30 +8,21 @@ import {
   FormGroup,
   InputGroup,
   FormControl,
+  Button,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
 const AssetAttributeFieldInfo = ({
-  metaProps,
-  metaValues,
+  fields,
   assetInfo,
-  onChange,
+  onUpdateValue,
+  onRemoveValue,
 }) => {
-  const [value, setValue] = useState({});
-  const [fields, setFields] = useState([]);
-  // console.log(metaProps, assetInfo);
   const { metadata } = assetInfo;
-  useEffect(() => {
-    setFields(metaProps);
-    setValue(metaValues);
-    // onChange(metaValues);
-  }, []);
 
-  const onMetaChangeEvent = (e) => {
-    const { name, value: val } = e.target;
-    const newVal = { ...value, [name]: val };
-    setValue(newVal);
-    onChange(newVal);
+  const onFieldChangeEvent = (e) => {
+    const { name, value } = e.target;
+    onUpdateValue(name, value);
   };
 
   const previewRender = assetInfo.type === 'image' ? (
@@ -38,6 +30,11 @@ const AssetAttributeFieldInfo = ({
   ) : (
     <div className="fa fa-file-text img-thumbnail AssetAttributeField__attach-preview" />
   );
+
+  const {
+    name: nameField,
+    metadata: metaFields,
+  } = fields;
 
   return (
     <Grid fluid className="AssetAttributeField__selected-info">
@@ -49,24 +46,53 @@ const AssetAttributeFieldInfo = ({
           <Grid fluid>
             <Row>
               <Col xs={2} className="AssetAttributeField__lbl"><FormattedMessage id="cms.assets.form.name" /></Col>
-              <Col xs={10} className="inf">{assetInfo.description}</Col>
+              <Col xs={10} className="AssetAttributeField__inf">{assetInfo.description}</Col>
             </Row>
             <Row className="form-group">
               <Col xs={2} className="AssetAttributeField__lbl"><FormattedMessage id="cms.assets.form.filename" /></Col>
-              <Col xs={10} className="inf">{metadata && metadata.filename}</Col>
+              <Col xs={10} className="AssetAttributeField__inf">{get(metadata, 'filename', '')}</Col>
             </Row>
-            {fields.map(tf => (
+            {nameField && (
+              <Row>
+                <Col xs={4} className="AssetAttributeField__lbl text-right">{nameField.label}</Col>
+                <Col xs={8}>
+                  <FormGroup className="AssetAttributeField__input">
+                    <InputGroup className="AssetAttributeField__input">
+                      <FormControl
+                        type="text"
+                        name={nameField.name}
+                        onChange={onFieldChangeEvent}
+                        defaultValue={nameField.value || ''}
+                        className="AssetAttributeField__input--inner"
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+              </Row>
+            )}
+            {metaFields && metaFields.map(tf => (
               <Row key={tf.name}>
                 <Col xs={4} className="AssetAttributeField__lbl text-right">{tf.label}</Col>
                 <Col xs={8}>
                   <FormGroup className="AssetAttributeField__input">
                     <InputGroup className="AssetAttributeField__input">
-                      <FormControl type="text" name={tf.name} onChange={onMetaChangeEvent} defaultValue={tf.value || ''} className="AssetAttributeField__input--inner" />
+                      <FormControl
+                        type="text"
+                        name={tf.name}
+                        onChange={onFieldChangeEvent}
+                        defaultValue={tf.value || ''}
+                        className="AssetAttributeField__input--inner"
+                      />
                     </InputGroup>
                   </FormGroup>
                 </Col>
               </Row>
             ))}
+            <Row>
+              <Col xs={12} className="AssetAttributeField__input text-right">
+                <Button bsStyle="danger" onClick={onRemoveValue}>Delete</Button>
+              </Col>
+            </Row>
           </Grid>
         </Col>
       </Row>
@@ -75,16 +101,31 @@ const AssetAttributeFieldInfo = ({
 };
 
 AssetAttributeFieldInfo.propTypes = {
-  metaProps: PropTypes.arrayOf(PropTypes.shape({})),
-  metaValues: PropTypes.shape({}),
-  assetInfo: PropTypes.shape({}),
-  onChange: PropTypes.func.isRequired,
+  fields: PropTypes.shape({
+    name: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+    metadata: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
+  assetInfo: PropTypes.shape({
+    type: PropTypes.string,
+    previewUrl: PropTypes.string,
+    description: PropTypes.string,
+    metadata: PropTypes.shape({
+      filename: PropTypes.string,
+    }),
+  }),
+  mapping: PropTypes.shape({}),
+  onUpdateValue: PropTypes.func.isRequired,
+  onRemoveValue: PropTypes.func.isRequired,
 };
 
 AssetAttributeFieldInfo.defaultProps = {
-  metaProps: [],
-  metaValues: {},
+  fields: {},
   assetInfo: {},
+  mapping: {},
 };
 
 export default AssetAttributeFieldInfo;

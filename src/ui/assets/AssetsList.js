@@ -185,7 +185,7 @@ class AssetsList extends Component {
     const notSortable = ['actions', 'preview', 'categories'];
     const headerSorter = item => (notSortable.indexOf(item.name) === -1
       ? onApplySort(item.id) : null);
-    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map((item, i) => (
+    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map(item => (
       <th
         width={item.width}
         key={item.name}
@@ -305,8 +305,7 @@ class AssetsList extends Component {
     const content = (
       <CardGrid className="AssetsList__files-grid">
         <div className="AssetsList__files-header">
-          {!browseMode ? renderFileTypes : null}(
-          {renderFileTypes}
+          {!browseMode ? renderFileTypes : null}
           {mobile || singleView ? null : (
             <div className="AssetsList__view-options">
               <span

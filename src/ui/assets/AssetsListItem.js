@@ -95,9 +95,12 @@ AssetsListItem.propTypes = {
     previewUrl: PropTypes.string,
     downloadUrl: PropTypes.string,
     metadata: PropTypes.shape({}),
-    group: PropTypes.shape({
-      name: PropTypes.string,
-    }),
+    group: PropTypes.oneOfType([
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+      PropTypes.string,
+    ]),
     versions: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   onEditClicked: PropTypes.func.isRequired,

@@ -15,21 +15,37 @@ const getURLAbsolute = (domain, url) => {
   return `${theURL.origin}${url}`;
 };
 
-export const condenseAssetInfo = (asset, domain) => {
-  const { versions, metadata } = asset;
-  if (!metadata) {
-    const newAsset = Object.assign(asset, { path: getURLAbsolute(domain, get(asset, 'path', '')) });
-    return newAsset;
-  }
-  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
-  const origpath = versions[0].path;
+const refineImageVersions = (versions, domain, dimension) => {
   const sizes = ['orig', 'sm', 'md', 'lg'];
   const newVersions = versions.map((img, i) => ({
     ...img,
     sizetype: sizes[i],
     path: getURLAbsolute(domain, get(img, 'path', '')),
-    dimensions: i === 0 ? dimension : img.dimensions,
+    dimensions: i === 0 && dimension ? dimension : img.dimensions,
   }));
+  return {
+    versions: newVersions,
+    downloadUrl: newVersions[0].path,
+    previewUrl: newVersions[1].path,
+    previewLgUrl: newVersions[3].path,
+  };
+};
+
+export const condenseAssetInfo = (asset, domain) => {
+  const { versions, metadata } = asset;
+  const isImg = asset.type === 'image';
+  if (!metadata || !('Image Width' in metadata)) {
+    const newAsset = Object.assign(asset, { path: getURLAbsolute(domain, get(asset, 'path', '')) });
+    if (isImg && versions) {
+      const newVersions = refineImageVersions(versions, domain);
+      return { ...newAsset, ...newVersions };
+    }
+    return newAsset;
+  }
+
+  const dimension = `${removePixelWord(metadata['Image Width'])}x${removePixelWord(metadata['Image Height'])} px`;
+  const origpath = versions[0].path;
+  const newVersions = isImg ? refineImageVersions(versions, domain, dimension) : {};
   const filestrparts = origpath.split('/');
   const filename = filestrparts[filestrparts.length - 1];
   const newMetadata = {
@@ -38,14 +54,11 @@ export const condenseAssetInfo = (asset, domain) => {
     dimension,
     filename,
   };
-  const isImg = asset.type === 'image';
   return {
     ...asset,
-    versions: newVersions,
+    ...newVersions,
     metadata: newMetadata,
-    downloadUrl: isImg ? newVersions[0].path : asset.path,
-    previewUrl: isImg ? newVersions[1].path : null,
-    previewLgUrl: isImg ? newVersions[3].path : null,
+    downloadUrl: isImg ? newVersions.versions[0].path : asset.path,
   };
 };
 
