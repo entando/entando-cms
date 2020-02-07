@@ -74,6 +74,10 @@ describe('helpers/attrUtils', () => {
         minutes: '20',
         seconds: '05',
       });
+      const emptyDateStr = '';
+      expect(getDateTimeObjFromStr(emptyDateStr)).toEqual({
+        date: '',
+      });
     });
   });
 });
