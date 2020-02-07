@@ -34,7 +34,7 @@ const TimestampAttributeField = ({
   let inputDateFormat = dateFormat;
   if (date.includes('-')) inputDateFormat = 'YYYY-MM-DD';
   actualValue = {
-    date: moment(date, inputDateFormat).format(dateFormat),
+    date: date && moment(date, inputDateFormat).format(dateFormat),
     hours,
     minutes,
     seconds,

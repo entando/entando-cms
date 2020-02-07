@@ -60,6 +60,8 @@ export const getAttrInitialValue = (attr) => {
  * // { date: '2019-11-26', hours: '14', minutes: '46', seconds: '07' }
  */
 export const getDateTimeObjFromStr = (dateStr) => {
+  if (!dateStr) return { date: '' };
+
   const dtSegments = dateStr.split(' ');
   const date = dtSegments[0];
   if (dtSegments[1]) {
