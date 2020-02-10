@@ -211,6 +211,7 @@ export default {
     'cms.chooseAnOption': 'Choose an option',
     'cms.contents.title': 'Contents',
     'cms.contents.code': 'Code',
+    'cms.contents.add.title': 'Add',
     'cms.contents.edit.title': 'Edit',
     'cms.contents.edit.info': 'Info',
     'cms.contents.edit.groups': 'Groups',

@@ -19,7 +19,7 @@ const AddContentPage = () => (
             <FormattedMessage id="cms.contents.title" defaultMessage="Contents" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contents.edit.title" defaultMessage="Edit" />
+            <FormattedMessage id="cms.contents.add.title" defaultMessage="Add" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>
@@ -27,7 +27,7 @@ const AddContentPage = () => (
     <Row>
       <Col>
         <CMSPageTitle
-          titleId="cms.contents.edit.title"
+          titleId="cms.contents.add.title"
           helpId="cms.contents.edit.titletip"
           position="pull-right"
           noHeaderMargin
