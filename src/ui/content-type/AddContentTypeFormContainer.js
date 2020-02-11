@@ -31,10 +31,10 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
     dispatch(fetchContentTypeAttributes());
   },
   onSubmit: (values) => {
-    dispatch(sendPostContentType(values)).then(({ code }) => {
-      if (code) {
+    dispatch(sendPostContentType(values)).then((res) => {
+      if (res && res.code) {
         dispatch(addToast(intl.formatMessage(msgs.contTypeCreated), TOAST_SUCCESS));
-        history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code }));
+        history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: res.code }));
       }
     });
   },
