@@ -38,7 +38,7 @@ describe('EditContentFormContainer connection to redux', () => {
   });
 
   it('verify that onDidMount and onSetOwnerGroupDisable are defined and called in mapDispatchToProps', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = jest.fn(() => ({ catch: jest.fn() }));
     const result = mapDispatchToProps(dispatchMock, { intl: {}, history: {} });
     expect(result.onSetOwnerGroupDisable).toBeDefined();
     result.onSetOwnerGroupDisable();

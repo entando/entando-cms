@@ -61,7 +61,8 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onDidMount: (fetchContentParams) => {
-    dispatch(fetchContent(fetchContentParams));
+    dispatch(fetchContent(fetchContentParams))
+      .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTree());
   },

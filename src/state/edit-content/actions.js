@@ -22,7 +22,7 @@ import {
   WORK_MODE_ADD,
 } from './types';
 import {
-  getWorkMode, getContent as getStateContent, getJoinedCategories, getNewContentsType,
+  getWorkMode, getContent as getStateContent, getJoinedCategories,
 } from './selectors';
 
 export const setContentEntry = content => ({
@@ -44,7 +44,7 @@ export const setJoinedCategories = categories => ({
   payload: { joinedCategories: categories },
 });
 
-export const fetchContent = params => dispatch => new Promise((resolve) => {
+export const fetchContent = params => dispatch => new Promise((resolve, reject) => {
   getContent(params)
     .then((response) => {
       response.json().then((json) => {
@@ -65,6 +65,7 @@ export const fetchContent = params => dispatch => new Promise((resolve) => {
           );
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
+          reject();
         }
         resolve();
       });
@@ -142,6 +143,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   const workMode = getWorkMode(state);
   const {
     joinGroups = [], ownerGroup, contentDescription, status, attributes = [],
+    contentType,
   } = values;
 
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);
@@ -195,7 +197,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   if (workMode === WORK_MODE_ADD) {
     const requestObject = {
       ...enhancedValues,
-      typeCode: getNewContentsType(state).typeCode,
+      typeCode: contentType,
     };
     dispatch(sendPostAddContent(requestObject)).then(res => resolve(res));
   } else {

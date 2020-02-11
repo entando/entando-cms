@@ -22,6 +22,9 @@ const TEST_STATE = {
         selectedCategories: undefined,
         selectedJoinGroups: undefined,
       },
+      contentType: {
+        selected: 'ART',
+      },
     },
   },
   currentUser: { username: 'admin' },
@@ -35,8 +38,8 @@ describe('AddContentFormContainer connection to redux', () => {
   });
 
   it('verify that onDidMount and onSetOwnerGroupDisable are defined and called in mapDispatchToProps', () => {
-    const dispatchMock = jest.fn();
-    const result = mapDispatchToProps(dispatchMock, { intl: {}, history: {} });
+    const dispatchMock = jest.fn(() => ({ catch: jest.fn() }));
+    const result = mapDispatchToProps(dispatchMock, { intl: {}, history: {}, match: { params: 'test' } });
     expect(result.onSetOwnerGroupDisable).toBeDefined();
     result.onSetOwnerGroupDisable();
     expect(dispatchMock).toHaveBeenCalled();

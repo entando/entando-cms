@@ -12,6 +12,7 @@ import {
   saveContent,
   fetchContent,
 } from 'state/edit-content/actions';
+import { fetchContentType } from 'state/content-type/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { ROUTE_CMS_CONTENTS } from 'app-init/routes';
@@ -19,13 +20,12 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 
 import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getUsername } from '@entando/apimanager';
-
+import { getSelectedContentType } from 'state/content-type/selectors';
 import { getLocale } from 'state/locale/selectors';
 
 import {
   getGroups,
   getWorkMode,
-  getNewContentsType,
   getOwnerGroupDisabled,
   getSaveType,
   getContent,
@@ -52,7 +52,6 @@ const publishContentMsgs = defineMessages({
 export const mapStateToProps = state => ({
   workMode: getWorkMode(state),
   language: getLocale(state),
-  contentType: getNewContentsType(state),
   groups: getGroups(state),
   currentUser: getUsername(state),
   ownerGroupDisabled: getOwnerGroupDisabled(state),
@@ -60,13 +59,16 @@ export const mapStateToProps = state => ({
   selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),
   saveType: getSaveType(state),
   content: getContent(state),
+  contentType: getSelectedContentType(state),
 });
 
-export const mapDispatchToProps = (dispatch, { intl, history }) => ({
+export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onDidMount: () => {
     dispatch(setWorkMode(WORK_MODE_ADD));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTree());
+    dispatch(fetchContentType(params.contentType))
+      .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onWillUnmount: () => dispatch(clearEditContentForm()),

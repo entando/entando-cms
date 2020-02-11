@@ -135,7 +135,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(setCurrentStatusShow('all'));
     dispatch(setNewContentsType(contentType));
     history.push(
-      routeConverter(ROUTE_CMS_ADD_CONTENT),
+      routeConverter(ROUTE_CMS_ADD_CONTENT, { contentType: contentType.typeCode }),
     );
   },
   onClickJoinCategories: (contents) => {
