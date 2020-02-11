@@ -26,7 +26,7 @@ export const ADD_CONTENT_OPENED_OK = {
     { code: 'adminstrators', name: 'Administrators' },
     { code: 'freeAccess', name: 'Free Access' },
   ],
-  contentType: undefined,
+  contentType: 'ART',
   selectedCategories: undefined,
   language: undefined,
   saveType: undefined,

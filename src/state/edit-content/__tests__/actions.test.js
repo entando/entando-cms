@@ -94,13 +94,12 @@ describe('editContent thunks', () => {
     getContent.mockImplementationOnce(mockApi({ errors: true }));
     store
       .dispatch(fetchContent())
-      .then(() => {
+      .catch(() => {
         expect(getContent).toHaveBeenCalled();
         const actions = store.getActions();
         expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
         done();
-      })
-      .catch(done.fail);
+      });
   });
   it('fetchGroups', (done) => {
     store

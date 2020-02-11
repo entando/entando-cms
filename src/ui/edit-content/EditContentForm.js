@@ -43,15 +43,15 @@ const defaultOwnerGroup = 'free';
 class EditContentFormBody extends React.Component {
   componentDidMount() {
     const {
-      initialize, onDidMount, workMode, match: { params = {} },
-      onIncompleteData, contentType,
+      initialize, onDidMount, match: { params = {} },
+      onIncompleteData,
     } = this.props;
-    const contentId = params.id;
+    const { id: contentId, contentType } = params;
     const fetchContentParams = `/${contentId}`;
-    if (workMode === WORK_MODE_EDIT && contentId == null) return onIncompleteData();
-    if (workMode === WORK_MODE_ADD) {
-      if (contentType == null || contentType === '') return onIncompleteData();
-      return initialize({ ownerGroup: defaultOwnerGroup });
+    if (contentType == null && contentId == null) return onIncompleteData();
+    // if contentId from params is null, it means we are creating a new content
+    if (contentId == null) {
+      initialize({ ownerGroup: defaultOwnerGroup, contentType });
     }
     return onDidMount(fetchContentParams);
   }
@@ -77,6 +77,7 @@ class EditContentFormBody extends React.Component {
       onUnpublish,
       selectedJoinGroups,
       ownerGroupDisabled,
+      contentType: cType,
       onSetOwnerGroupDisable,
       currentUser: currentUserName,
     } = this.props;
@@ -84,8 +85,11 @@ class EditContentFormBody extends React.Component {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
       onLine,
     } = content || {};
-    const { contentType: newContentsType } = this.props;
-    const contentType = content.typeDescription || newContentsType.typeDescription;
+    const newContentsType = {
+      typeDescription: cType.name,
+      typeCode: cType.code,
+    };
+    const contentType = content.typeDescription || newContentsType.typeDescription || '';
     const typeCode = content.typeCode || newContentsType.typeCode;
     const groupsWithEmptyOption = [...groups];
 
@@ -255,7 +259,6 @@ EditContentFormBody.propTypes = {
     typeCode: PropTypes.string,
     attributes: PropTypes.arrayOf(PropTypes.shape({})),
   }),
-  contentType: PropTypes.shape({}),
   currentUser: PropTypes.string.isRequired,
   location: PropTypes.shape({}).isRequired,
   groups: PropTypes.arrayOf(
@@ -278,18 +281,19 @@ EditContentFormBody.propTypes = {
   onUnpublish: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
+  contentType: PropTypes.shape({
+    name: PropTypes.string,
+    code: PropTypes.string,
+  }),
 };
 
 EditContentFormBody.defaultProps = {
   ownerGroupDisabled: false,
   selectedJoinGroups: [],
   content: {},
-  contentType: {
-    typeDescription: '',
-    typeCode: '',
-  },
   invalid: false,
   submitting: false,
+  contentType: {},
 };
 
 const EditContentForm = reduxForm({

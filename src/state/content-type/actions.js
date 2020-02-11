@@ -198,7 +198,7 @@ export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, para
     .catch(() => {});
 });
 
-export const fetchContentType = contentTypeCode => dispatch => new Promise((resolve) => {
+export const fetchContentType = contentTypeCode => dispatch => new Promise((resolve, reject) => {
   getContentType(contentTypeCode)
     .then((response) => {
       response.json().then((json) => {
@@ -207,6 +207,7 @@ export const fetchContentType = contentTypeCode => dispatch => new Promise((reso
           dispatch(initialize('ContentType', json.payload));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
+          reject();
         }
         resolve();
       });

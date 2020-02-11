@@ -473,13 +473,12 @@ describe('state/content-type/actions ', () => {
         getContentType.mockImplementationOnce(mockApi({ errors: true }));
         store
           .dispatch(fetchContentType('AAA'))
-          .then(() => {
+          .catch(() => {
             const actions = store.getActions();
             expect(actions).toHaveLength(1);
             expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
             done();
-          })
-          .catch(done.fail);
+          });
       });
     });
 
