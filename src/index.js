@@ -11,6 +11,7 @@ import 'patternfly/dist/css/patternfly.min.css';
 import 'patternfly/dist/css/patternfly-additions.min.css';
 
 import '@entando/menu/dist/css/index.css';
+import '@entando/pagetreeselector/dist/css/index.css';
 import 'sass/index.scss';
 
 ReactDOM.render(
