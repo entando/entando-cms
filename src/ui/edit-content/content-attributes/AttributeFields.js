@@ -21,7 +21,7 @@ import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
 const renderField = (name, idx, attribute) => {
   const {
-    type, code, mandatory, listFilter, indexable,
+    type, code, mandatory, listFilter, indexable, name: attName,
   } = attribute;
 
   const helpTextArr = [];
@@ -30,7 +30,7 @@ const renderField = (name, idx, attribute) => {
   const helpText = helpTextArr.join('<br>');
   const fieldLabel = (
     <FormLabel
-      labelText={code}
+      labelText={attName || code}
       required={mandatory}
       helpText={helpText}
     />
@@ -83,7 +83,7 @@ const AttributeFields = ({ attributes, fields }) => {
     // as it cannot be set directly from props
     attributes.forEach((attr) => {
       const {
-        type, code, value, values, elements, compositeelements, listelements,
+        type, code, value, values, elements, compositeelements, listelements, name,
       } = attr;
       fields.push({
         code,
@@ -92,6 +92,7 @@ const AttributeFields = ({ attributes, fields }) => {
         elements,
         compositeelements,
         listelements,
+        name,
       });
     });
   }

@@ -48,6 +48,7 @@ const AttributeField = ({
   const {
     type,
     code,
+    name: attName,
     mandatory,
     listFilter,
     indexable,
@@ -61,7 +62,7 @@ const AttributeField = ({
 
   const fieldLabel = label || (
     <FormLabel
-      labelText={code}
+      labelText={attName || code}
       required={mandatory}
       helpText={helpText}
     />
