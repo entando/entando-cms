@@ -21,7 +21,6 @@ class ContentAttributes extends Component {
 
   render() {
     const { attributes, languages } = this.props;
-
     return (
       <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
         {languages.map(({ code, name }) => (
