@@ -13,6 +13,10 @@ import {
 } from 'state/edit-content/actions';
 import { GET_CONTENT_RESPONSE_OK } from 'testutils/mocks/editContent';
 import {
+  TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP,
+  TYPE_LINK,
+} from 'state/content-type/const';
+import {
   SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, WORK_MODE_ADD, WORK_MODE_EDIT,
   CLEAR_EDIT_CONTENT_FORM,
   SET_NEW_CONTENTS_TYPE,
@@ -174,7 +178,8 @@ describe('editContent thunks', () => {
   });
 
   it('save new content', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }, { type: TYPE_DATE }, { type: TYPE_LINK }, { type: TYPE_THREESTATE },
+    ]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
@@ -182,11 +187,11 @@ describe('editContent thunks', () => {
       form: { editcontentform: { values: {} } },
     });
     store
-      .dispatch(saveContent({ attributes: [{ value: 'test' }] })).then(() => done());
+      .dispatch(saveContent({ attributes: [{ value: 'test' }, { value: '2020-01-01' }, { value: {} }, { value: 'test' }] })).then(() => done());
   });
 
   it('save add content', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Boolean' }]);
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Boolean' }, { type: TYPE_CHECKBOX }, { type: TYPE_BOOLEAN }, { type: TYPE_TIMESTAMP }]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } } },
@@ -194,6 +199,6 @@ describe('editContent thunks', () => {
       form: { editcontentform: { values: {} } },
     });
     store
-      .dispatch(saveContent({ contentStatus: 'ready', attributes: [{ value: 'test' }] })).then(() => done());
+      .dispatch(saveContent({ contentStatus: 'ready', attributes: [{ value: 'test' }, { value: true }, { value: true }, { value: { date: '' } }] })).then(() => done());
   });
 });

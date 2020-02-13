@@ -3,12 +3,14 @@ import {
 } from '@entando/messages';
 import { initialize } from 'redux-form';
 import moment from 'moment';
+import _ from 'lodash';
 
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
 import {
   TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP,
+  TYPE_LINK,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import {
@@ -159,6 +161,10 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
         value: `${moment(value, fromFormat).format(toFormat)} 00:00:00`,
       };
     }
+    if (type === TYPE_LINK) {
+      if (value && !_.isEmpty(value)) return attribute;
+      return null;
+    }
     if (type === TYPE_TIMESTAMP) {
       const {
         date, hours, minutes, seconds,
@@ -184,7 +190,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       };
     }
     return attribute;
-  });
+  }).filter(i => i !== null);
 
   const enhancedValues = {
     groups: joinGroups,
