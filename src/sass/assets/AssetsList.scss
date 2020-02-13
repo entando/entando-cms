@@ -194,9 +194,8 @@
       height: 100%;
       margin-top: 0;
     }
-
-    .AssetsList__body {
-      height: calc(90vh - 128px);
+    .AssetsList__files-container--mobile {
+      padding-bottom: 50px;
     }
 
     .AssetsList__files-container {
@@ -207,6 +206,7 @@
 
   & > .modal-content {
     height: 90vh;
+    overflow-y: scroll;
   }
 
   & > .modal-body {
