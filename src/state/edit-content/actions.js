@@ -57,9 +57,9 @@ export const fetchContent = params => dispatch => new Promise((resolve, reject) 
           } = content;
           dispatch(
             initialize('editcontentform', {
-              ownerGroup: mainGroup,
-              joinGroups: groups,
-              contentDescription: description,
+              mainGroup,
+              groups,
+              description,
               ...(status !== 'PUBLIC' && { status }),
             }),
           );
@@ -142,7 +142,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
   const {
-    joinGroups = [], ownerGroup, contentDescription, status, attributes = [],
+    groups = [], mainGroup, description, status, attributes = [],
     contentType,
   } = values;
 
@@ -187,9 +187,9 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   });
 
   const enhancedValues = {
-    groups: joinGroups,
-    mainGroup: ownerGroup,
-    description: contentDescription,
+    groups,
+    mainGroup,
+    description,
     categories,
     attributes: transformedAttributes,
     ...(status != null && { status }),

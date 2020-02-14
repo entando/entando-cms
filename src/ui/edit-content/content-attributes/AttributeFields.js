@@ -77,15 +77,18 @@ const renderField = (name, idx, attribute) => {
   );
 };
 
-const AttributeFields = ({ attributes, fields }) => {
+const AttributeFields = ({
+  attributes, fields, reInitializeForm, content, typeCode, mainGroup,
+}) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
     // as it cannot be set directly from props
+    const atts = [];
     attributes.forEach((attr) => {
       const {
         type, code, value, values, elements, compositeelements, listelements, name,
       } = attr;
-      fields.push({
+      atts.push({
         code,
         value: type === TYPE_TIMESTAMP ? (getDateTimeObjFromStr(value)) : value,
         values,
@@ -95,6 +98,9 @@ const AttributeFields = ({ attributes, fields }) => {
         name,
       });
     });
+    reInitializeForm('editcontentform', {
+      ...content, attributes: atts, contentType: typeCode, mainGroup,
+    });
   }
 
   return fields.map((name, idx) => renderField(name, idx, attributes[idx]));
@@ -103,6 +109,10 @@ const AttributeFields = ({ attributes, fields }) => {
 AttributeFields.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
+  reInitializeForm: PropTypes.func.isRequired,
+  content: PropTypes.shape({}).isRequired,
+  typeCode: PropTypes.string.isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
 export default AttributeFields;

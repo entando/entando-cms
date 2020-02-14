@@ -2,6 +2,11 @@ import { connect } from 'react-redux';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
+import { submit } from 'redux-form';
+import { routeConverter } from '@entando/utils';
+
+import { setVisibleModal } from 'state/modal/actions';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import {
@@ -65,6 +70,9 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
       history.push(ROUTE_CMS_CONTENTMODEL_LIST);
     }
   }),
+  onSaveFromModal: () => { dispatch(setVisibleModal('')); dispatch(submit('contentmodelform')); },
+  onCancelClick: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onCancelWithoutSave: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTMODEL_LIST)); },
 });
 
 const EditContentModelFormContainer = connect(

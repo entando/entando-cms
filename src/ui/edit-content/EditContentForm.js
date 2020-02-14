@@ -51,7 +51,7 @@ class EditContentFormBody extends React.Component {
     if (contentType == null && contentId == null) return onIncompleteData();
     // if contentId from params is null, it means we are creating a new content
     if (contentId == null) {
-      initialize({ ownerGroup: defaultOwnerGroup, contentType });
+      initialize({ mainGroup: defaultOwnerGroup, contentType });
     }
     return onDidMount(fetchContentParams);
   }
@@ -69,7 +69,6 @@ class EditContentFormBody extends React.Component {
       content,
       language,
       workMode,
-      onCancel,
       handleSubmit,
       onSubmit,
       invalid,
@@ -80,10 +79,14 @@ class EditContentFormBody extends React.Component {
       contentType: cType,
       onSetOwnerGroupDisable,
       currentUser: currentUserName,
+      dirty,
+      onCancelClick,
+      onCancelWithoutSave,
+      onSaveFromModal,
     } = this.props;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
-      onLine,
+      onLine, mainGroup = defaultOwnerGroup,
     } = content || {};
     const newContentsType = {
       typeDescription: cType.name,
@@ -92,7 +95,6 @@ class EditContentFormBody extends React.Component {
     const contentType = content.typeDescription || newContentsType.typeDescription || '';
     const typeCode = content.typeCode || newContentsType.typeCode;
     const groupsWithEmptyOption = [...groups];
-
     return (
       <form
         className="EditContentForm form-horizontal"
@@ -134,7 +136,7 @@ class EditContentFormBody extends React.Component {
                 <Col xs={12}>
                   <Field
                     component={RenderTextInput}
-                    name="contentDescription"
+                    name="description"
                     validate={[required]}
                     label={(
                       <FormLabel
@@ -155,7 +157,7 @@ class EditContentFormBody extends React.Component {
                 <FormGroup>
                   <Field
                     component={RenderSelectInput}
-                    name="ownerGroup"
+                    name="mainGroup"
                     defaultValue="df"
                     append={
                       !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
@@ -185,13 +187,13 @@ class EditContentFormBody extends React.Component {
                 </FormGroup>
                 <FormGroup>
                   <FormGroup>
-                    <ControlLabel htmlFor="joinGroups" className="col-xs-12 col-sm-2 text-right">
+                    <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
                       <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" required />
                     </ControlLabel>
                     <Col xs={12} sm={10}>
                       <FieldArray
                         component={MultiSelectRenderer}
-                        name="joinGroups"
+                        name="groups"
                         intl={intl}
                         options={groups}
                         selectedValues={selectedJoinGroups}
@@ -228,6 +230,8 @@ class EditContentFormBody extends React.Component {
               <ContentAttributesContainer
                 attributes={content.attributes}
                 typeCode={typeCode}
+                content={content}
+                mainGroup={mainGroup}
               />
             )}
           </Row>
@@ -236,10 +240,13 @@ class EditContentFormBody extends React.Component {
           <StickySave
             intl={intl}
             lastAutoSaveTime={lastModified}
-            onCancel={onCancel}
             onSubmit={onSubmit}
             handleSubmit={handleSubmit}
             invalid={invalid}
+            isDirty={dirty}
+            onCancelClick={onCancelClick}
+            onCancelWithoutSave={onCancelWithoutSave}
+            onSaveFromModal={onSaveFromModal}
             submitting={submitting}
             onLine={onLine}
             content={content}
@@ -257,6 +264,7 @@ EditContentFormBody.propTypes = {
   content: PropTypes.shape({
     typeDescription: PropTypes.string,
     typeCode: PropTypes.string,
+    mainGroup: PropTypes.string,
     attributes: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   currentUser: PropTypes.string.isRequired,
@@ -275,7 +283,6 @@ EditContentFormBody.propTypes = {
   ownerGroupDisabled: PropTypes.bool,
   onSetOwnerGroupDisable: PropTypes.func.isRequired,
   match: PropTypes.shape({ params: PropTypes.shape({}) }).isRequired,
-  onCancel: PropTypes.func.isRequired,
   onIncompleteData: PropTypes.func.isRequired,
   onWillUnmount: PropTypes.func.isRequired,
   onUnpublish: PropTypes.func.isRequired,
@@ -285,6 +292,10 @@ EditContentFormBody.propTypes = {
     name: PropTypes.string,
     code: PropTypes.string,
   }),
+  dirty: PropTypes.bool,
+  onCancelWithoutSave: PropTypes.func.isRequired,
+  onCancelClick: PropTypes.func.isRequired,
+  onSaveFromModal: PropTypes.func.isRequired,
 };
 
 EditContentFormBody.defaultProps = {
@@ -294,6 +305,7 @@ EditContentFormBody.defaultProps = {
   invalid: false,
   submitting: false,
   contentType: {},
+  dirty: false,
 };
 
 const EditContentForm = reduxForm({

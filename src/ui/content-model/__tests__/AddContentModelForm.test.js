@@ -27,9 +27,13 @@ const PROPS = {
   }],
 };
 
+const STATE = {
+  modal: { visibleModal: '', info: { key: 'yo' } },
+};
+
 describe('content-model/AddContentModelForm', () => {
   const InjectedAddContentModelForm = injectIntl(AddContentModelForm);
-  const component = mount(mockRenderWithIntl(<InjectedAddContentModelForm {...PROPS} />));
+  const component = mount(mockRenderWithIntl(<InjectedAddContentModelForm {...PROPS} />, STATE));
 
   it('renders without crashing', () => {
     expect(component.exists()).toEqual(true);

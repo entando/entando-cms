@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import {
   InputGroup, Button, Row, Col,
 } from 'patternfly-react';
@@ -12,6 +12,7 @@ import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import AttributeListTable from 'ui/common/contenttype-attributes/AttributeListTable';
 import DeleteAttributeModalContainer from 'ui/content-type/attributes/DeleteAttributeModalContainer';
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 
 const uppercaseThreeLetters = value => (value && !/[A-Z]$/g.test(value) ? <FormattedMessage id="validateForm.element.code" /> : undefined);
 
@@ -36,7 +37,20 @@ export class AddContentTypeFormBody extends Component {
       contentTypeCode,
       viewPages,
       contentModels,
+      dirty,
+      intl,
+      onCancelClick,
+      onCancelWithoutSave,
+      onSaveFromModal,
     } = this.props;
+
+    const handleCancelClick = () => {
+      if (dirty) {
+        onCancelClick();
+      } else {
+        onCancelWithoutSave();
+      }
+    };
 
     const isEdit = mode === 'edit';
 
@@ -193,6 +207,20 @@ export class AddContentTypeFormBody extends Component {
             >
               <FormattedMessage id="cms.label.save" />
             </Button>
+            <Button
+              className="pull-right AddContentTypeFormBody__cancel--btn"
+              bsStyle="default"
+              onClick={handleCancelClick}
+            >
+              <FormattedMessage id="cms.label.cancel" />
+            </Button>
+            <ConfirmCancelModalContainer
+              contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+              invalid={invalid}
+              submitting={submitting}
+              onSave={onSaveFromModal}
+              onCancelWithoutSave={onCancelWithoutSave}
+            />
           </Col>
         </Row>
       </form>
@@ -212,6 +240,11 @@ AddContentTypeFormBody.propTypes = {
   contentTypeCode: PropTypes.string,
   viewPages: PropTypes.arrayOf(PropTypes.object),
   contentModels: PropTypes.arrayOf(PropTypes.object),
+  intl: intlShape.isRequired,
+  dirty: PropTypes.bool,
+  onCancelWithoutSave: PropTypes.func.isRequired,
+  onCancelClick: PropTypes.func.isRequired,
+  onSaveFromModal: PropTypes.func.isRequired,
 };
 
 AddContentTypeFormBody.defaultProps = {
@@ -223,6 +256,7 @@ AddContentTypeFormBody.defaultProps = {
   contentTypeCode: '',
   viewPages: [],
   contentModels: [],
+  dirty: false,
 };
 
 const AddContentTypeForm = reduxForm({

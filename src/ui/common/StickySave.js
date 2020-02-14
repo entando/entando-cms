@@ -6,6 +6,7 @@ import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import { REGULAR_SAVE_TYPE, APPROVE_SAVE_TYPE, CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 
 const messages = defineMessages({
   chooseOption: {
@@ -41,8 +42,8 @@ const messages = defineMessages({
 });
 
 const StickySave = ({
-  lastAutoSaveTime, intl, onCancel, invalid, submitting, onLine, onSubmit, handleSubmit,
-  onUnpublish, content,
+  lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
+  onUnpublish, content, isDirty, onCancelClick, onCancelWithoutSave, onSaveFromModal,
 }) => (
   <Grid className="no-padding">
     <Col xs={12} className="StickySave no-padding">
@@ -130,9 +131,20 @@ const StickySave = ({
                       </Button>
                     ) : null
                   }
-                <Button className="StickySave__actionButton--last" bsStyle="danger" onClick={() => onCancel()}>
-                  {intl.formatMessage(messages.cancel)}
+                <Button
+                  className="AddContentTypeFormBody__cancel--btn"
+                  bsStyle="default"
+                  onClick={isDirty ? onCancelClick : onCancelWithoutSave}
+                >
+                  <FormattedMessage id="cms.label.cancel" />
                 </Button>
+                <ConfirmCancelModalContainer
+                  contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+                  invalid={invalid}
+                  submitting={submitting}
+                  onSave={onSaveFromModal}
+                  onCancelWithoutSave={onCancelWithoutSave}
+                />
               </Col>
             </Col>
           </Row>
@@ -148,19 +160,23 @@ StickySave.propTypes = {
     id: PropTypes.string,
   }),
   lastAutoSaveTime: PropTypes.string,
-  onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onUnpublish: PropTypes.func.isRequired,
   invalid: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   onLine: PropTypes.bool,
+  isDirty: PropTypes.bool,
+  onCancelWithoutSave: PropTypes.func.isRequired,
+  onCancelClick: PropTypes.func.isRequired,
+  onSaveFromModal: PropTypes.func.isRequired,
 };
 
 StickySave.defaultProps = {
   lastAutoSaveTime: ' skipped',
   onLine: false,
   content: {},
+  isDirty: false,
 };
 
 const StickySaveContainer = reduxForm({

@@ -7,6 +7,7 @@ import { fetchContentSettings } from 'state/content-settings/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getAttrInitialValue } from 'helpers/attrUtils';
 import { getActiveLanguages, getLanguages } from 'state/languages/selectors';
+import { initialize } from 'redux-form';
 
 export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => ({
   attributes: (getSelectedContentTypeAttributes(state) || []).map((attr, i) => ({
@@ -26,6 +27,7 @@ export const mapDispatchToProps = (dispatch, { typeCode }) => ({
     // Clear selected content type to avoid using previous one when the component remounts.
     dispatch(setSelectedContentType({}));
   },
+  reInitializeForm: (formName, data) => dispatch(initialize(formName, data)),
 });
 
 export default connect(

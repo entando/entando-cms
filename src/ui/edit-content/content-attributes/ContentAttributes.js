@@ -20,7 +20,9 @@ class ContentAttributes extends Component {
   }
 
   render() {
-    const { attributes, languages } = this.props;
+    const {
+      attributes, languages, reInitializeForm, content, typeCode, mainGroup,
+    } = this.props;
     return (
       <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
         {languages.map(({ code, name }) => (
@@ -32,6 +34,10 @@ class ContentAttributes extends Component {
                 <FieldArray
                   data-test-id="edit-content-content-attributes-field-array"
                   name="attributes"
+                  content={content}
+                  typeCode={typeCode}
+                  mainGroup={mainGroup}
+                  reInitializeForm={reInitializeForm}
                   component={AttributeFields}
                   attributes={attributes}
                 />
@@ -55,6 +61,10 @@ ContentAttributes.propTypes = {
   onWillUnmount: PropTypes.func.isRequired,
   attributes: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  reInitializeForm: PropTypes.func.isRequired,
+  content: PropTypes.shape({}).isRequired,
+  typeCode: PropTypes.string.isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
 export default ContentAttributes;
