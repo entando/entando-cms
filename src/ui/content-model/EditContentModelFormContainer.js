@@ -70,9 +70,9 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
       history.push(ROUTE_CMS_CONTENTMODEL_LIST);
     }
   }),
-  onSaveFromModal: () => { dispatch(setVisibleModal('')); dispatch(submit('contentmodelform')); },
-  onCancelClick: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
-  onCancelWithoutSave: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTMODEL_LIST)); },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('contentmodelform')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTMODEL_LIST)); },
 });
 
 const EditContentModelFormContainer = connect(

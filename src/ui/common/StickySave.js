@@ -43,7 +43,7 @@ const messages = defineMessages({
 
 const StickySave = ({
   lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
-  onUnpublish, content, isDirty, onCancelClick, onCancelWithoutSave, onSaveFromModal,
+  onUnpublish, content, isDirty, onCancel, onDiscard, onSave,
 }) => (
   <Grid className="no-padding">
     <Col xs={12} className="StickySave no-padding">
@@ -134,7 +134,7 @@ const StickySave = ({
                 <Button
                   className="AddContentTypeFormBody__cancel--btn"
                   bsStyle="default"
-                  onClick={isDirty ? onCancelClick : onCancelWithoutSave}
+                  onClick={isDirty ? onCancel : onDiscard}
                 >
                   <FormattedMessage id="cms.label.cancel" />
                 </Button>
@@ -142,8 +142,8 @@ const StickySave = ({
                   contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
                   invalid={invalid}
                   submitting={submitting}
-                  onSave={onSaveFromModal}
-                  onCancelWithoutSave={onCancelWithoutSave}
+                  onSave={onSave}
+                  onDiscard={onDiscard}
                 />
               </Col>
             </Col>
@@ -167,9 +167,9 @@ StickySave.propTypes = {
   submitting: PropTypes.bool.isRequired,
   onLine: PropTypes.bool,
   isDirty: PropTypes.bool,
-  onCancelWithoutSave: PropTypes.func.isRequired,
-  onCancelClick: PropTypes.func.isRequired,
-  onSaveFromModal: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 StickySave.defaultProps = {

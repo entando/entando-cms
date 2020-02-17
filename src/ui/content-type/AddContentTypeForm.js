@@ -39,16 +39,15 @@ export class AddContentTypeFormBody extends Component {
       contentModels,
       dirty,
       intl,
-      onCancelClick,
-      onCancelWithoutSave,
-      onSaveFromModal,
+      onCancel,
+      onDiscard,
+      onSave,
     } = this.props;
-
     const handleCancelClick = () => {
       if (dirty) {
-        onCancelClick();
+        onCancel();
       } else {
-        onCancelWithoutSave();
+        onDiscard();
       }
     };
 
@@ -218,8 +217,8 @@ export class AddContentTypeFormBody extends Component {
               contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
               invalid={invalid}
               submitting={submitting}
-              onSave={onSaveFromModal}
-              onCancelWithoutSave={onCancelWithoutSave}
+              onSave={onSave}
+              onDiscard={onDiscard}
             />
           </Col>
         </Row>
@@ -242,9 +241,9 @@ AddContentTypeFormBody.propTypes = {
   contentModels: PropTypes.arrayOf(PropTypes.object),
   intl: intlShape.isRequired,
   dirty: PropTypes.bool,
-  onCancelWithoutSave: PropTypes.func.isRequired,
-  onCancelClick: PropTypes.func.isRequired,
-  onSaveFromModal: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 AddContentTypeFormBody.defaultProps = {

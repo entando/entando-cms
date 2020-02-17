@@ -172,17 +172,17 @@ class AddContentModelFormBody extends Component {
     const {
       handleSubmit, invalid, submitting, intl, mode, contentTypes,
       dirty,
-      onCancelClick,
-      onCancelWithoutSave,
-      onSaveFromModal,
+      onCancel,
+      onDiscard,
+      onSave,
     } = this.props;
     const { modalOpened, dictList } = this.state;
 
     const handleCancelClick = () => {
       if (dirty) {
-        onCancelClick();
+        onCancel();
       } else {
-        onCancelWithoutSave();
+        onDiscard();
       }
     };
 
@@ -328,8 +328,8 @@ class AddContentModelFormBody extends Component {
               contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
               invalid={invalid}
               submitting={submitting}
-              onSave={onSaveFromModal}
-              onCancelWithoutSave={onCancelWithoutSave}
+              onSave={onSave}
+              onDiscard={onDiscard}
             />
           </Col>
         </Row>
@@ -349,9 +349,9 @@ AddContentModelFormBody.propTypes = {
   submitting: PropTypes.bool,
   mode: PropTypes.string,
   dirty: PropTypes.bool,
-  onCancelWithoutSave: PropTypes.func.isRequired,
-  onCancelClick: PropTypes.func.isRequired,
-  onSaveFromModal: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 AddContentModelFormBody.defaultProps = {

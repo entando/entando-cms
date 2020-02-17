@@ -103,9 +103,9 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
       history.push(routeConverter(ROUTE_CMS_CONTENTS));
     }
   }),
-  onSaveFromModal: () => { dispatch(setVisibleModal('')); dispatch(submit('editcontentform')); },
-  onCancelClick: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
-  onCancelWithoutSave: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('editcontentform')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
 });
 
 const EditContentContainer = connect(

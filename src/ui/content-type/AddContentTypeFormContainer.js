@@ -41,9 +41,9 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
       }
     });
   },
-  onSaveFromModal: () => { dispatch(setVisibleModal('')); dispatch(submit('ContentType')); },
-  onCancelClick: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
-  onCancelWithoutSave: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_LIST)); },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('ContentType')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_LIST)); },
 });
 
 const AddContentTypeFormContainer = connect(

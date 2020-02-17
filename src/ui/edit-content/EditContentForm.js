@@ -80,9 +80,9 @@ class EditContentFormBody extends React.Component {
       onSetOwnerGroupDisable,
       currentUser: currentUserName,
       dirty,
-      onCancelClick,
-      onCancelWithoutSave,
-      onSaveFromModal,
+      onCancel,
+      onDiscard,
+      onSave,
     } = this.props;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
@@ -244,9 +244,9 @@ class EditContentFormBody extends React.Component {
             handleSubmit={handleSubmit}
             invalid={invalid}
             isDirty={dirty}
-            onCancelClick={onCancelClick}
-            onCancelWithoutSave={onCancelWithoutSave}
-            onSaveFromModal={onSaveFromModal}
+            onCancel={onCancel}
+            onDiscard={onDiscard}
+            onSave={onSave}
             submitting={submitting}
             onLine={onLine}
             content={content}
@@ -293,9 +293,9 @@ EditContentFormBody.propTypes = {
     code: PropTypes.string,
   }),
   dirty: PropTypes.bool,
-  onCancelWithoutSave: PropTypes.func.isRequired,
-  onCancelClick: PropTypes.func.isRequired,
-  onSaveFromModal: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 EditContentFormBody.defaultProps = {

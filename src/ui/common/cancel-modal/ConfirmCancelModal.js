@@ -13,13 +13,13 @@ import {
 export const ConfirmCancelModalID = 'ConfirmCancelModal';
 
 const ConfirmCancelModal = ({
-  modalTitleText, onSave, onCancelWithoutSave, invalid, submitting, contentText,
+  modalTitleText, onSave, onDiscard, invalid, submitting, contentText,
 }) => {
   const buttons = [
     <Button
       bsStyle="danger"
       id="ConfirmCancelModal__button-cancel"
-      onClick={() => onCancelWithoutSave()}
+      onClick={() => onDiscard()}
     >
       <FormattedMessage id="cms.label.dontSave" />
     </Button>,
@@ -47,9 +47,9 @@ const ConfirmCancelModal = ({
       modalTitle={modalTitle}
       className="ConfirmCancelModal"
     >
-      <EmptyState>
+      <EmptyState className="ConfirmCancelModal__body">
         <EmptyStateIcon name="exclamation" type="fa" className="ConfirmCancelModal__icon" />
-        <EmptyStateTitle>
+        <EmptyStateTitle className="ConfirmCancelModal__title">
           {contentText}
         </EmptyStateTitle>
       </EmptyState>
@@ -60,7 +60,7 @@ const ConfirmCancelModal = ({
 ConfirmCancelModal.propTypes = {
   modalTitleText: PropTypes.string,
   onSave: PropTypes.func.isRequired,
-  onCancelWithoutSave: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   contentText: PropTypes.string,
