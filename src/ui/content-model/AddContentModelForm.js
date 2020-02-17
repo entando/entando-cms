@@ -15,6 +15,8 @@ import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import DraggableDialog from 'ui/common/DraggableDialog';
 
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
+
 const EDIT_MODE = 'edit';
 const NEW_MODE = 'new';
 
@@ -169,8 +171,21 @@ class AddContentModelFormBody extends Component {
   render() {
     const {
       handleSubmit, invalid, submitting, intl, mode, contentTypes,
+      dirty,
+      onCancel,
+      onDiscard,
+      onSave,
     } = this.props;
     const { modalOpened, dictList } = this.state;
+
+    const handleCancelClick = () => {
+      if (dirty) {
+        onCancel();
+      } else {
+        onDiscard();
+      }
+    };
+
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
         <Modal
@@ -295,13 +310,27 @@ class AddContentModelFormBody extends Component {
         <Row>
           <Col xs={12}>
             <Button
-              className="pull-right"
               type="submit"
               bsStyle="primary"
+              className="pull-right AddContentTypeFormBody__save--btn"
               disabled={invalid || submitting}
             >
               <FormattedMessage id="cms.label.save" />
             </Button>
+            <Button
+              className="pull-right AddContentTypeFormBody__cancel--btn"
+              bsStyle="default"
+              onClick={handleCancelClick}
+            >
+              <FormattedMessage id="cms.label.cancel" />
+            </Button>
+            <ConfirmCancelModalContainer
+              contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+              invalid={invalid}
+              submitting={submitting}
+              onSave={onSave}
+              onDiscard={onDiscard}
+            />
           </Col>
         </Row>
       </form>
@@ -319,12 +348,17 @@ AddContentModelFormBody.propTypes = {
   onDidUnmount: PropTypes.func.isRequired,
   submitting: PropTypes.bool,
   mode: PropTypes.string,
+  dirty: PropTypes.bool,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 AddContentModelFormBody.defaultProps = {
   invalid: false,
   submitting: false,
   mode: NEW_MODE,
+  dirty: false,
 };
 
 const AddContentModelForm = reduxForm({

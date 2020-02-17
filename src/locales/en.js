@@ -40,6 +40,8 @@ export default {
     'cms.label.date.placeholder': 'dd/mm/yyyy',
     'cms.label.presenter.placeholder': 'Press enter key to save changes',
     'cms.label.modal.confirmdelete': 'Do you really want to delete {code}?',
+    'cms.label.modal.confirmCancel': 'Do you want to save the changes you made? Your changes will be lost if you don\'t save them',
+    'cms.label.dontSave': 'Don\'t save',
     'cms.label.metadata': 'Metadata',
     'cms.label.modal.confirmpublish': 'Do you really want to publish {code}?',
     'cms.label.modal.confirmunpublish': 'Do you really want to unpublish {code}?',

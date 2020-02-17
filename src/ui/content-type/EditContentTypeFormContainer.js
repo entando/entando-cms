@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, submit } from 'redux-form';
 import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 import { routeConverter } from '@entando/utils';
 import {
   fetchContentTypeAttributes,
@@ -29,6 +30,7 @@ import { fetchContentModelsByContentType } from 'state/content-model/actions';
 import { getViewPages } from 'state/pages/selectors';
 import { fetchViewPages } from 'state/pages/actions';
 import { getContentModelList } from 'state/content-model/selectors';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: 'edit',
@@ -75,6 +77,9 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
       }
     });
   },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('ContentType')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_LIST)); },
 });
 
 const EditContentTypeFormContainer = connect(
@@ -86,4 +91,4 @@ const EditContentTypeFormContainer = connect(
   },
 )(AddContentTypeForm);
 
-export default withRouter(EditContentTypeFormContainer);
+export default withRouter(injectIntl(EditContentTypeFormContainer));

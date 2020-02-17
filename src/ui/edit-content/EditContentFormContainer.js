@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, submit } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
@@ -13,6 +13,7 @@ import {
 } from 'state/edit-content/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
+import { setVisibleModal } from 'state/modal/actions';
 import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getUsername } from '@entando/apimanager';
 import { getLocale } from 'state/locale/selectors';
@@ -29,6 +30,7 @@ import {
   ROUTE_CMS_CONTENTS,
 } from 'app-init/routes';
 import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE } from 'state/edit-content/types';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 const publishContentMsgs = defineMessages({
   published: {
@@ -53,7 +55,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   currentUser: getUsername(state),
   contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
-  selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
+  selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
   selectedCategories: getJoinedCategories(state),
   saveType: getSaveType(state),
   loading: getLoading(state).contents,
@@ -90,7 +92,6 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
       }
     });
   },
-  onCancel: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onUnpublish: content => dispatch(sendPublishContent(content.id, 'draft')).then((res) => {
     if (res) {
       dispatch(
@@ -102,6 +103,9 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
       history.push(routeConverter(ROUTE_CMS_CONTENTS));
     }
   }),
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('editcontentform')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
 });
 
 const EditContentContainer = connect(

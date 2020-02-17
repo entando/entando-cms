@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, submit } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 
 import {
@@ -12,6 +12,7 @@ import {
   saveContent,
   fetchContent,
 } from 'state/edit-content/actions';
+import { setVisibleModal } from 'state/modal/actions';
 import { fetchContentType } from 'state/content-type/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -22,6 +23,8 @@ import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getUsername } from '@entando/apimanager';
 import { getSelectedContentType } from 'state/content-type/selectors';
 import { getLocale } from 'state/locale/selectors';
+
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 import {
   getGroups,
@@ -55,7 +58,7 @@ export const mapStateToProps = state => ({
   groups: getGroups(state),
   currentUser: getUsername(state),
   ownerGroupDisabled: getOwnerGroupDisabled(state),
-  selectedJoinGroups: formValueSelector('editcontentform')(state, 'joinGroups'),
+  selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
   selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),
   saveType: getSaveType(state),
   content: getContent(state),
@@ -72,7 +75,6 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onWillUnmount: () => dispatch(clearEditContentForm()),
-  onCancel: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
     const { saveType } = values;
@@ -110,6 +112,9 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
       );
     }
   }),
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('editcontentform')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
 });
 
 const EditContentContainer = connect(

@@ -40,8 +40,8 @@ export const HOMEPAGE_PAYLOAD = {
     en: 'Home Page',
     it: 'Pagina iniziale',
   },
-  ownerGroup: 'administrators',
-  joinGroups: [
+  mainGroup: 'administrators',
+  groups: [
     'administrators',
   ],
   children: [
