@@ -23,4 +23,8 @@
   .ql-editor { //sass-lint:disable-line class-name-format
     min-height: 250px;
   }
+
+  .react-datepicker-popper { //sass-lint:disable-line class-name-format
+    z-index: 9999;
+  }
 }
