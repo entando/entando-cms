@@ -11,7 +11,7 @@ import {
   setOwnerGroupDisable,
   saveContent,
 } from 'state/edit-content/actions';
-import { fetchCategoryTree } from 'state/categories/actions';
+import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import { setVisibleModal } from 'state/modal/actions';
 import EditContentForm from 'ui/edit-content/EditContentForm';
@@ -66,7 +66,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
     dispatch(fetchContent(fetchContentParams))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchCategoryTree());
+    dispatch(fetchCategoryTreeAll());
   },
   onWillUnmount: () => dispatch(clearEditContentForm()),
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
