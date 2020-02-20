@@ -21,7 +21,7 @@ class AssetsCount extends React.Component {
         <div className="AssetsCount__box">
           <span className="AssetsCount__count">{fileCount}</span>
           <div>
-            <FormattedMessage id="cms.label.files" />
+            <FormattedMessage id="cms.label.documents" />
           </div>
         </div>
       </div>

@@ -68,7 +68,7 @@ const UploadAssetModalFiles = (props) => {
                   component={RenderSelectInput}
                   name={`${file}.group`}
                   labelSize={2}
-                  label={<FormLabel labelId="cms.assets.form.group" />}
+                  label={<FormLabel labelId="cms.assets.form.group" required />}
                   defaultOptionId="cms.label.chooseoption"
                   optionDisplayName="name"
                   optionValue="code"
