@@ -32,12 +32,17 @@ const ImageAttributeField = ({
       <>
         <Button
           bsStyle="primary"
-          onClick={onClickAdd}
+          onClick={() => onClickAdd(input.name)}
         >
           <FormattedMessage id="cms.label.add" defaultMessage="Add" />
         </Button>
         {errorBox}
-        <AssetBrowserModal assetType="image" onModalOpened={assetListBegin} onAssetSelected={handleAssetSelected} />
+        <AssetBrowserModal
+          assetType="image"
+          name={input.name}
+          onModalOpened={assetListBegin}
+          onAssetSelected={handleAssetSelected}
+        />
       </>
     );
   };
@@ -68,6 +73,7 @@ ImageAttributeField.propTypes = {
       PropTypes.shape({}),
       PropTypes.string,
     ]),
+    name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }),
   labelSize: PropTypes.number,
