@@ -32,13 +32,18 @@ const AttachAttributeField = ({
         <Button
           bsStyle="primary"
           style={{ marginRight: 10 }}
-          onClick={onClickAdd}
+          onClick={() => onClickAdd(input.name)}
         >
           <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
         {errorBox}
         <AssetsUploadContainer buttonVersion />
-        <AssetBrowserModal assetType="file" onModalOpened={assetListBegin} onAssetSelected={handleAssetSelected} />
+        <AssetBrowserModal
+          assetType="file"
+          name={input.name}
+          onModalOpened={assetListBegin}
+          onAssetSelected={handleAssetSelected}
+        />
       </>
     );
   };
@@ -70,6 +75,7 @@ AttachAttributeField.propTypes = {
       PropTypes.string,
     ]),
     onChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
   }),
   labelSize: PropTypes.number,
   alignClass: PropTypes.string,

@@ -14,13 +14,14 @@ const AssetBrowserModal = ({
   assetType,
   onAssetSelected,
   onModalOpened,
+  name,
 }) => {
   const modalTitle = (
     <Modal.Title>
       <FormattedMessage id="cms.assets.label.assetbrowser" defaultMessage="Browse Asset" />
     </Modal.Title>
   );
-  const MODAL_ID = assetType === 'image' ? IMAGE_MODAL_ID : ATTACH_MODAL_ID;
+  const MODAL_ID = assetType === 'image' ? `${IMAGE_MODAL_ID}${name}` : `${ATTACH_MODAL_ID}${name}`;
   return (
     <GenericModalContainer
       modalId={MODAL_ID}
@@ -42,6 +43,7 @@ AssetBrowserModal.propTypes = {
   assetType: PropTypes.string.isRequired,
   onAssetSelected: PropTypes.func.isRequired,
   onModalOpened: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default AssetBrowserModal;

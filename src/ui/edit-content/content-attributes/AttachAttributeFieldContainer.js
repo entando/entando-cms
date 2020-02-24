@@ -18,7 +18,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchAssetsPaged(pageDefault, 'file'));
     dispatch(fetchCategoryTree());
   },
-  onClickAdd: () => dispatch(dispatch(setVisibleModal(ATTACH_MODAL_ID))),
+  onClickAdd: name => dispatch(dispatch(setVisibleModal(`${ATTACH_MODAL_ID}${name}`))),
 });
 
 const AttachAttributeFieldContainer = connect(

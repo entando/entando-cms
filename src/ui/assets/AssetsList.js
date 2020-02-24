@@ -69,8 +69,8 @@ const fileTypes = [
     id: 'image',
   },
   {
-    name: 'Attachments',
-    id: 'file',
+    name: 'Documents',
+    id: 'documents',
   },
 ];
 

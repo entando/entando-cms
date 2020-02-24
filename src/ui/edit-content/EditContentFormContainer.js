@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector, submit } from 'redux-form';
+import { formValueSelector, submit, destroy } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
@@ -68,7 +68,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTreeAll());
   },
-  onWillUnmount: () => dispatch(clearEditContentForm()),
+  onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
