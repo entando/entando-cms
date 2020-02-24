@@ -1,6 +1,7 @@
 .AssetsList {
   &__wrap {
     margin-top: 3.4rem;
+    margin-bottom: 2rem;
 
     @media screen and (max-width: 991px) {
       margin-bottom: 5.5rem;
@@ -77,6 +78,10 @@
 
     &--mobile {
       border-left: 0;
+    }
+
+    &--no-border {
+      border: 0;
     }
 
     .table { // sass-lint:disable-line class-name-format
@@ -182,6 +187,10 @@
 
   // sass-lint:disable class-name-format
   &.modal-dialog {
+
+    @media (max-width: 1220px) {
+      width: 100vw;
+    }
     width: 1210px;
     height: 90vh;
 
@@ -200,8 +209,7 @@
     }
 
     .AssetsList__files-container {
-      padding-bottom: 0;
-      overflow: auto;
+      padding-bottom: 40px;
     }
   }
 

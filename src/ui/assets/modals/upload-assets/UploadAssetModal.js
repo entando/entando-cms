@@ -21,7 +21,7 @@ const UploadAssetModal = (props) => {
   const modalTitle = (
     <Modal.Title>
       <FormattedMessage
-        id={files && files.length > 1 ? 'cms.label.addFilePlural' : 'cms.label.addFile'}
+        id={files && files.length > 1 ? 'cms.label.addAssetPlural' : 'cms.label.addAsset'}
       />
     </Modal.Title>
   );

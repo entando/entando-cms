@@ -7,7 +7,7 @@ import {
   Button,
 } from 'patternfly-react';
 import AssetAttributeFieldInfoContainer from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfoContainer';
-
+import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
 const AttachAttributeField = ({
@@ -31,11 +31,13 @@ const AttachAttributeField = ({
       <>
         <Button
           bsStyle="primary"
+          style={{ marginRight: 10 }}
           onClick={onClickAdd}
         >
-          <FormattedMessage id="cms.label.add" defaultMessage="Add" />
+          <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
         {errorBox}
+        <AssetsUploadContainer buttonVersion />
         <AssetBrowserModal assetType="file" onModalOpened={assetListBegin} onAssetSelected={handleAssetSelected} />
       </>
     );

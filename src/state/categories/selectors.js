@@ -4,6 +4,7 @@ import { getLocale } from 'state/locale/selectors';
 
 export const getCategories = state => state.apps.cms.categories;
 export const getCategoriesIdList = state => state.apps.cms.categories.list;
+export const getCategoryTreeFetched = state => state.apps.cms.categories.treeFetched.status;
 export const getCategoriesMap = state => state.apps.cms.categories.map;
 export const getChildrenMap = state => state.apps.cms.categories.childrenMap;
 export const getStatusMap = state => state.apps.cms.categories.statusMap;

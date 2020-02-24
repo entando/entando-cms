@@ -10,6 +10,7 @@ import {
   handleExpandCategory,
   toggleCategoryExpanded,
   fetchCategoryTreeAll,
+  setCategoryTreeFetched,
 } from 'state/categories/actions';
 
 import { getCategoryTree, getCategory } from 'api/categories';
@@ -19,6 +20,7 @@ import {
   TOGGLE_CATEGORY_EXPANDED,
   SET_CATEGORY_LOADING,
   SET_CATEGORY_LOADED,
+  SET_CATEGORY_TREE_FETCHED,
 } from 'state/categories/types';
 
 import {
@@ -87,6 +89,12 @@ describe('state/categories/actions', () => {
     expect(action).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
     expect(action.payload).toHaveProperty('categoryCode', CATEGORY_CODE);
     expect(action.payload).toHaveProperty('expanded', true);
+  });
+
+  it('setCategoryTreeFetched() should return a well formed action', () => {
+    const action = setCategoryTreeFetched(true);
+    expect(action).toHaveProperty('type', SET_CATEGORY_TREE_FETCHED);
+    expect(action.payload).toEqual(true);
   });
 
   it('setCategoryLoading() should return a well formed action', () => {
@@ -184,8 +192,9 @@ describe('state/categories/actions', () => {
       store.dispatch(fetchCategoryTreeAll())
         .then(() => {
           const actions = store.getActions();
-          expect(actions).toHaveLength(1);
+          expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', SET_CATEGORIES);
+          expect(actions[1]).toHaveProperty('type', SET_CATEGORY_TREE_FETCHED);
           done();
         })
         .catch(done.fail);

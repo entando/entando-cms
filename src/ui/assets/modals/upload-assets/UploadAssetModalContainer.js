@@ -15,6 +15,7 @@ import { sendUploadAsset, fetchAssetsCount } from 'state/assets/actions';
 
 import UploadAssetModal from 'ui/assets/modals/upload-assets/UploadAssetModal';
 import { FORM_NAME, LOADING_GROUP } from 'ui/assets/modals/upload-assets/constants';
+import { getGroups } from 'state/edit-content/selectors';
 
 const uploadAssetMsgs = defineMessages({
   uploaded: {
@@ -27,10 +28,10 @@ const uploadAssetMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state, { buttonVersion }) => ({
   loading: getLoading(state),
   files: getInfo(state).files || [],
-  group: getGroupsList(state),
+  group: buttonVersion ? getGroups(state) : getGroupsList(state),
   language: getLocale(state),
   categories: getCategoryTree(state),
 });

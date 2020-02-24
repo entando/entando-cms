@@ -172,6 +172,8 @@ class AssetsList extends Component {
       hideFooter,
       singleView,
       onDuplicateClicked,
+      categories,
+      categoryTreeFetched,
     } = this.props;
     const pagination = {
       page,
@@ -181,7 +183,7 @@ class AssetsList extends Component {
     const { mobile, selectedAsset } = this.state;
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
-
+    const hideCategoryBox = categoryTreeFetched && categories.length === 0;
     const notSortable = ['actions', 'preview', 'categories'];
     const headerSorter = item => (notSortable.indexOf(item.name) === -1
       ? onApplySort(item.id) : null);
@@ -326,22 +328,29 @@ class AssetsList extends Component {
           )}
         </div>
         <Row className="AssetsList__body">
-          <Col xs={mobile ? 12 : 2} className="no-padding">
-            <div className="AssetsList__tree-container">
-              <CategoryTreeFilterContainer
-                language={language}
-                onApplyFilteredSearch={onApplyFilteredSearch}
-                filteringCategories={filteringCategories}
-                assetType={fileType}
-                mobile={mobile}
-                hideIfEmpty
-                filterSubject="asset"
-              />
-            </div>
-            {mobile && !loading ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
-          </Col>
+          {
+            hideCategoryBox ? null : (
+              <Col xs={mobile ? 12 : 2} className="no-padding">
+                <div className="AssetsList__tree-container">
+                  <CategoryTreeFilterContainer
+                    language={language}
+                    onApplyFilteredSearch={onApplyFilteredSearch}
+                    filteringCategories={filteringCategories}
+                    assetType={fileType}
+                    mobile={mobile}
+                    hideIfEmpty
+                    filterSubject="asset"
+                  />
+                </div>
+                {mobile && !loading ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
+              </Col>
+            )
+          }
           {mobile ? null : (
-            <Col xs={10} className="AssetsList__files-container no-padding">
+            <Col
+              xs={hideCategoryBox ? 12 : 10}
+              className={`AssetsList__files-container no-padding ${hideCategoryBox ? 'AssetsList__files-container--no-border' : ''}`}
+            >
               <div className="AssetsList__filter-info">{renderAppliedFilters}</div>
               <Spinner loading={!!loading}>
                 {bodyContent}
@@ -424,6 +433,8 @@ AssetsList.propTypes = {
   hideFooter: PropTypes.bool,
   singleView: PropTypes.bool,
   onSelect: PropTypes.func,
+  categories: PropTypes.arrayOf(PropTypes.shape({})),
+  categoryTreeFetched: PropTypes.bool,
 };
 
 AssetsList.defaultProps = {
@@ -442,6 +453,8 @@ AssetsList.defaultProps = {
   hideFooter: false,
   singleView: false,
   onSelect: () => {},
+  categories: [],
+  categoryTreeFetched: false,
 };
 
 export default AssetsList;
