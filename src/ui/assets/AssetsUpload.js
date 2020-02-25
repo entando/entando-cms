@@ -2,23 +2,39 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 import { FormattedMessage } from 'react-intl';
+import { Button } from 'patternfly-react';
 
 import UploadAssetModalContainer from 'ui/assets/modals/upload-assets/UploadAssetModalContainer';
 
-const AssetsUpload = ({ onDrop }) => {
+const AssetsUpload = ({ onDrop, buttonVersion }) => {
   const handleDrop = useCallback((acceptedFiles) => {
     onDrop(acceptedFiles);
   }, [onDrop]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: handleDrop });
+  const {
+    getRootProps, getInputProps, isDragActive, open,
+  } = useDropzone({
+    onDrop: handleDrop,
+    ...(buttonVersion && { noClick: true, noKeyboard: true }),
+  });
 
   return (
     <>
-      <div {...getRootProps()} className="UploadAsset">
+      <div {...getRootProps()} className={buttonVersion ? 'UploadAsset--button-version' : 'UploadAsset'}>
         <input {...getInputProps()} />
-        <i className="fa fa-cloud-upload UploadAsset__upload-icon" />
-        <p>
-          {
+        {
+          buttonVersion ? (
+            <Button
+              bsStyle="primary"
+              onClick={open}
+            >
+              <FormattedMessage id="cms.label.upload" defaultMessage="Upload" />
+            </Button>
+          ) : (
+            <React.Fragment>
+              <i className="fa fa-cloud-upload UploadAsset__upload-icon" />
+              <p>
+                {
             isDragActive
               ? <FormattedMessage id="cms.label.dropFilesHere" defaultMessage="Drop the files here" />
               : (
@@ -28,19 +44,24 @@ const AssetsUpload = ({ onDrop }) => {
                 </>
               )
           }
-        </p>
+              </p>
+            </React.Fragment>
+          )
+        }
       </div>
-      <UploadAssetModalContainer />
+      <UploadAssetModalContainer buttonVersion={buttonVersion} />
     </>
   );
 };
 
 AssetsUpload.propTypes = {
   onDrop: PropTypes.func,
+  buttonVersion: PropTypes.bool,
 };
 
 AssetsUpload.defaultProps = {
   onDrop: () => { },
+  buttonVersion: false,
 };
 
 export default AssetsUpload;

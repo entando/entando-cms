@@ -21,6 +21,7 @@ import {
   getReferenceKeyList,
   getReferenceMap,
   getAllCategories,
+  getCategoryTreeFetched,
 } from 'state/categories/selectors';
 
 const LOCALE_MOCK = 'en';
@@ -30,6 +31,7 @@ const MOCK_STATE = {
   apps: {
     cms: {
       categories: {
+        treeFetched: { status: true },
         list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
         map: {
           home: HOME_PAYLOAD,
@@ -326,6 +328,13 @@ describe('state/categories/selectors', () => {
       expect(selected).toHaveProperty('jacmsResourceManager');
       expect(selected).toHaveProperty('jacmsContentManager');
       expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.referenceMap);
+    });
+  });
+
+  describe('category tree fetched', () => {
+    it('getSelected(state)', () => {
+      const fetched = getCategoryTreeFetched(MOCK_STATE);
+      expect(fetched).toBe(MOCK_STATE.apps.cms.categories.treeFetched.status);
     });
   });
 });

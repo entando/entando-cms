@@ -30,6 +30,7 @@ import {
 import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
+import { getCategoryTree, getCategoryTreeFetched } from 'state/categories/selectors';
 import AssetsList from 'ui/assets/AssetsList';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
@@ -50,6 +51,8 @@ export const mapStateToProps = state => ({
   pageSize: getPageSize(state),
   totalItems: getTotalItems(state),
   page: getCurrentPage(state),
+  categories: getCategoryTree(state),
+  categoryTreeFetched: getCategoryTreeFetched(state),
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -113,9 +116,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
     dispatch(setInfo(asset));
   },
-  onUseAssetClicked: asset => (
-    dispatch(fetchRawAssetInfo(asset.id)).then(ownProps.onUseAsset)
-  ),
+  onUseAssetClicked: (asset) => {
+    dispatch(fetchRawAssetInfo(asset.id)).then(ownProps.onUseAsset);
+    dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
+  },
   onDuplicateClicked: (asset) => {
     dispatch(setVisibleModal(CLONE_ASSET_MODAL_ID));
     dispatch(setInfo(Object.assign({}, { id: asset.id, name: asset.name })));

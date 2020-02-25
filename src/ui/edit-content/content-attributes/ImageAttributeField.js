@@ -10,6 +10,8 @@ import {
 import AssetAttributeFieldInfoContainer from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfoContainer';
 
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
+import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
+
 
 const ImageAttributeField = ({
   input,
@@ -32,10 +34,12 @@ const ImageAttributeField = ({
       <>
         <Button
           bsStyle="primary"
+          style={{ marginRight: 10 }}
           onClick={() => onClickAdd(input.name)}
         >
-          <FormattedMessage id="cms.label.add" defaultMessage="Add" />
+          <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
+        <AssetsUploadContainer buttonVersion />
         {errorBox}
         <AssetBrowserModal
           assetType="image"
