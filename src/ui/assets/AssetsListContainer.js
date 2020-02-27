@@ -118,7 +118,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onUseAssetClicked: (asset) => {
     dispatch(fetchRawAssetInfo(asset.id)).then(ownProps.onUseAsset);
-    dispatch(setVisibleModal(DELETE_ASSET_MODAL_ID));
+    dispatch(setVisibleModal(''));
   },
   onDuplicateClicked: (asset) => {
     dispatch(setVisibleModal(CLONE_ASSET_MODAL_ID));
