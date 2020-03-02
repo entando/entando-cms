@@ -6,6 +6,7 @@ import {
 } from 'patternfly-react';
 import GenericModalContainer from 'ui/common/modal/GenericModalContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
+import AssetsAdvancedSearchContainer from 'ui/assets/AssetsAdvancedSearchContainer';
 
 export const ATTACH_MODAL_ID = 'AssetBrowserModal_attach';
 export const IMAGE_MODAL_ID = 'AssetBrowserModal_image';
@@ -30,6 +31,7 @@ const AssetBrowserModal = ({
       modalClassName="AssetsList"
       onOpenModal={onModalOpened}
     >
+      <AssetsAdvancedSearchContainer />
       <AssetsListContainer
         assetType={assetType}
         browseMode
