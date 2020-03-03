@@ -15,6 +15,7 @@ import FormLabel from 'ui/common/form/FormLabel';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import { CONTENTS_QUERY_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
@@ -68,6 +69,7 @@ export class ContentsQueryFormBody extends Component {
       onResetModelId, selectedContentType, selectedCategories,
       intl, onResetFilterOption, languages, onToggleInclusiveOr,
       selectedInclusiveOr, handleSubmit, invalid, submitting,
+      dirty, onCancel, onDiscard, onSave,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -132,7 +134,7 @@ export class ContentsQueryFormBody extends Component {
     const renderSaveButton = selectedContentType
       && (
       <Button
-        className="pull-right"
+        className="pull-right AddContentTypeFormBody__save--btn"
         type="submit"
         bsStyle="primary"
         disabled={invalid || submitting}
@@ -190,6 +192,14 @@ export class ContentsQueryFormBody extends Component {
     const handleCollapseFilters = () => this.collapseSection('filters');
     const handleCollapseExtraOptions = () => this.collapseSection('extraOptions');
     const handleCollapseFrontendFilters = () => this.collapseSection('frontendFilters');
+
+    const handleCancelClick = () => {
+      if (dirty) {
+        onCancel();
+      } else {
+        onDiscard();
+      }
+    };
 
     return (
       <Fragment>
@@ -394,6 +404,20 @@ export class ContentsQueryFormBody extends Component {
           <Row>
             <Col xs={12}>
               {renderSaveButton}
+              <Button
+                className="pull-right AddContentTypeFormBody__cancel--btn"
+                bsStyle="default"
+                onClick={handleCancelClick}
+              >
+                <FormattedMessage id="cms.label.cancel" />
+              </Button>
+              <ConfirmCancelModalContainer
+                contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+                invalid={invalid}
+                submitting={submitting}
+                onSave={onSave}
+                onDiscard={onDiscard}
+              />
             </Col>
           </Row>
         </form>
@@ -421,6 +445,10 @@ ContentsQueryFormBody.propTypes = {
   onResetModelId: PropTypes.func.isRequired,
   selectedContentType: PropTypes.string,
   selectedInclusiveOr: PropTypes.string,
+  dirty: PropTypes.bool,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 ContentsQueryFormBody.defaultProps = {
@@ -434,6 +462,7 @@ ContentsQueryFormBody.defaultProps = {
   selectedCategories: [],
   selectedContentType: '',
   selectedInclusiveOr: '',
+  dirty: false,
 };
 
 const ContentsQueryForm = reduxForm({

@@ -13,6 +13,7 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import { MULTIPLE_CONTENTS_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
@@ -59,6 +60,10 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
       intl,
       widgetCode,
       chosenContents,
+      dirty,
+      onCancel,
+      onDiscard,
+      onSave,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_WIDGET_CONFIG_ID;
@@ -93,6 +98,14 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
 
     const handleCollapsePublishingSettings = () => this.collapseSection('publishingSettingsOpen');
     const handleCollapseExtraOptions = () => this.collapseSection('extraOptionsOpen');
+
+    const handleCancelClick = () => {
+      if (dirty) {
+        onCancel();
+      } else {
+        onDiscard();
+      }
+    };
 
     const renderExtraOptions = multipleContentsMode ? (
       <Row>
@@ -178,13 +191,27 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
           <Row>
             <Col xs={12}>
               <Button
-                className="pull-right"
+                className="pull-right AddContentTypeFormBody__save--btn"
                 type="submit"
                 bsStyle="primary"
                 disabled={invalid || submitting || noContents}
               >
                 <FormattedMessage id="app.save" />
               </Button>
+              <Button
+                className="pull-right AddContentTypeFormBody__cancel--btn"
+                bsStyle="default"
+                onClick={handleCancelClick}
+              >
+                <FormattedMessage id="cms.label.cancel" />
+              </Button>
+              <ConfirmCancelModalContainer
+                contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+                invalid={invalid}
+                submitting={submitting}
+                onSave={onSave}
+                onDiscard={onDiscard}
+              />
             </Col>
           </Row>
         </form>
@@ -205,10 +232,15 @@ HandpickedContentsConfigFormBody.propTypes = {
   language: PropTypes.string.isRequired,
   widgetCode: PropTypes.string.isRequired,
   chosenContents: PropTypes.arrayOf(PropTypes.shape({})),
+  dirty: PropTypes.bool,
+  onDiscard: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 HandpickedContentsConfigFormBody.defaultProps = {
   languages: [],
   pages: [],
   chosenContents: [],
+  dirty: false,
 };

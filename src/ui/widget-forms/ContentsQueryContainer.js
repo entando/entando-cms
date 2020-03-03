@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { injectIntl } from 'react-intl';
-import { change, formValueSelector } from 'redux-form';
+import { change, formValueSelector, submit } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 
@@ -20,6 +20,8 @@ import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { CONTENTS_QUERY_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+import { setVisibleModal } from 'state/modal/actions';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 const contentsQueryWidgetReduxFormId = `widgets.${CONTENTS_QUERY_WIDGET_CONFIG_ID}`;
 
@@ -70,6 +72,13 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onResetModelId: () => dispatch(change(contentsQueryWidgetReduxFormId, 'modelId', '')),
   onToggleInclusiveOr: value => dispatch(change(contentsQueryWidgetReduxFormId, 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(contentsQueryWidgetReduxFormId)); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => {
+    dispatch(setVisibleModal(''));
+    ownProps.history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG,
+      { pageCode: ownProps.pageCode }));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
