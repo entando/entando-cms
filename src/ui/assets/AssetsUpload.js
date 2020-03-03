@@ -6,7 +6,9 @@ import { Button } from 'patternfly-react';
 
 import UploadAssetModalContainer from 'ui/assets/modals/upload-assets/UploadAssetModalContainer';
 
-const AssetsUpload = ({ onDrop, buttonVersion }) => {
+const AssetsUpload = ({
+  onDrop, buttonVersion, onAssetSelected, name,
+}) => {
   const handleDrop = useCallback((acceptedFiles) => {
     onDrop(acceptedFiles);
   }, [onDrop]);
@@ -49,19 +51,27 @@ const AssetsUpload = ({ onDrop, buttonVersion }) => {
           )
         }
       </div>
-      <UploadAssetModalContainer buttonVersion={buttonVersion} />
+      <UploadAssetModalContainer
+        buttonVersion={buttonVersion}
+        onAssetSelected={onAssetSelected}
+        name={name}
+      />
     </>
   );
 };
 
 AssetsUpload.propTypes = {
   onDrop: PropTypes.func,
+  onAssetSelected: PropTypes.func,
   buttonVersion: PropTypes.bool,
+  name: PropTypes.string,
 };
 
 AssetsUpload.defaultProps = {
   onDrop: () => { },
+  onAssetSelected: () => {},
   buttonVersion: false,
+  name: '',
 };
 
 export default AssetsUpload;

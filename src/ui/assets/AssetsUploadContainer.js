@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import AssetsUpload from 'ui/assets/AssetsUpload';
-
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { UPLOAD_ASSET_MODAL_ID } from 'ui/assets/modals/upload-assets/constants';
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, { onAssetSelected, buttonVersion, name = '' }) => ({
   onDrop: (assets) => {
     const assetInfo = {
       files: assets.map((asset, fileId) => ({
@@ -17,7 +16,13 @@ export const mapDispatchToProps = dispatch => ({
       })),
     };
     dispatch(setInfo(assetInfo));
-    dispatch(setVisibleModal(UPLOAD_ASSET_MODAL_ID));
+    dispatch(setVisibleModal(`${UPLOAD_ASSET_MODAL_ID}${name}`));
+  },
+  onAssetSelected: (asset) => {
+    if (buttonVersion) {
+      onAssetSelected(asset);
+      dispatch(setVisibleModal(''));
+    }
   },
 });
 

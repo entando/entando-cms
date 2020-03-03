@@ -37,7 +37,11 @@ const AttachAttributeField = ({
           <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
         {errorBox}
-        <AssetsUploadContainer buttonVersion />
+        <AssetsUploadContainer
+          buttonVersion
+          onAssetSelected={handleAssetSelected}
+          name={input.name}
+        />
         <AssetBrowserModal
           assetType="file"
           name={input.name}

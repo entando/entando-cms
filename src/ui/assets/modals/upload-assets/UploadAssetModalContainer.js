@@ -36,7 +36,7 @@ export const mapStateToProps = (state, { buttonVersion }) => ({
   categories: getCategoryTree(state),
 });
 
-export const mapDispatchToProps = (dispatch, { intl }) => ({
+export const mapDispatchToProps = (dispatch, { intl, onAssetSelected }) => ({
   onModalOpen: (payload) => {
     dispatch(fetchCategoryTreeAll());
     dispatch(initialize(FORM_NAME, payload));
@@ -55,6 +55,7 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
                 TOAST_SUCCESS,
               ),
             );
+            onAssetSelected(res);
           }
           if (res && res.hasError) {
             dispatch(

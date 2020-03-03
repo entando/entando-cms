@@ -39,7 +39,11 @@ const ImageAttributeField = ({
         >
           <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
-        <AssetsUploadContainer buttonVersion />
+        <AssetsUploadContainer
+          buttonVersion
+          onAssetSelected={handleAssetSelected}
+          name={input.name}
+        />
         {errorBox}
         <AssetBrowserModal
           assetType="image"
