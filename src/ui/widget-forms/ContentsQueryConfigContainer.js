@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { injectIntl } from 'react-intl';
-import { change, formValueSelector } from 'redux-form';
+import { change, formValueSelector, submit } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 
@@ -14,14 +14,16 @@ import { fetchContentModelsByContentType } from 'state/content-model/actions';
 
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getCategoryTree } from 'state/categories/selectors';
-import ContentsQueryForm from 'ui/widget-forms/ContentsQueryForm';
+import ContentsQueryConfig from 'ui/widget-forms/ContentsQueryConfig';
 import { getContentModelList } from 'state/content-model/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
-import { CONTENTS_QUERY_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
+import { setVisibleModal } from 'state/modal/actions';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-const contentsQueryWidgetReduxFormId = `widgets.${CONTENTS_QUERY_WIDGET_CONFIG_ID}`;
+const ContentsQueryContainerId = `widgets.${CONTENTS_QUERY_CONFIG}`;
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -33,9 +35,9 @@ export const mapStateToProps = (state, ownProps) => ({
   pages: getSearchPagesRaw(state),
   categories: getCategoryTree(state),
   contentModels: getContentModelList(state),
-  selectedContentType: formValueSelector(contentsQueryWidgetReduxFormId)(state, 'contentType'),
-  selectedCategories: formValueSelector(contentsQueryWidgetReduxFormId)(state, 'categories'),
-  selectedInclusiveOr: formValueSelector(contentsQueryWidgetReduxFormId)(state, 'orClauseCategoryFilter'),
+  selectedContentType: formValueSelector(ContentsQueryContainerId)(state, 'contentType'),
+  selectedCategories: formValueSelector(ContentsQueryContainerId)(state, 'categories'),
+  selectedInclusiveOr: formValueSelector(ContentsQueryContainerId)(state, 'orClauseCategoryFilter'),
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -64,14 +66,21 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     });
   },
-  onResetFilterOption: (name, i) => dispatch(change(contentsQueryWidgetReduxFormId, `${name}.[${i}].option`, '')),
+  onResetFilterOption: (name, i) => dispatch(change(ContentsQueryContainerId, `${name}.[${i}].option`, '')),
   onChangeContentType: (contentType) => {
     if (contentType) dispatch(fetchContentModelsByContentType(contentType));
   },
-  onResetModelId: () => dispatch(change(contentsQueryWidgetReduxFormId, 'modelId', '')),
-  onToggleInclusiveOr: value => dispatch(change(contentsQueryWidgetReduxFormId, 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),
+  onResetModelId: () => dispatch(change(ContentsQueryContainerId, 'modelId', '')),
+  onToggleInclusiveOr: value => dispatch(change(ContentsQueryContainerId, 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(ContentsQueryContainerId)); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => {
+    dispatch(setVisibleModal(''));
+    const { history, pageCode } = ownProps;
+    history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
-})(injectIntl(ContentsQueryForm));
+})(injectIntl(ContentsQueryConfig));

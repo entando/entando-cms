@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentModelList } from 'state/content-model/selectors';
-import HandpickedContentsConfigForm from 'ui/widget-forms/HandpickedContentsConfigForm';
+import ContentConfigFormBody from 'ui/widget-forms/ContentConfigFormBody';
 import { fetchContentModelListPaged } from 'state/content-model/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
@@ -12,10 +12,12 @@ import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
-import { formValueSelector, reduxForm } from 'redux-form';
-import { MULTIPLE_CONTENTS_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+import { formValueSelector, reduxForm, submit } from 'redux-form';
+import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
+import { setVisibleModal } from 'state/modal/actions';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-const multipleContentsWidgetReduxFormId = `widgets.${MULTIPLE_CONTENTS_WIDGET_CONFIG_ID}`;
+const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
 
 export const mapStateToProps = (state, ownProps) => ({
   contentModels: getContentModelList(state),
@@ -24,7 +26,7 @@ export const mapStateToProps = (state, ownProps) => ({
   pages: getSearchPagesRaw(state),
   language: getLocale(state),
   widgetCode: ownProps.widgetCode,
-  chosenContents: formValueSelector(multipleContentsWidgetReduxFormId)(state, 'contents'),
+  chosenContents: formValueSelector(MultipleContentsConfigContainerId)(state, 'contents'),
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -58,10 +60,17 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     });
   },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(MultipleContentsConfigContainerId)); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => {
+    dispatch(setVisibleModal(''));
+    const { history, pageCode } = ownProps;
+    history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(reduxForm({
-  form: multipleContentsWidgetReduxFormId,
-})(HandpickedContentsConfigForm)));
+  form: MultipleContentsConfigContainerId,
+})(ContentConfigFormBody)));

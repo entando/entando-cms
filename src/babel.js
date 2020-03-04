@@ -3,9 +3,9 @@ import { cms as state } from 'state/rootReducer';
 import { routes, routesDir } from 'ui/App';
 import en from 'locales/en';
 import it from 'locales/it';
-import HandpickedContentConfigFormContainer from 'ui/widget-forms/HandpickedContentConfigFormContainer';
-import HandpickedContentListConfigFormContainer from 'ui/widget-forms/HandpickedContentListConfigFormContainer';
-import ContentsQueryContainer from 'ui/widget-forms/ContentsQueryContainer';
+import SingleContentConfigContainer from 'ui/widget-forms/SingleContentConfigContainer';
+import MultipleContentsConfigContainer from 'ui/widget-forms/MultipleContentsConfigContainer';
+import ContentsQueryConfigContainer from 'ui/widget-forms/ContentsQueryConfigContainer';
 
 const cms = {
   id: 'cms',
@@ -18,9 +18,9 @@ const cms = {
     it,
   },
   widgetForms: {
-    content_viewer: HandpickedContentConfigFormContainer,
-    content_viewer_list: ContentsQueryContainer,
-    row_content_viewer_list: HandpickedContentListConfigFormContainer,
+    content_viewer: SingleContentConfigContainer,
+    content_viewer_list: ContentsQueryConfigContainer,
+    row_content_viewer_list: MultipleContentsConfigContainer,
     search_result: null,
   },
 };
