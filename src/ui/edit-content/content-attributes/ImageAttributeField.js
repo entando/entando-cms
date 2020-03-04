@@ -8,7 +8,7 @@ import {
 } from 'patternfly-react';
 
 import AssetAttributeFieldInfoContainer from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfoContainer';
-
+import UploadTriggerButton from 'ui/common/button/UploadTriggerButton';
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
 
@@ -39,7 +39,13 @@ const ImageAttributeField = ({
         >
           <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
-        <AssetsUploadContainer buttonVersion />
+        <AssetsUploadContainer
+          customTriggerComponent={UploadTriggerButton}
+          customClassName="UploadAsset--button-version"
+          customDropzoneProps={{ noClick: true }}
+          onAssetSelected={handleAssetSelected}
+          name={input.name}
+        />
         {errorBox}
         <AssetBrowserModal
           assetType="image"

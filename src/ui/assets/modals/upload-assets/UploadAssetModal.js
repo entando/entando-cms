@@ -11,7 +11,7 @@ import { FORM_NAME, UPLOAD_ASSET_MODAL_ID } from 'ui/assets/modals/upload-assets
 
 const UploadAssetModal = (props) => {
   const {
-    onModalOpen, submitting, files, handleSubmit,
+    onModalOpen, submitting, files, handleSubmit, name,
   } = props;
 
   const handleOpenModal = () => {
@@ -28,7 +28,7 @@ const UploadAssetModal = (props) => {
 
   return (
     <GenericModalContainer
-      modalId={UPLOAD_ASSET_MODAL_ID}
+      modalId={`${UPLOAD_ASSET_MODAL_ID}${name}`}
       modalFooter={<span />}
       modalTitle={modalTitle}
       modalClassName="UploadAssetModal"
@@ -56,6 +56,7 @@ UploadAssetModal.propTypes = {
     }),
   ),
   handleSubmit: PropTypes.func,
+  name: PropTypes.string,
 };
 
 UploadAssetModal.defaultProps = {
@@ -63,6 +64,7 @@ UploadAssetModal.defaultProps = {
   handleSubmit: () => { },
   submitting: false,
   files: [],
+  name: '',
 };
 
 export default reduxForm({

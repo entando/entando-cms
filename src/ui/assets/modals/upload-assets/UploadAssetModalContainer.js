@@ -5,7 +5,6 @@ import { addToast, TOAST_SUCCESS, TOAST_ERROR } from '@entando/messages';
 
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-import { getGroupsList } from 'state/groups/selectors';
 import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { getCategoryTree } from 'state/categories/selectors';
 import { getLocale } from 'state/locale/selectors';
@@ -28,15 +27,15 @@ const uploadAssetMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = (state, { buttonVersion }) => ({
+export const mapStateToProps = state => ({
   loading: getLoading(state),
   files: getInfo(state).files || [],
-  group: buttonVersion ? getGroups(state) : getGroupsList(state),
+  group: getGroups(state),
   language: getLocale(state),
   categories: getCategoryTree(state),
 });
 
-export const mapDispatchToProps = (dispatch, { intl }) => ({
+export const mapDispatchToProps = (dispatch, { intl, onAssetSelected }) => ({
   onModalOpen: (payload) => {
     dispatch(fetchCategoryTreeAll());
     dispatch(initialize(FORM_NAME, payload));
@@ -55,6 +54,7 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
                 TOAST_SUCCESS,
               ),
             );
+            onAssetSelected(res);
           }
           if (res && res.hasError) {
             dispatch(
