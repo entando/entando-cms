@@ -13,11 +13,11 @@ import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import { formValueSelector, reduxForm, submit } from 'redux-form';
-import { SINGLE_CONTENT_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+import { HANDPICKED_CONTENT_CONFIG_FORM_CONTAINER } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-const singleContentWidgetReduxFormId = `widgets.${SINGLE_CONTENT_WIDGET_CONFIG_ID}`;
+const HandpickedContentConfigFormContainerId = `widgets.${HANDPICKED_CONTENT_CONFIG_FORM_CONTAINER}`;
 
 export const mapStateToProps = (state, ownProps) => {
   let propWidgetConfig = ownProps.widgetConfig;
@@ -38,7 +38,7 @@ export const mapStateToProps = (state, ownProps) => {
     pages: getSearchPagesRaw(state),
     language: getLocale(state),
     widgetCode: ownProps.widgetCode,
-    chosenContents: formValueSelector(singleContentWidgetReduxFormId)(state, 'contents'),
+    chosenContents: formValueSelector(HandpickedContentConfigFormContainerId)(state, 'contents'),
   });
 };
 
@@ -73,17 +73,17 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     });
   },
-  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(singleContentWidgetReduxFormId)); },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(HandpickedContentConfigFormContainerId)); },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => {
     dispatch(setVisibleModal(''));
-    ownProps.history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG,
-      { pageCode: ownProps.pageCode }));
+    const { history, pageCode } = ownProps;
+    history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
   },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(reduxForm({
-  form: singleContentWidgetReduxFormId,
+  form: HandpickedContentConfigFormContainerId,
 })(HandpickedContentsConfigForm)));

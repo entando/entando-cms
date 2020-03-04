@@ -14,7 +14,7 @@ import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
-import { MULTIPLE_CONTENTS_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+import { HANDPICKED_CONTENT_LIST_CONFIG_FORM_CONTAINER } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
@@ -66,7 +66,7 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
       onSave,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
-    const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_WIDGET_CONFIG_ID;
+    const multipleContentsMode = widgetCode === HANDPICKED_CONTENT_LIST_CONFIG_FORM_CONTAINER;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
     const noContents = chosenContents.length === 0;

@@ -16,7 +16,7 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
-import { CONTENTS_QUERY_WIDGET_CONFIG_ID } from 'ui/widget-forms/const';
+import { CONTENTS_QUERY_CONTAINER } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 const CATEGORY_HOME = 'home';
@@ -466,7 +466,7 @@ ContentsQueryFormBody.defaultProps = {
 };
 
 const ContentsQueryForm = reduxForm({
-  form: `widgets.${CONTENTS_QUERY_WIDGET_CONFIG_ID}`,
+  form: `widgets.${CONTENTS_QUERY_CONTAINER}`,
 })(ContentsQueryFormBody);
 
 export default ContentsQueryForm;
