@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentModelList } from 'state/content-model/selectors';
-import HandpickedContentsConfigForm from 'ui/widget-forms/HandpickedContentsConfigForm';
+import ContentConfigFormBody from 'ui/widget-forms/ContentConfigFormBody';
 import { fetchContentModelListPaged } from 'state/content-model/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
@@ -13,34 +13,21 @@ import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import { formValueSelector, reduxForm, submit } from 'redux-form';
-import { HANDPICKED_CONTENT_CONFIG_FORM_CONTAINER } from 'ui/widget-forms/const';
+import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-const HandpickedContentConfigFormContainerId = `widgets.${HANDPICKED_CONTENT_CONFIG_FORM_CONTAINER}`;
+const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
 
-export const mapStateToProps = (state, ownProps) => {
-  let propWidgetConfig = ownProps.widgetConfig;
-  let widgetConfig = null;
-  if (propWidgetConfig !== null && propWidgetConfig !== undefined) {
-    const { contents, ...rest } = propWidgetConfig;
-    propWidgetConfig = rest;
-  }
-  widgetConfig = propWidgetConfig !== null && propWidgetConfig !== undefined
-    ? {
-      contents: [propWidgetConfig],
-      maxElemForItem: propWidgetConfig.maxElemForItem,
-    } : null;
-  return ({
-    contentModels: getContentModelList(state),
-    initialValues: widgetConfig,
-    languages: getActiveLanguages(state),
-    pages: getSearchPagesRaw(state),
-    language: getLocale(state),
-    widgetCode: ownProps.widgetCode,
-    chosenContents: formValueSelector(HandpickedContentConfigFormContainerId)(state, 'contents'),
-  });
-};
+export const mapStateToProps = (state, ownProps) => ({
+  contentModels: getContentModelList(state),
+  initialValues: ownProps.widgetConfig,
+  languages: getActiveLanguages(state),
+  pages: getSearchPagesRaw(state),
+  language: getLocale(state),
+  widgetCode: ownProps.widgetCode,
+  chosenContents: formValueSelector(MultipleContentsConfigContainerId)(state, 'contents'),
+});
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
@@ -62,7 +49,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
         contentDescription: cc.contentDescription,
       },
     ));
-    const payload = { ...values, ...configContents[0], contents: undefined };
+    const payload = { ...values, contents: configContents };
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
     dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {
@@ -73,7 +60,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     });
   },
-  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(HandpickedContentConfigFormContainerId)); },
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(MultipleContentsConfigContainerId)); },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => {
     dispatch(setVisibleModal(''));
@@ -85,5 +72,5 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(reduxForm({
-  form: HandpickedContentConfigFormContainerId,
-})(HandpickedContentsConfigForm)));
+  form: MultipleContentsConfigContainerId,
+})(ContentConfigFormBody)));

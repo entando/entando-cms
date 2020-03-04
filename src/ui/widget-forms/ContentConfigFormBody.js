@@ -14,11 +14,11 @@ import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
-import { HANDPICKED_CONTENT_LIST_CONFIG_FORM_CONTAINER } from 'ui/widget-forms/const';
+import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
-export default class HandpickedContentsConfigFormBody extends PureComponent {
+export default class ContentConfigFormBody extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,7 +66,7 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
       onSave,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
-    const multipleContentsMode = widgetCode === HANDPICKED_CONTENT_LIST_CONFIG_FORM_CONTAINER;
+    const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
     const noContents = chosenContents.length === 0;
@@ -220,7 +220,7 @@ export default class HandpickedContentsConfigFormBody extends PureComponent {
   }
 }
 
-HandpickedContentsConfigFormBody.propTypes = {
+ContentConfigFormBody.propTypes = {
   intl: intlShape.isRequired,
   contentModels: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   languages: PropTypes.arrayOf(PropTypes.shape({})),
@@ -238,7 +238,7 @@ HandpickedContentsConfigFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
 };
 
-HandpickedContentsConfigFormBody.defaultProps = {
+ContentConfigFormBody.defaultProps = {
   languages: [],
   pages: [],
   chosenContents: [],
