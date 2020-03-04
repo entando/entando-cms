@@ -42,7 +42,7 @@ const ImageAttributeField = ({
         <AssetsUploadContainer
           customTriggerComponent={UploadTriggerButton}
           customClassName="UploadAsset--button-version"
-          customDropzoneProps={{ noClick: true, noKeyboard: true }}
+          customDropzoneProps={{ noClick: true }}
           onAssetSelected={handleAssetSelected}
           name={input.name}
         />
