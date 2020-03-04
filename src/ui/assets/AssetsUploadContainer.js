@@ -3,8 +3,8 @@ import AssetsUpload from 'ui/assets/AssetsUpload';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { UPLOAD_ASSET_MODAL_ID } from 'ui/assets/modals/upload-assets/constants';
 
-export const mapDispatchToProps = (dispatch, { onAssetSelected, buttonVersion, name = '' }) => ({
-  onDrop: (assets) => {
+export const mapDispatchToProps = (dispatch, { onAssetSelected, name = '' }) => ({
+  onUpload: (assets) => {
     const assetInfo = {
       files: assets.map((asset, fileId) => ({
         fileId,
@@ -19,7 +19,7 @@ export const mapDispatchToProps = (dispatch, { onAssetSelected, buttonVersion, n
     dispatch(setVisibleModal(`${UPLOAD_ASSET_MODAL_ID}${name}`));
   },
   onAssetSelected: (asset) => {
-    if (buttonVersion) {
+    if (onAssetSelected) {
       onAssetSelected(asset);
       dispatch(setVisibleModal(''));
     }
