@@ -115,7 +115,7 @@ export default {
     'cms.contenttype.list.status.1': 'Ricaricamento in corso. Aggiorna la pagina.',
     'cms.contenttype.list.status.2': 'Necessità di un ricaricamento: lancialo ora.',
     'cms.contenttype.reference.text':
-      "Le referenze per i seguenti Tipi di Entita' hanno bisogno di essere ricaricate. Totale da ricaricare: {count}. ",
+      "Le referenze per i seguenti Tipi di Entita' hanno bisogno di essere ricaricate: {types}. Totale da ricaricare: {count}. ",
     'cms.contenttype.reference.reload': 'Clicca {link} per ricaricare tutti i content types.',
     'cms.contenttype.attributes.label': 'Attributi',
     'cms.contentType.helpattributes.label':
