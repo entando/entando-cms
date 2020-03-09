@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, FormSection } from 'redux-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, Row, Col } from 'patternfly-react';
 import AttributeInfo from 'ui/common/contenttype-attributes/AttributeInfo';
 import AttributeInfoComposite from 'ui/common/contenttype-attributes/AttributeInfoComposite';
@@ -14,6 +14,7 @@ import AttributeMonoListMonoSettings from 'ui/common/contenttype-attributes/Attr
 import AttributesNumber from 'ui/common/contenttype-attributes/AttributesNumber';
 import AttributesDateSettings from 'ui/common/contenttype-attributes/AttributesDateSettings';
 import AttributeListTableComposite from 'ui/common/contenttype-attributes/AttributeListTableComposite';
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 
 import {
   MODE_ADD_COMPOSITE,
@@ -50,6 +51,10 @@ export class AttributeFormBody extends Component {
       allowedRoles,
       invalid,
       submitting,
+      intl,
+      onDiscard,
+      onSave,
+      dirty,
     } = this.props;
     const isComposite = mode === MODE_ADD_COMPOSITE;
     const isEditComposite = mode === MODE_EDIT_COMPOSITE;
@@ -64,6 +69,14 @@ export class AttributeFormBody extends Component {
         isSearchable={selectedAttributeType.indexableOptionSupported}
       />
     ));
+
+    const handleCancelClick = () => {
+      if (dirty) {
+        onCancel();
+      } else {
+        onDiscard();
+      }
+    };
 
     const renderAttributeRole = () => (!isComposite ? <AttributeRole {...this.props} /> : null);
 
@@ -162,13 +175,20 @@ export class AttributeFormBody extends Component {
               <FormattedMessage id={labelsubmit} />
             </Button>
             <Button
-              onClick={onCancel}
+              onClick={handleCancelClick}
               className="pull-right ContentTypeAttributeForm__cancel-btn"
               type="reset"
               disabled={submitting}
             >
               <FormattedMessage id="cms.label.cancel" />
             </Button>
+            <ConfirmCancelModalContainer
+              contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+              invalid={invalid}
+              submitting={submitting}
+              onSave={onSave}
+              onDiscard={onDiscard}
+            />
           </Col>
         </Row>
       </form>
@@ -177,6 +197,7 @@ export class AttributeFormBody extends Component {
 }
 
 AttributeFormBody.propTypes = {
+  intl: intlShape.isRequired,
   onDidMount: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
@@ -215,6 +236,9 @@ AttributeFormBody.propTypes = {
   mode: PropTypes.string.isRequired,
   compositeAttributes: PropTypes.arrayOf(PropTypes.shape({})),
   attributesList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onDiscard: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  dirty: PropTypes.bool,
 };
 
 AttributeFormBody.defaultProps = {
@@ -230,6 +254,7 @@ AttributeFormBody.defaultProps = {
   },
   allowedRoles: [],
   compositeAttributes: [],
+  dirty: false,
 };
 
 const AttributeForm = reduxForm({

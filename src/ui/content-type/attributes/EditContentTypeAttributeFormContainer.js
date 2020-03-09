@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, submit } from 'redux-form';
 import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 import { METHODS } from '@entando/apimanager';
 import { clearErrors } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
@@ -28,6 +29,8 @@ import {
 } from 'state/content-type/selectors';
 
 import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
+import { setVisibleModal } from 'state/modal/actions';
+import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state) || 'edit',
@@ -54,9 +57,9 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(fetchAttributeFromContentType('attribute', contentTypeAttributeCode, attributeCode));
     dispatch(fetchContentTypeAttributes());
   },
-  onCancel: () => history.push(
-    routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode }),
-  ),
+  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('attribute')); },
+  onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
+  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode })); },
   onSubmit: (values, allowedRoles, mode) => {
     dispatch(
       handlerAttributeFromContentType(
@@ -99,4 +102,4 @@ const EditContentTypeAttributeFormContainer = connect(
   },
 )(EditContentTypeAttributeForm);
 
-export default withRouter(EditContentTypeAttributeFormContainer);
+export default injectIntl(withRouter(EditContentTypeAttributeFormContainer));
