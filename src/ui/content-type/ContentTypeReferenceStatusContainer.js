@@ -5,6 +5,7 @@ import ContentTypeReferenceStatus from 'ui/content-type/ContentTypeReferenceStat
 import {
   fetchContentTypeReferenceStatus,
   sendPostContentTypeReferenceStatus,
+  fetchContentTypeListPaged,
 } from 'state/content-type/actions';
 import { getContentTypeReferencesStatus } from 'state/content-type/selectors';
 import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
@@ -20,6 +21,8 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
   )).then((res) => {
     if (res) {
       history.push(ROUTE_CMS_CONTENTTYPE_LIST);
+      dispatch(fetchContentTypeReferenceStatus());
+      dispatch(fetchContentTypeListPaged());
     }
   }),
 });

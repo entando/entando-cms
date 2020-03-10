@@ -115,7 +115,7 @@ export default {
     'cms.contenttype.list.status.1': 'Reloading. Refresh this page.',
     'cms.contenttype.list.status.2': 'Stale status, please reload.',
     'cms.contenttype.reference.text':
-      'Reload the references for these entity types. Number of type to reload: {count}. ',
+      'Reload the references for these entity types: {types}. Number of type to reload: {count}. ',
     'cms.contenttype.reference.reload': 'Click {link} to reload all content types.',
     'cms.contenttype.attributes.label': 'Attributes',
     'cms.contentType.helpattributes.label':

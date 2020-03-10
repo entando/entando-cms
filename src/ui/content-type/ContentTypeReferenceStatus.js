@@ -16,7 +16,7 @@ class ContentTypeReferenceStatus extends Component {
 
   onClickReload() {
     const { onReload, status } = this.props;
-    onReload(status.contentTypesCodes);
+    onReload(status.contentTypeCodes);
   }
 
   render() {
@@ -26,7 +26,7 @@ class ContentTypeReferenceStatus extends Component {
     }
     return (
       <Alert type={status.type} className="ContentTypeReferenceStatus">
-        <FormattedMessage id="cms.contenttype.reference.text" values={{ count: status.count }} />
+        <FormattedMessage id="cms.contenttype.reference.text" values={{ types: status.contentTypeCodes, count: status.count }} />
         <FormattedMessage
           id="cms.contenttype.reference.reload"
           values={{
@@ -52,7 +52,7 @@ ContentTypeReferenceStatus.propTypes = {
   status: PropTypes.shape({
     status: PropTypes.string,
     type: PropTypes.string,
-    contentTypesCodes: PropTypes.arrayOf(PropTypes.string),
+    contentTypeCodes: PropTypes.arrayOf(PropTypes.string),
     count: PropTypes.number,
   }).isRequired,
 };
