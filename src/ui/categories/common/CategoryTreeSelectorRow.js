@@ -11,21 +11,28 @@ const CategoryTreeSelectorRow = ({
   language,
   onJoinCategory,
   onExpandCategory,
-  input: { onChange, value },
+  selectedRow,
+  setSelectedRow,
+  input: { onChange },
 }) => {
   const onClickExpand = () => {
     if (!category.isEmpty) {
       onExpandCategory(category.code);
     }
   };
-  const onClickSelect = () => onChange(category.code);
+  const onClickSelect = () => setSelectedRow(category.code);
+  const onClickJoin = () => {
+    onJoinCategory(category.code);
+    setSelectedRow(category.code);
+    onChange(category.code);
+  };
 
   const className = ['CategoryTreeSelector__column-td'];
   if (category.isEmpty) {
     className.push('CategoryTreeSelector__column-td--empty');
   }
   // higlight selected code
-  if (category.code === value) {
+  if (category.code === selectedRow) {
     className.push('info');
   }
 
@@ -34,8 +41,8 @@ const CategoryTreeSelectorRow = ({
       className="icon fa fa-plus CategoryTreeSelector__join-mark"
       role="button"
       tabIndex={i}
-      onClick={() => onJoinCategory(category.code)}
-      onKeyDown={() => onJoinCategory(category.code)}
+      onClick={onClickJoin}
+      onKeyDown={onClickJoin}
     />
   ) : null;
   return (
@@ -85,11 +92,15 @@ CategoryTreeSelectorRow.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     onChange: PropTypes.func.isRequired,
   }).isRequired,
+  selectedRow: PropTypes.string,
+  setSelectedRow: PropTypes.func.isRequired,
 };
 
 CategoryTreeSelectorRow.defaultProps = {
   onExpandCategory: () => {},
   onJoinCategory: () => {},
+  selectedRow: '',
+
 };
 
 export default CategoryTreeSelectorRow;

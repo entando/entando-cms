@@ -16,10 +16,6 @@ import {
   getStatusMap,
   getTitlesMap,
   getCategoryTree,
-  getSelected,
-  getSelectedRefs,
-  getReferenceKeyList,
-  getReferenceMap,
   getAllCategories,
 } from 'state/categories/selectors';
 
@@ -299,33 +295,6 @@ describe('state/categories/selectors', () => {
 
     it('return all available categories', () => {
       expect(allCategories.length).toBe(5);
-    });
-  });
-
-  describe('selected category', () => {
-    it('getSelected(state)', () => {
-      const selected = getSelected(MOCK_STATE);
-      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected);
-    });
-
-    it('getSelectedRefs(state)', () => {
-      const selected = getSelectedRefs(MOCK_STATE);
-      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.references);
-    });
-
-    it('getReferenceKeyList(state)', () => {
-      const selected = getReferenceKeyList(MOCK_STATE);
-      expect(selected).toHaveLength(4);
-      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.referenceKeyList);
-    });
-
-    it('getReferenceMap(state)', () => {
-      const selected = getReferenceMap(MOCK_STATE);
-      expect(selected).toHaveProperty('jpcollaborationIdeaManager');
-      expect(selected).toHaveProperty('DataObjectManager');
-      expect(selected).toHaveProperty('jacmsResourceManager');
-      expect(selected).toHaveProperty('jacmsContentManager');
-      expect(selected).toBe(MOCK_STATE.apps.cms.categories.selected.referenceMap);
     });
   });
 });

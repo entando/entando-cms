@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
@@ -8,6 +8,7 @@ import {
   Grid,
   Row,
   Col,
+  Alert,
 } from 'patternfly-react';
 import { required, maxLength } from '@entando/utils';
 
@@ -34,7 +35,9 @@ const EditAssetFormModalBody = ({
   categories,
   onModalOpen,
   onModalClose,
+  dirty,
 }) => {
+  const [showConfirm, setShowConfirm] = useState(false);
   const modalTitle = (
     <Modal.Title>
       <FormattedMessage id={`cms.assets.label.${isImg ? 'imagedetails' : 'attachdetails'}`} defaultMessage="Image Details" />
@@ -42,6 +45,18 @@ const EditAssetFormModalBody = ({
   );
 
   const toOpenModal = () => onModalOpen(assetInfo);
+  const handleCancelClick = () => {
+    if (dirty)setShowConfirm(true);
+    else onModalClose();
+  };
+  const handleDiscardClick = () => {
+    setShowConfirm(false);
+    onModalClose();
+  };
+  const handleSubmitClick = (values) => {
+    setShowConfirm(false);
+    handleSubmit(values);
+  };
 
   const groupItems = group && JSON.stringify(group) !== '{}' ? [group] : [];
 
@@ -80,7 +95,6 @@ const EditAssetFormModalBody = ({
       </Col>
     </Row>
   ) : null;
-
   return (
     <GenericModalContainer
       modalId={MODAL_ID}
@@ -89,7 +103,7 @@ const EditAssetFormModalBody = ({
       modalClassName="AssetPhotoCropper"
       onOpenModal={toOpenModal}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitClick}>
         <Grid fluid>
           {isImg ? (
             <Field
@@ -142,18 +156,44 @@ const EditAssetFormModalBody = ({
           </Row>
           {renderMetadata}
           <Row className="form-horizontal">
-            <Col xs={12} className="text-right modal-footer">
-              <Button bsStyle="default" className="btn-cancel" onClick={onModalClose}>
-                <FormattedMessage id="cms.label.cancel" />
-              </Button>
-              <Button
-                type="submit"
-                bsStyle="primary"
-                id="AssetPhotoCropper__button-save"
-              >
-                <FormattedMessage id="cms.label.save" />
-              </Button>
-            </Col>
+            {
+              showConfirm ? (
+                <Col xs={12}>
+                  <Alert type="warning">
+                    <FormattedMessage id="cms.label.modal.confirmCancel" />
+                    <Button
+                      type="submit"
+                      className="pull-right"
+                      bsStyle="primary"
+                      id="AssetPhotoCropper__button-save"
+                    >
+                      <FormattedMessage id="cms.label.save" />
+                    </Button>
+                    <Button
+                      bsStyle="danger"
+                      className="btn-cancel pull-right"
+                      onClick={handleDiscardClick}
+                      style={{ marginRight: 5 }}
+                    >
+                      <FormattedMessage id="cms.label.dontSave" />
+                    </Button>
+                  </Alert>
+                </Col>
+              ) : (
+                <Col xs={12} className="text-right modal-footer">
+                  <Button bsStyle="default" className="btn-cancel" onClick={handleCancelClick}>
+                    <FormattedMessage id="cms.label.cancel" />
+                  </Button>
+                  <Button
+                    type="submit"
+                    bsStyle="primary"
+                    id="AssetPhotoCropper__button-save"
+                  >
+                    <FormattedMessage id="cms.label.save" />
+                  </Button>
+                </Col>
+              )
+            }
           </Row>
         </Grid>
       </form>
@@ -173,6 +213,7 @@ EditAssetFormModalBody.propTypes = {
   language: PropTypes.string.isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onModalClose: PropTypes.func.isRequired,
+  dirty: PropTypes.bool.isRequired,
 };
 
 const EditAssetFormModal = reduxForm({

@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { get } from 'lodash';
 import { getLocale } from 'state/locale/selectors';
 
 export const getCategories = state => state.apps.cms.categories;
@@ -8,10 +7,6 @@ export const getCategoriesMap = state => state.apps.cms.categories.map;
 export const getChildrenMap = state => state.apps.cms.categories.childrenMap;
 export const getStatusMap = state => state.apps.cms.categories.statusMap;
 export const getTitlesMap = state => state.apps.cms.categories.titlesMap;
-export const getSelected = state => get(state.apps.cms.categories, 'selected', {});
-export const getSelectedRefs = state => get(state.apps.cms.categories, 'selected.references', {});
-export const getReferenceKeyList = state => get(state.apps.cms.categories, 'selected.referenceKeyList', []);
-export const getReferenceMap = state => get(state.apps.cms.categories, 'selected.referenceMap', {});
 export const getJoinedCategoriesCodes = state => state.apps.cms.editContent.joinedCategories;
 
 const CATEGORY_STATUS_DEFAULTS = {
