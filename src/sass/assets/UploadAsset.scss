@@ -19,6 +19,10 @@
   &__upload-description-browse {
     color: $color-mid-blue;
   }
+
+  &--button-version {
+    display: inline-block;
+  }
 }
 
 .UploadAssetModal {

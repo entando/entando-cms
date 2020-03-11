@@ -6,6 +6,7 @@ import {
 } from 'patternfly-react';
 import GenericModalContainer from 'ui/common/modal/GenericModalContainer';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
+import AssetsAdvancedSearchContainer from 'ui/assets/AssetsAdvancedSearchContainer';
 
 export const ATTACH_MODAL_ID = 'AssetBrowserModal_attach';
 export const IMAGE_MODAL_ID = 'AssetBrowserModal_image';
@@ -14,13 +15,14 @@ const AssetBrowserModal = ({
   assetType,
   onAssetSelected,
   onModalOpened,
+  name,
 }) => {
   const modalTitle = (
     <Modal.Title>
       <FormattedMessage id="cms.assets.label.assetbrowser" defaultMessage="Browse Asset" />
     </Modal.Title>
   );
-  const MODAL_ID = assetType === 'image' ? IMAGE_MODAL_ID : ATTACH_MODAL_ID;
+  const MODAL_ID = assetType === 'image' ? `${IMAGE_MODAL_ID}${name}` : `${ATTACH_MODAL_ID}${name}`;
   return (
     <GenericModalContainer
       modalId={MODAL_ID}
@@ -29,6 +31,7 @@ const AssetBrowserModal = ({
       modalClassName="AssetsList"
       onOpenModal={onModalOpened}
     >
+      <AssetsAdvancedSearchContainer />
       <AssetsListContainer
         assetType={assetType}
         browseMode
@@ -42,6 +45,7 @@ AssetBrowserModal.propTypes = {
   assetType: PropTypes.string.isRequired,
   onAssetSelected: PropTypes.func.isRequired,
   onModalOpened: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default AssetBrowserModal;

@@ -10,6 +10,7 @@ import {
   TOGGLE_CATEGORY_EXPANDED,
   SET_CATEGORY_LOADING,
   SET_CATEGORY_LOADED,
+  SET_CATEGORY_TREE_FETCHED,
 } from 'state/categories/types';
 
 import { JOIN_CATEGORY, UNJOIN_CATEGORY } from 'state/edit-content/types';
@@ -43,6 +44,11 @@ export const setCategoryLoaded = categoryCode => ({
   payload: {
     categoryCode,
   },
+});
+
+export const setCategoryTreeFetched = value => ({
+  type: SET_CATEGORY_TREE_FETCHED,
+  payload: value,
 });
 
 export const fetchCategoryNode = code => dispatch => new Promise((resolve) => {
@@ -117,6 +123,7 @@ export const fetchCategoryTreeAll = () => dispatch => new Promise((resolve) => {
       loadChildrenBranch(catResult).then((fullResult) => {
         const allCats = [rootCat.payload, ...flattenDeep(fullResult)];
         dispatch(setCategories(allCats));
+        dispatch(setCategoryTreeFetched(true));
         resolve(allCats);
       });
     });

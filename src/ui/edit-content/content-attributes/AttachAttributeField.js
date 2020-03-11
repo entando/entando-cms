@@ -7,7 +7,8 @@ import {
   Button,
 } from 'patternfly-react';
 import AssetAttributeFieldInfoContainer from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfoContainer';
-
+import UploadTriggerButton from 'ui/common/button/UploadTriggerButton';
+import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
 const AttachAttributeField = ({
@@ -31,12 +32,25 @@ const AttachAttributeField = ({
       <>
         <Button
           bsStyle="primary"
-          onClick={onClickAdd}
+          style={{ marginRight: 10 }}
+          onClick={() => onClickAdd(input.name)}
         >
-          <FormattedMessage id="cms.label.add" defaultMessage="Add" />
+          <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
         {errorBox}
-        <AssetBrowserModal assetType="file" onModalOpened={assetListBegin} onAssetSelected={handleAssetSelected} />
+        <AssetsUploadContainer
+          customTriggerComponent={UploadTriggerButton}
+          customClassName="UploadAsset--button-version"
+          customDropzoneProps={{ noClick: true }}
+          onAssetSelected={handleAssetSelected}
+          name={input.name}
+        />
+        <AssetBrowserModal
+          assetType="file"
+          name={input.name}
+          onModalOpened={assetListBegin}
+          onAssetSelected={handleAssetSelected}
+        />
       </>
     );
   };
@@ -68,6 +82,7 @@ AttachAttributeField.propTypes = {
       PropTypes.string,
     ]),
     onChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
   }),
   labelSize: PropTypes.number,
   alignClass: PropTypes.string,

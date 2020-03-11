@@ -20,7 +20,7 @@ const defaultState = {
   filterParams: {},
   keyword: '',
   assetsView: 'list',
-  fileType: 'image',
+  fileType: 'all',
   paginationOptions: {
     page: 1,
     perPage: 5,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { DropdownKebab, MenuItem } from 'patternfly-react';
+import { DropdownKebab, MenuItem, Button } from 'patternfly-react';
 
 const AssetsListItem = ({
   asset,
@@ -58,11 +58,9 @@ const AssetsListItem = ({
         <td key="categories">{renderCategories}</td>,
         <td key="actions">
           {browseMode ? (
-            <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
-              <MenuItem onClick={onClickSelectHandle}>
-                <FormattedMessage id="cms.label.use" defaultMessage="Use" />
-              </MenuItem>
-            </DropdownKebab>
+            <Button onClick={onClickSelectHandle}>
+              <FormattedMessage id="cms.label.use" defaultMessage="Use" />
+            </Button>
           ) : (
             <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
               <MenuItem onClick={onEditClickHandle}>

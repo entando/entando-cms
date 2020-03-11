@@ -7,3 +7,4 @@ export const SET_SELECTED_CATEGORY = 'categories/set-category-selected';
 export const REMOVE_CATEGORY = 'categories/remove-category';
 export const SET_REFERENCES = 'categories/set-references';
 export const ADD_ERRORS = 'errors/add-errors';
+export const SET_CATEGORY_TREE_FETCHED = 'categories/set-category-tree-fetched';

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector, submit } from 'redux-form';
+import { formValueSelector, submit, destroy } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 
 import {
@@ -74,7 +74,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
-  onWillUnmount: () => dispatch(clearEditContentForm()),
+  onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
     const { saveType } = values;

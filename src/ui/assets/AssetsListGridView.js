@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { DropdownKebab, MenuItem } from 'patternfly-react';
+import { DropdownKebab, MenuItem, Button } from 'patternfly-react';
 
 const AssetsListGridView = ({
   assets,
@@ -32,11 +32,9 @@ const AssetsListGridView = ({
         <div className="AssetsListGridView__header">
           <span className="AssetsListGridView__name">{asset.description}</span>
           {browseMode ? (
-            <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
-              <MenuItem onClick={onClickSelectHandle}>
-                <FormattedMessage id="cms.label.use" defaultMessage="Use" />
-              </MenuItem>
-            </DropdownKebab>
+            <Button onClick={onClickSelectHandle} id={asset.id} pullRight={browseMode}>
+              <FormattedMessage id="cms.label.use" defaultMessage="Use" />
+            </Button>
           ) : (
             <DropdownKebab className="AssetsList__item-actions" id={asset.id}>
               <MenuItem onClick={onEditClickHandle}>
