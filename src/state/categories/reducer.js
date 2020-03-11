@@ -4,6 +4,7 @@ import {
   SET_CATEGORY_LOADED,
   SET_CATEGORY_LOADING,
   TOGGLE_CATEGORY_EXPANDED,
+  SET_CATEGORY_TREE_FETCHED,
 } from 'state/categories/types';
 
 const toMap = (array, propKey) => array.reduce((acc, category) => {
@@ -46,6 +47,19 @@ const childrenMap = (state = {}, action = {}) => {
       return {
         ...state,
         ...toMap(action.payload.categories, 'children'),
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+const treeFetched = (state = {}, action = {}) => {
+  switch (action.type) {
+    case SET_CATEGORY_TREE_FETCHED: {
+      return {
+        ...state,
+        status: action.payload,
       };
     }
     default:
@@ -103,4 +117,5 @@ export default combineReducers({
   childrenMap,
   titlesMap,
   statusMap,
+  treeFetched,
 });

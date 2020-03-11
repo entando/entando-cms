@@ -17,6 +17,7 @@ import {
   getTitlesMap,
   getCategoryTree,
   getAllCategories,
+  getCategoryTreeFetched,
 } from 'state/categories/selectors';
 
 const LOCALE_MOCK = 'en';
@@ -26,6 +27,7 @@ const MOCK_STATE = {
   apps: {
     cms: {
       categories: {
+        treeFetched: { status: true },
         list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
         map: {
           home: HOME_PAYLOAD,
@@ -295,6 +297,13 @@ describe('state/categories/selectors', () => {
 
     it('return all available categories', () => {
       expect(allCategories.length).toBe(5);
+    });
+  });
+
+  describe('category tree fetched', () => {
+    it('getSelected(state)', () => {
+      const fetched = getCategoryTreeFetched(MOCK_STATE);
+      expect(fetched).toBe(MOCK_STATE.apps.cms.categories.treeFetched.status);
     });
   });
 });

@@ -247,9 +247,9 @@ export const fetchContentTypeReferenceStatus = () => dispatch => new Promise((re
     .catch(() => {});
 });
 
-export const sendPostContentTypeReferenceStatus = contentTypesCodes => dispatch => new Promise(
+export const sendPostContentTypeReferenceStatus = contentTypeCodes => dispatch => new Promise(
   (resolve) => {
-    postContentTypesStatus({ contentTypesCodes })
+    postContentTypesStatus({ profileTypeCodes: contentTypeCodes })
       .then((response) => {
         response.json().then((json) => {
           if (response.ok) {

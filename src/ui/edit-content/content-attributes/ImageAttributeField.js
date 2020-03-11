@@ -8,8 +8,10 @@ import {
 } from 'patternfly-react';
 
 import AssetAttributeFieldInfoContainer from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfoContainer';
-
+import UploadTriggerButton from 'ui/common/button/UploadTriggerButton';
 import AssetBrowserModal from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
+import AssetsUploadContainer from 'ui/assets/AssetsUploadContainer';
+
 
 const ImageAttributeField = ({
   input,
@@ -32,12 +34,25 @@ const ImageAttributeField = ({
       <>
         <Button
           bsStyle="primary"
-          onClick={onClickAdd}
+          style={{ marginRight: 10 }}
+          onClick={() => onClickAdd(input.name)}
         >
-          <FormattedMessage id="cms.label.add" defaultMessage="Add" />
+          <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
+        <AssetsUploadContainer
+          customTriggerComponent={UploadTriggerButton}
+          customClassName="UploadAsset--button-version"
+          customDropzoneProps={{ noClick: true }}
+          onAssetSelected={handleAssetSelected}
+          name={input.name}
+        />
         {errorBox}
-        <AssetBrowserModal assetType="image" onModalOpened={assetListBegin} onAssetSelected={handleAssetSelected} />
+        <AssetBrowserModal
+          assetType="image"
+          name={input.name}
+          onModalOpened={assetListBegin}
+          onAssetSelected={handleAssetSelected}
+        />
       </>
     );
   };
@@ -68,6 +83,7 @@ ImageAttributeField.propTypes = {
       PropTypes.shape({}),
       PropTypes.string,
     ]),
+    name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }),
   labelSize: PropTypes.number,

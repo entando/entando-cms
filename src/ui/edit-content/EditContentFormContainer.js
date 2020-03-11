@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector, submit } from 'redux-form';
+import { formValueSelector, submit, destroy } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
@@ -11,7 +11,7 @@ import {
   setOwnerGroupDisable,
   saveContent,
 } from 'state/edit-content/actions';
-import { fetchCategoryTree } from 'state/categories/actions';
+import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import { setVisibleModal } from 'state/modal/actions';
 import EditContentForm from 'ui/edit-content/EditContentForm';
@@ -66,9 +66,9 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
     dispatch(fetchContent(fetchContentParams))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchCategoryTree());
+    dispatch(fetchCategoryTreeAll());
   },
-  onWillUnmount: () => dispatch(clearEditContentForm()),
+  onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {

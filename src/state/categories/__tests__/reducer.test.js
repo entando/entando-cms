@@ -12,6 +12,7 @@ import {
   toggleCategoryExpanded,
   setCategoryLoading,
   setCategoryLoaded,
+  setCategoryTreeFetched,
 } from 'state/categories/actions';
 
 const CATEGORIES = [HOME_PAYLOAD, MYCATEGORY1_PAYLOAD, MYCATEGORY2_PAYLOAD, MYCATEGORY3_PAYLOAD];
@@ -71,6 +72,14 @@ describe('state/categories/reducer', () => {
       it('sets the category loading flag to true', () => {
         newState = reducer(state, setCategoryLoading(CATEGORY_CODE));
         expect(newState.statusMap[CATEGORY_CODE].loading).toBe(true);
+      });
+    });
+
+    describe('action setCategoryTreeFetched', () => {
+      let newState;
+      it('sets the category tree fetched to true', () => {
+        newState = reducer(state, setCategoryTreeFetched(true));
+        expect(newState.treeFetched.status).toBe(true);
       });
     });
 
