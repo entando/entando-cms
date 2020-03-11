@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Button, Label } from 'patternfly-react';
@@ -19,6 +19,8 @@ const CategoryTreeSelector = ({
       <FormattedMessage id="cms.contents.edit.contentCategoryList" />
     </h4>
   ) : null;
+
+  const [selectedRow, setSelectedRow] = useState('');
 
   const renderedTags = joinedCategories.map((value, i) => {
     const countSlashes = (value.fullTitles[language].match(/\//g) || []).length;
@@ -46,6 +48,8 @@ const CategoryTreeSelector = ({
       key={category.code}
       i={i}
       language={language}
+      selectedRow={selectedRow}
+      setSelectedRow={setSelectedRow}
       onExpandCategory={onExpandCategory}
       onJoinCategory={onJoinCategory}
       onUnjoinCategory={onUnjoinCategory}
