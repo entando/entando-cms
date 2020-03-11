@@ -100,7 +100,6 @@ CategoryTreeSelectorRow.defaultProps = {
   onExpandCategory: () => {},
   onJoinCategory: () => {},
   selectedRow: '',
-
 };
 
 export default CategoryTreeSelectorRow;

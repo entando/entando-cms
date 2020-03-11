@@ -45,10 +45,8 @@ const EditAssetFormModalBody = ({
   );
 
   const toOpenModal = () => onModalOpen(assetInfo);
-  const handleCancelClick = () => {
-    if (dirty)setShowConfirm(true);
-    else onModalClose();
-  };
+
+  const handleCancelClick = () => (dirty ? setShowConfirm(true) : onModalClose());
   const handleDiscardClick = () => {
     setShowConfirm(false);
     onModalClose();
