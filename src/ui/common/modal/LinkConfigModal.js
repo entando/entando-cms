@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import GenericModal from 'ui/common/modal/GenericModal';
 import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
 import LinkConfigPageForm from 'ui/common/link-config/LinkConfigPageForm';
-import LinkConfigContentForm from 'ui/common/link-config/LinkConfigContentForm';
+import LinkConfigContentFormContainer from 'ui/common/link-config/LinkConfigContentFormContainer';
 import LinkConfigResourceForm from 'ui/common/link-config/LinkConfigResourceForm';
 
 const getLinkUrl = (type, value) => `#!${type};${value}!#`;
@@ -23,7 +23,6 @@ const LinkConfigModal = ({
 }) => {
   const handleSubmit = (values) => {
     const linkObj = { ...values.attributes };
-
     if (values.url) {
       linkObj.url = getLinkUrl('U', values.url);
     } else if (values.page) {
@@ -95,7 +94,7 @@ const LinkConfigModal = ({
           <LinkConfigPageForm onSubmit={handleSubmit} onCancel={onClose} />
         </Tab>
         <Tab eventKey="content" title={renderedContentTabTitle}>
-          <LinkConfigContentForm onSubmit={handleSubmit} onCancel={onClose} />
+          <LinkConfigContentFormContainer onSubmit={handleSubmit} onCancel={onClose} />
         </Tab>
         {hasResourceTab && (
           <Tab eventKey="resource" title={renderedResourceTabTitle}>
