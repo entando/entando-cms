@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-import { sendDeleteContentType } from 'state/content-type/actions';
+import { sendDeleteContentType, fetchContentTypeListPaged } from 'state/content-type/actions';
 import { ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 
 import DeleteContentTypeModal from 'ui/content-type/DeleteContentTypeModal';
@@ -16,6 +16,7 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(setVisibleModal(''));
     dispatch(sendDeleteContentType(contentTypeCode)).then((result) => {
       if (result) {
+        dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 10 }));
         history.push(ROUTE_CMS_CONTENTTYPE_LIST);
       }
     });

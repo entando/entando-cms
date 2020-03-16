@@ -305,6 +305,7 @@ export const sendDeleteContentType = contentTypeCode => dispatch => new Promise(
           resolve(json);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(addToast(json.errors[0].message, TOAST_ERROR));
           resolve();
         }
       });
