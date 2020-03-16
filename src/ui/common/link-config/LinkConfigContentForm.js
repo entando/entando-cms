@@ -17,8 +17,8 @@ ContentsField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
 };
 
-const LinkConfigContentForm = ({ onCancel, handleSubmit }) => (
-  <form className="form-horizontal" onSubmit={handleSubmit}>
+const LinkConfigContentForm = ({ onCancel, handleClick, selectedContent }) => (
+  <div className="form-horizontal">
     <Field
       component={ContentsField}
       name="content"
@@ -34,16 +34,21 @@ const LinkConfigContentForm = ({ onCancel, handleSubmit }) => (
       >
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      <Button bsStyle="primary" type="submit">
+      <Button bsStyle="primary" onClick={() => handleClick(selectedContent)}>
         <FormattedMessage id="cms.label.save" />
       </Button>
     </div>
-  </form>
+  </div>
 );
 
 LinkConfigContentForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  selectedContent: PropTypes.string,
+  handleClick: PropTypes.func.isRequired,
+};
+
+LinkConfigContentForm.defaultProps = {
+  selectedContent: '',
 };
 
 export default reduxForm({
