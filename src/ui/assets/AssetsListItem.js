@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem, Button } from 'patternfly-react';
-import { standardFormatter } from 'helpers/dateFormatter';
+import { formatDate } from 'helpers/dateFormatter';
 
 const AssetsListItem = ({
   asset,
@@ -54,7 +54,7 @@ const AssetsListItem = ({
         <td key="name">{description}</td>,
         <td key="type">{type}</td>,
         <td key="uploadedBy">{owner || 'N/A'}</td>,
-        <td key="uploadedAt">{standardFormatter(createdAt)}</td>,
+        <td key="uploadedAt">{formatDate(createdAt)}</td>,
         <td key="group">{group.name || group}</td>,
         <td key="categories">{renderCategories}</td>,
         <td key="actions">

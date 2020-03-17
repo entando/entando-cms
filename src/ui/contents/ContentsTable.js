@@ -12,7 +12,7 @@ import * as resolve from 'table-resolver';
 import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
 import PublishContentModalContainer from 'ui/contents/PublishContentModalContainer';
 import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
-import { standardFormatter } from 'helpers/dateFormatter';
+import { formatDate } from 'helpers/dateFormatter';
 
 class ContentsTable extends Component {
   constructor(props) {
@@ -102,7 +102,7 @@ class ContentsTable extends Component {
             break;
           case 'created':
           case 'lastModified':
-            rowCellFormatter = date => <td>{standardFormatter(date)}</td>;
+            rowCellFormatter = date => <td>{formatDate(date)}</td>;
             break;
           case 'mainGroup':
             rowCellFormatter = (mainGroup) => {
