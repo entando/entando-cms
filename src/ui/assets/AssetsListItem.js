@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { DropdownKebab, MenuItem, Button } from 'patternfly-react';
-import { formatDate } from 'helpers/dateFormatter';
+import { formatDate } from '@entando/utils';
 
 const AssetsListItem = ({
   asset,

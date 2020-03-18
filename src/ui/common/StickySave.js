@@ -7,7 +7,7 @@ import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import { REGULAR_SAVE_TYPE, APPROVE_SAVE_TYPE, CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
-import { formatDate } from 'helpers/dateFormatter';
+import { formatDate } from '@entando/utils';
 
 const messages = defineMessages({
   chooseOption: {

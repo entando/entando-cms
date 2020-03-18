@@ -12,7 +12,7 @@ import * as resolve from 'table-resolver';
 import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
 import PublishContentModalContainer from 'ui/contents/PublishContentModalContainer';
 import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
-import { formatDate } from 'helpers/dateFormatter';
+import { formatDate } from '@entando/utils';
 
 class ContentsTable extends Component {
   constructor(props) {
