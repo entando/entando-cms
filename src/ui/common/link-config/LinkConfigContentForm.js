@@ -10,7 +10,7 @@ import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 import ContentsContainer from 'ui/common/content/ContentsContainer';
 
 const ContentsField = ({ input }) => (
-  <ContentsContainer onContentSelect={input.onChange} />
+  <ContentsContainer status="published" author="all" onContentSelect={input.onChange} />
 );
 
 ContentsField.propTypes = {

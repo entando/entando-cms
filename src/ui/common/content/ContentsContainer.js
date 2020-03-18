@@ -75,9 +75,10 @@ export const mapStateToProps = (state) => {
   });
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, { status: contentStatus, author: contentAuthor }) => ({
   onDidMount: () => {
-    dispatch(fetchContentsPaged());
+    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(contentStatus, contentAuthor),
+      null, null, false));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
