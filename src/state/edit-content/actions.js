@@ -8,7 +8,8 @@ import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
 import {
-  TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP,
+  TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP, TYPE_NUMBER,
+  TYPE_LIST, TYPE_MONOLIST,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import {
@@ -150,6 +151,26 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
   const transformedAttributes = attributes.map((attribute, i) => {
     const { value } = attribute;
     const { type } = contentTypeAttributes[i];
+    const replaceBooleanStringsComposite = (arr = []) => arr.map((item, j) => {
+      const types = contentTypeAttributes[i].compositeAttributes;
+      if (types[j].type === TYPE_BOOLEAN) {
+        return {
+          ...item,
+          value: item.value === 'true',
+        };
+      }
+      return item;
+    });
+    const replaceBooleanStringsList = (arr = []) => arr.map((item) => {
+      const { type: nestedType } = contentTypeAttributes[i].nestedAttribute;
+      if (nestedType === TYPE_BOOLEAN) {
+        return {
+          ...item,
+          value: item.value === 'true',
+        };
+      }
+      return item;
+    });
     if (type === TYPE_DATE) {
       if (value.includes('-')) return attribute;
       const fromFormat = 'DD/MM/YYYY';
@@ -183,7 +204,34 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
         value: newValue,
       };
     }
-    return attribute;
+    if (type === TYPE_NUMBER) {
+      return {
+        ...attribute,
+        value: value === '' ? null : value,
+      };
+    }
+    if (type === TYPE_LIST) {
+      const modifiedListElements = {};
+      const keys = Object.keys(attribute.listelements || {});
+      keys.map((el) => {
+        modifiedListElements.el = replaceBooleanStringsList(attribute.listelements[el]);
+        return el;
+      });
+      return {
+        ...attribute,
+        listelements: modifiedListElements,
+      };
+    }
+    if (type === TYPE_MONOLIST) {
+      return {
+        ...attribute,
+        elements: replaceBooleanStringsList(attribute.elements),
+      };
+    }
+    return {
+      ...attribute,
+      compositeelements: replaceBooleanStringsComposite(attribute.compositeelements),
+    };
   });
 
   const enhancedValues = {

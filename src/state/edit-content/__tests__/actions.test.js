@@ -186,7 +186,10 @@ describe('editContent thunks', () => {
   });
 
   it('save add content', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Boolean' }]);
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [
+      { type: 'Boolean' }, { type: 'Monolist', nestedAttribute: { type: 'Boolean' } },
+      { type: 'Composite', compositeAttributes: [{ type: 'Boolean' }, { type: 'Number' }] },
+      { type: 'List', nestedAttribute: { type: 'Boolean' } }, { type: 'Date' }, { type: 'Boolean' }, { type: 'Boolean' }]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } } },
@@ -194,6 +197,11 @@ describe('editContent thunks', () => {
       form: { editcontentform: { values: {} } },
     });
     store
-      .dispatch(saveContent({ contentStatus: 'ready', attributes: [{ value: 'test' }] })).then(() => done());
+      .dispatch(saveContent({
+        contentStatus: 'ready',
+        attributes: [
+          { value: 'test' }, { elements: [{ value: false }] }, { compositeelements: [{ value: false }, { value: '123' }] },
+          { listelements: { en: [{ value: false }] } }, { value: new Date().toISOString() }, { value: 'false' }, { value: 'true' }],
+      })).then(() => done());
   });
 });
