@@ -58,7 +58,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
   selectedCategories: getJoinedCategories(state),
   saveType: getSaveType(state),
-  loading: getLoading(state).contents,
+  loading: getLoading(state).editContent,
 });
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({

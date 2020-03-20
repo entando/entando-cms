@@ -7,7 +7,7 @@ import { CKEDITOR_OPTION_NODE } from 'state/content-settings/const';
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
 import {
-  Row, Col, Button, Icon,
+  Row, Col, Button, Icon, Spinner,
 } from 'patternfly-react';
 
 const messages = defineMessages({
@@ -45,6 +45,7 @@ class ContentSettingsGeneral extends Component {
       isReloadingReferences,
       isReloadingIndexes,
       isEditorChanging,
+      loading,
     } = this.props;
 
     const editorInput = {
@@ -108,72 +109,74 @@ class ContentSettingsGeneral extends Component {
     );
 
     return (
-      <div className="ContentSettingsGeneral__form-group">
-        <Row>
-          <Col xs={12} sm={2} className="text-right">
-            <FormattedMessage
-              id="cms.contentsettings.label.reloadreferences"
-              defaultMessage="Reload references"
-            />
-          </Col>
-          <Col xs={12} sm={10}>
-            <Button bsStyle="primary" onClick={onReloadReferences}>
+      <Spinner loading={!!loading}>
+        <div className="ContentSettingsGeneral__form-group">
+          <Row>
+            <Col xs={12} sm={2} className="text-right">
               <FormattedMessage
                 id="cms.contentsettings.label.reloadreferences"
                 defaultMessage="Reload references"
               />
-            </Button>{' '}
-            {isReloadingReferences ? (
-              <span>
+            </Col>
+            <Col xs={12} sm={10}>
+              <Button bsStyle="primary" onClick={onReloadReferences}>
+                <FormattedMessage
+                  id="cms.contentsettings.label.reloadreferences"
+                  defaultMessage="Reload references"
+                />
+              </Button>{' '}
+              {isReloadingReferences ? (
+                <span>
                 ({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)
-              </span>
-            ) : (
-              <span>({intl.formatMessage(statuses.reference)})</span>
-            )}
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col xs={12} sm={2} className="text-right">
-            <FormattedMessage
-              id="cms.contentsettings.label.reloadindexes"
-              defaultMessage="Reload indexes"
-            />
-          </Col>
-          <Col xs={12} sm={10}>
-            <Button bsStyle="primary" onClick={onReloadIndexes}>
+                </span>
+              ) : (
+                <span>({intl.formatMessage(statuses.reference)})</span>
+              )}
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col xs={12} sm={2} className="text-right">
               <FormattedMessage
                 id="cms.contentsettings.label.reloadindexes"
                 defaultMessage="Reload indexes"
               />
-            </Button>{' '}
-            {isReloadingIndexes ? (
-              <span>
-                ({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)
-              </span>
-            ) : (
-              <span>({intl.formatMessage(statuses.indexes)})</span>
-            )}
-          </Col>
-        </Row>
-        {lastReloadRemarkId ? (
-          <Row>
-            <Col xs={12} sm={2} />
+            </Col>
             <Col xs={12} sm={10}>
-              <div className="ContentSettingsGeneral__last-reload-remark">
+              <Button bsStyle="primary" onClick={onReloadIndexes}>
                 <FormattedMessage
-                  id={lastReloadRemarkId}
-                  values={{ date: indexesLastReloadDate }}
+                  id="cms.contentsettings.label.reloadindexes"
+                  defaultMessage="Reload indexes"
                 />
-              </div>
+              </Button>{' '}
+              {isReloadingIndexes ? (
+                <span>
+                ({reloading}... <Icon title={`${reloading}...`} name="spinner" type="fa" />)
+                </span>
+              ) : (
+                <span>({intl.formatMessage(statuses.indexes)})</span>
+              )}
             </Col>
           </Row>
-        ) : (
-          ''
-        )}
-        <br />
-        {generateEditorSwitch()}
-      </div>
+          {lastReloadRemarkId ? (
+            <Row>
+              <Col xs={12} sm={2} />
+              <Col xs={12} sm={10}>
+                <div className="ContentSettingsGeneral__last-reload-remark">
+                  <FormattedMessage
+                    id={lastReloadRemarkId}
+                    values={{ date: indexesLastReloadDate }}
+                  />
+                </div>
+              </Col>
+            </Row>
+          ) : (
+            ''
+          )}
+          <br />
+          {generateEditorSwitch()}
+        </div>
+      </Spinner>
     );
   }
 }
@@ -195,6 +198,7 @@ ContentSettingsGeneral.propTypes = {
   isReloadingReferences: PropTypes.bool,
   isReloadingIndexes: PropTypes.bool,
   isEditorChanging: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 ContentSettingsGeneral.defaultProps = {
@@ -206,6 +210,7 @@ ContentSettingsGeneral.defaultProps = {
   isReloadingReferences: false,
   isReloadingIndexes: false,
   isEditorChanging: false,
+  loading: false,
 };
 
 export default injectIntl(ContentSettingsGeneral);

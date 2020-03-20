@@ -17,6 +17,7 @@ import {
   CLEAR_EDIT_CONTENT_FORM,
   SET_NEW_CONTENTS_TYPE,
 } from 'state/edit-content/types';
+import { TOGGLE_LOADING } from 'state/loading/types';
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
@@ -84,8 +85,10 @@ describe('editContent thunks', () => {
       .dispatch(fetchContent())
       .then(() => {
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', SET_CONTENT_ENTRY);
-        expect(actions[0].payload.content).toEqual({ content: { categories: ['home'] } });
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2]).toHaveProperty('type', SET_CONTENT_ENTRY);
+        expect(actions[2].payload.content).toEqual({ content: { categories: ['home'] } });
         done();
       })
       .catch(done.fail);
@@ -97,7 +100,9 @@ describe('editContent thunks', () => {
       .catch(() => {
         expect(getContent).toHaveBeenCalled();
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
         done();
       });
   });

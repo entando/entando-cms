@@ -39,7 +39,7 @@ export const mapStateToProps = (state) => {
     isReloadingReferences: loads.reloadReferences,
     isReloadingIndexes: loads.reloadIndexes,
     isEditorChanging: loads.putEditorSettings,
-    loading: loads.contentSettings,
+    loading: loads.getSettings,
   };
 };
 
