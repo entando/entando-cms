@@ -25,7 +25,7 @@ const LinkMenu = () => (
     />
     <LinkMenuItem
       id="menu-content-model"
-      label={<FormattedMessage id="cms.menu.contentmodels" defaultMessage="Content Models" />}
+      label={<FormattedMessage id="cms.menu.contentmodels" defaultMessage="Content Templates" />}
       to={ROUTE_CMS_CONTENTMODEL_LIST}
     />
     <LinkMenuItem
