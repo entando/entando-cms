@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import {
-  Row, Col, FormGroup, ControlLabel,
+  Row, Col, FormGroup, ControlLabel, Spinner,
 } from 'patternfly-react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { required } from '@entando/utils';
@@ -83,6 +83,7 @@ class EditContentFormBody extends React.Component {
       onCancel,
       onDiscard,
       onSave,
+      loading,
     } = this.props;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
@@ -96,70 +97,71 @@ class EditContentFormBody extends React.Component {
     const typeCode = content.typeCode || newContentsType.typeCode;
     const groupsWithEmptyOption = [...groups];
     return (
-      <form
-        className="EditContentForm form-horizontal"
-      >
-        <div className="EditContentForm__content">
-          <Row className="InfoFormBody">
-            <SectionTitle nameId="cms.contents.edit.info" />
-            <fieldset className="no-padding">
-              <FormGroup>
-                <Col xs={12}>
-                  <Field
-                    component={RenderVersionText}
-                    name="id"
-                    label={<FormLabel labelId="cms.contents.edit.version.label" />}
-                    version={version || '0.0'}
-                    labelSize={2}
-                    currentUserName={currentUserName}
-                    creatorUserName={creatorUserName || currentUserName}
-                    modifierUserName={modifierUserName || currentUserName}
-                    modifierText={intl.formatMessage(messages.modifier)}
-                    creatorText={intl.formatMessage(messages.creator)}
-                    sameAuthorText={intl.formatMessage(messages.sameAuthor)}
-                    disabled
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col xs={12}>
-                  <Field
-                    component={RenderTextInput}
-                    name="contentType"
-                    label={<FormLabel labelId="cms.contents.edit.contentType.label" />}
-                    disabled
-                    input={{ value: contentType }}
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col xs={12}>
-                  <Field
-                    component={RenderTextInput}
-                    name="description"
-                    validate={[required]}
-                    label={(
-                      <FormLabel
-                        labelId="cms.contents.edit.contentDescription.label"
-                        helpId="cms.contents.edit.contentDescription.tooltip"
-                      />
-)}
-                    placeholder={intl.formatMessage(messages.contentDesctiption)}
-                  />
-                </Col>
-              </FormGroup>
-            </fieldset>
-          </Row>
-          <Row className="GroupsFormBody">
-            <SectionTitle nameId="cms.contents.edit.groups" />
-            <fieldset className="no-padding">
-              <Col xs={12}>
+      <Spinner loading={!!loading}>
+        <form
+          className="EditContentForm form-horizontal"
+        >
+          <div className="EditContentForm__content">
+            <Row className="InfoFormBody">
+              <SectionTitle nameId="cms.contents.edit.info" />
+              <fieldset className="no-padding">
                 <FormGroup>
-                  <Field
-                    component={RenderSelectInput}
-                    name="mainGroup"
-                    defaultValue="df"
-                    append={
+                  <Col xs={12}>
+                    <Field
+                      component={RenderVersionText}
+                      name="id"
+                      label={<FormLabel labelId="cms.contents.edit.version.label" />}
+                      version={version || '0.0'}
+                      labelSize={2}
+                      currentUserName={currentUserName}
+                      creatorUserName={creatorUserName || currentUserName}
+                      modifierUserName={modifierUserName || currentUserName}
+                      modifierText={intl.formatMessage(messages.modifier)}
+                      creatorText={intl.formatMessage(messages.creator)}
+                      sameAuthorText={intl.formatMessage(messages.sameAuthor)}
+                      disabled
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup>
+                  <Col xs={12}>
+                    <Field
+                      component={RenderTextInput}
+                      name="contentType"
+                      label={<FormLabel labelId="cms.contents.edit.contentType.label" />}
+                      disabled
+                      input={{ value: contentType }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup>
+                  <Col xs={12}>
+                    <Field
+                      component={RenderTextInput}
+                      name="description"
+                      validate={[required]}
+                      label={(
+                        <FormLabel
+                          labelId="cms.contents.edit.contentDescription.label"
+                          helpId="cms.contents.edit.contentDescription.tooltip"
+                        />
+)}
+                      placeholder={intl.formatMessage(messages.contentDesctiption)}
+                    />
+                  </Col>
+                </FormGroup>
+              </fieldset>
+            </Row>
+            <Row className="GroupsFormBody">
+              <SectionTitle nameId="cms.contents.edit.groups" />
+              <fieldset className="no-padding">
+                <Col xs={12}>
+                  <FormGroup>
+                    <Field
+                      component={RenderSelectInput}
+                      name="mainGroup"
+                      defaultValue="df"
+                      append={
                       !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
                         <button
                           type="button"
@@ -170,90 +172,91 @@ class EditContentFormBody extends React.Component {
                         </button>
                       ) : null
                     }
-                    label={(
-                      <FormLabel
-                        labelId="cms.contents.edit.groups.ownerGroup.label"
-                        helpId="cms.contents.edit.groups.ownerGroup.tooltip"
-                        required
-                      />
+                      label={(
+                        <FormLabel
+                          labelId="cms.contents.edit.groups.ownerGroup.label"
+                          helpId="cms.contents.edit.groups.ownerGroup.tooltip"
+                          required
+                        />
 )}
-                    labelSize={2}
-                    options={groupsWithEmptyOption}
-                    optionValue="code"
-                    optionDisplayName="name"
-                    defaultValueCode="free"
-                    disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormGroup>
-                    <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
-                      <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" required />
-                    </ControlLabel>
-                    <Col xs={12} sm={10}>
-                      <FieldArray
-                        component={MultiSelectRenderer}
-                        name="groups"
-                        intl={intl}
-                        options={groups}
-                        selectedValues={selectedJoinGroups}
-                        labelKey="name"
-                        valueKey="code"
-                      />
-                    </Col>
+                      labelSize={2}
+                      options={groupsWithEmptyOption}
+                      optionValue="code"
+                      optionDisplayName="name"
+                      defaultValueCode="free"
+                      disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
+                    />
                   </FormGroup>
-                </FormGroup>
-              </Col>
-            </fieldset>
-          </Row>
-          <Row className="GroupsFormBody">
-            <SectionTitle nameId="cms.contents.edit.categories" />
-            <fieldset className="no-padding">
-              <FormGroup>
-                <ControlLabel htmlFor="contentCategories" className="col-xs-2">
-                  <FormLabel labelId="cms.contents.edit.categories" />
-                </ControlLabel>
-                <Col xs={10}>
-                  <Field
-                    component={CategoryTreeContainer}
-                    language={language}
-                    name="contentCategories"
-                    treeNameId="cms.contents.edit.categories.categoriesTree"
-                  />
+                  <FormGroup>
+                    <FormGroup>
+                      <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
+                        <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" required />
+                      </ControlLabel>
+                      <Col xs={12} sm={10}>
+                        <FieldArray
+                          component={MultiSelectRenderer}
+                          name="groups"
+                          intl={intl}
+                          options={groups}
+                          selectedValues={selectedJoinGroups}
+                          labelKey="name"
+                          valueKey="code"
+                        />
+                      </Col>
+                    </FormGroup>
+                  </FormGroup>
                 </Col>
-              </FormGroup>
-            </fieldset>
-          </Row>
-          <Row>
-            <SectionTitle nameId="cms.contents.edit.contentAttributes" />
-            {(content.attributes || typeCode) && (
+              </fieldset>
+            </Row>
+            <Row className="GroupsFormBody">
+              <SectionTitle nameId="cms.contents.edit.categories" />
+              <fieldset className="no-padding">
+                <FormGroup>
+                  <ControlLabel htmlFor="contentCategories" className="col-xs-2">
+                    <FormLabel labelId="cms.contents.edit.categories" />
+                  </ControlLabel>
+                  <Col xs={10}>
+                    <Field
+                      component={CategoryTreeContainer}
+                      language={language}
+                      name="contentCategories"
+                      treeNameId="cms.contents.edit.categories.categoriesTree"
+                    />
+                  </Col>
+                </FormGroup>
+              </fieldset>
+            </Row>
+            <Row>
+              <SectionTitle nameId="cms.contents.edit.contentAttributes" />
+              {(content.attributes || typeCode) && (
               <ContentAttributesContainer
                 attributes={content.attributes}
                 typeCode={typeCode}
                 content={content}
                 mainGroup={mainGroup}
               />
-            )}
-          </Row>
-        </div>
-        <div className="AssetsList__footer">
-          <StickySave
-            intl={intl}
-            lastAutoSaveTime={lastModified}
-            onSubmit={onSubmit}
-            handleSubmit={handleSubmit}
-            invalid={invalid}
-            isDirty={dirty}
-            onCancel={onCancel}
-            onDiscard={onDiscard}
-            onSave={onSave}
-            submitting={submitting}
-            onLine={onLine}
-            content={content}
-            onUnpublish={onUnpublish}
-          />
-        </div>
-      </form>
+              )}
+            </Row>
+          </div>
+          <div className="AssetsList__footer">
+            <StickySave
+              intl={intl}
+              lastAutoSaveTime={lastModified}
+              onSubmit={onSubmit}
+              handleSubmit={handleSubmit}
+              invalid={invalid}
+              isDirty={dirty}
+              onCancel={onCancel}
+              onDiscard={onDiscard}
+              onSave={onSave}
+              submitting={submitting}
+              onLine={onLine}
+              content={content}
+              onUnpublish={onUnpublish}
+            />
+          </div>
+        </form>
+      </Spinner>
     );
   }
 }
@@ -296,6 +299,7 @@ EditContentFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };
 
 EditContentFormBody.defaultProps = {
@@ -306,6 +310,7 @@ EditContentFormBody.defaultProps = {
   submitting: false,
   contentType: {},
   dirty: false,
+  loading: false,
 };
 
 const EditContentForm = reduxForm({

@@ -12,6 +12,7 @@ import {
   TYPE_LIST, TYPE_MONOLIST,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
+import { toggleLoading } from 'state/loading/actions';
 import {
   SET_CONTENT_ENTRY,
   SET_OWNER_GROUP_DISABLE,
@@ -46,9 +47,11 @@ export const setJoinedCategories = categories => ({
 });
 
 export const fetchContent = params => dispatch => new Promise((resolve, reject) => {
+  dispatch(toggleLoading('editContent'));
   getContent(params)
     .then((response) => {
       response.json().then((json) => {
+        dispatch(toggleLoading('editContent'));
         if (response.ok) {
           const content = json.payload;
           dispatch(setContentEntry(content));
@@ -71,7 +74,7 @@ export const fetchContent = params => dispatch => new Promise((resolve, reject) 
         resolve();
       });
     })
-    .catch(() => {});
+    .catch(() => { dispatch(toggleLoading('editContent')); });
 });
 
 export const setOwnerGroupDisable = disabled => ({
