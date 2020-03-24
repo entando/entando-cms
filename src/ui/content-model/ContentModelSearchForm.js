@@ -16,7 +16,7 @@ class ContentModelSearchFormBody extends Component {
     this.messages = defineMessages({
       searchPlaceholder: {
         id: 'cms.contentmodel.searchPlaceholder',
-        defaultMessage: 'Search Content Model',
+        defaultMessage: 'Search Content Template',
       },
       valueName: {
         id: 'cms.contentmodel.searchFilter.valueName',

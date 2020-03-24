@@ -19,7 +19,7 @@ const ContentModelListPage = () => (
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contentmodel.title" defaultMessage="Content Models" />
+            <FormattedMessage id="cms.contentmodel.title" defaultMessage="Content Templates" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>
@@ -42,7 +42,7 @@ const ContentModelListPage = () => (
       <Col xs={2}>
         <Link to={ROUTE_CMS_CONTENTMODEL_ADD}>
           <Button bsStyle="primary" className="ContentModelList__addbutton">
-            <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Model" />
+            <FormattedMessage id="cms.contentmodel.add.label" defaultMessage="Add Content Template" />
           </Button>
         </Link>
       </Col>
