@@ -190,7 +190,7 @@ class EditContentFormBody extends React.Component {
                   <FormGroup>
                     <FormGroup>
                       <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
-                        <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" required />
+                        <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
                       </ControlLabel>
                       <Col xs={12} sm={10}>
                         <FieldArray
