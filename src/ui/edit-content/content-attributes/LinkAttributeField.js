@@ -82,7 +82,7 @@ class LinkAttributeField extends Component {
     } = this.props;
 
     const { value, values } = input.value;
-    const { urlDest, pageDest, contentDest } = value;
+    const { urlDest, pageDest, contentDest } = value || {};
     const dest = urlDest || pageDest || contentDest;
 
     const textInput = {
