@@ -42,6 +42,8 @@ export const setMetadataMapping = payload => ({
   payload,
 });
 
+export const wait = ms => new Promise(r => setTimeout(r, ms));
+
 // thunks
 
 export const fetchContentSettings = () => dispatch => new Promise((resolve) => {
@@ -82,10 +84,18 @@ export const sendPostReloadReferences = () => dispatch => new Promise((resolve) 
 export const sendPostReloadIndexes = () => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('reloadIndexes'));
   postReloadIndexes().then((response) => {
-    response.json().then((json) => {
+    response.json().then(async (json) => {
       dispatch(toggleLoading('reloadIndexes'));
       if (response.ok) {
-        dispatch(fetchContentSettings());
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          // eslint-disable-next-line no-await-in-loop
+          await wait(200);
+          // eslint-disable-next-line no-await-in-loop
+          const res = await dispatch(fetchContentSettings());
+          const status = res.indexesStatus;
+          if (status !== 1) { resolve(); break; }
+        }
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
         json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
