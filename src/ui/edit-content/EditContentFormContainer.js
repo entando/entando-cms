@@ -73,7 +73,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories) => {
     const { saveType, contentId } = values;
-    dispatch(saveContent(values, categories)).then((res) => {
+    return dispatch(saveContent(values, categories)).then((res) => {
       if (res) {
         dispatch(
           addToast(
