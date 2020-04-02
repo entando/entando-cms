@@ -46,8 +46,8 @@ export const wait = ms => new Promise(r => setTimeout(r, ms));
 
 // thunks
 
-export const fetchContentSettings = () => dispatch => new Promise((resolve) => {
-  dispatch(toggleLoading('getSettings'));
+export const fetchContentSettings = (toggleName = 'getSettings') => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading(toggleName));
   getContentSettings()
     .then((response) => {
       response.json().then((json) => {
@@ -60,7 +60,7 @@ export const fetchContentSettings = () => dispatch => new Promise((resolve) => {
           dispatch(clearErrors());
           resolve();
         }
-        dispatch(toggleLoading('getSettings'));
+        dispatch(toggleLoading(toggleName));
       });
     })
     .catch(() => {});
@@ -81,29 +81,32 @@ export const sendPostReloadReferences = () => dispatch => new Promise((resolve) 
   });
 });
 
-export const sendPostReloadIndexes = () => dispatch => new Promise((resolve) => {
-  dispatch(toggleLoading('reloadIndexes'));
-  postReloadIndexes().then((response) => {
-    response.json().then(async (json) => {
-      dispatch(toggleLoading('reloadIndexes'));
-      if (response.ok) {
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-          // eslint-disable-next-line no-await-in-loop
-          await wait(200);
-          // eslint-disable-next-line no-await-in-loop
-          const res = await dispatch(fetchContentSettings());
-          const status = res.indexesStatus;
-          if (status !== 1) { resolve(); break; }
-        }
-      } else {
-        dispatch(addErrors(json.errors.map(err => err.message)));
-        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-        dispatch(clearErrors());
+export const sendPostReloadIndexes = () => dispatch => new Promise(async (resolve) => {
+  try {
+    dispatch(toggleLoading('reloadIndexes'));
+    const response = await postReloadIndexes();
+    const json = await response.json();
+    dispatch(toggleLoading('reloadIndexes'));
+    if (response.ok) {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        await wait(200);
+        // eslint-disable-next-line no-await-in-loop
+        const res = await dispatch(fetchContentSettings('getSettingsPoll'));
+        const status = res.indexesStatus;
+        if (status !== 1) { resolve(); break; }
       }
-      resolve();
-    });
-  });
+    } else {
+      dispatch(addErrors(json.errors.map(err => err.message)));
+      json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+      dispatch(clearErrors());
+    }
+    resolve();
+  } catch (error) {
+    dispatch(toggleLoading('reloadIndexes'));
+    resolve();
+  }
 });
 
 export const sendPutEditorSettings = editor => dispatch => new Promise((resolve) => {

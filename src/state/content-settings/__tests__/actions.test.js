@@ -221,7 +221,7 @@ describe('contentSettings thunks', () => {
         expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
         expect(actions[1].payload.id).toEqual('reloadIndexes');
         expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
-        expect(actions[2].payload.id).toEqual('getSettings');
+        expect(actions[2].payload.id).toEqual('getSettingsPoll');
         done();
       })
       .catch(done.fail);
@@ -238,7 +238,7 @@ describe('contentSettings thunks', () => {
         expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
         expect(actions[1].payload.id).toEqual('reloadIndexes');
         expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
-        expect(actions[2].payload.id).toEqual('getSettings');
+        expect(actions[2].payload.id).toEqual('getSettingsPoll');
         done();
       })
       .catch(done.fail);
