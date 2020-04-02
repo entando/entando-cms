@@ -14,6 +14,7 @@ import {
   sendPutMetadataMap,
   checkAndPutMetadataMap,
   sendDeleteMetadataMap,
+  wait,
 } from 'state/content-settings/actions';
 import {
   SET_CONTENT_SETTINGS,
@@ -124,6 +125,10 @@ it('test setMetadataMapping action', () => {
   });
 });
 
+it('test wait function', () => {
+  expect(wait(2000)).toBeInstanceOf(Promise);
+});
+
 describe('contentSettings thunks', () => {
   let store;
   beforeEach(() => {
@@ -216,7 +221,24 @@ describe('contentSettings thunks', () => {
         expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
         expect(actions[1].payload.id).toEqual('reloadIndexes');
         expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
-        expect(actions[2].payload.id).toEqual('getSettings');
+        expect(actions[2].payload.id).toEqual('getSettingsPoll');
+        done();
+      })
+      .catch(done.fail);
+  });
+
+  it('sendPostReloadIndexes with un-finished status', (done) => {
+    getContentSettings.mockImplementationOnce(mockApi({ payload: { indexesStatus: 1 } }));
+    store
+      .dispatch(sendPostReloadIndexes())
+      .then(() => {
+        expect(postReloadIndexes).toHaveBeenCalled();
+        const actions = store.getActions();
+        expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[1].payload.id).toEqual('reloadIndexes');
+        expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+        expect(actions[2].payload.id).toEqual('getSettingsPoll');
         done();
       })
       .catch(done.fail);
