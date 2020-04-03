@@ -250,7 +250,7 @@ export default {
     'cms.assets.list.apply': 'Apply',
     'cms.assets.list.searchByUsername': 'Search by Username',
     'cms.assets.list.uploadedBy': 'Uploaded By',
-    'cms.assets.list.uploadedFrom': 'Uploaded from',
+    'cms.assets.list.uploadedFrom': 'Uploaded From',
     'cms.assets.list.uploadedAt': 'Uploaded At',
     'cms.assets.list.group': 'Group',
     'cms.assets.list.categories': 'Categories',

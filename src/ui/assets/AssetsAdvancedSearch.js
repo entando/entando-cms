@@ -88,7 +88,7 @@ class AssetsAdvancedSearchForm extends Component {
                 component={RenderDatePickerInput}
                 name="fromDate"
                 dateFormat="DD/MM/YYYY"
-                label={<FormLabel labelId="cms.assets.list.uploadedFrom" defaultMessage="Uploaded from" />}
+                label={<FormLabel labelId="cms.assets.list.uploadedFrom" defaultMessage="Uploaded From" />}
                 alignClass="text-right"
                 hasCalendarIcon
                 labelSize={4}
