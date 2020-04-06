@@ -23,6 +23,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@babel/runtime": "^7.9.2",
     "@entando/apimanager": "^4.3.0",
     "@entando/pagetreeselector": "^1.1.0",
     "brace": "^0.11.1",
@@ -67,6 +68,12 @@
           "root": [
             "./src/"
           ]
+        }
+      ],
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
         }
       ]
     ]
@@ -168,6 +175,7 @@
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
     "@entando/log": "^1.0.2",
