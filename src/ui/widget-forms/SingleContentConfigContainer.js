@@ -66,10 +66,12 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
     dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {
+      console.log('success in widget config');
       dispatch(addToast(
         intl.formatMessage({ id: 'widget.update.success' }),
         TOAST_SUCCESS,
       ));
+      console.log('pushing now to: ', routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     });
   },
