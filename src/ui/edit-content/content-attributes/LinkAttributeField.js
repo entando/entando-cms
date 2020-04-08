@@ -63,11 +63,11 @@ class LinkAttributeField extends Component {
   }
 
   handleDeleteClick() {
-    const { input } = this.props;
+    const { input, langCode } = this.props;
     input.onChange({
       value: {},
       values: {
-        en: '',
+        [langCode]: '',
       },
     });
   }
@@ -78,6 +78,7 @@ class LinkAttributeField extends Component {
       label,
       meta,
       attribute,
+      langCode,
       ...rest
     } = this.props;
 
@@ -86,13 +87,13 @@ class LinkAttributeField extends Component {
     const dest = urlDest || pageDest || contentDest;
 
     const textInput = {
-      name: `${input.name}.values.en`,
-      value: values.en,
+      name: `${input.name}.values.${langCode}`,
+      value: values[langCode],
       onChange: (event) => {
         input.onChange({
           ...input.value,
           values: {
-            en: event.target.value,
+            [langCode]: event.target.value,
           },
         });
       },
@@ -166,6 +167,7 @@ LinkAttributeField.propTypes = {
   label: PropTypes.node.isRequired,
   meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
+  langCode: PropTypes.string.isRequired,
 };
 
 export default LinkAttributeField;

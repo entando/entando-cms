@@ -40,6 +40,7 @@ class ContentAttributes extends Component {
                   reInitializeForm={reInitializeForm}
                   component={AttributeFields}
                   attributes={attributes}
+                  langCode={code}
                 />
               )
               : (

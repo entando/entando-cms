@@ -7,16 +7,22 @@ import {
   TYPE_LONGTEXT, TYPE_HYPERTEXT, TYPE_LINK,
 } from 'state/content-type/const';
 
-export const getAttrInitialValue = (attr) => {
+const createObjFromArr = (keyArr, value) => (
+  keyArr.reduce((accObj, key) => ({ ...accObj, [key]: value }), {})
+);
+
+export const getAttrInitialValue = (attr, langCodes = ['en']) => {
   const { type, code, compositeAttributes = [] } = attr;
   const initialValue = { code };
   switch (type) {
     case TYPE_COMPOSITE:
-      initialValue.compositeelements = compositeAttributes.map(getAttrInitialValue);
+      initialValue.compositeelements = compositeAttributes.map(
+        compAttr => getAttrInitialValue(compAttr, langCodes),
+      );
       break;
     case TYPE_LIST:
       initialValue.listelements = {
-        en: [],
+        ...createObjFromArr(langCodes, []),
       };
       break;
     case TYPE_MONOLIST:
@@ -37,13 +43,13 @@ export const getAttrInitialValue = (attr) => {
     case TYPE_LONGTEXT:
     case TYPE_HYPERTEXT:
       initialValue.values = {
-        en: '',
+        ...createObjFromArr(langCodes, ''),
       };
       break;
     case TYPE_LINK:
       initialValue.value = {};
       initialValue.values = {
-        en: '',
+        ...createObjFromArr(langCodes, ''),
       };
       break;
     default:

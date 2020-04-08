@@ -19,7 +19,7 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const renderField = (name, idx, attribute) => {
+const renderField = (name, idx, attribute, langCode) => {
   const {
     type, code, mandatory, listFilter, indexable, name: attName,
   } = attribute;
@@ -47,7 +47,7 @@ const renderField = (name, idx, attribute) => {
       AttributeFieldComp = CompositeAttributeField;
       break;
     case TYPE_LIST:
-      fieldName = `${name}.listelements.en`;
+      fieldName = `${name}.listelements.${langCode}`;
       FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
       break;
@@ -62,6 +62,7 @@ const renderField = (name, idx, attribute) => {
           key={code}
           name={name}
           attribute={attribute}
+          langCode={langCode}
         />
       );
   }
@@ -78,7 +79,7 @@ const renderField = (name, idx, attribute) => {
 };
 
 const AttributeFields = ({
-  attributes, fields, reInitializeForm, content, typeCode, mainGroup,
+  attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -103,7 +104,7 @@ const AttributeFields = ({
     });
   }
 
-  return fields.map((name, idx) => renderField(name, idx, attributes[idx]));
+  return fields.map((name, idx) => renderField(name, idx, attributes[idx], langCode));
 };
 
 AttributeFields.propTypes = {
@@ -113,6 +114,7 @@ AttributeFields.propTypes = {
   content: PropTypes.shape({}).isRequired,
   typeCode: PropTypes.string.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  langCode: PropTypes.string.isRequired,
 };
 
 export default AttributeFields;

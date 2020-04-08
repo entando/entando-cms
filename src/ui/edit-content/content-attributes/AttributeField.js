@@ -44,6 +44,7 @@ const AttributeField = ({
   attribute,
   label,
   hasLabel,
+  langCode,
 }) => {
   const {
     type,
@@ -96,7 +97,7 @@ const AttributeField = ({
       break;
     case TYPE_HYPERTEXT:
       AttributeFieldComp = HypertextAttributeField;
-      actualName = `${name}.values.en`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_NUMBER:
       validate.push(isNumber);
@@ -107,19 +108,19 @@ const AttributeField = ({
       break;
     case TYPE_LONGTEXT:
       AttributeFieldComp = LongtextAttributeField;
-      actualName = `${name}.values.en`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_TEXT:
       AttributeFieldComp = TextAttributeField;
-      actualName = `${name}.values.en`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
-      actualName = `${name}.values.en`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_IMAGE:
       AttributeFieldComp = ImageAttributeFieldContainer;
-      actualName = `${name}.values.en`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
@@ -140,6 +141,7 @@ const AttributeField = ({
       label={fieldLabel}
       hasLabel={hasLabel}
       validate={validate}
+      {...(type === TYPE_LINK && { langCode })}
       {...extraProps}
     />
   );
@@ -150,11 +152,13 @@ AttributeField.propTypes = {
   attribute: PropTypes.shape(attributeShape).isRequired,
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
+  langCode: PropTypes.string,
 };
 
 AttributeField.defaultProps = {
   label: null,
   hasLabel: true,
+  langCode: 'en',
 };
 
 export default AttributeField;
