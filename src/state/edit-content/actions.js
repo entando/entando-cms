@@ -217,7 +217,7 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       const modifiedListElements = {};
       const keys = Object.keys(attribute.listelements || {});
       keys.map((el) => {
-        modifiedListElements.el = replaceBooleanStringsList(attribute.listelements[el]);
+        modifiedListElements[el] = replaceBooleanStringsList(attribute.listelements[el]);
         return el;
       });
       return {
