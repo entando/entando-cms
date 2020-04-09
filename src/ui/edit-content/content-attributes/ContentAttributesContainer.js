@@ -9,13 +9,18 @@ import { getAttrInitialValue } from 'helpers/attrUtils';
 import { getActiveLanguages, getLanguages } from 'state/languages/selectors';
 import { initialize } from 'redux-form';
 
-export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => ({
-  attributes: (getSelectedContentTypeAttributes(state) || []).map((attr, i) => ({
-    ...attr,
-    ...(contentAttributes[i] || (getAttrInitialValue(attr))),
-  })),
-  languages: (getLanguages(state) && getActiveLanguages(state)) || [],
-});
+export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => {
+  const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
+  const langCodes = languages.map(({ code }) => code);
+
+  return {
+    attributes: (getSelectedContentTypeAttributes(state) || []).map((attr, i) => ({
+      ...attr,
+      ...(contentAttributes[i] || (getAttrInitialValue(attr, langCodes))),
+    })),
+    languages,
+  };
+};
 
 export const mapDispatchToProps = (dispatch, { typeCode }) => ({
   onDidMount: () => {
