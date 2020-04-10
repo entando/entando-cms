@@ -24,7 +24,7 @@ const BooleanAttributeField = ({
   const attrInput = {
     ...input,
     name,
-    value: inputValue || 'false',
+    value: `${inputValue || 'false'}`,
     onChange: (val) => {
       inputOnChange(val);
     },
