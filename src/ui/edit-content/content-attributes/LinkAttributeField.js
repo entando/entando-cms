@@ -65,6 +65,7 @@ class LinkAttributeField extends Component {
   handleDeleteClick() {
     const { input, langCode } = this.props;
     input.onChange({
+      ...input.value,
       value: {},
       values: {
         [langCode]: '',
