@@ -46,7 +46,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onDidMount: () => {
     dispatch(fetchContentModelDictionary());
-    dispatch(fetchContentTypeListPaged()).then(() => (
+    dispatch(fetchContentTypeListPaged({ pageSize: 0 })).then(() => (
       dispatch(fetchContentModel(params.id))
     ));
   },
