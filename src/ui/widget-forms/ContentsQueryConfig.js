@@ -16,6 +16,7 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
+
 import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
