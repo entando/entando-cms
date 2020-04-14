@@ -122,9 +122,9 @@ export const fetchContents = (page = pageDefault,
           dispatch(setContents(json.payload));
           dispatch(setPage(json.metaData, 'contents'));
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
         }
         dispatch(selectAllRows(false));
         dispatch(toggleLoading('contents'));
@@ -243,9 +243,9 @@ export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
           resolve(json.payload);
           dispatch(fetchContentsPaged());
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -261,9 +261,9 @@ export const sendPublishContent = (id, status) => dispatch => new Promise((resol
           resolve(json.payload);
           dispatch(fetchContentsPaged());
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -279,9 +279,9 @@ export const sendPublishMultipleContents = (id, status) => dispatch => new Promi
           resolve(json.payload);
           dispatch(fetchContentsPaged());
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -297,9 +297,9 @@ export const sendUpdateContents = contents => dispatch => new Promise((resolve) 
           resolve(json.payload);
           dispatch(fetchContentsPaged());
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -314,9 +314,9 @@ export const sendCloneContent = content => dispatch => new Promise((resolve) => 
         if (response.ok) {
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });

@@ -55,9 +55,9 @@ export const fetchContentSettings = (toggleName = 'getSettings') => dispatch => 
           dispatch(setContentSettings(json.payload));
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
         dispatch(toggleLoading(toggleName));
@@ -71,9 +71,9 @@ export const sendPostReloadReferences = () => dispatch => new Promise((resolve) 
   postReloadReferences().then((response) => {
     response.json().then((json) => {
       if (!response.ok) {
+        dispatch(clearErrors());
         dispatch(addErrors(json.errors.map(err => err.message)));
         json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-        dispatch(clearErrors());
       }
       dispatch(toggleLoading('reloadReferences'));
       resolve();
@@ -98,9 +98,9 @@ export const sendPostReloadIndexes = () => dispatch => new Promise(async (resolv
         if (status !== 1) { resolve(); break; }
       }
     } else {
+      dispatch(clearErrors());
       dispatch(addErrors(json.errors.map(err => err.message)));
       json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-      dispatch(clearErrors());
     }
     resolve();
   } catch (error) {

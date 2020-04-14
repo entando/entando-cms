@@ -282,7 +282,8 @@ describe('contentModel thunks', () => {
       .then(() => {
         expect(getContentModel).toHaveBeenCalledWith(1);
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[0]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
         done();
       })
       .catch(done.fail);
@@ -303,7 +304,8 @@ describe('contentModel thunks', () => {
     store.dispatch(fetchContentModelDictionary()).then(() => {
       expect(getContentModelDictionary).toHaveBeenCalled();
       const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[0]).toHaveProperty('type', 'errors/clear-errors');
+      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
       done();
     }).catch(done.fail);
   });

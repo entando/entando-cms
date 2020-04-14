@@ -182,7 +182,8 @@ describe('state/contents/actions', () => {
         expect(actions).toHaveLength(6);
         expect(actions.includes(TOGGLE_LOADING)).toBe(true);
         expect(actions.includes(SELECT_ALL_ROWS)).toBe(true);
-        expect(actions[1]).toEqual(ADD_ERRORS);
+        expect(actions[1]).toEqual(CLEAR_ERRORS);
+        expect(actions[2]).toEqual(ADD_ERRORS);
         done();
       });
     });

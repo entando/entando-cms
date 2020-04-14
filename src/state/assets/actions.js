@@ -296,9 +296,9 @@ export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {
           dispatch(fetchAssetsPaged());
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -321,9 +321,9 @@ export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Pr
           dispatch(setAssetChanged(json.payload));
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -355,9 +355,9 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
           dispatch(fetchAssetsPaged());
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -381,9 +381,9 @@ export const sendCloneAsset = id => dispatch => new Promise((resolve) => {
           dispatch(fetchAssetsPaged());
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
         dispatch(toggleLoading('assets'));
