@@ -2,7 +2,7 @@ import {
   equalDate, equalNumber, equalString,
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
-  regex,
+  regex, linkValidate,
 } from 'helpers/attrValidation';
 
 describe('helpers/attrValidation', () => {
@@ -154,6 +154,30 @@ describe('helpers/attrValidation', () => {
 
     it('should return undefined if value matches regex', () => {
       const result = regex(regexStr)('test5');
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('linkValidate', () => {
+    it('should return a message if link value is empty', () => {
+      const result = linkValidate('en')({
+        value: {},
+        values: { en: 'test' },
+      });
+      expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should return a message if link values is empty', () => {
+      const result = linkValidate('en')({
+        value: { symbolicDestination: 'test' },
+        values: {},
+      });
+      expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should return undefined if link has both value and values', () => {
+      const result = linkValidate('en')({
+        value: { symbolicDestination: 'test' },
+        values: { en: 'test' },
+      });
       expect(result).toBeUndefined();
     });
   });

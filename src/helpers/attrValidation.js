@@ -148,3 +148,12 @@ export const getAttrValidators = (validationRules) => {
 
   return validators;
 };
+
+export const linkValidate = memoize(langCode => input => (
+  !input.value.symbolicDestination || !input.values[langCode]
+    ? (
+      <FormattedMessage
+        id="validateForm.required"
+      />
+    ) : undefined
+));
