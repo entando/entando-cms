@@ -4,10 +4,14 @@ import { FormattedMessage } from 'react-intl';
 import {
   Button, ButtonGroup, Col, FormGroup,
 } from 'patternfly-react';
+import { FieldArray } from 'redux-form';
 import Panel from 'react-bootstrap/lib/Panel';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import { getAttrInitialValue } from 'helpers/attrUtils';
+import { TYPE_COMPOSITE } from 'state/content-type/const';
+import FormLabel from 'ui/common/form/FormLabel';
+import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
 
 class RenderListField extends Component {
   buttonMoveUp(index) {
@@ -52,7 +56,31 @@ class RenderListField extends Component {
     const {
       fields, label, ...rest
     } = this.props;
-
+    const renderCompositeAttributeField = (name) => {
+      const {
+        code, mandatory, listFilter, indexable, name: attName,
+      } = rest.attribute;
+      const helpTextArr = [];
+      if (listFilter) helpTextArr.push('Can be used as a filter in lists');
+      if (indexable) helpTextArr.push('Searchable');
+      const helpText = helpTextArr.join('<br>');
+      const fieldLabel = (
+        <FormLabel
+          labelText={attName || code}
+          required={mandatory}
+          helpText={helpText}
+        />
+      );
+      return (
+        <FieldArray
+          key={rest.attribute.code}
+          name={`${name}.compositeelements`}
+          attribute={rest.attribute}
+          component={CompositeAttributeField}
+          label={fieldLabel}
+        />
+      );
+    };
     return (
       <div>
         <FormGroup>
@@ -80,12 +108,18 @@ class RenderListField extends Component {
                   </div>
                 </Panel.Heading>
                 <Panel.Body>
-                  <AttributeField
-                    name={name}
-                    label={index + 1}
-                    {...rest}
-                    hasLabel={false}
-                  />
+                  {
+                    (rest.attribute && rest.attribute.type === TYPE_COMPOSITE) ? (
+                      renderCompositeAttributeField(name)
+                    ) : (
+                      <AttributeField
+                        name={name}
+                        label={index + 1}
+                        {...rest}
+                        hasLabel={false}
+                      />
+                    )
+                  }
                 </Panel.Body>
               </Panel>
             ))}
