@@ -1,1 +1,44 @@
 buildPack: javascript
+pipelineConfig:
+  agent:
+    image: entando-jx-nodejs12
+  pipelines:
+    pullRequest:
+      build:
+        replace: true
+        steps:
+          - sh: >-
+            npm install -g npm-install-peers;
+            npm install && npm-install-peers;
+          name: npm-install
+        - sh: >-
+            eslint ./src && sass-lint -v;
+            JX=true npm run coverage
+          name: npm-test
+
+      postBuild:
+        replace: true
+        steps: []
+      promote:
+        replace: true
+        steps: []
+    release:
+      build:
+        replace: true
+        steps:
+#        - sh: jx step credential -s npm-token -k file -f /builder/home/.npmrc --optional=true
+#          name: npmrc
+        - sh: >-
+            npm install -g npm-install-peers;
+            npm install && npm-install-peers;
+          name: npm-install
+        - sh: >-
+            eslint ./src && sass-lint -v;
+            JX=true npm run coverage
+          name: npm-test
+        - sh: >-
+            npm run prepublish;
+          name: npm-build
+      promote:
+        replace: true
+        steps: []
