@@ -7,15 +7,13 @@ pipelineConfig:
       build:
         replace: true
         steps:
-          - sh: >-
+        - sh: >-
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
-          name: npm-install
-        - sh: >-
             eslint ./src && sass-lint -v;
-            JX=true npm run coverage
+          name: npm-install
+        - sh: JX=true npm run coverage
           name: npm-test
-
       postBuild:
         replace: true
         steps: []
