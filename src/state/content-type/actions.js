@@ -222,9 +222,9 @@ export const sendPostContentType = contentTypeObject => dispatch => new Promise(
         if (response.ok) {
           resolve(json.payload);
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
           resolve();
         }
       });
@@ -271,9 +271,9 @@ export const sendPostRefreshContentType = contentTypeCode => dispatch => new Pro
         if (response.ok) {
           dispatch(addToast(json.payload.status, TOAST_SUCCESS));
         } else {
+          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
         }
         resolve();
       });
