@@ -36,7 +36,7 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => {
     dispatch(fetchContentModelDictionary());
-    dispatch(fetchContentTypeListPaged());
+    dispatch(fetchContentTypeListPaged({ pageSize: 0 }));
   },
   onDidUnmount: () => {
     dispatch(clearContentModel());
