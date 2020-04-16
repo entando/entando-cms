@@ -10,7 +10,7 @@ pipelineConfig:
         - sh: >-
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
-            eslint ./src && sass-lint -v;
+            npx eslint ./src && npx sass-lint -v;
           name: npm-install
         - sh: JX=true npm run coverage
           name: npm-test
