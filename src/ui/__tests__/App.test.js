@@ -22,7 +22,7 @@ const STATE = {
   modal: { visibleModal: '', info: {} },
   apps: {
     cms: {
-      contentModel: { list: [] },
+      contentTemplate: { list: [] },
       editContent: {
         ownerGroupDisabled: {
           disabled: false,

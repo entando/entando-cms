@@ -30,8 +30,8 @@ jest.mock('state/pages/selectors', () => ({
   getViewPages: jest.fn().mockReturnValue(['test viewPages']),
 }));
 
-jest.mock('state/content-model/selectors', () => ({
-  getContentModelList: jest.fn().mockReturnValue(['test contentModels']),
+jest.mock('state/content-template/selectors', () => ({
+  getContentTemplateList: jest.fn().mockReturnValue(['test contentTemplates']),
 }));
 
 const ownProps = {
@@ -59,7 +59,7 @@ describe('EditContentTypeFormContainer', () => {
       expect(props).toHaveProperty('attributeCode', 'formValueSelector_result');
       expect(props).toHaveProperty('routeToEdit', ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT);
       expect(props).toHaveProperty('viewPages', ['test viewPages']);
-      expect(props).toHaveProperty('contentModels', ['test contentModels']);
+      expect(props).toHaveProperty('contentTemplates', ['test contentTemplates']);
     });
   });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { LinkMenuItem } from '@entando/menu';
 import { FormattedMessage } from 'react-intl';
 import {
-  ROUTE_CMS_CONTENTMODEL_LIST, ROUTE_CMS_CONTENTTYPE_LIST,
+  ROUTE_CMS_CONTENTTEMPLATE_LIST, ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTS, ROUTE_CMS_ASSETS_LIST,
 } from 'app-init/routes';
 
@@ -24,9 +24,9 @@ const LinkMenu = () => (
       to={ROUTE_CMS_CONTENTTYPE_LIST}
     />
     <LinkMenuItem
-      id="menu-content-model"
-      label={<FormattedMessage id="cms.menu.contentmodels" defaultMessage="Content Templates" />}
-      to={ROUTE_CMS_CONTENTMODEL_LIST}
+      id="menu-content-template"
+      label={<FormattedMessage id="cms.menu.contenttemplates" defaultMessage="Content Templates" />}
+      to={ROUTE_CMS_CONTENTTEMPLATE_LIST}
     />
     <LinkMenuItem
       id="menu-content-settings"

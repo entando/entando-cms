@@ -1,11 +1,11 @@
 export const ROUTE_CMS = '/cms';
-export const ROUTE_CMS_CONTENTMODEL_LIST = '/cms/content-models';
-export const ROUTE_CMS_CONTENTMODEL_ADD = '/cms/content-models/add';
+export const ROUTE_CMS_CONTENTTEMPLATE_LIST = '/cms/content-templates';
+export const ROUTE_CMS_CONTENTTEMPLATE_ADD = '/cms/content-templates/add';
 export const ROUTE_CMS_EDIT_CONTENT = '/cms/content/edit/:id';
 export const ROUTE_CMS_ADD_CONTENT = '/cms/content/add/:contentType';
 export const ROUTE_CATEGORY_EDIT = '#edit';
 export const ROUTE_CATEGORY_DETAIL = '#detail';
-export const ROUTE_CMS_CONTENTMODEL_EDIT = '/cms/content-models/edit/:id';
+export const ROUTE_CMS_CONTENTTEMPLATE_EDIT = '/cms/content-templates/edit/:id';
 export const ROUTE_CMS_ASSETS_LIST = '/cms/assets';
 export const ROUTE_CMS_CONTENTTYPE_LIST = '/cms/content-types';
 export const ROUTE_CMS_CONTENTTYPE_ADD = '/cms/content-types/add';
