@@ -138,7 +138,7 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
         }
       });
     })
-    .catch((err) => {}),
+    .catch(() => {}),
 );
 
 export const saveContent = values => (dispatch, getState) => new Promise((resolve) => {
