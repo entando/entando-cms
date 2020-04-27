@@ -86,24 +86,19 @@ class RichTextEditor extends Component {
 
     this.state = {
       modal: '',
+      editorToolbarId: 'editor-toolbar',
     };
     this.reactQuill = createRef();
     this.quill = null;
 
-    this.modules = {
-      toolbar: {
-        container: '#editor-toolbar',
-        handlers: {
-          enlink: this.enlinkHandler.bind(this),
-          entable,
-          divider,
-          specialChar: this.specialCharHandler.bind(this),
-          history,
-          maximize,
-          viewSource,
-        },
-      },
-      table: true,
+    this.handlers = {
+      enlink: this.enlinkHandler.bind(this),
+      entable,
+      divider,
+      specialChar: this.specialCharHandler.bind(this),
+      history,
+      maximize,
+      viewSource,
     };
 
     this.formats = [
@@ -124,7 +119,11 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
+    const { attrCode } = this.props;
+
     this.attachQuillRefs();
+
+    this.setState({ editorToolbarId: `editor-toolbar_${attrCode}` });
 
     const htmlEditor = this.quill.addContainer('ql-custom');
     htmlEditor.appendChild(txtArea);
@@ -138,6 +137,17 @@ class RichTextEditor extends Component {
 
   componentDidUpdate() {
     this.attachQuillRefs();
+  }
+
+  get modules() {
+    const { editorToolbarId } = this.state;
+    return {
+      toolbar: {
+        container: `#${editorToolbarId}`,
+        handlers: this.handlers,
+      },
+      table: true,
+    };
   }
 
   attachQuillRefs() {
@@ -193,11 +203,11 @@ class RichTextEditor extends Component {
       placeholder, disabled, input,
     } = this.props;
 
-    const { modal } = this.state;
+    const { modal, editorToolbarId } = this.state;
 
     return (
       <div>
-        <EditorToolbar />
+        <EditorToolbar name={editorToolbarId} />
         <ReactQuill
           {...input}
           ref={this.reactQuill}
@@ -230,11 +240,13 @@ RichTextEditor.propTypes = {
   }).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
+  attrCode: PropTypes.string,
 };
 
 RichTextEditor.defaultProps = {
   placeholder: '',
   disabled: false,
+  attrCode: '',
 };
 
 export default RichTextEditor;
