@@ -115,7 +115,7 @@ const EditAssetFormModalBody = ({
             <Col xs={12}>
               <fieldset className="no-padding">
                 <legend>
-                  <div className="AddContentModelForm__required-fields text-right">
+                  <div className="AddContentTemplateForm__required-fields text-right">
                     * <FormattedMessage id="cms.label.fieldsRequired" />
                   </div>
                 </legend>
@@ -125,7 +125,7 @@ const EditAssetFormModalBody = ({
                       component={RenderTextInput}
                       name="description"
                       labelSize={4}
-                      label={<FormLabel labelId="cms.assets.form.desc" helpId="cms.contentmodel.form.nameHelp" required />}
+                      label={<FormLabel labelId="cms.assets.form.desc" helpId="cms.contenttemplate.form.nameHelp" required />}
                       validate={[required, maxLength50]}
                     />
                     <Field

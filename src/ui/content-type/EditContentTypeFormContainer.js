@@ -26,10 +26,10 @@ import {
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
 } from 'app-init/routes';
-import { fetchContentModelsByContentType } from 'state/content-model/actions';
+import { fetchContentTemplatesByContentType } from 'state/content-template/actions';
 import { getViewPages } from 'state/pages/selectors';
 import { fetchViewPages } from 'state/pages/actions';
-import { getContentModelList } from 'state/content-model/selectors';
+import { getContentTemplateList } from 'state/content-template/selectors';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
@@ -40,7 +40,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   attributeCode: formValueSelector('ContentType')(state, 'type'),
   routeToEdit: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
   viewPages: getViewPages(state),
-  contentModels: getContentModelList(state),
+  contentTemplates: getContentTemplateList(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
@@ -49,7 +49,7 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(setSelectedAttributeContentType());
     dispatch(fetchContentType(contentTypeCode));
     dispatch(fetchContentTypeAttributes());
-    dispatch(fetchContentModelsByContentType(contentTypeCode));
+    dispatch(fetchContentTemplatesByContentType(contentTypeCode));
     dispatch(fetchViewPages());
   },
   onAddAttribute: ({ attributeCode, contentTypeCode }) => {

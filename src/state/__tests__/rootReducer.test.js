@@ -18,8 +18,8 @@ describe('root reducer store', () => {
     expect(state).toHaveProperty('api');
   });
 
-  it('contains the contentModel state', () => {
-    expect(state.apps.cms).toHaveProperty('contentModel');
+  it('contains the contentTemplate state', () => {
+    expect(state.apps.cms).toHaveProperty('contentTemplate');
   });
 
   it('contains the contentType state', () => {

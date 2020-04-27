@@ -7,7 +7,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import DeleteContentMetadataModal from 'ui/content-settings/metadata/DeleteContentMetadataModal';
 
-const contentModelMsgs = defineMessages({
+const contentTemplateMsgs = defineMessages({
   removed: {
     id: 'cms.contentsettings.metadata.infoDeleted',
     defaultMessage: '{name} deleted.',
@@ -24,7 +24,7 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
       if (res) {
         dispatch(
           addToast(
-            intl.formatMessage(contentModelMsgs.removed, { name: contMeta.key }),
+            intl.formatMessage(contentTemplateMsgs.removed, { name: contMeta.key }),
             TOAST_SUCCESS,
           ),
         );

@@ -51,7 +51,7 @@ export default class ContentConfigFormBody extends PureComponent {
 
   render() {
     const {
-      contentModels,
+      contentTemplates,
       handleSubmit,
       invalid,
       submitting,
@@ -179,7 +179,7 @@ export default class ContentConfigFormBody extends PureComponent {
             <Col xs={12}>
               <FieldArray
                 component={ContentTableRenderer}
-                contentModels={contentModels}
+                contentTemplates={contentTemplates}
                 name="contents"
                 intl={intl}
                 multipleContentsMode={multipleContentsMode}
@@ -222,7 +222,7 @@ export default class ContentConfigFormBody extends PureComponent {
 
 ContentConfigFormBody.propTypes = {
   intl: intlShape.isRequired,
-  contentModels: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   languages: PropTypes.arrayOf(PropTypes.shape({})),
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,

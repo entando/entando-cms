@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
-import { getContentModelList } from 'state/content-model/selectors';
+import { getContentTemplateList } from 'state/content-template/selectors';
 import ContentConfigFormBody from 'ui/widget-forms/ContentConfigFormBody';
-import { fetchContentModelListPaged } from 'state/content-model/actions';
+import { fetchContentTemplateListPaged } from 'state/content-template/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
@@ -20,7 +20,7 @@ import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal'
 const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
 
 export const mapStateToProps = (state, ownProps) => ({
-  contentModels: getContentModelList(state),
+  contentTemplates: getContentTemplateList(state),
   initialValues: ownProps.widgetConfig,
   languages: getActiveLanguages(state),
   pages: getSearchPagesRaw(state),
@@ -31,7 +31,7 @@ export const mapStateToProps = (state, ownProps) => ({
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
-    dispatch(fetchContentModelListPaged({ page: 1, pageSize: 0 }));
+    dispatch(fetchContentTemplateListPaged({ page: 1, pageSize: 0 }));
     dispatch(fetchLanguages({ page: 1, pageSize: 0 }));
     dispatch(fetchSearchPages({ page: 1, pageSize: 0 }));
   },

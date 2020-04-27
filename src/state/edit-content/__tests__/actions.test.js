@@ -53,7 +53,7 @@ jest.mock('api/editContent', () => ({
 
 selectors.getSelectedContentTypeAttributes = jest.fn();
 
-it('test setContentModelList action', () => {
+it('test setContentTemplateList action', () => {
   expect(setContentEntry(GET_CONTENT_RESPONSE_OK)).toEqual(SET_CONTENT);
 });
 
@@ -141,7 +141,7 @@ describe('editContent thunks', () => {
       .catch(done.fail);
   });
 
-  it('sendPostContentModel error', (done) => {
+  it('sendPostContentTemplate error', (done) => {
     postAddContent.mockImplementationOnce(mockApi({ errors: true }));
     const tosend = { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } };
     store

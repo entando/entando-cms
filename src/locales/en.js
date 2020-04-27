@@ -62,45 +62,45 @@ export default {
     'cms.menu.cms': 'CMS',
     'cms.menu.contentlist': 'Content List',
     'cms.menu.contenttypes': 'Content Types',
-    'cms.menu.contentmodels': 'Content Templates',
+    'cms.menu.contenttemplates': 'Content Templates',
     'cms.menu.contentsettings': 'Content Settings',
-    'cms.contentmodel.title': 'Content Templates',
-    'cms.contentmodel.titletip': 'You can create a content template here',
-    'cms.contentmodel.titletip.edit': 'You can modify a content template here',
-    'cms.contentmodel.searchPlaceholder': 'Search Content Template',
-    'cms.contentmodel.searchFilter.label': 'Search By',
-    'cms.contentmodel.add.label': 'Add Content Template',
-    'cms.contentmodel.edit.label': 'Edit Content Template',
-    'cms.contentmodel.delete.label': 'Delete Content Template',
-    'cms.contentmodel.searchFilter.valueName': 'Name',
-    'cms.contentmodel.list.contentTypeHeader': 'Content Type',
-    'cms.contentmodel.list.contentModelNameHeader': 'Content Template Name',
-    'cms.contentmodel.list.actionsHeader': 'Actions',
-    'cms.contentmodel.list.infoDeleted': '{modelname} removed',
-    'cms.contentmodel.form.code': 'Code',
-    'cms.contentmodel.form.codePlaceholder': 'Code',
-    'cms.contentmodel.form.codeHelp': 'You can insert up to 10 numbers',
-    'cms.contentmodel.form.nameHelp':
+    'cms.contenttemplate.title': 'Content Templates',
+    'cms.contenttemplate.titletip': 'You can create a content template here',
+    'cms.contenttemplate.titletip.edit': 'You can modify a content template here',
+    'cms.contenttemplate.searchPlaceholder': 'Search Content Template',
+    'cms.contenttemplate.searchFilter.label': 'Search By',
+    'cms.contenttemplate.add.label': 'Add Content Template',
+    'cms.contenttemplate.edit.label': 'Edit Content Template',
+    'cms.contenttemplate.delete.label': 'Delete Content Template',
+    'cms.contenttemplate.searchFilter.valueName': 'Name',
+    'cms.contenttemplate.list.contentTypeHeader': 'Content Type',
+    'cms.contenttemplate.list.contentTemplateNameHeader': 'Content Template Name',
+    'cms.contenttemplate.list.actionsHeader': 'Actions',
+    'cms.contenttemplate.list.infoDeleted': '{modelname} removed',
+    'cms.contenttemplate.form.code': 'Code',
+    'cms.contenttemplate.form.codePlaceholder': 'Code',
+    'cms.contenttemplate.form.codeHelp': 'You can insert up to 10 numbers',
+    'cms.contenttemplate.form.nameHelp':
       'You can insert up to 50 characters including upper and lowercase letters, numbers and special characters',
-    'cms.contentmodel.form.contentTypeHelp':
+    'cms.contenttemplate.form.contentTypeHelp':
       'Choose one of your existing content types to use for your content template',
-    'cms.contentmodel.form.htmlmodel': 'HTML Model',
-    'cms.contentmodel.form.htmlmodelHelp':
+    'cms.contenttemplate.form.htmlmodel': 'HTML Model',
+    'cms.contenttemplate.form.htmlmodelHelp':
       'This will be your HTML content structure using your content elements provided by given content type',
-    'cms.contentmodel.form.htmlmodel.statusassist': 'Content Assist is <strong>ON</strong>',
-    'cms.contentmodel.form.htmlmodel.statusattrhelp':
+    'cms.contenttemplate.form.htmlmodel.statusassist': 'Content Assist is <strong>ON</strong>',
+    'cms.contenttemplate.form.htmlmodel.statusattrhelp':
       'Help About Attributes Type is <strong>OFF</strong>',
-    'cms.contentmodel.form.htmlmodel.statusadminconf':
+    'cms.contenttemplate.form.htmlmodel.statusadminconf':
       'If you want to change the status, you should set them in Admin Configuration Area',
-    'cms.contentmodel.form.saved': 'Content Template "{modelname}" saved',
-    'cms.contentmodel.form.editassistant': 'Inline Editing Assistant',
-    'cms.contentmodel.form.stylesheet': 'Style Sheet',
-    'cms.contentmodel.form.stylesheetHelp':
+    'cms.contenttemplate.form.saved': 'Content Template "{modelname}" saved',
+    'cms.contenttemplate.form.editassistant': 'Inline Editing Assistant',
+    'cms.contenttemplate.form.stylesheet': 'Style Sheet',
+    'cms.contenttemplate.form.stylesheetHelp':
       'Provide a stylesheet file to be used with your HTML model',
-    'cms.contentmodel.form.editassist.dialog':
+    'cms.contenttemplate.form.editassist.dialog':
       'Let&#39;s see an example on how to activate <strong>INLINE EDITING</strong> on Entando labels<br /><br /><ol><li> Open a <strong>TAG</strong> like div p span... </li><li> add the class <strong>&#39;editContent&#39;</strong> to the TAG. Keep in mind that <strong>&#39;editContentText&#39;</strong> class can be used in case of a text-area. </li><li>then add <strong>data-content-id=&quot;$content.getId()&quot;</strong> </li><li>then add the attribute ID (TITLE) of the desidered label adding <strong>data-attr-id=&quot;TITLE&quot;</strong> and close the tag with &gt;. Please be careful when writing the attribute ID as it is <strong>case sensitive</strong> and it must match the label attribute in the next step </li><li>finally add the label of the desidered attribute that will be rendered on screen writing <strong>$content.TITLE.text</strong>.</li><li>Close the <strong>TAG</strong> (div p span ...) opened at the very beginning.</li></ol>Result should look like this:<br /><br /> OPEN TAG class=&quot;editContent&quot; data-content-id=&quot;$content.getId()&quot; data-attr-id=&quot;TITLE&quot;><br />$content.TITLE.text<br />CLOSE TAG',
-    'cms.contentmodel.form.presscontext': '(press ctrl + space to open content assist menu)',
-    'cms.contentmodel.delete.messageprompt':
+    'cms.contenttemplate.form.presscontext': '(press ctrl + space to open content assist menu)',
+    'cms.contenttemplate.delete.messageprompt':
       'Are you sure you want to remove <strong>{id} ({descr})</strong>?',
     'cms.contenttype.title': 'Content Types',
     'cms.contenttype.titletip': 'The Content Types section let the administrator add new content types or edit those already existing.',
@@ -135,8 +135,8 @@ export default {
     'cms.contenttype.form.filter': 'Filter',
     'cms.contenttype.form.actions': 'Actions',
     'cms.contenttype.form.filterList': 'Can be used as a filter in lists',
-    'cms.contenttype.form.metadata.defaultContentModel': 'Default content template',
-    'cms.contenttype.form.metadata.defaultContentModelLists': 'Default content template for lists',
+    'cms.contenttype.form.metadata.defaultContentTemplate': 'Default content template',
+    'cms.contenttype.form.metadata.defaultContentTemplateLists': 'Default content template for lists',
     'cms.contenttype.form.metadata.viewPage': 'Page for on-the-fly publishing',
     'cms.contenttype.alert.created': 'Content type created successfully',
     'cms.contenttype.attribute.add.title': 'Add Content Type Attribute',
@@ -394,7 +394,7 @@ export default {
     'widget.form.filters': 'Filters',
     'widget.form.frontendFilters': 'Frontend filters',
     'widget.form.content': 'Content',
-    'widget.form.contentModel': 'Content template',
+    'widget.form.contentTemplate': 'Content template',
     'widget.form.elementsPP': 'Elements per page',
     'widget.form.maxElements': 'Max total elements',
     'widget.form.default': 'Default',
@@ -423,6 +423,6 @@ export default {
     'contentPicker.allTypes': 'All',
     'contentPicker.searchPlaceholder': 'Search for a content by name or code',
     'widget.singleContent.config.content': 'Content',
-    'widget.singleContent.config.contentModel': 'Content template',
+    'widget.singleContent.config.contentTemplate': 'Content template',
   },
 };

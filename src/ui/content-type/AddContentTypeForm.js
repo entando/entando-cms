@@ -36,7 +36,7 @@ export class AddContentTypeFormBody extends Component {
       submitting,
       contentTypeCode,
       viewPages,
-      contentModels,
+      contentTemplates,
       dirty,
       intl,
       onCancel,
@@ -111,8 +111,8 @@ export class AddContentTypeFormBody extends Component {
             text: code,
           })));
 
-        const selectContentModelOptions = [{ value: '', text: 'No model' }]
-          .concat(contentModels.map(({ id, descr }) => ({
+        const selectContentTemplateOptions = [{ value: '', text: 'No template' }]
+          .concat(contentTemplates.map(({ id, descr }) => ({
             value: id,
             text: descr,
           })));
@@ -132,17 +132,17 @@ export class AddContentTypeFormBody extends Component {
             />
             <Field
               component={RenderSelectInput}
-              options={selectContentModelOptions}
+              options={selectContentTemplateOptions}
               label={
-                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModel" />
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplate" />
               }
               name="defaultContentModel"
             />
             <Field
               component={RenderSelectInput}
-              options={selectContentModelOptions}
+              options={selectContentTemplateOptions}
               label={
-                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentModelLists" />
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplateLists" />
               }
               name="defaultContentModelLists"
             />
@@ -238,7 +238,7 @@ AddContentTypeFormBody.propTypes = {
   mode: PropTypes.string,
   contentTypeCode: PropTypes.string,
   viewPages: PropTypes.arrayOf(PropTypes.object),
-  contentModels: PropTypes.arrayOf(PropTypes.object),
+  contentTemplates: PropTypes.arrayOf(PropTypes.object),
   intl: intlShape.isRequired,
   dirty: PropTypes.bool,
   onDiscard: PropTypes.func.isRequired,
@@ -254,7 +254,7 @@ AddContentTypeFormBody.defaultProps = {
   mode: 'add',
   contentTypeCode: '',
   viewPages: [],
-  contentModels: [],
+  contentTemplates: [],
   dirty: false,
 };
 
