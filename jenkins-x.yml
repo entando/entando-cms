@@ -28,7 +28,9 @@ pipelineConfig:
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
             eslint ./src && sass-lint -v;
+            JX=true npm run coverage;
             npm run prepublish;
+            npm run jenkins;
           name: npm-build
       promote:
         replace: true
