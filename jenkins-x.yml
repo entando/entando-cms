@@ -27,7 +27,7 @@ pipelineConfig:
         - sh: >-
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
-            eslint ./src && sass-lint -v;
+            eslint ./src && sass-lint;
             npm run prepublish;
           name: npm-build
       promote:
