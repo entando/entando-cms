@@ -26,6 +26,8 @@ pipelineConfig:
         steps:
         - sh: >-
             export NPM_TOKEN=${NPM_AUTH_TOKEN};
+            echo ${NPM_AUTH_TOKEN};
+            echo $NPM_AUTH_TOKEN;
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
             npx eslint ./src && npx sass-lint -v;
