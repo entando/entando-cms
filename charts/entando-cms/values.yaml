@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: docker.io/entando/entando-cms
-  tag: 0.0.39
+  tag: 0.0.40
   pullPolicy: IfNotPresent
 
 # define environment variables here as a map of key: value
