@@ -25,13 +25,14 @@ pipelineConfig:
         replace: true
         steps:
         - sh: >-
-            export NPM_TOKEN=${NPM_AUTH_TOKEN};
-            echo ${NPM_AUTH_TOKEN};
-            echo $NPM_AUTH_TOKEN;
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
+          name: npm-install
+        - sh: >-
             npx eslint ./src && npx sass-lint -v;
             JX=true npm run coverage;
+          name: npm-test
+        - sh: >-
             npm run prepublish;
             npm run jenkins;
           name: npm-build
