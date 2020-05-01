@@ -58,12 +58,14 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     && checkedValues.userFilters.filter(f => f != null);
     const configItem = Object.assign({ config: checkedValues }, { code: widgetCode });
     dispatch(clearErrors());
-    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {
-      dispatch(addToast(
-        intl.formatMessage({ id: 'widget.update.success' }),
-        TOAST_SUCCESS,
-      ));
-      history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+      if (res) {
+        dispatch(addToast(
+          intl.formatMessage({ id: 'widget.update.success' }),
+          TOAST_SUCCESS,
+        ));
+        history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+      }
     });
   },
   onResetFilterOption: (name, i) => dispatch(change(ContentsQueryContainerId, `${name}.[${i}].option`, '')),

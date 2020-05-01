@@ -52,12 +52,14 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     const payload = { ...values, contents: configContents };
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
-    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {
-      dispatch(addToast(
-        intl.formatMessage({ id: 'widget.update.success' }),
-        TOAST_SUCCESS,
-      ));
-      history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+      if (res) {
+        dispatch(addToast(
+          intl.formatMessage({ id: 'widget.update.success' }),
+          TOAST_SUCCESS,
+        ));
+        history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+      }
     });
   },
   onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(MultipleContentsConfigContainerId)); },
