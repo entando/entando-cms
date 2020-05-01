@@ -26,6 +26,10 @@ pipelineConfig:
         steps:
         - sh: >-
             export NPM_TOKEN=$NPM_AUTH_TOKEN;
+            NPM_READ_ONLY_TOKEN=$NPM_AUTH_TOKEN;
+            NPM_READ_ONLY_TOKEN=$(eval echo $NPM_READ_ONLY_TOKEN);
+            rm -f ./.npmrc;
+            echo "//registry.npmjs.org/:_authToken=${NPM_READ_ONLY_TOKEN}" > .npmrc;
             npm install -g npm-install-peers;
             npm install && npm-install-peers;
             npx eslint ./src && npx sass-lint -v;
