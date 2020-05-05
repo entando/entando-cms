@@ -540,7 +540,7 @@ describe('state/assets/actions', () => {
       store
         .dispatch(sendPostAssetEdit(tosend, fileblob))
         .then(() => {
-          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object), '?description=jojopic');
+          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object));
           const actions = store.getActions();
           expect(actions).toHaveLength(3);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
@@ -556,7 +556,7 @@ describe('state/assets/actions', () => {
       store
         .dispatch(sendPostAssetEdit(tosend, fileblob))
         .then((res) => {
-          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object), '?description=jojopic');
+          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object));
           expect(res).toEqual(undefined);
           const actions = store.getActions();
           expect(actions).toHaveLength(5);

@@ -313,7 +313,8 @@ export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Pr
   if (file) {
     formdata.append('file', new File([file], filename, { type: 'image/png', lastModified: new Date() }));
   }
-  editAsset(id, formdata, `?${new URLSearchParams(info).toString()}`)
+  formdata.append('metadata', JSON.stringify(info));
+  editAsset(id, formdata)
     .then((response) => {
       response.json().then((json) => {
         dispatch(toggleLoading('editasset'));
@@ -339,15 +340,12 @@ export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
   const namedFile = new File([fileObject], filename, { type: fileObject.type });
   const formData = new FormData();
   formData.append('file', namedFile);
+  formData.append('metadata', JSON.stringify({
+    group, categories, type,
+  }));
 
-  const params = {
-    type,
-    group,
-    categories: categories.join(','),
-  };
   createAsset(
     formData,
-    `?${new URLSearchParams(params).toString()}`,
   )
     .then((response) => {
       response.json().then((json) => {
