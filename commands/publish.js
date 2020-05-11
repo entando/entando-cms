@@ -18,6 +18,7 @@ program.version('1.0.0')
     Log.empty().info('pushing changes on github');
     execSync('git add .', { stdio: [0, 1, 2] });
     execSync(`git commit --no-verify -m 'version ${pkg.version.get()}'`, { stdio: [0, 'ignore', 2] });
+
     Log.check('made new commit');
     execSync('git push origin master --force', { stdio: [0, 'ignore', 2] });
     Log.check('pushed commit');
