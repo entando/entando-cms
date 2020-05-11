@@ -33,7 +33,7 @@ pipelineConfig:
             JX=true npm run coverage;
           name: npm-test
         - sh: >-
-            npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+            npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}";
             npm run prepublish;
             npm run jenkins;
           name: npm-build
