@@ -103,7 +103,10 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
       history.push(routeConverter(ROUTE_CMS_CONTENTS));
     }
   }),
-  onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('editcontentform')); },
+  onSave: () => {
+    dispatch(setVisibleModal(''));
+    dispatch(submit('editcontentform'));
+  },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
 });
