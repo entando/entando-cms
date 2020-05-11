@@ -144,7 +144,7 @@ export class AddContentTypeFormBody extends Component {
               label={
                 <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplateLists" />
               }
-              name="defaultContentModelLists"
+              name="defaultContentModelList"
             />
           </div>
         );
