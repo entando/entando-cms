@@ -35,7 +35,8 @@ describe('ui/edit-content/content-attributes/ContentAttributes', () => {
   it('should contain a field array with passed in attributes as prop', () => {
     const testId = 'edit-content-content-attributes-field-array';
     const fieldArrayWrapper = findByTestId(wrapper, testId);
-    expect(fieldArrayWrapper.length).toBe(1);
-    expect(fieldArrayWrapper.props().attributes).toMatchObject(attributes);
+    expect(fieldArrayWrapper.length).toBe(3);
+    const allAttributes = fieldArrayWrapper.map(field => field.props().attributes);
+    expect(allAttributes).toMatchObject([attributes, attributes, attributes]);
   });
 });

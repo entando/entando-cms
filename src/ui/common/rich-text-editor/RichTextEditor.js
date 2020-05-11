@@ -103,7 +103,7 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
-    const { attrCode } = this.props;
+    const { attrCode, langCode } = this.props;
 
     if (this.attachQuillRefs()) {
       this.handlers = {
@@ -115,7 +115,7 @@ class RichTextEditor extends Component {
         maximize,
         viewSource: this.handleViewSource.bind(this),
       };
-      this.setState({ editorToolbarId: `editor-toolbar_${attrCode}` });
+      this.setState({ editorToolbarId: `editor-toolbar_${langCode}_${attrCode}` });
     }
   }
 
@@ -248,12 +248,14 @@ RichTextEditor.propTypes = {
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
   attrCode: PropTypes.string,
+  langCode: PropTypes.string,
 };
 
 RichTextEditor.defaultProps = {
   placeholder: '',
   disabled: false,
   attrCode: '',
+  langCode: 'en',
 };
 
 export default RichTextEditor;
