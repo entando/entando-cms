@@ -7,7 +7,7 @@ import { Button, ButtonGroup } from 'patternfly-react';
 import ContentPickerContainer from 'ui/widget-forms/ContentPickerContainer';
 
 const ContentTableRenderer = ({
-  fields, contentModels, intl, multipleContentsMode,
+  fields, contentTemplates, intl, multipleContentsMode,
 }) => {
   const handlePickContent = content => fields.push({
     ...content, contentId: content.id, modelId: null, contentDescription: content.description,
@@ -16,10 +16,10 @@ const ContentTableRenderer = ({
   const renderContentRows = fields.map((field, i) => {
     const content = fields.get(i);
     const contentTypeCode = content.typeCode || content.contentId.substr(0, 3);
-    const filterByCode = contentModel => contentModel.contentType === contentTypeCode;
-    const contentModelsByContentType = [{ id: 'default', descr: intl.formatMessage({ id: 'widget.form.default' }) },
-      ...contentModels.filter(filterByCode)];
-    const contentModelOptions = contentModelsByContentType
+    const filterByCode = contentTemplate => contentTemplate.contentType === contentTypeCode;
+    const contentTemplatesByContentType = [{ id: 'default', descr: intl.formatMessage({ id: 'widget.form.default' }) },
+      ...contentTemplates.filter(filterByCode)];
+    const contentTemplateOptions = contentTemplatesByContentType
       .map(item => (
         <option key={`opt-${item.id}`} value={item.id}>
           {item.descr}
@@ -55,7 +55,7 @@ const ContentTableRenderer = ({
             name={`${field}.modelId`}
             className="form-control"
           >
-            {contentModelOptions}
+            {contentTemplateOptions}
           </Field>
         </td>
         {
@@ -98,7 +98,7 @@ const ContentTableRenderer = ({
               <FormattedMessage id="widget.form.content" />
             </th>
             <th width="25%">
-              <FormattedMessage id="widget.form.contentModel" />
+              <FormattedMessage id="widget.form.contentTemplate" />
             </th>
             {
               multipleContentsMode && (
@@ -126,7 +126,7 @@ ContentTableRenderer.propTypes = {
     length: PropTypes.number,
   }).isRequired,
   multipleContentsMode: PropTypes.bool,
-  contentModels: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 ContentTableRenderer.defaultProps = {

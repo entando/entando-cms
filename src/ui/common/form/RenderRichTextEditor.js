@@ -6,8 +6,8 @@ import RichTextEditor from 'ui/common/rich-text-editor/RichTextEditor';
 
 const RenderRichTextEditor = ({
   meta: { touched, error }, hasLabel, labelSize,
-  alignClass, input, label, help, append,
-  placeholder, disabled,
+  alignClass, input, label, help, append, langCode,
+  placeholder, disabled, attribute,
 }) => (
   <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
     {hasLabel && (
@@ -18,7 +18,13 @@ const RenderRichTextEditor = ({
       </Col>
     )}
     <Col xs={12 - labelSize} className="RenderRichTextEditor__content">
-      <RichTextEditor input={input} placeholder={placeholder} disabled={disabled} />
+      <RichTextEditor
+        input={input}
+        attrCode={attribute.code}
+        langCode={langCode}
+        placeholder={placeholder}
+        disabled={disabled}
+      />
       {append && <span className="AppendedLabel">{append}</span>}
       {touched && ((error && <span className="help-block">{error}</span>))}
     </Col>
@@ -29,6 +35,10 @@ RenderRichTextEditor.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
   }).isRequired,
+  attribute: PropTypes.shape({
+    code: PropTypes.string,
+  }),
+  langCode: PropTypes.string,
   label: PropTypes.node,
   placeholder: PropTypes.string,
   meta: PropTypes.shape({
@@ -53,6 +63,8 @@ RenderRichTextEditor.defaultProps = {
   append: '',
   alignClass: 'text-right',
   hasLabel: true,
+  attribute: {},
+  langCode: 'en',
 };
 
 export default RenderRichTextEditor;

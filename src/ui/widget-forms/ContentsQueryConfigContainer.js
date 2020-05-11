@@ -10,12 +10,12 @@ import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
-import { fetchContentModelsByContentType } from 'state/content-model/actions';
+import { fetchContentTemplatesByContentType } from 'state/content-template/actions';
 
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getCategoryTree } from 'state/categories/selectors';
 import ContentsQueryConfig from 'ui/widget-forms/ContentsQueryConfig';
-import { getContentModelList } from 'state/content-model/selectors';
+import { getContentTemplateList } from 'state/content-template/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
@@ -34,7 +34,7 @@ export const mapStateToProps = (state, ownProps) => ({
   contentTypes: getContentTypeList(state),
   pages: getSearchPagesRaw(state),
   categories: getCategoryTree(state),
-  contentModels: getContentModelList(state),
+  contentTemplates: getContentTemplateList(state),
   selectedContentType: formValueSelector(ContentsQueryContainerId)(state, 'contentType'),
   selectedCategories: formValueSelector(ContentsQueryContainerId)(state, 'categories'),
   selectedInclusiveOr: formValueSelector(ContentsQueryContainerId)(state, 'orClauseCategoryFilter'),
@@ -58,17 +58,19 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     && checkedValues.userFilters.filter(f => f != null);
     const configItem = Object.assign({ config: checkedValues }, { code: widgetCode });
     dispatch(clearErrors());
-    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then(() => {
-      dispatch(addToast(
-        intl.formatMessage({ id: 'widget.update.success' }),
-        TOAST_SUCCESS,
-      ));
-      history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+      if (res) {
+        dispatch(addToast(
+          intl.formatMessage({ id: 'widget.update.success' }),
+          TOAST_SUCCESS,
+        ));
+        history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+      }
     });
   },
   onResetFilterOption: (name, i) => dispatch(change(ContentsQueryContainerId, `${name}.[${i}].option`, '')),
   onChangeContentType: (contentType) => {
-    if (contentType) dispatch(fetchContentModelsByContentType(contentType));
+    if (contentType) dispatch(fetchContentTemplatesByContentType(contentType));
   },
   onResetModelId: () => dispatch(change(ContentsQueryContainerId, 'modelId', '')),
   onToggleInclusiveOr: value => dispatch(change(ContentsQueryContainerId, 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),

@@ -170,9 +170,9 @@ describe('contentSettings thunks', () => {
         const actions = store.getActions();
         expect(actions).toHaveLength(5);
         expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-        expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
-        expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
-        expect(actions[3]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[1]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[3]).toHaveProperty('type', 'toasts/add-toast');
         expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
         done();
       })
@@ -202,9 +202,9 @@ describe('contentSettings thunks', () => {
         const actions = store.getActions();
         expect(actions).toHaveLength(5);
         expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-        expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
-        expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
-        expect(actions[3]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[1]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[3]).toHaveProperty('type', 'toasts/add-toast');
         expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
         done();
       })
@@ -254,9 +254,9 @@ describe('contentSettings thunks', () => {
         expect(actions).toHaveLength(5);
         expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
         expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
-        expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
-        expect(actions[3]).toHaveProperty('type', 'toasts/add-toast');
-        expect(actions[4]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[2]).toHaveProperty('type', 'errors/clear-errors');
+        expect(actions[3]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[4]).toHaveProperty('type', 'toasts/add-toast');
         done();
       })
       .catch(done.fail);

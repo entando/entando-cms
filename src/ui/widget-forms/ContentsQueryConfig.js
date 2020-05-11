@@ -16,6 +16,7 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
+
 import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
@@ -65,7 +66,7 @@ export class ContentsQueryFormBody extends Component {
 
   render() {
     const {
-      contentTypes, contentModels, categories, pages,
+      contentTypes, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
       intl, onResetFilterOption, languages, onToggleInclusiveOr,
       selectedInclusiveOr, handleSubmit, invalid, submitting,
@@ -247,9 +248,9 @@ export class ContentsQueryFormBody extends Component {
                         component={RenderSelectInput}
                         name="modelId"
                         label={
-                          <FormLabel labelId="widget.form.contentModel" />
+                          <FormLabel labelId="widget.form.contentTemplate" />
                       }
-                        options={contentModels}
+                        options={contentTemplates}
                         optionValue="id"
                         optionDisplayName="descr"
                         defaultOptionId="widget.form.default"
@@ -435,7 +436,7 @@ ContentsQueryFormBody.propTypes = {
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})),
-  contentModels: PropTypes.arrayOf(PropTypes.shape({})),
+  contentTemplates: PropTypes.arrayOf(PropTypes.shape({})),
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   selectedCategories: PropTypes.arrayOf(PropTypes.string),
@@ -456,7 +457,7 @@ ContentsQueryFormBody.defaultProps = {
   submitting: false,
   languages: [],
   contentTypes: [],
-  contentModels: [],
+  contentTemplates: [],
   categories: [],
   pages: [],
   selectedCategories: [],

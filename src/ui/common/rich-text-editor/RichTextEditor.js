@@ -19,10 +19,6 @@ DividerBlot.tagName = 'hr';
 
 Quill.register(DividerBlot);
 
-const txtArea = document.createElement('textarea');
-txtArea.classList.add('html-editor');
-txtArea.style.display = 'none';
-
 function history(value) {
   if (value === 'undo') {
     this.quill.history.undo();
@@ -40,17 +36,10 @@ function divider() {
 
 function maximize() {
   const blockElementClass = 'RenderRichTextEditor__content';
-  const editorContainer = document.querySelector(`.${blockElementClass}`);
+  const quillbasis = this.quill.container;
+  const editorContainer = quillbasis.closest(`.${blockElementClass}`);
   editorContainer.classList.toggle(`${blockElementClass}--maximize`);
   document.body.classList.toggle('no-scroll');
-}
-
-function viewSource() {
-  if (txtArea.style.display === '') {
-    const html = txtArea.value;
-    this.quill.clipboard.dangerouslyPasteHTML(html);
-  }
-  txtArea.style.display = txtArea.style.display === 'none' ? '' : 'none';
 }
 
 function entable(value) {
@@ -86,25 +75,14 @@ class RichTextEditor extends Component {
 
     this.state = {
       modal: '',
+      editorToolbarId: 'editor-toolbar',
     };
     this.reactQuill = createRef();
     this.quill = null;
 
-    this.modules = {
-      toolbar: {
-        container: '#editor-toolbar',
-        handlers: {
-          enlink: this.enlinkHandler.bind(this),
-          entable,
-          divider,
-          specialChar: this.specialCharHandler.bind(this),
-          history,
-          maximize,
-          viewSource,
-        },
-      },
-      table: true,
-    };
+    this.txtArea = document.createElement('textarea');
+    this.txtArea.classList.add('html-editor');
+    this.txtArea.style.display = 'none';
 
     this.formats = [
       'bold',
@@ -121,30 +99,51 @@ class RichTextEditor extends Component {
     this.handleLinkConfigSave = this.handleLinkConfigSave.bind(this);
     this.handleInsertSpecialChar = this.handleInsertSpecialChar.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
-    this.attachQuillRefs();
+    const { attrCode, langCode } = this.props;
 
-    const htmlEditor = this.quill.addContainer('ql-custom');
-    htmlEditor.appendChild(txtArea);
-
-    const myEditor = document.querySelector('.ql-editor');
-    this.quill.on('text-change', () => {
-      const html = myEditor.innerHTML;
-      txtArea.value = html;
-    });
+    if (this.attachQuillRefs()) {
+      this.handlers = {
+        enlink: this.enlinkHandler.bind(this),
+        entable,
+        divider,
+        specialChar: this.specialCharHandler.bind(this),
+        history,
+        maximize,
+        viewSource: this.handleViewSource.bind(this),
+      };
+      this.setState({ editorToolbarId: `editor-toolbar_${langCode}_${attrCode}` });
+    }
   }
 
   componentDidUpdate() {
     this.attachQuillRefs();
   }
 
+  get modules() {
+    const { editorToolbarId } = this.state;
+    const mods = {
+      toolbar: {
+        container: `#${editorToolbarId}`,
+        handlers: this.handlers,
+      },
+      table: true,
+    };
+    return mods;
+  }
+
   attachQuillRefs() {
-    if (typeof this.reactQuill.current.getEditor !== 'function') return;
+    if (typeof this.reactQuill.current.getEditor !== 'function') return false;
     this.quill = this.reactQuill.current.getEditor();
     const { input: { name } } = this.props;
     this.quill.id = name;
+    const quillCont = this.quill.container;
+    const htmlEditor = quillCont.querySelector('.ql-custom') || this.quill.addContainer('ql-custom');
+    htmlEditor.appendChild(this.txtArea);
+    return true;
   }
 
   handleLinkConfigSave(values) {
@@ -173,7 +172,7 @@ class RichTextEditor extends Component {
 
   enlinkHandler(value) {
     const selection = this.quill.getSelection();
-    if (value === 'link' && selection.length >= 1) {
+    if (value === 'link' && selection && selection.length >= 1) {
       this.setState({
         modal: 'enlink',
       });
@@ -188,20 +187,37 @@ class RichTextEditor extends Component {
     });
   }
 
+  handleOnChange(content) {
+    const { input } = this.props;
+    input.onChange(content);
+    const myEditor = this.quill.container.querySelector('.ql-editor');
+    const html = myEditor.innerHTML;
+    this.txtArea.value = html;
+  }
+
+  handleViewSource() {
+    if (this.txtArea.style.display === '') {
+      const html = this.txtArea.value;
+      this.quill.clipboard.dangerouslyPasteHTML(html);
+    }
+    this.txtArea.style.display = this.txtArea.style.display === 'none' ? '' : 'none';
+  }
+
   render() {
     const {
       placeholder, disabled, input,
     } = this.props;
 
-    const { modal } = this.state;
+    const { modal, editorToolbarId } = this.state;
 
     return (
       <div>
-        <EditorToolbar />
+        <EditorToolbar name={editorToolbarId} />
         <ReactQuill
           {...input}
           ref={this.reactQuill}
           onBlur={(_, __, editor) => input.onBlur(editor.getHTML())}
+          onChange={this.handleOnChange}
           placeholder={placeholder}
           disabled={disabled}
           modules={this.modules}
@@ -227,14 +243,19 @@ RichTextEditor.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
     onBlur: PropTypes.func,
+    onChange: PropTypes.func,
   }).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
+  attrCode: PropTypes.string,
+  langCode: PropTypes.string,
 };
 
 RichTextEditor.defaultProps = {
   placeholder: '',
   disabled: false,
+  attrCode: '',
+  langCode: 'en',
 };
 
 export default RichTextEditor;

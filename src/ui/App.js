@@ -4,11 +4,11 @@ import { Route, Redirect } from 'react-router-dom';
 
 import {
   ROUTE_CMS,
-  ROUTE_CMS_CONTENTMODEL_LIST,
-  ROUTE_CMS_CONTENTMODEL_ADD,
+  ROUTE_CMS_CONTENTTEMPLATE_LIST,
+  ROUTE_CMS_CONTENTTEMPLATE_ADD,
   ROUTE_CMS_ADD_CONTENT,
   ROUTE_CMS_EDIT_CONTENT,
-  ROUTE_CMS_CONTENTMODEL_EDIT,
+  ROUTE_CMS_CONTENTTEMPLATE_EDIT,
   ROUTE_CMS_ASSETS_LIST,
   ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTTYPE_ADD,
@@ -21,11 +21,11 @@ import {
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
-import ContentModelListPage from 'ui/content-model/ContentModelListPage';
-import AddContentModelPage from 'ui/content-model/AddContentModelPage';
+import ContentTemplateListPage from 'ui/content-template/ContentTemplateListPage';
+import AddContentTemplatePage from 'ui/content-template/AddContentTemplatePage';
 import AddContentPage from 'ui/add-content/AddContentPage';
 import EditContentPage from 'ui/edit-content/EditContentPage';
-import EditContentModelPage from 'ui/content-model/EditContentModelPage';
+import EditContentTemplatePage from 'ui/content-template/EditContentTemplatePage';
 import AssetsListPage from 'ui/assets/AssetsListPage';
 import ContentTypeListPage from 'ui/content-type/ContentTypeListPage';
 import AddContentTypePage from 'ui/content-type/AddContentTypePage';
@@ -39,7 +39,7 @@ import ContentsPage from 'ui/contents/ContentsPage';
 import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
 
-const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTMODEL_LIST} />;
+const defaultRedirect = () => <Redirect to={ROUTE_CMS_CONTENTTEMPLATE_LIST} />;
 
 export const routesDir = [
   {
@@ -47,20 +47,20 @@ export const routesDir = [
     component: defaultRedirect,
   },
   {
-    path: ROUTE_CMS_CONTENTMODEL_LIST,
-    component: ContentModelListPage,
+    path: ROUTE_CMS_CONTENTTEMPLATE_LIST,
+    component: ContentTemplateListPage,
   },
   {
-    path: ROUTE_CMS_CONTENTMODEL_ADD,
-    component: AddContentModelPage,
+    path: ROUTE_CMS_CONTENTTEMPLATE_ADD,
+    component: AddContentTemplatePage,
   },
   {
     path: ROUTE_CMS_ADD_CONTENT,
     component: AddContentPage,
   },
   {
-    path: ROUTE_CMS_CONTENTMODEL_EDIT,
-    component: EditContentModelPage,
+    path: ROUTE_CMS_CONTENTTEMPLATE_EDIT,
+    component: EditContentTemplatePage,
   },
   {
     path: ROUTE_CMS_CONTENTTYPE_LIST,

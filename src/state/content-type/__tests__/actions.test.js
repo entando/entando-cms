@@ -357,10 +357,10 @@ describe('state/content-type/actions ', () => {
             expect(postRefreshContentType).toHaveBeenCalled();
             const actions = store.getActions();
             expect(actions).toHaveLength(3);
-            expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-            expect(actions[1]).toHaveProperty('type', ADD_TOAST);
-            expect(actions[1].payload).toHaveProperty('type', 'error');
-            expect(actions[2]).toHaveProperty('type', CLEAR_ERRORS);
+            expect(actions[0]).toHaveProperty('type', CLEAR_ERRORS);
+            expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+            expect(actions[2]).toHaveProperty('type', ADD_TOAST);
+            expect(actions[2].payload).toHaveProperty('type', 'error');
             done();
           })
           .catch(done.fail);
@@ -387,8 +387,8 @@ describe('state/content-type/actions ', () => {
             expect(postContentType).toHaveBeenCalled();
             const actions = store.getActions();
             expect(actions).toHaveLength(3);
-            expect(actions[1]).toHaveProperty('type', ADD_TOAST);
-            expect(actions[1].payload).toHaveProperty('type', 'error');
+            expect(actions[2]).toHaveProperty('type', ADD_TOAST);
+            expect(actions[2].payload).toHaveProperty('type', 'error');
             done();
           })
           .catch(done.fail);

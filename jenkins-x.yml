@@ -1,1 +1,42 @@
 buildPack: javascript
+pipelineConfig:
+  agent:
+    image: entando-jx-nodejs12
+  pipelines:
+    pullRequest:
+      build:
+        replace: true
+        steps:
+        - sh: >-
+            npm install -g npm-install-peers;
+            npm install && npm-install-peers;
+            npx eslint ./src && npx sass-lint -v;
+          name: npm-install
+        - sh: JX=true npm run coverage
+          name: npm-test
+      postBuild:
+        replace: true
+        steps: []
+      promote:
+        replace: true
+        steps: []
+    release:
+      build:
+        replace: true
+        steps:
+        - sh: >-
+            npm install -g npm-install-peers;
+            npm install && npm-install-peers;
+          name: npm-install
+        - sh: >-
+            npx eslint ./src && npx sass-lint -v;
+            JX=true npm run coverage;
+          name: npm-test
+        - sh: >-
+            npm config set '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+            npm run prepublish;
+            npm run jenkins;
+          name: npm-build
+      promote:
+        replace: true
+        steps: []

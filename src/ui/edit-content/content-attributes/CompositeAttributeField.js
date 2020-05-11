@@ -15,7 +15,6 @@ const CompositeAttributeField = ({
   label,
 }) => {
   const { code, compositeAttributes } = attribute;
-
   return (
     <Row key={code}>
       <label className="control-label col-xs-2">

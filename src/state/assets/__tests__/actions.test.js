@@ -540,7 +540,7 @@ describe('state/assets/actions', () => {
       store
         .dispatch(sendPostAssetEdit(tosend, fileblob))
         .then(() => {
-          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object), '?description=jojopic');
+          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object));
           const actions = store.getActions();
           expect(actions).toHaveLength(3);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
@@ -556,15 +556,15 @@ describe('state/assets/actions', () => {
       store
         .dispatch(sendPostAssetEdit(tosend, fileblob))
         .then((res) => {
-          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object), '?description=jojopic');
+          expect(editAsset).toHaveBeenCalledWith(tosend.id, expect.any(Object));
           expect(res).toEqual(undefined);
           const actions = store.getActions();
           expect(actions).toHaveLength(5);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
           expect(actions[1]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
-          expect(actions[3]).toHaveProperty('type', 'toasts/add-toast');
-          expect(actions[4]).toHaveProperty('type', 'errors/clear-errors');
+          expect(actions[2]).toHaveProperty('type', 'errors/clear-errors');
+          expect(actions[3]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[4]).toHaveProperty('type', 'toasts/add-toast');
           done();
         })
         .catch(done.fail);

@@ -177,8 +177,8 @@ const renderToolbarButton = (format, value, icon, tooltipText) => (
   </button>
 );
 
-const EditorToolbar = () => (
-  <div id="editor-toolbar" style={{ borderBottom: 'none' }}>
+const EditorToolbar = ({ name }) => (
+  <div id={name} style={{ borderBottom: 'none' }}>
     <ToolbarGroup>
       {renderToolbarButton('history', 'undo', undoIcon, 'Undo (Ctrl + Z)')}
       {renderToolbarButton('history', 'redo', redoIcon, 'Redo (Ctrl + Y)')}
@@ -224,5 +224,13 @@ const EditorToolbar = () => (
     </ToolbarGroup>
   </div>
 );
+
+EditorToolbar.propTypes = {
+  name: PropTypes.string,
+};
+
+EditorToolbar.defaultProps = {
+  name: 'editor-toolbar',
+};
 
 export default EditorToolbar;
