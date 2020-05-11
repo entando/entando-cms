@@ -138,6 +138,7 @@ const AttributeField = ({
       name={actualName}
       attribute={attribute}
       component={AttributeFieldComp}
+      langCode={langCode}
       label={fieldLabel}
       hasLabel={hasLabel}
       validate={validate}

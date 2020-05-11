@@ -6,7 +6,7 @@ import RichTextEditor from 'ui/common/rich-text-editor/RichTextEditor';
 
 const RenderRichTextEditor = ({
   meta: { touched, error }, hasLabel, labelSize,
-  alignClass, input, label, help, append,
+  alignClass, input, label, help, append, langCode,
   placeholder, disabled, attribute,
 }) => (
   <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
@@ -21,6 +21,7 @@ const RenderRichTextEditor = ({
       <RichTextEditor
         input={input}
         attrCode={attribute.code}
+        langCode={langCode}
         placeholder={placeholder}
         disabled={disabled}
       />
@@ -37,6 +38,7 @@ RenderRichTextEditor.propTypes = {
   attribute: PropTypes.shape({
     code: PropTypes.string,
   }),
+  langCode: PropTypes.string,
   label: PropTypes.node,
   placeholder: PropTypes.string,
   meta: PropTypes.shape({
@@ -62,6 +64,7 @@ RenderRichTextEditor.defaultProps = {
   alignClass: 'text-right',
   hasLabel: true,
   attribute: {},
+  langCode: 'en',
 };
 
 export default RenderRichTextEditor;
