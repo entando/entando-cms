@@ -192,9 +192,17 @@ describe('editContent thunks', () => {
 
   it('save add content', (done) => {
     selectors.getSelectedContentTypeAttributes.mockImplementation(() => [
-      { type: 'Boolean' }, { type: 'Monolist', nestedAttribute: { type: 'Boolean' } },
+      { type: 'Boolean' },
+      { type: 'Timestamp' },
+      { type: 'Monolist', nestedAttribute: { type: 'Boolean' } },
+      { type: 'Monolist', nestedAttribute: { type: 'Date' } },
+      { type: 'Monolist', nestedAttribute: { type: 'Checkbox' } },
+      { type: 'List', nestedAttribute: { type: 'Number' } },
       { type: 'Composite', compositeAttributes: [{ type: 'Boolean' }, { type: 'Number' }] },
-      { type: 'List', nestedAttribute: { type: 'Boolean' } }, { type: 'Date' }, { type: 'Boolean' }, { type: 'Boolean' }]);
+      { type: 'List', nestedAttribute: { type: 'Boolean' } },
+      { type: 'Date' },
+      { type: 'Boolean' },
+    ]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } } },
@@ -205,8 +213,14 @@ describe('editContent thunks', () => {
       .dispatch(saveContent({
         contentStatus: 'ready',
         attributes: [
-          { value: 'test' }, { elements: [{ value: false }] }, { compositeelements: [{ value: false }, { value: '123' }] },
-          { listelements: { en: [{ value: false }] } }, { value: new Date().toISOString() }, { value: 'false' }, { value: 'true' }],
+          { value: 'test' },
+          { value: { date: new Date().toISOString() } },
+          { elements: [{ value: false }] },
+          { elements: [{ value: new Date().toISOString() }] },
+          { elements: [{ value: 'true' }] },
+          { listelements: { en: [{ value: '123' }] } },
+          { compositeelements: [{ value: false }, { value: '123' }] },
+          { listelements: { en: [{ value: false }] } }, { value: new Date().toISOString() }, { value: 'false' }],
       })).then(() => done());
   });
 });
