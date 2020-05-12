@@ -94,7 +94,7 @@ class Contents extends Component {
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
-      onAdvancedFilterSearch,
+      onAdvancedFilterSearch, users,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -147,6 +147,7 @@ class Contents extends Component {
           onSetGroup={onSetGroup}
           currentUsername={currentUsername}
           onAdvancedFilterSearch={onAdvancedFilterSearch}
+          users={users}
         />
         <div className="Contents__body">
           <ContentsTabs
@@ -239,10 +240,12 @@ Contents.propTypes = {
   currentUsername: PropTypes.string.isRequired,
   onClickClone: PropTypes.func.isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
+  users: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 Contents.defaultProps = {
   loading: false,
+  users: [],
 };
 
 export default Contents;
