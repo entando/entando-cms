@@ -141,6 +141,75 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
     .catch(() => {}),
 );
 
+const convertBoolToString = (item, hasNull = false) => {
+  const { value } = item;
+  const newValue = ((val) => {
+    switch (val) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        return hasNull ? null : false;
+    }
+  })(value);
+  return {
+    ...item,
+    value: newValue,
+  };
+};
+
+const fromDateFormat = 'DD/MM/YYYY';
+const toDateFormat = 'YYYY-MM-DD';
+
+const convertDateValue = (item) => {
+  const { value } = item;
+  if (value.includes('-')) return item;
+
+  return {
+    ...item,
+    value: `${moment(value, fromDateFormat).format(toDateFormat)} 00:00:00`,
+  };
+};
+
+const convertTimestampValue = (item) => {
+  const { value } = item;
+  const {
+    date, hours, minutes, seconds,
+  } = value;
+  const newDate = !date.includes('-') ? moment(date, fromDateFormat).format(toDateFormat) : date;
+  return {
+    ...item,
+    value: `${newDate} ${hours || '00'}:${minutes || '00'}:${seconds || '00'}`,
+  };
+};
+
+const convertNumberValue = (item) => {
+  const { value } = item;
+  return {
+    ...item,
+    value: value === '' ? null : value,
+  };
+};
+
+const convertFieldValueByType = (item, type) => {
+  switch (type) {
+    case TYPE_BOOLEAN:
+      return convertBoolToString(item);
+    case TYPE_DATE:
+      return convertDateValue(item);
+    case TYPE_TIMESTAMP:
+      return convertTimestampValue(item);
+    case TYPE_NUMBER:
+      return convertNumberValue(item);
+    case TYPE_CHECKBOX:
+    case TYPE_THREESTATE:
+      return convertBoolToString(item, true);
+    default:
+      return item;
+  }
+};
+
 export const saveContent = values => (dispatch, getState) => new Promise((resolve) => {
   const state = getState();
   const categories = getJoinedCategories(state);
@@ -152,72 +221,32 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
 
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);
   const transformedAttributes = attributes.map((attribute, i) => {
-    const { value } = attribute;
     const { type } = contentTypeAttributes[i];
-    const replaceBooleanStringsComposite = (arr = []) => arr.map((item, j) => {
+    const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item, j) => {
       const types = contentTypeAttributes[i].compositeAttributes;
-      if (types[j].type === TYPE_BOOLEAN) {
-        return {
-          ...item,
-          value: item.value === 'true',
-        };
-      }
-      return item;
+      return convertFieldValueByType(item, types[j].type);
     });
-    const replaceBooleanStringsList = (arr = []) => arr.map((item) => {
+    const replaceBooleanDateStringsList = (arr = []) => arr.map((item) => {
       const { type: nestedType } = contentTypeAttributes[i].nestedAttribute;
-      if (nestedType === TYPE_BOOLEAN) {
-        return {
-          ...item,
-          value: item.value === 'true',
-        };
-      }
-      return item;
+      return convertFieldValueByType(item, nestedType);
     });
     if (type === TYPE_DATE) {
-      if (value.includes('-')) return attribute;
-      const fromFormat = 'DD/MM/YYYY';
-      const toFormat = 'YYYY-MM-DD';
-      return {
-        ...attribute,
-        value: `${moment(value, fromFormat).format(toFormat)} 00:00:00`,
-      };
+      return convertDateValue(attribute);
     }
     if (type === TYPE_TIMESTAMP) {
-      const {
-        date, hours, minutes, seconds,
-      } = value;
-      let newDate = date;
-      if (!date.includes('-')) {
-        const fromFormat = 'DD/MM/YYYY';
-        const toFormat = 'YYYY-MM-DD';
-        newDate = moment(date, fromFormat).format(toFormat);
-      }
-      return {
-        ...attribute,
-        value: `${newDate} ${hours || '00'}:${minutes || '00'}:${seconds || '00'}`,
-      };
+      return convertTimestampValue(attribute);
     }
     if (type === TYPE_CHECKBOX || type === TYPE_BOOLEAN || type === TYPE_THREESTATE) {
-      let newValue = null;
-      if (value === 'true') newValue = true;
-      else if (value === 'false') newValue = false;
-      return {
-        ...attribute,
-        value: newValue,
-      };
+      return convertBoolToString(attribute, type !== TYPE_BOOLEAN);
     }
     if (type === TYPE_NUMBER) {
-      return {
-        ...attribute,
-        value: value === '' ? null : value,
-      };
+      return convertNumberValue(attribute);
     }
     if (type === TYPE_LIST) {
       const modifiedListElements = {};
       const keys = Object.keys(attribute.listelements || {});
       keys.map((el) => {
-        modifiedListElements[el] = replaceBooleanStringsList(attribute.listelements[el]);
+        modifiedListElements[el] = replaceBooleanDateStringsList(attribute.listelements[el]);
         return el;
       });
       return {
@@ -228,12 +257,12 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
     if (type === TYPE_MONOLIST) {
       return {
         ...attribute,
-        elements: replaceBooleanStringsList(attribute.elements),
+        elements: replaceBooleanDateStringsList(attribute.elements),
       };
     }
     return {
       ...attribute,
-      compositeelements: replaceBooleanStringsComposite(attribute.compositeelements),
+      compositeelements: replaceBooleanDateStringsComposite(attribute.compositeelements),
     };
   });
 
