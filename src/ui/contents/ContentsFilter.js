@@ -91,8 +91,9 @@ class ContentsFilter extends Component {
     const {
       currentQuickFilter, intl, contentTypes, groups, language, filteringCategories,
       statusChecked, onCheckStatus, accessChecked, onCheckAccess, authorChecked, onCheckAuthor,
-      onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch,
+      onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch, users,
     } = this.props;
+
     const { showAdvancedFilters } = this.state;
     const advancedFilterIcon = (
       <i
@@ -102,6 +103,24 @@ class ContentsFilter extends Component {
         } ContentsFilter__advanced-icon`}
       />
     );
+
+    const renderedUsers = users
+      .filter(({ username }) => username !== currentUsername)
+      .map(({ username }, i) => (
+        <Checkbox
+          key={username}
+          className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+          role="button"
+          tabIndex={-9 - i}
+          readOnly
+          checked={authorChecked === username}
+          onClick={() => onCheckAuthor(username)}
+          onKeyDown={() => onCheckAuthor(username)}
+        >
+          {username}
+        </Checkbox>
+      ));
+
     const advancedFiltersVisibility = showAdvancedFilters ? 'block' : 'none';
     return (
       <div className="ContentsFilter">
@@ -264,7 +283,7 @@ class ContentsFilter extends Component {
                 <FormLabel labelId="cms.contents.showMe" defaultMessage="Show me" />
               </ControlLabel>
             </Col>
-            <Col xs={12} sm={10}>
+            <Col xs={12} sm={10} className="ContentsFilter__users-wrapper">
               <Checkbox
                 className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
                 role="button"
@@ -287,6 +306,7 @@ class ContentsFilter extends Component {
               >
                 <FormattedMessage id="cms.contents.onlyMine" defaultMessage="Only Mine" />
               </Checkbox>
+              {renderedUsers}
             </Col>
           </div>
         </div>
@@ -328,6 +348,7 @@ ContentsFilter.propTypes = {
   onSetGroup: PropTypes.func.isRequired,
   currentUsername: PropTypes.string.isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
+  users: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default ContentsFilter;
