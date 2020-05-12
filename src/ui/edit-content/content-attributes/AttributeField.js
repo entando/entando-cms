@@ -5,7 +5,7 @@ import { required, isNumber } from '@entando/utils';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
-import { getAttrValidators } from 'helpers/attrValidation';
+import { getAttrValidators, linkValidate } from 'helpers/attrValidation';
 import {
   TYPE_BOOLEAN,
   TYPE_CHECKBOX,
@@ -72,6 +72,7 @@ const AttributeField = ({
   const validate = getAttrValidators({ ...validationRules, mandatory });
   if (mandatory) validate.push(required);
 
+
   let AttributeFieldComp;
   let actualName = `${name}.value`;
   const extraProps = {};
@@ -125,6 +126,7 @@ const AttributeField = ({
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
       actualName = name;
+      if (mandatory) validate.push(linkValidate(langCode));
       break;
     case TYPE_MONOTEXT:
       AttributeFieldComp = MonotextAttributeField;
