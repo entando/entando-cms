@@ -114,8 +114,8 @@ export const sendPostAddContent = newContentObject => dispatch => new Promise(
         if (response.ok) {
           resolve(json.payload);
         } else {
-          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           resolve();
         }
@@ -131,8 +131,8 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
         if (response.ok) {
           resolve(json.payload);
         } else {
-          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           resolve();
         }

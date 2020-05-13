@@ -131,8 +131,8 @@ export const sendPostContentTemplate = contModelObject => dispatch => new Promis
       if (response.ok) {
         resolve(json.payload);
       } else {
-        dispatch(clearErrors());
         dispatch(addErrors(json.errors.map(err => err.message)));
+        dispatch(clearErrors());
         json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
         resolve();
       }
@@ -152,8 +152,8 @@ export const fetchContentTemplate = id => (dispatch, getState) => new Promise(re
         }));
         resolve(json.payload);
       } else {
-        dispatch(clearErrors());
         dispatch(addErrors(json.errors.map(err => err.message)));
+        dispatch(clearErrors());
         json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
         resolve();
       }
@@ -168,8 +168,8 @@ export const fetchContentTemplateDictionary = () => dispatch => new Promise(reso
         dispatch(setContentTemplateDictionary(json.payload));
         resolve(json.payload);
       } else {
-        dispatch(clearErrors());
         dispatch(addErrors(json.errors.map(err => err.message)));
+        dispatch(clearErrors());
         json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
         resolve();
       }
@@ -184,8 +184,8 @@ export const sendPutContentTemplate = contModelObject => dispatch => new Promise
         if (response.ok) {
           resolve(json.payload);
         } else {
-          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           resolve();
         }
@@ -202,8 +202,8 @@ export const sendDeleteContentTemplate = id => dispatch => new Promise(
           resolve(json.payload);
           dispatch(fetchContentTemplateListPaged());
         } else {
-          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           resolve();
         }

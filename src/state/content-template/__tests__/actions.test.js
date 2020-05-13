@@ -282,8 +282,8 @@ describe('contentTemplate thunks', () => {
       .then(() => {
         expect(getContentTemplate).toHaveBeenCalledWith(1);
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', 'errors/clear-errors');
-        expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[1]).toHaveProperty('type', 'errors/clear-errors');
         done();
       })
       .catch(done.fail);
@@ -304,8 +304,8 @@ describe('contentTemplate thunks', () => {
     store.dispatch(fetchContentTemplateDictionary()).then(() => {
       expect(getContentTemplateDictionary).toHaveBeenCalled();
       const actions = store.getActions();
-      expect(actions[0]).toHaveProperty('type', 'errors/clear-errors');
-      expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+      expect(actions[1]).toHaveProperty('type', 'errors/clear-errors');
       done();
     }).catch(done.fail);
   });
