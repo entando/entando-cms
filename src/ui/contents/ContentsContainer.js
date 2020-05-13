@@ -14,6 +14,7 @@ import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
+import { fetchUsers } from 'state/users/actions';
 import {
   getContents, getCurrentQuickFilter, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentAuthorShow,
@@ -32,6 +33,9 @@ import { PUBLISH_CONTENT_MODAL_ID } from 'ui/contents/PublishContentModal';
 import { JOIN_CATEGORIES_MODAL_ID } from 'ui/contents/JoinCategoriesModal';
 import { WORK_MODE_EDIT, WORK_MODE_ADD } from 'state/edit-content/types';
 import Contents from 'ui/contents/Contents';
+import { getUserList } from 'state/users/selectors';
+
+const noPage = { page: 1, pageSize: 0 };
 
 const paramsForStatusAndAuthor = (status, author) => {
   const published = status === 'published';
@@ -79,6 +83,7 @@ export const mapStateToProps = (state) => {
     sortingColumns: getSortingColumns(state),
     selectedRows: getSelectedRows(state),
     currentUsername: getUsername(state),
+    users: getUserList(state),
   });
 };
 
@@ -86,8 +91,9 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => {
     dispatch(fetchContentsPaged());
     dispatch(fetchCategoryTree());
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
+    dispatch(fetchGroups(noPage));
+    dispatch(fetchContentTypeListPaged(noPage));
+    dispatch(fetchUsers(noPage));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
   onFilteredSearch: (fetchParams, pagination, sortParams, tabSearch) => dispatch(

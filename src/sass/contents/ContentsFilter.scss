@@ -124,6 +124,16 @@
     font-family: "Open Sans";
     font-weight: normal;
   }
+
+  &__users-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+
+    .ContentsFilter__item-cb {
+      margin-top: 0;
+    }
+  }
 }
 
 .form-group .mobile-left { // sass-lint:disable-line class-name-format, force-element-nesting
