@@ -12,8 +12,8 @@ export const sendPutWidgetConfig = (pageCode, frameId, configItem) => dispatch =
         if (response.ok) {
           resolve(json.payload);
         } else {
-          dispatch(clearErrors());
           dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           resolve();
         }
