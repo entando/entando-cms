@@ -4,12 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { routeConverter } from '@entando/utils';
 import {
-  fetchContentTypeAttributes,
+  fetchContentTypeAttributeRefs,
   fetchContentType,
-  fetchContentTypeAttribute,
+  fetchContentTypeAttributeRef,
   sendPutContentType,
-  setSelectedAttribute,
-  setSelectedAttributeContentType,
+  setSelectedAttributeRef,
+  setSelectedContentTypeAttribute,
   sendMoveAttributeUp,
   sendMoveAttributeDown,
 } from 'state/content-type/actions';
@@ -45,16 +45,16 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: ({ contentTypeCode }) => {
-    dispatch(setSelectedAttribute({}));
-    dispatch(setSelectedAttributeContentType());
+    dispatch(setSelectedAttributeRef({}));
+    dispatch(setSelectedContentTypeAttribute());
     dispatch(fetchContentType(contentTypeCode));
-    dispatch(fetchContentTypeAttributes());
+    dispatch(fetchContentTypeAttributeRefs());
     dispatch(fetchContentTemplatesByContentType(contentTypeCode));
     dispatch(fetchViewPages());
   },
   onAddAttribute: ({ attributeCode, contentTypeCode }) => {
     dispatch(
-      fetchContentTypeAttribute(attributeCode, () => history.push(
+      fetchContentTypeAttributeRef(attributeCode, () => history.push(
         routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),
       )),
     );

@@ -5,9 +5,9 @@ import {
   removeContentType,
   removeAttribute,
   setSelectedContentType,
-  setSelectedAttributeContentType,
+  setSelectedContentTypeAttribute,
   setContentTypeAttributes,
-  setSelectedAttribute,
+  setSelectedAttributeRef,
   setContentTypeReferenceStatus,
   moveAttributeUpSync,
   moveAttributeDownSync,
@@ -219,7 +219,7 @@ describe('state/content-type/reducer', () => {
       expect(newState).toHaveProperty('selected');
       newState = reducer(
         newState,
-        setSelectedAttributeContentType(GET_CONTENT_TYPE_RESPONSE_OK.attributes[0]),
+        setSelectedContentTypeAttribute(GET_CONTENT_TYPE_RESPONSE_OK.attributes[0]),
       );
       expect(newState).toHaveProperty(
         'selected.attributeSelected',
@@ -242,7 +242,7 @@ describe('state/content-type/reducer', () => {
 
   describe('after action SET_SELECTED_ATTRIBUTE', () => {
     beforeEach(() => {
-      newState = reducer(state, setSelectedAttribute(CONTENT_TYPE_ATTRIBUTE));
+      newState = reducer(state, setSelectedAttributeRef(CONTENT_TYPE_ATTRIBUTE));
     });
 
     it('should define the selected payload', () => {

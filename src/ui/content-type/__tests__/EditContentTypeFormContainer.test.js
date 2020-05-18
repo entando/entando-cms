@@ -8,11 +8,11 @@ jest.mock('redux-form', () => ({
 }));
 
 jest.mock('state/content-type/actions', () => ({
-  fetchContentTypeAttributes: jest.fn().mockReturnValue('fetchContentTypeAttributes_result'),
+  fetchContentTypeAttributeRefs: jest.fn().mockReturnValue('fetchContentTypeAttributeRefs_result'),
   fetchContentType: jest.fn().mockReturnValue('fetchContentType_result'),
-  fetchContentTypeAttribute: jest.fn().mockReturnValue('fetchContentTypeAttribute_result'),
-  setSelectedAttribute: jest.fn().mockReturnValue('setSelectedAttribute_result'),
-  setSelectedAttributeContentType: jest.fn().mockReturnValue('setSelectedAttributeContentType_result'),
+  fetchContentTypeAttributeRef: jest.fn().mockReturnValue('fetchContentTypeAttributeRef_result'),
+  setSelectedAttributeRef: jest.fn().mockReturnValue('setSelectedAttributeRef_result'),
+  setSelectedContentTypeAttribute: jest.fn().mockReturnValue('setSelectedContentTypeAttribute_result'),
   sendMoveAttributeUp: jest.fn().mockReturnValue('sendMoveAttributeUp_result'),
   sendMoveAttributeDown: jest.fn().mockReturnValue('sendMoveAttributeDown_result'),
 }));
@@ -70,28 +70,28 @@ describe('EditContentTypeFormContainer', () => {
       props = mapDispatchToProps(dispatchMock, { history });
     });
 
-    it('maps the "onDidMount" prop a "fetchContentType" and "fetchContentTypeAttributes" dispatch', () => {
+    it('maps the "onDidMount" prop a "fetchContentType" and "fetchContentTypeAttributeRefs" dispatch', () => {
       expect(props.onDidMount).toBeDefined();
       props.onDidMount('contenttypeCode_code');
-      expect(dispatchMock).toHaveBeenCalledWith('setSelectedAttribute_result');
-      expect(dispatchMock).toHaveBeenCalledWith('setSelectedAttributeContentType_result');
+      expect(dispatchMock).toHaveBeenCalledWith('setSelectedAttributeRef_result');
+      expect(dispatchMock).toHaveBeenCalledWith('setSelectedContentTypeAttribute_result');
       expect(dispatchMock).toHaveBeenCalledWith('fetchContentType_result');
-      expect(dispatchMock).toHaveBeenCalledWith('fetchContentTypeAttributes_result');
+      expect(dispatchMock).toHaveBeenCalledWith('fetchContentTypeAttributeRefs_result');
     });
 
-    it('maps the "onAddAttribute" prop a "fetchContentTypeAttribute" dispatch', () => {
+    it('maps the "onAddAttribute" prop a "fetchContentTypeAttributeRef" dispatch', () => {
       expect(props.onAddAttribute).toBeDefined();
       props.onAddAttribute('attribute_code', 'contentType_code');
-      expect(dispatchMock).toHaveBeenCalledWith('fetchContentTypeAttribute_result');
+      expect(dispatchMock).toHaveBeenCalledWith('fetchContentTypeAttributeRef_result');
     });
 
-    it('maps the "onMoveUp" prop a "fetchContentTypeAttribute" dispatch', () => {
+    it('maps the "onMoveUp" prop a "fetchContentTypeAttributeRef" dispatch', () => {
       expect(props.onMoveUp).toBeDefined();
       props.onMoveUp('attribute_code');
       expect(dispatchMock).toHaveBeenCalledWith('sendMoveAttributeUp_result');
     });
 
-    it('maps the "onMoveDown" prop a "fetchContentTypeAttribute" dispatch', () => {
+    it('maps the "onMoveDown" prop a "fetchContentTypeAttributeRef" dispatch', () => {
       expect(props.onMoveDown).toBeDefined();
       props.onMoveDown('attribute_code');
       expect(dispatchMock).toHaveBeenCalledWith('sendMoveAttributeDown_result');

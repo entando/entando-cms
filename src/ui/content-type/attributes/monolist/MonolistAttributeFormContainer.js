@@ -6,7 +6,7 @@ import { routeConverter } from '@entando/utils';
 
 import {
   fetchAttributeFromContentType,
-  fetchContentTypeAttribute,
+  fetchContentTypeAttributeRef,
   sendPutAttributeFromContentTypeMonolist,
   setActionMode,
   removeAttributeFromComposite,
@@ -48,7 +48,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(clearErrors());
     if (mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(
-        fetchContentTypeAttribute(
+        fetchContentTypeAttributeRef(
           TYPE_COMPOSITE,
           () => history.push(
             routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
@@ -70,7 +70,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   onAddAttribute: ({ contentTypeCode, type }) => {
     dispatch(setActionMode(MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE));
     dispatch(
-      fetchContentTypeAttribute(
+      fetchContentTypeAttributeRef(
         type,
         () => history.push(
           routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),

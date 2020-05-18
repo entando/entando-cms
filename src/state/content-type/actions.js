@@ -106,7 +106,7 @@ export const setContentTypeReferenceStatus = contentTypeStatus => ({
   },
 });
 
-export const setSelectedAttributeContentType = attribute => ({
+export const setSelectedContentTypeAttribute = attribute => ({
   type: SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE,
   payload: {
     attribute,
@@ -121,7 +121,7 @@ export const removeAttribute = (contentTypeCode, attributeCode) => ({
   },
 });
 
-export const setSelectedAttribute = attribute => ({
+export const setSelectedAttributeRef = attribute => ({
   type: SET_SELECTED_ATTRIBUTE,
   payload: {
     attribute,
@@ -329,7 +329,7 @@ export const sendDeleteContentType = contentTypeCode => dispatch => new Promise(
     .catch(() => {}),
 );
 
-export const fetchContentTypeAttributes = (page = { page: 1, pageSize: 0 }, params = '') => (
+export const fetchContentTypeAttributeRefs = (page = { page: 1, pageSize: 0 }, params = '') => (
   dispatch,
   getState,
 ) => new Promise((resolve) => {
@@ -352,7 +352,7 @@ export const fetchContentTypeAttributes = (page = { page: 1, pageSize: 0 }, para
     .catch(() => {});
 });
 
-export const fetchContentTypeAttribute = (
+export const fetchContentTypeAttributeRef = (
   contentTypeAttributeCode,
   routeFunc,
   selectedAttributeType = '',
@@ -380,7 +380,7 @@ export const fetchContentTypeAttribute = (
       .then((response) => {
         response.json().then((json) => {
           if (response.ok) {
-            dispatch(setSelectedAttribute(json.payload));
+            dispatch(setSelectedAttributeRef(json.payload));
             console.log('what action', actionMode);
             switch (actionMode) {
               case MODE_ADD_ATTRIBUTE_COMPOSITE: {
@@ -476,8 +476,8 @@ export const fetchAttributeFromContentType = (formName, contentTypeCode, attribu
           const actionMode = getActionModeContentTypeSelectedAttribute(getState());
           if (actionMode !== MODE_ADD_ATTRIBUTE_COMPOSITE) {
             dispatch(initialize(formName, payload));
-            dispatch(setSelectedAttributeContentType(json.payload));
-            dispatch(fetchContentTypeAttribute(getSelectedAttributeType(getState())));
+            dispatch(setSelectedContentTypeAttribute(json.payload));
+            dispatch(fetchContentTypeAttributeRef(getSelectedAttributeType(getState())));
           }
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -536,9 +536,9 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
             }),
           );
         } else {
-          dispatch(setSelectedAttributeContentType(json.payload));
+          dispatch(setSelectedContentTypeAttribute(json.payload));
           const { type, code } = attributeObject;
-          if (type === TYPE_COMPOSITE) {
+          if (type === TYPE_COMPOSITE || (type === TYPE_MONOLIST && getIsMonolistCompositeAttributeType(getState()))) {
             dispatch(
               initialize('attribute', {
                 ...json.payload,
@@ -695,11 +695,11 @@ export const handlerAttributeFromContentType = (
         payload = getPayloadFromTypeAttributeComposite(newAttributeComposite, compositeAttributes);
       }
       if (payload && mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
-        dispatch(setSelectedAttributeContentType(payload));
+        dispatch(setSelectedContentTypeAttribute(payload));
         const parentAttr = getParentSelectedAttribute(getState());
         console.log('go here', payload, parentAttr);
         dispatch(popParentSelectedAttribute());
-        dispatch(setSelectedAttribute(parentAttr));
+        dispatch(setSelectedAttributeRef(parentAttr));
         dispatch(handlerAttributeFromContentType(action, payload, allowedRoles, mode, history));
       } else {
         console.log('go else here');

@@ -5,10 +5,10 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import { submit } from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import {
-  fetchContentTypeAttributes,
+  fetchContentTypeAttributeRefs,
   sendPostContentType,
-  setSelectedAttribute,
-  setSelectedAttributeContentType,
+  setSelectedAttributeRef,
+  setSelectedContentTypeAttribute,
 } from 'state/content-type/actions';
 import { getContentTypeAttributesIdList } from 'state/content-type/selectors';
 import AddContentTypeForm from 'ui/content-type/AddContentTypeForm';
@@ -29,9 +29,9 @@ const msgs = defineMessages({
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onDidMount: () => {
-    dispatch(setSelectedAttribute({}));
-    dispatch(setSelectedAttributeContentType());
-    dispatch(fetchContentTypeAttributes());
+    dispatch(setSelectedAttributeRef({}));
+    dispatch(setSelectedContentTypeAttribute());
+    dispatch(fetchContentTypeAttributeRefs());
   },
   onSubmit: (values) => {
     dispatch(sendPostContentType(values)).then((res) => {

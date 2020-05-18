@@ -12,8 +12,8 @@ import {
   setActionMode,
   fetchAttributeFromContentType,
   handlerAttributeFromContentType,
-  fetchContentTypeAttributes,
-  fetchContentTypeAttribute,
+  fetchContentTypeAttributeRefs,
+  fetchContentTypeAttributeRef,
   removeAttributeFromComposite,
   moveAttributeFromComposite,
 } from 'state/content-type/actions';
@@ -61,7 +61,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   onDidMount: ({ contentTypeAttributeCode, attributeCode }) => {
     dispatch(clearErrors());
     dispatch(fetchAttributeFromContentType('attribute', contentTypeAttributeCode, attributeCode));
-    dispatch(fetchContentTypeAttributes());
+    dispatch(fetchContentTypeAttributeRefs());
   },
   onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('attribute')); },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
@@ -95,7 +95,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   onAddAttribute: (props) => {
     const { attributeCode, contentTypeAttributeCode, selectedAttributeType } = props;
     dispatch(
-      fetchContentTypeAttribute(
+      fetchContentTypeAttributeRef(
         attributeCode,
         () => history.push(routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
           entityCode: contentTypeAttributeCode,
