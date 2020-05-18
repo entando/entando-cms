@@ -30,6 +30,8 @@ const getContentTypeReferences = state => state.apps.cms.contentType.references;
 
 export const getContentTypeSelectedAttribute = state => state.apps.cms
   . contentType.attributes.selected;
+export const getContentTypeParentSelectedAttribute = state => state.apps.cms
+  . contentType.attributes.parentSelected;
 export const getContentTypeSelectedAttributeType = state => state.apps.cms
   . contentType.attributes.selected.listAttribute;
 export const getContentTypeSelectedAttributeSearchable = state => state.apps.cms
@@ -46,6 +48,13 @@ export const getSelectedAttributeType = state => get(state.apps.cms.contentType.
 export const getSelectedAttributeNestedType = state => get(state.apps.cms.contentType.selected, 'attributeSelected.nestedAttribute.type');
 export const getSelectedValidationRules = state => get(state.apps.cms.contentType.selected, 'attributeSelected.validationRules');
 export const getContentTypeSelectedAttributeCode = state => get(state.apps.cms.contentType.attributes.selected, 'code');
+
+export const getParentSelectedAttribute = createSelector(
+  [getContentTypeParentSelectedAttribute],
+  parentSelected => (
+    parentSelected.length ? parentSelected[parentSelected.length - 1] : {}
+  ),
+);
 
 export const getContentTypeList = createSelector(
   [getContentTypeMap, getContentTypeIdList],

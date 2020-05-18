@@ -5,9 +5,11 @@ import { injectIntl } from 'react-intl';
 import { METHODS } from '@entando/apimanager';
 import { clearErrors } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
+import { MODE_EDIT_COMPOSITE, MODE_ADD_ATTRIBUTE_COMPOSITE } from 'state/content-type/const';
 
 import EditContentTypeAttributeForm from 'ui/common/form/EditContentTypeAttributeForm';
 import {
+  setActionMode,
   fetchAttributeFromContentType,
   handlerAttributeFromContentType,
   fetchContentTypeAttributes,
@@ -28,7 +30,11 @@ import {
   getContentTypeSelectedAttributeIndexable,
 } from 'state/content-type/selectors';
 
-import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
+import {
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
+  ROUTE_CMS_CONTENTTYPE_EDIT,
+  ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
+} from 'app-init/routes';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
@@ -59,7 +65,21 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   },
   onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('attribute')); },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
-  onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode })); },
+  onDiscard: (mode) => {
+    dispatch(setVisibleModal(''));
+    console.log('lemode', mode);
+    if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
+      dispatch(setActionMode(MODE_EDIT_COMPOSITE));
+      history.push(
+        routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT, {
+          entityCode: params.entityCode,
+          attributeCode: params.attributeCode,
+        }),
+      );
+    } else {
+      history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode }));
+    }
+  },
   onSubmit: (values, allowedRoles, mode) => {
     dispatch(
       handlerAttributeFromContentType(

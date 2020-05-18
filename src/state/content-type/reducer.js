@@ -6,6 +6,8 @@ import {
   SET_ATTRIBUTES,
   SET_CONTENT_TYPE_REFERENCE_STATUS,
   SET_SELECTED_ATTRIBUTE,
+  PUSH_PARENT_SELECTED_ATTRIBUTE,
+  POP_PARENT_SELECTED_ATTRIBUTE,
   REMOVE_ATTRIBUTE,
   SET_SELECTED_CONTENT_TYPE,
   SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE,
@@ -151,6 +153,18 @@ export const selectedAttribute = (state = {}, action = {}) => {
       return state;
   }
 };
+export const parentSelectedAttribute = (state = [], action = {}) => {
+  switch (action.type) {
+    case PUSH_PARENT_SELECTED_ATTRIBUTE: {
+      return [...state, action.payload.attribute];
+    }
+    case POP_PARENT_SELECTED_ATTRIBUTE: {
+      return state.slice(0, -1);
+    }
+    default:
+      return state;
+  }
+};
 export const status = (state = [], action = {}) => {
   switch (action.type) {
     case SET_CONTENT_TYPE_REFERENCE_STATUS: {
@@ -168,6 +182,7 @@ export default combineReducers({
   attributes: combineReducers({
     list: attributeList,
     selected: selectedAttribute,
+    parentSelected: parentSelectedAttribute,
   }),
   references: combineReducers({
     status,

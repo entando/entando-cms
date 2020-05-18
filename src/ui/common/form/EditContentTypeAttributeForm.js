@@ -82,7 +82,7 @@ export class EditContentTypeAttributeFormBody extends Component {
       if (dirty) {
         onCancel();
       } else {
-        onDiscard();
+        onDiscard(mode);
       }
     };
 
@@ -215,7 +215,7 @@ export class EditContentTypeAttributeFormBody extends Component {
               invalid={invalid}
               submitting={submitting}
               onSave={onSave}
-              onDiscard={onDiscard}
+              onDiscard={() => onDiscard(mode)}
             />
           </Col>
         </Row>
