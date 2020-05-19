@@ -57,7 +57,7 @@ class RenderDatePickerInput extends Component {
           </ControlLabel>
         </Col>
         )}
-        <Col xs={12} sm={inputSize || 12 - labelSize}>
+        <Col xs={12} sm={inputSize || 12 - labelSize} className="RenderDatePickerInput__container">
           <DatePicker
             {...input}
             placeholder={placeholder}

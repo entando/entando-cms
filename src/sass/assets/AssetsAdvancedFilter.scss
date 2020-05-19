@@ -47,7 +47,7 @@
 
     // sass-lint:disable force-element-nesting, no-qualifying-elements, class-name-format
     .react-datepicker-wrapper {
-      width: 82%;
+      width: 98%;
 
       // sass-lint:disable force-element-nesting, no-qualifying-elements, class-name-format
       .react-datepicker__input-container {
@@ -70,5 +70,16 @@
     margin-top: 1rem;
     font-family: "Open Sans";
     font-weight: normal;
+  }
+}
+
+.RenderDatePickerInput__container > div {
+  display: inline-block;
+  width: 90%;
+}
+
+@media (min-width: 768px) and (max-width: 854px) {
+  .RenderDatePickerInput__container > div {
+    width: 85%;
   }
 }

@@ -10,8 +10,9 @@
   font-weight: 600;
   line-height: 19px;
   text-align: center;
+  cursor: pointer;
 
-  &__upload-icon {
+  &__upload-icon.fa.fa-cloud-upload { //sass-lint:disable-line force-element-nesting class-name-format
     color: $color-space-grey;
     font-size: 59px;
   }
