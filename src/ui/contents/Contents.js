@@ -127,6 +127,7 @@ class Contents extends Component {
         }
       </div>
     ) : null;
+
     return (
       <div>
         <ContentsFilter
