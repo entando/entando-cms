@@ -1,11 +1,14 @@
 import { addErrors } from '@entando/messages';
+import { flattenDeep } from 'lodash';
 
 import {
   getPage, getPageChildren, getViewPages, getSearchPages,
 } from 'api/pages';
+import { toggleLoading } from 'state/loading/actions';
 import {
   ADD_PAGES, SET_PAGE_LOADING, SET_PAGE_LOADED,
   TOGGLE_PAGE_EXPANDED, SET_VIEWPAGES, SEARCH_PAGES,
+  CLEAR_TREE, BATCH_TOGGLE_EXPANDED, COLLAPSE_ALL,
 } from 'state/pages/types';
 import { getStatusMap } from 'state/pages/selectors';
 
@@ -52,6 +55,19 @@ export const setPageLoaded = pageCode => ({
   payload: {
     pageCode,
   },
+});
+
+export const clearTree = () => ({
+  type: CLEAR_TREE,
+});
+
+export const setBatchExpanded = pageCodes => ({
+  type: BATCH_TOGGLE_EXPANDED,
+  payload: pageCodes,
+});
+
+export const collapseAll = () => ({
+  type: COLLAPSE_ALL,
 });
 
 const wrapApiCall = apiFunc => (...args) => dispatch => new Promise((resolve, reject) => {
@@ -126,3 +142,35 @@ export const handleExpandPage = (pageCode = HOMEPAGE_CODE) => (dispatch, getStat
   dispatch(togglePageExpanded(pageCode, toExpand));
   return noopPromise();
 };
+
+export const fetchPageTreeAll = () => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('pageTree'));
+  dispatch(clearTree());
+  const fetchBranch = pageCode => (
+    dispatch(fetchPageChildren(pageCode)).then(response => response.payload)
+  );
+
+  const loadChildrenBranch = pgArr => (
+    Promise.all(pgArr.map((pg) => {
+      if (pg.children.length > 0) {
+        return fetchBranch(pg.code).then(res => (
+          loadChildrenBranch(res)
+        )).then(loadedres => (
+          [pg, ...loadedres]
+        ));
+      }
+      return Promise.resolve(pg);
+    }))
+  );
+  dispatch(fetchPage(HOMEPAGE_CODE)).then((rootPg) => {
+    fetchBranch(HOMEPAGE_CODE).then((catResult) => {
+      loadChildrenBranch(catResult).then((fullResult) => {
+        const allPages = [rootPg.payload, ...flattenDeep(fullResult)];
+        dispatch(addPages(allPages));
+        dispatch(setBatchExpanded(allPages.map(p => p.code)));
+        dispatch(toggleLoading('pageTree'));
+        resolve(allPages);
+      });
+    });
+  }).catch(() => {});
+});

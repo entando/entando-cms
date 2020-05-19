@@ -4,7 +4,8 @@ import thunk from 'redux-thunk';
 import { createMockStore, mockApi } from 'testutils/helpers';
 
 import {
-  ADD_PAGES, SET_PAGE_LOADING, SET_PAGE_LOADED, TOGGLE_PAGE_EXPANDED, SET_VIEWPAGES, SEARCH_PAGES,
+  ADD_PAGES, SET_PAGE_LOADING, SET_PAGE_LOADED, TOGGLE_PAGE_EXPANDED,
+  SET_VIEWPAGES, SEARCH_PAGES, CLEAR_TREE, BATCH_TOGGLE_EXPANDED,
 } from 'state/pages/types';
 import {
   HOMEPAGE_PAYLOAD, DASHBOARD_PAYLOAD, SERVICE_PAYLOAD, CONTACTS_PAYLOAD, ERROR_PAYLOAD,
@@ -17,8 +18,10 @@ import { getStatusMap } from 'state/pages/selectors';
 
 import {
   addPages, setPageLoading, setPageLoaded, togglePageExpanded,
-  handleExpandPage, fetchViewPages, setViewPages, setSearchPages, fetchSearchPages,
+  handleExpandPage, fetchViewPages, setViewPages, setSearchPages,
+  fetchSearchPages, clearTree, setBatchExpanded, fetchPageTreeAll,
 } from 'state/pages/actions';
+import { TOGGLE_LOADING } from 'state/loading/types';
 
 jest.mock('state/pages/selectors', () => ({
   getStatusMap: jest.fn(),
@@ -98,6 +101,22 @@ describe('state/pages/actions', () => {
     const action = setPageLoaded(PAGE_CODE);
     expect(action.type).toBe(SET_PAGE_LOADED);
     expect(action.payload).toEqual({ pageCode: PAGE_CODE });
+  });
+
+  it('clearTree() should return a well formed action', () => {
+    const action = clearTree();
+    expect(action.type).toBe(CLEAR_TREE);
+  });
+
+  it('setBatchExpanded() should return a well formed action', () => {
+    const action = setBatchExpanded([1, 2, 3]);
+    expect(action.type).toBe(BATCH_TOGGLE_EXPANDED);
+    expect(action.payload).toEqual([1, 2, 3]);
+  });
+
+  it('collapseAll() should return a well formed action', () => {
+    const action = clearTree();
+    expect(action.type).toBe(CLEAR_TREE);
   });
 
   it('togglePageExpanded() should return a well formed action', () => {
@@ -248,6 +267,27 @@ describe('state/pages/actions', () => {
           done();
         })
         .catch(done.fail);
+    });
+  });
+
+
+  describe('fetchPageTreeAll()', () => {
+    beforeEach(() => {
+      getStatusMap.mockReturnValue(INITIALIZED_STATE.pages.statusMap);
+      getPage.mockImplementation(mockApi({ payload: HOMEPAGE_PAYLOAD }));
+      getPageChildren.mockImplementation(mockApi({ payload: [CONTACTS_PAYLOAD] }));
+    });
+
+    it('when loading homepage, should download homepage and its children', (done) => {
+      const store = mockStore();
+      getStatusMap.mockReturnValue({});
+      store.dispatch(fetchPageTreeAll()).then(() => {
+        const actionTypes = store.getActions().map(action => action.type);
+        expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+        expect(actionTypes.includes(ADD_PAGES)).toBe(true);
+        expect(actionTypes.includes(BATCH_TOGGLE_EXPANDED)).toBe(true);
+        done();
+      }).catch(done.fail);
     });
   });
 });
