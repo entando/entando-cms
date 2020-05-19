@@ -20,7 +20,7 @@ const AssetsUpload = ({
     ...customDropzoneProps,
   });
 
-  const defaultTrigger = () => (
+  const renderedDefaultTriggerComponent = (
     <React.Fragment>
       <i className="fa fa-cloud-upload UploadAsset__upload-icon" />
       <p>
@@ -37,12 +37,19 @@ const AssetsUpload = ({
       </p>
     </React.Fragment>
   );
-  const TriggerComponent = customTriggerComponent || defaultTrigger;
+  const CustomTriggerComponent = customTriggerComponent;
+  const renderedTriggerComponent = customTriggerComponent ? (
+    <CustomTriggerComponent onClick={open} />
+  ) : (
+    renderedDefaultTriggerComponent
+  );
   return (
     <>
       <div {...getRootProps()} className={`UploadAsset ${customClassName}`}>
         <input {...getInputProps()} />
-        <TriggerComponent onClick={open} />
+        {
+          renderedTriggerComponent
+        }
       </div>
       <UploadAssetModalContainer
         onAssetSelected={onAssetSelected}
