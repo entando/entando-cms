@@ -1,6 +1,6 @@
 {
   "name": "@entando/cms",
-  "version": "0.2.50",
+  "version": "0.2.52",
   "license": "LGPL-2.1",
   "description": "entando CMS app",
   "keywords": [
@@ -25,7 +25,7 @@
   "dependencies": {
     "@babel/runtime": "^7.9.2",
     "@entando/apimanager": "^6.2.1",
-    "@entando/pagetreeselector": "^1.1.0",
+    "@entando/pagetreeselector": "^2.0.0",
     "brace": "^0.11.1",
     "react-ace": "^7.0.2",
     "react-bootstrap-typeahead": "^3.4.6",
@@ -223,5 +223,5 @@
   },
   "readme": "ERROR: No README data found!",
   "homepage": "https://github.com/entando/entando-cms#readme",
-  "_id": "@entando/cms@0.2.49"
+  "_id": "@entando/cms@0.2.51"
 }

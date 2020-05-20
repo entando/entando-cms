@@ -175,7 +175,7 @@
       padding-top: 10px;
       text-align: center;
 
-      .AssetsList__item-actions {
+      .dropdown-kebab-pf.AssetsList__item-actions.dropdown.btn-group { //sass-lint:disable-line force-element-nesting class-name-format
         margin-left: 0;
       }
     }

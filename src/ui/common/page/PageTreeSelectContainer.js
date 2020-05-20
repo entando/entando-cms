@@ -1,16 +1,25 @@
 import { connect } from 'react-redux';
 
 import { PageTreeSelector } from '@entando/pagetreeselector';
-import { handleExpandPage } from 'state/pages/actions';
+import {
+  handleExpandPage, fetchPageTreeAll, collapseAll, clearTree,
+} from 'state/pages/actions';
 import { getPageTreePages } from 'state/pages/selectors';
+import { getLoading } from 'state/loading/selectors';
 
 export const mapStateToProps = state => ({
   pages: getPageTreePages(state),
+  loading: getLoading(state).pageTree,
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onDidMount: () => dispatch(handleExpandPage()),
+  onDidMount: () => {
+    dispatch(clearTree());
+    dispatch(handleExpandPage());
+  },
   onExpandPage: pageCode => dispatch(handleExpandPage(pageCode)),
+  onExpandAll: () => dispatch(fetchPageTreeAll()),
+  onCollapseAll: () => dispatch(collapseAll()),
 });
 
 

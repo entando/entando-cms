@@ -6,6 +6,9 @@ import {
   SET_PAGE_LOADED,
   SET_VIEWPAGES,
   SEARCH_PAGES,
+  CLEAR_TREE,
+  BATCH_TOGGLE_EXPANDED,
+  COLLAPSE_ALL,
 } from 'state/pages/types';
 
 // creates a map from an array
@@ -27,6 +30,9 @@ const reducer = (state = {}, action = {}) => {
         ...toMap(pages),
       };
     }
+    case CLEAR_TREE: {
+      return [];
+    }
     default: return state;
   }
 };
@@ -47,6 +53,9 @@ const childrenMap = (state = {}, action = {}) => {
         ...newValues,
       };
     }
+    case CLEAR_TREE: {
+      return {};
+    }
     default: return state;
   }
 };
@@ -59,8 +68,20 @@ const titlesMap = (state = {}, action = {}) => {
         ...toMap(action.payload.pages, 'titles'),
       };
     }
+    case CLEAR_TREE: {
+      return {};
+    }
     default: return state;
   }
+};
+
+const toggleBatchExpandedValues = (arr, toggleValue) => {
+  const newState = {};
+  arr.map((pg) => {
+    newState[pg] = { loaded: true, loading: false, expanded: toggleValue };
+    return pg;
+  });
+  return newState;
 };
 
 const statusMap = (state = {}, action = {}) => {
@@ -87,6 +108,22 @@ const statusMap = (state = {}, action = {}) => {
         [pageCode]: { ...state[pageCode], loaded: true, loading: false },
       };
     }
+    case CLEAR_TREE: {
+      return {};
+    }
+    case BATCH_TOGGLE_EXPANDED: {
+      const pageCodes = action.payload;
+      return toggleBatchExpandedValues(pageCodes, true);
+    }
+    case COLLAPSE_ALL: {
+      const newState = {};
+      const pageCodes = Object.keys(state);
+      pageCodes.map((p) => {
+        newState[p] = { expanded: false, loading: false, loaded: state[p].loaded };
+        return p;
+      });
+      return newState;
+    }
     default: return state;
   }
 };
@@ -95,6 +132,9 @@ const viewPages = (state = [], { type, payload } = {}) => {
   switch (type) {
     case SET_VIEWPAGES:
       return payload;
+    case CLEAR_TREE: {
+      return [];
+    }
     default:
       return state;
   }
