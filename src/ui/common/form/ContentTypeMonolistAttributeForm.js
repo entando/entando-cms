@@ -42,6 +42,7 @@ export class MonolistAttributeFormBody extends Component {
   render() {
     const {
       attributeCode,
+      selectedAttribute,
       selectedAttributeType,
       isIndexable,
       type,
@@ -164,7 +165,10 @@ export class MonolistAttributeFormBody extends Component {
           &nbsp;
           {attributeCode}&nbsp; ({isMonoListComposite ? TYPE_MONOLIST : selectedAttributeType}).
         </Alert>
-        <form onSubmit={handleSubmit(onSubmit)} className="form-horizontal">
+        <form
+          onSubmit={handleSubmit(values => onSubmit(values, mode, selectedAttribute))}
+          className="form-horizontal"
+        >
           <Row>
             <Col xs={12}>
               <fieldset className="no-padding">
@@ -204,6 +208,7 @@ MonolistAttributeFormBody.propTypes = {
   onMove: PropTypes.func,
   type: PropTypes.string,
   attributeCode: PropTypes.string,
+  selectedAttribute: PropTypes.shape({}),
   selectedAttributeType: PropTypes.string,
   mode: PropTypes.string,
   attributesList: PropTypes.arrayOf(PropTypes.string),
@@ -222,6 +227,7 @@ MonolistAttributeFormBody.defaultProps = {
   isIndexable: false,
   type: '',
   attributeCode: '',
+  selectedAttribute: {},
   selectedAttributeType: TYPE_MONOLIST,
   mode: '',
   attributesList: [],

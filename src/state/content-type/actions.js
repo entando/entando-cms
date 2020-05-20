@@ -24,7 +24,6 @@ import {
   MOVE_ATTRIBUTE_FROM_COMPOSITE,
 } from 'state/content-type/types';
 import {
-  ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTTYPE_EDIT,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD,
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
@@ -52,7 +51,6 @@ import {
   TYPE_MONOLIST,
   TYPE_COMPOSITE,
   TYPE_DATE,
-  MODE_ADD,
   MODE_EDIT,
   MODE_ADD_COMPOSITE,
   MODE_EDIT_COMPOSITE,
@@ -358,7 +356,6 @@ export const fetchContentTypeAttributeRef = (
   selectedAttributeType = '',
   formName,
 ) => (dispatch, getState) => new Promise((resolve) => {
-  console.log('fetchcontenttypeattrdef', contentTypeAttributeCode, selectedAttributeType, formName);
   let typeAttribute = contentTypeAttributeCode;
 
   const checkCompositeSubAttribute = selectedAttributeType === TYPE_COMPOSITE
@@ -372,7 +369,6 @@ export const fetchContentTypeAttributeRef = (
     dispatch(pushParentSelectedAttribute(selectedAttr));
   }
   const actionMode = getActionModeContentTypeSelectedAttribute(getState());
-  console.log('added to composite', typeAttribute, actionMode);
   if (typeAttribute === TYPE_COMPOSITE && actionMode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
     resolve();
   } else {
@@ -381,10 +377,8 @@ export const fetchContentTypeAttributeRef = (
         response.json().then((json) => {
           if (response.ok) {
             dispatch(setSelectedAttributeRef(json.payload));
-            console.log('what action', actionMode);
             switch (actionMode) {
               case MODE_ADD_ATTRIBUTE_COMPOSITE: {
-                console.log('in action MODE_ADD_ATTRIBUTE_COMPOSITE');
                 dispatch(initialize(formName, {
                   type: json.payload.code,
                   compositeAttributeType: TYPE_COMPOSITE,
@@ -394,12 +388,10 @@ export const fetchContentTypeAttributeRef = (
                 break;
               }
               case MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE: {
-                console.log('in action MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE');
                 dispatch(initialize(formName, { type: json.payload.code }));
                 break;
               }
               case MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE: {
-                console.log('in action MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE');
                 const nestedAttribute = {
                   ...json.payload,
                   type: json.payload.code,
@@ -518,7 +510,6 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
   dispatch,
   getState,
 ) => new Promise((resolve) => {
-  console.log('sendingput', attributeObject.type);
   putAttributeFromContentType(entityCode, attributeObject)
     .then((response) => {
       response.json().then((json) => {
@@ -528,7 +519,6 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
           json.payload.type === TYPE_MONOLIST
             && !getIsMonolistCompositeAttributeType(getState())
         ) {
-          console.log('ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD', entityCode, attributeObject.code);
           history.push(
             routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
               entityCode,
@@ -545,9 +535,7 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
                 compositeAttributeType: TYPE_COMPOSITE,
               }),
             );
-            console.log('done where to go', mode);
             if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE || mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
-              console.log('ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT', entityCode, code);
               history.push(
                 routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT, {
                   entityCode,
@@ -555,13 +543,28 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
                 }),
               );
             } else {
-              console.log('ROUTE_CMS_CONTENTTYPE_EDIT', entityCode);
               history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: entityCode }));
             }
           } else {
-            console.log('ROUTE_CMS_CONTENTTYPE_EDIT', entityCode);
             history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: entityCode }));
           }
+        }
+        resolve();
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPostAttributeFromContentTypeMonolist = (
+  attributeObject, entityCode, history,
+) => dispatch => new Promise((resolve) => {
+  postAttributeFromContentType(entityCode, attributeObject)
+    .then((response) => {
+      response.json().then((json) => {
+        if (!response.ok) {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+        } else {
+          history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: entityCode }));
         }
         resolve();
       });
@@ -646,7 +649,7 @@ const getPayloadFromTypeMonolistAttributeComposite = (composite, childAttribute)
   ...composite,
   nestedAttribute: {
     ...composite.nestedAttribute,
-    compositeAttributes: [childAttribute],
+    compositeAttributes: Array.isArray(childAttribute) ? childAttribute : [childAttribute],
   },
 });
 
@@ -661,24 +664,18 @@ export const handlerAttributeFromContentType = (
   let payload = getPayloadFromTypeAttribute(values, allowedRoles);
   const isMonolistComposite = payload.type === TYPE_MONOLIST
   && payload.nestedAttribute.type === TYPE_COMPOSITE;
-  console.log('params', action, values, allowedRoles, mode, entityCode);
-  console.log('start handling', mode, action, payload);
   if (action === METHODS.POST) {
-    // dispatch(setActionMode(MODE_ADD));
     const attributeSelected = getAttributeSelectFromContentType(getState()) || '';
-    console.log('handling attributeSelected', attributeSelected);
     if (attributeSelected.type === TYPE_COMPOSITE && mode !== MODE_ADD_ATTRIBUTE_COMPOSITE) {
-      console.log('send putting from post');
-      // attributeSelected.compositeAttributes.push(payload);
       dispatch(setActionMode(MODE_ADD_COMPOSITE));
       dispatch(sendPostAttributeFromContentType(attributeSelected, entityCode, history));
-      // dispatch(sendPutAttributeFromContentType(attributeSelected, entityCode, mode, history));
     } else if (payload.type === TYPE_COMPOSITE || isMonolistComposite) {
-      console.log('its a monolistcomp');
       dispatch(setActionMode(MODE_ADD_COMPOSITE));
       dispatch(setNewAttributeComposite(payload));
       if (isMonolistComposite) {
         dispatch(setActionMode(MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE));
+        const selectedAttr = getContentTypeSelectedAttribute(getState());
+        dispatch(pushParentSelectedAttribute(selectedAttr));
         history.push(
           routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
             entityCode,
@@ -688,27 +685,32 @@ export const handlerAttributeFromContentType = (
       }
     } else {
       const newAttributeComposite = getNewAttributeComposite(getState());
-      console.log('posting new attribute', newAttributeComposite);
       if (!isUndefined(newAttributeComposite)) {
         const compositeAttributes = [...getSelectedCompositeAttributes(getState()), payload];
         // const compositeAttributes = [...get(newAttributeComposite, 'compositeAttributes', []), payload];
         payload = getPayloadFromTypeAttributeComposite(newAttributeComposite, compositeAttributes);
       }
-      if (payload && mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
-        dispatch(setSelectedContentTypeAttribute(payload));
-        const parentAttr = getParentSelectedAttribute(getState());
-        console.log('go here', payload, parentAttr);
-        dispatch(popParentSelectedAttribute());
-        dispatch(setSelectedAttributeRef(parentAttr));
-        dispatch(handlerAttributeFromContentType(action, payload, allowedRoles, mode, history));
-      } else {
-        console.log('go else here');
-        if (mode === MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE) {
+      if (payload) {
+        if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
+          dispatch(setSelectedContentTypeAttribute(payload));
+          const parentAttr = getParentSelectedAttribute(getState());
+          dispatch(popParentSelectedAttribute());
+          dispatch(setSelectedAttributeRef(parentAttr));
+          dispatch(handlerAttributeFromContentType(action, payload, allowedRoles, mode, entityCode, history));
+        } else if (mode === MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE) {
           payload = getPayloadFromTypeMonolistAttributeComposite(
             newAttributeComposite,
-            getPayloadFromTypeAttribute(values, allowedRoles),
+            [...getSelectedCompositeAttributes(getState()), getPayloadFromTypeAttribute(values, allowedRoles)],
           );
+          dispatch(setSelectedContentTypeAttribute(payload));
+          const parentAttr = getParentSelectedAttribute(getState());
+          dispatch(popParentSelectedAttribute());
+          dispatch(setSelectedAttributeRef(parentAttr));
+          dispatch(handlerAttributeFromContentType(action, payload, allowedRoles, mode, entityCode, history));
+        } else {
+          dispatch(sendPostAttributeFromContentType(payload, entityCode, history));
         }
+      } else {
         dispatch(sendPostAttributeFromContentType(payload, entityCode, history));
       }
     }
@@ -717,20 +719,17 @@ export const handlerAttributeFromContentType = (
     const isComposite = values.type === TYPE_COMPOSITE
     || payload.type === TYPE_COMPOSITE || isMonolistComposite;
     if (isComposite) {
-      console.log('gotos', mode);
       if (mode === MODE_EDIT_COMPOSITE) {
         dispatch(sendPutAttributeFromContentType(payload, entityCode, mode, history));
       }
       dispatch(setActionMode(MODE_EDIT_COMPOSITE));
     } else {
-      console.log('gotoso', payload);
       if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
         const compositeData = getAttributeSelectFromContentType(getState());
         if (getIsMonolistCompositeAttributeType(getState())) {
           compositeData.nestedAttribute.compositeAttributes.push(payload);
         } else {
           compositeData.compositeAttributes.push(payload);
-          console.log('pushed in', compositeData.compositeAttributes);
         }
         payload = compositeData;
         dispatch(setActionMode(MODE_EDIT_COMPOSITE));
