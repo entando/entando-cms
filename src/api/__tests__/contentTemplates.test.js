@@ -6,6 +6,7 @@ import {
   getContentTemplate,
   putContentTemplate,
   deleteContentTemplate,
+  getContentTemplateDictionary,
 } from 'api/contentTemplates';
 import { makeRequest } from '@entando/apimanager';
 import { GET_CONTENT_TEMPLATES_RESPONSE_OK } from 'testutils/mocks/contentTemplate';
@@ -38,6 +39,22 @@ describe('api/contentTemplates', () => {
       { page: 1, pageSize: 10 },
     );
     expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('getContentTemplates returns error', () => {
+    makeRequest.mockImplementationOnce(jest.fn(({ errors }) => errors()));
+    getContentTemplates();
+    expect(makeRequest).toHaveBeenCalledWith(
+      {
+        uri: '/api/plugins/cms/contentmodels',
+        method: 'GET',
+        mockResponse: GET_CONTENT_TEMPLATES_RESPONSE_OK,
+        contentType: 'application/json',
+        useAuthentication: true,
+        errors: expect.any(Function),
+      },
+      { page: 1, pageSize: 10 },
+    );
   });
 
   it('postContentTemplate returns a promise with correct params', () => {
@@ -86,6 +103,20 @@ describe('api/contentTemplates', () => {
       mockResponse: { code: '<contentTemplateId>' },
       useAuthentication: true,
     });
+    expect(response).toBeInstanceOf(Promise);
+  });
+
+  it('getContentTemplateDictionary returns a promise with correct params', () => {
+    const response = getContentTemplateDictionary();
+    expect(makeRequest).toHaveBeenCalledWith(
+      {
+        uri: '/api/plugins/cms/contentmodels/dictionary',
+        method: 'GET',
+        mockResponse: GET_CONTENT_TEMPLATES_RESPONSE_OK,
+        useAuthentication: true,
+        errors: expect.any(Function),
+      },
+    );
     expect(response).toBeInstanceOf(Promise);
   });
 });

@@ -52,7 +52,6 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code: params.entityCode })); },
   onSubmit: (values, allowedRoles, mode) => {
-    console.log('onSubmit', values, allowedRoles, mode, params.entityCode);
     dispatch(
       handlerAttributeFromContentType(
         METHODS.POST,

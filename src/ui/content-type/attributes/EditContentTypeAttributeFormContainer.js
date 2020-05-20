@@ -67,7 +67,6 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: (mode) => {
     dispatch(setVisibleModal(''));
-    console.log('lemode', mode);
     if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
       dispatch(setActionMode(MODE_EDIT_COMPOSITE));
       history.push(

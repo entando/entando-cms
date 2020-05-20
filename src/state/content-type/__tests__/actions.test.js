@@ -18,6 +18,7 @@ import {
   SET_SELECTED_CONTENT_TYPE,
   SET_SELECTED_ATTRIBUTE_FOR_CONTENTTYPE,
   SET_SELECTED_ATTRIBUTE,
+  PUSH_PARENT_SELECTED_ATTRIBUTE,
   REMOVE_ATTRIBUTE,
   MOVE_ATTRIBUTE_UP,
   MOVE_ATTRIBUTE_DOWN,
@@ -32,6 +33,7 @@ import {
   getActionModeContentTypeSelectedAttribute,
   getFormTypeValue,
   getAttributeSelectFromContentType,
+  getNewAttributeComposite,
 } from 'state/content-type/selectors';
 import {
   sendPostContentType,
@@ -129,6 +131,7 @@ jest.mock('state/content-type/selectors', () => ({
   getSelectedContentType: jest.fn().mockReturnValue({ code: 'ContentType_code' }),
   getSelectedAttributeType: jest.fn(),
   getActionModeContentTypeSelectedAttribute: jest.fn(),
+  getContentTypeSelectedAttribute: jest.fn(),
   getFormTypeValue: jest.fn(),
   getIsMonolistCompositeAttributeType: jest.fn(),
   getMonolistAttributeType: jest.fn(),
@@ -655,7 +658,7 @@ describe('state/content-type/actions ', () => {
           mockApi({ payload: { type: 'Monolist' } }),
         );
         store
-          .dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monolist', history))
+          .dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monolist', '', history))
           .then(() => {
             expect(putAttributeFromContentType).toHaveBeenCalled();
             done();
@@ -668,7 +671,7 @@ describe('state/content-type/actions ', () => {
           mockApi({ payload: { type: 'Monotext' } }),
         );
         store
-          .dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monotext', history))
+          .dispatch(sendPutAttributeFromContentType({ code: 'AAA' }, 'Monotext', '', history))
           .then(() => {
             expect(putAttributeFromContentType).toHaveBeenCalled();
             done();
@@ -679,7 +682,7 @@ describe('state/content-type/actions ', () => {
       it('sendPutAttributeFromContentType calls ADD_ERROR actions', (done) => {
         putAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
         store
-          .dispatch(sendPutAttributeFromContentType('AAA'), 'Monolist', history)
+          .dispatch(sendPutAttributeFromContentType('AAA'), 'Monolist', '', history)
           .then(() => {
             const actions = store.getActions();
             expect(actions).toHaveLength(1);
@@ -833,11 +836,12 @@ describe('state/content-type/actions ', () => {
           .then(() => {
             expect(getContentTypeAttribute).not.toHaveBeenCalled();
             const actions = store.getActions();
-            expect(actions).toHaveLength(1);
+            expect(actions).toHaveLength(2);
             expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
             expect(actions[0]).toHaveProperty('payload', {
               actionMode: MODE_ADD_ATTRIBUTE_COMPOSITE,
             });
+            expect(actions[1]).toHaveProperty('type', PUSH_PARENT_SELECTED_ATTRIBUTE);
             expect(routeFunc).not.toHaveBeenCalled();
             done();
           })
@@ -957,11 +961,7 @@ describe('state/content-type/actions ', () => {
           store.dispatch(
             handlerAttributeFromContentType(METHODS.POST, CONTENT_TYPE_ATTRIBUTE, allowedRoles),
           );
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
-          expect(postAttributeFromContentType).toHaveBeenCalled();
+          expect(getNewAttributeComposite).toHaveBeenCalled();
           done();
         });
 
@@ -994,24 +994,24 @@ describe('state/content-type/actions ', () => {
           store.dispatch(
             handlerAttributeFromContentType(METHODS.POST, ATTRIBUTE_TYPE_DATE, allowedRoles),
           );
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
-          expect(postAttributeFromContentType).toHaveBeenCalled();
+          expect(getNewAttributeComposite).toHaveBeenCalled();
         });
 
         it('action add sub attribute to Composite attribute', (done) => {
           postAttributeFromContentType.mockImplementationOnce(mockApi({}));
           getAttributeSelectFromContentType.mockReturnValueOnce(ATTRIBUTE_COMPOSITE);
           store.dispatch(
-            handlerAttributeFromContentType(METHODS.POST, CONTENT_TYPE_ATTRIBUTE, allowedRoles),
+            handlerAttributeFromContentType(
+              METHODS.POST,
+              CONTENT_TYPE_ATTRIBUTE,
+              allowedRoles,
+              MODE_ADD_COMPOSITE,
+            ),
           );
           const actions = store.getActions();
-          expect(actions).toHaveLength(2);
+          expect(actions).toHaveLength(1);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
-          expect(putAttributeFromContentType).toHaveBeenCalled();
+          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD_COMPOSITE });
           done();
         });
 
@@ -1022,12 +1022,10 @@ describe('state/content-type/actions ', () => {
             handlerAttributeFromContentType(METHODS.POST, ATTRIBUTE_COMPOSITE, allowedRoles),
           );
           const actions = store.getActions();
-          expect(actions).toHaveLength(3);
+          expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
-          expect(actions[1]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[1]).toHaveProperty('payload', { actionMode: MODE_ADD_COMPOSITE });
-          expect(actions[2]).toHaveProperty('type', SET_NEW_ATTRIBUTE_COMPOSITE);
+          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD_COMPOSITE });
+          expect(actions[1]).toHaveProperty('type', SET_NEW_ATTRIBUTE_COMPOSITE);
         });
 
         it('action new Monolist Composite attribute', () => {
@@ -1039,7 +1037,7 @@ describe('state/content-type/actions ', () => {
               METHODS.POST,
               ATTRIBUTE_MONOLIST_COMPOSITE,
               allowedRoles,
-              null,
+              'addComposite',
               'Monolist',
               history,
             ),
@@ -1047,12 +1045,10 @@ describe('state/content-type/actions ', () => {
           const actions = store.getActions();
           expect(actions).toHaveLength(4);
           expect(actions[0]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD });
-          expect(actions[1]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[1]).toHaveProperty('payload', { actionMode: MODE_ADD_COMPOSITE });
-          expect(actions[2]).toHaveProperty('type', SET_NEW_ATTRIBUTE_COMPOSITE);
-          expect(actions[3]).toHaveProperty('type', SET_ACTION_MODE);
-          expect(actions[3]).toHaveProperty('payload', {
+          expect(actions[0]).toHaveProperty('payload', { actionMode: MODE_ADD_COMPOSITE });
+          expect(actions[1]).toHaveProperty('type', SET_NEW_ATTRIBUTE_COMPOSITE);
+          expect(actions[2]).toHaveProperty('type', SET_ACTION_MODE);
+          expect(actions[2]).toHaveProperty('payload', {
             actionMode: MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE,
           });
         });

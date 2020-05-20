@@ -3,7 +3,6 @@ import { GET_CONTENT_TEMPLATES_RESPONSE_OK } from 'testutils/mocks/contentTempla
 
 const contentTemplatesPath = '/api/plugins/cms/contentmodels';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getContentTemplates = (page = { page: 1, pageSize: 10 }, params = '') => makeRequest(
   {
     uri: `${contentTemplatesPath}${params}`,

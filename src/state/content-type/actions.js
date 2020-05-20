@@ -528,14 +528,18 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
         } else {
           dispatch(setSelectedContentTypeAttribute(json.payload));
           const { type, code } = attributeObject;
-          if (type === TYPE_COMPOSITE || (type === TYPE_MONOLIST && getIsMonolistCompositeAttributeType(getState()))) {
+          if (type === TYPE_COMPOSITE || (
+            type === TYPE_MONOLIST
+            && getIsMonolistCompositeAttributeType(getState())
+          )) {
             dispatch(
               initialize('attribute', {
                 ...json.payload,
                 compositeAttributeType: TYPE_COMPOSITE,
               }),
             );
-            if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE || mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
+            if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE
+              || mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
               history.push(
                 routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT, {
                   entityCode,
@@ -687,29 +691,41 @@ export const handlerAttributeFromContentType = (
       const newAttributeComposite = getNewAttributeComposite(getState());
       if (!isUndefined(newAttributeComposite)) {
         const compositeAttributes = [...getSelectedCompositeAttributes(getState()), payload];
-        // const compositeAttributes = [...get(newAttributeComposite, 'compositeAttributes', []), payload];
         payload = getPayloadFromTypeAttributeComposite(newAttributeComposite, compositeAttributes);
       }
-      if (payload) {
-        if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
-          dispatch(setSelectedContentTypeAttribute(payload));
-          const parentAttr = getParentSelectedAttribute(getState());
-          dispatch(popParentSelectedAttribute());
-          dispatch(setSelectedAttributeRef(parentAttr));
-          dispatch(handlerAttributeFromContentType(action, payload, allowedRoles, mode, entityCode, history));
-        } else if (mode === MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE) {
-          payload = getPayloadFromTypeMonolistAttributeComposite(
-            newAttributeComposite,
-            [...getSelectedCompositeAttributes(getState()), getPayloadFromTypeAttribute(values, allowedRoles)],
-          );
-          dispatch(setSelectedContentTypeAttribute(payload));
-          const parentAttr = getParentSelectedAttribute(getState());
-          dispatch(popParentSelectedAttribute());
-          dispatch(setSelectedAttributeRef(parentAttr));
-          dispatch(handlerAttributeFromContentType(action, payload, allowedRoles, mode, entityCode, history));
-        } else {
-          dispatch(sendPostAttributeFromContentType(payload, entityCode, history));
-        }
+      if (mode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
+        dispatch(setSelectedContentTypeAttribute(payload));
+        const parentAttr = getParentSelectedAttribute(getState());
+        dispatch(popParentSelectedAttribute());
+        dispatch(setSelectedAttributeRef(parentAttr));
+        dispatch(handlerAttributeFromContentType(
+          action,
+          payload,
+          allowedRoles,
+          mode,
+          entityCode,
+          history,
+        ));
+      } else if (mode === MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE) {
+        payload = getPayloadFromTypeMonolistAttributeComposite(
+          newAttributeComposite,
+          [
+            ...getSelectedCompositeAttributes(getState()),
+            getPayloadFromTypeAttribute(values, allowedRoles),
+          ],
+        );
+        dispatch(setSelectedContentTypeAttribute(payload));
+        const parentAttr = getParentSelectedAttribute(getState());
+        dispatch(popParentSelectedAttribute());
+        dispatch(setSelectedAttributeRef(parentAttr));
+        dispatch(handlerAttributeFromContentType(
+          action,
+          payload,
+          allowedRoles,
+          mode,
+          entityCode,
+          history,
+        ));
       } else {
         dispatch(sendPostAttributeFromContentType(payload, entityCode, history));
       }
