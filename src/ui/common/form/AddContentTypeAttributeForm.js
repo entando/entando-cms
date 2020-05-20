@@ -74,7 +74,7 @@ export class AttributeFormBody extends Component {
       if (dirty) {
         onCancel();
       } else {
-        onDiscard();
+        onDiscard(mode);
       }
     };
 
@@ -187,7 +187,7 @@ export class AttributeFormBody extends Component {
               invalid={invalid}
               submitting={submitting}
               onSave={onSave}
-              onDiscard={onDiscard}
+              onDiscard={() => onDiscard(mode)}
             />
           </Col>
         </Row>

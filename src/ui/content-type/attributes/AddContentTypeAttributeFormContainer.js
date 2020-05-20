@@ -8,9 +8,9 @@ import { routeConverter } from '@entando/utils';
 import AddContentTypeAttributeForm from 'ui/common/form/AddContentTypeAttributeForm';
 import {
   setActionMode,
-  fetchContentTypeAttributes,
+  fetchContentTypeAttributeRefs,
   handlerAttributeFromContentType,
-  fetchContentTypeAttribute,
+  fetchContentTypeAttributeRef,
   removeAttributeFromComposite,
   moveAttributeFromComposite,
 } from 'state/content-type/actions';
@@ -46,7 +46,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
   onDidMount: () => {
     dispatch(clearErrors());
-    dispatch(fetchContentTypeAttributes());
+    dispatch(fetchContentTypeAttributeRefs());
   },
   onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('addAttribute')); },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
@@ -71,7 +71,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     } = props;
     dispatch(setActionMode(MODE_ADD));
     dispatch(
-      fetchContentTypeAttribute(
+      fetchContentTypeAttributeRef(
         attributeCode,
         () => history.push(routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode })),
         code,

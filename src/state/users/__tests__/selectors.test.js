@@ -1,4 +1,5 @@
 import {
+  getUsers,
   getUsersIdList,
   getUsersMap,
   getUserList,
@@ -19,6 +20,9 @@ const TEST_STATE = {
 
 
 describe('state/users/selectors', () => {
+  it('verify getUsers selector', () => {
+    expect(getUsers(TEST_STATE)).toEqual(TEST_STATE.apps.cms.users);
+  });
   it('verify getUsersIdList selector', () => {
     expect(getUsersIdList(TEST_STATE)).toEqual(TEST_STATE.apps.cms.users.list);
   });
