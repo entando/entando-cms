@@ -2,6 +2,8 @@
 
 This project contains the `App Builder` screens for the CMS app of Entando.
 
+Information below is for building and running locally directly from source. If you're looking for information installing the platform head to https://docs.entando.com
+
 ---
 
 # Developer Prerequesites
