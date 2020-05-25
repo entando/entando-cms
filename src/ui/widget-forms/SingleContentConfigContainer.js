@@ -3,19 +3,18 @@ import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
-import ContentConfigFormBody from 'ui/widget-forms/ContentConfigFormBody';
+import SingleContentConfigFormBody from 'ui/widget-forms/SingleContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
-import { getSearchPagesRaw } from 'state/pages/selectors';
-import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import { formValueSelector, reduxForm, submit } from 'redux-form';
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { ContentsFilterModalID } from './contents-filter/ContentsFilterModal';
 
 const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
@@ -34,8 +33,6 @@ export const mapStateToProps = (state, ownProps) => {
   return ({
     contentTemplates: getContentTemplateList(state),
     initialValues: widgetConfig,
-    languages: getActiveLanguages(state),
-    pages: getSearchPagesRaw(state),
     language: getLocale(state),
     widgetCode: ownProps.widgetCode,
     chosenContents: formValueSelector(SingleContentConfigContainerId)(state, 'contents'),
@@ -82,10 +79,12 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     const { history, pageCode } = ownProps;
     history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
   },
+  showFilterModal: () => dispatch(setVisibleModal(ContentsFilterModalID)),
+  onSelectContent: () => dispatch(console.log('onSelectContent')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(reduxForm({
   form: SingleContentConfigContainerId,
-})(ContentConfigFormBody)));
+})(SingleContentConfigFormBody)));

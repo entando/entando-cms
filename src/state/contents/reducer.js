@@ -7,6 +7,7 @@ import {
   SET_SORT,
   SET_CONTENT_TYPE,
   SET_GROUP,
+  SELECT_SINGLE_ROW,
   SELECT_ROW,
   SELECT_ALL_ROWS,
   SET_JOIN_CONTENT_CATEGORY,
@@ -121,6 +122,15 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         sortingColumns: action.payload,
+      };
+    }
+    case SELECT_SINGLE_ROW: {
+      const row = action.payload;
+      const selectedRows = [];
+      selectedRows.push(row.id);
+      return {
+        ...state,
+        selectedRows: selectedRows,
       };
     }
     case SELECT_ROW: {

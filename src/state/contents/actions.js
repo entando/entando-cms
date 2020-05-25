@@ -18,7 +18,7 @@ import {
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
   SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
-  RESET_AUTHOR_STATUS,
+  RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
 
@@ -97,7 +97,10 @@ export const setCurrentColumnsShow = column => ({
   type: SET_CURRENT_COLUMNS_SHOW,
   payload: column,
 });
-
+export const selectSingleRow = row => ({
+  type: SELECT_SINGLE_ROW,
+  payload: row,
+});
 export const selectRow = row => ({
   type: SELECT_ROW,
   payload: row,
