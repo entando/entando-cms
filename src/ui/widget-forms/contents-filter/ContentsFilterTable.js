@@ -79,8 +79,7 @@ class ContentsFilterTable extends Component {
 
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl, onEditContent, onClickDelete,
-      onClickPublish, onClickClone, groups,
+      activeColumns, availableColumns, intl, groups,
     } = this.props;
     const currentActiveColumns = ['selectAll', ...activeColumns];
     const allColumns = [{ code: 'selectAll' }, ...availableColumns];
@@ -218,7 +217,6 @@ class ContentsFilterTable extends Component {
             bordered
             hover
             dataTable
-            selectableRows
             columns={columns}
             components={{
               header: {
@@ -252,18 +250,6 @@ class ContentsFilterTable extends Component {
             onLastPage={() => this.onPageChange(lastPage)}
           />
         </div>
-        <Row>
-          <Col xs={12}>
-
-          <Button
-            className="pull-right ContentsFilterTable__choose--btn"
-            type="submit"
-            bsStyle="primary"
-          >
-            <FormattedMessage id="cms.contents.confirm" />
-          </Button>
-        </Col>
-      </Row>
       </Col>
     );
   }

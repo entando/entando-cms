@@ -3,10 +3,8 @@ import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
-import SingleContentConfigFormBody from 'ui/widget-forms/SingleContentConfigFormBody';
+import SingleContentConfigFormBody from 'ui/widget-forms/publish-single-content-config/SingleContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
-import { fetchSearchPages } from 'state/pages/actions';
-import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
@@ -14,7 +12,7 @@ import { formValueSelector, reduxForm, submit } from 'redux-form';
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
-import { ContentsFilterModalID } from './contents-filter/ContentsFilterModal';
+import { ContentsFilterModalID } from '../contents-filter/ContentsFilterModal';
 
 const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
@@ -42,8 +40,6 @@ export const mapStateToProps = (state, ownProps) => {
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
     dispatch(fetchContentTemplateListPaged({ page: 1, pageSize: 0 }));
-    dispatch(fetchLanguages({ page: 1, pageSize: 0 }));
-    dispatch(fetchSearchPages({ page: 1, pageSize: 0 }));
   },
   onSubmit: (values) => {
     dispatch(clearErrors());
@@ -80,7 +76,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
   },
   showFilterModal: () => dispatch(setVisibleModal(ContentsFilterModalID)),
-  onSelectContent: () => dispatch(console.log('onSelectContent')),
+  onSelectContent: (selectContent) => {
+    console.log('selectContent', selectContent);
+    dispatch(setVisibleModal(''));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {

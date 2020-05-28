@@ -76,7 +76,12 @@ class ContentsFilterModal extends Component {
       onCheckStatus, onCheckAccess, accessChecked, onCheckAuthor, authorChecked,
       currentAuthorShow, currentStatusShow, currentColumnsShow,
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
-      onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows, onSelectRow,
+      onSetContentType,
+      onSetGroup,
+      sortingColumns,
+      onSetSort,
+      selectedRows,
+      onSelectRow,
       currentUsername,
       onAdvancedFilterSearch, users,
     } = this.props;
@@ -94,7 +99,7 @@ class ContentsFilterModal extends Component {
         bsStyle="primary"
         disabled={invalid || submitting}
         id="ContentsFilterModal__button-save"
-        onClick={() => onSave()}
+        onClick={() => onSave(selectedRows) }
       >
         <FormattedMessage id="cms.label.save" />
       </Button>,
@@ -189,13 +194,9 @@ ContentsFilterModal.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
-  contentText: PropTypes.string,
   intl: intlShape.isRequired,
-  contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  languages: PropTypes.arrayOf(PropTypes.shape({})),
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
   dirty: PropTypes.bool,
   onCancel: PropTypes.func.isRequired,
@@ -238,8 +239,6 @@ ContentsFilterModal.defaultProps = {
   modalTitleText: '',
   invalid: false,
   submitting: false,
-  contentText: '',
-  languages: [],
   pages: [],
   dirty: false,
   loading: false,

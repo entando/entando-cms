@@ -425,6 +425,7 @@ export default {
     'contentPicker.allStatuses': 'All',
     'contentPicker.allTypes': 'All',
     'contentPicker.searchPlaceholder': 'Search for a content by name or code',
+    'widget.singleContent.config.title': 'Publish a content',
     'widget.singleContent.config.content': 'Content',
     'widget.singleContent.config.contentTemplate': 'Content template',
   },

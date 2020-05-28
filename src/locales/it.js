@@ -418,6 +418,7 @@ export default {
     'contentPicker.allStatuses': 'Tutti',
     'contentPicker.allTypes': 'Tutti',
     'contentPicker.searchPlaceholder': 'Cerca un contenuto per nome o codice',
+    'widget.singleContent.config.title': 'Pubblica un contenuto',
     'widget.singleContent.config.content': 'Contenuto',
     'widget.singleContent.config.contentTemplate': 'Template di contenuto',
   },
