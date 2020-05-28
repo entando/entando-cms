@@ -209,7 +209,7 @@
     "@entando/apimanager": "^4.2.0",
     "@entando/menu": "^2.0.0",
     "@entando/messages": "^1.0.4",
-    "@entando/utils": "^2.1.1",
+    "@entando/utils": "^2.3.0",
     "flux-standard-action": "^2.0.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
