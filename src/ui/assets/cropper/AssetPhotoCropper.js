@@ -325,6 +325,7 @@ class AssetPhotoCropper extends Component {
               src={croppedImg || imgSrc}
               preview=".AssetPhotoCropper__crop-preview"
               style={{ height: 400 }}
+              crossOrigin="use-credentials"
               crop={this.onCropDetailsChange}
             />
           </Col>
