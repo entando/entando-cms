@@ -17,3 +17,4 @@ export const SET_JOIN_CONTENT_CATEGORY = 'cms/contents/set-join-content-category
 export const RESET_JOIN_CONTENT_CATEGORIES = 'cms/contents/reset-join-content-categories';
 export const SET_TAB_SEARCH = 'cms/contents/set-tab-search';
 export const RESET_AUTHOR_STATUS = 'cms/contents/reset-author-status';
+export const CLEAR_CONTENTS_STATE = 'cms/contents/clear-content-state';

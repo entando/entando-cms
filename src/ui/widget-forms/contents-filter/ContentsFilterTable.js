@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, FormattedMessage } from 'react-intl';
+import { intlShape } from 'react-intl';
 import {
-  Table, Button, Row, Col,
+  Table, Col,
   customHeaderFormattersDefinition,
   PAGINATION_VIEW, PaginationRow, TABLE_SORT_DIRECTION,
   selectionHeaderCellFormatter, selectionCellFormatter, sortableHeaderCellFormatter,
-  tableCellFormatter, actionHeaderCellFormatter, MenuItem,
+  tableCellFormatter, actionHeaderCellFormatter,
 } from 'patternfly-react';
 import * as resolve from 'table-resolver';
 import { formatDate } from '@entando/utils';
 
 class ContentsFilterTable extends Component {
-
   constructor(props) {
     super(props);
     // enables our custom header formatters extensions to reactabular
@@ -271,11 +270,12 @@ ContentsFilterTable.propTypes = {
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
-  onSelectAllRows: PropTypes.func.isRequired,
+  onSelectAllRows: PropTypes.func,
 };
 
 ContentsFilterTable.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
+  onSelectAllRows: () => {},
 };
 
 export default ContentsFilterTable;

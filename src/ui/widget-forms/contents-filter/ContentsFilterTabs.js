@@ -12,30 +12,28 @@ import MultiSelectMenuItem from 'ui/common/form/MultiSelectMenuItem';
 const ContentFilterTabs = ({
   intl, availableColumns, messages, currentColumnsShow, currentAuthorShow,
   currentStatusShow, onSetCurrentColumnsShow, onSetCurrentStatusShow, onSetCurrentAuthorShow,
-  currentUsername,
+  currentUsername, inModal,
 }) => {
-  const filteredAvailableColumns = availableColumns.filter(
-    column => currentColumnsShow.includes(column.code),
-  );
-  const csvHeaders = filteredAvailableColumns.map(
-    column => Object.assign({}, { label: column.name, key: column.code }),
-  );
   const navItems = (
     <div>
-      <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
-        <NavItem eventKey="all">
-          <FormattedMessage id="cms.assets.list.all" defaultMessage="All" />
-        </NavItem>
-        <NavItem eventKey="draft">
-          <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
-        </NavItem>
-        <NavItem eventKey="ready">
-          <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
-        </NavItem>
-        <NavItem eventKey="published">
-          <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
-        </NavItem>
-      </Nav>
+      {
+        !inModal && (
+          <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
+            <NavItem eventKey="all">
+              <FormattedMessage id="cms.assets.list.all" defaultMessage="All" />
+            </NavItem>
+            <NavItem eventKey="draft">
+              <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
+            </NavItem>
+            <NavItem eventKey="ready">
+              <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
+            </NavItem>
+            <NavItem eventKey="published">
+              <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
+            </NavItem>
+          </Nav>
+        )
+      }
 
       <div className="Contents__main-action-button">
         <DropdownButton
@@ -117,6 +115,11 @@ ContentFilterTabs.propTypes = {
   onSetCurrentStatusShow: PropTypes.func.isRequired,
   onSetCurrentColumnsShow: PropTypes.func.isRequired,
   currentUsername: PropTypes.string.isRequired,
+  inModal: PropTypes.bool,
+};
+
+ContentFilterTabs.defaultProps = {
+  inModal: false,
 };
 
 export default ContentFilterTabs;

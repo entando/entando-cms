@@ -12,6 +12,7 @@ import {
   getSelectedRows,
   getJoiningCategories,
   getTabSearchEnabled,
+  getLastSelectedRow,
 } from 'state/contents/selectors';
 
 const TEST_STATE = {
@@ -33,6 +34,7 @@ const TEST_STATE = {
         selectedRows: ['row1', 'row2'],
         currentColumnsShow: ['col1', 'col2'],
         tabSearchEnabled: true,
+        lastSelectedRow: { a: 1 },
       },
     },
   },
@@ -76,6 +78,11 @@ it('verify getAccessChecked selector', () => {
 it('verify getAuthorChecked selector', () => {
   const author = getAuthorChecked(TEST_STATE);
   expect(author).toEqual('me');
+});
+
+it('verify getLastSelectedRow selector', () => {
+  const row = getLastSelectedRow(TEST_STATE);
+  expect(row).toEqual({ a: 1 });
 });
 
 it('verify getCurrentAuthorShow selector', () => {

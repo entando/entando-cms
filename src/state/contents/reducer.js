@@ -14,6 +14,7 @@ import {
   RESET_JOIN_CONTENT_CATEGORIES,
   SET_TAB_SEARCH,
   RESET_AUTHOR_STATUS,
+  CLEAR_CONTENTS_STATE,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -130,7 +131,8 @@ const reducer = (state = defaultState, action = {}) => {
       selectedRows.push(row.id);
       return {
         ...state,
-        selectedRows: selectedRows,
+        selectedRows,
+        lastSelectedRow: row,
       };
     }
     case SELECT_ROW: {
@@ -213,6 +215,9 @@ const reducer = (state = defaultState, action = {}) => {
         ...state,
         joiningCategories: [],
       };
+    }
+    case CLEAR_CONTENTS_STATE: {
+      return defaultState;
     }
     default:
       return state;

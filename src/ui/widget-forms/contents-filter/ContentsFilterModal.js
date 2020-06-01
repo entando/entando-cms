@@ -60,15 +60,19 @@ const AVAILABLE_COLUMNS = [
 
 
 class ContentsFilterModal extends Component {
-
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
   }
 
+  componentWillUnmount() {
+    const { onWillUnmount } = this.props;
+    onWillUnmount();
+  }
+
   render() {
     const {
-      modalTitleText, onSave, onDiscard, invalid, submitting,
+      modalTitleText, onSave, invalid, submitting,
       intl,
       page, totalItems, pageSize, contents, lastPage, loading,
       currentQuickFilter, onSetQuickFilter, onFilteredSearch,
@@ -82,26 +86,22 @@ class ContentsFilterModal extends Component {
       onSetSort,
       selectedRows,
       onSelectRow,
-      currentUsername,
+      currentUsername, lastSelectedRow,
       onAdvancedFilterSearch, users,
     } = this.props;
 
+    const contentChosen = lastSelectedRow && (lastSelectedRow.id || lastSelectedRow.contentId);
     const buttons = [
-      <Button
-        bsStyle="danger"
-        id="ContentsFilterModal__button-cancel"
-        onClick={() => onDiscard()}
-      >
-        <FormattedMessage id="cms.label.dontSave" />
-      </Button>,
       <Button
         type="button"
         bsStyle="primary"
-        disabled={invalid || submitting}
+        disabled={invalid || submitting || !contentChosen}
         id="ContentsFilterModal__button-save"
-        onClick={() => onSave(selectedRows) }
+        onClick={() => {
+          onSave(lastSelectedRow);
+        }}
       >
-        <FormattedMessage id="cms.label.save" />
+        <FormattedMessage id="cms.label.choose" />
       </Button>,
     ];
 
@@ -145,6 +145,7 @@ class ContentsFilterModal extends Component {
             currentUsername={currentUsername}
             onAdvancedFilterSearch={onAdvancedFilterSearch}
             users={users}
+            inModal
           />
           <div className="Contents__body">
             <ContentsFilterTabs
@@ -160,6 +161,7 @@ class ContentsFilterModal extends Component {
               onSetCurrentStatusShow={onSetCurrentStatusShow}
               onSetCurrentColumnsShow={onSetCurrentColumnsShow}
               currentUsername={currentUsername}
+              inModal
             />
             <div>
               <Spinner loading={!!loading}>
@@ -185,21 +187,17 @@ class ContentsFilterModal extends Component {
         </Fragment>
       </GenericModalContainer>
     );
-  };
+  }
 }
 
 ContentsFilterModal.propTypes = {
   modalTitleText: PropTypes.string,
   onSave: PropTypes.func.isRequired,
-  onDiscard: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   intl: intlShape.isRequired,
-  pages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
-  dirty: PropTypes.bool,
-  onCancel: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   lastPage: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
@@ -233,16 +231,20 @@ ContentsFilterModal.propTypes = {
   currentUsername: PropTypes.string.isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({})),
+  onWillUnmount: PropTypes.func.isRequired,
+  lastSelectedRow: PropTypes.shape({
+    id: PropTypes.string,
+    contentId: PropTypes.string,
+  }),
 };
 
 ContentsFilterModal.defaultProps = {
   modalTitleText: '',
   invalid: false,
   submitting: false,
-  pages: [],
-  dirty: false,
   loading: false,
   users: [],
+  lastSelectedRow: {},
 };
 
 export default ContentsFilterModal;

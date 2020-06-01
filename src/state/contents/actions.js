@@ -18,11 +18,15 @@ import {
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
   SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
-  RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW,
+  RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
 
 const pageDefault = { page: 1, pageSize: 10 };
+
+export const clearContentsState = () => ({
+  type: CLEAR_CONTENTS_STATE,
+});
 
 export const setContents = contents => ({
   type: SET_CONTENTS,
@@ -138,7 +142,7 @@ export const fetchContents = (page = pageDefault,
 });
 
 export const fetchContentsWithFilters = (
-  params, newPagination, newSort,
+  params, newPagination, newSort, quickFilterStatusParam = '',
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
@@ -153,7 +157,7 @@ export const fetchContentsWithFilters = (
   const eq = FILTER_OPERATORS.EQUAL;
   const like = FILTER_OPERATORS.LIKE;
   if (params) {
-    query = `${convertToQueryString({ sorting })}&${params}`;
+    query = `${convertToQueryString({ sorting })}&${params}${quickFilterStatusParam}`;
     return dispatch(fetchContents(pagination, query));
   }
   if (qfValue) {
@@ -194,7 +198,7 @@ export const fetchContentsWithFilters = (
     operators[att] = operator || eq;
     return null;
   });
-  query = `${convertToQueryString({ formValues, operators, sorting })}${published}${categories}`;
+  query = `${convertToQueryString({ formValues, operators, sorting })}${categories}${quickFilterStatusParam || published}`;
   return dispatch(fetchContents(pagination, query));
 };
 
@@ -229,13 +233,15 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
   return dispatch(fetchContents(pagination, query));
 };
 
-export const fetchContentsPaged = (params, page, sort, tabSearch) => (dispatch, getState) => {
+export const fetchContentsPaged = (params, page, sort, tabSearch, quickFilterStatusParam) => (
+  dispatch, getState,
+) => {
   const state = getState();
   const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
   if (tabSearchEnabled) {
     return dispatch(fetchContentsWithTabs(page, sort));
   }
-  return dispatch(fetchContentsWithFilters(params, page, sort));
+  return dispatch(fetchContentsWithFilters(params, page, sort, quickFilterStatusParam));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {

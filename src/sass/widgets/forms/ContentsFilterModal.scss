@@ -1,6 +1,6 @@
-#ContentsFilterModal {
-  .modal-dialog {
-    margin: auto;
+.ContentsFilterModal {
+  .modal-dialog { // sass-lint:disable-line class-name-format
     width: 80%;
+    margin: auto;
   }
 }

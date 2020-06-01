@@ -82,12 +82,14 @@ const ContentTableRenderer = ({
 
   return (
     <div className="FiltersSelectRenderer well">
-      {multipleContentsMode && <ContentPickerContainer
+      {multipleContentsMode && (
+      <ContentPickerContainer
         form="contentPicker"
         onPickContent={handlePickContent}
         multipleContentsMode={multipleContentsMode}
         contentsNumber={fields.length}
-      />}
+      />
+      )}
       <Table bordered striped>
         <thead>
           <tr>

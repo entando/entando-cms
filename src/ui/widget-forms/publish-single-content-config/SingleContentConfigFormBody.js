@@ -5,8 +5,10 @@ import {
 } from 'react-intl';
 import { Field } from 'redux-form';
 import {
-  Button, Row, Col, FormGroup,
+  Button, Row, Col,
 } from 'patternfly-react';
+import FormSectionTitle from 'ui/common/form/FormSectionTitle';
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from '../contents-filter/ContentsFilterModalContainer';
 
 export default class SingleContentConfigFormBody extends PureComponent {
@@ -22,18 +24,15 @@ export default class SingleContentConfigFormBody extends PureComponent {
       invalid,
       submitting,
       intl,
-      widgetCode,
-      chosenContents,
+      chosenContent,
       dirty,
       onCancel,
       onDiscard,
       showFilterModal,
       onSelectContent,
+      onSave,
     } = this.props;
-    const noContents = chosenContents.length === 0;
-    console.log('noContents', noContents);
-    console.log('chosenContents', chosenContents);
-
+    const contentExists = chosenContent && (chosenContent.id || chosenContent.contentId);
     const handleCancelClick = () => {
       if (dirty) {
         onCancel();
@@ -41,16 +40,13 @@ export default class SingleContentConfigFormBody extends PureComponent {
         onDiscard();
       }
     };
-
-    const content = chosenContents[0];
+    const content = chosenContent;
     const contentTypeCodeSub = content.contentId !== undefined ? content.contentId.substr(0, 3) : '';
     const contentTypeCode = content.typeCode || contentTypeCodeSub;
-    console.log('contentTypeCode', contentTypeCode);
 
     const filterByCode = contentTemplate => contentTemplate.contentType === contentTypeCode;
     const contentTemplatesByContentType = [{ id: 'default', descr: intl.formatMessage({ id: 'widget.form.default' }) },
       ...contentTemplates.filter(filterByCode)];
-    console.log('contentTemplatesByContentType', contentTemplatesByContentType);
 
     const contentTemplateOptions = contentTemplatesByContentType
       .map(item => (
@@ -62,31 +58,42 @@ export default class SingleContentConfigFormBody extends PureComponent {
 
     return (
       <Fragment>
-        <h2><FormattedMessage id="widget.form.content" /></h2>
-        <form onSubmit={handleSubmit} className="form-horizontal SingleContentConfigForm well">
-          <FormGroup>
-            <Row>
-              <Col xs={12}>
-                <label><FormattedMessage id="widget.singleContent.config.title" /> </label>
-
-                <h3> <FormattedMessage id="widget.singleContent.config.content" />: {content.contentId} - {content.contentDescription}</h3>
-
-                <Field
-                  name="contentId"
-                  component="span"
+        <Row>
+          <Col xs={12}>
+            <form onSubmit={handleSubmit} className="form-horizontal SingleContentConfigForm well">
+              <div>
+                <span className="icon fa fa-puzzle-piece" title="Widget" />
+                <h5 className="SingleContentConfigFormBody__widgetTitle"><FormattedMessage id="widget.singleContent.config.title" /> </h5>
+                <FormSectionTitle
+                  titleId="app.info"
+                  requireFields={false}
                 />
-                <label><FormattedMessage id="widget.form.contentTemplate" /></label>
-                <Field
-                  name="contentDescription"
-                  component="span"
-                />
+                <h3>
+                  <FormattedMessage id="widget.singleContent.config.content" />: {content.contentId || content.id} - {content.contentDescription || content.description}
+                </h3>
                 <Button
-                  className="pull-right ChooseContentBody__cancel--btn"
+                  className="ChooseContentBody__cancel--btn"
                   bsStyle="default"
                   onClick={showFilterModal}
                 >
                   <FormattedMessage id="cms.contents.change" />
                 </Button>
+                <Field name="chosenContent" component="div" />
+                <Field
+                  name="chosenContent.contentId"
+                  component="span"
+                />
+                <div className="SingleContentConfigFormBody__templateTitle">
+                  <FormSectionTitle
+                    titleId="widget.form.publishingSettings"
+                    requireFields={false}
+                  />
+                  <span><FormattedMessage id="widget.form.contentTemplate" /></span>
+                  <Field
+                    name="chosenContent.contentDescription"
+                    component="span"
+                  />
+                </div>
                 <ContentsFilterModalContainer
                   modalTitleText={intl.formatMessage({ id: 'cms.contents.modal.filter.title' })}
                   invalid={invalid}
@@ -94,47 +101,52 @@ export default class SingleContentConfigFormBody extends PureComponent {
                   onSave={onSelectContent}
                   onDiscard={onDiscard}
                 />
-              </Col>
-            </Row>
 
-            { content.contentId
+                { (content.contentId || content.id)
           && (
           <Row>
-            <Col xs={12}>  <Field
-              component="select"
-              name="contentTemplateModelId"
-              className="form-control"
-            >
-              {contentTemplateOptions}
-            </Field>
+            <Col xs={12}>
+              <Field
+                component="select"
+                name="chosenContent.modelId"
+                className="form-control"
+              >
+                {contentTemplateOptions}
+              </Field>
             </Col>
           </Row>
           )
         }
-
-            <Row>
-              <Col xs={12}>
-                <Button
-                  className="pull-right AddContentTypeFormBody__save--btn"
-                  type="submit"
-                  bsStyle="primary"
-                  disabled={invalid || submitting || noContents}
-                >
-                  <FormattedMessage id="app.save" />
-                </Button>
-                <Button
-                  className="pull-right AddContentTypeFormBody__cancel--btn"
-                  bsStyle="default"
-                  onClick={handleCancelClick}
-                >
-                  <FormattedMessage id="cms.label.cancel" />
-                </Button>
-
-
-              </Col>
-            </Row>
-          </FormGroup>
-        </form>
+                <Row className="SingleContentConfigFormBody__actionBar">
+                  <Col xs={12}>
+                    <Button
+                      className="pull-right AddContentTypeFormBody__save--btn"
+                      type="submit"
+                      bsStyle="primary"
+                      disabled={invalid || submitting || !contentExists}
+                    >
+                      <FormattedMessage id="app.save" />
+                    </Button>
+                    <Button
+                      className="pull-right AddContentTypeFormBody__cancel--btn"
+                      bsStyle="default"
+                      onClick={handleCancelClick}
+                    >
+                      <FormattedMessage id="cms.label.cancel" />
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            </form>
+          </Col>
+        </Row>
+        <ConfirmCancelModalContainer
+          contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+          invalid={invalid}
+          submitting={submitting}
+          onSave={onSave}
+          onDiscard={onDiscard}
+        />
       </Fragment>
     );
   }
@@ -147,17 +159,19 @@ SingleContentConfigFormBody.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   invalid: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
-  language: PropTypes.string.isRequired,
-  widgetCode: PropTypes.string.isRequired,
-  chosenContents: PropTypes.arrayOf(PropTypes.shape({})),
+  chosenContent: PropTypes.shape({
+    id: PropTypes.string,
+    contentId: PropTypes.string,
+  }),
   dirty: PropTypes.bool,
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   showFilterModal: PropTypes.func.isRequired,
   onSelectContent: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 SingleContentConfigFormBody.defaultProps = {
-  chosenContents: [{}],
+  chosenContent: {},
   dirty: false,
 };

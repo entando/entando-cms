@@ -91,7 +91,7 @@ class ContentsFilter extends Component {
     const {
       currentQuickFilter, intl, contentTypes, groups, language, filteringCategories,
       statusChecked, onCheckStatus, accessChecked, onCheckAccess, authorChecked, onCheckAuthor,
-      onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch, users,
+      onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch, users, inModal,
     } = this.props;
 
     const { showAdvancedFilters } = this.state;
@@ -120,6 +120,55 @@ class ContentsFilter extends Component {
           {username}
         </Checkbox>
       ));
+
+
+    const renderedContentsStatusFilter = !inModal && (
+      <div className="ContentsFilter__advanced-filter ContentsFilter__advanced-filter--close form-group">
+        <Col xs={12} sm={2} className="text-right mobile-left">
+          <ControlLabel>
+            <FormLabel labelId="cms.contents.statusMain" />
+          </ControlLabel>
+        </Col>
+        <Col xs={12} sm={10}>
+          <Checkbox
+            className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+            role="button"
+            tabIndex={-2}
+            readOnly
+            checked={statusChecked === PUBLISHED}
+            onClick={() => onCheckStatus(PUBLISHED)}
+            onKeyDown={() => onCheckStatus(PUBLISHED)}
+          >
+            <div className="ContentsFilter__status ContentsFilter__status--published" />
+            <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
+          </Checkbox>
+          <Checkbox
+            className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+            role="button"
+            tabIndex={-3}
+            readOnly
+            checked={statusChecked === READY}
+            onClick={() => onCheckStatus(READY)}
+            onKeyDown={() => onCheckStatus(READY)}
+          >
+            <div className="ContentsFilter__status ContentsFilter__status--review" />
+            <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
+          </Checkbox>
+          <Checkbox
+            className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+            role="button"
+            tabIndex={-4}
+            readOnly
+            checked={statusChecked === UNPUBLISHED}
+            onClick={() => onCheckStatus(UNPUBLISHED)}
+            onKeyDown={() => onCheckStatus(UNPUBLISHED)}
+          >
+            <div className="ContentsFilter__status ContentsFilter__status--unpublished" />
+            <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
+          </Checkbox>
+        </Col>
+      </div>
+    );
 
     const advancedFiltersVisibility = showAdvancedFilters ? 'block' : 'none';
     return (
@@ -199,51 +248,7 @@ class ContentsFilter extends Component {
               />
             </Col>
           </div>
-          <div className="ContentsFilter__advanced-filter ContentsFilter__advanced-filter--close form-group">
-            <Col xs={12} sm={2} className="text-right mobile-left">
-              <ControlLabel>
-                <FormLabel labelId="cms.contents.statusMain" />
-              </ControlLabel>
-            </Col>
-            <Col xs={12} sm={10}>
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-2}
-                readOnly
-                checked={statusChecked === PUBLISHED}
-                onClick={() => onCheckStatus(PUBLISHED)}
-                onKeyDown={() => onCheckStatus(PUBLISHED)}
-              >
-                <div className="ContentsFilter__status ContentsFilter__status--published" />
-                <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
-              </Checkbox>
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-3}
-                readOnly
-                checked={statusChecked === READY}
-                onClick={() => onCheckStatus(READY)}
-                onKeyDown={() => onCheckStatus(READY)}
-              >
-                <div className="ContentsFilter__status ContentsFilter__status--review" />
-                <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
-              </Checkbox>
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-4}
-                readOnly
-                checked={statusChecked === UNPUBLISHED}
-                onClick={() => onCheckStatus(UNPUBLISHED)}
-                onKeyDown={() => onCheckStatus(UNPUBLISHED)}
-              >
-                <div className="ContentsFilter__status ContentsFilter__status--unpublished" />
-                <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
-              </Checkbox>
-            </Col>
-          </div>
+          { renderedContentsStatusFilter }
           <div className="ContentsFilter__advanced-filter form-group">
             <Col xs={12} sm={2} className="text-right mobile-left">
               <ControlLabel>
@@ -349,6 +354,11 @@ ContentsFilter.propTypes = {
   currentUsername: PropTypes.string.isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  inModal: PropTypes.bool,
+};
+
+ContentsFilter.defaultProps = {
+  inModal: false,
 };
 
 export default ContentsFilter;

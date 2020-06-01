@@ -16,6 +16,8 @@ import {
   sendPublishMultipleContents,
   sendCloneContent,
   resetAuthorStatus,
+  clearContentsState,
+  selectSingleRow,
 } from 'state/contents/actions';
 import { postAddContent } from 'api/editContent';
 import {
@@ -24,6 +26,7 @@ import {
   CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW, SET_CURRENT_STATUS_SHOW,
   SET_CURRENT_COLUMNS_SHOW, SELECT_ROW, SELECT_ALL_ROWS, SET_CONTENTS,
   SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES, SET_TAB_SEARCH, RESET_AUTHOR_STATUS,
+  CLEAR_CONTENTS_STATE, SELECT_SINGLE_ROW,
 } from '../types';
 
 const middlewares = [thunk];
@@ -69,6 +72,17 @@ describe('state/contents/actions', () => {
     const action = setContentType('NEWS');
     expect(action).toHaveProperty('type', SET_CONTENT_TYPE);
     expect(action.payload).toEqual('NEWS');
+  });
+
+  it('clearContentsState() should return a well formed action', () => {
+    const action = clearContentsState();
+    expect(action).toHaveProperty('type', CLEAR_CONTENTS_STATE);
+  });
+
+  it('selectSingleRow() should return a well formed action', () => {
+    const action = selectSingleRow(1);
+    expect(action).toHaveProperty('type', SELECT_SINGLE_ROW);
+    expect(action.payload).toEqual(1);
   });
 
   it('setGroup() should return a well formed action', () => {
