@@ -7,6 +7,7 @@ import moment from 'moment';
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
+
 import {
   TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP, TYPE_NUMBER,
   TYPE_LIST, TYPE_MONOLIST,
