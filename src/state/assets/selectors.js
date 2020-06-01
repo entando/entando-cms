@@ -47,7 +47,7 @@ export const condenseAssetInfo = (asset, domain) => {
   const origpath = versions[0].path;
   const newVersions = isImg ? refineImageVersions(versions, domain, dimension) : {};
   const filestrparts = origpath.split('/');
-  const filename = filestrparts[filestrparts.length - 1];
+  const filename = get(metadata, 'File Name', filestrparts[filestrparts.length - 1]);
   const newMetadata = {
     ...metadata,
     type: metadata['Detected File Type Name'],
