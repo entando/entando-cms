@@ -1,8 +1,19 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import { configEnzymeAdapter, createMockHistory, mockRenderWithRouter } from 'testutils/helpers';
+import { mount } from 'enzyme';
+import {
+  configEnzymeAdapter,
+  createMockHistory,
+  mockRenderWithRouter,
+  mockRenderWithStore,
+} from 'testutils/helpers';
 import { Route } from 'react-router-dom';
 import { LinkMenuItem } from '@entando/menu';
+import {
+  SUPERUSER_PERMISSION,
+  CRUD_CONTENTS_PERMISSION,
+  VALIDATE_CONTENTS_PERMISSION,
+  MANAGE_RESOURCES_PERMISSION,
+} from 'state/permissions/const';
 import cms from 'babel';
 
 configEnzymeAdapter();
@@ -51,7 +62,22 @@ describe('exports cms', () => {
 
   describe('the menu key', () => {
     const Menu = cms.menu;
-    const component = shallow(<Menu />);
+    const STATE = {
+      permissions: {
+        list: [
+          SUPERUSER_PERMISSION,
+          CRUD_CONTENTS_PERMISSION,
+          VALIDATE_CONTENTS_PERMISSION,
+          MANAGE_RESOURCES_PERMISSION,
+        ],
+        loggedUser: [SUPERUSER_PERMISSION],
+      },
+    };
+    const history = createMockHistory();
+    const component = mount(mockRenderWithStore(
+      mockRenderWithRouter(<Menu />, history),
+      STATE,
+    ));
 
     it('contains <LinkMenuItem> elements', () => {
       expect(component.find(LinkMenuItem).exists()).toBe(true);

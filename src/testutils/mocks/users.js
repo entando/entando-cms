@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const USERS = [
   {
     username: 'admin',
@@ -47,5 +46,16 @@ export const USERS = [
       fullName: 'User Name3',
       email: 'user3@entando.com',
     },
+  },
+];
+
+export const AUTHORITIES = [
+  {
+    group: 'free',
+    role: 'editUsers',
+  },
+  {
+    group: 'accounting',
+    role: 'supervisor',
   },
 ];

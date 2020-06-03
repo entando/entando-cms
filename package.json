@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "@entando/apimanager": "^6.2.1",
+    "@entando/apimanager": "^6.3.0",
     "@entando/pagetreeselector": "^2.0.0",
     "brace": "^0.11.1",
     "react-ace": "^7.0.2",
@@ -206,10 +206,11 @@
     "update-pkg-extended": "^2.2.1"
   },
   "peerDependencies": {
-    "@entando/apimanager": "^4.2.0",
+    "@entando/apimanager": "^6.3.0",
     "@entando/menu": "^2.0.0",
     "@entando/messages": "^1.0.4",
     "@entando/utils": "^2.3.0",
+    "@entando/pages": "^3.1.4",
     "flux-standard-action": "^2.0.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",

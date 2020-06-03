@@ -6,6 +6,11 @@ import {
 
 import { addErrors, addToast, TOAST_WARNING } from '@entando/messages';
 
+import {
+  fetchPermissions,
+  fetchLoggedUserPermissions,
+} from 'state/permissions/actions';
+
 import { login } from 'api/login';
 
 class ApiManager extends Component {
@@ -39,6 +44,9 @@ class ApiManager extends Component {
 
     if (devMode && !mockMode && !this.isUserLogged()) {
       this.performAutoLogin();
+    } else {
+      dispatch(fetchPermissions())
+        .then(() => store.dispatch(fetchLoggedUserPermissions()));
     }
   }
 

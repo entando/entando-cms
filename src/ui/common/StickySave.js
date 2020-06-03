@@ -5,9 +5,11 @@ import {
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
+import { formatDate, PermissionCheck } from '@entando/utils';
 import { REGULAR_SAVE_TYPE, APPROVE_SAVE_TYPE, CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
-import { formatDate } from '@entando/utils';
+import { withPermissionValues } from 'ui/common/auth/withPermissions';
+import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
 const messages = defineMessages({
   chooseOption: {
@@ -44,7 +46,7 @@ const messages = defineMessages({
 
 const StickySave = ({
   lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
-  onUnpublish, content, isDirty, onCancel, onDiscard, onSave,
+  onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions,
 }) => (
   <Grid className="no-padding">
     <Col xs={12} className="StickySave no-padding">
@@ -107,21 +109,25 @@ const StickySave = ({
                 >
                   {intl.formatMessage(messages.saveAndContinue)}
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={invalid || submitting}
-                  className="StickySave__actionButton"
-                  bsStyle="success"
-                  onClick={handleSubmit(values => onSubmit({
-                    ...values,
-                    contentId: content.id,
-                    saveType: APPROVE_SAVE_TYPE,
-                  }))}
+                <PermissionCheck
+                  requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+                  userPermissions={userPermissions}
                 >
-                  {intl.formatMessage(messages.saveAndApprove)}
-                </Button>
-                {
-                    onLine ? (
+                  <>
+                    <Button
+                      type="submit"
+                      disabled={invalid || submitting}
+                      className="StickySave__actionButton"
+                      bsStyle="success"
+                      onClick={handleSubmit(values => onSubmit({
+                        ...values,
+                        contentId: content.id,
+                        saveType: APPROVE_SAVE_TYPE,
+                      }))}
+                    >
+                      {intl.formatMessage(messages.saveAndApprove)}
+                    </Button>
+                    {onLine && (
                       <Button
                         className="StickySave__actionButton"
                         bsStyle="warning"
@@ -130,8 +136,9 @@ const StickySave = ({
                         <span className="icon fa fa-pause" />
                         {` ${intl.formatMessage(messages.unpublish)}`}
                       </Button>
-                    ) : null
-                  }
+                    )}
+                  </>
+                </PermissionCheck>
                 <Button
                   className="AddContentTypeFormBody__cancel--btn"
                   bsStyle="default"
@@ -171,6 +178,7 @@ StickySave.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  userPermissions: PropTypes.arrayOf(PropTypes.string),
 };
 
 StickySave.defaultProps = {
@@ -178,10 +186,11 @@ StickySave.defaultProps = {
   onLine: false,
   content: {},
   isDirty: false,
+  userPermissions: [],
 };
 
 const StickySaveContainer = reduxForm({
   form: 'editcontentform',
 })(StickySave);
 
-export default StickySaveContainer;
+export default withPermissionValues(StickySaveContainer);
