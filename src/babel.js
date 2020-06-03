@@ -3,7 +3,7 @@ import { cms as state } from 'state/rootReducer';
 import { routes, routesDir } from 'ui/App';
 import en from 'locales/en';
 import it from 'locales/it';
-import SingleContentConfigContainer from 'ui/widget-forms/SingleContentConfigContainer';
+import SingleContentConfigContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigContainer';
 import MultipleContentsConfigContainer from 'ui/widget-forms/MultipleContentsConfigContainer';
 import ContentsQueryConfigContainer from 'ui/widget-forms/ContentsQueryConfigContainer';
 

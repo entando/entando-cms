@@ -59,3 +59,8 @@ export const AUTHORITIES = [
     role: 'supervisor',
   },
 ];
+
+export const EDIT_USER_PROFILE_AUTHORITIES = [{
+  group: 'administratos',
+  permissions: ['editUserProfile'],
+}];

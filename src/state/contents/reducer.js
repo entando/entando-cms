@@ -7,12 +7,14 @@ import {
   SET_SORT,
   SET_CONTENT_TYPE,
   SET_GROUP,
+  SELECT_SINGLE_ROW,
   SELECT_ROW,
   SELECT_ALL_ROWS,
   SET_JOIN_CONTENT_CATEGORY,
   RESET_JOIN_CONTENT_CATEGORIES,
   SET_TAB_SEARCH,
   RESET_AUTHOR_STATUS,
+  CLEAR_CONTENTS_STATE,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -123,6 +125,15 @@ const reducer = (state = defaultState, action = {}) => {
         sortingColumns: action.payload,
       };
     }
+    case SELECT_SINGLE_ROW: {
+      const lastSelectedRow = action.payload;
+      const selectedRows = [lastSelectedRow.id];
+      return {
+        ...state,
+        selectedRows,
+        lastSelectedRow,
+      };
+    }
     case SELECT_ROW: {
       const row = action.payload;
       let { selectedRows } = state;
@@ -203,6 +214,9 @@ const reducer = (state = defaultState, action = {}) => {
         ...state,
         joiningCategories: [],
       };
+    }
+    case CLEAR_CONTENTS_STATE: {
+      return defaultState;
     }
     default:
       return state;

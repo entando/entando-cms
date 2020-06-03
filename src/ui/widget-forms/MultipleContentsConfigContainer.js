@@ -52,7 +52,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     const payload = { ...values, contents: configContents };
     const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
     dispatch(clearErrors());
-    dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+    return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
       if (res) {
         dispatch(addToast(
           intl.formatMessage({ id: 'widget.update.success' }),

@@ -8,7 +8,7 @@ import {
   setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow, fetchContentsPaged,
   setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
   setTabSearch,
-  resetAuthorStatus,
+  resetAuthorStatus, leaveContentsPage,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
@@ -167,6 +167,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
       }
     });
   },
+  onWillUnmount: () => dispatch(leaveContentsPage()),
 });
 
 const ContentsContainer = connect(

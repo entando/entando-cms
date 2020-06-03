@@ -6,7 +6,7 @@ import {
 } from 'state/permissions/actions';
 import { getPermissionsList } from 'state/permissions/selectors';
 import { LIST_PERMISSIONS_OK } from 'testutils/mocks/permissions';
-import { AUTHORITIES } from 'testutils/mocks/users';
+import { AUTHORITIES, EDIT_USER_PROFILE_AUTHORITIES } from 'testutils/mocks/users';
 
 describe('state/permssions/reducer', () => {
   let state = reducer();
@@ -42,6 +42,11 @@ describe('state/permssions/reducer', () => {
       allPermissions: ['editor', 'supervisor', 'superuser', 'editUsers', 'viewUsers'],
     };
 
+    const payloadUserAuthorityForEditUsers = {
+      result: EDIT_USER_PROFILE_AUTHORITIES,
+      allPermissions: ['editor', 'supervisor', 'superuser', 'editUsers', 'viewUsers'],
+    };
+
     it('after action SET_LOGGED_USER_PERMISSIONS', () => {
       state = reducer(state, setLoggedUserPermissions(payloadUserAuthority));
       expect(state.loggedUser).toEqual([...AUTHORITIES.map(auth => auth.role), 'viewUsers']);
@@ -50,6 +55,14 @@ describe('state/permssions/reducer', () => {
     it('after action CLEAR_LOGGED_USER_PERMISSIONS', () => {
       state = reducer(state, clearLoggedUserPermissions());
       expect(state.loggedUser).toBe(null);
+    });
+
+    it('after action SET_LOGGED_USER_PERMISSIONS with different authorities', () => {
+      state = reducer(state, setLoggedUserPermissions(payloadUserAuthorityForEditUsers));
+      expect(state.loggedUser).toEqual([...EDIT_USER_PROFILE_AUTHORITIES.map(auth => auth.permissions[0]), 'viewUsers']);
+
+      state = reducer(state, setLoggedUserPermissions(payloadUserAuthorityForEditUsers));
+      expect(state.loggedUser).toEqual([...EDIT_USER_PROFILE_AUTHORITIES.map(auth => auth.permissions[0]), 'viewUsers']);
     });
   });
 });

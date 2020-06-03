@@ -86,6 +86,11 @@ class Contents extends Component {
     onDidMount();
   }
 
+  componentWillUnmount() {
+    const { onWillUnmount } = this.props;
+    onWillUnmount();
+  }
+
   render() {
     const {
       page, totalItems, pageSize, contents, lastPage, loading,
@@ -248,6 +253,7 @@ Contents.propTypes = {
   onClickClone: PropTypes.func.isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({})),
+  onWillUnmount: PropTypes.func.isRequired,
   userPermissions: PropTypes.arrayOf(PropTypes.string),
 };
 
