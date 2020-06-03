@@ -123,7 +123,7 @@ describe('state/permissions/actions', () => {
         expect(actions).toHaveLength(3);
         const actionPayload = actions[1];
         expect(actionPayload).toHaveProperty('type', SET_LOGGED_USER_PERMISSIONS);
-        expect(actionPayload).toHaveProperty('payload', { 
+        expect(actionPayload).toHaveProperty('payload', {
           result: MY_PERMISSIONS_PAYLOAD_OK,
           allPermissions: ['superuser', 'managePages'],
         });
@@ -140,6 +140,5 @@ describe('state/permissions/actions', () => {
         done();
       }).catch(done.fail);
     });
-
   });
 });
