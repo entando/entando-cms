@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import {
@@ -38,9 +38,9 @@ const messages = defineMessages({
   },
 });
 
-const defaultOwnerGroup = 'free';
+const defaultOwnerGroup = '';
 
-class EditContentFormBody extends React.Component {
+export class EditContentFormBody extends React.Component {
   componentDidMount() {
     const {
       initialize, onDidMount, match: { params = {} },
@@ -96,6 +96,14 @@ class EditContentFormBody extends React.Component {
     const contentType = content.typeDescription || newContentsType.typeDescription || '';
     const typeCode = content.typeCode || newContentsType.typeCode;
     const groupsWithEmptyOption = [...groups];
+    const disableOwnerGroupFunction = (e) => {
+      if (e.target.value) {
+        onSetOwnerGroupDisable(true);
+      }
+    };
+    const showAllSettings = (workMode === WORK_MODE_ADD && ownerGroupDisabled)
+    || workMode === WORK_MODE_EDIT;
+    const showStyle = { style: { display: showAllSettings ? 'block' : 'none' } };
     return (
       <Spinner loading={!!loading}>
         <form
@@ -134,22 +142,24 @@ class EditContentFormBody extends React.Component {
                     />
                   </Col>
                 </FormGroup>
-                <FormGroup>
-                  <Col xs={12}>
-                    <Field
-                      component={RenderTextInput}
-                      name="description"
-                      validate={[required]}
-                      label={(
-                        <FormLabel
-                          labelId="cms.contents.edit.contentDescription.label"
-                          helpId="cms.contents.edit.contentDescription.tooltip"
-                        />
-)}
-                      placeholder={intl.formatMessage(messages.contentDesctiption)}
-                    />
-                  </Col>
-                </FormGroup>
+                <div id="contentDescriptionWrapper" {...showStyle}>
+                  <FormGroup>
+                    <Col xs={12}>
+                      <Field
+                        component={RenderTextInput}
+                        name="description"
+                        validate={[required]}
+                        label={(
+                          <FormLabel
+                            labelId="cms.contents.edit.contentDescription.label"
+                            helpId="cms.contents.edit.contentDescription.tooltip"
+                          />
+    )}
+                        placeholder={intl.formatMessage(messages.contentDesctiption)}
+                      />
+                    </Col>
+                  </FormGroup>
+                </div>
               </fieldset>
             </Row>
             <Row className="GroupsFormBody">
@@ -160,7 +170,7 @@ class EditContentFormBody extends React.Component {
                     <Field
                       component={RenderSelectInput}
                       name="mainGroup"
-                      defaultValue="df"
+                      onChange={disableOwnerGroupFunction}
                       append={
                       !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
                         <button
@@ -183,60 +193,66 @@ class EditContentFormBody extends React.Component {
                       options={groupsWithEmptyOption}
                       optionValue="code"
                       optionDisplayName="name"
-                      defaultValueCode="free"
+                      defaultOptionId="cms.label.chooseoption"
                       disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
                     />
                   </FormGroup>
-                  <FormGroup>
+                  <div id="contentGroupsWrapper" {...showStyle}>
                     <FormGroup>
-                      <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
-                        <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
-                      </ControlLabel>
-                      <Col xs={12} sm={10}>
-                        <FieldArray
-                          component={MultiSelectRenderer}
-                          name="groups"
-                          intl={intl}
-                          options={groups}
-                          selectedValues={selectedJoinGroups}
-                          labelKey="name"
-                          valueKey="code"
-                        />
-                      </Col>
+                      <FormGroup>
+                        <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
+                          <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
+                        </ControlLabel>
+                        <Col xs={12} sm={10}>
+                          <FieldArray
+                            component={MultiSelectRenderer}
+                            name="groups"
+                            intl={intl}
+                            options={groups}
+                            selectedValues={selectedJoinGroups}
+                            labelKey="name"
+                            valueKey="code"
+                          />
+                        </Col>
+                      </FormGroup>
                     </FormGroup>
-                  </FormGroup>
+                  </div>
                 </Col>
               </fieldset>
             </Row>
-            <Row className="GroupsFormBody">
-              <SectionTitle nameId="cms.contents.edit.categories" />
-              <fieldset className="no-padding">
-                <FormGroup>
-                  <ControlLabel htmlFor="contentCategories" className="col-xs-2">
-                    <FormLabel labelId="cms.contents.edit.categories" />
-                  </ControlLabel>
-                  <Col xs={10}>
-                    <Field
-                      component={CategoryTreeContainer}
-                      language={language}
-                      name="contentCategories"
-                      treeNameId="cms.contents.edit.categories.categoriesTree"
-                    />
-                  </Col>
-                </FormGroup>
-              </fieldset>
-            </Row>
-            <Row>
-              <SectionTitle nameId="cms.contents.edit.contentAttributes" />
-              {(content.attributes || typeCode) && (
-              <ContentAttributesContainer
-                attributes={content.attributes}
-                typeCode={typeCode}
-                content={content}
-                mainGroup={mainGroup}
-              />
-              )}
-            </Row>
+            <div id="attributesWrapper" {...showStyle}>
+              <Fragment>
+                <Row className="GroupsFormBody">
+                  <SectionTitle nameId="cms.contents.edit.categories" />
+                  <fieldset className="no-padding">
+                    <FormGroup>
+                      <ControlLabel htmlFor="contentCategories" className="col-xs-2">
+                        <FormLabel labelId="cms.contents.edit.categories" />
+                      </ControlLabel>
+                      <Col xs={10}>
+                        <Field
+                          component={CategoryTreeContainer}
+                          language={language}
+                          name="contentCategories"
+                          treeNameId="cms.contents.edit.categories.categoriesTree"
+                        />
+                      </Col>
+                    </FormGroup>
+                  </fieldset>
+                </Row>
+                <Row>
+                  <SectionTitle nameId="cms.contents.edit.contentAttributes" />
+                  {(content.attributes || typeCode) && (
+                  <ContentAttributesContainer
+                    attributes={content.attributes}
+                    typeCode={typeCode}
+                    content={content}
+                    mainGroup={mainGroup}
+                  />
+                  )}
+                </Row>
+              </Fragment>
+            </div>
           </div>
           <div className="AssetsList__footer">
             <StickySave
@@ -277,7 +293,7 @@ EditContentFormBody.propTypes = {
       code: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
   selectedJoinGroups: PropTypes.arrayOf(PropTypes.string),
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -311,6 +327,7 @@ EditContentFormBody.defaultProps = {
   contentType: {},
   dirty: false,
   loading: false,
+  groups: [],
 };
 
 const EditContentForm = reduxForm({

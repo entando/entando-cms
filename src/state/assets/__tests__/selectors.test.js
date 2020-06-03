@@ -76,7 +76,7 @@ it('verify condense function', () => {
   expect(res.versions[0].dimensions).toEqual(dimension);
   expect(res.metadata.dimension).toEqual(dimension);
   expect(res.versions[0].sizetype).toEqual('orig');
-  expect(res.metadata.filename).toEqual('a-ping-d0.png');
+  expect(res.metadata.filename).toEqual('temp_a-ping-d0.png');
 });
 
 
