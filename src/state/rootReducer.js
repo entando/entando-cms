@@ -18,6 +18,7 @@ import contents from 'state/contents/reducer';
 import languages from 'state/languages/reducer';
 import pages from 'state/pages/reducer';
 import users from 'state/users/reducer';
+import permissions from 'state/permissions/reducer';
 
 export const cms = combineReducers({
   contentTemplate,
@@ -42,6 +43,7 @@ export default combineReducers({
   locale,
   messages,
   modal,
+  permissions,
   categories,
   pagination,
 });

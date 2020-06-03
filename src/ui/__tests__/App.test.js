@@ -7,6 +7,12 @@ import {
   createMockHistory,
   mockRenderWithRouter,
 } from 'testutils/helpers';
+import {
+  SUPERUSER_PERMISSION,
+  CRUD_CONTENTS_PERMISSION,
+  VALIDATE_CONTENTS_PERMISSION,
+  MANAGE_RESOURCES_PERMISSION,
+} from 'state/permissions/const';
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 
 import App from 'ui/App';
@@ -20,6 +26,15 @@ const STATE = {
   locale: 'en',
   messages: [],
   modal: { visibleModal: '', info: {} },
+  permissions: {
+    list: [
+      SUPERUSER_PERMISSION,
+      CRUD_CONTENTS_PERMISSION,
+      VALIDATE_CONTENTS_PERMISSION,
+      MANAGE_RESOURCES_PERMISSION,
+    ],
+    loggedUser: [SUPERUSER_PERMISSION],
+  },
   apps: {
     cms: {
       contentTemplate: { list: [] },

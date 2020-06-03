@@ -1,3 +1,4 @@
+export const ROUTE_DASHBOARD = '/dashboard';
 export const ROUTE_CMS = '/cms';
 export const ROUTE_CMS_CONTENTTEMPLATE_LIST = '/cms/content-templates';
 export const ROUTE_CMS_CONTENTTEMPLATE_ADD = '/cms/content-templates/add';
