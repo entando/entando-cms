@@ -40,7 +40,7 @@ const messages = defineMessages({
 
 const defaultOwnerGroup = '';
 
-class EditContentFormBody extends React.Component {
+export class EditContentFormBody extends React.Component {
   componentDidMount() {
     const {
       initialize, onDidMount, match: { params = {} },
@@ -142,7 +142,7 @@ class EditContentFormBody extends React.Component {
                     />
                   </Col>
                 </FormGroup>
-                <div {...showStyle}>
+                <div id="contentDescriptionWrapper" {...showStyle}>
                   <FormGroup>
                     <Col xs={12}>
                       <Field
@@ -197,7 +197,7 @@ class EditContentFormBody extends React.Component {
                       disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
                     />
                   </FormGroup>
-                  <div {...showStyle}>
+                  <div id="contentGroupsWrapper" {...showStyle}>
                     <FormGroup>
                       <FormGroup>
                         <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
@@ -220,7 +220,7 @@ class EditContentFormBody extends React.Component {
                 </Col>
               </fieldset>
             </Row>
-            <div {...showStyle}>
+            <div id="attributesWrapper" {...showStyle}>
               <Fragment>
                 <Row className="GroupsFormBody">
                   <SectionTitle nameId="cms.contents.edit.categories" />
@@ -293,7 +293,7 @@ EditContentFormBody.propTypes = {
       code: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
   selectedJoinGroups: PropTypes.arrayOf(PropTypes.string),
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -327,6 +327,7 @@ EditContentFormBody.defaultProps = {
   contentType: {},
   dirty: false,
   loading: false,
+  groups: [],
 };
 
 const EditContentForm = reduxForm({
