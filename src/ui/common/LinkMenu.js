@@ -17,10 +17,8 @@ import {
 } from 'state/permissions/const';
 
 const LinkMenu = ({ userPermissions }) => {
-  const hasMenuContentsAccess = hasAccess([
-    CRUD_CONTENTS_PERMISSION,
-    VALIDATE_CONTENTS_PERMISSION,
-  ], userPermissions);
+  const hasMenuContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions)
+    || hasAccess(VALIDATE_CONTENTS_PERMISSION, userPermissions);
   const hasMenuAssetsAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
   const hasMenuContentTypeAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
   const hasMenuContentTemplatesAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
