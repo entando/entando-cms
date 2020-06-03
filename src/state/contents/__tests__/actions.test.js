@@ -16,7 +16,7 @@ import {
   sendPublishMultipleContents,
   sendCloneContent,
   resetAuthorStatus,
-  clearContentsState,
+  leaveContentsPage,
   selectSingleRow,
 } from 'state/contents/actions';
 import { postAddContent } from 'api/editContent';
@@ -74,8 +74,8 @@ describe('state/contents/actions', () => {
     expect(action.payload).toEqual('NEWS');
   });
 
-  it('clearContentsState() should return a well formed action', () => {
-    const action = clearContentsState();
+  it('leaveContentsPage() should return a well formed action', () => {
+    const action = leaveContentsPage();
     expect(action).toHaveProperty('type', CLEAR_CONTENTS_STATE);
   });
 

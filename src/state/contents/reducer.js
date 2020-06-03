@@ -126,13 +126,12 @@ const reducer = (state = defaultState, action = {}) => {
       };
     }
     case SELECT_SINGLE_ROW: {
-      const row = action.payload;
-      const selectedRows = [];
-      selectedRows.push(row.id);
+      const lastSelectedRow = action.payload;
+      const selectedRows = [lastSelectedRow.id];
       return {
         ...state,
         selectedRows,
-        lastSelectedRow: row,
+        lastSelectedRow,
       };
     }
     case SELECT_ROW: {

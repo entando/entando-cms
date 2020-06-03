@@ -7,23 +7,22 @@ import {
   ROUTE_CMS_CONTENTTEMPLATE_LIST, ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTS, ROUTE_CMS_ASSETS_LIST,
 } from 'app-init/routes';
+import { withPermissionValues } from 'ui/common/auth/withPermissions';
 
-const SUPERUSER_PERMISSION = 'superuser';
-const CRUD_CONTENTS_PERMISSION = 'editContents';
-const VALIDATE_CONTENTS_PERMISSION = 'validateContents';
-const MANAGE_RESOURCES_PERMISSION = 'manageResources';
-const ALL_CMS_PERMISSIONS = [
-  SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION,
-  VALIDATE_CONTENTS_PERMISSION, MANAGE_RESOURCES_PERMISSION];
+import {
+  SUPERUSER_PERMISSION,
+  CRUD_CONTENTS_PERMISSION,
+  VALIDATE_CONTENTS_PERMISSION,
+  MANAGE_RESOURCES_PERMISSION,
+} from 'state/permissions/const';
 
 const LinkMenu = ({ userPermissions }) => {
-  const cmsUserPermissions = userPermissions === null ? ALL_CMS_PERMISSIONS : userPermissions;
-  const hasMenuContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, cmsUserPermissions)
-  || hasAccess(VALIDATE_CONTENTS_PERMISSION, cmsUserPermissions);
-  const hasMenuAssetsAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, cmsUserPermissions);
-  const hasMenuContentTypeAccess = hasAccess(SUPERUSER_PERMISSION, cmsUserPermissions);
-  const hasMenuContentTemplatesAccess = hasAccess(SUPERUSER_PERMISSION, cmsUserPermissions);
-  const hasMenuContentSettingsAccess = hasAccess(SUPERUSER_PERMISSION, cmsUserPermissions);
+  const hasMenuContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions)
+    || hasAccess(VALIDATE_CONTENTS_PERMISSION, userPermissions);
+  const hasMenuAssetsAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
+  const hasMenuContentTypeAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
+  const hasMenuContentTemplatesAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
+  const hasMenuContentSettingsAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
   return (
     <>
       {
@@ -84,4 +83,4 @@ LinkMenu.defaultProps = {
 };
 
 
-export default LinkMenu;
+export default withPermissionValues(LinkMenu);

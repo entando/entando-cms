@@ -8,11 +8,13 @@ import {
   selectionHeaderCellFormatter, selectionCellFormatter, sortableHeaderCellFormatter,
   tableCellFormatter, actionHeaderCellFormatter, MenuItem,
 } from 'patternfly-react';
+import { formatDate, PermissionCheck } from '@entando/utils';
 import * as resolve from 'table-resolver';
 import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
 import PublishContentModalContainer from 'ui/contents/PublishContentModalContainer';
 import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
-import { formatDate } from '@entando/utils';
+import { withPermissionValues } from 'ui/common/auth/withPermissions';
+import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
 class ContentsTable extends Component {
   constructor(props) {
@@ -82,7 +84,7 @@ class ContentsTable extends Component {
   showingColumns() {
     const {
       activeColumns, availableColumns, intl, onEditContent, onClickDelete,
-      onClickPublish, onClickClone, groups,
+      onClickPublish, onClickClone, groups, userPermissions,
     } = this.props;
     const currentActiveColumns = ['selectAll', ...activeColumns];
     const allColumns = [{ code: 'selectAll' }, ...availableColumns];
@@ -178,15 +180,25 @@ class ContentsTable extends Component {
                     <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
                       <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
                     </MenuItem>
-                    <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
-                      <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
-                    </MenuItem>
+                    <PermissionCheck
+                      requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+                      userPermissions={userPermissions}
+                    >
+                      <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
+                        <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                      </MenuItem>
+                    </PermissionCheck>
                     <MenuItem onClick={() => onClickClone(rowData)}>
                       <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
                     </MenuItem>
-                    <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
-                      <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
-                    </MenuItem>
+                    <PermissionCheck
+                      requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+                      userPermissions={userPermissions}
+                    >
+                      <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
+                        <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                      </MenuItem>
+                    </PermissionCheck>
                   </Table.DropdownKebab>
                 </div>
               </Table.Actions>];
@@ -291,6 +303,7 @@ ContentsTable.propTypes = {
   availableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  userPermissions: PropTypes.arrayOf(PropTypes.string),
   page: PropTypes.number.isRequired,
   lastPage: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
@@ -310,6 +323,7 @@ ContentsTable.propTypes = {
 
 ContentsTable.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
+  userPermissions: [],
 };
 
-export default ContentsTable;
+export default withPermissionValues(ContentsTable);

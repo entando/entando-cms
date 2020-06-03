@@ -1,5 +1,3 @@
-#ContentsFilterModal { // sass-lint:disable-line no-ids
-  .modal-dialog { // sass-lint:disable-line class-name-format
-    width: 80%;
-  }
+.ContentsFilterModal.modal-dialog { // sass-lint:disable-line class-name-format
+  width: 80%;
 }

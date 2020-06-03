@@ -123,7 +123,7 @@ class ContentsFilterModal extends Component {
         modalId={ContentsFilterModalID}
         buttons={buttons}
         modalTitle={modalTitle}
-        className="ContentsFilterModal"
+        modalClassName="ContentsFilterModal"
       >
         <Fragment>
           <ContentsFilter

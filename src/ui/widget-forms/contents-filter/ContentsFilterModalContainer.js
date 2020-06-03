@@ -14,7 +14,7 @@ import {
   setCurrentStatusShow, setGroup,
   setQuickFilter, setSort,
   setTabSearch,
-  clearContentsState,
+  leaveContentsPage,
 } from 'state/contents/actions';
 import { getPagination } from 'state/pagination/selectors';
 import { getLoading } from 'state/loading/selectors';
@@ -129,7 +129,7 @@ export const mapDispatchToProps = dispatch => ({
   onSetGroup: group => dispatch(setGroup(group)),
   onSetSort: sort => dispatch(setSort(sort)),
   onSelectRow: content => dispatch(selectSingleRow(content)),
-  onWillUnmount: () => dispatch(clearContentsState()),
+  onWillUnmount: () => dispatch(leaveContentsPage()),
 });
 
 export default connect(

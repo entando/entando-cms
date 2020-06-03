@@ -24,7 +24,7 @@ import { postAddContent } from 'api/editContent';
 
 const pageDefault = { page: 1, pageSize: 10 };
 
-export const clearContentsState = () => ({
+export const leaveContentsPage = () => ({
   type: CLEAR_CONTENTS_STATE,
 });
 

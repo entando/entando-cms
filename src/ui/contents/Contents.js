@@ -4,9 +4,12 @@ import {
   intlShape, defineMessages, FormattedMessage,
 } from 'react-intl';
 import { Button, Spinner } from 'patternfly-react';
+import { PermissionCheck } from '@entando/utils';
 import ContentsFilter from 'ui/contents/ContentsFilter';
 import ContentsTable from 'ui/contents/ContentsTable';
 import ContentsTabs from 'ui/contents/ContentsTabs';
+import { withPermissionValues } from 'ui/common/auth/withPermissions';
+import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
 const AVAILABLE_COLUMNS = [
   {
@@ -99,7 +102,7 @@ class Contents extends Component {
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
-      onAdvancedFilterSearch, users,
+      onAdvancedFilterSearch, users, userPermissions,
     } = this.props;
 
     const { selectedContents } = this.messages;
@@ -113,8 +116,11 @@ class Contents extends Component {
             defaultMessage="Select Categories to add"
           />
         </Button>
-        {
-          currentStatusShow === 'published' ? (
+        <PermissionCheck
+          requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+          userPermissions={userPermissions}
+        >
+          {currentStatusShow === 'published' ? (
             <Button onClick={() => onClickPublish(selectedRowsData, false)}>
               <FormattedMessage
                 id="cms.contents.unpublish"
@@ -128,8 +134,8 @@ class Contents extends Component {
                 defaultMessage="Publish"
               />
             </Button>
-          )
-        }
+          )}
+        </PermissionCheck>
       </div>
     ) : null;
 
@@ -248,11 +254,13 @@ Contents.propTypes = {
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({})),
   onWillUnmount: PropTypes.func.isRequired,
+  userPermissions: PropTypes.arrayOf(PropTypes.string),
 };
 
 Contents.defaultProps = {
   loading: false,
   users: [],
+  userPermissions: [],
 };
 
-export default Contents;
+export default withPermissionValues(Contents);
