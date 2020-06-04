@@ -22,6 +22,7 @@ class ContentTemplateListItem extends Component {
 
     return (
       <tr className="ContentTemplateList">
+        <td className="ContentTemplateList__td">{id}</td>
         <td className="ContentTemplateList__td">{contentType}</td>
         <td className="ContentTemplateList__td">{descr}</td>
         <td className="ContentTemplateList__td text-center">

@@ -56,10 +56,13 @@ class ContentTemplateList extends Component {
           <table className="table table-striped table-bordered table-hover ContentTemplateList__table">
             <thead>
               <tr>
+                <th width="10%">
+                  <FormattedMessage id="cms.contenttemplate.list.contentTypeIdHeader" />
+                </th>
                 <th width="20%">
                   <FormattedMessage id="cms.contenttemplate.list.contentTypeHeader" />
                 </th>
-                <th width="70%">
+                <th width="60%">
                   <FormattedMessage id="cms.contenttemplate.list.contentTemplateNameHeader" />
                 </th>
                 <th width="10%" className="text-center">
