@@ -5,7 +5,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentTemplateListContainer from 'ui/content-template/ContentTemplateListContainer';
+import VersioningListContainer from 'ui/versioning/VersioningListContainer';
 
 const VersioningListPage = () => (
   <Grid fluid>
@@ -39,7 +39,7 @@ const VersioningListPage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <ContentTemplateListContainer />
+        <VersioningListContainer />
       </Col>
     </Row>
   </Grid>
