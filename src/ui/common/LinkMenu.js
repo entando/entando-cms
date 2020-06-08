@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
   ROUTE_CMS_CONTENTTEMPLATE_LIST, ROUTE_CMS_CONTENTTYPE_LIST,
-  ROUTE_CMS_CONTENTS, ROUTE_CMS_ASSETS_LIST,
+  ROUTE_CMS_CONTENTS, ROUTE_CMS_ASSETS_LIST, ROUTE_CMS_VERSIONING,
 } from 'app-init/routes';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 
@@ -67,6 +67,15 @@ const LinkMenu = ({ userPermissions }) => {
           id="menu-content-settings"
           label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
           to="/cms/content-settings"
+        />
+        )
+      }
+      {
+        hasMenuContentsAccess && (
+        <LinkMenuItem
+          id="menu-versioning"
+          label={<FormattedMessage id="cms.menu.versioning" defaultMessage="Versioning" />}
+          to={ROUTE_CMS_VERSIONING}
         />
         )
       }
