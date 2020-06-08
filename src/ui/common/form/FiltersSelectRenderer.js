@@ -19,14 +19,14 @@ class FiltersSelectRenderer extends Component {
   render() {
     const {
       fields, filterName,
-      options, suboptions, onResetFilterOption,
+      options, suboptions, onChangeFilterValue,
     } = this.props;
 
     const handleAddNewFilter = () => fields.push();
 
     const renderFilters = fields.map((filter, i) => {
       const filterField = fields.get(i) || {};
-      const { code } = filterField;
+      const { key } = filterField;
       return (
         // eslint-disable-next-line react/no-array-index-key
         <tr key={i}>
@@ -42,24 +42,26 @@ class FiltersSelectRenderer extends Component {
           </td>
           <td>
             <Field
-              name={`${filter}.code`}
+              name={`${filter}.key`}
               component="select"
               className="form-control"
-              onChange={() => onResetFilterOption(filterName, i)}
+              onChange={({ currentTarget }) => (
+                onChangeFilterValue(filterName, i, currentTarget.value)
+              )}
             >
               {this.filterOptions(options)}
             </Field>
           </td>
           <td>
             {
-              code && suboptions[code] && suboptions[code].length > 0
+              key && suboptions[key] && suboptions[key].length > 0
               && (
               <Field
                 name={filterName === 'filter' ? `${filter}.order` : `${filter}.categoryCode`}
                 component="select"
                 className="form-control"
               >
-                {this.filterOptions(suboptions[code])}
+                {this.filterOptions(suboptions[key])}
               </Field>
               )
             }
@@ -145,7 +147,7 @@ FiltersSelectRenderer.propTypes = {
   }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   suboptions: PropTypes.shape({}),
-  onResetFilterOption: PropTypes.func.isRequired,
+  onChangeFilterValue: PropTypes.func.isRequired,
   filterName: PropTypes.string.isRequired,
 };
 
