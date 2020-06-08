@@ -1,14 +1,82 @@
 import React from 'react';
+import {
+  Nav, NavItem, TabContent, TabPane, TabContainer,
+} from 'patternfly-react';
 
 const VersioningTypes = () => (
-  <ul className="nav nav-tabs nav-justified nav-tabs-pattern" id="tabs-pattern" role="tablist">
-    <li role="presentation" className="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
-
-    <li role="presentation"><a href="#design" aria-controls="design" role="tab" data-toggle="tab">Design</a></li>
-
-
-    <li role="presentation"><a href="#code" aria-controls="code" role="tab" data-toggle="tab">Code</a></li>
-  </ul>
+  <TabContainer id="basic-tabs" defaultActiveKey="contents">
+    <div>
+      <Nav
+        bsClass="nav nav-tabs"
+        justified
+        onSelect={null}
+        pullLeft={false}
+        pullRight={false}
+        stacked={false}
+      >
+        <NavItem
+          active={false}
+          disabled={false}
+          eventKey="contents"
+        >
+      Contents
+        </NavItem>
+        <NavItem
+          active={false}
+          disabled={false}
+          eventKey="images"
+        >
+      Images
+        </NavItem>
+        <NavItem
+          active={false}
+          disabled={false}
+          eventKey="attachments"
+        >
+      Attachments
+        </NavItem>
+        <NavItem
+          active={false}
+          disabled={false}
+          eventKey="configuration"
+        >
+      Configuration
+        </NavItem>
+      </Nav>
+      <TabContent
+        animation
+        bsClass="tab"
+        componentClass="div"
+        mountOnEnter
+        unmountOnExit
+      >
+        <TabPane
+          bsClass="tab-pane"
+          eventKey="contents"
+        >
+      contents tab active
+        </TabPane>
+        <TabPane
+          bsClass="tab-pane"
+          eventKey="images"
+        >
+      images tab active
+        </TabPane>
+        <TabPane
+          bsClass="tab-pane"
+          eventKey="attachments"
+        >
+      attachments tab active
+        </TabPane>
+        <TabPane
+          bsClass="tab-pane"
+          eventKey="configuration"
+        >
+      configuration tab active
+        </TabPane>
+      </TabContent>
+    </div>
+  </TabContainer>
 );
 
 export default VersioningTypes;
