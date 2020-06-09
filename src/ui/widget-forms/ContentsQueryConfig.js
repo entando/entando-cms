@@ -68,7 +68,7 @@ export class ContentsQueryFormBody extends Component {
     const {
       contentTypes, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
-      intl, onResetFilterOption, languages, onToggleInclusiveOr,
+      intl, onChangeFilterValue, languages, onToggleInclusiveOr,
       selectedInclusiveOr, handleSubmit, invalid, submitting,
       dirty, onCancel, onDiscard, onSave,
     } = this.props;
@@ -329,7 +329,7 @@ export class ContentsQueryFormBody extends Component {
                           name="filters"
                           options={filters}
                           suboptions={filtersSuboptions}
-                          onResetFilterOption={onResetFilterOption}
+                          onChangeFilterValue={onChangeFilterValue}
                           filterName="filters"
                         />
                       </Col>
@@ -391,7 +391,7 @@ export class ContentsQueryFormBody extends Component {
                           name="userFilters"
                           options={frontendFilters}
                           suboptions={frontendFiltersSuboptions}
-                          onResetFilterOption={onResetFilterOption}
+                          onChangeFilterValue={onChangeFilterValue}
                           filterName="frontendFilters"
                         />
                       </Col>
@@ -440,7 +440,7 @@ ContentsQueryFormBody.propTypes = {
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   selectedCategories: PropTypes.arrayOf(PropTypes.string),
-  onResetFilterOption: PropTypes.func.isRequired,
+  onChangeFilterValue: PropTypes.func.isRequired,
   onChangeContentType: PropTypes.func.isRequired,
   onToggleInclusiveOr: PropTypes.func.isRequired,
   onResetModelId: PropTypes.func.isRequired,
