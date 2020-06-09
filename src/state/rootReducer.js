@@ -19,6 +19,7 @@ import languages from 'state/languages/reducer';
 import pages from 'state/pages/reducer';
 import users from 'state/users/reducer';
 import permissions from 'state/permissions/reducer';
+import versioning from 'state/versioning/reducer';
 
 export const cms = combineReducers({
   contentTemplate,
@@ -32,6 +33,7 @@ export const cms = combineReducers({
   languages,
   pages,
   users,
+  versioning,
 });
 
 export default combineReducers({
