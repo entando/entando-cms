@@ -5,7 +5,6 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import VersioningListContainer from 'ui/versioning/VersioningListContainer';
 import VersioningTypesContainer from 'ui/versioning/VersioningTypesContainer';
 
 const VersioningListPage = () => (
@@ -23,16 +22,13 @@ const VersioningListPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col xs={12} md={6}>
+      <Col xs={12} md={12}>
         <CMSPageTitle
           titleId="cms.versioning.title"
           helpId="cms.versioning.titletip"
           position="pull-right"
           largeTitle
         />
-      </Col>
-      <Col xs={12} md={6}>
-        <VersioningTypesContainer />
       </Col>
     </Row>
     <Row className="VersioningList__filter">
@@ -43,7 +39,7 @@ const VersioningListPage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <VersioningListContainer />
+        <VersioningTypesContainer />
       </Col>
     </Row>
   </Grid>

@@ -3,6 +3,8 @@ import {
   Nav, NavItem, TabContent, TabPane, TabContainer,
 } from 'patternfly-react';
 
+import VersioningListContainer from 'ui/versioning/VersioningListContainer';
+
 const VersioningTypes = () => (
   <TabContainer id="basic-tabs" defaultActiveKey="contents">
     <div>
@@ -54,7 +56,7 @@ const VersioningTypes = () => (
           bsClass="tab-pane"
           eventKey="contents"
         >
-      contents tab active
+          <VersioningListContainer />
         </TabPane>
         <TabPane
           bsClass="tab-pane"
