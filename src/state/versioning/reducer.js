@@ -2,11 +2,11 @@ import { combineReducers } from 'redux';
 import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE } from 'state/versioning/types';
 
 export const toMap = array => array.reduce((acc, versioning) => {
-  acc[versioning.code] = versioning;
+  acc[versioning.id] = versioning;
   return acc;
 }, {});
 
-export const toIdListVersioningList = array => array.map(versioning => versioning.code);
+export const toIdListVersioningList = array => array.map(versioning => versioning.id);
 
 export const list = (state = [], action = {}) => {
   switch (action.type) {

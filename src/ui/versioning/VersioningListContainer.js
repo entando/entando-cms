@@ -7,7 +7,7 @@ import { getVersioningList } from 'state/versioning/selectors';
 import { fetchVersionings, setSelectedVersioningType } from 'state/versioning/actions';
 
 export const mapStateToProps = state => ({
-  loading: getLoading(state).contentTemplateList,
+  loading: getLoading(state).versionings,
   page: getCurrentPage(state),
   totalItems: getTotalItems(state),
   pageSize: getPageSize(state),
