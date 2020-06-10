@@ -38,7 +38,6 @@ class VersioningList extends Component {
       pageSize,
       totalItems,
     } = this.props;
-    console.log('loading', loading);
     const pagination = {
       page,
       perPage: pageSize,
@@ -57,25 +56,25 @@ class VersioningList extends Component {
             <thead>
               <tr>
                 <th width="20%">
-                  <FormattedMessage id="cms.versioning.list.description" />
+                  <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
                 </th>
                 <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.id" />
+                  <FormattedMessage id="cms.versioning.list.id" defaultMessage="Id" />
                 </th>
                 <th width="20%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.contentType" />
+                  <FormattedMessage id="cms.versioning.list.contentType" defaultMessage="Content Type" />
                 </th>
                 <th width="15%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.editor" />
+                  <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
                 </th>
                 <th width="15%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.lastModify" />
+                  <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modify" />
                 </th>
                 <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.status" />
+                  <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
                 </th>
                 <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.actions" />
+                  <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />
                 </th>
               </tr>
             </thead>
