@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
+import VersioningSearchForm from 'ui/versioning/VersioningSearchForm';
 import VersioningListItem from 'ui/versioning/VersioningListItem';
 
 const perPageOptions = [5, 10, 15, 25, 50];
@@ -51,6 +52,7 @@ class VersioningList extends Component {
     return (
       <div className="VersioningList__wrap">
         <Spinner loading={!!loading}>
+          <VersioningSearchForm {...this.props} />
           <table className="table table-striped table-bordered table-hover VersioningList__table">
             <thead>
               <tr>
