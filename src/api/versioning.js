@@ -14,9 +14,10 @@ export const getVersionings = (versioningType, page = { page: 1, pageSize: 10 },
 );
 
 export const getSingleVersioning = (versioningType, itemId, page = { page: 1, pageSize: 10 }, params = '') => (
-  makeMockRequest(
+  console.log('page', page)
+  || makeMockRequest(
     {
-      uri: `/api/plugins/versioning/${versioningType}/${itemId}${params}`,
+      uri: `/plugins/versioning/${versioningType}/${itemId}${params}`,
       method: METHODS.GET,
       mockResponse: LIST_SINGLE_VERSIONING_OK,
       useAuthentication: true,

@@ -73,6 +73,8 @@ export default {
     'cms.versioning.list.editor': 'Editore',
     'cms.versioning.list.status': 'Stato',
     'cms.versioning.list.actions': 'Azioni',
+    'cms.versioning.list.version': 'Versione',
+    'cms.versioning.list.restoreVersion': 'Ripristina versione',
     'cms.versioning.search.formtitle': 'Search',
     'cms.versioning.search.desclabel': 'Descrizione',
     'cms.versioning.search.typelabel': 'Tipo',
