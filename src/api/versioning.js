@@ -1,12 +1,31 @@
 import { makeMockRequest, METHODS } from '@entando/apimanager';
-import { LIST_VERSIONING_OK, LIST_SINGLE_VERSIONING_OK } from 'testutils/mocks/versioning';
+import {
+  LIST_VERSIONING_OK,
+  LIST_SINGLE_VERSIONING_OK,
+  LIST_ATTACHMENTS_OK,
+  DELETE_ATTACHMENT_OK,
+  RESTORE_ATTACHMENT_OK,
+} from 'testutils/mocks/versioning';
+
+const TYPE_MOCKS = {
+  LIST: {
+    attachments: LIST_ATTACHMENTS_OK,
+    contents: LIST_VERSIONING_OK,
+  },
+  DELETE: {
+    attachments: DELETE_ATTACHMENT_OK,
+  },
+  RESTORE: {
+    attachments: RESTORE_ATTACHMENT_OK,
+  },
+};
 
 export const getVersionings = (versioningType, page = { page: 1, pageSize: 10 }, params = '') => (
   makeMockRequest(
     {
       uri: `/api/plugins/versioning/${versioningType}${params}`,
       method: METHODS.GET,
-      mockResponse: LIST_VERSIONING_OK,
+      mockResponse: TYPE_MOCKS.LIST[versioningType] || LIST_VERSIONING_OK,
       useAuthentication: true,
     },
     page,
@@ -22,5 +41,29 @@ export const getSingleVersioning = (versioningType, itemId, page = { page: 1, pa
       useAuthentication: true,
     },
     page,
+  )
+);
+
+
+export const deleteVersion = (versioningType, id) => (
+  makeMockRequest(
+    {
+      uri: `/api/plugins/versioning/${versioningType}/${id}`,
+      method: METHODS.DELETE,
+      mockResponse: TYPE_MOCKS.DELETE[versioningType],
+      useAuthentication: true,
+    },
+  )
+);
+
+export const restoreVersion = (versioningType, id, version) => (
+  makeMockRequest(
+    {
+      uri: `/api/plugins/versioning/${versioningType}/${id}`,
+      method: METHODS.POST,
+      body: { version },
+      mockResponse: TYPE_MOCKS.RESTORE[versioningType],
+      useAuthentication: true,
+    },
   )
 );
