@@ -9,10 +9,10 @@ import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
-import { fetchContentTypeListPaged } from 'state/content-type/actions';
+import { fetchContentTypeListPaged, fetchContentType } from 'state/content-type/actions';
 import { fetchContentTemplatesByContentType } from 'state/content-template/actions';
 
-import { getContentTypeList } from 'state/content-type/selectors';
+import { getContentTypeList, getSelectedContentType } from 'state/content-type/selectors';
 import { getCategoryTree } from 'state/categories/selectors';
 import ContentsQueryConfig from 'ui/widget-forms/ContentsQueryConfig';
 import { getContentTemplateList } from 'state/content-template/selectors';
@@ -32,6 +32,7 @@ export const mapStateToProps = (state, ownProps) => ({
   language: getLocale(state),
   languages: getActiveLanguages(state),
   contentTypes: getContentTypeList(state),
+  contentType: getSelectedContentType(state),
   pages: getSearchPagesRaw(state),
   categories: getCategoryTree(state),
   contentTemplates: getContentTemplateList(state),
@@ -69,8 +70,14 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     });
   },
   onResetFilterOption: (name, i) => dispatch(change(ContentsQueryContainerId, `${name}.[${i}].option`, '')),
+  onChangeFilterValue: (name, i, value) => {
+    dispatch(change(ContentsQueryContainerId, `${name}.[${i}].attributeFilter`, value));
+  },
   onChangeContentType: (contentType) => {
-    if (contentType) dispatch(fetchContentTemplatesByContentType(contentType));
+    if (contentType) {
+      dispatch(fetchContentTemplatesByContentType(contentType));
+      dispatch(fetchContentType(contentType));
+    }
   },
   onResetModelId: () => dispatch(change(ContentsQueryContainerId, 'modelId', '')),
   onToggleInclusiveOr: value => dispatch(change(ContentsQueryContainerId, 'orClauseCategoryFilter', value === 'true' ? '' : 'true')),

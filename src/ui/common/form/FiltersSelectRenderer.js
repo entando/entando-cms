@@ -18,15 +18,22 @@ class FiltersSelectRenderer extends Component {
 
   render() {
     const {
-      fields, filterName,
-      options, suboptions, onResetFilterOption,
+      fields, filterName, attributeFilterChoices,
+      options, suboptions, onChangeFilterValue,
+      onResetFilterOption,
     } = this.props;
 
     const handleAddNewFilter = () => fields.push();
 
+    const handleFilterChange = (value, index) => {
+      onResetFilterOption(filterName, index);
+      const attributeFilter = attributeFilterChoices.findIndex(({ code }) => code === value) > -1;
+      onChangeFilterValue(fields.name, index, attributeFilter);
+    };
+
     const renderFilters = fields.map((filter, i) => {
       const filterField = fields.get(i) || {};
-      const { code } = filterField;
+      const { key } = filterField;
       return (
         // eslint-disable-next-line react/no-array-index-key
         <tr key={i}>
@@ -42,24 +49,24 @@ class FiltersSelectRenderer extends Component {
           </td>
           <td>
             <Field
-              name={`${filter}.code`}
+              name={`${filter}.key`}
               component="select"
               className="form-control"
-              onChange={() => onResetFilterOption(filterName, i)}
+              onChange={({ currentTarget }) => handleFilterChange(currentTarget.value, i)}
             >
               {this.filterOptions(options)}
             </Field>
           </td>
           <td>
             {
-              code && suboptions[code] && suboptions[code].length > 0
+              key && suboptions[key] && suboptions[key].length > 0
               && (
               <Field
                 name={filterName === 'filter' ? `${filter}.order` : `${filter}.categoryCode`}
                 component="select"
                 className="form-control"
               >
-                {this.filterOptions(suboptions[code])}
+                {this.filterOptions(suboptions[key])}
               </Field>
               )
             }
@@ -136,6 +143,7 @@ class FiltersSelectRenderer extends Component {
 FiltersSelectRenderer.propTypes = {
   intl: intlShape.isRequired,
   fields: PropTypes.shape({
+    name: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     push: PropTypes.func,
     map: PropTypes.func,
     get: PropTypes.func,
@@ -145,8 +153,10 @@ FiltersSelectRenderer.propTypes = {
   }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   suboptions: PropTypes.shape({}),
+  onChangeFilterValue: PropTypes.func.isRequired,
   onResetFilterOption: PropTypes.func.isRequired,
   filterName: PropTypes.string.isRequired,
+  attributeFilterChoices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 FiltersSelectRenderer.defaultProps = {
