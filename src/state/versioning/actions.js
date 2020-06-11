@@ -27,7 +27,6 @@ export const setSelectedVersioningType = versioningType => ({
 export const fetchVersionings = (page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
   new Promise((resolve) => {
     dispatch(toggleLoading('versionings'));
-    /* @TODO Get filtering params here and pass it down as params below */
     const state = getState();
     const selectedVersioningType = getSelectedVersioningType(state);
     getVersionings(selectedVersioningType, page, params).then((response) => {
