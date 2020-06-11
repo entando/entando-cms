@@ -66,11 +66,11 @@ export class ContentsQueryFormBody extends Component {
 
   render() {
     const {
-      contentTypes, contentTemplates, categories, pages,
+      contentTypes, contentType, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
-      intl, onChangeFilterValue, languages, onToggleInclusiveOr,
-      selectedInclusiveOr, handleSubmit, invalid, submitting,
-      dirty, onCancel, onDiscard, onSave,
+      intl, onChangeFilterValue, onResetFilterOption, languages,
+      onToggleInclusiveOr, selectedInclusiveOr, handleSubmit, invalid,
+      submitting, dirty, onCancel, onDiscard, onSave,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -114,6 +114,17 @@ export class ContentsQueryFormBody extends Component {
     const inclusiveOrOptions = [{ id: 'true', label: intl.formatMessage({ id: 'widget.form.inclusiveOr' }) }];
 
     const renderCategories = selectedCategories;
+
+    const getListAttributeFilters = () => {
+      if (!contentType.attributes) {
+        return [];
+      }
+      const attributeFilters = contentType.attributes.filter(attribute => attribute.listFilter);
+      return attributeFilters.map(({ code }) => ({
+        code,
+        name: `Attribute: ${code}`,
+      }));
+    };
 
     const ButtonComponent = () => (
       <Button
@@ -171,10 +182,13 @@ export class ContentsQueryFormBody extends Component {
       modified: orderFilters,
     };
 
+    const attributeFilters = getListAttributeFilters();
+
     const frontendFilters = [
       { code: '', nameId: 'widget.form.selectFilter' },
       { code: 'fulltext', nameId: 'widget.form.text' },
       { code: 'category', nameId: 'menu.categories' },
+      ...attributeFilters,
     ];
 
     const allCategories = [{
@@ -186,6 +200,7 @@ export class ContentsQueryFormBody extends Component {
     const frontendFiltersSuboptions = {
       fulltext: [],
       category: allCategories,
+      ...attributeFilters.map(({ code }) => ({ [code]: [] })),
     };
 
     const handleContentTypeChange = () => onResetModelId();
@@ -329,8 +344,10 @@ export class ContentsQueryFormBody extends Component {
                           name="filters"
                           options={filters}
                           suboptions={filtersSuboptions}
+                          onResetFilterOption={onResetFilterOption}
                           onChangeFilterValue={onChangeFilterValue}
                           filterName="filters"
+                          attributeFilterChoices={attributeFilters}
                         />
                       </Col>
                     </FormGroup>
@@ -391,8 +408,10 @@ export class ContentsQueryFormBody extends Component {
                           name="userFilters"
                           options={frontendFilters}
                           suboptions={frontendFiltersSuboptions}
+                          onResetFilterOption={onResetFilterOption}
                           onChangeFilterValue={onChangeFilterValue}
                           filterName="frontendFilters"
+                          attributeFilterChoices={attributeFilters}
                         />
                       </Col>
                     </FormGroup>
@@ -436,10 +455,14 @@ ContentsQueryFormBody.propTypes = {
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})),
+  contentType: PropTypes.shape({
+    attributes: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
   contentTemplates: PropTypes.arrayOf(PropTypes.shape({})),
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   selectedCategories: PropTypes.arrayOf(PropTypes.string),
+  onResetFilterOption: PropTypes.func.isRequired,
   onChangeFilterValue: PropTypes.func.isRequired,
   onChangeContentType: PropTypes.func.isRequired,
   onToggleInclusiveOr: PropTypes.func.isRequired,
@@ -457,6 +480,7 @@ ContentsQueryFormBody.defaultProps = {
   submitting: false,
   languages: [],
   contentTypes: [],
+  contentType: {},
   contentTemplates: [],
   categories: [],
   pages: [],
