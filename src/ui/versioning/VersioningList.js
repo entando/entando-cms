@@ -37,6 +37,7 @@ class VersioningList extends Component {
       page,
       pageSize,
       totalItems,
+      contentTypes,
     } = this.props;
     const pagination = {
       page,
@@ -51,7 +52,7 @@ class VersioningList extends Component {
     return (
       <div className="VersioningList__wrap">
         <Spinner loading={!!loading}>
-          <VersioningSearchForm {...this.props} />
+          <VersioningSearchForm contentTypes={contentTypes} />
           <table className="table table-striped table-bordered table-hover VersioningList__table">
             <thead>
               <tr>
@@ -101,11 +102,13 @@ VersioningList.propTypes = {
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
+  contentTypes: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 VersioningList.defaultProps = {
   loading: false,
   versioningList: [],
+  contentTypes: [],
 };
 
 export default VersioningList;
