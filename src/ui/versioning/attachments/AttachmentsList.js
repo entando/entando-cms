@@ -9,7 +9,7 @@ import AttachmentsListItem from 'ui/versioning/attachments/AttachmentsListItem';
 
 const AttachmentsList = (props) => {
   const {
-    onDidMount,
+    fetchAttachments,
     loading,
     pagination,
     attachments,
@@ -17,7 +17,7 @@ const AttachmentsList = (props) => {
     recoverAttachment,
   } = props;
 
-  useEffect(() => onDidMount(pagination), []);
+  useEffect(() => fetchAttachments(pagination), [fetchAttachments, pagination]);
 
   return (
     <ListView>
@@ -38,7 +38,7 @@ const AttachmentsList = (props) => {
 };
 
 AttachmentsList.propTypes = {
-  onDidMount: PropTypes.func,
+  fetchAttachments: PropTypes.func,
   loading: PropTypes.bool,
   pagination: PropTypes.shape({
     page: PropTypes.number,
@@ -50,7 +50,7 @@ AttachmentsList.propTypes = {
 };
 
 AttachmentsList.defaultProps = {
-  onDidMount: () => {},
+  fetchAttachments: () => {},
   loading: false,
   pagination: {
     page: 1,

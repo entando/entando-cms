@@ -22,11 +22,10 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onDidMount: (pagination = { page: 1, pageSize: 10 }) => {
+  fetchAttachments: (pagination = { page: 1, pageSize: 10 }) => {
     dispatch(setSelectedVersioningType('attachments'));
     dispatch(fetchVersionings(pagination));
   },
-
   removeAttachment: (attachmentId) => {
     dispatch(removeVersion(attachmentId));
   },
