@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Spinner,
@@ -7,35 +7,39 @@ import {
 
 import AttachmentsListItem from 'ui/versioning/attachments/AttachmentsListItem';
 
-const AttachmentsList = (props) => {
-  const {
-    fetchAttachments,
-    loading,
-    pagination,
-    attachments,
-    removeAttachment,
-    recoverAttachment,
-  } = props;
 
-  useEffect(() => fetchAttachments(pagination), [fetchAttachments, pagination]);
+class AttachmentsList extends React.Component {
+  componentDidMount() {
+    const { fetchAttachments, pagination } = this.props;
+    fetchAttachments(pagination);
+  }
 
-  return (
-    <ListView>
-      <Spinner loading={!!loading}>
-        {attachments.map(
-          attachment => (
-            <AttachmentsListItem
-              key={attachment.id}
-              attachment={attachment}
-              onClickRemove={removeAttachment}
-              onClickRecover={recoverAttachment}
-            />
-          ),
-        )}
-      </Spinner>
-    </ListView>
-  );
-};
+  render() {
+    const {
+      loading,
+      attachments,
+      removeAttachment,
+      recoverAttachment,
+    } = this.props;
+
+    return (
+      <ListView>
+        <Spinner loading={!!loading}>
+          {attachments.map(
+            attachment => (
+              <AttachmentsListItem
+                key={attachment.id}
+                attachment={attachment}
+                onClickRemove={removeAttachment}
+                onClickRecover={recoverAttachment}
+              />
+            ),
+          )}
+        </Spinner>
+      </ListView>
+    );
+  }
+}
 
 AttachmentsList.propTypes = {
   fetchAttachments: PropTypes.func,
