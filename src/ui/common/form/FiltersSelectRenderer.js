@@ -18,11 +18,18 @@ class FiltersSelectRenderer extends Component {
 
   render() {
     const {
-      fields, filterName,
+      fields, filterName, attributeFilterChoices,
       options, suboptions, onChangeFilterValue,
+      onResetFilterOption,
     } = this.props;
 
     const handleAddNewFilter = () => fields.push();
+
+    const handleFilterChange = (value, index) => {
+      onResetFilterOption(filterName, index);
+      const attributeFilter = attributeFilterChoices.findIndex(({ code }) => code === value) > -1;
+      onChangeFilterValue(fields.name, index, attributeFilter);
+    };
 
     const renderFilters = fields.map((filter, i) => {
       const filterField = fields.get(i) || {};
@@ -45,9 +52,7 @@ class FiltersSelectRenderer extends Component {
               name={`${filter}.key`}
               component="select"
               className="form-control"
-              onChange={({ currentTarget }) => (
-                onChangeFilterValue(filterName, i, currentTarget.value)
-              )}
+              onChange={({ currentTarget }) => handleFilterChange(currentTarget.value, i)}
             >
               {this.filterOptions(options)}
             </Field>
@@ -138,6 +143,7 @@ class FiltersSelectRenderer extends Component {
 FiltersSelectRenderer.propTypes = {
   intl: intlShape.isRequired,
   fields: PropTypes.shape({
+    name: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     push: PropTypes.func,
     map: PropTypes.func,
     get: PropTypes.func,
@@ -148,7 +154,9 @@ FiltersSelectRenderer.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   suboptions: PropTypes.shape({}),
   onChangeFilterValue: PropTypes.func.isRequired,
+  onResetFilterOption: PropTypes.func.isRequired,
   filterName: PropTypes.string.isRequired,
+  attributeFilterChoices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 FiltersSelectRenderer.defaultProps = {

@@ -23,15 +23,19 @@ const AttachmentsListItemActions = ({
 
   return (
     <DropdownKebab id="action2kebab" pullRight toggleStyle="link">
-      <MenuItem onClick={handleClickRecover}><FormattedMessage id="cms.label.recover" /></MenuItem>
+      <MenuItem onClick={handleClickRecover}>
+        <FormattedMessage id="cms.label.recover" defaultMessage="Recover" />
+      </MenuItem>
       <MenuItem divider />
-      <MenuItem onClick={handleClickRemove}><FormattedMessage id="cms.label.remove" /></MenuItem>
+      <MenuItem onClick={handleClickRemove}>
+        <FormattedMessage id="cms.label.remove" defaultMessage="Remove" />
+      </MenuItem>
     </DropdownKebab>
   );
 };
 
 AttachmentsListItemActions.propTypes = {
-  attachmentId: PropTypes.number.isRequired,
+  attachmentId: PropTypes.string.isRequired,
   attachmentVersion: PropTypes.string.isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,

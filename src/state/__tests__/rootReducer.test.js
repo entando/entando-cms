@@ -81,4 +81,8 @@ describe('root reducer store', () => {
   it('contains the pages state', () => {
     expect(state.apps.cms).toHaveProperty('pages');
   });
+
+  it('contains the versioning state', () => {
+    expect(state.apps.cms).toHaveProperty('versioning');
+  });
 });

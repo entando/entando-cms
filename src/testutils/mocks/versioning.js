@@ -61,7 +61,7 @@ export const LIST_ATTACHMENTS_OK = [
     lastVersion: '0.1',
     lastModify: '2020-06-09T18:13:28.704Z',
     fileName: 'attch-1.pdf',
-    sizeBytes: 1024,
+    sizeBytes: 8,
   },
   {
     id: 'ATTCH_0002',
@@ -69,15 +69,15 @@ export const LIST_ATTACHMENTS_OK = [
     lastVersion: '0.2',
     lastModify: '2020-06-10T18:13:28.704Z',
     fileName: 'attachment-file-2.pdf',
-    sizeBytes: 1048576,
+    sizeBytes: 1024,
   },
   {
     id: 'ATTCH_0003',
     description: 'This is a description of attachment number 0003. This is a long description',
-    lastVersion: '0.2',
+    lastVersion: '0.33',
     lastModify: '2000-01-01T00:00:00.001Z',
     fileName: 'interesting-attachment-file-3-name-final-final-really-final.pdf',
-    sizeBytes: 1048576,
+    sizeBytes: 1024 * 1024,
   },
   {
     id: 'ATTCH_0004',
@@ -85,7 +85,7 @@ export const LIST_ATTACHMENTS_OK = [
     lastVersion: '1.2',
     lastModify: '1988-07-25T16:00:00.000Z',
     fileName: 'interesting-attachment-file-4-this-is-a-very-long_file_name_for_YOU_TO_TEST-LONG_NAMES-name-final-final-really-final.jpg',
-    sizeBytes: 11048576,
+    sizeBytes: 1024 * 1024 * 1024,
   },
   {
     id: 'ATTCH_0005',
@@ -93,7 +93,7 @@ export const LIST_ATTACHMENTS_OK = [
     lastVersion: '1.12',
     lastModify: '1988-07-25T16:00:00.000Z',
     fileName: 'large.jpg',
-    sizeBytes: 1073741824,
+    sizeBytes: 1024 * 1024 * 1024 * 1024,
   },
 ];
 

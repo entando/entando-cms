@@ -26,7 +26,7 @@ export const selected = (state = {}, action = {}) => {
   }
 };
 
-export const roleMap = (state = {}, action = {}) => {
+export const versioningMap = (state = {}, action = {}) => {
   switch (action.type) {
     case SET_VERSIONINGS: {
       return toMap(action.payload.versionings);
@@ -37,6 +37,6 @@ export const roleMap = (state = {}, action = {}) => {
 
 export default combineReducers({
   list,
-  map: roleMap,
+  map: versioningMap,
   selected,
 });

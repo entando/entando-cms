@@ -25,6 +25,7 @@ const AttachmentsList = (props) => {
         {attachments.map(
           attachment => (
             <AttachmentsListItem
+              key={attachment.id}
               attachment={attachment}
               onClickRemove={removeAttachment}
               onClickRecover={recoverAttachment}
@@ -43,7 +44,7 @@ AttachmentsList.propTypes = {
     page: PropTypes.number,
     pageSize: PropTypes.number,
   }),
-  attachments: PropTypes.arrayOf(PropTypes.shape({})),
+  attachments: PropTypes.arrayOf(PropTypes.shape()),
   removeAttachment: PropTypes.func,
   recoverAttachment: PropTypes.func,
 };

@@ -39,16 +39,15 @@ const AttachmentsListItem = ({ attachment, onClickRemove, onClickRecover }) => (
         <div className="AttachmentsListItem__file-details">
           <div className="AttachmentsListItem__filename">{attachment.fileName}</div>
           <div>
-            <Badge className="AttachmentsListItem__size-badge">
+            <Badge className="AttachmentsListItem__size-badge" data-testid="size-badge">
               { bytesToSize(attachment.sizeBytes) }
             </Badge>
           </div>
-          <div><FormattedMessage id="cms.versioning.list.resourceId" />: {attachment.id}</div>
+          <div><FormattedMessage id="cms.versioning.list.resourceId" defaultMessage="Resource ID" />: {attachment.id}</div>
         </div>
       </div>
     )}
     hideCloseIcon={false}
-    initExpanded={false}
     stacked={false}
   />
 );
