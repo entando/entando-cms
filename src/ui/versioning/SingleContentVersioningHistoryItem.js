@@ -4,10 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { routeConverter, formatDate } from '@entando/utils';
-import { ROUTE_CMS_VERSIONING_DETAIL } from 'app-init/routes';
+import { ROUTE_CMS_VERSIONING_CONTENT_DETAIL } from 'app-init/routes';
 
 const SingleContentVersioningHistoryItem = ({
-  description, editor, lastModify, lastVersion, onClickRestore,
+  id, description, editor, lastModify, lastVersion, onClickRestore,
 }) => (
   <tr className="VersioningListRow">
     <td className="VersioningListRow__td text-center">
@@ -26,7 +26,10 @@ const SingleContentVersioningHistoryItem = ({
       <DropdownKebab pullRight id="VersioningListRow-dropdown">
         <LinkMenuItem
           id={`versioning-id${lastVersion}`}
-          to={routeConverter(ROUTE_CMS_VERSIONING_DETAIL, { lastVersion })}
+          to={routeConverter(
+            ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
+            { contentId: id, versionId: lastVersion },
+          )}
           label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
           className="VersioningListRow__menu-item-edit"
         />

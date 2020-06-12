@@ -5,7 +5,7 @@ import { LinkMenuItem } from '@entando/menu';
 import { Link } from 'react-router-dom';
 import { DropdownKebab } from 'patternfly-react';
 import { routeConverter, formatDate } from '@entando/utils';
-import { ROUTE_CMS_VERSIONING_DETAIL, ROUTE_CMS_EDIT_CONTENT } from 'app-init/routes';
+import { ROUTE_CMS_VERSIONING_CONTENT_DETAIL, ROUTE_CMS_EDIT_CONTENT } from 'app-init/routes';
 
 const VersioningListItem = ({
   id, contentType, description, editor, lastModify, lastVersion, status, onLine: hasPublicVersion,
@@ -54,7 +54,10 @@ const VersioningListItem = ({
         <DropdownKebab pullRight id="VersioningListRow-dropdown">
           <LinkMenuItem
             id={`versioning-id${id}`}
-            to={routeConverter(ROUTE_CMS_VERSIONING_DETAIL, { id })}
+            to={routeConverter(
+              ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
+              { contentId: id, versionId: lastVersion },
+            )}
             label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
             className="VersioningListRow__menu-item-edit"
           />
