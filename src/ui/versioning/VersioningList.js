@@ -39,6 +39,7 @@ class VersioningList extends Component {
       totalItems,
       contentTypes,
     } = this.props;
+
     const pagination = {
       page,
       perPage: pageSize,
