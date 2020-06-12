@@ -7,7 +7,7 @@ import VersioningListContainer from 'ui/versioning/VersioningListContainer';
 import AttachmentsListContainer from 'ui/versioning/attachments/AttachmentsListContainer';
 
 const VersioningTypes = () => (
-  <TabContainer id="basic-tabs" defaultActiveKey="attachments">
+  <TabContainer id="basic-tabs" defaultActiveKey="contents">
     <div>
       <Nav
         bsClass="nav nav-tabs"
