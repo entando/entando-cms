@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { getLoading } from 'state/loading/selectors';
 import { convertToQueryString } from '@entando/utils';
+import { getLoading } from 'state/loading/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 
-import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
+import ImagesList from 'ui/versioning/images/ImagesList';
 import { getVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
@@ -19,22 +19,22 @@ export const mapStateToProps = state => ({
     pageSize: getPageSize(state),
   },
   totalItems: getTotalItems(state),
-  attachments: getVersioningList(state),
+  images: getVersioningList(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(setSelectedVersioningType('attachments'));
+    dispatch(setSelectedVersioningType('images'));
     dispatch(fetchVersionings(page));
   },
-  fetchAttachments: (pagination = { page: 1, pageSize: 10 }) => {
-    dispatch(fetchVersionings(pagination));
+  fetchImages: (page = { page: 1, pageSize: 10 }) => {
+    dispatch(fetchVersionings(page));
   },
-  removeAttachment: (attachmentId) => {
-    dispatch(removeVersion(attachmentId));
+  removeImage: (imageId) => {
+    dispatch(removeVersion(imageId));
   },
-  recoverAttachment: (attachmentId, attachmentVersion) => {
-    dispatch(recoverVersion(attachmentId, attachmentVersion));
+  recoverImage: (imageId, imageVersion) => {
+    dispatch(recoverVersion(imageId, imageVersion));
   },
   onSubmit: (params) => {
     let queryString = convertToQueryString({
@@ -49,9 +49,9 @@ export const mapDispatchToProps = dispatch => ({
   },
 });
 
-const AttachmentsListContainer = connect(
+const ImagesListContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(AttachmentsList);
+)(ImagesList);
 
-export default AttachmentsListContainer;
+export default ImagesListContainer;
