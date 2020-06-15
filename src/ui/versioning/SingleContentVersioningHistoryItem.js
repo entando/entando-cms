@@ -7,28 +7,28 @@ import { routeConverter, formatDate } from '@entando/utils';
 import { ROUTE_CMS_VERSIONING_CONTENT_DETAIL } from 'app-init/routes';
 
 const SingleContentVersioningHistoryItem = ({
-  id, description, editor, lastModify, lastVersion, onClickRestore,
+  id, description, username, versionDate, version, onClickRestore,
 }) => (
   <tr className="VersioningListRow">
     <td className="VersioningListRow__td text-center">
       <code>
-        {lastVersion}
+        {version}
       </code>
     </td>
     <td className="VersioningListRow__td">{description}</td>
     <td className="VersioningListRow__td text-center">
       <code>
-        {formatDate(lastModify)}
+        {formatDate(versionDate)}
       </code>
     </td>
-    <td className="VersioningListRow__td text-center">{editor}</td>
+    <td className="VersioningListRow__td text-center">{username}</td>
     <td className="VersioningListRow__td text-center">
       <DropdownKebab pullRight id="VersioningListRow-dropdown">
         <LinkMenuItem
-          id={`versioning-id${lastVersion}`}
+          id={`versioning-id${version}`}
           to={routeConverter(
             ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
-            { contentId: id, versionId: lastVersion },
+            { contentId: id, versionId: version },
           )}
           label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
           className="VersioningListRow__menu-item-edit"
@@ -43,10 +43,11 @@ const SingleContentVersioningHistoryItem = ({
 
 
 SingleContentVersioningHistoryItem.propTypes = {
+  id: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  editor: PropTypes.string.isRequired,
-  lastModify: PropTypes.string.isRequired,
-  lastVersion: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  versionDate: PropTypes.string.isRequired,
+  version: PropTypes.string.isRequired,
   onClickRestore: PropTypes.func,
 };
 

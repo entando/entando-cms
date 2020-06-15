@@ -38,21 +38,23 @@ class VersioningList extends Component {
       pageSize,
       totalItems,
       contentTypes,
+      onSubmit,
     } = this.props;
+
     const pagination = {
       page,
       perPage: pageSize,
       perPageOptions,
     };
 
-    const renderRow = versioningList
+    const renderRows = versioningList
       .map(item => (
         <VersioningListItem key={item.id} {...item} />
       ));
     return (
       <div className="VersioningList__wrap">
         <Spinner loading={!!loading}>
-          <VersioningSearchForm contentTypes={contentTypes} />
+          <VersioningSearchForm contentTypes={contentTypes} onSubmit={onSubmit} />
           <table className="table table-striped table-bordered table-hover VersioningList__table">
             <thead>
               <tr>
@@ -79,7 +81,7 @@ class VersioningList extends Component {
                 </th>
               </tr>
             </thead>
-            <tbody>{renderRow}</tbody>
+            <tbody>{renderRows}</tbody>
           </table>
           <Paginator
             pagination={pagination}
@@ -98,6 +100,7 @@ VersioningList.propTypes = {
   versioningList: PropTypes.arrayOf(PropTypes.shape({})),
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   fetchVersioningList: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,

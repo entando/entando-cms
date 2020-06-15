@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import RatioInput from 'ui/content-settings/ContentSettingsCropRatioInput';
-import { findByTestId, configEnzymeAdapter } from 'testutils/helpers';
+import { enzymeHelperFindByTestId, configEnzymeAdapter } from 'testutils/helpers';
 
 configEnzymeAdapter();
 
@@ -13,7 +13,7 @@ describe('ContentSettingsCropRatioInput', () => {
 
   it('should have an input field', () => {
     const wrapper = shallow(<RatioInput />);
-    expect(findByTestId(wrapper, inputTestId).length).toBe(1);
+    expect(enzymeHelperFindByTestId(wrapper, inputTestId).length).toBe(1);
   });
 
   describe('when new', () => {
@@ -26,11 +26,11 @@ describe('ContentSettingsCropRatioInput', () => {
     const wrapper = shallow(<RatioInput isNew onAdd={mockOnAddCallback} />);
 
     it('should have an add button', () => {
-      expect(findByTestId(wrapper, addBtnTestId).length).toBe(1);
+      expect(enzymeHelperFindByTestId(wrapper, addBtnTestId).length).toBe(1);
     });
 
     it('should not have a delete button', () => {
-      expect(findByTestId(wrapper, deleteBtnTestId).length).toBe(0);
+      expect(enzymeHelperFindByTestId(wrapper, deleteBtnTestId).length).toBe(0);
     });
 
     it('should call onAdd prop with valid inputted value after clicking the add button', () => {
@@ -40,10 +40,10 @@ describe('ContentSettingsCropRatioInput', () => {
           value,
         },
       };
-      const inputField = findByTestId(wrapper, inputTestId);
+      const inputField = enzymeHelperFindByTestId(wrapper, inputTestId);
       inputField.simulate('change', changeEvent);
 
-      const addBtn = findByTestId(wrapper, addBtnTestId);
+      const addBtn = enzymeHelperFindByTestId(wrapper, addBtnTestId);
       addBtn.simulate('click');
 
       expect(mockOnAddCallback).toHaveBeenCalledWith(value);
@@ -56,10 +56,10 @@ describe('ContentSettingsCropRatioInput', () => {
           value,
         },
       };
-      const inputField = findByTestId(wrapper, inputTestId);
+      const inputField = enzymeHelperFindByTestId(wrapper, inputTestId);
       inputField.simulate('change', changeEvent);
 
-      const addBtn = findByTestId(wrapper, addBtnTestId);
+      const addBtn = enzymeHelperFindByTestId(wrapper, addBtnTestId);
       addBtn.simulate('click');
 
       expect(mockOnAddCallback).toHaveBeenCalledTimes(0);
@@ -75,19 +75,19 @@ describe('ContentSettingsCropRatioInput', () => {
     );
 
     it('should have a value derived from props', () => {
-      expect(findByTestId(wrapper, inputTestId).props().value).toBe(value);
+      expect(enzymeHelperFindByTestId(wrapper, inputTestId).props().value).toBe(value);
     });
 
     it('should have a delete button', () => {
-      expect(findByTestId(wrapper, deleteBtnTestId).length).toBe(1);
+      expect(enzymeHelperFindByTestId(wrapper, deleteBtnTestId).length).toBe(1);
     });
 
     it('should not have an add button', () => {
-      expect(findByTestId(wrapper, addBtnTestId).length).toBe(0);
+      expect(enzymeHelperFindByTestId(wrapper, addBtnTestId).length).toBe(0);
     });
 
     it('should call onDelete prop after clicking the delete button', () => {
-      const deleteBtn = findByTestId(wrapper, deleteBtnTestId);
+      const deleteBtn = enzymeHelperFindByTestId(wrapper, deleteBtnTestId);
       deleteBtn.simulate('click');
 
       expect(mockOnDeleteCallback).toHaveBeenCalled();
@@ -100,7 +100,7 @@ describe('ContentSettingsCropRatioInput', () => {
           value: newValue,
         },
       };
-      const inputField = findByTestId(wrapper, inputTestId);
+      const inputField = enzymeHelperFindByTestId(wrapper, inputTestId);
       inputField.simulate('change', changeEvent);
       inputField.simulate('blur');
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { convertToQueryString } from '@entando/utils';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { getLoading } from 'state/loading/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
@@ -30,17 +30,20 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchVersionings(page));
   },
   onSubmit: (params) => {
-    let queryString = convertToQueryString({
-      sorting: {
-        attribute: 'description',
-      },
+    const like = FILTER_OPERATORS.LIKE;
+    const { description, type: contentType } = params;
+    const formValues = {
+      ...(description && { description }),
+      ...(contentType && { contentType }),
+    };
+    const operators = {
+      ...(contentType && { author: like }),
+      ...(description && { status: like }),
+    };
+    const queryString = convertToQueryString({
+      formValues,
+      operators,
     });
-    if (params.description) {
-      queryString = `${queryString}&description=${params.description}`;
-    }
-    if (params.type) {
-      queryString = `${queryString}&type=${params.type}`;
-    }
     dispatch(fetchVersionings({ page: 1, pageSize: 10 }, queryString));
   },
 });
