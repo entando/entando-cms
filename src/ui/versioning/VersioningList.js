@@ -39,13 +39,14 @@ class VersioningList extends Component {
       totalItems,
       contentTypes,
     } = this.props;
+
     const pagination = {
       page,
       perPage: pageSize,
       perPageOptions,
     };
 
-    const renderRow = versioningList
+    const renderRows = versioningList
       .map(item => (
         <VersioningListItem key={item.id} {...item} />
       ));
@@ -79,7 +80,7 @@ class VersioningList extends Component {
                 </th>
               </tr>
             </thead>
-            <tbody>{renderRow}</tbody>
+            <tbody>{renderRows}</tbody>
           </table>
           <Paginator
             pagination={pagination}

@@ -1,0 +1,26 @@
+.AttachmentsListItem {
+
+  &__description {
+
+    > div + div {
+      margin-top: 10px;
+    }
+  }
+
+  &__file-details {
+    display: flex;
+    align-items: center;
+  }
+
+  &__filename {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__size-badge {
+    margin-right: 5px;
+    margin-left: 5px;
+    background-color: $color-light-blue;
+  }
+}

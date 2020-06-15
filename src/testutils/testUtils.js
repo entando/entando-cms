@@ -1,5 +1,6 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
@@ -12,7 +13,7 @@ const renderWithRedux = (
   component,
   { initialState, reducer = rootReducer } = {},
 ) => {
-  const store = createStore(reducer, initialState);
+  const store = createStore(reducer, initialState, applyMiddleware(thunk));
   return ({
     ...render(<Provider store={store}>{component}</Provider>),
     store,
