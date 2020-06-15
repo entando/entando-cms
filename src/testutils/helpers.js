@@ -58,6 +58,6 @@ export const mockRenderWithIntl = (ui, state = {}) => {
   return mockRenderWithStore(<IntlProviderContainer>{ui}</IntlProviderContainer>, STATE);
 };
 
-export const findByTestId = (wrapper, testId) => wrapper.find(`[data-test-id="${testId}"]`);
+export const enzymeHelperFindByTestId = (wrapper, testId) => wrapper.find(`[data-test-id="${testId}"]`);
 
 export const addReduxForm = (def, formName = 'form') => reduxForm({ form: formName })(def);
