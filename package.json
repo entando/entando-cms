@@ -1,6 +1,6 @@
 {
   "name": "@entando/cms",
-  "version": "0.2.70",
+  "version": "0.2.71",
   "license": "LGPL-3.0",
   "description": "Entando CMS app",
   "keywords": [
@@ -255,6 +255,6 @@
     "url": "https://github.com/entando/entando-cms/issues"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "@entando/cms@0.2.69",
+  "_id": "@entando/cms@0.2.70",
   "homepage": "https://github.com/entando/entando-cms#readme"
 }
