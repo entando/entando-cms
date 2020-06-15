@@ -2,6 +2,7 @@ import {
   getVersionings,
   deleteVersion,
   restoreVersion,
+  getSingleVersioning,
 } from 'api/versioning';
 import {
   setVersionings,
@@ -9,6 +10,7 @@ import {
   fetchVersionings,
   removeVersion,
   recoverVersion,
+  fetchSingleVersioningHistory,
 } from 'state/versioning/actions';
 import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE } from 'state/versioning/types';
 
@@ -20,6 +22,7 @@ jest.mock('api/versioning', () => ({
   getVersionings: jest.fn(),
   deleteVersion: jest.fn(),
   restoreVersion: jest.fn(),
+  getSingleVersioning: jest.fn(),
 }));
 
 describe('versioning actions', () => {
@@ -187,6 +190,53 @@ describe('versioning actions', () => {
           expect(restoreVersion).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('fetchSingleVersioningHistory', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        apps: {
+          cms: {
+            versioning: {
+              list: [],
+              map: {},
+            },
+          },
+        },
+      });
+    });
+
+    it('should dispatch correct actions when api call is successful', (done) => {
+      getSingleVersioning.mockImplementationOnce(mockApi({ payload: [] }));
+      store
+        .dispatch(fetchSingleVersioningHistory())
+        .then(() => {
+          expect(getSingleVersioning).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions).toHaveLength(4);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', SET_VERSIONINGS);
+          expect(actions[2]).toHaveProperty('type', SET_PAGE);
+          expect(actions[3]).toHaveProperty('type', TOGGLE_LOADING);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      getSingleVersioning.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(fetchSingleVersioningHistory())
+        .then(() => {
+          expect(getSingleVersioning).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
           done();
         })
         .catch(done.fail);

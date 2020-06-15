@@ -71,7 +71,7 @@ describe('api/versioning', () => {
     it('passes correct parameters to request', () => {
       getSingleVersioning(VERSIONING_TYPE, ITEM_ID, PAGINATION);
 
-      expect(makeMockRequest).toHaveBeenCalledWith(
+      expect(makeRequest).toHaveBeenCalledWith(
         {
           uri: `${getVersioningUri(VERSIONING_TYPE)}/${ITEM_ID}`,
           method: METHODS.GET,

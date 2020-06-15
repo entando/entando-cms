@@ -5,6 +5,7 @@ import {
   Row, Col, FormGroup, ControlLabel, Spinner,
 } from 'patternfly-react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
+import Panel from 'react-bootstrap/lib/Panel';
 import { required } from '@entando/utils';
 
 import StickySave from 'ui/common/StickySave';
@@ -18,6 +19,7 @@ import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorCont
 
 import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
 import ContentAttributesContainer from 'ui/edit-content/content-attributes/ContentAttributesContainer';
+import SingleContentVersioningHistoryContainer from 'ui/versioning/SingleContentVersioningHistoryContainer';
 
 const messages = defineMessages({
   contentDesctiption: {
@@ -84,7 +86,9 @@ export class EditContentFormBody extends React.Component {
       onDiscard,
       onSave,
       loading,
+      match: { params = {} },
     } = this.props;
+    const { id } = params;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
       onLine, mainGroup = defaultOwnerGroup,
@@ -104,6 +108,21 @@ export class EditContentFormBody extends React.Component {
     const showAllSettings = (workMode === WORK_MODE_ADD && ownerGroupDisabled)
     || workMode === WORK_MODE_EDIT;
     const showStyle = { style: { display: showAllSettings ? 'block' : 'none' } };
+    const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && (
+      <Row className="no-padding">
+        <Panel>
+          <Panel.Heading>
+        Content Info
+          </Panel.Heading>
+          <Panel.Body>
+            <legend>
+          History
+            </legend>
+            <SingleContentVersioningHistoryContainer id={id} />
+          </Panel.Body>
+        </Panel>
+      </Row>
+    );
     return (
       <Spinner loading={!!loading}>
         <form
@@ -253,6 +272,7 @@ export class EditContentFormBody extends React.Component {
                 </Row>
               </Fragment>
             </div>
+            {renderContentVersioningHistory}
           </div>
           <div className="AssetsList__footer">
             <StickySave

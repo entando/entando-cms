@@ -3,9 +3,8 @@ import {
 } from '@entando/messages';
 
 import {
-  getVersionings,
-  restoreVersion,
-  deleteVersion,
+  getVersionings, getSingleVersioning,
+  restoreVersion, deleteVersion,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -95,7 +94,28 @@ export const recoverVersion = (versionTypeId, versionNumber) => (dispatch, getSt
           dispatch(clearErrors());
         }
         resolve();
-      })
-      .catch(() => {});
+      });
+  }).catch(() => {})
+);
+
+export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
+  new Promise((resolve) => {
+    dispatch(toggleLoading('versionings'));
+    const state = getState();
+    const selectedVersioningType = getSelectedVersioningType(state);
+    getSingleVersioning(selectedVersioningType, id, page, params).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setVersionings(json.payload));
+          dispatch(setPage(json.metaData));
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        dispatch(toggleLoading('versionings'));
+        resolve();
+      });
+    }).catch(() => {});
   })
 );
