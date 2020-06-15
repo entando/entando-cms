@@ -36,15 +36,15 @@ describe('Versioning List Container', () => {
     // data
     LIST_VERSIONING_OK.forEach(({
       description,
-      id,
-      editor,
+      contentId,
+      username,
       contentType,
     }) => {
-      const rowNode = screen.getByText(id).closest('tr');
+      const rowNode = screen.getByText(contentId).closest('tr');
       const row = within(rowNode);
       expect(row.getByText(description)).toBeInTheDocument();
-      expect(row.getByText(id)).toBeInTheDocument();
-      expect(row.getByText(editor)).toBeInTheDocument();
+      expect(row.getByText(contentId)).toBeInTheDocument();
+      expect(row.getByText(username)).toBeInTheDocument();
       expect(row.getByText(contentType)).toBeInTheDocument();
     });
 

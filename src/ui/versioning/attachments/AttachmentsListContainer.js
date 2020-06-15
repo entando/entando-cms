@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { getLoading } from 'state/loading/selectors';
-import { convertToQueryString } from '@entando/utils';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 
 import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
@@ -37,14 +37,18 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(recoverVersion(attachmentId, attachmentVersion));
   },
   onSubmit: (params) => {
-    let queryString = convertToQueryString({
-      sorting: {
-        attribute: 'description',
-      },
+    const like = FILTER_OPERATORS.LIKE;
+    const { description } = params;
+    const formValues = {
+      ...(description && { description }),
+    };
+    const operators = {
+      ...(description && { status: like }),
+    };
+    const queryString = convertToQueryString({
+      formValues,
+      operators,
     });
-    if (params.description) {
-      queryString = `${queryString}&description=${params.description}`;
-    }
     dispatch(fetchVersionings({ page: 1, pageSize: 10 }, queryString));
   },
 });
