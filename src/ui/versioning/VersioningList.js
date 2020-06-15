@@ -38,6 +38,7 @@ class VersioningList extends Component {
       pageSize,
       totalItems,
       contentTypes,
+      onSubmit,
     } = this.props;
 
     const pagination = {
@@ -53,7 +54,7 @@ class VersioningList extends Component {
     return (
       <div className="VersioningList__wrap">
         <Spinner loading={!!loading}>
-          <VersioningSearchForm contentTypes={contentTypes} />
+          <VersioningSearchForm contentTypes={contentTypes} onSubmit={onSubmit} />
           <table className="table table-striped table-bordered table-hover VersioningList__table">
             <thead>
               <tr>
@@ -99,6 +100,7 @@ VersioningList.propTypes = {
   versioningList: PropTypes.arrayOf(PropTypes.shape({})),
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   fetchVersioningList: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,

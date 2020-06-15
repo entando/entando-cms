@@ -6,12 +6,12 @@ import {
   Paginator,
 } from 'patternfly-react';
 
-import AttachmentsListItem from 'ui/versioning/attachments/AttachmentsListItem';
+import ImagesListItem from 'ui/versioning/images/ImagesListItem';
 import FileVersioningSearchForm from 'ui/versioning/common/FileVersioningSearchForm';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
-class AttachmentsList extends React.Component {
+class ImagesList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -25,40 +25,40 @@ class AttachmentsList extends React.Component {
   }
 
   changePage(page) {
-    const { fetchAttachments, pagination: { pageSize } } = this.props;
-    fetchAttachments({ page, pageSize });
+    const { fetchImages, pagination: { pageSize } } = this.props;
+    fetchImages({ page, pageSize });
   }
 
   changePageSize(pageSize) {
-    const { fetchAttachments } = this.props;
-    fetchAttachments({ page: 1, pageSize });
+    const { fetchImages } = this.props;
+    fetchImages({ page: 1, pageSize });
   }
 
   render() {
     const {
       loading,
-      attachments,
+      images,
       pagination: {
         page,
         pageSize,
       },
       totalItems,
       onSubmit,
-      removeAttachment,
-      recoverAttachment,
+      removeImage,
+      recoverImage,
     } = this.props;
 
     return (
       <Spinner loading={!!loading}>
         <FileVersioningSearchForm onSubmit={onSubmit} />
         <ListView>
-          {attachments.map(
-            attachment => (
-              <AttachmentsListItem
-                key={attachment.id}
-                attachment={attachment}
-                onClickRemove={removeAttachment}
-                onClickRecover={recoverAttachment}
+          {images.map(
+            image => (
+              <ImagesListItem
+                key={image.id}
+                image={image}
+                onClickRemove={removeImage}
+                onClickRecover={recoverImage}
               />
             ),
           )}
@@ -79,33 +79,33 @@ class AttachmentsList extends React.Component {
   }
 }
 
-AttachmentsList.propTypes = {
+ImagesList.propTypes = {
   onDidMount: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
-  fetchAttachments: PropTypes.func,
+  fetchImages: PropTypes.func,
   loading: PropTypes.bool,
   pagination: PropTypes.shape({
     page: PropTypes.number,
     pageSize: PropTypes.number,
   }),
-  attachments: PropTypes.arrayOf(PropTypes.shape()),
-  removeAttachment: PropTypes.func,
-  recoverAttachment: PropTypes.func,
+  images: PropTypes.arrayOf(PropTypes.shape()),
+  removeImage: PropTypes.func,
+  recoverImage: PropTypes.func,
   totalItems: PropTypes.number,
 };
 
-AttachmentsList.defaultProps = {
+ImagesList.defaultProps = {
   onDidMount: () => {},
-  fetchAttachments: () => {},
+  fetchImages: () => {},
   loading: false,
   pagination: {
     page: 1,
     pageSize: 10,
   },
-  attachments: [],
+  images: [],
   totalItems: 0,
-  removeAttachment: () => {},
-  recoverAttachment: () => {},
+  removeImage: () => {},
+  recoverImage: () => {},
 };
 
-export default AttachmentsList;
+export default ImagesList;

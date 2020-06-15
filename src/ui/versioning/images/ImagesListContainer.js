@@ -2,33 +2,39 @@ import { connect } from 'react-redux';
 import { convertToQueryString } from '@entando/utils';
 import { getLoading } from 'state/loading/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
-import { fetchContentTypeListPaged } from 'state/content-type/actions';
-import { getContentTypeList } from 'state/content-type/selectors';
 
-import VersioningList from 'ui/versioning/VersioningList';
+import ImagesList from 'ui/versioning/images/ImagesList';
 import { getVersioningList } from 'state/versioning/selectors';
-import { fetchVersionings, setSelectedVersioningType, setVersionings } from 'state/versioning/actions';
-
-const noPage = { page: 1, pageSize: 0 };
+import {
+  setSelectedVersioningType,
+  fetchVersionings,
+  removeVersion,
+  recoverVersion,
+} from 'state/versioning/actions';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).versionings,
-  page: getCurrentPage(state),
+  pagination: {
+    page: getCurrentPage(state),
+    pageSize: getPageSize(state),
+  },
   totalItems: getTotalItems(state),
-  pageSize: getPageSize(state),
-  contentTypes: getContentTypeList(state),
-  versioningList: getVersioningList(state),
+  images: getVersioningList(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(setVersionings([]));
-    dispatch(setSelectedVersioningType('contents'));
+    dispatch(setSelectedVersioningType('images'));
     dispatch(fetchVersionings(page));
-    dispatch(fetchContentTypeListPaged(noPage));
   },
-  fetchVersioningList: (page) => {
+  fetchImages: (page = { page: 1, pageSize: 10 }) => {
     dispatch(fetchVersionings(page));
+  },
+  removeImage: (imageId) => {
+    dispatch(removeVersion(imageId));
+  },
+  recoverImage: (imageId, imageVersion) => {
+    dispatch(recoverVersion(imageId, imageVersion));
   },
   onSubmit: (params) => {
     let queryString = convertToQueryString({
@@ -39,16 +45,13 @@ export const mapDispatchToProps = dispatch => ({
     if (params.description) {
       queryString = `${queryString}&description=${params.description}`;
     }
-    if (params.type) {
-      queryString = `${queryString}&type=${params.type}`;
-    }
     dispatch(fetchVersionings({ page: 1, pageSize: 10 }, queryString));
   },
 });
 
-const VersioningListContainer = connect(
+const ImagesListContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(VersioningList);
+)(ImagesList);
 
-export default VersioningListContainer;
+export default ImagesListContainer;

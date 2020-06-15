@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { getLoading } from 'state/loading/selectors';
+import { convertToQueryString } from '@entando/utils';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 
 import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
@@ -12,7 +13,7 @@ import {
 } from 'state/versioning/actions';
 
 export const mapStateToProps = state => ({
-  loading: getLoading(state).attachmentVersioning,
+  loading: getLoading(state).versionings,
   pagination: {
     page: getCurrentPage(state),
     pageSize: getPageSize(state),
@@ -22,8 +23,11 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchAttachments: (pagination = { page: 1, pageSize: 10 }) => {
+  onDidMount: (page = { page: 1, pageSize: 10 }) => {
     dispatch(setSelectedVersioningType('attachments'));
+    dispatch(fetchVersionings(page));
+  },
+  fetchAttachments: (pagination = { page: 1, pageSize: 10 }) => {
     dispatch(fetchVersionings(pagination));
   },
   removeAttachment: (attachmentId) => {
@@ -31,6 +35,17 @@ export const mapDispatchToProps = dispatch => ({
   },
   recoverAttachment: (attachmentId, attachmentVersion) => {
     dispatch(recoverVersion(attachmentId, attachmentVersion));
+  },
+  onSubmit: (params) => {
+    let queryString = convertToQueryString({
+      sorting: {
+        attribute: 'description',
+      },
+    });
+    if (params.description) {
+      queryString = `${queryString}&description=${params.description}`;
+    }
+    dispatch(fetchVersionings({ page: 1, pageSize: 10 }, queryString));
   },
 });
 

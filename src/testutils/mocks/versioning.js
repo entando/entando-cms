@@ -97,5 +97,69 @@ export const LIST_ATTACHMENTS_OK = [
   },
 ];
 
+export const LIST_IMAGES_OK = [
+  {
+    id: 'img1',
+    description: 'IMG1 desc',
+    lastVersion: '0.1',
+    lastModify: '2020-06-09T18:13:28.704Z',
+    fileName: 'img-1.pdf',
+    versions: [
+      {
+        dimensions: null,
+        path: 'https://picsum.photos/200/300',
+        size: '130 Kb',
+      },
+      {
+        dimensions: '90x90 px',
+        path: 'https://picsum.photos/90/90',
+        size: '1 Kb',
+      },
+      {
+        dimensions: '130x130 px',
+        path: 'https://picsum.photos/130/130',
+        size: '3 Kb',
+      },
+      {
+        dimensions: '150x150 px',
+        path: 'https://picsum.photos/150/150',
+        size: '3 Kb',
+      },
+    ],
+  },
+  {
+    id: 'img2',
+    description: 'This is a very long description of attachment number 0004 (zero zero zero four). As you can see, this is a very long text. Maybe you will be able to notice some breaking views. Hope this helps.',
+    lastVersion: '1.2',
+    lastModify: '1988-07-25T16:00:00.000Z',
+    fileName: 'interesting-image-file-2-this-is-a-very-long_file_name_for_YOU_TO_TEST-LONG_NAMES-name-final-final-really-final.jpg',
+    versions: [
+      {
+        dimensions: null,
+        path: 'https://picsum.photos/200/300',
+        size: '130 Kb',
+      },
+      {
+        dimensions: '90x90 px',
+        path: 'https://picsum.photos/90/90',
+        size: '1 Kb',
+      },
+      {
+        dimensions: '130x130 px',
+        path: 'https://picsum.photos/130/130',
+        size: '3 Kb',
+      },
+      {
+        dimensions: '150x150 px',
+        path: 'https://picsum.photos/150/150',
+        size: '3 Kb',
+      },
+    ],
+  },
+];
+
 export const DELETE_ATTACHMENT_OK = { success: true };
 export const RESTORE_ATTACHMENT_OK = { success: true };
+
+export const DELETE_IMAGE_OK = { success: true };
+export const RESTORE_IMAGE_OK = { success: true };
