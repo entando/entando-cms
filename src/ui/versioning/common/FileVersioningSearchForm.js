@@ -30,12 +30,12 @@ export const FileVersioningSearchFormBody = ({ intl, handleSubmit }) => {
     <Row className="VersioningSearchForm">
       <Col xs={6} xsOffset={3}>
         <form onSubmit={onSubmit} className="VersioningSearchForm__form form-horizontal well">
-          <h3><FormattedMessage id="cms.versioning.search.formtitle" /></h3>
+          <h3><FormattedMessage id="cms.versioning.search.formtitle" defaultMessage="Search" /></h3>
           <FormGroup>
             <Row>
               <Col md={2} mdOffset={1}>
                 <label className="control-label col-xs-2" htmlFor="description">
-                  <FormattedMessage id="cms.versioning.search.desclabel" />
+                  <FormattedMessage id="cms.versioning.search.desclabel" defaultMessage="Description" />
                 </label>
               </Col>
               <Col md={8}>
@@ -57,7 +57,7 @@ export const FileVersioningSearchFormBody = ({ intl, handleSubmit }) => {
                   bsStyle="primary"
                   className="pull-right VersioningSearchForm__save"
                 >
-                  <FormattedMessage id="cms.versioning.search.formtitle" />
+                  <FormattedMessage id="cms.versioning.search.formtitle" defaultMessage="Search" />
                 </Button>
               </Col>
             </Row>

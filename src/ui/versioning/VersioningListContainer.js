@@ -7,7 +7,7 @@ import { getContentTypeList } from 'state/content-type/selectors';
 
 import VersioningList from 'ui/versioning/VersioningList';
 import { getVersioningList } from 'state/versioning/selectors';
-import { fetchVersionings, setSelectedVersioningType, setVersionings } from 'state/versioning/actions';
+import { fetchVersionings, setSelectedVersioningType } from 'state/versioning/actions';
 
 const noPage = { page: 1, pageSize: 0 };
 
@@ -22,7 +22,6 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(setVersionings([]));
     dispatch(setSelectedVersioningType('contents'));
     dispatch(fetchVersionings(page));
     dispatch(fetchContentTypeListPaged(noPage));
