@@ -42,14 +42,14 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
-    "coverage": "react-scripts test --coverage --watchAll=false",
+    "coverage": "npm run test -- --coverage --watchAll=false",
     "babel": "babel src -d dist && node-sass --output-style compressed src/sass/index.scss -o dist/css",
     "prepublish": "npm run babel",
     "jenkins": "node commands/publish.js"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint src/ && sass-lint -v && npm run test -- --coverage --watchAll=false"
+      "pre-commit": "eslint src/ && sass-lint -v && npm run coverage"
     }
   },
   "babel": {
