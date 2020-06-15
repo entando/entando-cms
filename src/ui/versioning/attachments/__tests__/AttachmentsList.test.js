@@ -1,7 +1,8 @@
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import '@testing-library/jest-dom/extend-expect';
-import { renderWithRedux, renderWithRouter } from 'testutils/test-utils';
+import { screen } from '@testing-library/react';
+import { renderWithRedux, renderWithRouter } from 'testutils/testUtils';
 import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
 import { LIST_ATTACHMENTS_OK } from 'testutils/mocks/versioning';
 
@@ -12,7 +13,7 @@ const STARTING_PROPS = {
 
 describe('AttachmentsList', () => {
   it('renders without crash with attachments and actions', () => {
-    const { getByText, getAllByText } = renderWithRedux(
+    renderWithRedux(
       renderWithRouter(
         <IntlProvider locale="en">
           <AttachmentsList {...STARTING_PROPS} />
@@ -20,16 +21,16 @@ describe('AttachmentsList', () => {
       ),
     );
 
-    expect(getAllByText('Recover')).toHaveLength(LIST_ATTACHMENTS_OK.length);
-    expect(getAllByText('Remove')).toHaveLength(LIST_ATTACHMENTS_OK.length);
-    expect(getByText(LIST_ATTACHMENTS_OK[0].description)).toBeInTheDocument();
-    expect(getByText(LIST_ATTACHMENTS_OK[0].lastVersion)).toBeInTheDocument();
-    expect(getByText(LIST_ATTACHMENTS_OK[0].fileName)).toBeInTheDocument();
+    expect(screen.getAllByText('Recover')).toHaveLength(LIST_ATTACHMENTS_OK.length);
+    expect(screen.getAllByText('Remove')).toHaveLength(LIST_ATTACHMENTS_OK.length);
+    expect(screen.getByText(LIST_ATTACHMENTS_OK[0].description)).toBeInTheDocument();
+    expect(screen.getByText(LIST_ATTACHMENTS_OK[0].lastVersion)).toBeInTheDocument();
+    expect(screen.getByText(LIST_ATTACHMENTS_OK[0].fileName)).toBeInTheDocument();
   });
 
   describe('renders correct file sizes', () => {
     it('in Bs', () => {
-      const { getByTestId } = renderWithRedux(
+      renderWithRedux(
         renderWithRouter(
           <IntlProvider locale="en">
             <AttachmentsList attachments={[LIST_ATTACHMENTS_OK[0]]} />
@@ -37,11 +38,11 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[0].sizeBytes} B`);
+      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[0].sizeBytes} B`);
     });
 
     it('in KBs', () => {
-      const { getByTestId } = renderWithRedux(
+      renderWithRedux(
         renderWithRouter(
           <IntlProvider locale="en">
             <AttachmentsList attachments={[LIST_ATTACHMENTS_OK[1]]} />
@@ -49,11 +50,11 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(getByTestId('size-badge')).toContainHTML('1 KB');
+      expect(screen.getByTestId('size-badge')).toContainHTML('1 KB');
     });
 
     it('in MBs', () => {
-      const { getByTestId } = renderWithRedux(
+      renderWithRedux(
         renderWithRouter(
           <IntlProvider locale="en">
             <AttachmentsList attachments={[LIST_ATTACHMENTS_OK[2]]} />
@@ -61,11 +62,11 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(getByTestId('size-badge')).toContainHTML('1 MB');
+      expect(screen.getByTestId('size-badge')).toContainHTML('1 MB');
     });
 
     it('in GBs', () => {
-      const { getByTestId } = renderWithRedux(
+      renderWithRedux(
         renderWithRouter(
           <IntlProvider locale="en">
             <AttachmentsList attachments={[LIST_ATTACHMENTS_OK[3]]} />
@@ -73,11 +74,11 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(getByTestId('size-badge')).toContainHTML('1 GB');
+      expect(screen.getByTestId('size-badge')).toContainHTML('1 GB');
     });
 
     it('in TBs', () => {
-      const { getByTestId } = renderWithRedux(
+      renderWithRedux(
         renderWithRouter(
           <IntlProvider locale="en">
             <AttachmentsList attachments={[LIST_ATTACHMENTS_OK[4]]} />
@@ -85,7 +86,7 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(getByTestId('size-badge')).toContainHTML('1 TB');
+      expect(screen.getByTestId('size-badge')).toContainHTML('1 TB');
     });
   });
 });
