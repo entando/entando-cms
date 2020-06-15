@@ -1,4 +1,4 @@
-import { makeMockRequest, METHODS } from '@entando/apimanager';
+import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
 import {
   LIST_VERSIONING_OK,
   LIST_SINGLE_VERSIONING_OK,
@@ -27,9 +27,9 @@ const TYPE_MOCKS = {
 };
 
 export const getVersionings = (versioningType, page = { page: 1, pageSize: 10 }, params = '') => (
-  makeMockRequest(
+  makeRequest(
     {
-      uri: `/api/plugins/versioning/${versioningType}${params}`,
+      uri: `/api/plugins/versioning/${versioningType}/${params}`,
       method: METHODS.GET,
       mockResponse: TYPE_MOCKS.LIST[versioningType] || LIST_VERSIONING_OK,
       useAuthentication: true,
