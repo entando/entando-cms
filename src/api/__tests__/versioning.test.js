@@ -19,8 +19,8 @@ configEnzymeAdapter();
 const getVersioningUri = VERSIONING_TYPE => `/api/plugins/versioning/${VERSIONING_TYPE}`;
 
 jest.mock('@entando/apimanager', () => ({
-  makeMockRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
+  makeMockRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   METHODS: {
     GET: 'GET',
     POST: 'POST',
@@ -36,7 +36,7 @@ describe('api/versioning', () => {
     const VERSIONING_TYPE = 'contents';
     const PAGINATION = { page: 1, pageSize: 10 };
 
-    afterEach(() => makeMockRequest.mockClear());
+    afterEach(() => makeRequest.mockClear());
 
     it('returns a promise', () => {
       expect(getVersionings()).toBeInstanceOf(Promise);
@@ -45,9 +45,9 @@ describe('api/versioning', () => {
     it('passes correct parameters to request', () => {
       getVersionings(VERSIONING_TYPE, PAGINATION);
 
-      expect(makeMockRequest).toHaveBeenCalledWith(
+      expect(makeRequest).toHaveBeenCalledWith(
         {
-          uri: `${getVersioningUri(VERSIONING_TYPE)}`,
+          uri: `${getVersioningUri(VERSIONING_TYPE)}/`,
           method: METHODS.GET,
           useAuthentication: true,
           mockResponse: LIST_VERSIONING_OK,

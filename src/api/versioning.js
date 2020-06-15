@@ -5,25 +5,31 @@ import {
   LIST_ATTACHMENTS_OK,
   DELETE_ATTACHMENT_OK,
   RESTORE_ATTACHMENT_OK,
+  LIST_IMAGES_OK,
+  DELETE_IMAGE_OK,
+  RESTORE_IMAGE_OK,
 } from 'testutils/mocks/versioning';
 
 const TYPE_MOCKS = {
   LIST: {
     attachments: LIST_ATTACHMENTS_OK,
     contents: LIST_VERSIONING_OK,
+    images: LIST_IMAGES_OK,
   },
   DELETE: {
     attachments: DELETE_ATTACHMENT_OK,
+    images: DELETE_IMAGE_OK,
   },
   RESTORE: {
     attachments: RESTORE_ATTACHMENT_OK,
+    images: RESTORE_IMAGE_OK,
   },
 };
 
 export const getVersionings = (versioningType, page = { page: 1, pageSize: 10 }, params = '') => (
-  makeMockRequest(
+  makeRequest(
     {
-      uri: `/api/plugins/versioning/${versioningType}${params}`,
+      uri: `/api/plugins/versioning/${versioningType}/${params}`,
       method: METHODS.GET,
       mockResponse: TYPE_MOCKS.LIST[versioningType] || LIST_VERSIONING_OK,
       useAuthentication: true,

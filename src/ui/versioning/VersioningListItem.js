@@ -2,20 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { LinkMenuItem } from '@entando/menu';
-import { Link } from 'react-router-dom';
 import { DropdownKebab } from 'patternfly-react';
 import { routeConverter, formatDate } from '@entando/utils';
-import { ROUTE_CMS_VERSIONING_DETAIL, ROUTE_CMS_EDIT_CONTENT } from 'app-init/routes';
+import { ROUTE_CMS_VERSIONING_DETAIL } from 'app-init/routes';
 
 const VersioningListItem = ({
-  id, contentType, description, editor, lastModify, lastVersion, status, onLine: hasPublicVersion,
+  id, contentType, description, username, versionDate, version,
+  status, approved: hasPublicVersion, contentId,
 }) => {
+  const statusLowerCase = status.toLowerCase();
   let statusColor = '';
   let statusTitle = '';
-  if (status === 'PUBLIC') {
+  if (statusLowerCase === 'public') {
     statusColor = 'published';
     statusTitle = 'Published';
-  } else if (status === 'ready') {
+  } else if (statusLowerCase === 'ready') {
     statusColor = 'review';
     if (hasPublicVersion) {
       statusTitle = 'Public ≠ Ready';
@@ -34,17 +35,15 @@ const VersioningListItem = ({
     <tr className="VersioningListRow">
       <td className="VersioningListRow__td">{description}</td>
       <td className="VersioningListRow__td text-center">
-        <Link to={routeConverter(ROUTE_CMS_EDIT_CONTENT, { id })}>
-          <code>
-            {id}
-          </code>
-        </Link>
+        <code>
+          {contentId}
+        </code>
       </td>
       <td className="VersioningListRow__td">{contentType}</td>
-      <td className="VersioningListRow__td text-center">{editor}</td>
+      <td className="VersioningListRow__td text-center">{username}</td>
       <td className="VersioningListRow__td text-center">
         <code>
-          {lastVersion} ({formatDate(lastModify)})
+          {version} ({formatDate(versionDate)})
         </code>
       </td>
       <td className="VersioningListRow__td text-center">
@@ -68,12 +67,13 @@ const VersioningListItem = ({
 VersioningListItem.propTypes = {
   contentType: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  editor: PropTypes.string.isRequired,
-  lastModify: PropTypes.string.isRequired,
-  lastVersion: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  versionDate: PropTypes.number.isRequired,
+  version: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  contentId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  onLine: PropTypes.bool.isRequired,
+  approved: PropTypes.bool.isRequired,
 };
 
 export default VersioningListItem;
