@@ -4,6 +4,7 @@ import {
 } from 'patternfly-react';
 
 import VersioningListContainer from 'ui/versioning/VersioningListContainer';
+import AttachmentsListContainer from 'ui/versioning/attachments/AttachmentsListContainer';
 
 const VersioningTypes = () => (
   <TabContainer id="basic-tabs" defaultActiveKey="contents">
@@ -68,7 +69,7 @@ const VersioningTypes = () => (
           bsClass="tab-pane"
           eventKey="attachments"
         >
-      attachments tab active
+          <AttachmentsListContainer />
         </TabPane>
         <TabPane
           bsClass="tab-pane"
