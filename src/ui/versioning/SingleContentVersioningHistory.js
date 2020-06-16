@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
-import SingleContentVersioningHistoryItem from './SingleContentVersioningHistoryItem';
+import SingleContentVersioningHistoryItem from 'ui/versioning/SingleContentVersioningHistoryItem';
+import RestoreContentVersionModalContainer from 'ui/versioning/RestoreContentVersionModalContainer';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -36,6 +37,7 @@ class SingleContentVersioningHistory extends Component {
       page,
       pageSize,
       totalItems,
+      onClickRestore,
     } = this.props;
     const pagination = {
       page,
@@ -43,9 +45,13 @@ class SingleContentVersioningHistory extends Component {
       perPageOptions,
     };
 
-    const renderRow = versioningList
+    const renderRows = versioningList
       .map(item => (
-        <SingleContentVersioningHistoryItem key={item.id} {...item} />
+        <SingleContentVersioningHistoryItem
+          key={item.id}
+          onClickRestore={onClickRestore}
+          {...item}
+        />
       ));
     return (
       <div className="VersioningList__wrap">
@@ -70,7 +76,7 @@ class SingleContentVersioningHistory extends Component {
                 </th>
               </tr>
             </thead>
-            <tbody>{renderRow}</tbody>
+            <tbody>{renderRows}</tbody>
           </table>
           <Paginator
             pagination={pagination}
@@ -80,6 +86,7 @@ class SingleContentVersioningHistory extends Component {
             onPerPageSelect={this.changePageSize}
           />
         </Spinner>
+        <RestoreContentVersionModalContainer />
       </div>
     );
   }
@@ -90,6 +97,7 @@ SingleContentVersioningHistory.propTypes = {
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
   fetchVersioningList: PropTypes.func.isRequired,
+  onClickRestore: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,

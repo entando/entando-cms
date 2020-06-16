@@ -1,10 +1,13 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { getLoading } from 'state/loading/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 
 import SingleContentVersioningHistory from 'ui/versioning/SingleContentVersioningHistory';
 import { getVersioningList } from 'state/versioning/selectors';
 import { fetchSingleVersioningHistory, setSelectedVersioningType } from 'state/versioning/actions';
+import { setVisibleModal, setInfo } from 'state/modal/actions';
+import { RESTORE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/RestoreContentVersionModal';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).versionings,
@@ -14,13 +17,17 @@ export const mapStateToProps = state => ({
   versioningList: getVersioningList(state),
 });
 
-export const mapDispatchToProps = (dispatch, { id }) => ({
+export const mapDispatchToProps = (dispatch, { id, match: { params } }) => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
     dispatch(setSelectedVersioningType('contents'));
-    dispatch(fetchSingleVersioningHistory(id, page));
+    dispatch(fetchSingleVersioningHistory(params.contentId || id, page));
   },
   fetchVersioningList: (page) => {
-    dispatch(fetchSingleVersioningHistory(id, page));
+    dispatch(fetchSingleVersioningHistory(params.contentId || id, page));
+  },
+  onClickRestore: (item) => {
+    dispatch(setVisibleModal(RESTORE_CONTENT_VERSION_MODAL_ID));
+    dispatch(setInfo(item));
   },
 });
 
@@ -29,4 +36,4 @@ const SingleContentVersioningHistoryContainer = connect(
   mapDispatchToProps,
 )(SingleContentVersioningHistory);
 
-export default SingleContentVersioningHistoryContainer;
+export default withRouter(SingleContentVersioningHistoryContainer);

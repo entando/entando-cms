@@ -19,6 +19,7 @@ import {
   ROUTE_CMS_CONTENT_SETTINGS,
   ROUTE_CMS_CONTENTS,
   ROUTE_CMS_VERSIONING,
+  ROUTE_CMS_VERSIONING_DETAIL,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
@@ -37,6 +38,7 @@ import MonolistPageContainer from 'ui/content-type/attributes/monolist/MonolistP
 import ContentSettingsPage from 'ui/content-settings/ContentSettingsPage';
 import ContentsPage from 'ui/contents/ContentsPage';
 import VersioningListPage from 'ui/versioning/VersioningListPage';
+import SingleContentVersioningDetailsPage from 'ui/versioning/SingleContentVersioningDetailsPage';
 
 import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
@@ -107,6 +109,10 @@ export const routesDir = [
   {
     path: ROUTE_CMS_VERSIONING,
     component: VersioningListPage,
+  },
+  {
+    path: ROUTE_CMS_VERSIONING_DETAIL,
+    component: SingleContentVersioningDetailsPage,
   },
 ];
 
