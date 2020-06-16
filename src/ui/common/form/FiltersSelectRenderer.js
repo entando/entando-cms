@@ -5,6 +5,8 @@ import { Table } from 'react-bootstrap';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, ButtonGroup } from 'patternfly-react';
 
+import FilterValueOptionSelector from 'ui/common/form/FilterValueOptionSelector';
+
 class FiltersSelectRenderer extends Component {
   filterOptions(options) {
     const { intl } = this.props;
@@ -19,8 +21,8 @@ class FiltersSelectRenderer extends Component {
   render() {
     const {
       fields, filterName, attributeFilterChoices,
-      options, suboptions, onChangeFilterValue,
-      onResetFilterOption,
+      options, suboptions, intl,
+      onChangeFilterValue, onResetFilterOption,
     } = this.props;
 
     const handleAddNewFilter = () => fields.push();
@@ -47,7 +49,7 @@ class FiltersSelectRenderer extends Component {
               <span className="pficon pficon-delete" />
             </div>
           </td>
-          <td>
+          <td style={{ verticalAlign: 'middle' }}>
             <Field
               name={`${filter}.key`}
               component="select"
@@ -58,18 +60,24 @@ class FiltersSelectRenderer extends Component {
             </Field>
           </td>
           <td>
-            {
-              key && suboptions[key] && suboptions[key].length > 0
-              && (
-              <Field
-                name={filterName === 'filter' ? `${filter}.order` : `${filter}.categoryCode`}
-                component="select"
-                className="form-control"
-              >
-                {this.filterOptions(suboptions[key])}
-              </Field>
-              )
-            }
+            {filterName === 'filters' && (
+              <FilterValueOptionSelector
+                value={filterField}
+                intl={intl}
+                filterName={filterName}
+                attributeFilterChoices={attributeFilterChoices}
+              />
+            )}
+            {filterName !== 'filters' && key
+              && suboptions[key] && suboptions[key].length > 0 && (
+                <Field
+                  name={`${filter}.categoryCode`}
+                  component="select"
+                  className="form-control"
+                >
+                  {this.filterOptions(suboptions[key])}
+                </Field>
+            )}
           </td>
           <td className="text-center">
             <ButtonGroup bsSize="small">
@@ -113,7 +121,9 @@ class FiltersSelectRenderer extends Component {
               <th
                 width="25%"
               >
-                <FormattedMessage id="widget.form.options" />
+                <FormattedMessage
+                  id={`widget.form.${filterName === 'filters' ? 'settings' : 'options'}`}
+                />
               </th>
               <th
                 width="5%"

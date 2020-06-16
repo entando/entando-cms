@@ -120,9 +120,10 @@ export class ContentsQueryFormBody extends Component {
         return [];
       }
       const attributeFilters = contentType.attributes.filter(attribute => attribute.listFilter);
-      return attributeFilters.map(({ code }) => ({
+      return attributeFilters.map(({ code, type }) => ({
         code,
         name: `Attribute: ${code}`,
+        type,
       }));
     };
 
@@ -155,34 +156,14 @@ export class ContentsQueryFormBody extends Component {
       </Button>
       );
 
-
-    const orderFilters = [
-      {
-        code: '',
-        nameId: 'app.enumerator.none',
-      },
-      {
-        code: 'ASC',
-        nameId: 'widget.form.asc',
-      },
-      {
-        code: 'DESC',
-        nameId: 'widget.form.desc',
-      },
-    ];
+    const attributeFilters = getListAttributeFilters();
 
     const filters = [
       { code: '', nameId: 'widget.form.selectFilter' },
       { code: 'created', nameId: 'widget.form.creationDate' },
       { code: 'modified', nameId: 'widget.form.lastModify' },
+      ...attributeFilters,
     ];
-
-    const filtersSuboptions = {
-      created: orderFilters,
-      modified: orderFilters,
-    };
-
-    const attributeFilters = getListAttributeFilters();
 
     const frontendFilters = [
       { code: '', nameId: 'widget.form.selectFilter' },
@@ -343,7 +324,6 @@ export class ContentsQueryFormBody extends Component {
                           component={FiltersSelectRenderer}
                           name="filters"
                           options={filters}
-                          suboptions={filtersSuboptions}
                           onResetFilterOption={onResetFilterOption}
                           onChangeFilterValue={onChangeFilterValue}
                           filterName="filters"
