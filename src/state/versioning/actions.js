@@ -4,14 +4,17 @@ import {
 
 import {
   getVersionings, getSingleVersioning,
-  restoreVersion, deleteVersion,
+  restoreVersion, deleteVersion, getContentDetails,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
 import { getCurrentPage, getPageSize } from 'state/pagination/selectors';
 
-import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE } from './types';
-import { getSelectedVersioningType } from './selectors';
+import {
+  SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
+  SET_SINGLE_CONTENT_VERSION_DETAILS,
+} from 'state/versioning/types';
+import { getSelectedVersioningType } from 'state/versioning/selectors';
 
 
 export const setVersionings = versionings => ({
@@ -24,6 +27,11 @@ export const setVersionings = versionings => ({
 export const setSelectedVersioningType = versioningType => ({
   type: SET_SELECTED_VERSIONING_TYPE,
   payload: versioningType,
+});
+
+export const setDetailedContentVersion = contentVersion => ({
+  type: SET_SINGLE_CONTENT_VERSION_DETAILS,
+  payload: contentVersion,
 });
 
 // thunks
@@ -114,6 +122,25 @@ export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 
           dispatch(clearErrors());
         }
         dispatch(toggleLoading('versionings'));
+        resolve();
+      });
+    }).catch(() => {});
+  })
+);
+
+export const fetchContentDetails = (contentId, versionId) => dispatch => (
+  new Promise((resolve) => {
+    dispatch(toggleLoading('contentVersionDetails'));
+    getContentDetails(contentId, versionId).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setDetailedContentVersion(json.payload));
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        dispatch(toggleLoading('contentVersionDetails'));
         resolve();
       });
     }).catch(() => {});

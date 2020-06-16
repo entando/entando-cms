@@ -8,6 +8,7 @@ import {
   LIST_IMAGES_OK,
   DELETE_IMAGE_OK,
   RESTORE_IMAGE_OK,
+  CONTENT_DETAILS_OK,
 } from 'testutils/mocks/versioning';
 
 const TYPE_MOCKS = {
@@ -50,6 +51,16 @@ export const getSingleVersioning = (versioningType, itemId, page = { page: 1, pa
   )
 );
 
+export const getContentDetails = (contentId, versionId) => (
+  makeRequest(
+    {
+      uri: `/plugins/versioning/contents/${contentId}/versions/${versionId}`,
+      method: METHODS.GET,
+      mockResponse: CONTENT_DETAILS_OK,
+      useAuthentication: true,
+    },
+  )
+);
 
 export const deleteVersion = (versioningType, id) => (
   makeMockRequest(

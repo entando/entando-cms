@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
-import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE } from 'state/versioning/types';
+import {
+  SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
+  SET_SINGLE_CONTENT_VERSION_DETAILS,
+} from 'state/versioning/types';
 
 export const toMap = array => array.reduce((acc, versioning) => {
   acc[versioning.id] = versioning;
@@ -35,8 +38,18 @@ export const versioningMap = (state = {}, action = {}) => {
   }
 };
 
+export const detailedContentVersion = (state = {}, action = {}) => {
+  switch (action.type) {
+    case SET_SINGLE_CONTENT_VERSION_DETAILS: {
+      return action.payload;
+    }
+    default: return state;
+  }
+};
+
 export default combineReducers({
   list,
   map: versioningMap,
   selected,
+  detailedContentVersion,
 });
