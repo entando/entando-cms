@@ -54,7 +54,7 @@ export const getSingleVersioning = (versioningType, itemId, page = { page: 1, pa
 export const getContentDetails = (contentId, versionId) => (
   makeRequest(
     {
-      uri: `/plugins/versioning/contents/${contentId}/versions/${versionId}`,
+      uri: `/api/plugins/versioning/contents/${contentId}/versions/${versionId}`,
       method: METHODS.GET,
       mockResponse: CONTENT_DETAILS_OK,
       useAuthentication: true,

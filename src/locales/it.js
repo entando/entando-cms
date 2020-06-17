@@ -86,6 +86,8 @@ export default {
     'cms.versioning.search.desclabel': 'Descrizione',
     'cms.versioning.search.typelabel': 'Tipo',
     'cms.versioning.search.allitem': 'Tutti',
+    'cms.versioning.attributed.emptyList': 'Elenco vuoto',
+    'cms.versioning.attributes.showDefault': 'Il valore corretto è quello definito per la lingua predefinita.',
     'cms.contenttemplate.title': 'Template di Contenuto',
     'cms.contenttemplate.titletip': 'Puoi creare un template di contenuto qui',
     'cms.contenttemplate.titletip.edit': 'È possibile modificare il template di contenuto qui',

@@ -5,7 +5,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentVersionDetails from 'ui/versioning/details/ContentVersionDetails';
+import ContentVersionDetailsContainer from 'ui/versioning/details/ContentVersionDetailsContainer';
 
 const ContentVersionDetailsPage = () => (
   <Grid>
@@ -36,7 +36,7 @@ const ContentVersionDetailsPage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <ContentVersionDetails />
+        <ContentVersionDetailsContainer />
       </Col>
     </Row>
   </Grid>

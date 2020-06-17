@@ -88,6 +88,8 @@ export default {
     'cms.versioning.search.typelabel': 'Type',
     'cms.versioning.list.restoreVersion': 'Restore version',
     'cms.versioning.search.allitem': 'All',
+    'cms.versioning.attributed.emptyList': 'Empty List',
+    'cms.versioning.attributes.showDefault': 'The right value is the one defined for the default language.',
     'cms.contenttemplate.title': 'Content Templates',
     'cms.contenttemplate.titletip': 'You can create a content template here',
     'cms.contenttemplate.titletip.edit': 'You can modify a content template here',

@@ -28,7 +28,7 @@ const SingleContentVersioningHistoryItem = ({
           id={`versioning-id${version}`}
           to={routeConverter(
             ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
-            { contentId: id, versionId: version },
+            { contentId, versionId: id },
           )}
           label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
           className="VersioningListRow__menu-item-edit"
