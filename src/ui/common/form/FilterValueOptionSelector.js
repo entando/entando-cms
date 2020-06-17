@@ -101,11 +101,11 @@ class FilterValueOptionSelector extends Component {
       end,
       nullValue,
     } = propValue;
-    if (value) {
-      return filterableType === TEXT_FILTERABLE ? BY_VALUE_PARTIAL : BY_VALUE_ONLY;
-    }
     if (start || end) {
       return BY_RANGE;
+    }
+    if (value) {
+      return filterableType === TEXT_FILTERABLE ? BY_VALUE_PARTIAL : BY_VALUE_ONLY;
     }
     if (nullValue) {
       return HAS_NO_VALUE;
@@ -130,14 +130,14 @@ class FilterValueOptionSelector extends Component {
   handleValueTypeChange({ currentTarget: { value } }) {
     const { filterableType } = this.state;
     const cleaned = {
-      value: null,
-      nullValue: null,
-      likeOption: null,
-      valueDateDelay: null,
-      startDateDelay: null,
-      endDateDelay: null,
-      start: null,
-      end: null,
+      value: undefined,
+      nullValue: undefined,
+      likeOption: undefined,
+      valueDateDelay: undefined,
+      startDateDelay: undefined,
+      endDateDelay: undefined,
+      start: undefined,
+      end: undefined,
     };
     switch (value) {
       case HAS_VALUE:
@@ -149,8 +149,15 @@ class FilterValueOptionSelector extends Component {
       case BY_VALUE_ONLY:
         if (filterableType === DATE_FILTERABLE) {
           this.handleValueChange({ ...cleaned, value: 'today' });
+        } else {
+          this.handleValueChange({ ...cleaned, value: '' });
         }
         break;
+      case BY_VALUE_PARTIAL:
+        this.handleValueChange({ ...cleaned, value: '', likeOption: false });
+        break;
+      case BY_RANGE:
+        this.handleValueChange({ ...cleaned, start: '', end: '' });
     }
 
     this.setState({ optionSelected: value });
@@ -410,7 +417,7 @@ class FilterValueOptionSelector extends Component {
             onChange: values => this.handleValueChange({
               ...values,
               start: values.value,
-              value: null,
+              value: undefined,
             }),
           }}
           hasNone
@@ -425,7 +432,7 @@ class FilterValueOptionSelector extends Component {
             onChange: values => this.handleValueChange({
               ...values,
               end: values.value,
-              value: null,
+              value: undefined,
             }),
           }}
           hasNone

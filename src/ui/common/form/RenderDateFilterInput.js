@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
+import { injectIntl, FormattedMessage, intlShape } from 'react-intl';
 import DatePicker from 'react-datepicker';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -72,6 +73,7 @@ class RenderDateFilterInput extends Component {
       input,
       name,
       label,
+      intl,
       delayKey,
       help,
       locale,
@@ -101,13 +103,24 @@ class RenderDateFilterInput extends Component {
         <Col xs={12} className="RenderDateFilterInput__container">
           <ToggleButtonGroup name="valueType" type="radio" value={valueType} onChange={this.handleDateTypeChange}>
             <ToggleButton value={firstValue} className="RenderDateFilterInput__toggle-btn">
-              {hasNone ? 'None' : 'Today'}
+              <FormattedMessage
+                id={hasNone ? 'cms.label.none' : 'widget.form.filterable.labelDateToday'}
+              />
             </ToggleButton>
             <ToggleButton value="today-delay" className="RenderDateFilterInput__toggle-btn">
-              Today <input type="text" value={input[delayKey]} className="extra form-control" placeholder="Delay (days)" onChange={this.handleChangeDelay} />
+              <FormattedMessage id="widget.form.filterable.labelDateToday" />
+              {' '}
+              <input
+                type="text"
+                value={input[delayKey]}
+                className="extra form-control"
+                placeholder={intl.formatMessage({ id: 'widget.form.filterable.labelDateDelay' })}
+                disabled={valueType !== 'today-delay'}
+                onChange={this.handleChangeDelay}
+              />
             </ToggleButton>
             <ToggleButton value="chosen-date" className="RenderDateFilterInput__toggle-btn">
-              Chosen Date
+            <FormattedMessage id="widget.form.filterable.labelChosenDate" />
               <DatePicker
                 placeholder={dateFormat}
                 selected={valueType === 'chosen-date' && input.value ? moment(input.value, dateFormat) : null}
@@ -117,6 +130,7 @@ class RenderDateFilterInput extends Component {
                 dateFormat={dateFormat}
                 isClearable={isClearable}
                 className="extra"
+                disabled={valueType !== 'chosen-date'}
                 style={{ after: 'fa fa-calendar' }}
               />
             </ToggleButton>
@@ -130,6 +144,7 @@ class RenderDateFilterInput extends Component {
 
 RenderDateFilterInput.propTypes = {
   onDidMount: PropTypes.func,
+  intl: intlShape.isRequired,
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -170,4 +185,4 @@ RenderDateFilterInput.defaultProps = {
   xsClass: 'mobile-left',
   delayKey: 'delay',
 };
-export default RenderDateFilterInput;
+export default injectIntl(RenderDateFilterInput);
