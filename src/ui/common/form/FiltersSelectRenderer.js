@@ -22,16 +22,21 @@ class FiltersSelectRenderer extends Component {
     const {
       fields, filterName, attributeFilterChoices,
       options, suboptions, intl,
-      onChangeFilterValue, onResetFilterOption,
+      onChangeFilterValue, onChangeFilterAttribute,
+      onResetFilterOption,
     } = this.props;
 
     const handleAddNewFilter = () => fields.push();
 
-    const handleFilterChange = (value, index) => {
+    const handleFilterAttributeChange = (value, index) => {
       onResetFilterOption(filterName, index);
       const attributeFilter = attributeFilterChoices.findIndex(({ code }) => code === value) > -1;
-      onChangeFilterValue(fields.name, index, attributeFilter);
+      onChangeFilterAttribute(fields.name, index, attributeFilter);
     };
+
+    const handleFilterChange = (value, index) => (
+      onChangeFilterValue(fields.name, index, value)
+    );
 
     const renderFilters = fields.map((filter, i) => {
       const filterField = fields.get(i) || {};
@@ -54,7 +59,7 @@ class FiltersSelectRenderer extends Component {
               name={`${filter}.key`}
               component="select"
               className="form-control"
-              onChange={({ currentTarget }) => handleFilterChange(currentTarget.value, i)}
+              onChange={({ currentTarget }) => handleFilterAttributeChange(currentTarget.value, i)}
             >
               {this.filterOptions(options)}
             </Field>
@@ -64,8 +69,11 @@ class FiltersSelectRenderer extends Component {
               <FilterValueOptionSelector
                 value={filterField}
                 intl={intl}
+                filter={filter}
                 filterName={filterName}
+                fieldIndex={i}
                 attributeFilterChoices={attributeFilterChoices}
+                onChange={handleFilterChange}
               />
             )}
             {filterName !== 'filters' && key
@@ -163,6 +171,7 @@ FiltersSelectRenderer.propTypes = {
   }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   suboptions: PropTypes.shape({}),
+  onChangeFilterAttribute: PropTypes.func.isRequired,
   onChangeFilterValue: PropTypes.func.isRequired,
   onResetFilterOption: PropTypes.func.isRequired,
   filterName: PropTypes.string.isRequired,

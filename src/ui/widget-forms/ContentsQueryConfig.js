@@ -68,9 +68,9 @@ export class ContentsQueryFormBody extends Component {
     const {
       contentTypes, contentType, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
-      intl, onChangeFilterValue, onResetFilterOption, languages,
-      onToggleInclusiveOr, selectedInclusiveOr, handleSubmit, invalid,
-      submitting, dirty, onCancel, onDiscard, onSave,
+      intl, onChangeFilterValue, onResetFilterOption, onChangeFilterAttribute,
+      languages, onToggleInclusiveOr, selectedInclusiveOr, handleSubmit,
+      invalid, submitting, dirty, onCancel, onDiscard, onSave,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -326,6 +326,7 @@ export class ContentsQueryFormBody extends Component {
                           options={filters}
                           onResetFilterOption={onResetFilterOption}
                           onChangeFilterValue={onChangeFilterValue}
+                          onChangeFilterAttribute={onChangeFilterAttribute}
                           filterName="filters"
                           attributeFilterChoices={attributeFilters}
                         />
@@ -390,6 +391,7 @@ export class ContentsQueryFormBody extends Component {
                           suboptions={frontendFiltersSuboptions}
                           onResetFilterOption={onResetFilterOption}
                           onChangeFilterValue={onChangeFilterValue}
+                          onChangeFilterAttribute={onChangeFilterAttribute}
                           filterName="frontendFilters"
                           attributeFilterChoices={attributeFilters}
                         />
@@ -444,6 +446,7 @@ ContentsQueryFormBody.propTypes = {
   selectedCategories: PropTypes.arrayOf(PropTypes.string),
   onResetFilterOption: PropTypes.func.isRequired,
   onChangeFilterValue: PropTypes.func.isRequired,
+  onChangeFilterAttribute: PropTypes.func.isRequired,
   onChangeContentType: PropTypes.func.isRequired,
   onToggleInclusiveOr: PropTypes.func.isRequired,
   onResetModelId: PropTypes.func.isRequired,

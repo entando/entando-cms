@@ -41,8 +41,9 @@
 @import "contents/JoinCategoriesModal.scss";
 @import "assets/AssetsAdvancedFilter.scss";
 @import "common/form/FormSectionTitle";
-@import "common/form/FiltersSelectRenderer.scss";
-@import "common/form/FilterValueOptionSelector.scss";
+@import "common/form/FiltersSelectRenderer";
+@import "common/form/FilterValueOptionSelector";
+@import "common/form/RenderDateFilterInput";
 @import "contents/JoinCategoriesModal";
 @import "common/modal/LinkConfigModal";
 @import "common/content/ContentSearch";
