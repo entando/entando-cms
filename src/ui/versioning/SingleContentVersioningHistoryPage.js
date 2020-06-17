@@ -7,7 +7,7 @@ import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import SingleContentVersioningHistoryContainer from 'ui/versioning/SingleContentVersioningHistoryContainer';
 
-const SinglContentVersioningDetailsPage = () => (
+const SinglContentVersioningHistoryPage = () => (
   <Grid fluid>
     <Row>
       <Col xs={12}>
@@ -39,4 +39,4 @@ const SinglContentVersioningDetailsPage = () => (
   </Grid>
 );
 
-export default SinglContentVersioningDetailsPage;
+export default SinglContentVersioningHistoryPage;

@@ -19,4 +19,5 @@ export const ROUTE_CMS_CONTENTS = '/cms/contents';
 export const ROUTE_APP_BUILDER_PAGE_CONFIG = '/page/configuration/:pageCode';
 export const ROUTE_CMS_VERSIONING = '/cms/versioning';
 export const ROUTE_CMS_VERSIONING_CONTENTS = '/cms/versioning/contents';
+export const ROUTE_CMS_VERSIONING_CONTENT_HISTORY = '/cms/versioning/:contentId';
 export const ROUTE_CMS_VERSIONING_CONTENT_DETAIL = '/cms/versioning/contents/:contentId/versions/:versionId';
