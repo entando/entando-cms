@@ -4,7 +4,7 @@ import {
 
 import {
   getVersionings, getSingleVersioning,
-  restoreVersion, deleteVersion, getContentDetails,
+  restoreVersion, deleteVersion, getContentDetails, postRecoverContentVersion,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -145,4 +145,26 @@ export const fetchContentDetails = (contentId, versionId) => dispatch => (
       });
     }).catch(() => {});
   })
+);
+
+export const recoverContentVersion = (id, version) => (dispatch, getState) => (
+  new Promise((resolve) => {
+    const state = getState();
+
+    const page = getCurrentPage(state);
+    const pageSize = getPageSize(state);
+
+    postRecoverContentVersion(id, version)
+      .then(async (response) => {
+        if (response.ok) {
+          dispatch(fetchVersionings({ page, pageSize }));
+        } else {
+          const json = await response.json();
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        resolve(response);
+      });
+  }).catch(() => {})
 );

@@ -6,7 +6,7 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-import { recoverVersion } from 'state/versioning/actions';
+import { recoverContentVersion } from 'state/versioning/actions';
 import { ROUTE_CMS_EDIT_CONTENT } from 'app-init/routes';
 
 import RestoreContentVersionModal from 'ui/versioning/RestoreContentVersionModal';
@@ -25,8 +25,8 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onConfirmRestore: (contentVersion) => {
     const { versionId, version, contentId } = contentVersion;
-    dispatch(recoverVersion(contentId, versionId)).then((res) => {
-      if (res) {
+    dispatch(recoverContentVersion(contentId, versionId)).then((res) => {
+      if (res && res.ok) {
         dispatch(
           addToast(
             intl.formatMessage(restoreMsgs.restored, { version }),

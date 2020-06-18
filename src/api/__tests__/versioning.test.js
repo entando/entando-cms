@@ -5,6 +5,7 @@ import {
   deleteVersion,
   restoreVersion,
   getContentDetails,
+  postRecoverContentVersion,
 } from 'api/versioning';
 import {
   LIST_VERSIONING_OK,
@@ -150,6 +151,31 @@ describe('api/versioning', () => {
       expect(makeMockRequest).toHaveBeenCalledWith(
         {
           uri: `${getVersioningUri(VERSIONING_TYPE)}/${MOCK_ID}`,
+          body: { version: MOCK_VERSION },
+          method: METHODS.POST,
+          useAuthentication: true,
+          mockResponse: RESTORE_ATTACHMENT_OK,
+        },
+      );
+    });
+  });
+
+  describe('postRecoverContentVersion', () => {
+    const MOCK_ID = 'MOCK_ID';
+    const MOCK_VERSION = 'MOCK_VERSION';
+
+    afterEach(() => makeRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(restoreVersion()).toBeInstanceOf(Promise);
+    });
+
+    it('passes content and version id', () => {
+      postRecoverContentVersion(MOCK_ID, MOCK_VERSION);
+
+      expect(makeRequest).toHaveBeenCalledWith(
+        {
+          uri: `/api/plugins/versioning/contents/${MOCK_ID}/versions/${MOCK_VERSION}/recover`,
           body: { version: MOCK_VERSION },
           method: METHODS.POST,
           useAuthentication: true,
