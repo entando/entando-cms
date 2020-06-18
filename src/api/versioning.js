@@ -31,7 +31,7 @@ const TYPE_MOCKS = {
 export const getVersionings = (versioningType, page = { page: 1, pageSize: 10 }, params = '') => (
   makeRequest(
     {
-      uri: `/api/plugins/versioning/${versioningType}/${params}`,
+      uri: `/api/plugins/versioning/${versioningType}${params}`,
       method: METHODS.GET,
       mockResponse: TYPE_MOCKS.LIST[versioningType] || LIST_VERSIONING_OK,
       useAuthentication: true,

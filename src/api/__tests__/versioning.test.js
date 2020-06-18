@@ -50,7 +50,7 @@ describe('api/versioning', () => {
 
       expect(makeRequest).toHaveBeenCalledWith(
         {
-          uri: `${getVersioningUri(VERSIONING_TYPE)}/`,
+          uri: `${getVersioningUri(VERSIONING_TYPE)}`,
           method: METHODS.GET,
           useAuthentication: true,
           mockResponse: LIST_VERSIONING_OK,
