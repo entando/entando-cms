@@ -5,6 +5,8 @@ import { Table } from 'react-bootstrap';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, ButtonGroup } from 'patternfly-react';
 
+import FilterValueOptionSelector from 'ui/common/form/FilterValueOptionSelector';
+
 class FiltersSelectRenderer extends Component {
   filterOptions(options) {
     const { intl } = this.props;
@@ -19,17 +21,22 @@ class FiltersSelectRenderer extends Component {
   render() {
     const {
       fields, filterName, attributeFilterChoices,
-      options, suboptions, onChangeFilterValue,
+      options, suboptions, intl,
+      onChangeFilterValue, onChangeFilterAttribute,
       onResetFilterOption,
     } = this.props;
 
     const handleAddNewFilter = () => fields.push();
 
-    const handleFilterChange = (value, index) => {
+    const handleFilterAttributeChange = (value, index) => {
       onResetFilterOption(filterName, index);
       const attributeFilter = attributeFilterChoices.findIndex(({ code }) => code === value) > -1;
-      onChangeFilterValue(fields.name, index, attributeFilter);
+      onChangeFilterAttribute(fields.name, index, attributeFilter);
     };
+
+    const handleFilterChange = (value, index) => (
+      onChangeFilterValue(fields.name, index, value)
+    );
 
     const renderFilters = fields.map((filter, i) => {
       const filterField = fields.get(i) || {};
@@ -47,29 +54,38 @@ class FiltersSelectRenderer extends Component {
               <span className="pficon pficon-delete" />
             </div>
           </td>
-          <td>
+          <td style={{ verticalAlign: 'middle' }}>
             <Field
               name={`${filter}.key`}
               component="select"
               className="form-control"
-              onChange={({ currentTarget }) => handleFilterChange(currentTarget.value, i)}
+              onChange={({ currentTarget }) => handleFilterAttributeChange(currentTarget.value, i)}
             >
               {this.filterOptions(options)}
             </Field>
           </td>
           <td>
-            {
-              key && suboptions[key] && suboptions[key].length > 0
-              && (
-              <Field
-                name={filterName === 'filter' ? `${filter}.order` : `${filter}.categoryCode`}
-                component="select"
-                className="form-control"
-              >
-                {this.filterOptions(suboptions[key])}
-              </Field>
-              )
-            }
+            {filterName === 'filters' && (
+              <FilterValueOptionSelector
+                value={filterField}
+                intl={intl}
+                filter={filter}
+                filterName={filterName}
+                fieldIndex={i}
+                attributeFilterChoices={attributeFilterChoices}
+                onChange={handleFilterChange}
+              />
+            )}
+            {filterName !== 'filters' && key
+              && suboptions[key] && suboptions[key].length > 0 && (
+                <Field
+                  name={`${filter}.categoryCode`}
+                  component="select"
+                  className="form-control"
+                >
+                  {this.filterOptions(suboptions[key])}
+                </Field>
+            )}
           </td>
           <td className="text-center">
             <ButtonGroup bsSize="small">
@@ -113,7 +129,9 @@ class FiltersSelectRenderer extends Component {
               <th
                 width="25%"
               >
-                <FormattedMessage id="widget.form.options" />
+                <FormattedMessage
+                  id={`widget.form.${filterName === 'filters' ? 'settings' : 'options'}`}
+                />
               </th>
               <th
                 width="5%"
@@ -153,6 +171,7 @@ FiltersSelectRenderer.propTypes = {
   }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   suboptions: PropTypes.shape({}),
+  onChangeFilterAttribute: PropTypes.func.isRequired,
   onChangeFilterValue: PropTypes.func.isRequired,
   onResetFilterOption: PropTypes.func.isRequired,
   filterName: PropTypes.string.isRequired,

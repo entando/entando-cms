@@ -70,9 +70,13 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     });
   },
   onResetFilterOption: (name, i) => dispatch(change(ContentsQueryContainerId, `${name}.[${i}].option`, '')),
-  onChangeFilterValue: (name, i, value) => {
+  onChangeFilterAttribute: (name, i, value) => {
     dispatch(change(ContentsQueryContainerId, `${name}.[${i}].attributeFilter`, value));
   },
+  onChangeFilterValue: (name, i, value) => {
+    dispatch(change(ContentsQueryContainerId, `${name}.[${i}]`, value));
+  },
+
   onChangeContentType: (contentType) => {
     if (contentType) {
       dispatch(fetchContentTemplatesByContentType(contentType));

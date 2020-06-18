@@ -8,6 +8,15 @@ import {
   TYPE_HYPERTEXT,
   TYPE_LONGTEXT,
   TYPE_TEXT,
+  TYPE_BOOLEAN,
+  TYPE_CHECKBOX,
+  TYPE_DATE,
+  TYPE_ENUMERATOR,
+  TYPE_ENUMERATOR_MAP,
+  TYPE_NUMBER,
+  TYPE_MONOTEXT,
+  TYPE_THREESTATE,
+  TYPE_TIMESTAMP,
 } from 'state/content-type/const';
 
 const NO_ATTRIBUTE_FOR_TYPE_LIST = [
@@ -20,6 +29,26 @@ const NO_ATTRIBUTE_FOR_TYPE_LIST = [
 ];
 
 const NO_ATTRIBUTE_FOR_TYPE_MONOLIST = [TYPE_LIST, TYPE_MONOLIST];
+
+export const TEXT_FILTERABLE_ATTRIBUTES = [
+  TYPE_TEXT,
+  TYPE_ENUMERATOR,
+  TYPE_ENUMERATOR_MAP,
+  TYPE_LONGTEXT,
+  TYPE_MONOTEXT,
+  TYPE_NUMBER,
+];
+
+export const DATE_FILTERABLE_ATTRIBUTES = [
+  TYPE_DATE,
+  TYPE_TIMESTAMP,
+];
+
+export const BOOL_FILTERABLE_ATTRIBUTES = [
+  TYPE_BOOLEAN,
+  TYPE_CHECKBOX,
+  TYPE_THREESTATE,
+];
 
 export const getContentTypeState = state => state.apps.cms.contentType;
 export const getContentTypeIdList = state => state.apps.cms.contentType.list;
