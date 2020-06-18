@@ -19,6 +19,7 @@ export const mockApi = ({
 }) => {
   const statusCode = errors === true || (Array.isArray(errors) && errors.length) ? codeStatus : 200;
   const response = {
+    ok: statusCode < 400,
     errors: errors === true ? [{ code: 1, message: 'Error!' }] : errors || [],
     payload: payload || {},
     metaData: metaData || [],

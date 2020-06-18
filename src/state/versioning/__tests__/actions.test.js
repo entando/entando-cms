@@ -3,6 +3,7 @@ import {
   deleteVersion,
   restoreVersion,
   getSingleVersioning,
+  postRecoverContentVersion,
 } from 'api/versioning';
 import {
   setVersionings,
@@ -11,6 +12,7 @@ import {
   removeVersion,
   recoverVersion,
   fetchSingleVersioningHistory,
+  recoverContentVersion,
 } from 'state/versioning/actions';
 import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE } from 'state/versioning/types';
 
@@ -18,11 +20,14 @@ import { createMockStore, mockApi } from 'testutils/helpers';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { SET_PAGE } from 'state/pagination/types';
 
+const ADD_ERRORS = 'errors/add-errors';
+
 jest.mock('api/versioning', () => ({
   getVersionings: jest.fn(),
   deleteVersion: jest.fn(),
   restoreVersion: jest.fn(),
   getSingleVersioning: jest.fn(),
+  postRecoverContentVersion: jest.fn(),
 }));
 
 describe('versioning actions', () => {
@@ -82,7 +87,7 @@ describe('versioning actions', () => {
           expect(getVersionings).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);
@@ -135,7 +140,7 @@ describe('versioning actions', () => {
         .then(() => {
           expect(deleteVersion).toHaveBeenCalled();
           const actions = store.getActions();
-          expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);
@@ -189,7 +194,7 @@ describe('versioning actions', () => {
         .then(() => {
           expect(restoreVersion).toHaveBeenCalled();
           const actions = store.getActions();
-          expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);
@@ -236,7 +241,50 @@ describe('versioning actions', () => {
           expect(getSingleVersioning).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+
+  describe('recoverContentVersion', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        pagination: {
+          global: {
+            page: 1,
+            pageSize: 10,
+          },
+        },
+        apps: {
+          cms: {
+            versioning: {
+              list: [],
+              map: {},
+            },
+          },
+        },
+      });
+    });
+
+    afterEach(() => jest.clearAllMocks());
+
+    const MOCK_CONTENT_ID = 'content_id';
+    const MOCK_VERSION = 'version';
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      postRecoverContentVersion.mockImplementationOnce(mockApi({ errors: true }));
+      getVersionings.mockImplementationOnce(mockApi({ payload: [] }));
+      store
+        .dispatch(recoverContentVersion(MOCK_CONTENT_ID, MOCK_VERSION))
+        .then(() => {
+          expect(postRecoverContentVersion).toHaveBeenCalledTimes(1);
+          expect(postRecoverContentVersion).toHaveBeenCalledWith(MOCK_CONTENT_ID, MOCK_VERSION);
+          const actions = store.getActions();
+          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);

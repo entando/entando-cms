@@ -8,6 +8,7 @@ import {
   LIST_IMAGES_OK,
   DELETE_IMAGE_OK,
   RESTORE_IMAGE_OK,
+  RESTORE_CONTENT_OK,
 } from 'testutils/mocks/versioning';
 
 const TYPE_MOCKS = {
@@ -50,7 +51,6 @@ export const getSingleVersioning = (versioningType, itemId, page = { page: 1, pa
   )
 );
 
-
 export const deleteVersion = (versioningType, id) => (
   makeMockRequest(
     {
@@ -69,6 +69,18 @@ export const restoreVersion = (versioningType, id, version) => (
       method: METHODS.POST,
       body: { version },
       mockResponse: TYPE_MOCKS.RESTORE[versioningType],
+      useAuthentication: true,
+    },
+  )
+);
+
+export const postRecoverContentVersion = (id, version) => (
+  makeRequest(
+    {
+      uri: `/api/plugins/versioning/contents/${id}/versions/${version}/recover`,
+      method: METHODS.POST,
+      body: { version },
+      mockResponse: RESTORE_CONTENT_OK,
       useAuthentication: true,
     },
   )
