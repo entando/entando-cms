@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import { isNull } from 'lodash';
+import { isNull, isUndefined } from 'lodash';
 
 class RenderDateFilterInput extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class RenderDateFilterInput extends Component {
     if (prevInput !== input) {
       const { value: inputValue } = input;
       const firstValue = hasNone ? 'none' : 'today';
-      if (typeof input[delayKey] !== 'undefined' && input[delayKey] !== null) {
+      if (!isUndefined(input[delayKey]) && !isNull(input[delayKey])) {
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ valueType: 'today-delay' });
       } else if (inputValue && inputValue !== 'today') {

@@ -449,6 +449,7 @@ export default {
     'widget.form.filterable.labelOnly': 'Filter by value',
     'widget.form.filterable.labelPartial': 'Filter by value (partial)',
     'widget.form.filterable.labelRange': 'Filter by range',
+    'widget.form.filterable.labelRangeField': 'Range',
     'widget.form.filterable.labelChosenDate': 'Chosen Date',
     'widget.form.filterable.labelDateToday': 'Today',
     'widget.form.filterable.labelDateDelay': 'Delay (days)',

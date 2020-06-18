@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, isUndefined, isEqual } from 'lodash';
 import { FormattedMessage, FormattedHTMLMessage, intlShape } from 'react-intl';
 import { Collapse } from 'react-collapse';
 
@@ -58,17 +58,23 @@ class FilterValueOptionSelector extends Component {
   componentDidUpdate(prevProps) {
     const {
       attributeFilterChoices: prevAttr,
-      value: { key: prevKey },
+      value: prevValue,
     } = prevProps;
+    const { key: prevKey } = prevValue;
+
     const {
       attributeFilterChoices: attr,
-      value: { key },
+      value,
     } = this.props;
+    const { key } = value;
+
+    const hasAllValueChanged = !isEqual({ ...prevValue, key: 1 }, { ...value, key: 1 });
+
     const keyChanged = prevKey !== key;
     if (keyChanged || prevAttr.length !== attr.length) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ keyChanged });
-      this.beginFillState();
+      this.beginFillState(hasAllValueChanged);
     }
   }
 
@@ -88,7 +94,7 @@ class FilterValueOptionSelector extends Component {
     return get(selectedAttributeType, 'type', '');
   }
 
-  beginFillState() {
+  beginFillState(valuePropChanged) {
     const {
       attributeFilterChoices: attrChoices,
       value: { attributeFilter },
@@ -97,7 +103,7 @@ class FilterValueOptionSelector extends Component {
 
     if (attributeFilter && attrChoices && attrChoices.length > 0) {
       const filterableType = this.determineFilterableType();
-      if (keyChanged) {
+      if (keyChanged && !valuePropChanged) {
         if (filterableType === BOOL_FILTERABLE) {
           this.handleValueChange({ ...CLEAN_VALUES, value: true });
         } else {
@@ -134,7 +140,7 @@ class FilterValueOptionSelector extends Component {
       end,
       nullValue,
     } = propValue;
-    if (start || end) {
+    if (!isUndefined(start) || !isUndefined(end)) {
       return BY_RANGE;
     }
     if (value) {
@@ -224,7 +230,7 @@ class FilterValueOptionSelector extends Component {
     } = value;
 
     if (filterableType === BOOL_FILTERABLE) {
-      if (typeof filterValue !== 'undefined') {
+      if (!isUndefined(filterValue)) {
         return this.renderLabelWithSort(
           <FormattedHTMLMessage
             id="widget.form.filterable.valueOnly"
@@ -298,7 +304,13 @@ class FilterValueOptionSelector extends Component {
         );
 
         return this.renderLabelWithSort(
-          <Fragment>{fromMsg} {toMsg}</Fragment>,
+          <Fragment>
+            <FormattedMessage id="widget.form.filterable.labelRangeField" />
+            {' '}
+            {fromMsg}
+            {' '}
+            {toMsg}
+          </Fragment>,
         );
       }
       case HAS_NO_VALUE:
@@ -340,30 +352,33 @@ class FilterValueOptionSelector extends Component {
       },
     ];
     const boolValue = filterValue ? 'true' : 'false';
-    const value = typeof filterValue === 'undefined' ? 'all' : boolValue;
+    const value = isUndefined(filterValue) ? 'all' : boolValue;
+
+    const input = {
+      name: `${filter}.value`,
+      type: 'radio',
+      value,
+      onChange: (valueSelected) => {
+        switch (valueSelected) {
+          case 'true':
+            this.handleValueChange({ value: true });
+            break;
+          case 'false':
+            this.handleValueChange({ value: false });
+            break;
+          case 'all':
+          default:
+            this.handleValueChange({ value: undefined });
+            break;
+        }
+      },
+    };
+
     return (
       <Fragment>
         <h5><FormattedMessage id="widget.form.options" /></h5>
         <RadioInput
-          input={{
-            name: `${filter}.value`,
-            type: 'radio',
-            value,
-            onChange: (valueSelected) => {
-              switch (valueSelected) {
-                case 'true':
-                  this.handleValueChange({ value: true });
-                  break;
-                case 'false':
-                  this.handleValueChange({ value: false });
-                  break;
-                case 'all':
-                default:
-                  this.handleValueChange({ value: undefined });
-                  break;
-              }
-            },
-          }}
+          input={input}
           hasLabel={false}
           toggleElement={boolChoices}
           meta={{ touched: false, error: false }}
@@ -376,13 +391,16 @@ class FilterValueOptionSelector extends Component {
     const { value: propValue, filter } = this.props;
     const { value } = propValue;
     const { filterableType } = this.state;
+    const input = {
+      name: `${filter}.value`,
+      value,
+    };
     return (
       filterableType !== DATE_FILTERABLE ? (
         <div className="FilterValueOptionSelector__top-options">
           <TextInput
             input={{
-              name: `${filter}.value`,
-              value,
+              ...input,
               onChange: ({ currentTarget: { value: v } }) => (
                 this.handleValueChange({ value: v })
               ),
@@ -394,7 +412,7 @@ class FilterValueOptionSelector extends Component {
         <div className="FilterValueOptionSelector__top-options">
           <DateFilterInput
             input={{
-              name: `${filter}.value`,
+              ...input,
               ...propValue,
               onChange: values => this.handleValueChange(values),
             }}
@@ -410,16 +428,19 @@ class FilterValueOptionSelector extends Component {
     const { value: propValue, filter } = this.props;
     const { start, end } = propValue;
     const { filterableType } = this.state;
+
     if (filterableType === TEXT_FILTERABLE) {
+      const handleChangeRange = forValue => ({ target: { value } }) => (
+        this.handleValueChange({ [forValue]: value })
+      );
+
       return (
         <div className="FilterValueOptionSelector__top-options">
           <TextInput
             input={{
               name: `${filter}.start`,
               value: start,
-              onChange: ({ currentTarget: { value } }) => (
-                this.handleValueChange({ start: value })
-              ),
+              onChange: handleChangeRange('start'),
             }}
             label={<FormLabel labelId="cms.label.from" />}
           />
@@ -427,15 +448,20 @@ class FilterValueOptionSelector extends Component {
             input={{
               name: `${filter}.end`,
               value: end,
-              onChange: ({ currentTarget: { value } }) => (
-                this.handleValueChange({ end: value })
-              ),
+              onChange: handleChangeRange('end'),
             }}
             label={<FormLabel labelId="cms.label.to" />}
           />
         </div>
       );
     }
+    const handleChangeDateRange = forValue => values => (
+      this.handleValueChange({
+        ...values,
+        [forValue]: values.value,
+        value: undefined,
+      })
+    );
     return (
       <div className="FilterValueOptionSelector__top-options">
         <DateFilterInput
@@ -443,11 +469,7 @@ class FilterValueOptionSelector extends Component {
             name: `${filter}.start`,
             ...propValue,
             value: start,
-            onChange: values => this.handleValueChange({
-              ...values,
-              start: values.value,
-              value: undefined,
-            }),
+            onChange: handleChangeDateRange('start'),
           }}
           hasNone
           delayKey="startDateDelay"
@@ -458,11 +480,7 @@ class FilterValueOptionSelector extends Component {
             name: `${filter}.end`,
             ...propValue,
             value: end,
-            onChange: values => this.handleValueChange({
-              ...values,
-              end: values.value,
-              value: undefined,
-            }),
+            onChange: handleChangeDateRange('end'),
           }}
           hasNone
           delayKey="endDateDelay"
@@ -530,17 +548,15 @@ class FilterValueOptionSelector extends Component {
             />
           </div>
         )}
+        {optionSelected === BY_RANGE && this.renderRangeFields()}
       </Fragment>
     );
   }
 
   renderAttributeFilter() {
-    const { filterableType, optionSelected } = this.state;
+    const { filterableType } = this.state;
     if (filterableType === BOOL_FILTERABLE) {
       return this.renderBooleanFilterValueOptions();
-    }
-    if (optionSelected === BY_RANGE) {
-      return this.renderRangeFields();
     }
     return this.renderFilterValueOptions();
   }
