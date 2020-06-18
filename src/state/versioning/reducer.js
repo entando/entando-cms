@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
-  SET_SINGLE_CONTENT_VERSION_DETAILS,
+  SET_SINGLE_CONTENT_VERSION_DETAILS, SET_RESOURCE_VERSIONINGS,
 } from 'state/versioning/types';
 
 export const toMap = array => array.reduce((acc, versioning) => {
@@ -14,6 +14,15 @@ export const toIdListVersioningList = array => array.map(versioning => versionin
 export const list = (state = [], action = {}) => {
   switch (action.type) {
     case SET_VERSIONINGS: {
+      return toIdListVersioningList(action.payload.versionings);
+    }
+    default: return state;
+  }
+};
+
+export const resourceList = (state = [], action = {}) => {
+  switch (action.type) {
+    case SET_RESOURCE_VERSIONINGS: {
       return toIdListVersioningList(action.payload.versionings);
     }
     default: return state;
@@ -38,6 +47,15 @@ export const versioningMap = (state = {}, action = {}) => {
   }
 };
 
+export const resourceVersioningMap = (state = {}, action = {}) => {
+  switch (action.type) {
+    case SET_RESOURCE_VERSIONINGS: {
+      return toMap(action.payload.versionings);
+    }
+    default: return state;
+  }
+};
+
 export const contentVersionDetails = (state = {}, action = {}) => {
   switch (action.type) {
     case SET_SINGLE_CONTENT_VERSION_DETAILS: {
@@ -49,7 +67,9 @@ export const contentVersionDetails = (state = {}, action = {}) => {
 
 export default combineReducers({
   list,
+  resourceList,
   map: versioningMap,
+  resourceMap: resourceVersioningMap,
   selected,
   contentVersionDetails,
 });

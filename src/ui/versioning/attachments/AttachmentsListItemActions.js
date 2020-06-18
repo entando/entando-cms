@@ -7,18 +7,18 @@ import {
 import { FormattedMessage } from 'react-intl';
 
 const AttachmentsListItemActions = ({
-  attachmentId, attachmentVersion, onClickRemove, onClickRecover,
+  attachmentId, onClickRemove, onClickRecover, attachmentDescription,
 }) => {
   const handleClickRecover = () => {
     // leaving console.log() until APIs are implemented to see interaction
-    console.log(`onClickRecover(${attachmentId}, ${attachmentVersion})`); // eslint-disable-line no-console
-    onClickRecover(attachmentId, attachmentVersion);
+    console.log(`onClickRecover(${attachmentId}`); // eslint-disable-line no-console
+    onClickRecover(attachmentId);
   };
 
   const handleClickRemove = () => {
     // leaving console.log() until APIs are implemented to see interaction
     console.log(`onClickDelete(${attachmentId})`); // eslint-disable-line no-console
-    onClickRemove(attachmentId);
+    onClickRemove({ id: attachmentId, description: attachmentDescription });
   };
 
   return (
@@ -36,7 +36,7 @@ const AttachmentsListItemActions = ({
 
 AttachmentsListItemActions.propTypes = {
   attachmentId: PropTypes.string.isRequired,
-  attachmentVersion: PropTypes.string.isRequired,
+  attachmentDescription: PropTypes.string.isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,
 };

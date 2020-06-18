@@ -8,6 +8,7 @@ import {
 
 import AttachmentsListItem from 'ui/versioning/attachments/AttachmentsListItem';
 import FileVersioningSearchForm from 'ui/versioning/common/FileVersioningSearchForm';
+import RemoveResourceModalContainer from 'ui/versioning/common/RemoveResourceModalContainer';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -46,6 +47,7 @@ class AttachmentsList extends React.Component {
       onSubmit,
       removeAttachment,
       recoverAttachment,
+      domain,
     } = this.props;
 
     return (
@@ -56,6 +58,7 @@ class AttachmentsList extends React.Component {
             attachment => (
               <AttachmentsListItem
                 key={attachment.id}
+                domain={domain}
                 attachment={attachment}
                 onClickRemove={removeAttachment}
                 onClickRecover={recoverAttachment}
@@ -74,6 +77,7 @@ class AttachmentsList extends React.Component {
             onPerPageSelect={this.changePageSize}
           />
         </ListView>
+        <RemoveResourceModalContainer />
       </Spinner>
     );
   }
@@ -92,6 +96,7 @@ AttachmentsList.propTypes = {
   removeAttachment: PropTypes.func,
   recoverAttachment: PropTypes.func,
   totalItems: PropTypes.number,
+  domain: PropTypes.string,
 };
 
 AttachmentsList.defaultProps = {
@@ -106,6 +111,7 @@ AttachmentsList.defaultProps = {
   totalItems: 0,
   removeAttachment: () => {},
   recoverAttachment: () => {},
+  domain: '',
 };
 
 export default AttachmentsList;

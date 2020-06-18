@@ -5,12 +5,19 @@ import {
   getSelectedVersioningType,
   getVersioningList,
   getDetailedContentVersion,
+  getResourceVersioningList,
+  getResourceVersioningsMap,
+  getResourceVersioningsIdList,
 } from 'state/versioning/selectors';
 
 const versioningSlice = {
   list: [1],
+  resourceList: [3],
   map: {
     1: { code: 2 },
+  },
+  resourceMap: {
+    3: { code: 4 },
   },
   selected: 'contents',
   contentVersionDetails: {
@@ -55,5 +62,20 @@ describe('state/versioning/selectors', () => {
   it('verify getVersioningList returns correct values', () => {
     const versions = getVersioningList(TEST_STATE);
     expect(versions).toEqual([{ code: 2 }]);
+  });
+
+  it('verify getVersioningList returns correct values', () => {
+    const versions = getResourceVersioningList(TEST_STATE);
+    expect(versions).toEqual([{ code: 4 }]);
+  });
+
+  it('verify getResourceVersioningsMap selector', () => {
+    expect(getResourceVersioningsMap(TEST_STATE))
+      .toEqual(versioningSlice.resourceMap);
+  });
+
+  it('verify getResourceVersioningsIdList selector', () => {
+    expect(getResourceVersioningsIdList(TEST_STATE))
+      .toEqual(versioningSlice.resourceList);
   });
 });

@@ -3,7 +3,7 @@ import {
 } from '@entando/messages';
 
 import {
-  getVersionings, getSingleVersioning,
+  getVersionings, getSingleVersioning, getResourceVersionings, deleteResourceVersion,
   restoreVersion, deleteVersion, getContentDetails, postRecoverContentVersion,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
@@ -12,13 +12,20 @@ import { getCurrentPage, getPageSize } from 'state/pagination/selectors';
 
 import {
   SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
-  SET_SINGLE_CONTENT_VERSION_DETAILS,
+  SET_SINGLE_CONTENT_VERSION_DETAILS, SET_RESOURCE_VERSIONINGS,
 } from 'state/versioning/types';
 import { getSelectedVersioningType } from 'state/versioning/selectors';
 
 
 export const setVersionings = versionings => ({
   type: SET_VERSIONINGS,
+  payload: {
+    versionings,
+  },
+});
+
+export const setResourceVersionings = versionings => ({
+  type: SET_RESOURCE_VERSIONINGS,
   payload: {
     versionings,
   },
@@ -57,6 +64,30 @@ export const fetchVersionings = (page = { page: 1, pageSize: 10 }, params = '') 
   })
 );
 
+export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
+  new Promise((resolve) => {
+    dispatch(toggleLoading('versionings'));
+    const state = getState();
+    const selectedVersioningType = getSelectedVersioningType(state);
+    getResourceVersionings(selectedVersioningType, page, params).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setResourceVersionings(json.payload));
+          dispatch(setPage(json.metaData));
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        dispatch(toggleLoading('versionings'));
+        resolve();
+      });
+    }).catch(() => {
+      dispatch(toggleLoading('versionings'));
+    });
+  })
+);
+
 export const removeVersion = versionId => (dispatch, getState) => (
   new Promise((resolve) => {
     const state = getState();
@@ -64,13 +95,36 @@ export const removeVersion = versionId => (dispatch, getState) => (
 
     const page = getCurrentPage(state);
     const pageSize = getPageSize(state);
-
     deleteVersion(selectedVersioningType, versionId)
       .then(async (response) => {
         const json = await response.json();
 
         if (response.ok) {
           dispatch(fetchVersionings({ page, pageSize }));
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        resolve();
+      })
+      .catch(() => {});
+  })
+);
+
+export const removeResourceVersion = versionId => (dispatch, getState) => (
+  new Promise((resolve) => {
+    const state = getState();
+    const selectedVersioningType = getSelectedVersioningType(state);
+
+    const page = getCurrentPage(state);
+    const pageSize = getPageSize(state);
+    deleteResourceVersion(selectedVersioningType, versionId)
+      .then(async (response) => {
+        const json = await response.json();
+
+        if (response.ok) {
+          dispatch(fetchResourceVersionings({ page, pageSize }));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));

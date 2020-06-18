@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
-import { getLoading } from 'state/loading/selectors';
+import { getDomain } from '@entando/apimanager';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
-
-import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
-import { getVersioningList } from 'state/versioning/selectors';
+import { setVisibleModal, setInfo } from 'state/modal/actions';
+import { getLoading } from 'state/loading/selectors';
+import { getResourceVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
-  fetchVersionings,
-  removeVersion,
   recoverVersion,
+  fetchResourceVersionings,
 } from 'state/versioning/actions';
+import { REMOVE_RESOURCE_MODAL_ID } from 'ui/versioning/common/RemoveResourceModal';
+import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).versionings,
@@ -19,22 +20,24 @@ export const mapStateToProps = state => ({
     pageSize: getPageSize(state),
   },
   totalItems: getTotalItems(state),
-  attachments: getVersioningList(state),
+  attachments: getResourceVersioningList(state),
+  domain: getDomain(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(setSelectedVersioningType('attachments'));
-    dispatch(fetchVersionings(page));
+    dispatch(setSelectedVersioningType('Attach'));
+    dispatch(fetchResourceVersionings(page));
   },
   fetchAttachments: (pagination = { page: 1, pageSize: 10 }) => {
-    dispatch(fetchVersionings(pagination));
+    dispatch(fetchResourceVersionings(pagination));
   },
-  removeAttachment: (attachmentId) => {
-    dispatch(removeVersion(attachmentId));
+  removeAttachment: (attachment) => {
+    dispatch(setVisibleModal(REMOVE_RESOURCE_MODAL_ID));
+    dispatch(setInfo(attachment));
   },
-  recoverAttachment: (attachmentId, attachmentVersion) => {
-    dispatch(recoverVersion(attachmentId, attachmentVersion));
+  recoverAttachment: (attachmentId) => {
+    dispatch(recoverVersion(attachmentId));
   },
   onSubmit: (params) => {
     const like = FILTER_OPERATORS.LIKE;
@@ -43,13 +46,13 @@ export const mapDispatchToProps = dispatch => ({
       ...(description && { description }),
     };
     const operators = {
-      ...(description && { status: like }),
+      ...(description && { description: like }),
     };
     const queryString = convertToQueryString({
       formValues,
       operators,
-    });
-    dispatch(fetchVersionings({ page: 1, pageSize: 10 }, queryString));
+    }).replace('?', '&');
+    dispatch(fetchResourceVersionings({ page: 1, pageSize: 10 }, queryString));
   },
 });
 

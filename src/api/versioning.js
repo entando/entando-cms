@@ -14,17 +14,17 @@ import {
 
 const TYPE_MOCKS = {
   LIST: {
-    attachments: LIST_ATTACHMENTS_OK,
+    Attach: LIST_ATTACHMENTS_OK,
     contents: LIST_VERSIONING_OK,
-    images: LIST_IMAGES_OK,
+    Image: LIST_IMAGES_OK,
   },
   DELETE: {
-    attachments: DELETE_ATTACHMENT_OK,
-    images: DELETE_IMAGE_OK,
+    Attach: DELETE_ATTACHMENT_OK,
+    Image: DELETE_IMAGE_OK,
   },
   RESTORE: {
-    attachments: RESTORE_ATTACHMENT_OK,
-    images: RESTORE_IMAGE_OK,
+    Attach: RESTORE_ATTACHMENT_OK,
+    Image: RESTORE_IMAGE_OK,
   },
 };
 
@@ -34,6 +34,18 @@ export const getVersionings = (versioningType, page = { page: 1, pageSize: 10 },
       uri: `/api/plugins/versioning/${versioningType}/${params}`,
       method: METHODS.GET,
       mockResponse: TYPE_MOCKS.LIST[versioningType] || LIST_VERSIONING_OK,
+      useAuthentication: true,
+    },
+    page,
+  )
+);
+
+export const getResourceVersionings = (resourceTypeCode, page = { page: 1, pageSize: 10 }, params = '') => (
+  makeRequest(
+    {
+      uri: `/api/plugins/versioning/resources?resourceTypeCode=${resourceTypeCode}${params}`,
+      method: METHODS.GET,
+      mockResponse: TYPE_MOCKS.LIST[resourceTypeCode],
       useAuthentication: true,
     },
     page,
@@ -64,6 +76,17 @@ export const getContentDetails = (contentId, versionId) => (
 );
 
 export const deleteVersion = (versioningType, id) => (
+  makeMockRequest(
+    {
+      uri: `/api/plugins/versioning/${versioningType}/${id}`,
+      method: METHODS.DELETE,
+      mockResponse: TYPE_MOCKS.DELETE[versioningType],
+      useAuthentication: true,
+    },
+  )
+);
+
+export const deleteResourceVersion = (versioningType, id) => (
   makeMockRequest(
     {
       uri: `/api/plugins/versioning/${versioningType}/${id}`,
