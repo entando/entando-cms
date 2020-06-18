@@ -38,7 +38,7 @@ export const versioningMap = (state = {}, action = {}) => {
   }
 };
 
-export const detailedContentVersion = (state = {}, action = {}) => {
+export const contentVersionDetails = (state = {}, action = {}) => {
   switch (action.type) {
     case SET_SINGLE_CONTENT_VERSION_DETAILS: {
       return action.payload;
@@ -51,5 +51,5 @@ export default combineReducers({
   list,
   map: versioningMap,
   selected,
-  detailedContentVersion,
+  contentVersionDetails,
 });

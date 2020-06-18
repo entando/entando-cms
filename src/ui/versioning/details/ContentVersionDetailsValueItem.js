@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup, ListView, ListViewItem } from 'patternfly-react';
-import { getURLAbsolute } from 'state/assets/selectors';
+import { v4 as uuidv4 } from 'uuid';
 import { FormattedMessage } from 'react-intl';
+import { FormGroup, ListView, ListViewItem } from 'patternfly-react';
+
+import { getURLAbsolute } from 'state/assets/selectors';
+
+let renderAttributeTypes = () => {};
 
 const renderAttachAttributeValue = (attribute,
   defLangCode, currentLangCode, domain, showLabel = true) => {
@@ -64,7 +68,6 @@ const renderCompositeAttributeValue = (attribute, defaultLangCode, currentLangCo
             {attr.code}
           </span>
           <div>
-            { /* eslint-disable-next-line no-use-before-define */ }
             {renderAttributeTypes(attr, defaultLangCode, currentLangCode, domain, false)}
           </div>
         </FormGroup>
@@ -142,15 +145,12 @@ const renderLinkAttributeValue = (attribute, defLangCode, currentLangCode, showL
     <FormGroup>
       {showLabel && <label>{code}</label>}
       <div>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a
+        <span
           className={`btn btn-default icon fa fa-${icon}`}
-          rel="noopener noreferrer"
-          target="_blank"
           title={`Link to ${linkToText}: ${url}`}
         >
           <span className="sr-only">Link to {linkToText}: {url}</span>
-        </a>
+        </span>
         <span className={`${useDefaultText ? 'text-muted' : ''}`}> {target}</span>
       </div>
     </FormGroup>
@@ -162,13 +162,11 @@ const renderListAttributeValue = (attribute, defaultLangCode, currentLangCode, d
   const dataExists = listelements[currentLangCode] != null;
   const target = listelements[currentLangCode] || [];
   const renderedCompositeValues = target.map((attr, i) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <FormGroup key={`${code}-${attr.code}-id-${i}`} style={{ marginLeft: '10px' }}>
+    <FormGroup key={`${code}-${attr.code}-id-${uuidv4()}`} style={{ marginLeft: '10px' }}>
       <span className="label label-default" style={{ marginBottom: '10px', display: 'inline-block' }}>
         {i + 1}
       </span>
       <span>
-        { /* eslint-disable-next-line no-use-before-define */ }
         {renderAttributeTypes(attr, defaultLangCode, currentLangCode, domain, false)}
       </span>
     </FormGroup>
@@ -196,13 +194,11 @@ const renderListAttributeValue = (attribute, defaultLangCode, currentLangCode, d
 const renderMonolistAttributeValue = (attribute, defaultLangCode, currentLangCode, domain) => {
   const { code, elements } = attribute;
   const renderedCompositeValues = elements.map((attr, i) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <FormGroup key={`${code}-${attr.code}-id-${i}`} style={{ marginLeft: '10px' }}>
+    <FormGroup key={`${code}-${attr.code}-id-${uuidv4()}`} style={{ marginLeft: '10px' }}>
       <span className="label label-default" style={{ marginBottom: '10px', display: 'inline-block' }}>
         {i + 1}
       </span>
       <span>
-        { /* eslint-disable-next-line no-use-before-define */ }
         {renderAttributeTypes(attr, defaultLangCode, currentLangCode, domain, false)}
       </span>
     </FormGroup>
@@ -223,7 +219,7 @@ const renderEmptyAttributeValue = (attibute, showLabel) => (
   </FormGroup>
 );
 
-const renderAttributeTypes = (attribute, defaultLangCode, currentLangCode, domain, showLabel) => {
+renderAttributeTypes = (attribute, defaultLangCode, currentLangCode, domain, showLabel) => {
   const {
     value, values, compositeelements, listelements, elements,
   } = attribute;

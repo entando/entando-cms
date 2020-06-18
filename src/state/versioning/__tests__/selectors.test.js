@@ -13,7 +13,7 @@ const versioningSlice = {
     1: { code: 2 },
   },
   selected: 'contents',
-  detailedContentVersion: {
+  contentVersionDetails: {
     id: 'ART1',
   },
 };

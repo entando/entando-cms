@@ -8,7 +8,7 @@ import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import SingleContentCurrentVersionContainer from 'ui/versioning/SingleContentCurrentVersionContainer';
 import SingleContentVersioningHistoryContainer from 'ui/versioning/SingleContentVersioningHistoryContainer';
 
-const SinglContentVersioningHistoryPage = () => (
+const SingleContentVersioningHistoryPage = () => (
   <Grid fluid>
     <Row>
       <Col xs={12}>
@@ -45,4 +45,4 @@ const SinglContentVersioningHistoryPage = () => (
   </Grid>
 );
 
-export default SinglContentVersioningHistoryPage;
+export default SingleContentVersioningHistoryPage;
