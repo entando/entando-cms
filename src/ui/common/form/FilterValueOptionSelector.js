@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
-import { get, compact } from 'lodash';
+import { get } from 'lodash';
 import { FormattedMessage, FormattedHTMLMessage, intlShape } from 'react-intl';
 import { Collapse } from 'react-collapse';
 
@@ -26,6 +26,17 @@ const BY_VALUE_ONLY = 'valueOnly';
 const BY_VALUE_PARTIAL = 'valuePartial';
 const BY_RANGE = 'valueRange';
 
+const CLEAN_VALUES = {
+  value: undefined,
+  nullValue: undefined,
+  likeOption: undefined,
+  valueDateDelay: undefined,
+  startDateDelay: undefined,
+  endDateDelay: undefined,
+  start: undefined,
+  end: undefined,
+};
+
 class FilterValueOptionSelector extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +44,7 @@ class FilterValueOptionSelector extends Component {
       filterableType: '',
       expanded: false,
       optionSelected: '',
+      keyChanged: false,
     };
     this.handleHeadlineClick = this.handleHeadlineClick.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
@@ -44,22 +56,19 @@ class FilterValueOptionSelector extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { attributeFilterChoices: prevAttr } = prevProps;
-    const { attributeFilterChoices: attr } = this.props;
-    if (prevAttr.length !== attr.length) {
-      this.beginFillState();
-    }
-  }
-
-  beginFillState() {
-    const { attributeFilterChoices: attr, value: { attributeFilter } } = this.props;
-    if (attr && attributeFilter && attr.length > 0) {
-      const filterableType = this.determineFilterableType();
+    const {
+      attributeFilterChoices: prevAttr,
+      value: { key: prevKey },
+    } = prevProps;
+    const {
+      attributeFilterChoices: attr,
+      value: { key },
+    } = this.props;
+    const keyChanged = prevKey !== key;
+    if (keyChanged || prevAttr.length !== attr.length) {
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        filterableType,
-        optionSelected: this.determineOptionSelected(filterableType),
-      });
+      this.setState({ keyChanged });
+      this.beginFillState();
     }
   }
 
@@ -77,6 +86,30 @@ class FilterValueOptionSelector extends Component {
     const { attributeFilterChoices } = this.props;
     const selectedAttributeType = attributeFilterChoices.find(attribute => attribute.code === key);
     return get(selectedAttributeType, 'type', '');
+  }
+
+  beginFillState() {
+    const {
+      attributeFilterChoices: attrChoices,
+      value: { attributeFilter },
+    } = this.props;
+    const { keyChanged } = this.state;
+
+    if (attributeFilter && attrChoices && attrChoices.length > 0) {
+      const filterableType = this.determineFilterableType();
+      if (keyChanged) {
+        if (filterableType === BOOL_FILTERABLE) {
+          this.handleValueChange({ ...CLEAN_VALUES, value: true });
+        } else {
+          this.handleValueChange({ ...CLEAN_VALUES });
+        }
+      }
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        filterableType,
+        optionSelected: this.determineOptionSelected(filterableType),
+      });
+    }
   }
 
   determineFilterableType() {
@@ -127,39 +160,33 @@ class FilterValueOptionSelector extends Component {
     onChange(newValue, fieldIndex);
   }
 
-  handleValueTypeChange({ currentTarget: { value } }) {
-    const { filterableType } = this.state;
-    const cleaned = {
-      value: undefined,
-      nullValue: undefined,
-      likeOption: undefined,
-      valueDateDelay: undefined,
-      startDateDelay: undefined,
-      endDateDelay: undefined,
-      start: undefined,
-      end: undefined,
-    };
-    switch (value) {
-      case HAS_VALUE:
-        this.handleValueChange({ ...cleaned });
-        break;
-      case HAS_NO_VALUE:
-        this.handleValueChange({ ...cleaned, nullValue: true });
-        break;
+  resetValueKeys(option, filterableType) {
+    switch (option) {
       case BY_VALUE_ONLY:
         if (filterableType === DATE_FILTERABLE) {
-          this.handleValueChange({ ...cleaned, value: 'today' });
+          this.handleValueChange({ ...CLEAN_VALUES, value: 'today' });
         } else {
-          this.handleValueChange({ ...cleaned, value: '' });
+          this.handleValueChange({ ...CLEAN_VALUES, value: '' });
         }
         break;
       case BY_VALUE_PARTIAL:
-        this.handleValueChange({ ...cleaned, value: '', likeOption: false });
+        this.handleValueChange({ ...CLEAN_VALUES, value: '', likeOption: false });
         break;
       case BY_RANGE:
-        this.handleValueChange({ ...cleaned, start: '', end: '' });
+        this.handleValueChange({ ...CLEAN_VALUES, start: '', end: '' });
+        break;
+      case HAS_NO_VALUE:
+        this.handleValueChange({ ...CLEAN_VALUES, nullValue: true });
+        break;
+      case HAS_VALUE:
+      default:
+        this.handleValueChange({ ...CLEAN_VALUES });
     }
+  }
 
+  handleValueTypeChange({ currentTarget: { value } }) {
+    const { filterableType } = this.state;
+    this.resetValueKeys(value, filterableType);
     this.setState({ optionSelected: value });
   }
 
@@ -197,7 +224,7 @@ class FilterValueOptionSelector extends Component {
     } = value;
 
     if (filterableType === BOOL_FILTERABLE) {
-      if (filterValue !== null) {
+      if (typeof filterValue !== 'undefined') {
         return this.renderLabelWithSort(
           <FormattedHTMLMessage
             id="widget.form.filterable.valueOnly"
@@ -214,7 +241,7 @@ class FilterValueOptionSelector extends Component {
     }
 
     switch (optionSelected) {
-      case BY_VALUE_ONLY:
+      case BY_VALUE_ONLY: {
         return this.renderLabelWithSort(
           <Fragment>
             <FormattedHTMLMessage
@@ -229,6 +256,7 @@ class FilterValueOptionSelector extends Component {
             )}
           </Fragment>,
         );
+      }
       case BY_VALUE_PARTIAL: {
         const partial = likeOption
           && intl.formatMessage({ id: 'widget.form.filterable.valuePartialPhrase' });
@@ -312,7 +340,7 @@ class FilterValueOptionSelector extends Component {
       },
     ];
     const boolValue = filterValue ? 'true' : 'false';
-    const value = filterValue === null ? 'all' : boolValue;
+    const value = typeof filterValue === 'undefined' ? 'all' : boolValue;
     return (
       <Fragment>
         <h5><FormattedMessage id="widget.form.options" /></h5>
@@ -330,7 +358,8 @@ class FilterValueOptionSelector extends Component {
                   this.handleValueChange({ value: false });
                   break;
                 case 'all':
-                  this.handleValueChange({ value: null });
+                default:
+                  this.handleValueChange({ value: undefined });
                   break;
               }
             },
@@ -345,7 +374,7 @@ class FilterValueOptionSelector extends Component {
 
   renderValueOnlyFields() {
     const { value: propValue, filter } = this.props;
-    const { key } = propValue;
+    const { value } = propValue;
     const { filterableType } = this.state;
     return (
       filterableType !== DATE_FILTERABLE ? (
@@ -354,8 +383,8 @@ class FilterValueOptionSelector extends Component {
             input={{
               name: `${filter}.value`,
               value,
-              onChange: ({ currentTarget: { value } }) => (
-                this.handleValueChange({ value })
+              onChange: ({ currentTarget: { value: v } }) => (
+                this.handleValueChange({ value: v })
               ),
             }}
             label={<FormLabel labelId="widget.form.filterable.whichcontains" />}
@@ -374,7 +403,7 @@ class FilterValueOptionSelector extends Component {
           />
         </div>
       )
-    )
+    );
   }
 
   renderRangeFields() {
@@ -479,8 +508,8 @@ class FilterValueOptionSelector extends Component {
               input={{
                 name: `${filter}.value`,
                 value,
-                onChange: ({ currentTarget: { value } }) => (
-                  this.handleValueChange({ value })
+                onChange: ({ currentTarget: { value: v } }) => (
+                  this.handleValueChange({ value: v })
                 ),
               }}
               labelSize={3}
@@ -490,7 +519,7 @@ class FilterValueOptionSelector extends Component {
               input={{
                 name: `${filter}.likeOption`,
                 value: likeOption || false,
-                onChange: like => this.handleValueChange({ likeOption: like || null }),
+                onChange: like => this.handleValueChange({ likeOption: like || undefined }),
               }}
               label={<FormLabel labelId="widget.form.filterable.valuePartialLabel" />}
               labelSize={3}

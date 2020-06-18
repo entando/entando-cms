@@ -31,15 +31,18 @@ class RenderDateFilterInput extends Component {
       const { value: inputValue } = input;
       const firstValue = hasNone ? 'none' : 'today';
       if (typeof input[delayKey] !== 'undefined' && input[delayKey] !== null) {
+        // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ valueType: 'today-delay' });
       } else if (inputValue && inputValue !== 'today') {
+        // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ valueType: 'chosen-date' });
       } else {
+        // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ valueType: firstValue });
       }
     }
   }
-  
+
   handleDateTypeChange(valueType) {
     const { input, delayKey, dateFormat } = this.props;
     switch (valueType) {
@@ -87,7 +90,7 @@ class RenderDateFilterInput extends Component {
     } = this.props;
 
     const { valueType } = this.state;
-    
+
     const firstValue = hasNone ? 'none' : 'today';
     const errorblock = touched ? error : '';
 
@@ -120,7 +123,7 @@ class RenderDateFilterInput extends Component {
               />
             </ToggleButton>
             <ToggleButton value="chosen-date" className="RenderDateFilterInput__toggle-btn">
-            <FormattedMessage id="widget.form.filterable.labelChosenDate" />
+              <FormattedMessage id="widget.form.filterable.labelChosenDate" />
               <DatePicker
                 placeholder={dateFormat}
                 selected={valueType === 'chosen-date' && input.value ? moment(input.value, dateFormat) : null}
