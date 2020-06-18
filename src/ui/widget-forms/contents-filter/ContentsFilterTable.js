@@ -10,6 +10,7 @@ import {
 } from 'patternfly-react';
 import * as resolve from 'table-resolver';
 import { formatDate } from '@entando/utils';
+import { getContentStatusDetails } from 'ui/contents/ContentsTable';
 
 class ContentsFilterTable extends Component {
   constructor(props) {
@@ -128,29 +129,10 @@ class ContentsFilterTable extends Component {
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
               const { status, onLine: hasPublicVersion } = rowData;
-              let statusColor = '';
-              let statusTitle = '';
-              if (status === 'PUBLIC') {
-                statusColor = 'published';
-                statusTitle = 'Published';
-              } else if (status === 'ready') {
-                statusColor = 'review';
-                if (hasPublicVersion) {
-                  statusTitle = 'Public ≠ Ready';
-                } else {
-                  statusTitle = 'Ready';
-                }
-              } else {
-                statusColor = 'unpublished';
-                if (hasPublicVersion) {
-                  statusTitle = 'Public ≠ Draft';
-                } else {
-                  statusTitle = 'Unpublished';
-                }
-              }
+              const { color, title } = getContentStatusDetails(status, hasPublicVersion);
               return (
                 <td className="text-center">
-                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} title={statusTitle} />
+                  <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
                 </td>
               );
             };

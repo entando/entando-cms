@@ -134,7 +134,7 @@ export const fetchContentDetails = (contentId, versionId) => dispatch => (
     getContentDetails(contentId, versionId).then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          dispatch(setDetailedContentVersion(json));
+          dispatch(setDetailedContentVersion(json.payload || json));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));

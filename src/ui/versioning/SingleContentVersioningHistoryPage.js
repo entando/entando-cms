@@ -5,6 +5,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
+import SingleContentCurrentVersionContainer from 'ui/versioning/SingleContentCurrentVersionContainer';
 import SingleContentVersioningHistoryContainer from 'ui/versioning/SingleContentVersioningHistoryContainer';
 
 const SinglContentVersioningHistoryPage = () => (
@@ -29,6 +30,11 @@ const SinglContentVersioningHistoryPage = () => (
           position="pull-right"
           largeTitle
         />
+      </Col>
+    </Row>
+    <Row>
+      <Col xs={12}>
+        <SingleContentCurrentVersionContainer />
       </Col>
     </Row>
     <Row>

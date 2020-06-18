@@ -51,8 +51,6 @@ describe('Versioning List Container', () => {
     expect(screen.getByText(/1\.6/)).toBeInTheDocument();
     expect(screen.getByText(/2\.2/)).toBeInTheDocument();
     expect(screen.getByText(/1\.0/)).toBeInTheDocument();
-    expect(screen.getByTitle(/published/i)).toBeInTheDocument();
-    expect(screen.getByTitle(/public.*ready/i)).toBeInTheDocument();
-    expect(screen.getByTitle(/public.*draft/i)).toBeInTheDocument();
+    expect(screen.getAllByTitle(/yes/i).length).toBe(3);
   });
 });

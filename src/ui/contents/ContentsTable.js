@@ -16,6 +16,31 @@ import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContain
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
+export const getContentStatusDetails = (status, hasPublicVersion) => {
+  const statusLowerCase = status.toLowerCase();
+  let color = '';
+  let title = '';
+  if (statusLowerCase === 'public') {
+    color = 'published';
+    title = 'Published';
+  } else if (statusLowerCase === 'ready') {
+    color = 'review';
+    if (hasPublicVersion) {
+      title = 'Public ≠ Ready';
+    } else {
+      title = 'Ready';
+    }
+  } else {
+    color = 'unpublished';
+    if (hasPublicVersion) {
+      title = 'Public ≠ Draft';
+    } else {
+      title = 'Unpublished';
+    }
+  }
+  return { color, title };
+};
+
 class ContentsTable extends Component {
   constructor(props) {
     super(props);
@@ -134,29 +159,10 @@ class ContentsTable extends Component {
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
               const { status, onLine: hasPublicVersion } = rowData;
-              let statusColor = '';
-              let statusTitle = '';
-              if (status === 'PUBLIC') {
-                statusColor = 'published';
-                statusTitle = 'Published';
-              } else if (status === 'ready') {
-                statusColor = 'review';
-                if (hasPublicVersion) {
-                  statusTitle = 'Public ≠ Ready';
-                } else {
-                  statusTitle = 'Ready';
-                }
-              } else {
-                statusColor = 'unpublished';
-                if (hasPublicVersion) {
-                  statusTitle = 'Public ≠ Draft';
-                } else {
-                  statusTitle = 'Unpublished';
-                }
-              }
+              const { color, title } = getContentStatusDetails(status, hasPublicVersion);
               return (
                 <td className="text-center">
-                  <span className={`ContentsFilter__status ContentsFilter__status--${statusColor}`} title={statusTitle} />
+                  <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
                 </td>
               );
             };

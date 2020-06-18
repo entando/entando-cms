@@ -6,43 +6,63 @@ import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { ROUTE_CMS_VERSIONING_CONTENT_DETAIL } from 'app-init/routes';
 
+export const getContentVersionStatusDetails = (status, approved) => {
+  const statusLowerCase = status.toLowerCase();
+  let color = 'review';
+  let title = 'No';
+  if (approved) {
+    color = 'published';
+    title = 'Yes';
+  } else if (statusLowerCase === 'new') {
+    color = 'unpublished';
+    title = 'Unpublished';
+  }
+  return { color, title };
+};
+
 const SingleContentVersioningHistoryItem = ({
-  description, username, versionDate, version, onClickRestore, contentId, id,
-}) => (
-  <tr className="VersioningListRow">
-    <td className="VersioningListRow__td text-center">
-      <code>
-        {version}
-      </code>
-    </td>
-    <td className="VersioningListRow__td">{description}</td>
-    <td className="VersioningListRow__td text-center">
-      <code>
-        {formatDate(versionDate)}
-      </code>
-    </td>
-    <td className="VersioningListRow__td text-center">{username}</td>
-    <td className="VersioningListRow__td text-center">
-      <DropdownKebab pullRight id="VersioningListRow-dropdown">
-        <LinkMenuItem
-          id={`versioning-id${version}`}
-          to={routeConverter(
-            ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
-            { contentId, versionId: id },
-          )}
-          label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
-          className="VersioningListRow__menu-item-edit"
-        />
-        <MenuItem onClick={() => onClickRestore({
-          version, contentId, description, versionId: id,
-        })}
-        >
-          <FormattedMessage id="cms.versioning.list.restoreVersion" defaultMessage="Restore version" />
-        </MenuItem>
-      </DropdownKebab>
-    </td>
-  </tr>
-);
+  description, username, versionDate, version, onClickRestore, contentId, id, approved, status,
+}) => {
+  const { color, title } = getContentVersionStatusDetails(status, approved);
+  return (
+    <tr className="VersioningListRow">
+      <td className="VersioningListRow__td text-center">
+        <code>
+          {version}
+        </code>
+      </td>
+      <td className="VersioningListRow__td SingleContentCurrentVersion__description">{description}</td>
+      <td className="VersioningListRow__td text-center">
+        <code>
+          {formatDate(versionDate)}
+        </code>
+      </td>
+      <td className="VersioningListRow__td text-center">{username}</td>
+      <td className="VersioningListRow__td text-center">
+        <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
+      </td>
+      <td className="VersioningListRow__td text-center">
+        <DropdownKebab pullRight id="VersioningListRow-dropdown">
+          <LinkMenuItem
+            id={`versioning-id${version}`}
+            to={routeConverter(
+              ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
+              { contentId, versionId: id },
+            )}
+            label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
+            className="VersioningListRow__menu-item-edit"
+          />
+          <MenuItem onClick={() => onClickRestore({
+            version, contentId, description, versionId: id,
+          })}
+          >
+            <FormattedMessage id="cms.versioning.list.restoreVersion" defaultMessage="Restore version" />
+          </MenuItem>
+        </DropdownKebab>
+      </td>
+    </tr>
+  );
+};
 
 
 SingleContentVersioningHistoryItem.propTypes = {
@@ -52,7 +72,9 @@ SingleContentVersioningHistoryItem.propTypes = {
   username: PropTypes.string.isRequired,
   versionDate: PropTypes.number.isRequired,
   version: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
   onClickRestore: PropTypes.func,
+  approved: PropTypes.bool.isRequired,
 };
 
 SingleContentVersioningHistoryItem.defaultProps = {
