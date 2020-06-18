@@ -163,6 +163,38 @@ export const LIST_IMAGES_OK = [
   },
 ];
 
+export const CONTENT_DETAILS_OK = {
+  id: 'TST6',
+  typeCode: 'TST',
+  typeDescription: 'This is a test',
+  description: 'This is my first test',
+  mainGroup: 'free',
+  attributes: [
+    {
+      code: 'Text',
+      value: null,
+      values: {
+        en: 'Hello World!',
+      },
+      elements: [],
+      compositeelements: [],
+      listelements: {},
+    },
+  ],
+  status: 'DRAFT',
+  onLine: false,
+  viewPage: null,
+  listModel: null,
+  defaultModel: null,
+  created: '2020-06-08 15:30:46',
+  lastModified: '2020-06-10 12:01:44',
+  version: '1.5',
+  firstEditor: 'admin',
+  lastEditor: 'admin',
+  restriction: null,
+  html: null,
+};
+
 export const DELETE_ATTACHMENT_OK = { success: true };
 export const RESTORE_ATTACHMENT_OK = { success: true };
 

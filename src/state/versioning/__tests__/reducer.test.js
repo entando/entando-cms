@@ -2,8 +2,9 @@ import reducer from 'state/versioning/reducer';
 import {
   setVersionings,
   setSelectedVersioningType,
+  setDetailedContentVersion,
 } from 'state/versioning/actions';
-import { getVersioningList, getSelectedVersioningType } from 'state/versioning/selectors';
+import { getVersioningList, getSelectedVersioningType, getDetailedContentVersion } from 'state/versioning/selectors';
 import { LIST_VERSIONING_OK } from 'testutils/mocks/versioning';
 
 describe('state/versioning/reducer', () => {
@@ -45,6 +46,21 @@ describe('state/versioning/reducer', () => {
 
     it('should define the selected versioning type', () => {
       expect(getSelectedVersioningType({ apps: { cms: { versioning: newState } } })).toEqual('contents');
+    });
+  });
+
+  describe('after action setDetailedContentVersion', () => {
+    let newState;
+    const content = { id: 'ART1' };
+    beforeEach(() => {
+      newState = reducer(state, setDetailedContentVersion(content));
+    });
+
+    it('should define the selected versioning type', () => {
+      expect(getDetailedContentVersion({
+        apps:
+        { cms: { versioning: newState } },
+      })).toEqual(content);
     });
   });
 });

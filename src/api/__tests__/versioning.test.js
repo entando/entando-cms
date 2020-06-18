@@ -4,6 +4,7 @@ import {
   getSingleVersioning,
   deleteVersion,
   restoreVersion,
+  getContentDetails,
   postRecoverContentVersion,
 } from 'api/versioning';
 import {
@@ -11,6 +12,7 @@ import {
   LIST_SINGLE_VERSIONING_OK,
   DELETE_ATTACHMENT_OK,
   RESTORE_ATTACHMENT_OK,
+  CONTENT_DETAILS_OK,
 } from 'testutils/mocks/versioning';
 
 import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
@@ -80,6 +82,30 @@ describe('api/versioning', () => {
           mockResponse: LIST_SINGLE_VERSIONING_OK,
         },
         PAGINATION,
+      );
+    });
+  });
+
+  describe('getContentDetails', () => {
+    const CONTENT_ID = 'ART1';
+    const VERSION_ID = 1;
+
+    afterEach(() => makeMockRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(getContentDetails()).toBeInstanceOf(Promise);
+    });
+
+    it('passes correct parameters to request', () => {
+      getContentDetails(CONTENT_ID, VERSION_ID);
+
+      expect(makeRequest).toHaveBeenCalledWith(
+        {
+          uri: `/api/plugins/versioning/contents/${CONTENT_ID}/versions/${VERSION_ID}`,
+          method: METHODS.GET,
+          mockResponse: CONTENT_DETAILS_OK,
+          useAuthentication: true,
+        },
       );
     });
   });

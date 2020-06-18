@@ -59,19 +59,22 @@ class SingleContentVersioningHistory extends Component {
           <table className="table table-striped table-bordered table-hover VersioningList__table">
             <thead>
               <tr>
-                <th width="12%" className="text-center">
+                <th width="10%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.version" defaultMessage="Version" />
                 </th>
-                <th width="32%">
+                <th width="30%">
                   <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
                 </th>
-                <th width="32%" className="text-center">
+                <th width="30%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modify" />
                 </th>
-                <th width="12%" className="text-center">
+                <th width="10%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
                 </th>
-                <th width="12%" className="text-center">
+                <th width="10%" className="text-center">
+                  <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
+                </th>
+                <th width="10%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />
                 </th>
               </tr>

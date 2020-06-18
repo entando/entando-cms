@@ -3,6 +3,7 @@ import {
   deleteVersion,
   restoreVersion,
   getSingleVersioning,
+  getContentDetails,
   postRecoverContentVersion,
 } from 'api/versioning';
 import {
@@ -12,9 +13,11 @@ import {
   removeVersion,
   recoverVersion,
   fetchSingleVersioningHistory,
+  fetchContentDetails,
+  setDetailedContentVersion,
   recoverContentVersion,
 } from 'state/versioning/actions';
-import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE } from 'state/versioning/types';
+import { SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE, SET_SINGLE_CONTENT_VERSION_DETAILS } from 'state/versioning/types';
 
 import { createMockStore, mockApi } from 'testutils/helpers';
 import { TOGGLE_LOADING } from 'state/loading/types';
@@ -27,6 +30,7 @@ jest.mock('api/versioning', () => ({
   deleteVersion: jest.fn(),
   restoreVersion: jest.fn(),
   getSingleVersioning: jest.fn(),
+  getContentDetails: jest.fn(),
   postRecoverContentVersion: jest.fn(),
 }));
 
@@ -40,10 +44,17 @@ describe('versioning actions', () => {
       expect(action).toHaveProperty('payload.versionings', payload);
     });
 
-    it('sets a custom namespace', () => {
+    it('sets a selected versioning type', () => {
       const action = setSelectedVersioningType('contents');
       expect(action).toHaveProperty('type', SET_SELECTED_VERSIONING_TYPE);
       expect(action).toHaveProperty('payload', 'contents');
+    });
+
+    it('sets single content details', () => {
+      const content = { id: 'ART1' };
+      const action = setDetailedContentVersion(content);
+      expect(action).toHaveProperty('type', SET_SINGLE_CONTENT_VERSION_DETAILS);
+      expect(action).toHaveProperty('payload', content);
     });
   });
 
@@ -285,6 +296,52 @@ describe('versioning actions', () => {
           expect(postRecoverContentVersion).toHaveBeenCalledWith(MOCK_CONTENT_ID, MOCK_VERSION);
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('fetchContentDetails', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        apps: {
+          cms: {
+            versioning: {
+              list: [],
+              map: {},
+            },
+          },
+        },
+      });
+    });
+
+    it('should dispatch correct actions when api call is successful', (done) => {
+      getContentDetails.mockImplementationOnce(mockApi({ payload: [] }));
+      store
+        .dispatch(fetchContentDetails('ART1', 1))
+        .then(() => {
+          expect(getContentDetails).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions).toHaveLength(3);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', SET_SINGLE_CONTENT_VERSION_DETAILS);
+          expect(actions[2]).toHaveProperty('type', TOGGLE_LOADING);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      getContentDetails.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(fetchContentDetails('ART1', 1))
+        .then(() => {
+          expect(getContentDetails).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', 'errors/add-errors');
           done();
         })
         .catch(done.fail);

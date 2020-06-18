@@ -5,9 +5,10 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
+import SingleContentCurrentVersionContainer from 'ui/versioning/SingleContentCurrentVersionContainer';
 import SingleContentVersioningHistoryContainer from 'ui/versioning/SingleContentVersioningHistoryContainer';
 
-const SinglContentVersioningDetailsPage = () => (
+const SingleContentVersioningHistoryPage = () => (
   <Grid fluid>
     <Row>
       <Col xs={12}>
@@ -33,10 +34,15 @@ const SinglContentVersioningDetailsPage = () => (
     </Row>
     <Row>
       <Col xs={12}>
+        <SingleContentCurrentVersionContainer />
+      </Col>
+    </Row>
+    <Row>
+      <Col xs={12}>
         <SingleContentVersioningHistoryContainer />
       </Col>
     </Row>
   </Grid>
 );
 
-export default SinglContentVersioningDetailsPage;
+export default SingleContentVersioningHistoryPage;

@@ -4,6 +4,7 @@ import {
   getVersioningsMap,
   getSelectedVersioningType,
   getVersioningList,
+  getDetailedContentVersion,
 } from 'state/versioning/selectors';
 
 const versioningSlice = {
@@ -12,6 +13,9 @@ const versioningSlice = {
     1: { code: 2 },
   },
   selected: 'contents',
+  contentVersionDetails: {
+    id: 'ART1',
+  },
 };
 
 const TEST_STATE = {
@@ -41,6 +45,11 @@ describe('state/versioning/selectors', () => {
   it('verify getSelectedVersioningType selector', () => {
     expect(getSelectedVersioningType(TEST_STATE))
       .toEqual('contents');
+  });
+
+  it('verify getDetailedContentVersion selector', () => {
+    expect(getDetailedContentVersion(TEST_STATE))
+      .toEqual({ id: 'ART1' });
   });
 
   it('verify getVersioningList returns correct values', () => {

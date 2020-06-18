@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLoading } from 'state/loading/selectors';
+
+import { setVisibleModal, setInfo } from 'state/modal/actions';
+import { fetchSingleVersioningHistory, setSelectedVersioningType } from 'state/versioning/actions';
+import { getVersioningList } from 'state/versioning/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 
 import SingleContentVersioningHistory from 'ui/versioning/SingleContentVersioningHistory';
-import { getVersioningList } from 'state/versioning/selectors';
-import { fetchSingleVersioningHistory, setSelectedVersioningType } from 'state/versioning/actions';
-import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { RESTORE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/RestoreContentVersionModal';
 
 export const mapStateToProps = state => ({

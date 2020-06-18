@@ -9,6 +9,7 @@ import { getSingleVersioning } from 'api/versioning';
 import { LIST_SINGLE_VERSIONING_OK } from 'testutils/mocks/versioning';
 
 jest.mock('api/versioning');
+
 describe('Single Content Versioning History Container', () => {
   it('renders table header and data', async () => {
     renderWithRedux(

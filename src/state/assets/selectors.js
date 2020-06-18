@@ -6,7 +6,7 @@ import { getDomain } from '@entando/apimanager';
 
 export const removePixelWord = word => word.replace(' pixels', '');
 
-const getURLAbsolute = (domain, url) => {
+export const getURLAbsolute = (domain, url) => {
   const isAbs = /^(?:[a-z]+:)?\/\//i.test(domain);
   if (!isAbs) {
     return url;
