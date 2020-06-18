@@ -168,3 +168,5 @@ export const RESTORE_ATTACHMENT_OK = { success: true };
 
 export const DELETE_IMAGE_OK = { success: true };
 export const RESTORE_IMAGE_OK = { success: true };
+
+export const RESTORE_CONTENT_OK = { success: true };
