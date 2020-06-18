@@ -53,7 +53,7 @@ const VersioningListItem = ({
         <DropdownKebab pullRight id="VersioningListRow-dropdown">
           <LinkMenuItem
             id={`versioning-id${id}`}
-            to={routeConverter(ROUTE_CMS_VERSIONING_DETAIL, { id })}
+            to={routeConverter(ROUTE_CMS_VERSIONING_DETAIL, { contentId })}
             label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
             className="VersioningListRow__menu-item-edit"
           />

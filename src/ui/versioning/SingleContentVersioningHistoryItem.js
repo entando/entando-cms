@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
-import { routeConverter, formatDate } from '@entando/utils';
-import { ROUTE_CMS_VERSIONING_DETAIL } from 'app-init/routes';
+import { formatDate } from '@entando/utils';
 
 const SingleContentVersioningHistoryItem = ({
-  description, username, versionDate, version, onClickRestore,
+  description, username, versionDate, version, onClickRestore, contentId, id,
 }) => (
   <tr className="VersioningListRow">
     <td className="VersioningListRow__td text-center">
@@ -25,12 +24,15 @@ const SingleContentVersioningHistoryItem = ({
     <td className="VersioningListRow__td text-center">
       <DropdownKebab pullRight id="VersioningListRow-dropdown">
         <LinkMenuItem
-          id={`versioning-id${version}`}
-          to={routeConverter(ROUTE_CMS_VERSIONING_DETAIL, { version })}
+          id={`versioning-id${contentId}`}
+          to=""
           label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
           className="VersioningListRow__menu-item-edit"
         />
-        <MenuItem onClick={onClickRestore}>
+        <MenuItem onClick={() => onClickRestore({
+          version, contentId, description, versionId: id,
+        })}
+        >
           <FormattedMessage id="cms.versioning.list.restoreVersion" defaultMessage="Restore version" />
         </MenuItem>
       </DropdownKebab>
@@ -41,8 +43,10 @@ const SingleContentVersioningHistoryItem = ({
 
 SingleContentVersioningHistoryItem.propTypes = {
   description: PropTypes.string.isRequired,
+  contentId: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
-  versionDate: PropTypes.string.isRequired,
+  versionDate: PropTypes.number.isRequired,
   version: PropTypes.string.isRequired,
   onClickRestore: PropTypes.func,
 };
