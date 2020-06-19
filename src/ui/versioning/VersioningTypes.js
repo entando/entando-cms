@@ -6,6 +6,7 @@ import {
 import VersioningListContainer from 'ui/versioning/VersioningListContainer';
 import AttachmentsListContainer from 'ui/versioning/attachments/AttachmentsListContainer';
 import ImagesListContainer from 'ui/versioning/images/ImagesListContainer';
+import VersioningConfigContainer from 'ui/versioning/VersioningConfigContainer';
 
 const VersioningTypes = () => (
   <TabContainer id="basic-tabs" defaultActiveKey="contents">
@@ -76,7 +77,7 @@ const VersioningTypes = () => (
           bsClass="tab-pane"
           eventKey="configuration"
         >
-      configuration tab active
+          <VersioningConfigContainer />
         </TabPane>
       </TabContent>
     </div>

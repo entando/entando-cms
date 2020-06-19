@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
   SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
   SET_SINGLE_CONTENT_VERSION_DETAILS, SET_RESOURCE_VERSIONINGS,
+  SET_VERSIONING_CONFIG,
 } from 'state/versioning/types';
 
 export const toMap = array => array.reduce((acc, versioning) => {
@@ -65,6 +66,15 @@ export const contentVersionDetails = (state = {}, action = {}) => {
   }
 };
 
+export const versioningConfig = (state = {}, action = {}) => {
+  switch (action.type) {
+    case SET_VERSIONING_CONFIG: {
+      return action.payload;
+    }
+    default: return state;
+  }
+};
+
 export default combineReducers({
   list,
   resourceList,
@@ -72,4 +82,5 @@ export default combineReducers({
   resourceMap: resourceVersioningMap,
   selected,
   contentVersionDetails,
+  versioningConfig,
 });

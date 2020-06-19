@@ -5,14 +5,17 @@ import {
 import {
   getVersionings, getSingleVersioning, getResourceVersionings, deleteResourceVersion,
   restoreVersion, deleteVersion, getContentDetails, postRecoverContentVersion,
+  getVersioningConfig, putVersioningConfig,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
 import { getCurrentPage, getPageSize } from 'state/pagination/selectors';
+import { initialize } from 'redux-form';
 
 import {
   SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
   SET_SINGLE_CONTENT_VERSION_DETAILS, SET_RESOURCE_VERSIONINGS,
+  SET_VERSIONING_CONFIG,
 } from 'state/versioning/types';
 import { getSelectedVersioningType } from 'state/versioning/selectors';
 
@@ -39,6 +42,11 @@ export const setSelectedVersioningType = versioningType => ({
 export const setDetailedContentVersion = contentVersion => ({
   type: SET_SINGLE_CONTENT_VERSION_DETAILS,
   payload: contentVersion,
+});
+
+export const setVersioningConfig = payload => ({
+  type: SET_VERSIONING_CONFIG,
+  payload,
 });
 
 // thunks
@@ -222,3 +230,43 @@ export const recoverContentVersion = (id, version) => (dispatch, getState) => (
       });
   }).catch(() => {})
 );
+
+export const fetchVersioningConfig = () => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('versioningConfig'));
+  getVersioningConfig()
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setVersioningConfig(json.payload));
+          dispatch(initialize('versionConfig', json.payload));
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          resolve();
+        }
+        dispatch(toggleLoading('versioningConfig'));
+      });
+    })
+    .catch(() => {});
+});
+
+export const sendPutVersioningConfig = payload => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('versioningConfig'));
+  putVersioningConfig(payload)
+    .then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          resolve(json.payload);
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          dispatch(clearErrors());
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          resolve();
+        }
+        dispatch(toggleLoading('versioningConfig'));
+      });
+    })
+    .catch(() => {});
+});
