@@ -53,6 +53,7 @@ export default {
     'cms.label.modal.removeResource': 'Remove resource',
     'cms.label.modal.confirmRemove': 'Do you really want to permanently remove asset {name}?',
     'cms.versioning.remove.versionRemoved': '{name} removed.',
+    'cms.versioning.noPreviousVersioning': 'No previous revision.',
     'cms.label.documents': 'Documents',
     'cms.label.images': 'Images',
     'cms.label.addAsset': 'Add asset',

@@ -130,7 +130,8 @@ describe('versioning actions', () => {
           expect(getVersionings).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          expect(actions[1]).toHaveProperty('type', SET_VERSIONINGS);
+          expect(actions[2]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);
@@ -284,7 +285,8 @@ describe('versioning actions', () => {
           expect(getSingleVersioning).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          expect(actions[1]).toHaveProperty('type', SET_VERSIONINGS);
+          expect(actions[2]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);
@@ -477,7 +479,8 @@ describe('versioning actions', () => {
           expect(getResourceVersionings).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          expect(actions[1]).toHaveProperty('type', SET_RESOURCE_VERSIONINGS);
+          expect(actions[2]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);

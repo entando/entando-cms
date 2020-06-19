@@ -63,7 +63,6 @@ export class EditContentFormBody extends React.Component {
     onWillUnmount();
   }
 
-
   render() {
     const {
       intl,
