@@ -1,16 +1,18 @@
 import { connect } from 'react-redux';
-import { convertToQueryString } from '@entando/utils';
+import { getDomain } from '@entando/apimanager';
+import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
+
+import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
-
-import ImagesList from 'ui/versioning/images/ImagesList';
-import { getVersioningList } from 'state/versioning/selectors';
+import { getResourceVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
-  fetchVersionings,
-  removeVersion,
+  fetchResourceVersionings,
   recoverVersion,
 } from 'state/versioning/actions';
+import ImagesList from 'ui/versioning/images/ImagesList';
+import { REMOVE_RESOURCE_MODAL_ID } from 'ui/versioning/common/RemoveResourceModal';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).versionings,
@@ -19,33 +21,39 @@ export const mapStateToProps = state => ({
     pageSize: getPageSize(state),
   },
   totalItems: getTotalItems(state),
-  images: getVersioningList(state),
+  images: getResourceVersioningList(state),
+  domain: getDomain(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(setSelectedVersioningType('images'));
-    dispatch(fetchVersionings(page));
+    dispatch(setSelectedVersioningType('Image'));
+    dispatch(fetchResourceVersionings(page));
   },
   fetchImages: (page = { page: 1, pageSize: 10 }) => {
-    dispatch(fetchVersionings(page));
+    dispatch(fetchResourceVersionings(page));
   },
-  removeImage: (imageId) => {
-    dispatch(removeVersion(imageId));
+  removeImage: (image) => {
+    dispatch(setVisibleModal(REMOVE_RESOURCE_MODAL_ID));
+    dispatch(setInfo(image));
   },
-  recoverImage: (imageId, imageVersion) => {
-    dispatch(recoverVersion(imageId, imageVersion));
+  recoverImage: (imageId) => {
+    dispatch(recoverVersion(imageId));
   },
   onSubmit: (params) => {
-    let queryString = convertToQueryString({
-      sorting: {
-        attribute: 'description',
-      },
-    });
-    if (params.description) {
-      queryString = `${queryString}&description=${params.description}`;
-    }
-    dispatch(fetchVersionings({ page: 1, pageSize: 10 }, queryString));
+    const like = FILTER_OPERATORS.LIKE;
+    const { description } = params;
+    const formValues = {
+      ...(description && { description }),
+    };
+    const operators = {
+      ...(description && { description: like }),
+    };
+    const queryString = convertToQueryString({
+      formValues,
+      operators,
+    }).replace('?', '&');
+    dispatch(fetchResourceVersionings({ page: 1, pageSize: 10 }, queryString));
   },
 });
 

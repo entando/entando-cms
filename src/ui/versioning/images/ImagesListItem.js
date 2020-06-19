@@ -12,7 +12,6 @@ const ImagesListItem = ({ image, onClickRemove, onClickRecover }) => (
     actions={(
       <ImagesListItemActions
         imageId={image.id}
-        imageVersion={image.lastVersion}
         onClickRemove={onClickRemove}
         onClickRecover={onClickRecover}
       />

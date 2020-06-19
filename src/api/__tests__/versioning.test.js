@@ -6,6 +6,8 @@ import {
   restoreVersion,
   getContentDetails,
   postRecoverContentVersion,
+  getResourceVersionings,
+  deleteResourceVersion,
 } from 'api/versioning';
 import {
   LIST_VERSIONING_OK,
@@ -13,6 +15,7 @@ import {
   DELETE_ATTACHMENT_OK,
   RESTORE_ATTACHMENT_OK,
   CONTENT_DETAILS_OK,
+  LIST_ATTACHMENTS_OK,
 } from 'testutils/mocks/versioning';
 
 import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
@@ -54,6 +57,31 @@ describe('api/versioning', () => {
           method: METHODS.GET,
           useAuthentication: true,
           mockResponse: LIST_VERSIONING_OK,
+        },
+        PAGINATION,
+      );
+    });
+  });
+
+  describe('getResourceVersionings', () => {
+    const RESOURCE_TYPE_CODE = 'Attach';
+    const PAGINATION = { page: 1, pageSize: 10 };
+
+    afterEach(() => makeRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(getResourceVersionings(RESOURCE_TYPE_CODE)).toBeInstanceOf(Promise);
+    });
+
+    it('passes correct parameters to request', () => {
+      getResourceVersionings(RESOURCE_TYPE_CODE, PAGINATION);
+
+      expect(makeRequest).toHaveBeenCalledWith(
+        {
+          uri: `/api/plugins/versioning/resources?resourceTypeCode=${RESOURCE_TYPE_CODE}`,
+          method: METHODS.GET,
+          useAuthentication: true,
+          mockResponse: LIST_ATTACHMENTS_OK,
         },
         PAGINATION,
       );
@@ -111,7 +139,7 @@ describe('api/versioning', () => {
   });
 
   describe('deleteVersion', () => {
-    const VERSIONING_TYPE = 'attachments';
+    const VERSIONING_TYPE = 'Attach';
     const MOCK_ID = 'MOCK_ID';
 
     afterEach(() => makeMockRequest.mockClear());
@@ -134,8 +162,32 @@ describe('api/versioning', () => {
     });
   });
 
+  describe('deleteResourceVersion', () => {
+    const VERSIONING_TYPE = 'Attach';
+    const MOCK_ID = 'MOCK_ID';
+
+    afterEach(() => makeMockRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(deleteResourceVersion()).toBeInstanceOf(Promise);
+    });
+
+    it('passes versioning type and versionType ID', () => {
+      deleteResourceVersion(VERSIONING_TYPE, MOCK_ID);
+
+      expect(makeMockRequest).toHaveBeenCalledWith(
+        {
+          uri: `${getVersioningUri(VERSIONING_TYPE)}/${MOCK_ID}`,
+          method: METHODS.DELETE,
+          useAuthentication: true,
+          mockResponse: DELETE_ATTACHMENT_OK,
+        },
+      );
+    });
+  });
+
   describe('restoreVersion', () => {
-    const VERSIONING_TYPE = 'attachments';
+    const VERSIONING_TYPE = 'Attach';
     const MOCK_ID = 'MOCK_ID';
     const MOCK_VERSION = 'MOCK_VERSION';
 

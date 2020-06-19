@@ -3,9 +3,13 @@ import {
   setVersionings,
   setSelectedVersioningType,
   setDetailedContentVersion,
+  setResourceVersionings,
 } from 'state/versioning/actions';
-import { getVersioningList, getSelectedVersioningType, getDetailedContentVersion } from 'state/versioning/selectors';
-import { LIST_VERSIONING_OK } from 'testutils/mocks/versioning';
+import {
+  getVersioningList, getSelectedVersioningType,
+  getDetailedContentVersion, getResourceVersioningList,
+} from 'state/versioning/selectors';
+import { LIST_VERSIONING_OK, LIST_ATTACHMENTS_OK } from 'testutils/mocks/versioning';
 
 describe('state/versioning/reducer', () => {
   const state = reducer();
@@ -35,6 +39,21 @@ describe('state/versioning/reducer', () => {
           cms: { versioning: newState },
         },
       })).toEqual(LIST_VERSIONING_OK);
+    });
+  });
+
+  describe('after action setResourceVersionings', () => {
+    let newState;
+    beforeEach(() => {
+      newState = reducer(state, setResourceVersionings(LIST_ATTACHMENTS_OK));
+    });
+
+    it('should define the versioning list payload', () => {
+      expect(getResourceVersioningList({
+        apps: {
+          cms: { versioning: newState },
+        },
+      })).toEqual(LIST_ATTACHMENTS_OK);
     });
   });
 

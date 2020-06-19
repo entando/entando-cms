@@ -23,7 +23,7 @@ describe('AttachmentsList', () => {
 
     expect(screen.getAllByText('Recover')).toHaveLength(LIST_ATTACHMENTS_OK.length);
     expect(screen.getAllByText('Remove')).toHaveLength(LIST_ATTACHMENTS_OK.length);
-    expect(screen.getByText(LIST_ATTACHMENTS_OK[0].description)).toBeInTheDocument();
+    expect(screen.getByTitle(LIST_ATTACHMENTS_OK[0].description)).toBeInTheDocument();
     expect(screen.getByText(LIST_ATTACHMENTS_OK[0].lastVersion)).toBeInTheDocument();
     expect(screen.getByText(LIST_ATTACHMENTS_OK[0].fileName)).toBeInTheDocument();
   });

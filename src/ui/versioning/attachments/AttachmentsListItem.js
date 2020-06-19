@@ -4,9 +4,9 @@ import {
   ListViewItem,
   Badge,
 } from 'patternfly-react';
-import { FormattedMessage, FormattedDate, FormattedTime } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-
+import { getURLAbsolute } from 'state/assets/selectors';
 import AttachmentsListItemActions from 'ui/versioning/attachments/AttachmentsListItemActions';
 
 function bytesToSize(bytes) {
@@ -16,12 +16,14 @@ function bytesToSize(bytes) {
   return `${Math.round(bytes / (1024 ** i), 2)} ${sizes[i]}`;
 }
 
-const AttachmentsListItem = ({ attachment, onClickRemove, onClickRecover }) => (
+const AttachmentsListItem = ({
+  attachment, onClickRemove, onClickRecover, domain,
+}) => (
   <ListViewItem
     actions={(
       <AttachmentsListItemActions
         attachmentId={attachment.id}
-        attachmentVersion={attachment.lastVersion}
+        attachmentDescription={attachment.description}
         onClickRemove={onClickRemove}
         onClickRecover={onClickRecover}
       />
@@ -32,15 +34,20 @@ const AttachmentsListItem = ({ attachment, onClickRemove, onClickRecover }) => (
       <div className="AttachmentsListItem__description">
         <h4>{attachment.description}</h4>
         <div>{attachment.lastVersion}</div>
-        <div>
-          <FormattedDate value={attachment.lastModify} />{' '}
-          <FormattedTime value={attachment.lastModify} />
-        </div>
         <div className="AttachmentsListItem__file-details">
           <div className="AttachmentsListItem__filename">{attachment.fileName}</div>
           <div>
+            <code>
+              <a href={getURLAbsolute(domain, attachment.path || '')} title="Download">
+                <code className="margin-small-bottom">
+                  <abbr title={attachment.description}>{attachment.description}</abbr>
+                </code>
+              </a>
+            </code>
+          </div>
+          <div>
             <Badge className="AttachmentsListItem__size-badge" data-testid="size-badge">
-              { bytesToSize(attachment.sizeBytes) }
+              { bytesToSize(attachment.sizeBytes || 0) }
             </Badge>
           </div>
           <div><FormattedMessage id="cms.versioning.list.resourceId" defaultMessage="Resource ID" />: {attachment.id}</div>
@@ -57,12 +64,13 @@ AttachmentsListItem.propTypes = {
     id: PropTypes.string,
     description: PropTypes.string,
     lastVersion: PropTypes.string,
-    lastModify: PropTypes.string,
+    path: PropTypes.string,
     fileName: PropTypes.string,
     sizeBytes: PropTypes.number,
   }).isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,
+  domain: PropTypes.string.isRequired,
 };
 
 AttachmentsListItem.defaultProps = {
