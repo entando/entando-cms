@@ -4,6 +4,7 @@ import {
   setSelectedVersioningType,
   setDetailedContentVersion,
   setResourceVersionings,
+  setVersioningConfig,
 } from 'state/versioning/actions';
 import {
   getVersioningList, getSelectedVersioningType,
@@ -20,6 +21,7 @@ describe('state/versioning/reducer', () => {
       expect(state).toHaveProperty('list');
       expect(state).toHaveProperty('map');
       expect(state).toHaveProperty('selected');
+      expect(state).toHaveProperty('versioningConfig');
     });
   });
 
@@ -80,6 +82,18 @@ describe('state/versioning/reducer', () => {
         apps:
         { cms: { versioning: newState } },
       })).toEqual(content);
+    });
+  });
+
+  describe('after action setVersioningConfig', () => {
+    let newState;
+    const config = { a: 1 };
+    beforeEach(() => {
+      newState = reducer(state, setVersioningConfig(config));
+    });
+
+    it('should define the selected versioning type', () => {
+      expect(newState).toHaveProperty('versioningConfig', config);
     });
   });
 });

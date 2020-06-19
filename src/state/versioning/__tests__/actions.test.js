@@ -7,6 +7,8 @@ import {
   postRecoverContentVersion,
   deleteResourceVersion,
   getResourceVersionings,
+  getVersioningConfig,
+  putVersioningConfig,
 } from 'api/versioning';
 import {
   setVersionings,
@@ -21,10 +23,14 @@ import {
   removeResourceVersion,
   setResourceVersionings,
   fetchResourceVersionings,
+  setVersioningConfig,
+  fetchVersioningConfig,
+  sendPutVersioningConfig,
 } from 'state/versioning/actions';
 import {
   SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
   SET_SINGLE_CONTENT_VERSION_DETAILS, SET_RESOURCE_VERSIONINGS,
+  SET_VERSIONING_CONFIG,
 } from 'state/versioning/types';
 
 import { createMockStore, mockApi } from 'testutils/helpers';
@@ -42,6 +48,8 @@ jest.mock('api/versioning', () => ({
   getContentDetails: jest.fn(),
   postRecoverContentVersion: jest.fn(),
   deleteResourceVersion: jest.fn(),
+  getVersioningConfig: jest.fn(),
+  putVersioningConfig: jest.fn(),
 }));
 
 describe('versioning actions', () => {
@@ -72,6 +80,13 @@ describe('versioning actions', () => {
       const action = setResourceVersionings(payload);
       expect(action).toHaveProperty('type', SET_RESOURCE_VERSIONINGS);
       expect(action).toHaveProperty('payload.versionings', payload);
+    });
+
+    it('sets versioning config', () => {
+      const payload = [{ midVersion: true }];
+      const action = setVersioningConfig(payload);
+      expect(action).toHaveProperty('type', SET_VERSIONING_CONFIG);
+      expect(action).toHaveProperty('payload', payload);
     });
   });
 
@@ -463,6 +478,114 @@ describe('versioning actions', () => {
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
           expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('fetchVersioningConfig', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        apps: {
+          cms: {
+            versioning: {
+              versioningConfig: {},
+            },
+          },
+        },
+      });
+    });
+
+    it('should dispatch correct actions when api call is successful', (done) => {
+      getVersioningConfig.mockImplementationOnce(
+        mockApi({
+          payload: {
+            contentsToIgnore: ['A', 'B'],
+            contentTypesToIgnore: ['BB'],
+          },
+        }),
+      );
+      store
+        .dispatch(fetchVersioningConfig())
+        .then(() => {
+          expect(getVersioningConfig).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions).toHaveLength(4);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', SET_VERSIONING_CONFIG);
+          expect(actions[1]).toHaveProperty('payload', { contentsToIgnore: 'A, B', contentTypesToIgnore: 'BB' });
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      getVersioningConfig.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(fetchVersioningConfig())
+        .then(() => {
+          expect(getVersioningConfig).toHaveBeenCalled();
+          const actions = store.getActions();
+          expect(actions).toHaveLength(5);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('sendPutVersioningConfig', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        apps: {
+          cms: {
+            versioning: {
+              versioningConfig: {},
+            },
+          },
+        },
+      });
+    });
+
+    const body = {
+      contentsToIgnore: 'A, B',
+      contentTypesToIgnore: 'BB',
+    };
+
+    const bodyParsed = {
+      contentsToIgnore: ['A', 'B'],
+      contentTypesToIgnore: ['BB'],
+    };
+
+    it('should dispatch correct actions when api call is successful', (done) => {
+      putVersioningConfig.mockImplementationOnce(mockApi({ payload: { success: true } }));
+      store
+        .dispatch(sendPutVersioningConfig(body))
+        .then(() => {
+          expect(putVersioningConfig).toHaveBeenCalledWith(bodyParsed);
+          const actions = store.getActions();
+          expect(actions).toHaveLength(2);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      putVersioningConfig.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(sendPutVersioningConfig(body))
+        .then(() => {
+          expect(putVersioningConfig).toHaveBeenCalledWith(bodyParsed);
+          const actions = store.getActions();
+          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
+          expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
+          expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
           done();
         })
         .catch(done.fail);

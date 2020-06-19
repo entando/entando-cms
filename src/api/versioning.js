@@ -11,6 +11,8 @@ import {
   RESTORE_IMAGE_OK,
   CONTENT_DETAILS_OK,
   RESTORE_CONTENT_OK,
+  VERSIONING_CONFIG_GET_OK,
+  VERSIONING_CONFIG_PUT_OK,
 } from 'testutils/mocks/versioning';
 
 const TYPE_MOCKS = {
@@ -120,4 +122,23 @@ export const postRecoverContentVersion = (id, version) => (
       useAuthentication: true,
     },
   )
+);
+
+export const getVersioningConfig = () => (
+  makeRequest({
+    uri: '/api/plugins/versioning/configuration',
+    method: METHODS.GET,
+    mockResponse: VERSIONING_CONFIG_GET_OK,
+    useAuthentication: true,
+  })
+);
+
+export const putVersioningConfig = body => (
+  makeRequest({
+    uri: '/api/plugins/versioning/configuration',
+    method: METHODS.PUT,
+    body,
+    mockResponse: VERSIONING_CONFIG_PUT_OK,
+    useAuthentication: true,
+  })
 );
