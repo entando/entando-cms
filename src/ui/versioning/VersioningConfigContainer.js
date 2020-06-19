@@ -2,6 +2,9 @@ import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 
+import withPermissions from 'ui/common/auth/withPermissions';
+import { SUPERUSER_PERMISSION } from 'state/permissions/const';
+
 import { fetchVersioningConfig, sendPutVersioningConfig } from 'state/versioning/actions';
 
 import VersioningConfig from 'ui/versioning/VersioningConfig';
@@ -29,4 +32,6 @@ const VersioningConfigContainer = connect(
   },
 )(VersioningConfig);
 
-export default injectIntl(VersioningConfigContainer);
+export default withPermissions(SUPERUSER_PERMISSION)(
+  injectIntl(VersioningConfigContainer),
+);
