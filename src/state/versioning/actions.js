@@ -237,9 +237,17 @@ export const fetchVersioningConfig = () => dispatch => new Promise((resolve) => 
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          dispatch(setVersioningConfig(json.payload));
-          dispatch(initialize('versionConfig', json.payload));
-          resolve(json.payload);
+          const { payload: rawPayload } = json;
+          const { contentsToIgnore, contentTypesToIgnore } = rawPayload;
+          const payload = {
+            ...rawPayload,
+            contentsToIgnore: contentsToIgnore.join(', '),
+            contentTypesToIgnore: contentTypesToIgnore.join(', '),
+          };
+
+          dispatch(setVersioningConfig(payload));
+          dispatch(initialize('versionConfig', payload));
+          resolve(payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           dispatch(clearErrors());
@@ -254,7 +262,13 @@ export const fetchVersioningConfig = () => dispatch => new Promise((resolve) => 
 
 export const sendPutVersioningConfig = payload => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('versioningConfig'));
-  putVersioningConfig(payload)
+  const { contentsToIgnore, contentTypesToIgnore } = payload;
+  const params = {
+    ...payload,
+    contentsToIgnore: contentsToIgnore.split(',').map(c => c.trim()),
+    contentTypesToIgnore: contentTypesToIgnore.split(',').map(c => c.trim()),
+  };
+  putVersioningConfig(params)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {

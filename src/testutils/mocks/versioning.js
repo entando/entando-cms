@@ -204,9 +204,9 @@ export const RESTORE_IMAGE_OK = { success: true };
 export const RESTORE_CONTENT_OK = { success: true };
 
 export const VERSIONING_CONFIG_GET_OK = {
-  deleteMidVersion: true,
-  contentIgnore: 'AAB1, CC2',
-  contentTypeIgnore: 'ABC',
+  deleteMidVersions: true,
+  contentsToIgnore: ['AAB1', 'CC2'],
+  contentTypesToIgnore: ['ABC'],
 };
 
 export const VERSIONING_CONFIG_PUT_OK = { success: true };

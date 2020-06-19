@@ -499,7 +499,14 @@ describe('versioning actions', () => {
     });
 
     it('should dispatch correct actions when api call is successful', (done) => {
-      getVersioningConfig.mockImplementationOnce(mockApi({ payload: { midVersion: true } }));
+      getVersioningConfig.mockImplementationOnce(
+        mockApi({
+          payload: {
+            contentsToIgnore: ['A', 'B'],
+            contentTypesToIgnore: ['BB'],
+          },
+        }),
+      );
       store
         .dispatch(fetchVersioningConfig())
         .then(() => {
@@ -508,6 +515,7 @@ describe('versioning actions', () => {
           expect(actions).toHaveLength(4);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
           expect(actions[1]).toHaveProperty('type', SET_VERSIONING_CONFIG);
+          expect(actions[1]).toHaveProperty('payload', { contentsToIgnore: 'A, B', contentTypesToIgnore: 'BB' });
           done();
         })
         .catch(done.fail);
@@ -544,13 +552,22 @@ describe('versioning actions', () => {
       });
     });
 
+    const body = {
+      contentsToIgnore: 'A, B',
+      contentTypesToIgnore: 'BB',
+    };
+
+    const bodyParsed = {
+      contentsToIgnore: ['A', 'B'],
+      contentTypesToIgnore: ['BB'],
+    };
+
     it('should dispatch correct actions when api call is successful', (done) => {
       putVersioningConfig.mockImplementationOnce(mockApi({ payload: { success: true } }));
-      const body = { midVersion: true };
       store
         .dispatch(sendPutVersioningConfig(body))
         .then(() => {
-          expect(putVersioningConfig).toHaveBeenCalledWith(body);
+          expect(putVersioningConfig).toHaveBeenCalledWith(bodyParsed);
           const actions = store.getActions();
           expect(actions).toHaveLength(2);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
@@ -561,11 +578,10 @@ describe('versioning actions', () => {
 
     it('should dispatch correct actions when api call returns errors', (done) => {
       putVersioningConfig.mockImplementationOnce(mockApi({ errors: true }));
-      const body = { midVersion: true };
       store
         .dispatch(sendPutVersioningConfig(body))
         .then(() => {
-          expect(putVersioningConfig).toHaveBeenCalledWith(body);
+          expect(putVersioningConfig).toHaveBeenCalledWith(bodyParsed);
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
           expect(actions[1]).toHaveProperty('type', ADD_ERRORS);

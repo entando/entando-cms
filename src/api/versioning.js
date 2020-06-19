@@ -125,8 +125,8 @@ export const postRecoverContentVersion = (id, version) => (
 );
 
 export const getVersioningConfig = () => (
-  makeMockRequest({
-    uri: '/api/plugins/versioning/config',
+  makeRequest({
+    uri: '/api/plugins/versioning/configuration',
     method: METHODS.GET,
     mockResponse: VERSIONING_CONFIG_GET_OK,
     useAuthentication: true,
@@ -134,8 +134,8 @@ export const getVersioningConfig = () => (
 );
 
 export const putVersioningConfig = body => (
-  makeMockRequest({
-    uri: '/api/plugins/versioning/config',
+  makeRequest({
+    uri: '/api/plugins/versioning/configuration',
     method: METHODS.PUT,
     body,
     mockResponse: VERSIONING_CONFIG_PUT_OK,
