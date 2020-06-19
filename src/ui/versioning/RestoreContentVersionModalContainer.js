@@ -22,7 +22,7 @@ export const mapStateToProps = state => ({
   info: getInfo(state),
 });
 
-export const mapDispatchToProps = (dispatch, { intl, history }) => ({
+export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onConfirmRestore: (contentVersion) => {
     const { versionId, version, contentId } = contentVersion;
     dispatch(recoverContentVersion(contentId, versionId)).then((res) => {
@@ -33,9 +33,15 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
             TOAST_SUCCESS,
           ),
         );
-        history.push(
-          routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
-        );
+        if (params.contentId) {
+          history.push(
+            routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
+          );
+        } else if (params.id) {
+          /* Simple trick to simulate page re-mount without refreshing actual page */
+          history.push('/temp');
+          history.goBack();
+        }
       }
     });
     dispatch(setVisibleModal(''));

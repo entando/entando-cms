@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
@@ -53,41 +53,48 @@ class SingleContentVersioningHistory extends Component {
           {...item}
         />
       ));
+    const renderData = versioningList.length === 0 ? (
+      <FormattedMessage id="cms.versioning.noPreviousVersioning" defaultMessage="No previous revision." />
+    ) : (
+      <Fragment>
+        <table className="table table-striped table-bordered table-hover VersioningList__table">
+          <thead>
+            <tr>
+              <th width="10%" className="text-center">
+                <FormattedMessage id="cms.versioning.list.version" defaultMessage="Version" />
+              </th>
+              <th width="30%">
+                <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
+              </th>
+              <th width="30%" className="text-center">
+                <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modify" />
+              </th>
+              <th width="10%" className="text-center">
+                <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
+              </th>
+              <th width="10%" className="text-center">
+                <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
+              </th>
+              <th width="10%" className="text-center">
+                <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>{renderRows}</tbody>
+        </table>
+        <Paginator
+          pagination={pagination}
+          viewType="table"
+          itemCount={totalItems}
+          onPageSet={this.changePage}
+          onPerPageSelect={this.changePageSize}
+        />
+      </Fragment>
+    );
     return (
       <div className="VersioningList__wrap">
         <Spinner loading={!!loading}>
-          <table className="table table-striped table-bordered table-hover VersioningList__table">
-            <thead>
-              <tr>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.version" defaultMessage="Version" />
-                </th>
-                <th width="30%">
-                  <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
-                </th>
-                <th width="30%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modify" />
-                </th>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
-                </th>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
-                </th>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>{renderRows}</tbody>
-          </table>
-          <Paginator
-            pagination={pagination}
-            viewType="table"
-            itemCount={totalItems}
-            onPageSet={this.changePage}
-            onPerPageSelect={this.changePageSize}
-          />
+          {renderData}
         </Spinner>
         <RestoreContentVersionModalContainer />
       </div>

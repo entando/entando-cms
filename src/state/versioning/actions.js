@@ -53,6 +53,7 @@ export const fetchVersionings = (page = { page: 1, pageSize: 10 }, params = '') 
           dispatch(setVersionings(json.payload));
           dispatch(setPage(json.metaData));
         } else {
+          dispatch(setVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
@@ -75,6 +76,7 @@ export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, param
           dispatch(setResourceVersionings(json.payload));
           dispatch(setPage(json.metaData));
         } else {
+          dispatch(setResourceVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
@@ -171,6 +173,7 @@ export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 
           dispatch(setVersionings(json.payload));
           dispatch(setPage(json.metaData));
         } else {
+          dispatch(setVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
@@ -211,7 +214,7 @@ export const recoverContentVersion = (id, version) => (dispatch, getState) => (
     postRecoverContentVersion(id, version)
       .then(async (response) => {
         if (response.ok) {
-          dispatch(fetchVersionings({ page, pageSize }));
+          dispatch(fetchSingleVersioningHistory(id, { page, pageSize }));
         } else {
           const json = await response.json();
           dispatch(addErrors(json.errors.map(err => err.message)));

@@ -1,12 +1,14 @@
 import React from 'react';
+import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from 'react-intl';
 import { mockApi } from 'testutils/helpers';
-import '@testing-library/jest-dom/extend-expect';
 import { screen } from '@testing-library/react';
-import { renderWithRedux, renderWithRouter } from 'testutils/testUtils';
-import ImagesListContainer from 'ui/versioning/images/ImagesListContainer';
+
 import { getResourceVersionings } from 'api/versioning';
 import { LIST_IMAGES_OK } from 'testutils/mocks/versioning';
+import { renderWithRedux, renderWithRouter } from 'testutils/testUtils';
+
+import ImagesListContainer from 'ui/versioning/images/ImagesListContainer';
 
 jest.mock('api/versioning');
 

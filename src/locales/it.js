@@ -52,6 +52,7 @@ export default {
     'cms.label.modal.removeResource': 'Rimuovi risorsa',
     'cms.label.modal.confirmRemove': 'Vuoi veramente rimuovere definitivamente l\'asset {name}?',
     'cms.versioning.remove.versionRemoved': '{name} rimosso.',
+    'cms.versioning.noPreviousVersioning': 'Nessuna revisione precedente.',
     'cms.label.dontSave': 'Non salvare',
     'cms.label.documents': 'Documenti',
     'cms.label.images': 'Immagini',
