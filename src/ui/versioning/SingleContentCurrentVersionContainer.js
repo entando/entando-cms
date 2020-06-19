@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLoading } from 'state/loading/selectors';
 
-import { fetchContent, fetchGroups } from 'state/edit-content/actions';
+import { fetchContent, fetchGroups, clearEditContentForm } from 'state/edit-content/actions';
 import { getContent, getGroups } from 'state/edit-content/selectors';
 
 import SingleContentCurrentVersion from 'ui/versioning/SingleContentCurrentVersion';
@@ -20,6 +20,7 @@ export const mapDispatchToProps = (dispatch, { match: { params } }) => ({
     dispatch(fetchContent(`/${params.contentId}`));
     dispatch(fetchGroups(noPage));
   },
+  onWillUnmount: () => { dispatch(clearEditContentForm()); },
 });
 
 const SingleContentCurrentVersionContainer = connect(
