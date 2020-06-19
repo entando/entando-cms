@@ -12,6 +12,11 @@ class SingleContentCurrentVersion extends Component {
     onDidMount();
   }
 
+  componentWillUnmount() {
+    const { onWillUnmount } = this.props;
+    onWillUnmount();
+  }
+
   render() {
     const {
       content,
@@ -107,6 +112,7 @@ SingleContentCurrentVersion.propTypes = {
   }),
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
+  onWillUnmount: PropTypes.func.isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

@@ -1,6 +1,7 @@
 import {
   addToast, addErrors, TOAST_ERROR, clearErrors,
 } from '@entando/messages';
+import { get } from 'lodash';
 
 import {
   getVersionings, getSingleVersioning, getResourceVersionings, deleteResourceVersion,
@@ -240,7 +241,7 @@ export const fetchVersioningConfig = () => dispatch => new Promise((resolve) => 
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          const { payload: rawPayload } = json;
+          const rawPayload = get(json, 'payload', json);
           const { contentsToIgnore, contentTypesToIgnore } = rawPayload;
           const payload = {
             ...rawPayload,
