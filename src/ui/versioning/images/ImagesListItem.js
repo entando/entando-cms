@@ -1,13 +1,15 @@
 import React from 'react';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import {
-  ListViewItem,
-} from 'patternfly-react';
+import { ListViewItem } from 'patternfly-react';
 
-
+import { getURLAbsolute } from 'state/assets/selectors';
 import ImagesListItemActions from 'ui/versioning/images/ImagesListItemActions';
 
-const ImagesListItem = ({ image, onClickRemove, onClickRecover }) => (
+const ImagesListItem = ({
+  image, onClickRemove, onClickRecover, domain,
+}) => console.log('image', image, getURLAbsolute(domain, image.versions && image.versions[0] && get(image.versions[0], 'path', '')))
+  || (
   <ListViewItem
     actions={(
       <ImagesListItemActions
@@ -20,14 +22,18 @@ const ImagesListItem = ({ image, onClickRemove, onClickRecover }) => (
     compoundExpanded={false}
     description={(
       <div className="ImagesListItem">
-        <img src="https://picsum.photos/90/90" className="ImagesListItem__image" alt="my" />
+        <img
+          src={getURLAbsolute(domain, image.versions && image.versions[0] && get(image.versions[0], 'path', ''))}
+          className="ImagesListItem__image"
+          alt={image.description}
+        />
         <h4 className="ImagesListItem__description">{image.description}</h4>
       </div>
     )}
     hideCloseIcon={false}
     stacked={false}
   />
-);
+  );
 
 ImagesListItem.propTypes = {
   image: PropTypes.shape({
@@ -37,6 +43,7 @@ ImagesListItem.propTypes = {
   }).isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,
+  domain: PropTypes.string.isRequired,
 };
 
 ImagesListItem.defaultProps = {

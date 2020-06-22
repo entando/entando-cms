@@ -46,6 +46,7 @@ class ImagesList extends React.Component {
       onSubmit,
       removeImage,
       recoverImage,
+      domain,
     } = this.props;
 
     return (
@@ -59,6 +60,7 @@ class ImagesList extends React.Component {
                 image={image}
                 onClickRemove={removeImage}
                 onClickRecover={recoverImage}
+                domain={domain}
               />
             ),
           )}
@@ -92,6 +94,7 @@ ImagesList.propTypes = {
   removeImage: PropTypes.func,
   recoverImage: PropTypes.func,
   totalItems: PropTypes.number,
+  domain: PropTypes.string,
 };
 
 ImagesList.defaultProps = {
@@ -106,6 +109,7 @@ ImagesList.defaultProps = {
   totalItems: 0,
   removeImage: () => {},
   recoverImage: () => {},
+  domain: '',
 };
 
 export default ImagesList;
