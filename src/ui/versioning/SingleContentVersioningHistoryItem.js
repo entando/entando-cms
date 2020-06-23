@@ -6,14 +6,13 @@ import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { ROUTE_CMS_VERSIONING_CONTENT_DETAIL } from 'app-init/routes';
 
-export const getContentVersionStatusDetails = (status, approved) => {
-  const statusLowerCase = status.toLowerCase();
+export const getContentVersionStatusDetails = (approved, onlineVersion) => {
   let color = 'review';
-  let title = 'No';
+  let title = 'Public ≠ Ready';
   if (approved) {
     color = 'published';
-    title = 'Yes';
-  } else if (statusLowerCase === 'new') {
+    title = 'Published';
+  } else if (onlineVersion === 0) {
     color = 'unpublished';
     title = 'Unpublished';
   }
@@ -21,9 +20,10 @@ export const getContentVersionStatusDetails = (status, approved) => {
 };
 
 const SingleContentVersioningHistoryItem = ({
-  description, username, versionDate, version, onClickRestore, contentId, id, approved, status,
+  description, username, versionDate, version, onClickRestore,
+  contentId, id, approved, onlineVersion,
 }) => {
-  const { color, title } = getContentVersionStatusDetails(status, approved);
+  const { color, title } = getContentVersionStatusDetails(approved, onlineVersion);
   return (
     <tr className="VersioningListRow">
       <td className="VersioningListRow__td text-center">
@@ -72,9 +72,9 @@ SingleContentVersioningHistoryItem.propTypes = {
   username: PropTypes.string.isRequired,
   versionDate: PropTypes.number.isRequired,
   version: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
   onClickRestore: PropTypes.func,
   approved: PropTypes.bool.isRequired,
+  onlineVersion: PropTypes.number.isRequired,
 };
 
 SingleContentVersioningHistoryItem.defaultProps = {
