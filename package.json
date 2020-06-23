@@ -243,7 +243,7 @@
     "@entando/menu": "^2.0.0",
     "@entando/messages": "^1.0.4",
     "@entando/pages": "^3.1.4",
-    "@entando/utils": "^2.3.0",
+    "@entando/utils": "^2.3.1",
     "flux-standard-action": "^2.0.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",

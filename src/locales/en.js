@@ -82,7 +82,7 @@ export default {
     'cms.versioning.list.id': 'Id',
     'cms.versioning.list.description': 'Description',
     'cms.versioning.list.contentType': 'Content Type',
-    'cms.versioning.list.lastModify': 'Last Modify',
+    'cms.versioning.list.lastModify': 'Latest Modify',
     'cms.versioning.list.editor': 'Editor',
     'cms.versioning.list.status': 'Status',
     'cms.versioning.list.actions': 'Actions',
