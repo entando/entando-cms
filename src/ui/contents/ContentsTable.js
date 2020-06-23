@@ -34,6 +34,7 @@ export const getContentStatusDetails = (status, hasPublicVersion) => {
     color = 'unpublished';
     if (hasPublicVersion) {
       title = 'Public ≠ Draft';
+      color = 'review';
     } else {
       title = 'Unpublished';
     }
