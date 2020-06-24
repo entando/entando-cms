@@ -71,7 +71,7 @@ class VersioningList extends Component {
                   <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
                 </th>
                 <th width="15%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Latest Modify" />
+                  <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modified" />
                 </th>
                 <th width="10%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
