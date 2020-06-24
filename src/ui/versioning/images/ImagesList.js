@@ -48,7 +48,6 @@ class ImagesList extends React.Component {
       recoverImage,
       domain,
     } = this.props;
-
     return (
       <Spinner loading={!!loading}>
         <FileVersioningSearchForm onSubmit={onSubmit} />

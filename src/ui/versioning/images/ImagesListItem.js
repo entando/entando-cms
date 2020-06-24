@@ -8,7 +8,7 @@ import ImagesListItemActions from 'ui/versioning/images/ImagesListItemActions';
 
 const ImagesListItem = ({
   image, onClickRemove, onClickRecover, domain,
-}) => console.log('image', image, getURLAbsolute(domain, image.versions && image.versions[0] && get(image.versions[0], 'path', '')))
+}) => console.log('image', image, domain, getURLAbsolute(domain, image.versions[0].path))
   || (
   <ListViewItem
     actions={(
@@ -23,7 +23,7 @@ const ImagesListItem = ({
     description={(
       <div className="ImagesListItem">
         <img
-          src={getURLAbsolute(domain, image.versions && image.versions[0] && get(image.versions[0], 'path', ''))}
+          src={`${domain}/${image.versions && image.versions[0] && get(image.versions[0], 'path', '')}`}
           className="ImagesListItem__image"
           alt={image.description}
         />
