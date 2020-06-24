@@ -26,7 +26,7 @@ describe('Single Content Versioning History Container', () => {
     expect(await screen.findByText(/description/i)).toBeInTheDocument();
     expect(screen.getByText(/Version/)).toBeInTheDocument();
     expect(screen.getByText(/editor/i)).toBeInTheDocument();
-    expect(screen.getByText(/latest modify/i)).toBeInTheDocument();
+    expect(screen.getByText(/last modified/i)).toBeInTheDocument();
     expect(screen.getByText(/actions/i)).toBeInTheDocument();
 
     // data
