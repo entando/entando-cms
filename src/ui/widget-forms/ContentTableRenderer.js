@@ -4,13 +4,18 @@ import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, ButtonGroup } from 'patternfly-react';
-import ContentPickerContainer from 'ui/widget-forms/ContentPickerContainer';
+import ContentsFilterBrowserContainer from 'ui/widget-forms/contents-filter/ContentsFilterBrowserContainer';
 
 const ContentTableRenderer = ({
   fields, contentTemplates, intl, multipleContentsMode,
 }) => {
   const handlePickContent = content => fields.push({
     ...content, contentId: content.id, modelId: null, contentDescription: content.description,
+  });
+
+  const contentRowIds = fields.map((field, i) => {
+    const content = fields.get(i);
+    return content.id;
   });
 
   const renderContentRows = fields.map((field, i) => {
@@ -83,14 +88,13 @@ const ContentTableRenderer = ({
   return (
     <div className="FiltersSelectRenderer well">
       {multipleContentsMode && (
-      <ContentPickerContainer
-        form="contentPicker"
-        onPickContent={handlePickContent}
-        multipleContentsMode={multipleContentsMode}
-        contentsNumber={fields.length}
+      <ContentsFilterBrowserContainer
+        inModal
+        pickedContents={contentRowIds}
+        onContentPicked={handlePickContent}
       />
       )}
-      <Table bordered striped>
+      <Table bordered striped className="FiltersSelectRenderer__content-table-selected">
         <thead>
           <tr>
             <th width="5%">

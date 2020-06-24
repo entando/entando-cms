@@ -59,7 +59,7 @@ class ContentsFilterBrowser extends Component {
     const { onWillUnmount } = this.props;
     onWillUnmount();
   }
-  
+
   render() {
     const {
       intl, inModal,
@@ -77,6 +77,8 @@ class ContentsFilterBrowser extends Component {
       onSelectRow,
       currentUsername,
       onAdvancedFilterSearch, users,
+      pickedContents,
+      onContentPicked,
     } = this.props;
 
     const messages = defineMessages({
@@ -110,21 +112,23 @@ class ContentsFilterBrowser extends Component {
           inModal={inModal}
         />
         <div className="Contents__body">
-          <ContentsFilterTabs
-            intl={intl}
-            availableColumns={AVAILABLE_COLUMNS}
-            messages={messages}
-            contents={contents}
-            contentTypes={contentTypes}
-            currentAuthorShow={currentAuthorShow}
-            currentStatusShow={currentStatusShow}
-            currentColumnsShow={currentColumnsShow}
-            onSetCurrentAuthorShow={onSetCurrentAuthorShow}
-            onSetCurrentStatusShow={onSetCurrentStatusShow}
-            onSetCurrentColumnsShow={onSetCurrentColumnsShow}
-            currentUsername={currentUsername}
-            inModal={inModal}
-          />
+          {!pickedContents && (
+            <ContentsFilterTabs
+              intl={intl}
+              availableColumns={AVAILABLE_COLUMNS}
+              messages={messages}
+              contents={contents}
+              contentTypes={contentTypes}
+              currentAuthorShow={currentAuthorShow}
+              currentStatusShow={currentStatusShow}
+              currentColumnsShow={currentColumnsShow}
+              onSetCurrentAuthorShow={onSetCurrentAuthorShow}
+              onSetCurrentStatusShow={onSetCurrentStatusShow}
+              onSetCurrentColumnsShow={onSetCurrentColumnsShow}
+              currentUsername={currentUsername}
+              inModal={inModal}
+            />
+          )}
           <div>
             <Spinner loading={!!loading}>
               <ContentsFilterTable
@@ -142,6 +146,8 @@ class ContentsFilterBrowser extends Component {
                 onFilteredSearch={onFilteredSearch}
                 availableColumns={AVAILABLE_COLUMNS}
                 groups={groups}
+                pickedContents={pickedContents}
+                onContentPicked={onContentPicked}
               />
             </Spinner>
           </div>
@@ -166,6 +172,7 @@ ContentsFilterBrowser.propTypes = {
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  sortingColumns: PropTypes.shape({}).isRequired,
   onCheckStatus: PropTypes.func.isRequired,
   statusChecked: PropTypes.string.isRequired,
   accessChecked: PropTypes.string.isRequired,
@@ -175,12 +182,13 @@ ContentsFilterBrowser.propTypes = {
   currentAuthorShow: PropTypes.string.isRequired,
   currentStatusShow: PropTypes.string.isRequired,
   currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onDidMount: PropTypes.func.isRequired,
   onSetCurrentAuthorShow: PropTypes.func.isRequired,
   onSetCurrentStatusShow: PropTypes.func.isRequired,
   onSetCurrentColumnsShow: PropTypes.func.isRequired,
   onSetContentType: PropTypes.func.isRequired,
   onSetGroup: PropTypes.func.isRequired,
-  sortingColumns: PropTypes.shape({}).isRequired,
+  onContentPicked: PropTypes.func,
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
@@ -189,12 +197,15 @@ ContentsFilterBrowser.propTypes = {
   users: PropTypes.arrayOf(PropTypes.shape({})),
   onWillUnmount: PropTypes.func.isRequired,
   inModal: PropTypes.bool,
+  pickedContents: PropTypes.arrayOf(PropTypes.string),
 };
 
 ContentsFilterBrowser.defaultProps = {
   loading: false,
   users: [],
   inModal: false,
+  pickedContents: null,
+  onContentPicked: () => {},
 };
 
 

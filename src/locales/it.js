@@ -250,6 +250,7 @@ export default {
     'cms.chooseAnOption': 'Scegliere un\'opzione',
     'cms.contents.title': 'Contenuto',
     'cms.contents.code': 'Codice',
+    'cms.contents.addToPool': 'Azioni',
     'cms.contents.add.title': 'Aggiungi Contenuto',
     'cms.contents.edit.title': 'Modifica Contenuto',
     'cms.contents.edit.info': 'Info',

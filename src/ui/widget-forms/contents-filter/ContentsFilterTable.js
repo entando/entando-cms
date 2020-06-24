@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'react-intl';
+import { intlShape, FormattedMessage } from 'react-intl';
+import { isNull } from 'lodash';
 import {
   Table, Col,
   customHeaderFormattersDefinition,
@@ -77,19 +78,27 @@ class ContentsFilterTable extends Component {
     onSelectAllRows(checked);
   }
 
+  get pickMode() {
+    const { pickedContents } = this.props;
+    return !isNull(pickedContents) && !Number.isNaN(pickedContents.length);
+  }
+
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl, groups,
+      activeColumns, availableColumns, intl, groups, pickedContents, onContentPicked,
     } = this.props;
-    const currentActiveColumns = ['selectAll', ...activeColumns, 'addToPool'];
-    const allColumns = [{ code: 'selectAll' }, ...availableColumns, { code: 'addToPool' }];
+    const currentActiveColumns = this.pickMode ? [...activeColumns, 'addToPool'] : ['selectAll', ...activeColumns];
+    const allColumns = this.pickMode
+      ? [...availableColumns, { code: 'addToPool' }]
+      : [{ code: 'selectAll' }, ...availableColumns];
     return allColumns.filter(ac => currentActiveColumns.includes(ac.code))
       .map((ac, i) => {
         let rowCellFormatter = tableCellFormatter;
         let headerCellFormatter = sortableHeaderCellFormatter;
         const { code } = ac;
         let newCode = code;
-        switch (ac.code) {
+        console.log('d code', code);
+        switch (code) {
           case 'description':
             rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
             );
@@ -126,7 +135,17 @@ class ContentsFilterTable extends Component {
             );
             break;
           case 'addToPool':
-            rowCellFormatter = () => <td />;
+            newCode = 'actions';
+            headerCellFormatter = actionHeaderCellFormatter;
+            rowCellFormatter = (_, { rowData }) => (
+              <Table.Actions>
+                <Table.Button
+                  onClick={() => onContentPicked(rowData)}
+                >
+                  <FormattedMessage id="cms.label.add" />
+                </Table.Button>
+              </Table.Actions>
+            );
             break;
           case 'onLine':
             newCode = 'status';
@@ -160,7 +179,7 @@ class ContentsFilterTable extends Component {
               rowSpan: 1,
               colSpan: 1,
             },
-            [code === 'actions' || code === 'groups' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
+            [[code, newCode].includes('actions') || code === 'groups' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
           },
           cell: {
             props: {
@@ -183,6 +202,7 @@ class ContentsFilterTable extends Component {
     const {
       totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
     } = this.props;
+    console.log('render');
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
     const itemsEnd = Math.min(page * pageSize, totalItems);
@@ -252,15 +272,19 @@ ContentsFilterTable.propTypes = {
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   sortingColumns: PropTypes.shape({}).isRequired,
+  pickedContents: PropTypes.arrayOf(PropTypes.string),
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
   onSelectAllRows: PropTypes.func,
+  onContentPicked: PropTypes.func,
 };
 
 ContentsFilterTable.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
   onSelectAllRows: () => {},
+  pickedContents: null,
+  onContentPicked: () => {},
 };
 
 export default ContentsFilterTable;
