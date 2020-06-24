@@ -81,8 +81,8 @@ class ContentsFilterTable extends Component {
     const {
       activeColumns, availableColumns, intl, groups,
     } = this.props;
-    const currentActiveColumns = ['selectAll', ...activeColumns];
-    const allColumns = [{ code: 'selectAll' }, ...availableColumns];
+    const currentActiveColumns = ['selectAll', ...activeColumns, 'addToPool'];
+    const allColumns = [{ code: 'selectAll' }, ...availableColumns, { code: 'addToPool' }];
     return allColumns.filter(ac => currentActiveColumns.includes(ac.code))
       .map((ac, i) => {
         let rowCellFormatter = tableCellFormatter;
@@ -124,6 +124,9 @@ class ContentsFilterTable extends Component {
                 {typeDescription}
               </td>
             );
+            break;
+          case 'addToPool':
+            rowCellFormatter = () => <td />;
             break;
           case 'onLine':
             newCode = 'status';
