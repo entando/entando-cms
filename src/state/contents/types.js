@@ -6,7 +6,6 @@ export const CHECK_ACCESS = 'cms/contents/check-access';
 export const CHECK_AUTHOR = 'cms/contents/check-author';
 export const SET_CURRENT_AUTHOR_SHOW = 'cms/contents/set-current-author-show';
 export const SET_CURRENT_STATUS_SHOW = 'cms/contents/set-current-status-show';
-export const SET_CURRENT_COLUMNS_SHOW = 'cms/contents/set-current-columns-show';
 export const SET_SORT = 'cms/contents/set-sort';
 export const SET_CONTENT_TYPE = 'cms/contents/set-content-type';
 export const SET_GROUP = 'cms/contents/set-group';

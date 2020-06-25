@@ -10,7 +10,7 @@ import {
   setQuickFilter, setContentType, setGroup, setSort,
   setContentCategoryFilter, checkStatus, checkAccess,
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
-  setCurrentColumnsShow, selectRow, selectAllRows, fetchContents,
+  selectRow, selectAllRows, fetchContents,
   sendDeleteContent, sendPublishContent, setJoinContentCategory,
   resetJoinContentCategories, sendUpdateContents, fetchContentsPaged, setTabSearch,
   sendPublishMultipleContents,
@@ -24,7 +24,7 @@ import {
   SET_QUICK_FILTER, SET_CONTENT_TYPE, SET_GROUP,
   SET_SORT, SET_CONTENT_CATEGORY_FILTER, CHECK_STATUS, CHECK_ACCESS,
   CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW, SET_CURRENT_STATUS_SHOW,
-  SET_CURRENT_COLUMNS_SHOW, SELECT_ROW, SELECT_ALL_ROWS, SET_CONTENTS,
+  SELECT_ROW, SELECT_ALL_ROWS, SET_CONTENTS,
   SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES, SET_TAB_SEARCH, RESET_AUTHOR_STATUS,
   CLEAR_CONTENTS_STATE, SELECT_SINGLE_ROW,
 } from '../types';
@@ -147,12 +147,6 @@ describe('state/contents/actions', () => {
   it('resetAuthorStatus() should return a well formed action', () => {
     const action = resetAuthorStatus();
     expect(action).toHaveProperty('type', RESET_AUTHOR_STATUS);
-  });
-
-  it('setCurrentColumnsShow() should return a well formed action', () => {
-    const action = setCurrentColumnsShow(['created', 'status']);
-    expect(action).toHaveProperty('type', SET_CURRENT_COLUMNS_SHOW);
-    expect(action.payload).toEqual(['created', 'status']);
   });
 
   it('selectRow() should return a well formed action', () => {

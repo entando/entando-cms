@@ -10,21 +10,22 @@ import {
   fetchContentsPaged,
   resetAuthorStatus, selectSingleRow, setContentType,
   setCurrentAuthorShow,
-  setCurrentColumnsShow,
   setCurrentStatusShow, setGroup,
   setQuickFilter, setSort,
   setTabSearch,
   leaveContentsPage,
 } from 'state/contents/actions';
+import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { getPagination } from 'state/pagination/selectors';
 import { getLoading } from 'state/loading/selectors';
 import {
   getLastSelectedRow,
   getAccessChecked, getAuthorChecked,
-  getContents, getCurrentAuthorShow, getCurrentColumnsShow,
+  getContents, getCurrentAuthorShow,
   getCurrentQuickFilter, getCurrentStatusShow,
   getFilteringCategories, getSelectedRows, getSortingColumns, getStatusChecked,
 } from 'state/contents/selectors';
+import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getGroups } from 'state/edit-content/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
@@ -124,7 +125,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchContentsPaged(null, null, null, false, STATUS_PUBLISHED));
     dispatch(resetAuthorStatus());
   },
-  onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
+  onSetCurrentColumnsShow: columns => dispatch(setCurrentColumnsShow(columns)),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetGroup: group => dispatch(setGroup(group)),
   onSetSort: sort => dispatch(setSort(sort)),

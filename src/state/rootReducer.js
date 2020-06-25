@@ -20,6 +20,7 @@ import pages from 'state/pages/reducer';
 import users from 'state/users/reducer';
 import permissions from 'state/permissions/reducer';
 import versioning from 'state/versioning/reducer';
+import tableColumns from 'state/table-columns/reducer';
 
 export const cms = combineReducers({
   contentTemplate,
@@ -34,6 +35,7 @@ export const cms = combineReducers({
   pages,
   users,
   versioning,
+  tableColumns,
 });
 
 export default combineReducers({

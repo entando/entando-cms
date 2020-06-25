@@ -22,6 +22,16 @@ const ContentTabs = ({
   const csvHeaders = filteredAvailableColumns.map(
     column => Object.assign({}, { label: column.name, key: column.code }),
   );
+  const onClickColumnItem = (code) => {
+    if (code === 'name') return;
+    let newColumns = currentColumnsShow.slice(0);
+    if (newColumns.includes(code)) {
+      newColumns = newColumns.filter(c => c !== code);
+    } else {
+      newColumns.push(code);
+    }
+    onSetCurrentColumnsShow(newColumns);
+  };
   const navItems = (
     <div>
       <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
@@ -104,7 +114,7 @@ const ContentTabs = ({
                   code={code}
                   key={code}
                   active={currentColumnsShow.includes(code)}
-                  onItemClicked={onSetCurrentColumnsShow}
+                  onItemClicked={onClickColumnItem}
                 />
               ),
             )

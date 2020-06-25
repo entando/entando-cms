@@ -7,7 +7,6 @@ import {
   getAuthorChecked,
   getCurrentAuthorShow,
   getCurrentStatusShow,
-  getCurrentColumnsShow,
   getSortingColumns,
   getSelectedRows,
   getJoiningCategories,
@@ -93,11 +92,6 @@ it('verify getCurrentAuthorShow selector', () => {
 it('verify getCurrentStatusShow selector', () => {
   const status = getCurrentStatusShow(TEST_STATE);
   expect(status).toEqual('approved');
-});
-
-it('verify getCurrentColumnsShow selector', () => {
-  const currentColumns = getCurrentColumnsShow(TEST_STATE);
-  expect(currentColumns).toEqual(['col1', 'col2']);
 });
 
 it('verify getSortingColumns selector', () => {
