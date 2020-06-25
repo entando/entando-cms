@@ -78,17 +78,13 @@ class ContentsFilterTable extends Component {
     onSelectAllRows(checked);
   }
 
-  get pickMode() {
-    const { pickedContents } = this.props;
-    return !isNull(pickedContents) && !Number.isNaN(pickedContents.length);
-  }
-
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl, groups, onContentPicked,
+      activeColumns, availableColumns, intl, groups, onContentPicked, pickedContents,
     } = this.props;
-    const currentActiveColumns = this.pickMode ? [...activeColumns, 'addToPool'] : ['selectAll', ...activeColumns];
-    const allColumns = this.pickMode
+    const pickMode = !isNull(pickedContents) && !Number.isNaN(pickedContents.length);
+    const currentActiveColumns = pickMode ? [...activeColumns, 'addToPool'] : ['selectAll', ...activeColumns];
+    const allColumns = pickMode
       ? [...availableColumns, { code: 'addToPool' }]
       : [{ code: 'selectAll' }, ...availableColumns];
     return allColumns.filter(ac => currentActiveColumns.includes(ac.code))

@@ -89,7 +89,6 @@ const ContentTableRenderer = ({
     <div className="FiltersSelectRenderer well">
       {multipleContentsMode && (
       <ContentsFilterBrowserContainer
-        inModal
         pickedContents={contentRowIds}
         onContentPicked={handlePickContent}
       />

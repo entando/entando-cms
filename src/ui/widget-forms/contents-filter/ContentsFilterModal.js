@@ -43,7 +43,6 @@ const ContentsFilterModal = (props) => {
     >
       <ContentsFilterBrowserContainer
         {...props}
-        inModal
       />
     </GenericModalContainer>
   );

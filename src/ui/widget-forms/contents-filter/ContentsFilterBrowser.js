@@ -62,7 +62,7 @@ class ContentsFilterBrowser extends Component {
 
   render() {
     const {
-      intl, inModal,
+      intl,
       page, totalItems, pageSize, contents, lastPage, loading,
       currentQuickFilter, onSetQuickFilter, onFilteredSearch,
       contentTypes, groups, language, filteringCategories, statusChecked,
@@ -109,7 +109,7 @@ class ContentsFilterBrowser extends Component {
           currentUsername={currentUsername}
           onAdvancedFilterSearch={onAdvancedFilterSearch}
           users={users}
-          inModal={inModal}
+          inModal
         />
         <div className="Contents__body">
           {!pickedContents && (
@@ -126,7 +126,7 @@ class ContentsFilterBrowser extends Component {
               onSetCurrentStatusShow={onSetCurrentStatusShow}
               onSetCurrentColumnsShow={onSetCurrentColumnsShow}
               currentUsername={currentUsername}
-              inModal={inModal}
+              inModal
             />
           )}
           <div>
@@ -196,14 +196,12 @@ ContentsFilterBrowser.propTypes = {
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({})),
   onWillUnmount: PropTypes.func.isRequired,
-  inModal: PropTypes.bool,
   pickedContents: PropTypes.arrayOf(PropTypes.string),
 };
 
 ContentsFilterBrowser.defaultProps = {
   loading: false,
   users: [],
-  inModal: false,
   pickedContents: null,
   onContentPicked: () => {},
 };
