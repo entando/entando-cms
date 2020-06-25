@@ -7,10 +7,10 @@ import { getLoading } from 'state/loading/selectors';
 import { getResourceVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
-  recoverVersion,
   fetchResourceVersionings,
 } from 'state/versioning/actions';
 import { REMOVE_RESOURCE_MODAL_ID } from 'ui/versioning/common/RemoveResourceModal';
+import { RECOVER_RESOURCE_MODAL_ID } from 'ui/versioning/common/RecoverResourceModal';
 import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
 
 export const mapStateToProps = state => ({
@@ -36,8 +36,9 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setVisibleModal(REMOVE_RESOURCE_MODAL_ID));
     dispatch(setInfo(attachment));
   },
-  recoverAttachment: (attachmentId) => {
-    dispatch(recoverVersion(attachmentId));
+  recoverAttachment: (attachment) => {
+    dispatch(setVisibleModal(RECOVER_RESOURCE_MODAL_ID));
+    dispatch(setInfo(attachment));
   },
   onSubmit: (params) => {
     const like = FILTER_OPERATORS.LIKE;

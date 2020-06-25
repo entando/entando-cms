@@ -10,9 +10,7 @@ const AttachmentsListItemActions = ({
   attachmentId, onClickRemove, onClickRecover, attachmentDescription,
 }) => {
   const handleClickRecover = () => {
-    // leaving console.log() until APIs are implemented to see interaction
-    console.log(`onClickRecover(${attachmentId}`); // eslint-disable-line no-console
-    onClickRecover(attachmentId);
+    onClickRecover({ id: attachmentId, name: attachmentDescription });
   };
 
   const handleClickRemove = () => {

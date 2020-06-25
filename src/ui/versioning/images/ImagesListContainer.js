@@ -9,10 +9,10 @@ import { getResourceVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
   fetchResourceVersionings,
-  recoverVersion,
 } from 'state/versioning/actions';
 import ImagesList from 'ui/versioning/images/ImagesList';
 import { REMOVE_RESOURCE_MODAL_ID } from 'ui/versioning/common/RemoveResourceModal';
+import { RECOVER_RESOURCE_MODAL_ID } from 'ui/versioning/common/RecoverResourceModal';
 
 export const mapStateToProps = state => ({
   loading: getLoading(state).versionings,
@@ -37,8 +37,9 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setVisibleModal(REMOVE_RESOURCE_MODAL_ID));
     dispatch(setInfo(image));
   },
-  recoverImage: (imageId) => {
-    dispatch(recoverVersion(imageId));
+  recoverImage: (image) => {
+    dispatch(setVisibleModal(RECOVER_RESOURCE_MODAL_ID));
+    dispatch(setInfo(image));
   },
   onSubmit: (params) => {
     const like = FILTER_OPERATORS.LIKE;

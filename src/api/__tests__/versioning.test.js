@@ -8,6 +8,9 @@ import {
   postRecoverContentVersion,
   getResourceVersionings,
   deleteResourceVersion,
+  getVersioningConfig,
+  putVersioningConfig,
+  recoverResource,
 } from 'api/versioning';
 import {
   LIST_VERSIONING_OK,
@@ -16,6 +19,8 @@ import {
   RESTORE_ATTACHMENT_OK,
   CONTENT_DETAILS_OK,
   LIST_ATTACHMENTS_OK,
+  VERSIONING_CONFIG_GET_OK,
+  VERSIONING_CONFIG_PUT_OK,
 } from 'testutils/mocks/versioning';
 
 import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
@@ -234,6 +239,64 @@ describe('api/versioning', () => {
           mockResponse: RESTORE_ATTACHMENT_OK,
         },
       );
+    });
+  });
+
+  describe('getVersioningConfig', () => {
+    afterEach(() => makeRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(getVersioningConfig()).toBeInstanceOf(Promise);
+    });
+
+    it('returns correct params', () => {
+      getVersioningConfig();
+      expect(makeRequest).toHaveBeenCalledWith({
+        uri: '/api/plugins/versioning/configuration',
+        method: METHODS.GET,
+        mockResponse: VERSIONING_CONFIG_GET_OK,
+        useAuthentication: true,
+      });
+    });
+  });
+
+  describe('putVersioningConfig', () => {
+    afterEach(() => makeRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(putVersioningConfig()).toBeInstanceOf(Promise);
+    });
+
+    it('returns correct params', () => {
+      const body = { a: '1' };
+      putVersioningConfig(body);
+      expect(makeRequest).toHaveBeenCalledWith({
+        uri: '/api/plugins/versioning/configuration',
+        method: METHODS.PUT,
+        body,
+        mockResponse: VERSIONING_CONFIG_PUT_OK,
+        useAuthentication: true,
+      });
+    });
+  });
+
+  describe('recoverResource', () => {
+    afterEach(() => makeRequest.mockClear());
+
+    it('returns a promise', () => {
+      expect(recoverResource()).toBeInstanceOf(Promise);
+    });
+
+    it('returns correct params', () => {
+      const resourceId = 1;
+      recoverResource(resourceId);
+      expect(makeRequest).toHaveBeenCalledWith({
+        uri: `/api/plugins/versioning/resources/${resourceId}/recover`,
+        method: METHODS.POST,
+        body: {},
+        mockResponse: RESTORE_ATTACHMENT_OK,
+        useAuthentication: true,
+      });
     });
   });
 });

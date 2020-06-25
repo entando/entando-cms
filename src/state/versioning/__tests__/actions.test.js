@@ -9,6 +9,7 @@ import {
   getResourceVersionings,
   getVersioningConfig,
   putVersioningConfig,
+  recoverResource,
 } from 'api/versioning';
 import {
   setVersionings,
@@ -26,6 +27,7 @@ import {
   setVersioningConfig,
   fetchVersioningConfig,
   sendPutVersioningConfig,
+  sendRecoverResource,
 } from 'state/versioning/actions';
 import {
   SET_VERSIONINGS, SET_SELECTED_VERSIONING_TYPE,
@@ -50,6 +52,7 @@ jest.mock('api/versioning', () => ({
   deleteResourceVersion: jest.fn(),
   getVersioningConfig: jest.fn(),
   putVersioningConfig: jest.fn(),
+  recoverResource: jest.fn(),
 }));
 
 describe('versioning actions', () => {
@@ -589,6 +592,50 @@ describe('versioning actions', () => {
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
           expect(actions[1]).toHaveProperty('type', ADD_ERRORS);
           expect(actions[4]).toHaveProperty('type', TOGGLE_LOADING);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
+  describe('sendRecoverResource', () => {
+    let store;
+    beforeEach(() => {
+      store = createMockStore({
+        apps: {
+          cms: {
+            versioning: {
+              selected: 'image',
+            },
+          },
+        },
+      });
+    });
+
+    const resourceId = 1;
+
+    it('should dispatch correct actions when api call is successful', (done) => {
+      recoverResource.mockImplementationOnce(mockApi({ payload: { success: true } }));
+      getResourceVersionings.mockImplementationOnce(mockApi({ payload: [] }));
+      store
+        .dispatch(sendRecoverResource(resourceId))
+        .then(() => {
+          expect(recoverResource).toHaveBeenCalledWith(resourceId);
+          expect(getResourceVersionings).toHaveBeenCalled();
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should dispatch correct actions when api call returns errors', (done) => {
+      recoverResource.mockImplementationOnce(mockApi({ errors: true }));
+      store
+        .dispatch(sendRecoverResource(resourceId))
+        .then(() => {
+          expect(recoverResource).toHaveBeenCalledWith(resourceId);
+          const actions = store.getActions();
+          expect(actions).toHaveLength(3);
+          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
           done();
         })
         .catch(done.fail);
