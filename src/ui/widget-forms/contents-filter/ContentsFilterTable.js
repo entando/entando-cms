@@ -85,7 +85,7 @@ class ContentsFilterTable extends Component {
 
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl, groups, pickedContents, onContentPicked,
+      activeColumns, availableColumns, intl, groups, onContentPicked,
     } = this.props;
     const currentActiveColumns = this.pickMode ? [...activeColumns, 'addToPool'] : ['selectAll', ...activeColumns];
     const allColumns = this.pickMode
@@ -97,7 +97,6 @@ class ContentsFilterTable extends Component {
         let headerCellFormatter = sortableHeaderCellFormatter;
         const { code } = ac;
         let newCode = code;
-        console.log('d code', code);
         switch (code) {
           case 'description':
             rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
@@ -202,7 +201,6 @@ class ContentsFilterTable extends Component {
     const {
       totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
     } = this.props;
-    console.log('render');
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
     const itemsEnd = Math.min(page * pageSize, totalItems);

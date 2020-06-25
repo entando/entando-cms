@@ -6,7 +6,7 @@ import {
   getLastSelectedRow,
 } from 'state/contents/selectors';
 
-export const mapStateToProps = (state) => ({
+export const mapStateToProps = state => ({
   lastSelectedRow: getLastSelectedRow(state),
 });
 
