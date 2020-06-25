@@ -105,13 +105,17 @@ Contents.propTypes = {
   onFilteredSearch: PropTypes.func.isRequired,
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currentColumnsShow: PropTypes.arrayOf(PropTypes.string),
   onSetContentType: PropTypes.func.isRequired,
   sortingColumns: PropTypes.shape({}).isRequired,
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   onContentSelect: PropTypes.func.isRequired,
+};
+
+Contents.defaultProps = {
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
 };
 
 export default Contents;

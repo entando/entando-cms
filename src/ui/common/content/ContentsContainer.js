@@ -4,18 +4,19 @@ import { withRouter } from 'react-router-dom';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
   setQuickFilter, setCurrentAuthorShow, setCurrentStatusShow,
-  setCurrentColumnsShow, fetchContentsPaged,
-  setContentType, setSort, resetAuthorStatus,
+  fetchContentsPaged, setContentType, setSort, resetAuthorStatus,
 } from 'state/contents/actions';
+import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import {
   getContents, getCurrentQuickFilter, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentAuthorShow,
-  getCurrentStatusShow, getCurrentColumnsShow, getSortingColumns,
+  getCurrentStatusShow, getSortingColumns,
   getSelectedRows,
 } from 'state/contents/selectors';
+import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { getPagination } from 'state/pagination/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
@@ -99,7 +100,7 @@ export const mapDispatchToProps = (dispatch, { status: contentStatus, author: co
     dispatch(fetchContentsPaged(null, null, null, false));
     dispatch(resetAuthorStatus());
   },
-  onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
+  onSetCurrentColumnsShow: columns => dispatch(setCurrentColumnsShow(columns)),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetSort: sort => dispatch(setSort(sort)),
 });

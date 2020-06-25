@@ -57,11 +57,6 @@ export const getCurrentStatusShow = createSelector(
   contents => contents.currentStatusShow,
 );
 
-export const getCurrentColumnsShow = createSelector(
-  getContentsState,
-  contents => contents.currentColumnsShow,
-);
-
 export const getSortingColumns = createSelector(
   getContentsState,
   contents => contents.sortingColumns,

@@ -233,7 +233,7 @@ Contents.propTypes = {
   onCheckAuthor: PropTypes.func.isRequired,
   currentAuthorShow: PropTypes.string.isRequired,
   currentStatusShow: PropTypes.string.isRequired,
-  currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currentColumnsShow: PropTypes.arrayOf(PropTypes.string),
   onSetCurrentAuthorShow: PropTypes.func.isRequired,
   onSetCurrentStatusShow: PropTypes.func.isRequired,
   onSetCurrentColumnsShow: PropTypes.func.isRequired,
@@ -261,6 +261,7 @@ Contents.defaultProps = {
   loading: false,
   users: [],
   userPermissions: [],
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
 };
 
 export default withPermissionValues(Contents);

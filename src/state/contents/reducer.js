@@ -3,7 +3,6 @@ import {
   SET_QUICK_FILTER, SET_CONTENTS, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW,
-  SET_CURRENT_COLUMNS_SHOW,
   SET_SORT,
   SET_CONTENT_TYPE,
   SET_GROUP,
@@ -40,7 +39,6 @@ const defaultState = {
   selectedRows: [],
   currentAuthorShow: 'all',
   currentStatusShow: 'all',
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
   tabSearchEnabled: true,
 };
 
@@ -158,25 +156,6 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         selectedRows: newSelectedRows,
-      };
-    }
-    case SET_CURRENT_COLUMNS_SHOW: {
-      const code = action.payload;
-      if (code === 'name') {
-        return {
-          ...state,
-        };
-      }
-      let { currentColumnsShow } = state;
-      currentColumnsShow = currentColumnsShow.slice(0);
-      if (currentColumnsShow.includes(code)) {
-        currentColumnsShow = currentColumnsShow.filter(c => c !== code);
-      } else {
-        currentColumnsShow.push(code);
-      }
-      return {
-        ...state,
-        currentColumnsShow,
       };
     }
     case SET_CONTENT_CATEGORY_FILTER: {
