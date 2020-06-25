@@ -8,6 +8,7 @@ import {
 
 import ImagesListItem from 'ui/versioning/images/ImagesListItem';
 import FileVersioningSearchForm from 'ui/versioning/common/FileVersioningSearchForm';
+import RecoverResourceModalContainer from 'ui/versioning/common/RecoverResourceModalContainer';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -74,6 +75,7 @@ class ImagesList extends React.Component {
             onPerPageSelect={this.changePageSize}
           />
         </ListView>
+        <RecoverResourceModalContainer resourceType="image" />
       </Spinner>
     );
   }

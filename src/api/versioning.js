@@ -142,3 +142,13 @@ export const putVersioningConfig = body => (
     useAuthentication: true,
   })
 );
+
+export const recoverResource = resourceId => (
+  makeRequest({
+    uri: `/api/plugins/versioning/resources/${resourceId}/recover`,
+    method: METHODS.POST,
+    body: {},
+    mockResponse: RESTORE_ATTACHMENT_OK,
+    useAuthentication: true,
+  })
+);

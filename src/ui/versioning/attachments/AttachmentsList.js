@@ -9,6 +9,7 @@ import {
 import AttachmentsListItem from 'ui/versioning/attachments/AttachmentsListItem';
 import FileVersioningSearchForm from 'ui/versioning/common/FileVersioningSearchForm';
 import RemoveResourceModalContainer from 'ui/versioning/common/RemoveResourceModalContainer';
+import RecoverResourceModalContainer from 'ui/versioning/common/RecoverResourceModalContainer';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -77,6 +78,7 @@ class AttachmentsList extends React.Component {
             onPerPageSelect={this.changePageSize}
           />
         </ListView>
+        <RecoverResourceModalContainer resourceType="file" />
         <RemoveResourceModalContainer />
       </Spinner>
     );

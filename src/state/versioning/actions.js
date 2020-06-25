@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import {
   getVersionings, getSingleVersioning, getResourceVersionings, deleteResourceVersion,
   restoreVersion, deleteVersion, getContentDetails, postRecoverContentVersion,
-  getVersioningConfig, putVersioningConfig,
+  getVersioningConfig, putVersioningConfig, recoverResource,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -288,3 +288,22 @@ export const sendPutVersioningConfig = payload => dispatch => new Promise((resol
     })
     .catch(() => {});
 });
+
+export const sendRecoverResource = resourceId => dispatch => (
+  new Promise((resolve) => {
+    recoverResource(resourceId)
+      .then((response) => {
+        response.json().then((json) => {
+          if (response.ok) {
+            dispatch(fetchResourceVersionings());
+          } else {
+            dispatch(addErrors(json.errors.map(err => err.message)));
+            json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+            dispatch(clearErrors());
+          }
+          resolve();
+        });
+      })
+      .catch(() => {});
+  })
+);

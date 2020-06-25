@@ -7,12 +7,10 @@ import {
 import { FormattedMessage } from 'react-intl';
 
 const ImagesListItemActions = ({
-  imageId, onClickRemove, onClickRecover,
+  imageId, onClickRemove, onClickRecover, imageDescription,
 }) => {
   const handleClickRecover = () => {
-    // leaving console.log() until APIs are implemented to see interaction
-    console.log(`onClickRecover(${imageId})`); // eslint-disable-line no-console
-    onClickRecover(imageId);
+    onClickRecover({ id: imageId, name: imageDescription });
   };
 
   const handleClickRemove = () => {
@@ -36,6 +34,7 @@ const ImagesListItemActions = ({
 
 ImagesListItemActions.propTypes = {
   imageId: PropTypes.string.isRequired,
+  imageDescription: PropTypes.string.isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,
 };
