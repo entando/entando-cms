@@ -15,7 +15,7 @@ import {
   setVersionings,
   setSelectedVersioningType,
   fetchVersionings,
-  removeVersion,
+  removeContentVersion,
   recoverVersion,
   fetchSingleVersioningHistory,
   fetchContentDetails,
@@ -164,16 +164,16 @@ describe('versioning actions', () => {
 
     it('should dispatch correct actions when api call is successful', (done) => {
       deleteVersion.mockImplementationOnce(mockApi({ payload: [] }));
-      getVersionings.mockImplementationOnce(mockApi({ payload: [] }));
+      getSingleVersioning.mockImplementationOnce(mockApi({ payload: [] }));
 
       store
-        .dispatch(removeVersion())
+        .dispatch(removeContentVersion())
         .then(() => {
           expect(deleteVersion).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(getVersionings).toHaveBeenCalled();
+          expect(getSingleVersioning).toHaveBeenCalled();
           done();
         })
         .catch(done.fail);
@@ -183,7 +183,7 @@ describe('versioning actions', () => {
       deleteVersion.mockImplementationOnce(mockApi({ errors: true }));
 
       store
-        .dispatch(removeVersion())
+        .dispatch(removeContentVersion())
         .then(() => {
           expect(deleteVersion).toHaveBeenCalled();
           const actions = store.getActions();

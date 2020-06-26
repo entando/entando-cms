@@ -21,7 +21,7 @@ export const getContentVersionStatusDetails = (approved, onlineVersion) => {
 
 const SingleContentVersioningHistoryItem = ({
   description, username, versionDate, version, onClickRestore,
-  contentId, id, approved, onlineVersion,
+  onClickDelete, contentId, id, approved, onlineVersion,
 }) => {
   const { color, title } = getContentVersionStatusDetails(approved, onlineVersion);
   return (
@@ -58,6 +58,12 @@ const SingleContentVersioningHistoryItem = ({
           >
             <FormattedMessage id="cms.versioning.list.restoreVersion" defaultMessage="Restore version" />
           </MenuItem>
+          <MenuItem onClick={() => onClickDelete({
+            version, contentId, description, versionId: id,
+          })}
+          >
+            <FormattedMessage id="cms.versioning.list.deleteVersion" defaultMessage="Delete version" />
+          </MenuItem>
         </DropdownKebab>
       </td>
     </tr>
@@ -73,12 +79,14 @@ SingleContentVersioningHistoryItem.propTypes = {
   versionDate: PropTypes.number.isRequired,
   version: PropTypes.string.isRequired,
   onClickRestore: PropTypes.func,
+  onClickDelete: PropTypes.func,
   approved: PropTypes.bool.isRequired,
   onlineVersion: PropTypes.number.isRequired,
 };
 
 SingleContentVersioningHistoryItem.defaultProps = {
   onClickRestore: () => {},
+  onClickDelete: () => {},
 };
 
 export default SingleContentVersioningHistoryItem;

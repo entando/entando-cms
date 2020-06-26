@@ -98,7 +98,7 @@ describe('api/versioning', () => {
     const ITEM_ID = 'ITEM_ID';
     const PAGINATION = { page: 1, pageSize: 10 };
 
-    afterEach(() => makeMockRequest.mockClear());
+    afterEach(() => makeRequest.mockClear());
 
     it('returns a promise', () => {
       expect(getSingleVersioning()).toBeInstanceOf(Promise);
@@ -123,7 +123,7 @@ describe('api/versioning', () => {
     const CONTENT_ID = 'ART1';
     const VERSION_ID = 1;
 
-    afterEach(() => makeMockRequest.mockClear());
+    afterEach(() => makeRequest.mockClear());
 
     it('returns a promise', () => {
       expect(getContentDetails()).toBeInstanceOf(Promise);
@@ -144,21 +144,22 @@ describe('api/versioning', () => {
   });
 
   describe('deleteVersion', () => {
-    const VERSIONING_TYPE = 'Attach';
-    const MOCK_ID = 'MOCK_ID';
+    const VERSIONING_TYPE = 'contents';
+    const MOCK_CONTENT_ID = 'MOCK_CONTENT_ID';
+    const MOCK_VERSION_ID = 'MOCK_VERSION_ID';
 
-    afterEach(() => makeMockRequest.mockClear());
+    afterEach(() => makeRequest.mockClear());
 
     it('returns a promise', () => {
       expect(deleteVersion()).toBeInstanceOf(Promise);
     });
 
     it('passes versioning type and versionType ID', () => {
-      deleteVersion(VERSIONING_TYPE, MOCK_ID);
+      deleteVersion(VERSIONING_TYPE, MOCK_CONTENT_ID, MOCK_VERSION_ID);
 
-      expect(makeMockRequest).toHaveBeenCalledWith(
+      expect(makeRequest).toHaveBeenCalledWith(
         {
-          uri: `${getVersioningUri(VERSIONING_TYPE)}/${MOCK_ID}`,
+          uri: `${getVersioningUri(VERSIONING_TYPE)}/${MOCK_CONTENT_ID}/versions/${MOCK_VERSION_ID}`,
           method: METHODS.DELETE,
           useAuthentication: true,
           mockResponse: DELETE_ATTACHMENT_OK,

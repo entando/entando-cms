@@ -99,19 +99,42 @@ export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, param
   })
 );
 
-export const removeVersion = versionId => (dispatch, getState) => (
+export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
   new Promise((resolve) => {
+    dispatch(toggleLoading('versionings'));
     const state = getState();
     const selectedVersioningType = getSelectedVersioningType(state);
+    getSingleVersioning(selectedVersioningType, id, page, params).then((response) => {
+      response.json().then((json) => {
+        if (response.ok) {
+          dispatch(setVersionings(json.payload));
+          dispatch(setPage(json.metaData));
+        } else {
+          dispatch(setVersionings([]));
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        dispatch(toggleLoading('versionings'));
+        resolve();
+      });
+    }).catch(() => {});
+  })
+);
+
+export const removeContentVersion = (contentId, versionId) => (dispatch, getState) => (
+  new Promise((resolve) => {
+    const state = getState();
 
     const page = getCurrentPage(state);
     const pageSize = getPageSize(state);
-    deleteVersion(selectedVersioningType, versionId)
+
+    deleteVersion('contents', contentId, versionId)
       .then(async (response) => {
         const json = await response.json();
 
         if (response.ok) {
-          dispatch(fetchVersionings({ page, pageSize }));
+          dispatch(fetchSingleVersioningHistory(contentId, { page, pageSize }));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
@@ -169,29 +192,6 @@ export const recoverVersion = (versionTypeId, versionNumber) => (dispatch, getSt
         resolve();
       });
   }).catch(() => {})
-);
-
-export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
-  new Promise((resolve) => {
-    dispatch(toggleLoading('versionings'));
-    const state = getState();
-    const selectedVersioningType = getSelectedVersioningType(state);
-    getSingleVersioning(selectedVersioningType, id, page, params).then((response) => {
-      response.json().then((json) => {
-        if (response.ok) {
-          dispatch(setVersionings(json.payload));
-          dispatch(setPage(json.metaData));
-        } else {
-          dispatch(setVersionings([]));
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
-        }
-        dispatch(toggleLoading('versionings'));
-        resolve();
-      });
-    }).catch(() => {});
-  })
 );
 
 export const fetchContentDetails = (contentId, versionId) => dispatch => (

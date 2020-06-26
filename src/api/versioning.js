@@ -10,6 +10,7 @@ import {
   DELETE_IMAGE_OK,
   RESTORE_IMAGE_OK,
   CONTENT_DETAILS_OK,
+  DELETE_CONTENT_OK,
   RESTORE_CONTENT_OK,
   VERSIONING_CONFIG_GET_OK,
   VERSIONING_CONFIG_PUT_OK,
@@ -23,10 +24,12 @@ const TYPE_MOCKS = {
   },
   DELETE: {
     Attach: DELETE_ATTACHMENT_OK,
+    contents: DELETE_CONTENT_OK,
     Image: DELETE_IMAGE_OK,
   },
   RESTORE: {
     Attach: RESTORE_ATTACHMENT_OK,
+    contents: RESTORE_CONTENT_OK,
     Image: RESTORE_IMAGE_OK,
   },
 };
@@ -78,10 +81,10 @@ export const getContentDetails = (contentId, versionId) => (
   )
 );
 
-export const deleteVersion = (versioningType, id) => (
-  makeMockRequest(
+export const deleteVersion = (versioningType, id, versionId) => (
+  makeRequest(
     {
-      uri: `/api/plugins/versioning/${versioningType}/${id}`,
+      uri: `/api/plugins/versioning/${versioningType}/${id}/versions/${versionId}`,
       method: METHODS.DELETE,
       mockResponse: TYPE_MOCKS.DELETE[versioningType],
       useAuthentication: true,
