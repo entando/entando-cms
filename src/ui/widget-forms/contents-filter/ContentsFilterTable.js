@@ -107,7 +107,7 @@ class ContentsFilterTable extends Component {
             break;
           case 'mainGroup':
             rowCellFormatter = (mainGroup) => {
-              const groupName = groups.filter(g => g.code === mainGroup)[0].name;
+              const groupName = (groups.filter(g => g.code === mainGroup)[0] || {}).name;
               return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupName || ''}</td>;
             };
             break;
@@ -115,7 +115,7 @@ class ContentsFilterTable extends Component {
             headerCellFormatter = actionHeaderCellFormatter;
             rowCellFormatter = (currentGroups) => {
               const groupNames = currentGroups
-              && currentGroups.map(cg => groups.filter(g => g.code === cg)[0].name);
+              && currentGroups.map(cg => (groups.filter(g => g.code === cg)[0] || {}).name);
               return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupNames && groupNames.join(', ')}</td>;
             };
             break;
