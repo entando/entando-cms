@@ -201,6 +201,7 @@ export const RESTORE_ATTACHMENT_OK = { success: true };
 export const DELETE_IMAGE_OK = { success: true };
 export const RESTORE_IMAGE_OK = { success: true };
 
+export const DELETE_CONTENT_OK = { success: true };
 export const RESTORE_CONTENT_OK = { success: true };
 
 export const VERSIONING_CONFIG_GET_OK = {
