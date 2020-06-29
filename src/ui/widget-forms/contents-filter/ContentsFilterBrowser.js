@@ -181,7 +181,7 @@ ContentsFilterBrowser.propTypes = {
   onCheckAuthor: PropTypes.func.isRequired,
   currentAuthorShow: PropTypes.string.isRequired,
   currentStatusShow: PropTypes.string.isRequired,
-  currentColumnsShow: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currentColumnsShow: PropTypes.arrayOf(PropTypes.string),
   onDidMount: PropTypes.func.isRequired,
   onSetCurrentAuthorShow: PropTypes.func.isRequired,
   onSetCurrentStatusShow: PropTypes.func.isRequired,
@@ -204,6 +204,7 @@ ContentsFilterBrowser.defaultProps = {
   users: [],
   pickedContents: null,
   onContentPicked: () => {},
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
 };
 
 
