@@ -4,14 +4,14 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-import { removeResourceVersion } from 'state/versioning/actions';
+import { sendRemoveResource } from 'state/versioning/actions';
 
 import RemoveResourceModal from 'ui/versioning/common/RemoveResourceModal';
 
 const restoreMsgs = defineMessages({
   removed: {
-    id: 'cms.versioning.remove.versionRemoved',
-    defaultMessage: '{description} removed.',
+    id: 'cms.versioning.modal.resourceRemoved',
+    defaultMessage: '{name} removed.',
   },
 });
 
@@ -21,16 +21,14 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, { intl }) => ({
   onConfirmRemove: (resource) => {
-    const { description, id } = resource;
-    dispatch(removeResourceVersion(id)).then((res) => {
-      if (res && res.ok) {
-        dispatch(
-          addToast(
-            intl.formatMessage(restoreMsgs.removed, { description }),
-            TOAST_SUCCESS,
-          ),
-        );
-      }
+    const { name, id } = resource;
+    dispatch(sendRemoveResource(id)).then(() => {
+      dispatch(
+        addToast(
+          intl.formatMessage(restoreMsgs.removed, { name }),
+          TOAST_SUCCESS,
+        ),
+      );
     });
     dispatch(setVisibleModal(''));
   },
