@@ -14,9 +14,7 @@ const ImagesListItemActions = ({
   };
 
   const handleClickRemove = () => {
-    // leaving console.log() until APIs are implemented to see interaction
-    console.log(`onClickDelete(${imageId})`); // eslint-disable-line no-console
-    onClickRemove(imageId);
+    onClickRemove({ id: imageId, name: imageDescription });
   };
 
   return (

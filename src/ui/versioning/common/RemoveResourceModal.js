@@ -13,7 +13,7 @@ import {
 
 export const REMOVE_RESOURCE_MODAL_ID = 'RemoveResourceModal';
 
-const RemoveResourceModal = ({ onConfirmRemove, info }) => {
+const RemoveResourceModal = ({ onConfirmRemove, info, resourceType }) => {
   const buttons = [
     <Button
       bsStyle="danger"
@@ -26,7 +26,7 @@ const RemoveResourceModal = ({ onConfirmRemove, info }) => {
 
   const modalTitle = (
     <Modal.Title>
-      <FormattedMessage id="cms.label.modal.removeResource" />
+      <FormattedMessage id={`cms.versioning.modal.${resourceType}RemoveCaption`} />
     </Modal.Title>
   );
 
@@ -35,19 +35,19 @@ const RemoveResourceModal = ({ onConfirmRemove, info }) => {
       modalId={REMOVE_RESOURCE_MODAL_ID}
       buttons={buttons}
       modalTitle={modalTitle}
-      className="RemoveResourceModal"
+      className="ResourceModal"
     >
       <EmptyState>
-        <EmptyStateIcon name="exclamation" type="fa" className="RemoveResourceModal__icon" />
+        <EmptyStateIcon name="exclamation" type="fa" className="ResourceModal__icon" />
         <EmptyStateTitle>
           <FormattedMessage id="cms.label.remove" />
-          <br />
-          <div className="max-description-size">
-            {info.description}
-          </div>
+          &nbsp;{info.name}
         </EmptyStateTitle>
-        <EmptyStateInfo className="RemoveResourceModal__info">
-          <FormattedMessage id="cms.label.modal.confirmRemove" values={{ name: info.description }} />
+        <EmptyStateInfo className="ResourceModal__info">
+          <FormattedMessage
+            id={`cms.versioning.modal.${resourceType}RemovePrompt`}
+            values={{ name: info.name }}
+          />
         </EmptyStateInfo>
       </EmptyState>
     </GenericModalContainer>
@@ -56,15 +56,15 @@ const RemoveResourceModal = ({ onConfirmRemove, info }) => {
 
 RemoveResourceModal.propTypes = {
   onConfirmRemove: PropTypes.func.isRequired,
+  resourceType: PropTypes.string.isRequired,
   info: PropTypes.shape({
-    description: PropTypes.string,
+    name: PropTypes.string,
   }),
 };
 
 RemoveResourceModal.defaultProps = {
   info: {
-    version: '',
-    description: '',
+    name: '',
   },
 };
 

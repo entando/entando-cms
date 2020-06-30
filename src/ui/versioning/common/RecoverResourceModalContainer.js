@@ -9,7 +9,7 @@ import RecoverResourceModal from 'ui/versioning/common/RecoverResourceModal';
 
 const recoverResourceMsgs = defineMessages({
   removed: {
-    id: 'cms.versioning.resource.infoRecovered',
+    id: 'cms.versioning.modal.resourceRecovered',
     defaultMessage: '{name} recovered.',
   },
 });
@@ -20,10 +20,11 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, { intl }) => ({
   onConfirmRecover: (resource) => {
-    dispatch(sendRecoverResource(resource.id)).then(() => {
+    const { name, id } = resource;
+    dispatch(sendRecoverResource(id)).then(() => {
       dispatch(
         addToast(
-          intl.formatMessage(recoverResourceMsgs.removed, { name: resource.name }),
+          intl.formatMessage(recoverResourceMsgs.removed, { name }),
           TOAST_SUCCESS,
         ),
       );

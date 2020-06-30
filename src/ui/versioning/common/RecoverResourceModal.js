@@ -17,7 +17,7 @@ const RecoverResourceModal = ({ onConfirmRecover, info, resourceType }) => {
   const buttons = [
     <Button
       bsStyle="primary"
-      id="RecoverResourceModal__button-recover"
+      id="ResourceModal__button-recover"
       onClick={() => onConfirmRecover(info)}
     >
       <FormattedMessage id="cms.label.recover" />
@@ -26,7 +26,7 @@ const RecoverResourceModal = ({ onConfirmRecover, info, resourceType }) => {
 
   const modalTitle = (
     <Modal.Title>
-      <FormattedMessage id={`cms.versioning.resource.${resourceType}Caption`} />
+      <FormattedMessage id={`cms.versioning.modal.${resourceType}RecoverCaption`} />
     </Modal.Title>
   );
 
@@ -35,17 +35,17 @@ const RecoverResourceModal = ({ onConfirmRecover, info, resourceType }) => {
       modalId={RECOVER_RESOURCE_MODAL_ID}
       buttons={buttons}
       modalTitle={modalTitle}
-      className="RecoverResourceModal"
+      className="ResourceModal"
     >
       <EmptyState>
-        <EmptyStateIcon name="exclamation" type="fa" className="RecoverResourceModal__icon" />
-        <EmptyStateTitle className="RecoverResourceModal__title">
+        <EmptyStateIcon name="exclamation" type="fa" className="ResourceModal__icon" />
+        <EmptyStateTitle className="ResourceModal__title">
           <FormattedMessage id="cms.label.recover" />
           &nbsp;{info.name}
         </EmptyStateTitle>
-        <EmptyStateInfo className="RecoverResourceModal__info">
+        <EmptyStateInfo className="ResourceModal__info">
           <FormattedMessage
-            id={`cms.versioning.resource.${resourceType}Prompt`}
+            id={`cms.versioning.modal.${resourceType}RecoverPrompt`}
             values={{ name: info.name }}
           />
         </EmptyStateInfo>

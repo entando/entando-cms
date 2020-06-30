@@ -79,7 +79,7 @@ class AttachmentsList extends React.Component {
           />
         </ListView>
         <RecoverResourceModalContainer resourceType="file" />
-        <RemoveResourceModalContainer />
+        <RemoveResourceModalContainer resourceType="file" />
       </Spinner>
     );
   }
