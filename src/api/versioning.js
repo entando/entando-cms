@@ -1,4 +1,4 @@
-import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
+import { METHODS, makeRequest } from '@entando/apimanager';
 
 import {
   LIST_VERSIONING_OK,
@@ -99,18 +99,6 @@ export const deleteResource = resourceId => (
     mockResponse: DELETE_ATTACHMENT_OK,
     useAuthentication: true,
   })
-);
-
-export const restoreVersion = (versioningType, id, version) => (
-  makeMockRequest(
-    {
-      uri: `/api/plugins/versioning/${versioningType}/${id}`,
-      method: METHODS.POST,
-      body: { version },
-      mockResponse: TYPE_MOCKS.RESTORE[versioningType],
-      useAuthentication: true,
-    },
-  )
 );
 
 export const postRecoverContentVersion = (id, version) => (

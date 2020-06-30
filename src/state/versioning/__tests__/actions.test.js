@@ -1,11 +1,10 @@
 import {
   getVersionings,
   deleteVersion,
-  restoreVersion,
   getSingleVersioning,
   getContentDetails,
   postRecoverContentVersion,
-  deleteResourceVersion,
+  deleteResource,
   getResourceVersionings,
   getVersioningConfig,
   putVersioningConfig,
@@ -16,12 +15,11 @@ import {
   setSelectedVersioningType,
   fetchVersionings,
   removeContentVersion,
-  recoverVersion,
   fetchSingleVersioningHistory,
   fetchContentDetails,
   setDetailedContentVersion,
   recoverContentVersion,
-  removeResourceVersion,
+  sendRemoveResource,
   setResourceVersionings,
   fetchResourceVersionings,
   setVersioningConfig,
@@ -44,12 +42,11 @@ const ADD_ERRORS = 'errors/add-errors';
 jest.mock('api/versioning', () => ({
   getVersionings: jest.fn(),
   deleteVersion: jest.fn(),
-  restoreVersion: jest.fn(),
   getSingleVersioning: jest.fn(),
   getResourceVersionings: jest.fn(),
   getContentDetails: jest.fn(),
   postRecoverContentVersion: jest.fn(),
-  deleteResourceVersion: jest.fn(),
+  deleteResource: jest.fn(),
   getVersioningConfig: jest.fn(),
   putVersioningConfig: jest.fn(),
   recoverResource: jest.fn(),
@@ -186,60 +183,6 @@ describe('versioning actions', () => {
         .dispatch(removeContentVersion())
         .then(() => {
           expect(deleteVersion).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
-          done();
-        })
-        .catch(done.fail);
-    });
-  });
-
-
-  describe('recoverVersion', () => {
-    let store;
-    beforeEach(() => {
-      store = createMockStore({
-        apps: {
-          cms: {
-            versioning: {
-              list: [],
-              map: {},
-            },
-          },
-        },
-        pagination: {
-          global: {
-            page: 1,
-            pageSize: 10,
-          },
-        },
-      });
-    });
-
-    it('should dispatch correct actions when api call is successful', (done) => {
-      restoreVersion.mockImplementationOnce(mockApi({ payload: [] }));
-      getVersionings.mockImplementationOnce(mockApi({ payload: [] }));
-
-      store
-        .dispatch(recoverVersion())
-        .then(() => {
-          expect(restoreVersion).toHaveBeenCalled();
-          const actions = store.getActions();
-          expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
-          expect(getVersionings).toHaveBeenCalled();
-          done();
-        })
-        .catch(done.fail);
-    });
-
-    it('should dispatch correct actions when api call returns errors', (done) => {
-      restoreVersion.mockImplementationOnce(mockApi({ errors: true }));
-
-      store
-        .dispatch(recoverVersion())
-        .then(() => {
-          expect(restoreVersion).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
           done();
@@ -385,7 +328,7 @@ describe('versioning actions', () => {
     });
   });
 
-  describe('removeResourceVersion', () => {
+  describe('sendRemoveResource', () => {
     let store;
     beforeEach(() => {
       store = createMockStore({
@@ -409,13 +352,13 @@ describe('versioning actions', () => {
     });
 
     it('should dispatch correct actions when api call is successful', (done) => {
-      deleteResourceVersion.mockImplementationOnce(mockApi({ payload: [] }));
+      deleteResource.mockImplementationOnce(mockApi({ payload: [] }));
       getResourceVersionings.mockImplementationOnce(mockApi({ payload: [] }));
 
       store
-        .dispatch(removeResourceVersion())
+        .dispatch(sendRemoveResource())
         .then(() => {
-          expect(deleteResourceVersion).toHaveBeenCalled();
+          expect(deleteResource).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
           expect(actions[0]).toHaveProperty('type', TOGGLE_LOADING);
@@ -426,12 +369,12 @@ describe('versioning actions', () => {
     });
 
     it('should dispatch correct actions when api call returns errors', (done) => {
-      deleteResourceVersion.mockImplementationOnce(mockApi({ errors: true }));
+      deleteResource.mockImplementationOnce(mockApi({ errors: true }));
 
       store
-        .dispatch(removeResourceVersion())
+        .dispatch(sendRemoveResource())
         .then(() => {
-          expect(deleteResourceVersion).toHaveBeenCalled();
+          expect(deleteResource).toHaveBeenCalled();
           const actions = store.getActions();
           expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
           done();

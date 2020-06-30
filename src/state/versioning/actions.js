@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 import {
   getVersionings, getSingleVersioning, getResourceVersionings, deleteResource,
-  restoreVersion, deleteVersion, getContentDetails, postRecoverContentVersion,
+  deleteVersion, getContentDetails, postRecoverContentVersion,
   getVersioningConfig, putVersioningConfig, recoverResource,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
@@ -167,30 +167,6 @@ export const sendRemoveResource = resourceId => (dispatch, getState) => (
       })
       .catch(() => {});
   })
-);
-
-export const recoverVersion = (versionTypeId, versionNumber) => (dispatch, getState) => (
-  new Promise((resolve) => {
-    const state = getState();
-    const selectedVersioningType = getSelectedVersioningType(state);
-
-    const page = getCurrentPage(state);
-    const pageSize = getPageSize(state);
-
-    restoreVersion(selectedVersioningType, versionTypeId, versionNumber)
-      .then(async (response) => {
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch(fetchVersionings({ page, pageSize }));
-        } else {
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
-        }
-        resolve();
-      });
-  }).catch(() => {})
 );
 
 export const fetchContentDetails = (contentId, versionId) => dispatch => (

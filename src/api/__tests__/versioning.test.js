@@ -3,11 +3,10 @@ import {
   getVersionings,
   getSingleVersioning,
   deleteVersion,
-  restoreVersion,
   getContentDetails,
   postRecoverContentVersion,
   getResourceVersionings,
-  deleteResourceVersion,
+  deleteResource,
   getVersioningConfig,
   putVersioningConfig,
   recoverResource,
@@ -23,7 +22,7 @@ import {
   VERSIONING_CONFIG_PUT_OK,
 } from 'testutils/mocks/versioning';
 
-import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
+import { METHODS, makeRequest } from '@entando/apimanager';
 
 configEnzymeAdapter();
 
@@ -31,7 +30,6 @@ const getVersioningUri = VERSIONING_TYPE => `/api/plugins/versioning/${VERSIONIN
 
 jest.mock('@entando/apimanager', () => ({
   makeRequest: jest.fn(() => new Promise(resolve => resolve({}))),
-  makeMockRequest: jest.fn(() => new Promise(resolve => resolve({}))),
   METHODS: {
     GET: 'GET',
     POST: 'POST',
@@ -168,51 +166,24 @@ describe('api/versioning', () => {
     });
   });
 
-  describe('deleteResourceVersion', () => {
-    const VERSIONING_TYPE = 'Attach';
+  describe('deleteResource', () => {
     const MOCK_ID = 'MOCK_ID';
 
-    afterEach(() => makeMockRequest.mockClear());
+    afterEach(() => makeRequest.mockClear());
 
     it('returns a promise', () => {
-      expect(deleteResourceVersion()).toBeInstanceOf(Promise);
+      expect(deleteResource()).toBeInstanceOf(Promise);
     });
 
-    it('passes versioning type and versionType ID', () => {
-      deleteResourceVersion(VERSIONING_TYPE, MOCK_ID);
+    it('passes ID', () => {
+      deleteResource(MOCK_ID);
 
-      expect(makeMockRequest).toHaveBeenCalledWith(
+      expect(makeRequest).toHaveBeenCalledWith(
         {
-          uri: `${getVersioningUri(VERSIONING_TYPE)}/${MOCK_ID}`,
+          uri: `${getVersioningUri('resources')}/${MOCK_ID}`,
           method: METHODS.DELETE,
           useAuthentication: true,
           mockResponse: DELETE_ATTACHMENT_OK,
-        },
-      );
-    });
-  });
-
-  describe('restoreVersion', () => {
-    const VERSIONING_TYPE = 'Attach';
-    const MOCK_ID = 'MOCK_ID';
-    const MOCK_VERSION = 'MOCK_VERSION';
-
-    afterEach(() => makeMockRequest.mockClear());
-
-    it('returns a promise', () => {
-      expect(restoreVersion()).toBeInstanceOf(Promise);
-    });
-
-    it('passes versioning type and versionType ID', () => {
-      restoreVersion(VERSIONING_TYPE, MOCK_ID, MOCK_VERSION);
-
-      expect(makeMockRequest).toHaveBeenCalledWith(
-        {
-          uri: `${getVersioningUri(VERSIONING_TYPE)}/${MOCK_ID}`,
-          body: { version: MOCK_VERSION },
-          method: METHODS.POST,
-          useAuthentication: true,
-          mockResponse: RESTORE_ATTACHMENT_OK,
         },
       );
     });
@@ -225,7 +196,7 @@ describe('api/versioning', () => {
     afterEach(() => makeRequest.mockClear());
 
     it('returns a promise', () => {
-      expect(restoreVersion()).toBeInstanceOf(Promise);
+      expect(postRecoverContentVersion()).toBeInstanceOf(Promise);
     });
 
     it('passes content and version id', () => {
