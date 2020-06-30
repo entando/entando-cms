@@ -16,6 +16,7 @@ const ImagesListItem = ({
         imageId={image.id}
         onClickRemove={onClickRemove}
         onClickRecover={onClickRecover}
+        imageDescription={image.description}
       />
     )}
     compoundExpand={false}

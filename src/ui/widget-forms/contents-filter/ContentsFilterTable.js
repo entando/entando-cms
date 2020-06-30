@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from 'react-intl';
+import { intlShape, FormattedMessage } from 'react-intl';
+import { isNull } from 'lodash';
 import {
   Table, Col,
   customHeaderFormattersDefinition,
@@ -79,17 +80,20 @@ class ContentsFilterTable extends Component {
 
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl, groups,
+      activeColumns, availableColumns, intl, groups, onContentPicked, pickedContents,
     } = this.props;
-    const currentActiveColumns = ['selectAll', ...activeColumns];
-    const allColumns = [{ code: 'selectAll' }, ...availableColumns];
+    const pickMode = !isNull(pickedContents) && !Number.isNaN(pickedContents.length);
+    const currentActiveColumns = pickMode ? [...activeColumns, 'addToPool'] : ['selectAll', ...activeColumns];
+    const allColumns = pickMode
+      ? [...availableColumns, { code: 'addToPool' }]
+      : [{ code: 'selectAll' }, ...availableColumns];
     return allColumns.filter(ac => currentActiveColumns.includes(ac.code))
       .map((ac, i) => {
         let rowCellFormatter = tableCellFormatter;
         let headerCellFormatter = sortableHeaderCellFormatter;
         const { code } = ac;
         let newCode = code;
-        switch (ac.code) {
+        switch (code) {
           case 'description':
             rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
             );
@@ -103,7 +107,7 @@ class ContentsFilterTable extends Component {
             break;
           case 'mainGroup':
             rowCellFormatter = (mainGroup) => {
-              const groupName = groups.filter(g => g.code === mainGroup)[0].name;
+              const groupName = (groups.filter(g => g.code === mainGroup)[0] || {}).name;
               return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupName || ''}</td>;
             };
             break;
@@ -111,7 +115,7 @@ class ContentsFilterTable extends Component {
             headerCellFormatter = actionHeaderCellFormatter;
             rowCellFormatter = (currentGroups) => {
               const groupNames = currentGroups
-              && currentGroups.map(cg => groups.filter(g => g.code === cg)[0].name);
+              && currentGroups.map(cg => (groups.filter(g => g.code === cg)[0] || {}).name);
               return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupNames && groupNames.join(', ')}</td>;
             };
             break;
@@ -123,6 +127,19 @@ class ContentsFilterTable extends Component {
               <td>
                 {typeDescription}
               </td>
+            );
+            break;
+          case 'addToPool':
+            newCode = 'actions';
+            headerCellFormatter = actionHeaderCellFormatter;
+            rowCellFormatter = (_, { rowData }) => (
+              <Table.Actions>
+                <Table.Button
+                  onClick={() => onContentPicked(rowData)}
+                >
+                  <FormattedMessage id="cms.label.add" />
+                </Table.Button>
+              </Table.Actions>
             );
             break;
           case 'onLine':
@@ -157,7 +174,7 @@ class ContentsFilterTable extends Component {
               rowSpan: 1,
               colSpan: 1,
             },
-            [code === 'actions' || code === 'groups' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
+            [[code, newCode].includes('actions') || code === 'groups' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
           },
           cell: {
             props: {
@@ -249,15 +266,19 @@ ContentsFilterTable.propTypes = {
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
   sortingColumns: PropTypes.shape({}).isRequired,
+  pickedContents: PropTypes.arrayOf(PropTypes.string),
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
   onSelectAllRows: PropTypes.func,
+  onContentPicked: PropTypes.func,
 };
 
 ContentsFilterTable.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
   onSelectAllRows: () => {},
+  pickedContents: null,
+  onContentPicked: () => {},
 };
 
 export default ContentsFilterTable;

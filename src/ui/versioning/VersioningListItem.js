@@ -8,9 +8,10 @@ import { ROUTE_CMS_VERSIONING_CONTENT_HISTORY } from 'app-init/routes';
 import { getContentVersionStatusDetails } from 'ui/versioning/SingleContentVersioningHistoryItem';
 
 const VersioningListItem = ({
-  id, contentType, description, username, versionDate, version, approved, contentId, status,
+  id, contentType, description, username, versionDate,
+  version, approved, contentId, onlineVersion,
 }) => {
-  const { color, title } = getContentVersionStatusDetails(status, approved);
+  const { color, title } = getContentVersionStatusDetails(approved, onlineVersion);
   return (
     <tr className="VersioningListRow">
       <td className="VersioningListRow__td SingleContentCurrentVersion__description">{description}</td>
@@ -53,7 +54,7 @@ VersioningListItem.propTypes = {
   id: PropTypes.number.isRequired,
   contentId: PropTypes.string.isRequired,
   approved: PropTypes.bool.isRequired,
-  status: PropTypes.string.isRequired,
+  onlineVersion: PropTypes.number.isRequired,
 };
 
 export default VersioningListItem;

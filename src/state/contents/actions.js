@@ -16,7 +16,7 @@ import {
 import {
   SET_CONTENTS, SET_QUICK_FILTER, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
-  SET_CURRENT_STATUS_SHOW, SET_CURRENT_COLUMNS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
+  SET_CURRENT_STATUS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
   SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
   RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE,
 } from 'state/contents/types';
@@ -97,10 +97,6 @@ export const setCurrentStatusShow = status => ({
   payload: status,
 });
 
-export const setCurrentColumnsShow = column => ({
-  type: SET_CURRENT_COLUMNS_SHOW,
-  payload: column,
-});
 export const selectSingleRow = row => ({
   type: SELECT_SINGLE_ROW,
   payload: row,

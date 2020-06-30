@@ -23,8 +23,8 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
-  onConfirmRestore: (contentVersion) => {
-    const { versionId, version, contentId } = contentVersion;
+  onConfirmRestore: (info) => {
+    const { versionId, version, contentId } = info;
     dispatch(recoverContentVersion(contentId, versionId)).then((res) => {
       if (res && res.ok) {
         dispatch(

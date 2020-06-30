@@ -3,7 +3,7 @@ import {
   setQuickFilter, setContentType, setGroup, setSort,
   setContentCategoryFilter, checkStatus, checkAccess, setContents,
   checkAuthor, setCurrentAuthorShow, setCurrentStatusShow,
-  setCurrentColumnsShow, selectRow, selectAllRows, setJoinContentCategory,
+  selectRow, selectAllRows, setJoinContentCategory,
   resetJoinContentCategories,
   setTabSearch,
 } from 'state/contents/actions';
@@ -127,17 +127,6 @@ describe('state/contents/reducer', () => {
         expect(newState.selectedRows.length).toEqual(2);
         newState = reducer(newState, selectAllRows(false));
         expect(newState.selectedRows.length).toEqual(0);
-      });
-    });
-    describe('after action setCurrentColumnsShow', () => {
-      let newState = reducer({ currentColumnsShow: [] });
-      it('should correctly update currentColumnsShow state field', () => {
-        newState = reducer(newState, setCurrentColumnsShow('column1'));
-        expect(newState.currentColumnsShow).toEqual(['column1']);
-        newState = reducer(newState, setCurrentColumnsShow('column1'));
-        expect(newState.currentColumnsShow).toEqual([]);
-        newState = reducer(newState, setCurrentColumnsShow('name'));
-        expect(newState.currentColumnsShow).toEqual([]);
       });
     });
     describe('after action setContentCategoryFilter', () => {

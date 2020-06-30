@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
 import SingleContentVersioningHistoryItem from 'ui/versioning/SingleContentVersioningHistoryItem';
 import RestoreContentVersionModalContainer from 'ui/versioning/RestoreContentVersionModalContainer';
+import DeleteContentVersionModalContainer from 'ui/versioning/DeleteContentVersionModalContainer';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -38,6 +39,7 @@ class SingleContentVersioningHistory extends Component {
       pageSize,
       totalItems,
       onClickRestore,
+      onClickDelete,
     } = this.props;
     const pagination = {
       page,
@@ -50,6 +52,7 @@ class SingleContentVersioningHistory extends Component {
         <SingleContentVersioningHistoryItem
           key={item.id}
           onClickRestore={onClickRestore}
+          onClickDelete={onClickDelete}
           {...item}
         />
       ));
@@ -67,7 +70,7 @@ class SingleContentVersioningHistory extends Component {
                 <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
               </th>
               <th width="30%" className="text-center">
-                <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modify" />
+                <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modified" />
               </th>
               <th width="10%" className="text-center">
                 <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
@@ -96,6 +99,7 @@ class SingleContentVersioningHistory extends Component {
         <Spinner loading={!!loading}>
           {renderData}
         </Spinner>
+        <DeleteContentVersionModalContainer />
         <RestoreContentVersionModalContainer />
       </div>
     );
@@ -108,6 +112,7 @@ SingleContentVersioningHistory.propTypes = {
   onDidMount: PropTypes.func.isRequired,
   fetchVersioningList: PropTypes.func.isRequired,
   onClickRestore: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,

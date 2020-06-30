@@ -5,11 +5,12 @@ import { routeConverter, convertToQueryString, FILTER_OPERATORS } from '@entando
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
   setQuickFilter, checkStatus, checkAccess, checkAuthor, sendCloneContent,
-  setCurrentAuthorShow, setCurrentStatusShow, setCurrentColumnsShow, fetchContentsPaged,
+  setCurrentAuthorShow, setCurrentStatusShow, fetchContentsPaged,
   setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
   setTabSearch,
   resetAuthorStatus, leaveContentsPage,
 } from 'state/contents/actions';
+import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
@@ -18,9 +19,10 @@ import { fetchUsers } from 'state/users/actions';
 import {
   getContents, getCurrentQuickFilter, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentAuthorShow,
-  getCurrentStatusShow, getCurrentColumnsShow, getSortingColumns,
+  getCurrentStatusShow, getSortingColumns,
   getSelectedRows,
 } from 'state/contents/selectors';
+import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
 import { getPagination } from 'state/pagination/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';

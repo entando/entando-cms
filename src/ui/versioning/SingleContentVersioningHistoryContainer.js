@@ -8,6 +8,7 @@ import { getVersioningList } from 'state/versioning/selectors';
 import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
 
 import SingleContentVersioningHistory from 'ui/versioning/SingleContentVersioningHistory';
+import { DELETE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/DeleteContentVersionModal';
 import { RESTORE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/RestoreContentVersionModal';
 
 export const mapStateToProps = state => ({
@@ -28,6 +29,10 @@ export const mapDispatchToProps = (dispatch, { id, match: { params } }) => ({
   },
   onClickRestore: (item) => {
     dispatch(setVisibleModal(RESTORE_CONTENT_VERSION_MODAL_ID));
+    dispatch(setInfo(item));
+  },
+  onClickDelete: (item) => {
+    dispatch(setVisibleModal(DELETE_CONTENT_VERSION_MODAL_ID));
     dispatch(setInfo(item));
   },
 });

@@ -23,6 +23,9 @@ const cms = {
     row_content_viewer_list: MultipleContentsConfigContainer,
     search_result: null,
   },
+  persistData: {
+    tableColumns: ['currentColumnsShow'],
+  },
 };
 
 export default cms;

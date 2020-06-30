@@ -4,9 +4,9 @@ import {
 import { get } from 'lodash';
 
 import {
-  getVersionings, getSingleVersioning, getResourceVersionings, deleteResourceVersion,
-  restoreVersion, deleteVersion, getContentDetails, postRecoverContentVersion,
-  getVersioningConfig, putVersioningConfig,
+  getVersionings, getSingleVersioning, getResourceVersionings, deleteResource,
+  deleteVersion, getContentDetails, postRecoverContentVersion,
+  getVersioningConfig, putVersioningConfig, recoverResource,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
 import { toggleLoading } from 'state/loading/actions';
@@ -99,78 +99,6 @@ export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, param
   })
 );
 
-export const removeVersion = versionId => (dispatch, getState) => (
-  new Promise((resolve) => {
-    const state = getState();
-    const selectedVersioningType = getSelectedVersioningType(state);
-
-    const page = getCurrentPage(state);
-    const pageSize = getPageSize(state);
-    deleteVersion(selectedVersioningType, versionId)
-      .then(async (response) => {
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch(fetchVersionings({ page, pageSize }));
-        } else {
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
-        }
-        resolve();
-      })
-      .catch(() => {});
-  })
-);
-
-export const removeResourceVersion = versionId => (dispatch, getState) => (
-  new Promise((resolve) => {
-    const state = getState();
-    const selectedVersioningType = getSelectedVersioningType(state);
-
-    const page = getCurrentPage(state);
-    const pageSize = getPageSize(state);
-    deleteResourceVersion(selectedVersioningType, versionId)
-      .then(async (response) => {
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch(fetchResourceVersionings({ page, pageSize }));
-        } else {
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
-        }
-        resolve();
-      })
-      .catch(() => {});
-  })
-);
-
-export const recoverVersion = (versionTypeId, versionNumber) => (dispatch, getState) => (
-  new Promise((resolve) => {
-    const state = getState();
-    const selectedVersioningType = getSelectedVersioningType(state);
-
-    const page = getCurrentPage(state);
-    const pageSize = getPageSize(state);
-
-    restoreVersion(selectedVersioningType, versionTypeId, versionNumber)
-      .then(async (response) => {
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch(fetchVersionings({ page, pageSize }));
-        } else {
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
-          dispatch(clearErrors());
-        }
-        resolve();
-      });
-  }).catch(() => {})
-);
-
 export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
   new Promise((resolve) => {
     dispatch(toggleLoading('versionings'));
@@ -191,6 +119,53 @@ export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 
         resolve();
       });
     }).catch(() => {});
+  })
+);
+
+export const removeContentVersion = (contentId, versionId) => (dispatch, getState) => (
+  new Promise((resolve) => {
+    const state = getState();
+
+    const page = getCurrentPage(state);
+    const pageSize = getPageSize(state);
+
+    deleteVersion('contents', contentId, versionId)
+      .then(async (response) => {
+        const json = await response.json();
+
+        if (response.ok) {
+          dispatch(fetchSingleVersioningHistory(contentId, { page, pageSize }));
+        } else {
+          dispatch(addErrors(json.errors.map(err => err.message)));
+          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          dispatch(clearErrors());
+        }
+        resolve();
+      })
+      .catch(() => {});
+  })
+);
+
+export const sendRemoveResource = resourceId => (dispatch, getState) => (
+  new Promise((resolve) => {
+    const state = getState();
+
+    const page = getCurrentPage(state);
+    const pageSize = getPageSize(state);
+    deleteResource(resourceId)
+      .then((response) => {
+        response.json().then((json) => {
+          if (response.ok) {
+            dispatch(fetchResourceVersionings({ page, pageSize }));
+          } else {
+            dispatch(addErrors(json.errors.map(err => err.message)));
+            json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+            dispatch(clearErrors());
+          }
+          resolve();
+        });
+      })
+      .catch(() => {});
   })
 );
 
@@ -288,3 +263,22 @@ export const sendPutVersioningConfig = payload => dispatch => new Promise((resol
     })
     .catch(() => {});
 });
+
+export const sendRecoverResource = resourceId => dispatch => (
+  new Promise((resolve) => {
+    recoverResource(resourceId)
+      .then((response) => {
+        response.json().then((json) => {
+          if (response.ok) {
+            dispatch(fetchResourceVersionings());
+          } else {
+            dispatch(addErrors(json.errors.map(err => err.message)));
+            json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+            dispatch(clearErrors());
+          }
+          resolve();
+        });
+      })
+      .catch(() => {});
+  })
+);

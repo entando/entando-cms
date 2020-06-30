@@ -1,4 +1,4 @@
-import { makeMockRequest, METHODS, makeRequest } from '@entando/apimanager';
+import { METHODS, makeRequest } from '@entando/apimanager';
 
 import {
   LIST_VERSIONING_OK,
@@ -10,6 +10,7 @@ import {
   DELETE_IMAGE_OK,
   RESTORE_IMAGE_OK,
   CONTENT_DETAILS_OK,
+  DELETE_CONTENT_OK,
   RESTORE_CONTENT_OK,
   VERSIONING_CONFIG_GET_OK,
   VERSIONING_CONFIG_PUT_OK,
@@ -23,10 +24,12 @@ const TYPE_MOCKS = {
   },
   DELETE: {
     Attach: DELETE_ATTACHMENT_OK,
+    contents: DELETE_CONTENT_OK,
     Image: DELETE_IMAGE_OK,
   },
   RESTORE: {
     Attach: RESTORE_ATTACHMENT_OK,
+    contents: RESTORE_CONTENT_OK,
     Image: RESTORE_IMAGE_OK,
   },
 };
@@ -78,10 +81,10 @@ export const getContentDetails = (contentId, versionId) => (
   )
 );
 
-export const deleteVersion = (versioningType, id) => (
-  makeMockRequest(
+export const deleteVersion = (versioningType, id, versionId) => (
+  makeRequest(
     {
-      uri: `/api/plugins/versioning/${versioningType}/${id}`,
+      uri: `/api/plugins/versioning/${versioningType}/${id}/versions/${versionId}`,
       method: METHODS.DELETE,
       mockResponse: TYPE_MOCKS.DELETE[versioningType],
       useAuthentication: true,
@@ -89,27 +92,13 @@ export const deleteVersion = (versioningType, id) => (
   )
 );
 
-export const deleteResourceVersion = (versioningType, id) => (
-  makeMockRequest(
-    {
-      uri: `/api/plugins/versioning/${versioningType}/${id}`,
-      method: METHODS.DELETE,
-      mockResponse: TYPE_MOCKS.DELETE[versioningType],
-      useAuthentication: true,
-    },
-  )
-);
-
-export const restoreVersion = (versioningType, id, version) => (
-  makeMockRequest(
-    {
-      uri: `/api/plugins/versioning/${versioningType}/${id}`,
-      method: METHODS.POST,
-      body: { version },
-      mockResponse: TYPE_MOCKS.RESTORE[versioningType],
-      useAuthentication: true,
-    },
-  )
+export const deleteResource = resourceId => (
+  makeRequest({
+    uri: `/api/plugins/versioning/resources/${resourceId}`,
+    method: METHODS.DELETE,
+    mockResponse: DELETE_ATTACHMENT_OK,
+    useAuthentication: true,
+  })
 );
 
 export const postRecoverContentVersion = (id, version) => (
@@ -139,6 +128,16 @@ export const putVersioningConfig = body => (
     method: METHODS.PUT,
     body,
     mockResponse: VERSIONING_CONFIG_PUT_OK,
+    useAuthentication: true,
+  })
+);
+
+export const recoverResource = resourceId => (
+  makeRequest({
+    uri: `/api/plugins/versioning/resources/${resourceId}/recover`,
+    method: METHODS.POST,
+    body: {},
+    mockResponse: RESTORE_ATTACHMENT_OK,
     useAuthentication: true,
   })
 );

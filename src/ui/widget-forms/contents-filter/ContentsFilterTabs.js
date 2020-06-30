@@ -14,6 +14,16 @@ const ContentFilterTabs = ({
   currentStatusShow, onSetCurrentColumnsShow, onSetCurrentStatusShow, onSetCurrentAuthorShow,
   currentUsername, inModal,
 }) => {
+  const onClickColumnItem = (code) => {
+    if (code === 'name') return;
+    let newColumns = currentColumnsShow.slice(0);
+    if (newColumns.includes(code)) {
+      newColumns = newColumns.filter(c => c !== code);
+    } else {
+      newColumns.push(code);
+    }
+    onSetCurrentColumnsShow(newColumns);
+  };
   const navItems = (
     <div>
       {
@@ -51,7 +61,7 @@ const ContentFilterTabs = ({
                   code={code}
                   key={code}
                   active={currentColumnsShow.includes(code)}
-                  onItemClicked={onSetCurrentColumnsShow}
+                  onItemClicked={onClickColumnItem}
                 />
               ),
             )

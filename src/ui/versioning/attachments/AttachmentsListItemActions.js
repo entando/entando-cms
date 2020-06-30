@@ -10,15 +10,11 @@ const AttachmentsListItemActions = ({
   attachmentId, onClickRemove, onClickRecover, attachmentDescription,
 }) => {
   const handleClickRecover = () => {
-    // leaving console.log() until APIs are implemented to see interaction
-    console.log(`onClickRecover(${attachmentId}`); // eslint-disable-line no-console
-    onClickRecover(attachmentId);
+    onClickRecover({ id: attachmentId, name: attachmentDescription });
   };
 
   const handleClickRemove = () => {
-    // leaving console.log() until APIs are implemented to see interaction
-    console.log(`onClickDelete(${attachmentId})`); // eslint-disable-line no-console
-    onClickRemove({ id: attachmentId, description: attachmentDescription });
+    onClickRemove({ id: attachmentId, name: attachmentDescription });
   };
 
   return (

@@ -11,41 +11,41 @@ import {
   EmptyStateInfo,
 } from 'patternfly-react';
 
-export const REMOVE_RESOURCE_MODAL_ID = 'RemoveResourceModal';
+export const RECOVER_RESOURCE_MODAL_ID = 'RecoverResourceModal';
 
-const RemoveResourceModal = ({ onConfirmRemove, info, resourceType }) => {
+const RecoverResourceModal = ({ onConfirmRecover, info, resourceType }) => {
   const buttons = [
     <Button
-      bsStyle="danger"
-      id="RemoveResourceModal__button-delete"
-      onClick={() => onConfirmRemove(info)}
+      bsStyle="primary"
+      id="ResourceModal__button-recover"
+      onClick={() => onConfirmRecover(info)}
     >
-      <FormattedMessage id="cms.label.remove" />
+      <FormattedMessage id="cms.label.recover" />
     </Button>,
   ];
 
   const modalTitle = (
     <Modal.Title>
-      <FormattedMessage id={`cms.versioning.modal.${resourceType}RemoveCaption`} />
+      <FormattedMessage id={`cms.versioning.modal.${resourceType}RecoverCaption`} />
     </Modal.Title>
   );
 
   return (
     <GenericModalContainer
-      modalId={REMOVE_RESOURCE_MODAL_ID}
+      modalId={RECOVER_RESOURCE_MODAL_ID}
       buttons={buttons}
       modalTitle={modalTitle}
       className="ResourceModal"
     >
       <EmptyState>
         <EmptyStateIcon name="exclamation" type="fa" className="ResourceModal__icon" />
-        <EmptyStateTitle>
-          <FormattedMessage id="cms.label.remove" />
+        <EmptyStateTitle className="ResourceModal__title">
+          <FormattedMessage id="cms.label.recover" />
           &nbsp;{info.name}
         </EmptyStateTitle>
         <EmptyStateInfo className="ResourceModal__info">
           <FormattedMessage
-            id={`cms.versioning.modal.${resourceType}RemovePrompt`}
+            id={`cms.versioning.modal.${resourceType}RecoverPrompt`}
             values={{ name: info.name }}
           />
         </EmptyStateInfo>
@@ -54,18 +54,20 @@ const RemoveResourceModal = ({ onConfirmRemove, info, resourceType }) => {
   );
 };
 
-RemoveResourceModal.propTypes = {
-  onConfirmRemove: PropTypes.func.isRequired,
+RecoverResourceModal.propTypes = {
+  onConfirmRecover: PropTypes.func.isRequired,
   resourceType: PropTypes.string.isRequired,
   info: PropTypes.shape({
+    id: PropTypes.number,
     name: PropTypes.string,
   }),
 };
 
-RemoveResourceModal.defaultProps = {
+RecoverResourceModal.defaultProps = {
   info: {
+    id: '',
     name: '',
   },
 };
 
-export default RemoveResourceModal;
+export default RecoverResourceModal;
