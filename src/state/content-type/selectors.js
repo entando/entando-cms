@@ -16,16 +16,22 @@ import {
   TYPE_NUMBER,
   TYPE_MONOTEXT,
   TYPE_THREESTATE,
+  TYPE_ATTACH,
   TYPE_TIMESTAMP,
+  TYPE_LINK,
+  TYPE_IMAGE,
 } from 'state/content-type/const';
 
 const NO_ATTRIBUTE_FOR_TYPE_LIST = [
+  TYPE_ATTACH,
+  TYPE_LINK,
+  TYPE_IMAGE,
+  TYPE_TEXT,
+  TYPE_LONGTEXT,
+  TYPE_HYPERTEXT,
+  TYPE_MONOLIST,
   TYPE_LIST,
   TYPE_COMPOSITE,
-  TYPE_HYPERTEXT,
-  TYPE_LONGTEXT,
-  TYPE_MONOLIST,
-  TYPE_TEXT,
 ];
 
 const NO_ATTRIBUTE_FOR_TYPE_MONOLIST = [TYPE_LIST, TYPE_MONOLIST];
@@ -129,8 +135,10 @@ export const getSelectedCompositeAttributes = createSelector(
 );
 
 const getList = (type, list) => {
+  console.log('getList', type);
   switch (type) {
     case TYPE_LIST:
+      console.log('what', list.filter(f => !NO_ATTRIBUTE_FOR_TYPE_LIST.includes(f)));
       return list.filter(f => !NO_ATTRIBUTE_FOR_TYPE_LIST.includes(f));
     case TYPE_MONOLIST:
     case TYPE_COMPOSITE:
@@ -151,6 +159,7 @@ export const getContentTypeAttributesIdList = createSelector(
       return getList(code, list);
     }
     const { type } = attributeSelected;
+    console.log('oh its', type);
     return getList(type, list);
   },
 );
