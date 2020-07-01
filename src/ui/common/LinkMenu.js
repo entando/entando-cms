@@ -10,19 +10,22 @@ import {
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 
 import {
-  SUPERUSER_PERMISSION,
   CRUD_CONTENTS_PERMISSION,
   VALIDATE_CONTENTS_PERMISSION,
   MANAGE_RESOURCES_PERMISSION,
 } from 'state/permissions/const';
 
-const LinkMenu = ({ userPermissions }) => {
-  const hasMenuContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions)
+const LinkMenu = ({ userPermissions, isSuperuser }) => {
+  const canEditContents = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions);
+
+  const hasMenuContentsAccess = canEditContents
     || hasAccess(VALIDATE_CONTENTS_PERMISSION, userPermissions);
   const hasMenuAssetsAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
-  const hasMenuContentTypeAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
-  const hasMenuContentTemplatesAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
-  const hasMenuContentSettingsAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
+  const hasMenuContentTypeAccess = isSuperuser;
+  const hasMenuContentTemplatesAccess = isSuperuser;
+  const hasMenuContentSettingsAccess = isSuperuser;
+  const hasMenuVersioningAccess = isSuperuser || canEditContents || hasMenuAssetsAccess;
+
   return (
     <>
       {
@@ -71,7 +74,7 @@ const LinkMenu = ({ userPermissions }) => {
         )
       }
       {
-        hasMenuContentsAccess && (
+        hasMenuVersioningAccess && (
         <LinkMenuItem
           id="menu-versioning"
           label={<FormattedMessage id="cms.menu.versioning" defaultMessage="Versioning" />}
@@ -85,6 +88,7 @@ const LinkMenu = ({ userPermissions }) => {
 
 LinkMenu.propTypes = {
   userPermissions: PropTypes.arrayOf(PropTypes.string),
+  isSuperuser: PropTypes.bool.isRequired,
 };
 
 LinkMenu.defaultProps = {
