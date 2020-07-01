@@ -16,9 +16,9 @@ import {
 } from 'state/permissions/const';
 
 const VersioningTypes = ({ userPermissions, isSuperuser }) => {
-  const canEditContent = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions);
-  const canManageResources = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
-  const defaultActiveKey = canEditContent || isSuperuser ? 'contents' : 'images';
+  const hasEditContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions);
+  const hasManageResourcesAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
+  const defaultActiveKey = hasEditContentsAccess || isSuperuser ? 'contents' : 'images';
   return (
     <TabContainer id="basic-tabs" defaultActiveKey={defaultActiveKey}>
       <div>
@@ -30,7 +30,7 @@ const VersioningTypes = ({ userPermissions, isSuperuser }) => {
           pullRight={false}
           stacked={false}
         >
-          {canEditContent && (
+          {hasEditContentsAccess && (
             <NavItem
               active={false}
               disabled={false}
@@ -42,7 +42,7 @@ const VersioningTypes = ({ userPermissions, isSuperuser }) => {
               />
             </NavItem>
           )}
-          {canManageResources && ([
+          {hasManageResourcesAccess && ([
             <NavItem
               active={false}
               disabled={false}
@@ -86,7 +86,7 @@ const VersioningTypes = ({ userPermissions, isSuperuser }) => {
           mountOnEnter
           unmountOnExit
         >
-          {canEditContent && (
+          {hasEditContentsAccess && (
             <TabPane
               bsClass="tab-pane"
               eventKey="contents"
@@ -94,7 +94,7 @@ const VersioningTypes = ({ userPermissions, isSuperuser }) => {
               <VersioningListContainer />
             </TabPane>
           )}
-          {canManageResources && ([
+          {hasManageResourcesAccess && ([
             <TabPane
               bsClass="tab-pane"
               eventKey="images"

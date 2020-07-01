@@ -16,20 +16,20 @@ import {
 } from 'state/permissions/const';
 
 const LinkMenu = ({ userPermissions, isSuperuser }) => {
-  const canEditContents = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions);
+  const hasEditContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions);
 
-  const canContentsAccess = canEditContents
+  const hasContentSupervisorAccess = hasEditContentsAccess
     || hasAccess(VALIDATE_CONTENTS_PERMISSION, userPermissions);
-  const canAssetsAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
-  const canContentTypeAccess = isSuperuser;
-  const canContentTemplatesAccess = isSuperuser;
-  const canContentSettingsAccess = isSuperuser;
-  const canVersioningAccess = isSuperuser || canEditContents || canAssetsAccess;
+  const hasManageResourcesAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
+  const hasContentTypesAccess = isSuperuser;
+  const hasContentTemplatesAccess = isSuperuser;
+  const hasContentSettingsAccess = isSuperuser;
+  const hasVersioningAccess = isSuperuser || hasEditContentsAccess || hasManageResourcesAccess;
 
   return (
     <>
       {
-      canContentsAccess && (
+      hasContentSupervisorAccess && (
       <LinkMenuItem
         id="menu-contents"
         label={<FormattedMessage id="cms.menu.contents" defaultMessage="Contents" />}
@@ -38,7 +38,7 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
       )
       }
       {
-        canAssetsAccess && (
+        hasManageResourcesAccess && (
         <LinkMenuItem
           id="menu-assets"
           label={<FormattedMessage id="cms.assets.title" defaultMessage="Digital Assets" />}
@@ -47,7 +47,7 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
         )
       }
       {
-        canContentTypeAccess && (
+        hasContentTypesAccess && (
         <LinkMenuItem
           id="menu-content-type"
           label={<FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />}
@@ -56,7 +56,7 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
         )
       }
       {
-        canContentTemplatesAccess && (
+        hasContentTemplatesAccess && (
         <LinkMenuItem
           id="menu-content-template"
           label={<FormattedMessage id="cms.menu.contenttemplates" defaultMessage="Content Templates" />}
@@ -65,7 +65,7 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
         )
       }
       {
-        canContentSettingsAccess && (
+        hasContentSettingsAccess && (
         <LinkMenuItem
           id="menu-content-settings"
           label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
@@ -74,7 +74,7 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
         )
       }
       {
-        canVersioningAccess && (
+        hasVersioningAccess && (
         <LinkMenuItem
           id="menu-versioning"
           label={<FormattedMessage id="cms.menu.versioning" defaultMessage="Versioning" />}
