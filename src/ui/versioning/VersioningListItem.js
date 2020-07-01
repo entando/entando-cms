@@ -49,7 +49,7 @@ VersioningListItem.propTypes = {
   contentType: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  versionDate: PropTypes.number.isRequired,
+  versionDate: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   contentId: PropTypes.string.isRequired,

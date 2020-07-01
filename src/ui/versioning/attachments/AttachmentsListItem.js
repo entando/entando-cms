@@ -6,7 +6,6 @@ import {
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
-import { getURLAbsolute } from 'state/assets/selectors';
 import AttachmentsListItemActions from 'ui/versioning/attachments/AttachmentsListItemActions';
 
 function bytesToSize(bytes) {
@@ -38,7 +37,7 @@ const AttachmentsListItem = ({
           <div className="AttachmentsListItem__filename">{attachment.fileName}</div>
           <div>
             <code>
-              <a href={getURLAbsolute(domain, attachment.path || '')} title="Download">
+              <a href={`${domain}/api/plugins/versioning/resources/${attachment.id}/1`} title="Download">
                 <code className="margin-small-bottom">
                   <abbr title={attachment.description}>{attachment.description}</abbr>
                 </code>

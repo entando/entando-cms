@@ -1,15 +1,12 @@
 import React from 'react';
-import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { ListViewItem } from 'patternfly-react';
 
-import { getURLAbsolute } from 'state/assets/selectors';
 import ImagesListItemActions from 'ui/versioning/images/ImagesListItemActions';
 
 const ImagesListItem = ({
   image, onClickRemove, onClickRecover, domain,
-}) => console.log('image', image, domain, getURLAbsolute(domain, image.versions[0].path))
-  || (
+}) => (
   <ListViewItem
     actions={(
       <ImagesListItemActions
@@ -24,7 +21,7 @@ const ImagesListItem = ({
     description={(
       <div className="ImagesListItem">
         <img
-          src={`${domain}/${image.versions && image.versions[0] && get(image.versions[0], 'path', '')}`}
+          src={`${domain}/api/plugins/versioning/resources/${image.id}/1`}
           className="ImagesListItem__image"
           alt={image.description}
         />
@@ -34,7 +31,7 @@ const ImagesListItem = ({
     hideCloseIcon={false}
     stacked={false}
   />
-  );
+);
 
 ImagesListItem.propTypes = {
   image: PropTypes.shape({
