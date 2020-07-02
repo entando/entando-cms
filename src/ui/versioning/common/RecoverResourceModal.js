@@ -58,7 +58,7 @@ RecoverResourceModal.propTypes = {
   onConfirmRecover: PropTypes.func.isRequired,
   resourceType: PropTypes.string.isRequired,
   info: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string,
   }),
 };
