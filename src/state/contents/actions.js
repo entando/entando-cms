@@ -138,7 +138,7 @@ export const fetchContents = (page = pageDefault,
 });
 
 export const fetchContentsWithFilters = (
-  params, newPagination, newSort, quickFilterStatusParam = '',
+  params, newPagination, newSort, quickFilterStatusParam = '', quickFilterOwnerGroup,
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
@@ -153,11 +153,20 @@ export const fetchContentsWithFilters = (
   const eq = FILTER_OPERATORS.EQUAL;
   const like = FILTER_OPERATORS.LIKE;
   if (params) {
-    query = `${convertToQueryString({ sorting })}&${params}${quickFilterStatusParam}`;
+    const formValues = {
+      ...(qfValue && { [id]: qfValue }),
+    };
+    const operators = {
+      ...(qfValue && { [id]: FILTER_OPERATORS.LIKE }),
+    };
+    query = `${convertToQueryString({ formValues, operators, sorting })}&${params}${quickFilterStatusParam}`;
     return dispatch(fetchContents(pagination, query));
   }
   if (qfValue) {
     filters.push({ att: id, value: qfValue, operator: FILTER_OPERATORS.LIKE });
+    if (quickFilterOwnerGroup) {
+      filters.push({ att: 'mainGroup', value: quickFilterOwnerGroup, operator: FILTER_OPERATORS.EQUAL });
+    }
   } else {
     const contentType = getContentType(state);
     const group = getGroup(state);
@@ -229,7 +238,8 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
   return dispatch(fetchContents(pagination, query));
 };
 
-export const fetchContentsPaged = (params, page, sort, tabSearch, quickFilterStatusParam) => (
+export const fetchContentsPaged = (params, page, sort, tabSearch,
+  quickFilterStatusParam, quickFilterOwnerGroup) => (
   dispatch, getState,
 ) => {
   const state = getState();
@@ -237,7 +247,8 @@ export const fetchContentsPaged = (params, page, sort, tabSearch, quickFilterSta
   if (tabSearchEnabled) {
     return dispatch(fetchContentsWithTabs(page, sort));
   }
-  return dispatch(fetchContentsWithFilters(params, page, sort, quickFilterStatusParam));
+  return dispatch(fetchContentsWithFilters(params, page, sort,
+    quickFilterStatusParam, quickFilterOwnerGroup));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {

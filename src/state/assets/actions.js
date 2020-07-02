@@ -260,7 +260,7 @@ export const advancedSearchFilter = (
     ...(group && {
       group: {
         value: group,
-        op: FILTER_OPERATORS.LIKE,
+        op: FILTER_OPERATORS.EQUAL,
       },
     }),
     ...(owner && {

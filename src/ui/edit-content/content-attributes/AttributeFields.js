@@ -19,7 +19,7 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const renderField = (name, idx, attribute, langCode) => {
+const renderField = (name, idx, attribute, langCode, mainGroup) => {
   const {
     type, code, mandatory, listFilter, indexable, name: attName,
   } = attribute;
@@ -63,6 +63,7 @@ const renderField = (name, idx, attribute, langCode) => {
           name={name}
           attribute={attribute}
           langCode={langCode}
+          mainGroup={mainGroup}
         />
       );
   }
@@ -74,6 +75,7 @@ const renderField = (name, idx, attribute, langCode) => {
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}
+      mainGroup={mainGroup}
     />
   );
 };
@@ -104,7 +106,7 @@ const AttributeFields = ({
     });
   }
 
-  return fields.map((name, idx) => renderField(name, idx, attributes[idx], langCode));
+  return fields.map((name, idx) => renderField(name, idx, attributes[idx], langCode, mainGroup));
 };
 
 AttributeFields.propTypes = {

@@ -12,24 +12,27 @@ import { FormattedMessage } from 'react-intl';
 import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 import AssetsListContainer from 'ui/assets/AssetsListContainer';
 
-const AssetsField = ({ input }) => (
+const AssetsField = ({ input, mainGroup }) => (
   <AssetsListContainer
     showColumns={['preview', 'name', 'type']}
     hideFooter
     singleView
+    ownerGroup={mainGroup}
     onSelect={input.onChange}
   />
 );
 
 AssetsField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
-const LinkConfigResourceForm = ({ onCancel, handleSubmit }) => (
+const LinkConfigResourceForm = ({ onCancel, handleSubmit, mainGroup }) => (
   <form className="form-horizontal" onSubmit={handleSubmit}>
     <Field
       component={AssetsField}
       name="resource"
+      mainGroup={mainGroup}
     />
     <FormSection name="attributes">
       <LinkConfigAttributes />
@@ -52,6 +55,7 @@ const LinkConfigResourceForm = ({ onCancel, handleSubmit }) => (
 LinkConfigResourceForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
 export default reduxForm({

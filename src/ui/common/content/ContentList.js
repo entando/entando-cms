@@ -69,6 +69,7 @@ class ContentList extends Component {
     const {
       activeColumns, availableColumns, intl,
     } = this.props;
+
     const currentActiveColumns = ['select', ...activeColumns];
     const allColumns = [{ code: 'select' }, ...availableColumns];
     return allColumns.filter(ac => currentActiveColumns.includes(ac.code))

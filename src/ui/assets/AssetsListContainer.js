@@ -60,7 +60,18 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     if (ownProps.browseMode) {
       dispatch(changeFileType(ownProps.assetType));
     } else {
-      dispatch(setListFilterParams({}));
+      let filters = {};
+      if (ownProps.ownerGroup) {
+        filters = {
+          formValues: {
+            group: [ownProps.ownerGroup, 'free'],
+          },
+          operators: {
+            group: 'eq',
+          },
+        };
+      }
+      dispatch(setListFilterParams(filters));
       dispatch(fetchGroups({ page: 1, pageSize: 0 }));
       dispatch(fetchAssetsPaged());
     }

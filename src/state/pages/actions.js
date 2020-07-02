@@ -12,7 +12,7 @@ import {
 } from 'state/pages/types';
 import { getStatusMap } from 'state/pages/selectors';
 
-const HOMEPAGE_CODE = 'homepage';
+export const HOMEPAGE_CODE = 'homepage';
 
 const noopPromise = arg => new Promise(resolve => resolve(arg));
 
@@ -126,7 +126,8 @@ export const fetchPageTree = pageCode => dispatch => new Promise((resolve) => {
   });
 });
 
-export const handleExpandPage = (pageCode = HOMEPAGE_CODE) => (dispatch, getState) => {
+export const handleExpandPage = (pageCode = HOMEPAGE_CODE,
+  status, accessGroups) => (dispatch, getState) => {
   const pageStatus = getStatusMap(getState())[pageCode];
   const toExpand = (!pageStatus || !pageStatus.expanded);
   const toLoad = (toExpand && (!pageStatus || !pageStatus.loaded));
@@ -134,7 +135,9 @@ export const handleExpandPage = (pageCode = HOMEPAGE_CODE) => (dispatch, getStat
     dispatch(setPageLoading(pageCode));
     return fetchPageTree(pageCode)(dispatch)
       .then((pages) => {
-        dispatch(addPages(pages));
+        const filteredPages = pages
+          .filter(page => page.status === status && accessGroups.includes(page.ownerGroup));
+        dispatch(addPages(filteredPages));
         dispatch(togglePageExpanded(pageCode, true));
         dispatch(setPageLoaded(pageCode));
       }).catch(() => {});

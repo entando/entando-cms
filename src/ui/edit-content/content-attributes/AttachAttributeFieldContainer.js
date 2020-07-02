@@ -11,9 +11,17 @@ import { fetchCategoryTree } from 'state/categories/actions';
 
 import { ATTACH_MODAL_ID } from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
-    dispatch(setListFilterParams({}));
+    const { mainGroup } = ownProps;
+    dispatch(setListFilterParams({
+      formValues: {
+        group: [mainGroup, 'free'],
+      },
+      operators: {
+        group: 'eq',
+      },
+    }));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchAssetsPaged(pageDefault, 'file'));
     dispatch(fetchCategoryTree());

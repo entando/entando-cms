@@ -9,18 +9,27 @@ import { Button } from 'patternfly-react';
 import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 import ContentsContainer from 'ui/common/content/ContentsContainer';
 
-const ContentsField = ({ input }) => (
-  <ContentsContainer status="published" author="all" onContentSelect={input.onChange} />
+const ContentsField = ({ input, mainGroup }) => (
+  <ContentsContainer
+    status="published"
+    author="all"
+    onContentSelect={input.onChange}
+    ownerGroup={mainGroup}
+  />
 );
 
 ContentsField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
-const LinkConfigContentForm = ({ onCancel, handleClick, selectedContent }) => (
+const LinkConfigContentForm = ({
+  onCancel, handleClick, selectedContent, mainGroup,
+}) => (
   <div className="form-horizontal">
     <Field
       component={ContentsField}
+      mainGroup={mainGroup}
       name="content"
     />
     <FormSection name="attributes">
@@ -44,6 +53,7 @@ const LinkConfigContentForm = ({ onCancel, handleClick, selectedContent }) => (
 LinkConfigContentForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   selectedContent: PropTypes.string,
+  mainGroup: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
 };
 

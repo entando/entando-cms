@@ -19,7 +19,7 @@ const getLinkUrl = (type, value) => `#!${type};${value}!#`;
 const ID = 'LinkConfigModal';
 
 const LinkConfigModal = ({
-  isVisible, hasResourceTab, onClose, onSave,
+  isVisible, hasResourceTab, onClose, onSave, mainGroup,
 }) => {
   const handleSubmit = (values) => {
     const linkObj = { ...values.attributes };
@@ -91,14 +91,26 @@ const LinkConfigModal = ({
           <LinkConfigUrlForm onSubmit={handleSubmit} onCancel={onClose} />
         </Tab>
         <Tab eventKey="page" title={renderedPageTabTitle}>
-          <LinkConfigPageForm onSubmit={handleSubmit} onCancel={onClose} />
+          <LinkConfigPageForm
+            mainGroup={mainGroup}
+            onSubmit={handleSubmit}
+            onCancel={onClose}
+          />
         </Tab>
         <Tab eventKey="content" title={renderedContentTabTitle}>
-          <LinkConfigContentFormContainer onSubmit={handleSubmit} onCancel={onClose} />
+          <LinkConfigContentFormContainer
+            mainGroup={mainGroup}
+            onSubmit={handleSubmit}
+            onCancel={onClose}
+          />
         </Tab>
         {hasResourceTab && (
           <Tab eventKey="resource" title={renderedResourceTabTitle}>
-            <LinkConfigResourceForm onSubmit={handleSubmit} onCancel={onClose} />
+            <LinkConfigResourceForm
+              onSubmit={handleSubmit}
+              onCancel={onClose}
+              mainGroup={mainGroup}
+            />
           </Tab>
         )}
       </Tabs>
@@ -111,6 +123,7 @@ LinkConfigModal.propTypes = {
   hasResourceTab: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
 LinkConfigModal.defaultProps = {

@@ -45,6 +45,7 @@ const AttributeField = ({
   label,
   hasLabel,
   langCode,
+  mainGroup,
 }) => {
   const {
     type,
@@ -144,6 +145,7 @@ const AttributeField = ({
       label={fieldLabel}
       hasLabel={hasLabel}
       validate={validate}
+      mainGroup={mainGroup}
       {...(type === TYPE_LINK && { langCode })}
       {...extraProps}
     />
@@ -156,12 +158,14 @@ AttributeField.propTypes = {
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
   langCode: PropTypes.string,
+  mainGroup: PropTypes.string,
 };
 
 AttributeField.defaultProps = {
   label: null,
   hasLabel: true,
   langCode: 'en',
+  mainGroup: '',
 };
 
 export default AttributeField;

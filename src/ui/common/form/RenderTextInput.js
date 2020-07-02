@@ -17,30 +17,34 @@ const RenderTextInput = ({
   hasLabel,
   xsClass,
   ...others
-}) => (
-  <div className={touched && error ? 'form-group has-error' : 'form-group'}>
-    {hasLabel && labelSize > 0 && (
-      <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
-        <ControlLabel htmlFor={input.name}>
-          {label} {help}
-        </ControlLabel>
+}) => {
+  // eslint-disable-next-line no-unused-vars
+  const { mainGroup, langCode, restProps } = others;
+  return (
+    <div className={touched && error ? 'form-group has-error' : 'form-group'}>
+      {hasLabel && labelSize > 0 && (
+        <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
+          <ControlLabel htmlFor={input.name}>
+            {label} {help}
+          </ControlLabel>
+        </Col>
+      )}
+      <Col xs={12} sm={inputSize || 12 - labelSize}>
+        <input
+          {...input}
+          type={type}
+          id={input.name}
+          placeholder={placeholder}
+          className="form-control RenderTextInput"
+          disabled={disabled}
+          {...restProps}
+        />
+        {append && <span className="AppendedLabel">{append}</span>}
+        {touched && (error && <span className="help-block">{error}</span>)}
       </Col>
-    )}
-    <Col xs={12} sm={inputSize || 12 - labelSize}>
-      <input
-        {...input}
-        type={type}
-        id={input.name}
-        placeholder={placeholder}
-        className="form-control RenderTextInput"
-        disabled={disabled}
-        {...others}
-      />
-      {append && <span className="AppendedLabel">{append}</span>}
-      {touched && (error && <span className="help-block">{error}</span>)}
-    </Col>
-  </div>
-);
+    </div>
+  );
+};
 
 RenderTextInput.propTypes = {
   input: PropTypes.shape({
@@ -58,6 +62,8 @@ RenderTextInput.propTypes = {
   labelSize: PropTypes.number,
   inputSize: PropTypes.number,
   append: PropTypes.string,
+  mainGroup: PropTypes.string,
+  langCode: PropTypes.string,
   alignClass: PropTypes.string,
   xsClass: PropTypes.string,
   hasLabel: PropTypes.bool,
@@ -74,6 +80,8 @@ RenderTextInput.defaultProps = {
   labelSize: 2,
   inputSize: null,
   append: '',
+  mainGroup: '',
+  langCode: '',
   alignClass: 'text-right',
   hasLabel: true,
   xsClass: 'mobile-left',

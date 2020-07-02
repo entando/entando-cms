@@ -7,7 +7,7 @@ import RichTextEditor from 'ui/common/rich-text-editor/RichTextEditor';
 const RenderRichTextEditor = ({
   meta: { touched, error }, hasLabel, labelSize,
   alignClass, input, label, help, append, langCode,
-  placeholder, disabled, attribute,
+  placeholder, disabled, attribute, mainGroup,
 }) => (
   <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
     {hasLabel && (
@@ -23,6 +23,7 @@ const RenderRichTextEditor = ({
         attrCode={attribute.code}
         langCode={langCode}
         placeholder={placeholder}
+        mainGroup={mainGroup}
         disabled={disabled}
       />
       {append && <span className="AppendedLabel">{append}</span>}
@@ -51,6 +52,7 @@ RenderRichTextEditor.propTypes = {
   append: PropTypes.string,
   alignClass: PropTypes.string,
   hasLabel: PropTypes.bool,
+  mainGroup: PropTypes.string,
 };
 
 RenderRichTextEditor.defaultProps = {
@@ -65,6 +67,7 @@ RenderRichTextEditor.defaultProps = {
   hasLabel: true,
   attribute: {},
   langCode: 'en',
+  mainGroup: '',
 };
 
 export default RenderRichTextEditor;
