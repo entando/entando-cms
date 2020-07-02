@@ -38,7 +38,7 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[0].sizeBytes} B`);
+      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[0].size}`);
     });
 
     it('in KBs', () => {
@@ -50,7 +50,7 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(screen.getByTestId('size-badge')).toContainHTML('1 KB');
+      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[1].size}`);
     });
 
     it('in MBs', () => {
@@ -62,7 +62,7 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(screen.getByTestId('size-badge')).toContainHTML('1 MB');
+      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[2].size}`);
     });
 
     it('in GBs', () => {
@@ -74,7 +74,7 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(screen.getByTestId('size-badge')).toContainHTML('1 GB');
+      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[3].size}`);
     });
 
     it('in TBs', () => {
@@ -86,7 +86,7 @@ describe('AttachmentsList', () => {
         ),
       );
 
-      expect(screen.getByTestId('size-badge')).toContainHTML('1 TB');
+      expect(screen.getByTestId('size-badge')).toContainHTML(`${LIST_ATTACHMENTS_OK[4].size}`);
     });
   });
 });

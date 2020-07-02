@@ -21,7 +21,7 @@ const ImagesListItem = ({
     description={(
       <div className="ImagesListItem">
         <img
-          src={`${domain}/api/plugins/versioning/resources/${image.id}/1`}
+          src={`${domain}/${image.versions && image.versions.length > 0 && image.versions[1].path}`}
           className="ImagesListItem__image"
           alt={image.description}
         />
@@ -38,6 +38,11 @@ ImagesListItem.propTypes = {
     id: PropTypes.string,
     description: PropTypes.string,
     lastVersion: PropTypes.string,
+    versions: PropTypes.arrayOf(
+      PropTypes.shape({
+        path: PropTypes.string,
+      }),
+    ).isRequired,
   }).isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,
