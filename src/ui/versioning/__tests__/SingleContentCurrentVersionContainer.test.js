@@ -35,13 +35,13 @@ describe('Single Content Current Version Container Test', () => {
 
     // data
     const {
-      description, lastModify, lastEditor, version,
+      description, lastModified, lastEditor, version,
     } = GET_CONTENT_RESPONSE_OK;
     const rowNode = screen.getByText(description).closest('tr');
     const row = within(rowNode);
     expect(row.getByText(description)).toBeInTheDocument();
     expect(row.getByText(version)).toBeInTheDocument();
     expect(row.getByText(lastEditor)).toBeInTheDocument();
-    expect(row.getByText(formatDate(lastModify))).toBeInTheDocument();
+    expect(row.getByText(formatDate(lastModified))).toBeInTheDocument();
   });
 });
