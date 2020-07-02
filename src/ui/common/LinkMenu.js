@@ -10,23 +10,26 @@ import {
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 
 import {
-  SUPERUSER_PERMISSION,
   CRUD_CONTENTS_PERMISSION,
   VALIDATE_CONTENTS_PERMISSION,
   MANAGE_RESOURCES_PERMISSION,
 } from 'state/permissions/const';
 
-const LinkMenu = ({ userPermissions }) => {
-  const hasMenuContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions)
+const LinkMenu = ({ userPermissions, isSuperuser }) => {
+  const hasEditContentsAccess = hasAccess(CRUD_CONTENTS_PERMISSION, userPermissions);
+
+  const hasContentSupervisorAccess = hasEditContentsAccess
     || hasAccess(VALIDATE_CONTENTS_PERMISSION, userPermissions);
-  const hasMenuAssetsAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
-  const hasMenuContentTypeAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
-  const hasMenuContentTemplatesAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
-  const hasMenuContentSettingsAccess = hasAccess(SUPERUSER_PERMISSION, userPermissions);
+  const hasManageResourcesAccess = hasAccess(MANAGE_RESOURCES_PERMISSION, userPermissions);
+  const hasContentTypesAccess = isSuperuser;
+  const hasContentTemplatesAccess = isSuperuser;
+  const hasContentSettingsAccess = isSuperuser;
+  const hasVersioningAccess = isSuperuser || hasEditContentsAccess || hasManageResourcesAccess;
+
   return (
     <>
       {
-      hasMenuContentsAccess && (
+      hasContentSupervisorAccess && (
       <LinkMenuItem
         id="menu-contents"
         label={<FormattedMessage id="cms.menu.contents" defaultMessage="Contents" />}
@@ -35,7 +38,7 @@ const LinkMenu = ({ userPermissions }) => {
       )
       }
       {
-        hasMenuAssetsAccess && (
+        hasManageResourcesAccess && (
         <LinkMenuItem
           id="menu-assets"
           label={<FormattedMessage id="cms.assets.title" defaultMessage="Digital Assets" />}
@@ -44,7 +47,7 @@ const LinkMenu = ({ userPermissions }) => {
         )
       }
       {
-        hasMenuContentTypeAccess && (
+        hasContentTypesAccess && (
         <LinkMenuItem
           id="menu-content-type"
           label={<FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />}
@@ -53,7 +56,7 @@ const LinkMenu = ({ userPermissions }) => {
         )
       }
       {
-        hasMenuContentTemplatesAccess && (
+        hasContentTemplatesAccess && (
         <LinkMenuItem
           id="menu-content-template"
           label={<FormattedMessage id="cms.menu.contenttemplates" defaultMessage="Content Templates" />}
@@ -62,7 +65,7 @@ const LinkMenu = ({ userPermissions }) => {
         )
       }
       {
-        hasMenuContentSettingsAccess && (
+        hasContentSettingsAccess && (
         <LinkMenuItem
           id="menu-content-settings"
           label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
@@ -71,7 +74,7 @@ const LinkMenu = ({ userPermissions }) => {
         )
       }
       {
-        hasMenuContentsAccess && (
+        hasVersioningAccess && (
         <LinkMenuItem
           id="menu-versioning"
           label={<FormattedMessage id="cms.menu.versioning" defaultMessage="Versioning" />}
@@ -85,6 +88,7 @@ const LinkMenu = ({ userPermissions }) => {
 
 LinkMenu.propTypes = {
   userPermissions: PropTypes.arrayOf(PropTypes.string),
+  isSuperuser: PropTypes.bool.isRequired,
 };
 
 LinkMenu.defaultProps = {
