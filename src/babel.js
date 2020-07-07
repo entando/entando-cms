@@ -6,6 +6,7 @@ import it from 'locales/it';
 import SingleContentConfigContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigContainer';
 import MultipleContentsConfigContainer from 'ui/widget-forms/MultipleContentsConfigContainer';
 import ContentsQueryConfigContainer from 'ui/widget-forms/ContentsQueryConfigContainer';
+import ContentsStatusCardContainer from 'ui/contents/status-card/ContentsStatusCardContainer';
 
 const cms = {
   id: 'cms',
@@ -13,6 +14,7 @@ const cms = {
   state,
   routes,
   routesDir,
+  contentsStatusCard: ContentsStatusCardContainer,
   locales: {
     en,
     it,

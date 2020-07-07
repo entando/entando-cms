@@ -260,6 +260,7 @@ export default {
     'cms.saveAndContinue': 'Save and Continue',
     'cms.setContentAs': 'Set content as',
     'cms.chooseAnOption': 'Choose an option',
+    'cms.contents.contentStatus': 'Content Status',
     'cms.contents.title': 'Contents',
     'cms.contents.code': 'Code',
     'cms.contents.addToPool': 'Actions',
