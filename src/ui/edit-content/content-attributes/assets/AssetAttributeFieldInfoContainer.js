@@ -8,7 +8,7 @@ import AssetAttributeFieldInfo from 'ui/edit-content/content-attributes/assets/A
 export const mapStateToProps = (state, { input }) => {
   const domain = getDomain(state);
   const mapping = getMetadataMapping(state);
-  const assetInfo = condenseAssetInfo(input.value, domain);
+  const assetInfo = condenseAssetInfo(input, domain);
   const { type } = assetInfo;
 
   const fields = {

@@ -74,6 +74,7 @@ const renderField = (name, idx, attribute, langCode) => {
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}
+      langCode={langCode}
     />
   );
 };

@@ -121,7 +121,7 @@ const AttributeField = ({
       break;
     case TYPE_IMAGE:
       AttributeFieldComp = ImageAttributeFieldContainer;
-      actualName = `${name}.values.${langCode}`;
+      actualName = name;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
