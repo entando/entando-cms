@@ -1,0 +1,11 @@
+.ContentsStatusCard {
+  height: 275px;
+  margin: 0 -10px;
+  padding: 0 20px 5px;
+  border: #d1d1d1 solid 1px;
+
+  &__title {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+}
