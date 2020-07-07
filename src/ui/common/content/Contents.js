@@ -115,7 +115,7 @@ Contents.propTypes = {
 };
 
 Contents.defaultProps = {
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
+  currentColumnsShow: ['description', 'typeCode', 'lastModified', 'created'],
 };
 
 export default Contents;

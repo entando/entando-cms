@@ -16,7 +16,6 @@ import {
   getCurrentStatusShow, getSortingColumns,
   getSelectedRows,
 } from 'state/contents/selectors';
-import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { getPagination } from 'state/pagination/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
@@ -46,8 +45,6 @@ const paramsForStatusAndAuthor = (status, author) => {
   return query.slice(1);
 };
 
-const contentColumns = ['description', 'lastModified', 'typeCode', 'created'];
-
 export const mapStateToProps = (state) => {
   const {
     page, lastPage, totalItems, pageSize,
@@ -65,7 +62,6 @@ export const mapStateToProps = (state) => {
     authorChecked: getAuthorChecked(state),
     currentAuthorShow: getCurrentAuthorShow(state),
     currentStatusShow: getCurrentStatusShow(state),
-    currentColumnsShow: getCurrentColumnsShow(state).filter(col => contentColumns.includes(col)),
     page,
     lastPage,
     totalItems,
