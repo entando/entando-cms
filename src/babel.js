@@ -14,7 +14,9 @@ const cms = {
   state,
   routes,
   routesDir,
-  contentsStatusCard: ContentsStatusCardContainer,
+  dashboardCards: {
+    contentsStatusCard: ContentsStatusCardContainer,
+  },
   locales: {
     en,
     it,
