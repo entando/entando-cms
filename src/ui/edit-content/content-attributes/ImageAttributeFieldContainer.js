@@ -19,7 +19,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchAssetsPaged());
     dispatch(fetchCategoryTree());
   },
-  onClickAdd: name => dispatch(dispatch(setVisibleModal(`${IMAGE_MODAL_ID}${name}`))),
+  onClickAdd: name => dispatch(setVisibleModal(`${IMAGE_MODAL_ID}${name}`)),
 });
 
 const ImageAttributeFieldContainer = connect(
