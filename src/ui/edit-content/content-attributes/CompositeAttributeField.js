@@ -16,12 +16,13 @@ const CompositeAttributeField = ({
   langCode,
 }) => {
   const { code, compositeAttributes } = attribute;
-  const mappedAttributeInfos = compositeAttributes.reduce(
-    (acc, curr) => {
-      const { code } = curr;
+  const fieldNames = fields.map(name => name);
+  const mappedFieldNames = fields.getAll().reduce(
+    (acc, curr, idx) => {
+      const { code: fieldCode } = curr;
       return {
         ...acc,
-        [code]: curr,
+        [fieldCode]: fieldNames[idx],
       };
     }, {},
   );
@@ -33,14 +34,14 @@ const CompositeAttributeField = ({
       <Col xs={10}>
         <Panel>
           <Panel.Body>
-            {fields.map((name, idx) => {
-              const field = fields.get(idx);
-              const { code } = field;
+            {compositeAttributes.map((attr) => {
+              const { code: attrCode } = attr;
+              const fieldName = mappedFieldNames[attrCode];
               return (
                 <AttributeField
-                  key={code}
-                  name={name}
-                  attribute={mappedAttributeInfos[code]}
+                  key={attrCode}
+                  name={fieldName}
+                  attribute={attr}
                   langCode={langCode}
                 />
               );

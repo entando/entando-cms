@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { get } from 'lodash';
 import {
   Col,
   ControlLabel,
@@ -24,7 +23,6 @@ const ImageAttributeField = ({
   help,
   onClickAdd,
   assetListBegin,
-  langCode,
 }) => {
   const handleAssetSelected = info => input.onChange(info);
 
@@ -46,12 +44,12 @@ const ImageAttributeField = ({
           customClassName="UploadAsset--button-version"
           customDropzoneProps={{ noClick: true }}
           onAssetSelected={handleAssetSelected}
-          name={`${input.name}.values.${langCode}`}
+          name={input.name}
         />
         {errorBox}
         <AssetBrowserModal
           assetType="image"
-          name={`${input.name}.values.${langCode}`}
+          name={input.name}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
         />
@@ -60,7 +58,7 @@ const ImageAttributeField = ({
   };
 
   const renderAssetSelected = () => (
-    <AssetAttributeFieldInfoContainer langCode={langCode} input={input} />
+    <AssetAttributeFieldInfoContainer input={input} />
   );
 
   const hasValue = !!input.value;
@@ -81,7 +79,6 @@ const ImageAttributeField = ({
 
 ImageAttributeField.propTypes = {
   input: PropTypes.shape({
-    values: PropTypes.shape({}),
     value: PropTypes.oneOfType([
       PropTypes.shape({}),
       PropTypes.string,
@@ -94,7 +91,6 @@ ImageAttributeField.propTypes = {
   help: PropTypes.node,
   inputSize: PropTypes.number,
   label: PropTypes.node.isRequired,
-  langCode: PropTypes.string,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.shape({}),
@@ -104,9 +100,7 @@ ImageAttributeField.propTypes = {
 };
 
 ImageAttributeField.defaultProps = {
-  input: {
-    en: {},
-  },
+  input: {},
   meta: {
     touched: false,
     error: {},
@@ -115,7 +109,6 @@ ImageAttributeField.defaultProps = {
   alignClass: 'text-right',
   help: null,
   inputSize: null,
-  langCode: 'en',
 };
 
 export default ImageAttributeField;
