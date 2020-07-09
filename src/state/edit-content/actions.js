@@ -11,7 +11,7 @@ import {
 
 import {
   TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP, TYPE_NUMBER,
-  TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE,
+  TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE, TYPE_ATTACH,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import { toggleLoading } from 'state/loading/actions';
@@ -194,7 +194,7 @@ const convertNumberValue = (item) => {
   };
 };
 
-const checkImageValueProps = (item) => {
+const checkAssetValueProps = (item) => {
   const { values } = item;
   const newVals = pickBy(values, val => !!val);
   return {
@@ -217,7 +217,8 @@ const convertFieldValueByType = (item, type) => {
     case TYPE_THREESTATE:
       return convertBoolToString(item, true);
     case TYPE_IMAGE:
-      return checkImageValueProps(item);
+    case TYPE_ATTACH:
+      return checkAssetValueProps(item);
     default:
       return item;
   }
