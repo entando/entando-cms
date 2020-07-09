@@ -4,6 +4,7 @@ import {
   fieldInputPropTypes,
   fieldMetaPropTypes,
 } from 'redux-form';
+import { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import { Col, Button } from 'patternfly-react';
 import { Panel } from 'react-bootstrap';
@@ -89,7 +90,7 @@ class LinkAttributeField extends Component {
 
     const textInput = {
       name: `${input.name}.values.${langCode}`,
-      value: values[langCode],
+      value: get(values, langCode, ''),
       onChange: (event) => {
         input.onChange({
           ...input.value,
