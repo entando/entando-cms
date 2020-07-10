@@ -41,6 +41,31 @@ class ContentsStatusCard extends Component {
       ['Work', unpublished],
       ['Approved with changes', ready],
     ];
+
+    const contentsAvailable = contents && contents.length > 0;
+
+    const renderBody = !contentsAvailable ? (
+      <div>
+        <FormattedMessage id="cms.contents.notFound" defaultMessage="No contents were found on system." />
+      </div>
+    ) : (
+      <DonutChart
+        id="donunt-chart-3"
+        data={{
+          colors: { Approved: '#00A0DF', Work: '#A6A6A6', 'Approved with changes': '#0066CC' },
+          columns,
+          type: 'donut',
+        }}
+        title={{ type: 'total', secondary: 'contents' }}
+        legend={{ show: true, position: 'right' }}
+        tooltip={{
+          format: {
+            value: v => v,
+          },
+        }}
+      />
+    );
+
     return (
       <div className="ContentsStatusCard">
         <h2 className="ContentsStatusCard__title">
@@ -50,23 +75,10 @@ class ContentsStatusCard extends Component {
           />
         </h2>
         <span>
-          {latestModificationDate && formatDate(latestModificationDate)}
+          {(latestModificationDate && contentsAvailable)
+            ? formatDate(latestModificationDate) : null}
         </span>
-        <DonutChart
-          id="donunt-chart-3"
-          data={{
-            colors: { Approved: '#6ca100', Work: '#72767b', 'Approved with changes': '#f0ab00' },
-            columns,
-            type: 'donut',
-          }}
-          title={{ type: 'total', secondary: 'contents' }}
-          legend={{ show: true, position: 'right' }}
-          tooltip={{
-            format: {
-              value: v => v,
-            },
-          }}
-        />
+        {renderBody}
         {
           hasAccess(SUPERUSER_PERMISSION, userPermissions) && (
             <div className="pull-right">

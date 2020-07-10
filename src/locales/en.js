@@ -261,6 +261,7 @@ export default {
     'cms.setContentAs': 'Set content as',
     'cms.chooseAnOption': 'Choose an option',
     'cms.contents.contentStatus': 'Content Status',
+    'cms.contents.notFound': 'No contents were found on system.',
     'cms.contents.title': 'Contents',
     'cms.contents.code': 'Code',
     'cms.contents.addToPool': 'Actions',

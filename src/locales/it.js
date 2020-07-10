@@ -262,6 +262,7 @@ export default {
     'cms.saveAndApprove': 'Salva e Approva',
     'cms.saveAndContinue': 'Salva e Continua',
     'cms.setContentAs': 'Imposta Contenuto Come',
+    'cms.contents.notFound': 'Nessun contenuto trovato sul sistema.',
     'cms.chooseAnOption': 'Scegliere un\'opzione',
     'cms.contents.contentStatus': 'Content Status',
     'cms.contents.title': 'Contenuto',
