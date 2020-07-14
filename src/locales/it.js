@@ -1,7 +1,7 @@
 export default {
   locale: 'it',
   messages: {
-    'cms.title': 'CMS',
+    'cms.title': 'Gestione Contenuti',
     'cms.label.name': 'Nome',
     'cms.label.value': 'Valore',
     'cms.label.edit': 'Modificare',
@@ -420,7 +420,7 @@ export default {
     'cms.assets.form.duplicateConfirm': 'Vuoi davvero duplicare "{name}" ?',
     'cms.linkconfig.title': 'Configurare il contenuto del collegamento',
     'cms.linkconfig.attributes.heading': 'Attributi aggiuntivi',
-    'cms.linkconfig.pagetree': 'Albero delle Pagine',
+    'cms.linkconfig.pagetree': 'Pagine',
     'cms.linkconfig.pageSelect': 'Scegli una pagina',
     'cms.specialcharModal.title': 'Inserisci carattere speciale',
     'cms.assets.errors.failedToUpload': 'Impossibile caricare una risorsa, si è verificato un errore del server.',

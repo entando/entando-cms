@@ -1,7 +1,7 @@
 export default {
   locale: 'en',
   messages: {
-    'cms.title': 'CMS',
+    'cms.title': 'Content Management',
     'cms.label.name': 'Name',
     'cms.label.edit': 'Edit',
     'cms.label.download': 'Download',
@@ -424,7 +424,7 @@ export default {
     'cms.contents.modal.filter.title': 'Select one content',
     'cms.linkconfig.title': 'Configure Link Content',
     'cms.linkconfig.attributes.heading': 'Additional Attributes',
-    'cms.linkconfig.pagetree': 'Page tree',
+    'cms.linkconfig.pagetree': 'Pages',
     'cms.linkconfig.pageSelect': 'Choose a page',
     'cms.specialcharModal.title': 'Insert Special Character',
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
