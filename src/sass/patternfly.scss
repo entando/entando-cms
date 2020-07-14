@@ -82,6 +82,12 @@ $fa-square-o: "\f096";
   }
 }
 
+.btn {
+  padding: 2px 12px;
+  border: 0;
+  background-image: none;
+}
+
 .CodeMirror {
   border: 1px solid $color-pf-black-400;
 }
