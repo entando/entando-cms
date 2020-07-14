@@ -1,7 +1,7 @@
 export default {
   locale: 'it',
   messages: {
-    'cms.title': 'Content Management',
+    'cms.title': 'Gestione Contenuti',
     'cms.label.name': 'Nome',
     'cms.label.value': 'Valore',
     'cms.label.edit': 'Modificare',
