@@ -203,7 +203,7 @@ export class ContentsQueryFormBody extends Component {
         <h5>
           <span className="icon fa fa-puzzle-piece" title="Widget" />
           {' '}
-          <FormattedMessage id="a" defaultMessage="Contents - Publish a List of Contents" />
+          <FormattedMessage id="widget.contentsQuery.config.title" defaultMessage="Content Search Query" />
         </h5>
         <form onSubmit={onSubmit} className="form-horizontal ContentsQueryForm">
           <Row>

@@ -12,23 +12,18 @@ import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 
-const QUICK_FILTERS = [
-  {
-    id: 'description',
-    title: 'Name',
-    filterType: 'text',
-  },
-  {
-    id: 'id',
-    title: 'Code',
-    filterType: 'text',
-  },
-];
-
 const messages = defineMessages({
   searchContent: {
     id: 'cms.contents.quickSearchPlaceHolder',
     defaultValue: 'Search Content',
+  },
+  code: {
+    id: 'cms.label.code',
+    defaultValue: 'Code',
+  },
+  name: {
+    id: 'cms.label.name',
+    defaultValue: 'Name',
   },
 });
 
@@ -171,6 +166,20 @@ class ContentsFilter extends Component {
     );
 
     const advancedFiltersVisibility = showAdvancedFilters ? 'block' : 'none';
+
+    const QUICK_FILTERS = [
+      {
+        id: 'description',
+        title: intl.formatMessage(messages.name),
+        filterType: 'text',
+      },
+      {
+        id: 'id',
+        title: intl.formatMessage(messages.code),
+        filterType: 'text',
+      },
+    ];
+
     return (
       <div className="ContentsFilter">
         <Filter className="clearfix col-xs-12">

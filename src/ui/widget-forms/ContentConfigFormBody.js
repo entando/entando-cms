@@ -174,6 +174,11 @@ export default class ContentConfigFormBody extends PureComponent {
 
     return (
       <Fragment>
+        <h5>
+          <span className="icon fa fa-puzzle-piece" title="Widget" />
+          {' '}
+          <FormattedMessage id="widget.multipleContents.config.title" defaultMessage="Content List" />
+        </h5>
         <form onSubmit={handleSubmit} className="form-horizontal">
           <Row>
             <Col xs={12}>
