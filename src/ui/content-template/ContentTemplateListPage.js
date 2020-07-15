@@ -39,17 +39,20 @@ const ContentTemplateListPage = () => (
         <ContentTemplateSearchFormContainer />
       </Col>
       <Col xs={1} />
+    </Row>
+    <Row>
+      <Col xs={12}>
+        <ContentTemplateListContainer />
+      </Col>
+    </Row>
+    <Row className="ContentTemplateList__filter">
+      <Col xs={10} />
       <Col xs={2}>
         <Link to={ROUTE_CMS_CONTENTTEMPLATE_ADD}>
           <Button bsStyle="primary" className="ContentTemplateList__addbutton">
             <FormattedMessage id="cms.contenttemplate.add.label" defaultMessage="Add Content Template" />
           </Button>
         </Link>
-      </Col>
-    </Row>
-    <Row>
-      <Col xs={12}>
-        <ContentTemplateListContainer />
       </Col>
     </Row>
   </Grid>

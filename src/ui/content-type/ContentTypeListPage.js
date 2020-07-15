@@ -33,6 +33,11 @@ const ContentTypeListPage = () => (
         />
       </Col>
     </Row>
+    <Row>
+      <Col xs={12}>
+        <ContentTypeListContainer />
+      </Col>
+    </Row>
     <Row className="ContentTypeList__filter">
       <Col xs={10} />
       <Col xs={2}>
@@ -41,11 +46,6 @@ const ContentTypeListPage = () => (
             <FormattedMessage id="cms.contenttype.add.label" defaultMessage="Add" />
           </Button>
         </Link>
-      </Col>
-    </Row>
-    <Row>
-      <Col xs={12}>
-        <ContentTypeListContainer />
       </Col>
     </Row>
   </Grid>
