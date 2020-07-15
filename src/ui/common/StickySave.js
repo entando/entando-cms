@@ -49,7 +49,7 @@ const StickySave = ({
   onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions,
 }) => (
   <Grid className="no-padding">
-    <Col xs={12} className="StickySave no-padding">
+    <Col xs={12} className="StickySave">
       <Row className="toolbar-pf table-view-pf-toolbar">
         <Col xs={12}>
           <Row className="StickySave__row">
