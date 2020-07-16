@@ -70,7 +70,7 @@ const fileTypes = [
   },
   {
     name: 'Documents',
-    id: 'documents',
+    id: 'file',
   },
 ];
 
