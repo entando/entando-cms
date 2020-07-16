@@ -11,6 +11,7 @@ const propTypes = {
   onAdd: PropTypes.func,
   onDelete: PropTypes.func,
   onSave: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 const defaultProps = {
@@ -19,6 +20,7 @@ const defaultProps = {
   onAdd: () => {},
   onDelete: () => {},
   onSave: () => {},
+  onError: () => {},
 };
 
 class ContentSettingsCropRatioInput extends Component {
@@ -54,10 +56,13 @@ class ContentSettingsCropRatioInput extends Component {
   }
 
   handleInputBlur() {
+    const { isNew, onError } = this.props;
     if (this.getValidationState() === 'success') {
       const { onSave } = this.props;
       const { value } = this.state;
       onSave(value);
+    } else if (!isNew) {
+      onError('cropvalueerror');
     }
   }
 
@@ -73,7 +78,7 @@ class ContentSettingsCropRatioInput extends Component {
   handleSubmit(e) {
     if (e) e.preventDefault();
 
-    const { isNew } = this.props;
+    const { isNew, onError } = this.props;
     if (isNew && this.getValidationState() === 'success') {
       const { onAdd } = this.props;
       const { value } = this.state;
@@ -82,6 +87,8 @@ class ContentSettingsCropRatioInput extends Component {
       this.setState({
         value: '',
       });
+    } else {
+      onError('cropvalueerror');
     }
   }
 
