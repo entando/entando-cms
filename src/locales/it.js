@@ -239,7 +239,7 @@ export default {
       "L'ultimo ricaricamento, in data {date}, ha avuto esisto positivo.",
     'cms.contentsettings.label.reloadstatus.remark.failed':
       "L'ultimo ricaricamento, in data {date}, ha avuto esisto negativo",
-    'cms.contentsettings.cropvalueerror': 'Valore del raccolto non valido. Il formato deve essere "numero: numero"',
+    'cms.contentsettings.cropvalueerror': 'Dimensioni di ritaglio non valide. Il formato deve essere "numero: numero"',
     'cms.contentsettings.cropratios.heading': 'Impostazioni Dimensioni di ritaglio immagine',
     'cms.contentsettings.cropratios.form.title': 'Aggiungi dimensione di ritaglio',
     'cms.contentsettings.ratio.added.success': 'Rapporto di ritaglio aggiunto correttamente',
