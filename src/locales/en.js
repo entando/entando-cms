@@ -2,6 +2,7 @@ export default {
   locale: 'en',
   messages: {
     'cms.title': 'Content Management',
+    'cms.label.code': 'Code',
     'cms.label.name': 'Name',
     'cms.label.edit': 'Edit',
     'cms.label.download': 'Download',
@@ -508,8 +509,10 @@ export default {
     'contentPicker.allStatuses': 'All',
     'contentPicker.allTypes': 'All',
     'contentPicker.searchPlaceholder': 'Search for a content by name or code',
-    'widget.singleContent.config.title': 'Contents - Publish a content',
+    'widget.singleContent.config.title': 'Content',
     'widget.singleContent.config.content': 'Content',
     'widget.singleContent.config.contentTemplate': 'Content template',
+    'widget.multipleContents.config.title': 'Content List',
+    'widget.contentsQuery.config.title': 'Content Search Query',
   },
 };
