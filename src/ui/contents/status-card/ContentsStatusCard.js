@@ -49,7 +49,9 @@ class ContentsStatusCard extends Component {
   }
 
   render() {
-    const { intl, contents, userPermissions } = this.props;
+    const {
+      intl, contents, userPermissions, language,
+    } = this.props;
     const {
       unpublished, ready, published, latestModificationDate,
     } = generateContentsStatusReport(contents);
@@ -74,7 +76,7 @@ class ContentsStatusCard extends Component {
       </div>
     ) : (
       <DonutChart
-        id="donunt-chart-3"
+        key={language}
         data={{
           colors: {
             [msgs.published]: '#00A0DF',
@@ -123,6 +125,7 @@ class ContentsStatusCard extends Component {
 
 ContentsStatusCard.propTypes = {
   intl: intlShape.isRequired,
+  language: PropTypes.string.isRequired,
   onDidMount: PropTypes.func,
   contents: PropTypes.arrayOf(PropTypes.shape({})),
   userPermissions: PropTypes.arrayOf(PropTypes.string),
