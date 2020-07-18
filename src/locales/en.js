@@ -91,7 +91,7 @@ export default {
     'cms.assets.list.actions': 'Actions',
     'cms.assets.list.all': 'All',
     'cms.assets.list.image': 'Images',
-    'cms.assets.list.documents': 'Documents',
+    'cms.assets.list.file': 'Documents',
     'cms.assets.list.filterBy': 'Search',
     'cms.assets.list.activeFilters': 'Active Filters',
     'cms.assets.list.clearAll': 'Clear All',
