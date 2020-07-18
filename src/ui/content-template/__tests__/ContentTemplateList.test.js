@@ -1,7 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-
-import { configEnzymeAdapter } from 'testutils/helpers';
+import { configEnzymeAdapter, shallowWithIntl } from 'testutils/helpers';
 import { GET_CONTENT_TEMPLATES_RESPONSE_OK as contentTemplates } from 'testutils/mocks/contentTemplate';
 
 import ContentTemplateList from 'ui/content-template/ContentTemplateList';
@@ -22,7 +20,7 @@ let component;
 
 describe('content-template/ContentTemplateList', () => {
   beforeEach(() => {
-    component = shallow(<ContentTemplateList {...props} />);
+    component = shallowWithIntl(<ContentTemplateList {...props} />);
   });
 
   it('renders component without crashing', () => {
@@ -30,11 +28,11 @@ describe('content-template/ContentTemplateList', () => {
   });
 
   it('has class ContentTemplateList__table', () => {
-    expect(component.find('.ContentTemplateList__table').exists()).toBe(true);
+    expect(component.dive().find('.ContentTemplateList__table').exists()).toBe(true);
   });
 
   it('called onDidMount and load rows same length with contentTemplates', () => {
     expect(props.onDidMount).toHaveBeenCalled();
-    expect(component.find('ContentTemplateListItem')).toHaveLength(contentTemplates.length);
+    expect(component.dive().find('ContentTemplateListItem')).toHaveLength(contentTemplates.length);
   });
 });

@@ -4,11 +4,14 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import { config } from '@entando/apimanager';
-import { configure } from 'enzyme';
+import { configure, mount, shallow } from 'enzyme';
 import { Provider as StateProvider } from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
 import { reduxForm } from 'redux-form';
+import { IntlProvider } from 'react-intl';
+import { enLocale } from 'app-init/locale';
+
 
 export const configEnzymeAdapter = () => {
   configure({ adapter: new Adapter() });
@@ -62,3 +65,28 @@ export const mockRenderWithIntl = (ui, state = {}) => {
 export const enzymeHelperFindByTestId = (wrapper, testId) => wrapper.find(`[data-test-id="${testId}"]`);
 
 export const addReduxForm = (def, formName = 'form') => reduxForm({ form: formName })(def);
+
+const defaultLocale = 'en';
+const locale = defaultLocale;
+
+export function mountWithIntl(node) {
+  return mount(node, {
+    wrappingComponent: IntlProvider,
+    wrappingComponentProps: {
+      locale,
+      defaultLocale,
+      messages: enLocale,
+    },
+  });
+}
+
+export function shallowWithIntl(node) {
+  return shallow(node, {
+    wrappingComponent: IntlProvider,
+    wrappingComponentProps: {
+      locale,
+      defaultLocale,
+      messages: enLocale,
+    },
+  });
+}
