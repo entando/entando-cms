@@ -5,11 +5,14 @@ import {
   ListView,
   Paginator,
 } from 'patternfly-react';
-
+import {
+  injectIntl, intlShape,
+} from 'react-intl';
 import AttachmentsListItem from 'ui/versioning/attachments/AttachmentsListItem';
 import FileVersioningSearchForm from 'ui/versioning/common/FileVersioningSearchForm';
 import RemoveResourceModalContainer from 'ui/versioning/common/RemoveResourceModalContainer';
 import RecoverResourceModalContainer from 'ui/versioning/common/RecoverResourceModalContainer';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -38,6 +41,7 @@ class AttachmentsList extends React.Component {
 
   render() {
     const {
+      intl,
       loading,
       attachments,
       pagination: {
@@ -50,6 +54,10 @@ class AttachmentsList extends React.Component {
       recoverAttachment,
       domain,
     } = this.props;
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
 
     return (
       <Spinner loading={!!loading}>
@@ -76,6 +84,7 @@ class AttachmentsList extends React.Component {
             itemCount={totalItems}
             onPageSet={this.changePage}
             onPerPageSelect={this.changePageSize}
+            messages={messages}
           />
         </ListView>
         <RecoverResourceModalContainer resourceType="file" />
@@ -86,6 +95,7 @@ class AttachmentsList extends React.Component {
 }
 
 AttachmentsList.propTypes = {
+  intl: intlShape.isRequired,
   onDidMount: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   fetchAttachments: PropTypes.func,
@@ -116,4 +126,4 @@ AttachmentsList.defaultProps = {
   domain: '',
 };
 
-export default AttachmentsList;
+export default injectIntl(AttachmentsList);

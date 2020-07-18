@@ -5,11 +5,14 @@ import {
   ListView,
   Paginator,
 } from 'patternfly-react';
-
+import {
+  injectIntl, intlShape,
+} from 'react-intl';
 import ImagesListItem from 'ui/versioning/images/ImagesListItem';
 import FileVersioningSearchForm from 'ui/versioning/common/FileVersioningSearchForm';
 import RemoveResourceModalContainer from 'ui/versioning/common/RemoveResourceModalContainer';
 import RecoverResourceModalContainer from 'ui/versioning/common/RecoverResourceModalContainer';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -38,6 +41,7 @@ class ImagesList extends React.Component {
 
   render() {
     const {
+      intl,
       loading,
       images,
       pagination: {
@@ -50,6 +54,11 @@ class ImagesList extends React.Component {
       recoverImage,
       domain,
     } = this.props;
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <Spinner loading={!!loading}>
         <FileVersioningSearchForm onSubmit={onSubmit} />
@@ -75,6 +84,7 @@ class ImagesList extends React.Component {
             itemCount={totalItems}
             onPageSet={this.changePage}
             onPerPageSelect={this.changePageSize}
+            messages={messages}
           />
         </ListView>
         <RecoverResourceModalContainer resourceType="image" />
@@ -85,6 +95,7 @@ class ImagesList extends React.Component {
 }
 
 ImagesList.propTypes = {
+  intl: intlShape.isRequired,
   onDidMount: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   fetchImages: PropTypes.func,
@@ -115,4 +126,4 @@ ImagesList.defaultProps = {
   domain: '',
 };
 
-export default ImagesList;
+export default injectIntl(ImagesList);

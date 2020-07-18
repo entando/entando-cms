@@ -3,7 +3,9 @@ import { DonutChart } from 'patternfly-react';
 import { Link } from 'react-router-dom';
 import { formatDate, hasAccess } from '@entando/utils';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  defineMessages, FormattedMessage, injectIntl, intlShape,
+} from 'react-intl';
 
 import { ROUTE_CMS_CONTENTS } from 'app-init/routes';
 import { SUPERUSER_PERMISSION } from 'state/permissions/const';
@@ -25,6 +27,21 @@ const generateContentsStatusReport = contents => contents.reduce((acc, curr) => 
   unpublished: 0, ready: 0, published: 0, latestModificationDate: 0,
 });
 
+const contentStatusMsgs = defineMessages({
+  published: {
+    id: 'cms.content.status.published',
+    defaultMessage: 'Approved',
+  },
+  unpublished: {
+    id: 'cms.content.status.unpublished',
+    defaultMessage: 'Work',
+  },
+  ready: {
+    id: 'cms.content.status.ready',
+    defaultMessage: 'Approved, with changes',
+  },
+});
+
 class ContentsStatusCard extends Component {
   componentDidMount() {
     const { onDidMount } = this.props;
@@ -32,14 +49,23 @@ class ContentsStatusCard extends Component {
   }
 
   render() {
-    const { contents, userPermissions } = this.props;
+    const {
+      intl, contents, userPermissions, language,
+    } = this.props;
     const {
       unpublished, ready, published, latestModificationDate,
     } = generateContentsStatusReport(contents);
+
+    const msgs = {
+      published: intl.formatMessage(contentStatusMsgs.published),
+      unpublished: intl.formatMessage(contentStatusMsgs.unpublished),
+      ready: intl.formatMessage(contentStatusMsgs.ready),
+    };
+
     const columns = [
-      ['Approved', published],
-      ['Work', unpublished],
-      ['Approved with changes', ready],
+      [msgs.published, published],
+      [msgs.unpublished, unpublished],
+      [msgs.ready, ready],
     ];
 
     const contentsAvailable = contents && contents.length > 0;
@@ -50,9 +76,13 @@ class ContentsStatusCard extends Component {
       </div>
     ) : (
       <DonutChart
-        id="donunt-chart-3"
+        key={language}
         data={{
-          colors: { Approved: '#00A0DF', Work: '#A6A6A6', 'Approved with changes': '#0066CC' },
+          colors: {
+            [msgs.published]: '#00A0DF',
+            [msgs.unpublished]: '#A6A6A6',
+            [msgs.ready]: '#0066CC',
+          },
           columns,
           type: 'donut',
         }}
@@ -94,6 +124,8 @@ class ContentsStatusCard extends Component {
 }
 
 ContentsStatusCard.propTypes = {
+  intl: intlShape.isRequired,
+  language: PropTypes.string.isRequired,
   onDidMount: PropTypes.func,
   contents: PropTypes.arrayOf(PropTypes.shape({})),
   userPermissions: PropTypes.arrayOf(PropTypes.string),
@@ -105,4 +137,4 @@ ContentsStatusCard.defaultProps = {
   userPermissions: null,
 };
 
-export default ContentsStatusCard;
+export default injectIntl(ContentsStatusCard);

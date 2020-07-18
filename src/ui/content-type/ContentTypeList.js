@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape,
+} from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
 import ContentTypeReferenceStatusContainer from 'ui/content-type/ContentTypeReferenceStatusContainer';
 import DeleteContentTypeModalContainer from 'ui/content-type/DeleteContentTypeModalContainer';
 import ContentTypeListItem from 'ui/content-type/ContentTypeListItem';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -33,6 +36,7 @@ class ContentTypeList extends Component {
 
   render() {
     const {
+      intl,
       contentTypes,
       loading,
       onClickDelete,
@@ -47,6 +51,7 @@ class ContentTypeList extends Component {
       perPage: pageSize,
       perPageOptions,
     };
+
     const renderRow = contentTypes.map(item => (
       <ContentTypeListItem
         key={item.code}
@@ -55,6 +60,11 @@ class ContentTypeList extends Component {
         {...item}
       />
     ));
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div className="ContentTypeList__wrap">
         <Spinner loading={!!loading}>
@@ -84,6 +94,7 @@ class ContentTypeList extends Component {
             itemCount={totalItems}
             onPageSet={this.changePage}
             onPerPageSelect={this.changePageSize}
+            messages={messages}
           />
           <DeleteContentTypeModalContainer />
         </Spinner>
@@ -93,6 +104,7 @@ class ContentTypeList extends Component {
 }
 
 ContentTypeList.propTypes = {
+  intl: intlShape.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
@@ -107,4 +119,4 @@ ContentTypeList.defaultProps = {
   loading: false,
 };
 
-export default ContentTypeList;
+export default injectIntl(ContentTypeList);

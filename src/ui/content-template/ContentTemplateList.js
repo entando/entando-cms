@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape,
+} from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
 import ContentTemplateListItem from 'ui/content-template/ContentTemplateListItem';
 import DeleteContentTemplateModalContainer from 'ui/content-template/DeleteContentTemplateModalContainer';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -32,6 +35,7 @@ class ContentTemplateList extends Component {
 
   render() {
     const {
+      intl,
       contentTemplates,
       loading,
       onClickDelete,
@@ -50,6 +54,12 @@ class ContentTemplateList extends Component {
       .map(item => (
         <ContentTemplateListItem key={item.id} onDelete={onClickDelete} {...item} />
       ));
+
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div className="ContentTemplateList__wrap">
         <Spinner loading={!!loading}>
@@ -78,6 +88,7 @@ class ContentTemplateList extends Component {
             itemCount={totalItems}
             onPageSet={this.changePage}
             onPerPageSelect={this.changePageSize}
+            messages={messages}
           />
           <DeleteContentTemplateModalContainer />
         </Spinner>
@@ -87,6 +98,7 @@ class ContentTemplateList extends Component {
 }
 
 ContentTemplateList.propTypes = {
+  intl: intlShape.isRequired,
   contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
@@ -101,4 +113,4 @@ ContentTemplateList.defaultProps = {
   loading: false,
 };
 
-export default ContentTemplateList;
+export default injectIntl(ContentTemplateList);
