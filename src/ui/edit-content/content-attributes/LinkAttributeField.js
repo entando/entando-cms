@@ -81,6 +81,7 @@ class LinkAttributeField extends Component {
       attribute,
       langCode,
       mainGroup,
+      joinGroups,
       ...rest
     } = this.props;
 
@@ -157,6 +158,7 @@ class LinkAttributeField extends Component {
         <LinkConfigModal
           isVisible={modalVisible}
           mainGroup={mainGroup}
+          joinGroups={joinGroups}
           onClose={this.handleModalClose}
           onSave={this.handleSave}
         />
@@ -172,6 +174,7 @@ LinkAttributeField.propTypes = {
   attribute: PropTypes.shape(attributeShape).isRequired,
   langCode: PropTypes.string.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default LinkAttributeField;

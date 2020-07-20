@@ -19,7 +19,7 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const renderField = (name, idx, attribute, langCode, mainGroup) => {
+const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
   const {
     type, code, mandatory, listFilter, indexable, name: attName,
   } = attribute;
@@ -64,6 +64,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup) => {
           attribute={attribute}
           langCode={langCode}
           mainGroup={mainGroup}
+          joinGroups={joinGroups}
         />
       );
   }
@@ -76,12 +77,13 @@ const renderField = (name, idx, attribute, langCode, mainGroup) => {
       component={AttributeFieldComp}
       label={fieldLabel}
       mainGroup={mainGroup}
+      joinGroups={joinGroups}
     />
   );
 };
 
 const AttributeFields = ({
-  attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode,
+  attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -102,11 +104,12 @@ const AttributeFields = ({
       });
     });
     reInitializeForm('editcontentform', {
-      ...content, attributes: atts, contentType: typeCode, mainGroup,
+      ...content, attributes: atts, contentType: typeCode, mainGroup, joinGroups,
     });
   }
 
-  return fields.map((name, idx) => renderField(name, idx, attributes[idx], langCode, mainGroup));
+  return fields.map((name, idx) => renderField(name, idx, attributes[idx],
+    langCode, mainGroup, joinGroups));
 };
 
 AttributeFields.propTypes = {
@@ -117,6 +120,7 @@ AttributeFields.propTypes = {
   typeCode: PropTypes.string.isRequired,
   mainGroup: PropTypes.string.isRequired,
   langCode: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default AttributeFields;

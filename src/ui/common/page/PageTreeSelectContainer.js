@@ -14,12 +14,12 @@ export const mapStateToProps = state => ({
   loading: getLoading(state).pageTree,
 });
 
-export const mapDispatchToProps = (dispatch, { status, ownerGroup }) => ({
+export const mapDispatchToProps = (dispatch, { status, ownerGroup, joinGroups }) => ({
   onDidMount: () => {
     dispatch(clearTree());
-    dispatch(handleExpandPage(HOMEPAGE_CODE, status, [ownerGroup, 'free']));
+    dispatch(handleExpandPage(HOMEPAGE_CODE, status, ownerGroup, joinGroups));
   },
-  onExpandPage: pageCode => dispatch(handleExpandPage(pageCode, status, [ownerGroup, 'free'])),
+  onExpandPage: pageCode => dispatch(handleExpandPage(pageCode, status, ownerGroup, joinGroups)),
   onExpandAll: () => dispatch(fetchPageTreeAll()),
   onCollapseAll: () => dispatch(collapseAll()),
 });

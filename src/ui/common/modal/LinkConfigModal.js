@@ -19,7 +19,7 @@ const getLinkUrl = (type, value) => `#!${type};${value}!#`;
 const ID = 'LinkConfigModal';
 
 const LinkConfigModal = ({
-  isVisible, hasResourceTab, onClose, onSave, mainGroup,
+  isVisible, hasResourceTab, onClose, onSave, mainGroup, joinGroups,
 }) => {
   const handleSubmit = (values) => {
     const linkObj = { ...values.attributes };
@@ -93,6 +93,7 @@ const LinkConfigModal = ({
         <Tab eventKey="page" title={renderedPageTabTitle}>
           <LinkConfigPageForm
             mainGroup={mainGroup}
+            joinGroups={joinGroups}
             onSubmit={handleSubmit}
             onCancel={onClose}
           />
@@ -100,6 +101,7 @@ const LinkConfigModal = ({
         <Tab eventKey="content" title={renderedContentTabTitle}>
           <LinkConfigContentFormContainer
             mainGroup={mainGroup}
+            joinGroups={joinGroups}
             onSubmit={handleSubmit}
             onCancel={onClose}
           />
@@ -108,6 +110,7 @@ const LinkConfigModal = ({
           <Tab eventKey="resource" title={renderedResourceTabTitle}>
             <LinkConfigResourceForm
               onSubmit={handleSubmit}
+              joinGroups={joinGroups}
               onCancel={onClose}
               mainGroup={mainGroup}
             />
@@ -124,10 +127,12 @@ LinkConfigModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 LinkConfigModal.defaultProps = {
   hasResourceTab: false,
+  joinGroups: [],
 };
 
 export default LinkConfigModal;

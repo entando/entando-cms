@@ -205,7 +205,7 @@ class RichTextEditor extends Component {
 
   render() {
     const {
-      placeholder, disabled, input, mainGroup,
+      placeholder, disabled, input, mainGroup, joinGroups,
     } = this.props;
 
     const { modal, editorToolbarId } = this.state;
@@ -227,6 +227,7 @@ class RichTextEditor extends Component {
           isVisible={modal === 'enlink'}
           hasResourceTab
           mainGroup={mainGroup}
+          joinGroups={joinGroups}
           onSave={this.handleLinkConfigSave}
           onClose={this.handleModalClose}
         />
@@ -251,6 +252,7 @@ RichTextEditor.propTypes = {
   attrCode: PropTypes.string,
   langCode: PropTypes.string,
   mainGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 RichTextEditor.defaultProps = {
@@ -259,6 +261,7 @@ RichTextEditor.defaultProps = {
   attrCode: '',
   langCode: 'en',
   mainGroup: '',
+  joinGroups: [],
 };
 
 export default RichTextEditor;

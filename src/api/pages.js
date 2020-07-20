@@ -17,8 +17,8 @@ const fetchPageResponseMap = {
   contacts: CONTACTS_PAYLOAD,
 };
 
-export const getPage = (pageCode, status = PAGE_STATUS_DRAFT) => makeRequest({
-  uri: `/api/pages/${pageCode}?status=${status}`,
+export const getPage = (pageCode, status = PAGE_STATUS_DRAFT, params = '') => makeRequest({
+  uri: `/api/pages/${pageCode}?status=${status}&${params}`,
   method: METHODS.GET,
   mockResponse: fetchPageResponseMap[pageCode] || {},
   useAuthentication: true,
@@ -38,8 +38,8 @@ const fetchPageChildrenResponseMap = {
   contacts: [],
 };
 
-export const getPageChildren = pageCode => makeRequest({
-  uri: `/api/pages?parentCode=${pageCode}`,
+export const getPageChildren = (pageCode, params = '') => makeRequest({
+  uri: `/api/pages?parentCode=${pageCode}&${params}`,
   method: METHODS.GET,
   mockResponse: fetchPageChildrenResponseMap[pageCode] || {},
   useAuthentication: true,

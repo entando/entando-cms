@@ -112,32 +112,32 @@ export const fetchSearchPages = (page = { page: 1, pageSize: 10 }, params = '') 
   }).catch(() => {});
 });
 
-export const fetchPageTree = pageCode => dispatch => new Promise((resolve) => {
+export const fetchPageTree = (pageCode, status, params) => dispatch => new Promise((resolve) => {
   if (pageCode === HOMEPAGE_CODE) {
     Promise.all([
-      fetchPage(pageCode)(dispatch),
-      fetchPageChildren(pageCode)(dispatch),
+      fetchPage(pageCode, status, params)(dispatch),
+      fetchPageChildren(pageCode, params)(dispatch),
     ]).then((responses) => {
       resolve([responses[0].payload].concat(responses[1].payload));
     });
   }
-  fetchPageChildren(pageCode)(dispatch).then((response) => {
+  fetchPageChildren(pageCode, params)(dispatch).then((response) => {
     resolve(response.payload);
   });
 });
 
 export const handleExpandPage = (pageCode = HOMEPAGE_CODE,
-  status, accessGroups) => (dispatch, getState) => {
+  status, mainGroup, joinGroups) => (dispatch, getState) => {
+  console.log(mainGroup, joinGroups);
+  const params = `forLinkingToOwnerGroup=${mainGroup}&forLinkingToExtraGroups=${joinGroups.join(',')}`;
   const pageStatus = getStatusMap(getState())[pageCode];
   const toExpand = (!pageStatus || !pageStatus.expanded);
   const toLoad = (toExpand && (!pageStatus || !pageStatus.loaded));
   if (toLoad) {
     dispatch(setPageLoading(pageCode));
-    return fetchPageTree(pageCode)(dispatch)
+    return fetchPageTree(pageCode, status, params)(dispatch)
       .then((pages) => {
-        const filteredPages = pages
-          .filter(page => page.status === status && accessGroups.includes(page.ownerGroup));
-        dispatch(addPages(filteredPages));
+        dispatch(addPages(pages));
         dispatch(togglePageExpanded(pageCode, true));
         dispatch(setPageLoaded(pageCode));
       }).catch(() => {});

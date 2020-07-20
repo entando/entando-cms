@@ -13,10 +13,11 @@ import PageTreeContainer from 'ui/common/page/PageTreeSelectContainer';
 import FormLabel from 'ui/common/form/FormLabel';
 import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 
-const PageTreeField = ({ input, mainGroup }) => (
+const PageTreeField = ({ input, mainGroup, joinGroups }) => (
   <PageTreeContainer
     onPageSelect={input.onChange}
     ownerGroup={mainGroup}
+    joinGroups={joinGroups}
     status="published"
   />
 );
@@ -24,11 +25,14 @@ const PageTreeField = ({ input, mainGroup }) => (
 PageTreeField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
   mainGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const label = <FormLabel labelId="cms.linkconfig.pageSelect" />;
 
-const LinkConfigPageForm = ({ onCancel, handleSubmit, mainGroup }) => (
+const LinkConfigPageForm = ({
+  onCancel, handleSubmit, mainGroup, joinGroups,
+}) => (
   <form className="form-horizontal" onSubmit={handleSubmit}>
     <Col xs={2} className="text-right">
       <label>{label}</label>
@@ -37,6 +41,7 @@ const LinkConfigPageForm = ({ onCancel, handleSubmit, mainGroup }) => (
       <Field
         component={PageTreeField}
         mainGroup={mainGroup}
+        joinGroups={joinGroups}
         name="page"
       />
     </Col>
@@ -62,6 +67,7 @@ LinkConfigPageForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default reduxForm({

@@ -267,6 +267,7 @@ export class EditContentFormBody extends React.Component {
                     typeCode={typeCode}
                     content={content}
                     mainGroup={selectedOwnerGroup}
+                    joinGroups={selectedJoinGroups}
                   />
                   )}
                 </Row>
