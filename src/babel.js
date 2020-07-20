@@ -7,6 +7,7 @@ import SingleContentConfigContainer from 'ui/widget-forms/publish-single-content
 import MultipleContentsConfigContainer from 'ui/widget-forms/MultipleContentsConfigContainer';
 import ContentsQueryConfigContainer from 'ui/widget-forms/ContentsQueryConfigContainer';
 import ContentsStatusCardContainer from 'ui/contents/status-card/ContentsStatusCardContainer';
+import { getActionText, getTargetText, getTargetLink } from 'helpers/notificationUtils';
 
 const cms = {
   id: 'cms',
@@ -29,6 +30,11 @@ const cms = {
   },
   persistData: {
     tableColumns: ['currentColumnsShow'],
+  },
+  notificationMaker: {
+    getActionText,
+    getTargetText,
+    getTargetLink,
   },
 };
 
