@@ -122,6 +122,7 @@ class ContentSearch extends Component {
         <Col xs={12} sm={3} smOffset={9} className="text-right mobile-center">
           <Button
             className="ContentsFilter__search-button"
+            bsStyle="primary"
             onClick={() => onAdvancedFilterSearch()}
           >
             <FormattedMessage id="cms.contents.search" defaultMessage="Search" />

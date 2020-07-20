@@ -136,6 +136,7 @@ class AssetsAdvancedSearchForm extends Component {
           <Button
             className="AssetsAdvancedFilter__search-button"
             type="submit"
+            bsStyle="primary"
             onClick={() => handleSubmit()}
           >
             <FormattedMessage id="cms.contents.search" defaultMessage="Search" />

@@ -50,7 +50,7 @@ const StickySave = ({
 }) => (
   <Grid className="no-padding">
     <Col xs={12} className="StickySave">
-      <Row className="toolbar-pf table-view-pf-toolbar">
+      <Row className="toolbar-pf table-view-pf-toolbar" style={{ backgroundColor: 'white' }}>
         <Col xs={12}>
           <Row className="StickySave__row">
             <Col xs={12} className="StickySave__column">
