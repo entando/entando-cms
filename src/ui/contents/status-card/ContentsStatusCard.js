@@ -28,6 +28,10 @@ const generateContentsStatusReport = contents => contents.reduce((acc, curr) => 
 });
 
 const contentStatusMsgs = defineMessages({
+  contents: {
+    id: 'cms.contents.title',
+    defaultMessage: 'Contents',
+  },
   published: {
     id: 'cms.content.status.published',
     defaultMessage: 'Approved',
@@ -57,6 +61,7 @@ class ContentsStatusCard extends Component {
     } = generateContentsStatusReport(contents);
 
     const msgs = {
+      contents: intl.formatMessage(contentStatusMsgs.contents),
       published: intl.formatMessage(contentStatusMsgs.published),
       unpublished: intl.formatMessage(contentStatusMsgs.unpublished),
       ready: intl.formatMessage(contentStatusMsgs.ready),
@@ -86,7 +91,7 @@ class ContentsStatusCard extends Component {
           columns,
           type: 'donut',
         }}
-        title={{ type: 'total', secondary: 'contents' }}
+        title={{ type: 'total', secondary: msgs.contents }}
         legend={{ show: true, position: 'right' }}
         tooltip={{
           format: {
