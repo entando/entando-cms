@@ -327,6 +327,7 @@ class ContentsFilter extends Component {
         <div className="form-group">
           <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
             <Button
+              bsStyle="primary"
               className="ContentsFilter__search-button"
               onClick={() => onAdvancedFilterSearch()}
             >
