@@ -404,6 +404,7 @@ export default {
     'cms.linkconfig.attributes.heading': 'Additional Attributes',
     'cms.linkconfig.pagetree': 'Pages',
     'cms.linkconfig.pageSelect': 'Choose a page',
+    'cms.activityStream.saveContent': 'edited a content',
     'cms.specialcharModal.title': 'Insert Special Character',
     'validateForm.elements': "Insert a configuration like 'key1=value1,key2=value2,key3=value3'",
     'validateForm.element': "Insert a configuration like 'label1,label2,label3'",
