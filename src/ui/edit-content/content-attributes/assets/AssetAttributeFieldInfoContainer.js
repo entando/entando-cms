@@ -5,10 +5,10 @@ import { getMetadataMapping } from 'state/content-settings/selectors';
 import { getDomain } from '@entando/apimanager';
 import AssetAttributeFieldInfo from 'ui/edit-content/content-attributes/assets/AssetAttributeFieldInfo';
 
-export const mapStateToProps = (state, { input }) => {
+export const mapStateToProps = (state, { input, langCode }) => {
   const domain = getDomain(state);
   const mapping = getMetadataMapping(state);
-  const assetInfo = condenseAssetInfo(input.value, domain);
+  const assetInfo = condenseAssetInfo(input.value[langCode], domain);
   const { type } = assetInfo;
 
   const fields = {
@@ -54,21 +54,28 @@ export const mapStateToProps = (state, { input }) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch, { input }) => ({
+export const mapDispatchToProps = (dispatch, { input, langCode }) => ({
   onUpdateValue: (name, value) => {
+    const inputValueLang = input.value[langCode];
+    let inputValue;
     if (name === 'name') {
-      const ch = { ...input.value, name: value };
-      input.onChange(ch);
+      inputValue = {
+        ...inputValueLang,
+        name: value,
+      };
     } else {
-      const ch = {
-        ...input.value,
+      inputValue = {
+        ...inputValueLang,
         metadata: {
-          ...input.value.metadata,
+          ...inputValueLang.metadata,
           [name]: value,
         },
       };
-      input.onChange(ch);
     }
+    input.onChange({
+      ...input.value,
+      [langCode]: inputValue,
+    });
   },
   onRemoveValue: () => input.onChange(null),
 });
