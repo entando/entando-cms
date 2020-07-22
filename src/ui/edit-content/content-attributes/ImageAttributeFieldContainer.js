@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttributeField';
 import { setVisibleModal } from 'state/modal/actions';
+import { getActiveLanguages, getLanguages, getDefaultLanguage } from 'state/languages/selectors';
 import {
   setListFilterParams,
   fetchAssetsPaged,
@@ -10,6 +11,13 @@ import { fetchGroups } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 
 import { IMAGE_MODAL_ID } from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
+
+export const mapStateToProps = (state) => {
+  const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
+  const langCodes = languages.map(({ code }) => code);
+  const defaultLang = getDefaultLanguage(state);
+  return { languages, langCodes, defaultLang };
+};
 
 export const mapDispatchToProps = dispatch => ({
   assetListBegin: () => {
@@ -23,7 +31,7 @@ export const mapDispatchToProps = dispatch => ({
 });
 
 const ImageAttributeFieldContainer = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(ImageAttributeField);
 
