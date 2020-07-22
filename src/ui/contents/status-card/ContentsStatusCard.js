@@ -139,7 +139,7 @@ ContentsStatusCard.propTypes = {
 ContentsStatusCard.defaultProps = {
   onDidMount: () => {},
   contents: [],
-  userPermissions: null,
+  userPermissions: [],
 };
 
 export default injectIntl(ContentsStatusCard);

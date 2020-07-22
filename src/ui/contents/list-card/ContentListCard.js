@@ -136,7 +136,7 @@ ContentListCard.propTypes = {
 };
 
 ContentListCard.defaultProps = {
-  userPermissions: null,
+  userPermissions: [],
   contents: [],
   contentTypes: [],
   pagination: {
