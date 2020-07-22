@@ -45,9 +45,11 @@ const defaultState = {
 const reducer = (state = defaultState, action = {}) => {
   switch (action.type) {
     case SET_CONTENTS: {
+      const { contents, namespace } = action.payload;
+      const newContents = contents || [];
       return {
         ...state,
-        contents: action.payload || [],
+        ...(namespace ? { [namespace]: newContents } : { contents: newContents }),
       };
     }
     case SET_TAB_SEARCH: {

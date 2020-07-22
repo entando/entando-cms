@@ -8,7 +8,7 @@ import {
 } from 'react-intl';
 
 import { ROUTE_CMS_CONTENTS } from 'app-init/routes';
-import { SUPERUSER_PERMISSION } from 'state/permissions/const';
+import { SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION } from 'state/permissions/const';
 
 const generateContentsStatusReport = contents => contents.reduce((acc, curr) => {
   const { onLine, status, lastModified } = curr;
@@ -115,8 +115,8 @@ class ContentsStatusCard extends Component {
         </span>
         {renderBody}
         {
-          hasAccess(SUPERUSER_PERMISSION, userPermissions) && (
-            <div className="pull-right">
+          hasAccess([SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION], userPermissions) && (
+            <div className="pull-right ContentsStatusCard__bottom-link">
               <Link to={ROUTE_CMS_CONTENTS}>
                 <FormattedMessage id="cms.menu.contentlist" defaultMessage="Content List" />
               </Link>

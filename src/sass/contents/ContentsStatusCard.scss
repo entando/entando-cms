@@ -1,4 +1,5 @@
 .ContentsStatusCard {
+  position: relative;
   height: 275px;
   margin: 0 -10px 20px;
   padding: 0 20px 5px;
@@ -8,5 +9,12 @@
     margin-bottom: 0;
     font-size: 16px;
     font-weight: 400;
+  }
+
+  &__bottom-link {
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+    padding: 5px;
   }
 }
