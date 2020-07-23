@@ -92,7 +92,7 @@ LinkMenu.propTypes = {
 };
 
 LinkMenu.defaultProps = {
-  userPermissions: null,
+  userPermissions: [],
 };
 
 

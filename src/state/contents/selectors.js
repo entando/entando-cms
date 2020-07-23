@@ -7,6 +7,11 @@ export const getContents = createSelector(
   contents => contents.contents,
 );
 
+export const getContentsWithNamespace = (state, namespace) => createSelector(
+  getContentsState,
+  contents => contents[namespace],
+)(state);
+
 export const getCurrentQuickFilter = createSelector(
   getContentsState,
   contents => contents.currentQuickFilter,
