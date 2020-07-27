@@ -118,7 +118,7 @@ class ContentsStatusCard extends Component {
           hasAccess([SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION], userPermissions) && (
             <div className="pull-right ContentsStatusCard__bottom-link">
               <Link to={ROUTE_CMS_CONTENTS}>
-                <FormattedMessage id="cms.menu.contentlist" defaultMessage="Content List" />
+                <FormattedMessage id="dashboard.contents.link" defaultMessage="Content List" />
               </Link>
             </div>
           )

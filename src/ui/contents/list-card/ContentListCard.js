@@ -8,6 +8,8 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
 import { SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION } from 'state/permissions/const';
 
+import paginatorMessages from 'ui/common/paginatorMessages';
+
 class ContentListCard extends Component {
   constructor(props) {
     super(props);
@@ -55,12 +57,12 @@ class ContentListCard extends Component {
 
   render() {
     const {
-      intl, pagination: { page, pageSize, totalItems }, contentTypes,
+      intl, pagination: { page, totalItems }, contentTypes,
       onClickAddContent, userPermissions,
     } = this.props;
     const pagination = {
       page,
-      perPage: pageSize,
+      perPage: 5,
       perPageOptions: [5],
     };
     const renderAddContentButton = hasAccess(
@@ -68,6 +70,7 @@ class ContentListCard extends Component {
     ) && (
       <DropdownButton
         bsStyle="primary"
+        className="pull-right"
         title={intl.formatMessage({ id: 'cms.contents.add.title' })}
         id="addContent"
       >
@@ -86,10 +89,15 @@ class ContentListCard extends Component {
       }
       </DropdownButton>
     );
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div className="ContentListCard">
         <h2>
-          <FormattedMessage id="cms.menu.contentlist" defaultMessage="Content List" />
+          <FormattedMessage id="dashboard.content.title" defaultMessage="Content" />
           {renderAddContentButton}
         </h2>
         <table className="ContentListCardTable__table table table-striped table-bordered">
@@ -113,8 +121,8 @@ class ContentListCard extends Component {
           viewType="table"
           itemCount={totalItems}
           onPageSet={this.changePage}
+          messages={messages}
         />
-        <br />
         <Clearfix />
       </div>
     );
@@ -129,7 +137,6 @@ ContentListCard.propTypes = {
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})),
   pagination: PropTypes.shape({
     page: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired,
     totalItems: PropTypes.number.isRequired,
   }),
   onClickAddContent: PropTypes.func.isRequired,
@@ -141,7 +148,6 @@ ContentListCard.defaultProps = {
   contentTypes: [],
   pagination: {
     page: 1,
-    pageSize: 0,
     totalItems: 0,
   },
 };
