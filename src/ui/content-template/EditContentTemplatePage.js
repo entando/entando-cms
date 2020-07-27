@@ -16,7 +16,7 @@ const EditContentTemplatePage = () => (
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem to="/cms/content-templates">
-            <FormattedMessage id="cms.contenttemplate.title" defaultMessage="Content Templates" />
+            <FormattedMessage id="cms.menu.contenttemplates" defaultMessage="Content Templates" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
             <FormattedMessage id="cms.contenttemplate.edit.label" defaultMessage="Edit" />

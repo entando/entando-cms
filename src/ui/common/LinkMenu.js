@@ -6,13 +6,16 @@ import { FormattedMessage } from 'react-intl';
 import {
   ROUTE_CMS_CONTENTTEMPLATE_LIST, ROUTE_CMS_CONTENTTYPE_LIST,
   ROUTE_CMS_CONTENTS, ROUTE_CMS_ASSETS_LIST, ROUTE_CMS_VERSIONING,
+  ROUTE_CATEGORIES,
 } from 'app-init/routes';
+import { adminConsoleUrl } from 'helpers/urlUtils';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 
 import {
   CRUD_CONTENTS_PERMISSION,
   VALIDATE_CONTENTS_PERMISSION,
   MANAGE_RESOURCES_PERMISSION,
+  MANAGE_CATEGORIES_PERMISSION,
 } from 'state/permissions/const';
 
 const LinkMenu = ({ userPermissions, isSuperuser }) => {
@@ -24,6 +27,7 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
   const hasContentTypesAccess = isSuperuser;
   const hasContentTemplatesAccess = isSuperuser;
   const hasContentSettingsAccess = isSuperuser;
+  const hasCategoriesAccess = hasAccess(MANAGE_CATEGORIES_PERMISSION, userPermissions);
   const hasVersioningAccess = isSuperuser || hasEditContentsAccess || hasManageResourcesAccess;
 
   return (
@@ -47,15 +51,6 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
         )
       }
       {
-        hasContentTypesAccess && (
-        <LinkMenuItem
-          id="menu-content-type"
-          label={<FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />}
-          to={ROUTE_CMS_CONTENTTYPE_LIST}
-        />
-        )
-      }
-      {
         hasContentTemplatesAccess && (
         <LinkMenuItem
           id="menu-content-template"
@@ -65,20 +60,47 @@ const LinkMenu = ({ userPermissions, isSuperuser }) => {
         )
       }
       {
-        hasContentSettingsAccess && (
-        <LinkMenuItem
-          id="menu-content-settings"
-          label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
-          to="/cms/content-settings"
-        />
+        hasCategoriesAccess && (
+          <LinkMenuItem
+            id="menu-categories"
+            label={<FormattedMessage id="cms.menu.categories" />}
+            to={ROUTE_CATEGORIES}
+          />
         )
       }
       {
         hasVersioningAccess && (
         <LinkMenuItem
           id="menu-versioning"
-          label={<FormattedMessage id="cms.menu.versioning" defaultMessage="Versioning" />}
+          label={<FormattedMessage id="cms.menu.versioning" defaultMessage="Content Versioning" />}
           to={ROUTE_CMS_VERSIONING}
+        />
+        )
+      }
+      {
+        isSuperuser && (
+          <li className="LinkMenuItem" data-id="menu-versioning">
+            <a href={adminConsoleUrl('do/jpcontentscheduler/config/viewItem.action')}>
+              <FormattedMessage id="cms.menu.scheduler" defaultMessage="Content Scheduler" />
+            </a>
+          </li>
+        )
+      }
+      {
+        hasContentTypesAccess && (
+        <LinkMenuItem
+          id="menu-content-type"
+          label={<FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />}
+          to={ROUTE_CMS_CONTENTTYPE_LIST}
+        />
+        )
+      }
+      {
+        hasContentSettingsAccess && (
+        <LinkMenuItem
+          id="menu-content-settings"
+          label={<FormattedMessage id="cms.menu.contentsettings" defaultMessage="Content Settings" />}
+          to="/cms/content-settings"
         />
         )
       }
