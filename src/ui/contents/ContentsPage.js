@@ -16,7 +16,7 @@ const ContentsPage = () => (
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contents.title" defaultMessage="Contents" />
+            <FormattedMessage id="cms.menu.contents" defaultMessage="Contents" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>

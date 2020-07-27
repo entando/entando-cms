@@ -19,7 +19,7 @@ const ContentTemplateListPage = () => (
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contenttemplate.title" defaultMessage="Content Templates" />
+            <FormattedMessage id="cms.menu.contenttemplates" defaultMessage="Content Templates" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>
