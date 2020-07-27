@@ -43,7 +43,8 @@ describe('Single Content Versioning History Container', () => {
       expect(row.getByText(username)).toBeInTheDocument();
       expect(row.getByText(formatDate(versionDate))).toBeInTheDocument();
     });
+    expect(screen.getAllByText('Delete version')).toHaveLength(LIST_SINGLE_VERSIONING_OK.length);
     expect(screen.getAllByText('Restore version')).toHaveLength(LIST_SINGLE_VERSIONING_OK.length);
-    expect(screen.getAllByText('Details')).toHaveLength(LIST_SINGLE_VERSIONING_OK.length);
+    expect(screen.getAllByText('Detail')).toHaveLength(LIST_SINGLE_VERSIONING_OK.length);
   });
 });
