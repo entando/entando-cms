@@ -498,5 +498,7 @@ export default {
     'pagination.lastPage': 'Last page',
     'pagination.perPage': 'per page',
     'pagination.of': 'of',
+    'dashboard.content.title': 'Content',
+    'dashboard.contents.link': 'Content List',
   },
 };

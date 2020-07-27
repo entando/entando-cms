@@ -312,7 +312,7 @@ export default {
     'cms.contents.title': 'Contenuti',
     'cms.contents.code': 'Codice',
     'cms.contents.addToPool': 'Azioni',
-    'cms.contents.add.title': 'Aggiungi Contenuto',
+    'cms.contents.add.title': 'Aggiungi',
     'cms.contents.edit.title': 'Modifica Contenuto',
     'cms.contents.edit.info': 'Info',
     'cms.contents.edit.groups': 'Gruppi',
@@ -498,5 +498,7 @@ export default {
     'pagination.lastPage': 'Ultima Pagina',
     'pagination.perPage': 'per pagina',
     'pagination.of': 'di',
+    'dashboard.content.title': 'Contenuto',
+    'dashboard.contents.link': 'Elenco contenuti',
   },
 };
