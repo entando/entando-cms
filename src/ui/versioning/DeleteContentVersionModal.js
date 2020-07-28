@@ -53,7 +53,7 @@ DeleteContentVersionModal.propTypes = {
     contentId: PropTypes.string,
     description: PropTypes.string,
     version: PropTypes.string,
-    versionId: PropTypes.number.isRequired,
+    versionId: PropTypes.number,
   }),
 };
 
@@ -62,6 +62,7 @@ DeleteContentVersionModal.defaultProps = {
     contentId: '',
     description: '',
     version: '',
+    versionId: '',
   },
 };
 

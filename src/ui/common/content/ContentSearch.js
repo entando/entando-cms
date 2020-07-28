@@ -10,23 +10,18 @@ import {
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 
-const QUICK_FILTERS = [
-  {
-    id: 'description',
-    title: 'Name',
-    filterType: 'text',
-  },
-  {
-    id: 'id',
-    title: 'Code',
-    filterType: 'text',
-  },
-];
-
 const messages = defineMessages({
   searchContent: {
     id: 'cms.contents.quickSearchPlaceHolder',
     defaultValue: 'Search Content',
+  },
+  code: {
+    id: 'cms.label.code',
+    defaultValue: 'Code',
+  },
+  name: {
+    id: 'cms.label.name',
+    defaultValue: 'Name',
   },
 });
 
@@ -84,6 +79,23 @@ class ContentSearch extends Component {
       onSetContentType, onAdvancedFilterSearch,
     } = this.props;
 
+    const QUICK_FILTERS = [
+      {
+        id: 'description',
+        title: intl.formatMessage(messages.name),
+        filterType: 'text',
+      },
+      {
+        id: 'id',
+        title: intl.formatMessage(messages.code),
+        filterType: 'text',
+      },
+    ];
+
+    // WORKAROUND to prevent showing untranslated info coming from state at first render
+    const localizedCurrentQuickFilter = currentQuickFilter.title ? currentQuickFilter
+      : QUICK_FILTERS.filter(quickFilter => quickFilter.id === currentQuickFilter.id)[0];
+
     return (
       <div className="ContentSearch">
         <Filter className="clearfix col-xs-12">
@@ -91,15 +103,15 @@ class ContentSearch extends Component {
             <Filter.TypeSelector
               className="ContentSearch__quick-filter-type"
               filterTypes={QUICK_FILTERS}
-              currentFilterType={currentQuickFilter}
+              currentFilterType={localizedCurrentQuickFilter}
               onFilterTypeSelected={e => this.onChangeQuickFilter(e)}
             />
           </Col>
           <Col xs={10} sm={9} className="no-padding ContentSearch__right-column">
             <FormControl
               style={{ zIndex: '1' }}
-              type={currentQuickFilter.filterType}
-              value={currentQuickFilter.value}
+              type={localizedCurrentQuickFilter.filterType}
+              value={localizedCurrentQuickFilter.value}
               placeholder={intl.formatMessage(messages.searchContent)}
               onChange={e => this.onChangeQuickFilterSearchText(e)}
               onKeyPress={e => this.onValueKeyPress(e)}

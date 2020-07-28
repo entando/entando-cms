@@ -15,6 +15,7 @@ import PublishContentModalContainer from 'ui/contents/PublishContentModalContain
 import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 export const getContentStatusDetails = (status, hasPublicVersion) => {
   const statusLowerCase = status.toLowerCase();
@@ -187,6 +188,9 @@ class ContentsTable extends Component {
                     <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
                       <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
                     </MenuItem>
+                    <MenuItem onClick={() => onClickClone(rowData)}>
+                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
+                    </MenuItem>
                     <PermissionCheck
                       requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
                       userPermissions={userPermissions}
@@ -195,9 +199,6 @@ class ContentsTable extends Component {
                         <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
                       </MenuItem>
                     </PermissionCheck>
-                    <MenuItem onClick={() => onClickClone(rowData)}>
-                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
-                    </MenuItem>
                     <PermissionCheck
                       requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
                       userPermissions={userPermissions}
@@ -243,7 +244,7 @@ class ContentsTable extends Component {
 
   render() {
     const {
-      totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
+      intl, totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -254,6 +255,11 @@ class ContentsTable extends Component {
       perPageOptions,
     };
     const contents = this.markSelectedContents();
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div>
         <div className="Contents__table">
@@ -294,6 +300,7 @@ class ContentsTable extends Component {
             onPageInput={this.onPageInput}
             onNextPage={() => this.onPageChange(page + 1)}
             onLastPage={() => this.onPageChange(lastPage)}
+            messages={messages}
           />
           <DeleteContentModalContainer />
           <PublishContentModalContainer />

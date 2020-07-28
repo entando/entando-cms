@@ -19,8 +19,6 @@ import {
 const defaultState = {
   currentQuickFilter: {
     id: 'description',
-    title: 'Name',
-    placeholder: 'Filter by Name',
     filterType: 'text',
     value: '',
   },

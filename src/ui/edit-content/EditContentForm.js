@@ -110,12 +110,9 @@ export class EditContentFormBody extends React.Component {
     const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && (
       <Row className="no-padding">
         <Panel>
-          <Panel.Heading>
-        Content Info
-          </Panel.Heading>
           <Panel.Body>
             <legend>
-          History
+              <FormattedMessage id="cms.versioning.history" defaultMessage="History" />
             </legend>
             <SingleContentVersioningHistoryContainer id={id} />
           </Panel.Body>

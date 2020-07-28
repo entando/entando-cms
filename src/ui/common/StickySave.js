@@ -96,7 +96,7 @@ const StickySave = ({
             <Col xs={12} md={8} lg={6} lgOffset={6} mdOffset={4} className="no-padding">
               <Col xs={12} className="text-right">
                 <strong className="StickySave__saveText">
-                  <FormattedMessage id="rame" defaultMessage="Set content as" />
+                  <FormattedMessage id="cms.setContentAs" defaultMessage="Set content as" />
                 </strong>
                 <Button
                   type="submit"

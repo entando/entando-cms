@@ -8,6 +8,7 @@ import {
   sortableHeaderCellFormatter,
 } from 'patternfly-react';
 import * as resolve from 'table-resolver';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 class ContentList extends Component {
   constructor(props) {
@@ -132,7 +133,7 @@ class ContentList extends Component {
 
   render() {
     const {
-      totalItems, page, pageSize, perPageOptions, lastPage, sortingColumns,
+      intl, totalItems, page, pageSize, perPageOptions, lastPage, sortingColumns,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -143,6 +144,11 @@ class ContentList extends Component {
       perPageOptions,
     };
     const contents = this.markSelectedContents();
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div>
         <div className="Contents__table">
@@ -182,6 +188,7 @@ class ContentList extends Component {
             onPageInput={this.onPageInput}
             onNextPage={() => this.onPageChange(page + 1)}
             onLastPage={() => this.onPageChange(lastPage)}
+            messages={messages}
           />
         </div>
       </div>
