@@ -180,6 +180,10 @@ class ContentsFilter extends Component {
       },
     ];
 
+    // WORKAROUND to prevent showing untranslated info coming from state at first render
+    const localizedCurrentQuickFilter = currentQuickFilter.title ? currentQuickFilter
+      : QUICK_FILTERS.filter(quickFilter => quickFilter.id === currentQuickFilter.id)[0];
+
     return (
       <div className="ContentsFilter">
         <Filter className="clearfix col-xs-12">
@@ -187,15 +191,15 @@ class ContentsFilter extends Component {
             <Filter.TypeSelector
               className="ContentsFilter__quick-filter-type"
               filterTypes={QUICK_FILTERS}
-              currentFilterType={currentQuickFilter}
+              currentFilterType={localizedCurrentQuickFilter}
               onFilterTypeSelected={e => this.onChangeQuickFilter(e)}
             />
           </Col>
           <Col xs={10} sm={9} className="no-padding ContentsFilter__right-column">
             <FormControl
               style={{ zIndex: '1' }}
-              type={currentQuickFilter.filterType}
-              value={currentQuickFilter.value}
+              type={localizedCurrentQuickFilter.filterType}
+              value={localizedCurrentQuickFilter.value}
               placeholder={intl.formatMessage(messages.searchContent)}
               onChange={e => this.onChangeQuickFilterSearchText(e)}
               onKeyPress={e => this.onValueKeyPress(e)}

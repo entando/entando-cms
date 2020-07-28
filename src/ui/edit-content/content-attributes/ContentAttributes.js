@@ -4,7 +4,7 @@ import {
   FieldArray,
 } from 'redux-form';
 import { Tabs, Tab } from 'patternfly-react';
-
+import { FormattedMessage } from 'react-intl';
 import AttributeFields from 'ui/edit-content/content-attributes/AttributeFields';
 
 class ContentAttributes extends Component {
@@ -24,8 +24,8 @@ class ContentAttributes extends Component {
     } = this.props;
     return (
       <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
-        {languages.map(({ code, name }) => (
-          <Tab key={code} eventKey={code} title={name}>
+        {languages.map(({ code }) => (
+          <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
             <FieldArray
               data-test-id="edit-content-content-attributes-field-array"
               name="attributes"
