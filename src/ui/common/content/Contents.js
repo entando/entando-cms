@@ -20,7 +20,7 @@ const AVAILABLE_COLUMNS = [
     code: 'typeCode',
   },
   {
-    name: 'Created Date',
+    name: 'Creation Date',
     code: 'created',
   },
 ];

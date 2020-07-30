@@ -8,7 +8,6 @@ export const LIST_VERSIONING_OK = [
     approved: true,
     version: '1.6',
     contentType: 'News',
-    status: 'PUBLIC',
   },
   {
     id: 2,
@@ -19,7 +18,6 @@ export const LIST_VERSIONING_OK = [
     approved: true,
     version: '2.2',
     contentType: 'Press',
-    status: 'ready',
   },
   {
     id: 3,
@@ -30,7 +28,6 @@ export const LIST_VERSIONING_OK = [
     approved: true,
     version: '1.0',
     contentType: 'News',
-    status: 'unpublished',
   },
 ];
 
@@ -44,7 +41,6 @@ export const LIST_SINGLE_VERSIONING_OK = [
     approved: true,
     version: '1.6',
     contentType: 'type 1',
-    status: 'PUBLIC',
   },
   {
     id: 2,
@@ -55,7 +51,6 @@ export const LIST_SINGLE_VERSIONING_OK = [
     approved: true,
     version: '1.2',
     contentType: 'type 1',
-    status: 'ready',
   },
 ];
 

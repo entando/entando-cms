@@ -75,7 +75,7 @@ class SingleContentVersioningHistory extends Component {
               <th width="10%" className="text-center">
                 <FormattedMessage id="cms.versioning.list.version" defaultMessage="Version" />
               </th>
-              <th width="30%">
+              <th width="40%">
                 <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
               </th>
               <th width="30%" className="text-center">
@@ -83,9 +83,6 @@ class SingleContentVersioningHistory extends Component {
               </th>
               <th width="10%" className="text-center">
                 <FormattedMessage id="cms.versioning.list.editor" defaultMessage="Editor" />
-              </th>
-              <th width="10%" className="text-center">
-                <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
               </th>
               <th width="10%" className="text-center">
                 <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />

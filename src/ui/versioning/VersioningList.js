@@ -67,7 +67,7 @@ class VersioningList extends Component {
           <table className="table table-striped table-bordered table-hover VersioningList__table">
             <thead>
               <tr>
-                <th width="20%">
+                <th width="30%">
                   <FormattedMessage id="cms.versioning.list.description" defaultMessage="Description" />
                 </th>
                 <th width="10%" className="text-center">
@@ -81,9 +81,6 @@ class VersioningList extends Component {
                 </th>
                 <th width="15%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.lastModify" defaultMessage="Last Modified" />
-                </th>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.versioning.list.status" defaultMessage="Status" />
                 </th>
                 <th width="10%" className="text-center">
                   <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />
