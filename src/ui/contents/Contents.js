@@ -52,12 +52,16 @@ const messages = defineMessages({
     id: 'cms.contents.code',
     defaultMessage: 'Code',
   },
+  actions: {
+    id: 'cms.contents.actions',
+    defaultMessage: 'Actions',
+  },
 });
 
 const AVAILABLE_COLUMN_CODES = [
   'description', 'firstEditor', 'lastModified',
   'typeCode', 'created', 'mainGroup', 'groups',
-  'onLine', 'restriction', 'code',
+  'onLine', 'restriction', 'code', 'actions',
 ];
 
 class Contents extends Component {
