@@ -17,29 +17,30 @@ import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
-export const getContentStatusDetails = (status, hasPublicVersion) => {
+export const getContentStatusDetails = (status, hasPublicVersion, intl) => {
   const statusLowerCase = status.toLowerCase();
   let color = '';
-  let title = '';
+  let titleId = '';
   if (statusLowerCase === 'public') {
     color = 'published';
-    title = 'Published';
+    titleId = 'cms.content.status.published';
   } else if (statusLowerCase === 'ready') {
     color = 'review';
     if (hasPublicVersion) {
-      title = 'Public ≠ Ready';
+      titleId = 'cms.content.status.pendingChanges.publicNotEqualReady';
     } else {
-      title = 'Ready';
+      titleId = 'cms.content.status.unpublished.ready';
     }
   } else {
     color = 'unpublished';
     if (hasPublicVersion) {
-      title = 'Public ≠ Draft';
+      titleId = 'cms.content.status.pendingChanges.publicNotEqualDraft';
       color = 'review';
     } else {
-      title = 'Unpublished';
+      titleId = 'cms.content.status.unpublished';
     }
   }
+  const title = intl.formatMessage({ id: titleId });
   return { color, title };
 };
 
@@ -161,7 +162,7 @@ class ContentsTable extends Component {
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
               const { status, onLine: hasPublicVersion } = rowData;
-              const { color, title } = getContentStatusDetails(status, hasPublicVersion);
+              const { color, title } = getContentStatusDetails(status, hasPublicVersion, intl);
               return (
                 <td className="text-center">
                   <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />

@@ -147,7 +147,7 @@ class ContentsFilterTable extends Component {
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
               const { status, onLine: hasPublicVersion } = rowData;
-              const { color, title } = getContentStatusDetails(status, hasPublicVersion);
+              const { color, title } = getContentStatusDetails(status, hasPublicVersion, intl);
               return (
                 <td className="text-center">
                   <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
