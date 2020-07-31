@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import {
   setQuickFilter, fetchContentsPaged, setContentType, setSort, resetAuthorStatus,
-  setGroup, checkStatus,
+  checkStatus,
 } from 'state/contents/actions';
 import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -52,12 +52,11 @@ export const mapStateToProps = (state, ownProps) => {
   });
 };
 
-export const mapDispatchToProps = (dispatch, { ownerGroup }) => ({
+export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
   onDidMount: () => {
-    dispatch(setGroup(ownerGroup));
     dispatch(checkStatus('published'));
     dispatch(fetchContentsPaged(null,
-      null, null, false));
+      null, null, false, '&status=published', ownerGroup, joinGroups));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
@@ -65,10 +64,10 @@ export const mapDispatchToProps = (dispatch, { ownerGroup }) => ({
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
   onFilteredSearch: (fetchParams, pagination, sortParams) => dispatch(
     fetchContentsPaged(null,
-      pagination, sortParams, false, '&status=published', [ownerGroup, 'free']),
+      pagination, sortParams, false, '&status=published', ownerGroup, joinGroups),
   ),
   onAdvancedFilterSearch: () => {
-    dispatch(fetchContentsPaged(null, null, null, false, '&status=published', [ownerGroup, 'free']));
+    dispatch(fetchContentsPaged(null, null, null, false, '&status=published', ownerGroup, joinGroups));
     dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: columns => dispatch(setCurrentColumnsShow(columns)),

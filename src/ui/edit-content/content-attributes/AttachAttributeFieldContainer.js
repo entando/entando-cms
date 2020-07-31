@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import AttachAttributeField from 'ui/edit-content/content-attributes/AttachAttributeField';
 import { setVisibleModal } from 'state/modal/actions';
 import {
-  setListFilterParams,
   fetchAssetsPaged,
   pageDefault,
 } from 'state/assets/actions';
@@ -14,16 +13,8 @@ import { ATTACH_MODAL_ID } from 'ui/edit-content/content-attributes/assets/Asset
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
     const { mainGroup } = ownProps;
-    dispatch(setListFilterParams({
-      formValues: {
-        group: [mainGroup, 'free'],
-      },
-      operators: {
-        group: 'eq',
-      },
-    }));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchAssetsPaged(pageDefault, 'file'));
+    dispatch(fetchAssetsPaged(pageDefault, 'file', mainGroup));
     dispatch(fetchCategoryTree());
   },
   onClickAdd: name => dispatch(dispatch(setVisibleModal(`${ATTACH_MODAL_ID}${name}`))),

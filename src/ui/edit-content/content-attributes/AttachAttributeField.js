@@ -21,6 +21,7 @@ const AttachAttributeField = ({
   help,
   onClickAdd,
   assetListBegin,
+  mainGroup,
 }) => {
   const handleAssetSelected = info => input.onChange(info);
 
@@ -47,6 +48,7 @@ const AttachAttributeField = ({
         />
         <AssetBrowserModal
           assetType="file"
+          ownerGroup={mainGroup}
           name={input.name}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
@@ -95,6 +97,7 @@ AttachAttributeField.propTypes = {
   }),
   onClickAdd: PropTypes.func.isRequired,
   assetListBegin: PropTypes.func.isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
 AttachAttributeField.defaultProps = {

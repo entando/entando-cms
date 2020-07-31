@@ -129,6 +129,7 @@ export const fetchAssetsCount = type => dispatch => new Promise((resolve) => {
 export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
   assetType = null,
+  ownerGroup,
 ) => (dispatch, getState) => {
   const state = getState();
   const fileType = assetType || getFileType(state);
@@ -153,7 +154,7 @@ export const fetchAssetsPaged = (
   }
 
   const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
-  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
+  return dispatch(fetchAssets(paginationMetadata, `?${params}${ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : ''}`));
 };
 
 export const makeFilter = (value, op = FILTER_OPERATORS.EQUAL) => ({ value, op });
@@ -161,6 +162,7 @@ export const makeFilter = (value, op = FILTER_OPERATORS.EQUAL) => ({ value, op }
 export const applyAssetsFilter = (
   filters,
   paginationMetadata = pageDefault,
+  ownerGroup,
 ) => (dispatch, getState) => {
   const { sorting } = getListFilterParams(getState());
   const filter = Object.entries(filters).reduce((curr, [key, entry]) => ({
@@ -177,13 +179,14 @@ export const applyAssetsFilter = (
 
   dispatch(setListFilterParams(filter));
   const page = getPagination(getState()) || paginationMetadata;
-  return dispatch(fetchAssetsPaged(page));
+  return dispatch(fetchAssetsPaged(page, undefined, ownerGroup));
 };
 
 export const sortAssetsList = (
   attribute,
   direction = SORT_DIRECTIONS.ASCENDANT,
   paginationMetadata = pageDefault,
+  ownerGroup,
 ) => (dispatch, getState) => {
   const newSorting = { attribute, direction };
   const { sorting, ...others } = getListFilterParams(getState());
@@ -200,7 +203,7 @@ export const sortAssetsList = (
   };
   dispatch(setListFilterParams(filter));
   const page = getPagination(getState()) || paginationMetadata;
-  return dispatch(fetchAssetsPaged(page));
+  return dispatch(fetchAssetsPaged(page, undefined, ownerGroup));
 };
 
 export const filterAssetsBySearch = (
@@ -229,8 +232,9 @@ export const filterAssetsBySearch = (
 };
 
 export const advancedSearchFilter = (
-  values, paginationMetadata = pageDefault,
+  values, paginationMetadata = pageDefault, ownerGroup,
 ) => (dispatch, getState) => {
+  dispatch(setListFilterParams({}));
   const state = getState();
   const filt = getListFilterParams(state);
   const { formValues = {}, operators = {}, sorting } = filt;
@@ -238,7 +242,6 @@ export const advancedSearchFilter = (
   const typeParams = fileType === 'all' ? '' : `type=${fileType}`;
   const filters = { formValues, operators, sorting };
   const keyword = formValueSelector('assetSearchForm')(state, 'keyword');
-
   if (keyword) {
     filters.formValues.description = keyword;
     filters.operators.description = FILTER_OPERATORS.LIKE;
@@ -285,7 +288,7 @@ export const advancedSearchFilter = (
   });
   dispatch(setListFilterParams(filters));
   const params = compact([convertToQueryString(filters).slice(1), typeParams]).join('&').replace('toDateTimeString', 'createdAt');
-  return dispatch(fetchAssets(paginationMetadata, `?${params}`));
+  return dispatch(fetchAssets(paginationMetadata, `?${params}${ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : ''}`));
 };
 
 export const sendDeleteAsset = id => dispatch => new Promise((resolve) => {

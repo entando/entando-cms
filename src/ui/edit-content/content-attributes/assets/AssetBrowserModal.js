@@ -15,6 +15,7 @@ const AssetBrowserModal = ({
   assetType,
   onAssetSelected,
   onModalOpened,
+  ownerGroup,
   name,
 }) => {
   const modalTitle = (
@@ -31,11 +32,12 @@ const AssetBrowserModal = ({
       modalClassName="AssetsList"
       onOpenModal={onModalOpened}
     >
-      <AssetsAdvancedSearchContainer />
+      <AssetsAdvancedSearchContainer ownerGroup={ownerGroup} />
       <AssetsListContainer
         assetType={assetType}
         browseMode
         onUseAsset={onAssetSelected}
+        ownerGroup={ownerGroup}
       />
     </GenericModalContainer>
   );
@@ -46,6 +48,7 @@ AssetBrowserModal.propTypes = {
   onAssetSelected: PropTypes.func.isRequired,
   onModalOpened: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  ownerGroup: PropTypes.string.isRequired,
 };
 
 export default AssetBrowserModal;

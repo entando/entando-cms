@@ -10,7 +10,6 @@ import {
 } from 'state/assets/selectors';
 import {
   applyAssetsFilter,
-  fetchAssets,
   setActiveFilters,
   setListFilterParams,
   fetchAssetsPaged,
@@ -57,23 +56,14 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
-    if (ownProps.browseMode) {
-      dispatch(changeFileType(ownProps.assetType));
+    const { browseMode, assetType, ownerGroup } = ownProps;
+    if (browseMode) {
+      dispatch(changeFileType(assetType));
     } else {
-      let filters = {};
-      if (ownProps.ownerGroup) {
-        filters = {
-          formValues: {
-            group: [ownProps.ownerGroup, 'free'],
-          },
-          operators: {
-            group: 'eq',
-          },
-        };
-      }
+      const filters = {};
       dispatch(setListFilterParams(filters));
       dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-      dispatch(fetchAssetsPaged());
+      dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup));
     }
   },
   onApplyFilteredSearch: (filters) => {
@@ -83,7 +73,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       const values = filters.length > 1 ? filters.map(filter => filter.code) : filters[0].code;
       filtprops = { categories: makeFilter(values) };
     }
-    dispatch(applyAssetsFilter(filtprops));
+    dispatch(applyAssetsFilter(filtprops, undefined, ownProps.ownerGroup));
   },
   onResetFilteringCategories: () => dispatch(resetFilteringCategories()),
   onRemoveActiveFilter: (category, filteringCategories) => {
@@ -95,28 +85,25 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
         newFilters.length > 1 ? newFilters : newFilters[0],
       ),
     } : {};
-    dispatch(applyAssetsFilter(filtSend));
+    dispatch(applyAssetsFilter(filtSend, undefined, ownProps.ownerGroup));
   },
   onChangeFileType: (fileType) => {
     dispatch(changeFileType(fileType));
-    dispatch(fetchAssetsPaged());
+    dispatch(fetchAssetsPaged(undefined, undefined, ownProps.ownerGroup));
   },
   onChangeAssetsView: (assetsView) => {
     dispatch(changeAssetsView(assetsView));
   },
   fetchList: (page = pageDefault) => (
-    dispatch(fetchAssetsPaged(page))
+    dispatch(fetchAssetsPaged(page, undefined, ownProps.ownerGroup))
   ),
-  refetchAssets: (params) => {
-    dispatch(fetchAssets(params));
-  },
   onApplySort: (sortName) => {
-    dispatch(sortAssetsList(sortName));
+    dispatch(sortAssetsList(sortName, undefined, undefined, ownProps.ownerGroup));
   },
   onRemoveAllActiveFilters: () => {
     dispatch(setActiveFilters([]));
     dispatch(setListFilterParams({}));
-    dispatch(fetchAssetsPaged());
+    dispatch(fetchAssetsPaged(undefined, undefined, ownProps.ownerGroup));
   },
   onAssetSelected: (item) => {
     dispatch(setVisibleModal(MODAL_ID));

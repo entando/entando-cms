@@ -128,8 +128,8 @@ export const fetchPageTree = (pageCode, status, params) => dispatch => new Promi
 
 export const handleExpandPage = (pageCode = HOMEPAGE_CODE,
   status, mainGroup, joinGroups) => (dispatch, getState) => {
-  console.log(mainGroup, joinGroups);
-  const params = `forLinkingToOwnerGroup=${mainGroup}&forLinkingToExtraGroups=${joinGroups.join(',')}`;
+  const extraGroupParams = (joinGroups && joinGroups.length > 0) ? `&forLinkingToExtraGroups=${joinGroups.join(',')}` : '';
+  const params = `forLinkingToOwnerGroup=${mainGroup}${extraGroupParams}`;
   const pageStatus = getStatusMap(getState())[pageCode];
   const toExpand = (!pageStatus || !pageStatus.expanded);
   const toLoad = (toExpand && (!pageStatus || !pageStatus.loaded));

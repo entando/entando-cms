@@ -88,10 +88,12 @@ export const mapStateToProps = (state) => {
   });
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, { ownerGroup }) => ({
   onDidMount: () => {
+    console.log('ownerGroup', ownerGroup);
     dispatch(setCurrentStatusShow('published'));
-    dispatch(fetchContentsPaged());
+    dispatch(fetchContentsPaged(null,
+      null, null, false, '&status=published', ownerGroup));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups(noPage));
     dispatch(fetchContentTypeListPaged(noPage));
@@ -109,14 +111,14 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setCurrentStatusShow('published'));
     dispatch(setCurrentAuthorShow(author));
     dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)),
-      null, null, true, STATUS_PUBLISHED);
+      null, null, true, STATUS_PUBLISHED, ownerGroup);
   },
   onSetCurrentStatusShow: (status, author) => {
     dispatch(setCurrentStatusShow(status));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
+    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true, '&status=published', ownerGroup);
   },
   onAdvancedFilterSearch: () => {
-    dispatch(fetchContentsPaged(null, null, null, false, STATUS_PUBLISHED));
+    dispatch(fetchContentsPaged(null, null, null, false, '&status=published', ownerGroup));
     dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),

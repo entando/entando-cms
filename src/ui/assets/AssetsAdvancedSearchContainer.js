@@ -10,11 +10,11 @@ export const mapStateToProps = state => ({
   groups: getGroups(state),
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
   },
-  onSubmit: values => dispatch(advancedSearchFilter(values)),
+  onSubmit: values => dispatch(advancedSearchFilter(values, undefined, ownProps.ownerGroup)),
 });
 
 const AssetsAdvancedSearchContainer = connect(

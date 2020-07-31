@@ -30,7 +30,7 @@ export const mapStateToProps = (state, ownProps) => {
     } : null;
   return ({
     contentTemplates: getContentTemplateList(state),
-    initialValues: widgetConfig,
+    initialValues: widgetConfig || {},
     chosenContent: formValueSelector(SingleContentConfigContainerId)(state, 'chosenContent'),
   });
 };

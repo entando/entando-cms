@@ -23,6 +23,7 @@ const ImageAttributeField = ({
   help,
   onClickAdd,
   assetListBegin,
+  mainGroup,
 }) => {
   const handleAssetSelected = info => input.onChange(info);
 
@@ -52,6 +53,7 @@ const ImageAttributeField = ({
           name={input.name}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
+          ownerGroup={mainGroup}
         />
       </>
     );
@@ -97,6 +99,7 @@ ImageAttributeField.propTypes = {
   }),
   onClickAdd: PropTypes.func.isRequired,
   assetListBegin: PropTypes.func.isRequired,
+  mainGroup: PropTypes.string.isRequired,
 };
 
 ImageAttributeField.defaultProps = {

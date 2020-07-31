@@ -18,6 +18,8 @@ import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
+const ADMINISTRATOR_OWNER = 'administrator';
+
 export default class ContentConfigFormBody extends PureComponent {
   constructor(props) {
     super(props);
@@ -64,6 +66,7 @@ export default class ContentConfigFormBody extends PureComponent {
       onCancel,
       onDiscard,
       onSave,
+      initialValues,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
@@ -172,6 +175,7 @@ export default class ContentConfigFormBody extends PureComponent {
       </Row>
     ) : null;
 
+    const { group: ownerGroup } = initialValues.widgetConfig || {};
     return (
       <Fragment>
         <form onSubmit={handleSubmit} className="form-horizontal">
@@ -182,6 +186,7 @@ export default class ContentConfigFormBody extends PureComponent {
                 contentTemplates={contentTemplates}
                 name="contents"
                 intl={intl}
+                ownerGroup={ownerGroup || ADMINISTRATOR_OWNER}
                 multipleContentsMode={multipleContentsMode}
               />
             </Col>
@@ -236,6 +241,9 @@ ContentConfigFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  initialValues: PropTypes.shape({
+    widgetConfig: PropTypes.shape({}).isRequired,
+  }).isRequired,
 };
 
 ContentConfigFormBody.defaultProps = {

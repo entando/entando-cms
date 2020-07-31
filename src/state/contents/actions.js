@@ -139,6 +139,7 @@ export const fetchContents = (page = pageDefault,
 
 export const fetchContentsWithFilters = (
   params, newPagination, newSort, quickFilterStatusParam = '', quickFilterOwnerGroup,
+  joinGroups,
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
@@ -152,6 +153,9 @@ export const fetchContentsWithFilters = (
   const filters = [];
   const eq = FILTER_OPERATORS.EQUAL;
   const like = FILTER_OPERATORS.LIKE;
+  const ownerGroupQuery = `&forLinkingWithOwnerGroup=${quickFilterOwnerGroup}`;
+  const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
+    ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   if (params) {
     const formValues = {
       ...(qfValue && { [id]: qfValue }),
@@ -159,14 +163,11 @@ export const fetchContentsWithFilters = (
     const operators = {
       ...(qfValue && { [id]: FILTER_OPERATORS.LIKE }),
     };
-    query = `${convertToQueryString({ formValues, operators, sorting })}&${params}${quickFilterStatusParam}`;
+    query = `${convertToQueryString({ formValues, operators, sorting })}&${params}${quickFilterStatusParam}${ownerGroupQuery}${joinGroupsQuery}`;
     return dispatch(fetchContents(pagination, query));
   }
   if (qfValue) {
     filters.push({ att: id, value: qfValue, operator: FILTER_OPERATORS.LIKE });
-    if (quickFilterOwnerGroup) {
-      filters.push({ att: 'mainGroup', value: quickFilterOwnerGroup, operator: FILTER_OPERATORS.EQUAL });
-    }
   } else {
     const contentType = getContentType(state);
     const group = getGroup(state);
@@ -203,7 +204,7 @@ export const fetchContentsWithFilters = (
     operators[att] = operator || eq;
     return null;
   });
-  query = `${convertToQueryString({ formValues, operators, sorting })}${categories}${quickFilterStatusParam || published}`;
+  query = `${convertToQueryString({ formValues, operators, sorting })}${categories}${quickFilterStatusParam || published}${ownerGroupQuery}${joinGroupsQuery}`;
   return dispatch(fetchContents(pagination, query));
 };
 
@@ -239,7 +240,7 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
 };
 
 export const fetchContentsPaged = (params, page, sort, tabSearch,
-  quickFilterStatusParam, quickFilterOwnerGroup) => (
+  quickFilterStatusParam, quickFilterOwnerGroup, joingGroups) => (
   dispatch, getState,
 ) => {
   const state = getState();
@@ -248,7 +249,7 @@ export const fetchContentsPaged = (params, page, sort, tabSearch,
     return dispatch(fetchContentsWithTabs(page, sort));
   }
   return dispatch(fetchContentsWithFilters(params, page, sort,
-    quickFilterStatusParam, quickFilterOwnerGroup));
+    quickFilterStatusParam, quickFilterOwnerGroup, joingGroups));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {

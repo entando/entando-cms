@@ -21,7 +21,7 @@ const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
 
 export const mapStateToProps = (state, ownProps) => ({
   contentTemplates: getContentTemplateList(state),
-  initialValues: ownProps.widgetConfig,
+  initialValues: ownProps.widgetConfig || {},
   languages: getActiveLanguages(state),
   pages: getSearchPagesRaw(state),
   language: getLocale(state),
