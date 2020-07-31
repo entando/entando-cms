@@ -11,51 +11,53 @@ import ContentsTabs from 'ui/contents/ContentsTabs';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
-const AVAILABLE_COLUMNS = [
-  {
-    name: 'Name',
-    code: 'description',
+const messages = defineMessages({
+  description: {
+    id: 'cms.contents.description',
+    defaultMessage: 'Name',
   },
-  {
-    name: 'Created By',
-    code: 'firstEditor',
+  lastModified: {
+    id: 'cms.contents.lastModified',
+    defaultMessage: 'Last Edited',
   },
-  {
-    name: 'Last Edited',
-    code: 'lastModified',
+  typeCode: {
+    id: 'cms.contents.typeCode',
+    defaultMessage: 'Type',
   },
-  {
-    name: 'Type',
-    code: 'typeCode',
+  created: {
+    id: 'cms.contents.created',
+    defaultMessage: 'Created date',
   },
-  {
-    name: 'Created Date',
-    code: 'created',
+  firstEditor: {
+    id: 'cms.contents.firstEditor',
+    defaultMessage: 'Created by',
   },
-  {
-    name: 'Owner Group',
-    code: 'mainGroup',
+  mainGroup: {
+    id: 'cms.contents.mainGroup',
+    defaultMessage: 'Owner Group',
   },
-  {
-    name: 'Join Groups',
-    code: 'groups',
+  groups: {
+    id: 'cms.contents.groups',
+    defaultMessage: 'Join Groups',
   },
-  {
-    name: 'Status',
-    code: 'onLine',
+  onLine: {
+    id: 'cms.contents.onLine',
+    defaultMessage: 'Status',
   },
-  {
-    name: 'Restrictions',
-    code: 'restriction',
+  restriction: {
+    id: 'cms.contents.restriction',
+    defaultMessage: 'Restrictions',
   },
-  {
-    name: 'Code',
-    code: 'code',
+  code: {
+    id: 'cms.contents.code',
+    defaultMessage: 'Code',
   },
-  {
-    name: 'Actions',
-    code: 'actions',
-  },
+});
+
+const AVAILABLE_COLUMN_CODES = [
+  'description', 'firstEditor', 'lastModified',
+  'typeCode', 'created', 'mainGroup', 'groups',
+  'onLine', 'restriction', 'code',
 ];
 
 class Contents extends Component {
@@ -104,6 +106,11 @@ class Contents extends Component {
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
       onAdvancedFilterSearch, users, userPermissions,
     } = this.props;
+
+    const availableColumns = AVAILABLE_COLUMN_CODES.map(code => ({
+      name: intl.formatMessage(messages[code]),
+      code,
+    }));
 
     const { selectedContents } = this.messages;
     const selectedRowsData = contents.filter(c => selectedRows.includes(c.id));
@@ -164,7 +171,7 @@ class Contents extends Component {
         <div className="Contents__body">
           <ContentsTabs
             intl={intl}
-            availableColumns={AVAILABLE_COLUMNS}
+            availableColumns={availableColumns}
             messages={this.messages}
             contents={contents}
             contentTypes={contentTypes}
@@ -194,7 +201,7 @@ class Contents extends Component {
                 onSelectRow={onSelectRow}
                 onSelectAllRows={onSelectAllRows}
                 onFilteredSearch={onFilteredSearch}
-                availableColumns={AVAILABLE_COLUMNS}
+                availableColumns={availableColumns}
                 onEditContent={onEditContent}
                 onClickDelete={onClickDelete}
                 onClickPublish={onClickPublish}

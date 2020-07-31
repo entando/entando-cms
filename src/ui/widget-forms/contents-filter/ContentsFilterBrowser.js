@@ -6,47 +6,57 @@ import ContentsFilter from 'ui/contents/ContentsFilter';
 import ContentsFilterTabs from 'ui/widget-forms/contents-filter/ContentsFilterTabs';
 import ContentsFilterTable from 'ui/widget-forms/contents-filter/ContentsFilterTable';
 
-const AVAILABLE_COLUMNS = [
-  {
-    name: 'Name',
-    code: 'description',
+const messages = defineMessages({
+  description: {
+    id: 'cms.contents.description',
+    defaultMessage: 'Name',
   },
-  {
-    name: 'Created By',
-    code: 'firstEditor',
+  lastModified: {
+    id: 'cms.contents.lastModified',
+    defaultMessage: 'Last Edited',
   },
-  {
-    name: 'Last Edited',
-    code: 'lastModified',
+  typeCode: {
+    id: 'cms.contents.typeCode',
+    defaultMessage: 'Type',
   },
-  {
-    name: 'Type',
-    code: 'typeCode',
+  created: {
+    id: 'cms.contents.created',
+    defaultMessage: 'Created date',
   },
-  {
-    name: 'Created Date',
-    code: 'created',
+  firstEditor: {
+    id: 'cms.contents.firstEditor',
+    defaultMessage: 'Created by',
   },
-  {
-    name: 'Owner Group',
-    code: 'mainGroup',
+  mainGroup: {
+    id: 'cms.contents.mainGroup',
+    defaultMessage: 'Owner Group',
   },
-  {
-    name: 'Join Groups',
-    code: 'groups',
+  groups: {
+    id: 'cms.contents.groups',
+    defaultMessage: 'Join Groups',
   },
-  {
-    name: 'Status',
-    code: 'onLine',
+  onLine: {
+    id: 'cms.contents.onLine',
+    defaultMessage: 'Status',
   },
-  {
-    name: 'Restrictions',
-    code: 'restriction',
+  restriction: {
+    id: 'cms.contents.restriction',
+    defaultMessage: 'Restrictions',
   },
-  {
-    name: 'Code',
-    code: 'code',
+  code: {
+    id: 'cms.contents.code',
+    defaultMessage: 'Code',
   },
+  columns: {
+    id: 'cms.contents.columns',
+    defaultMessage: 'Columns',
+  },
+});
+
+const AVAILABLE_COLUMN_CODES = [
+  'description', 'firstEditor', 'lastModified',
+  'typeCode', 'created', 'mainGroup', 'groups',
+  'onLine', 'restriction', 'code',
 ];
 
 class ContentsFilterBrowser extends Component {
@@ -81,12 +91,10 @@ class ContentsFilterBrowser extends Component {
       onContentPicked,
     } = this.props;
 
-    const messages = defineMessages({
-      columns: {
-        id: 'cms.contents.columns',
-        defaultMessage: 'Columns',
-      },
-    });
+    const availableColumns = AVAILABLE_COLUMN_CODES.map(code => ({
+      name: intl.formatMessage(messages[code]),
+      code,
+    }));
 
     return (
       <Fragment>
@@ -115,7 +123,7 @@ class ContentsFilterBrowser extends Component {
           {!pickedContents && (
             <ContentsFilterTabs
               intl={intl}
-              availableColumns={AVAILABLE_COLUMNS}
+              availableColumns={availableColumns}
               messages={messages}
               contents={contents}
               contentTypes={contentTypes}
@@ -144,7 +152,7 @@ class ContentsFilterBrowser extends Component {
                 selectedRows={selectedRows}
                 onSelectRow={onSelectRow}
                 onFilteredSearch={onFilteredSearch}
-                availableColumns={AVAILABLE_COLUMNS}
+                availableColumns={availableColumns}
                 groups={groups}
                 pickedContents={pickedContents}
                 onContentPicked={onContentPicked}
