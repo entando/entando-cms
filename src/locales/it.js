@@ -335,7 +335,7 @@ export default {
     'cms.contents.edit.version.creator': 'creato da',
     'cms.contents.edit.version.modifier': 'modificato da',
     'cms.stickySave.lastAutoSave': 'L\'ultimo salvataggio è stato: ',
-    'cms.stickySave.status': 'Stato',
+    'cms.stickySave.status': 'Pronto per la pubblicazione',
     'cms.content.status.published': 'Approvato',
     'cms.content.status.unpublished': 'Inedito',
     'cms.content.status.ready': 'Approvato, con modifiche',

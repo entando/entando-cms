@@ -2,14 +2,17 @@ import React from 'react';
 import {
   Row, Col, Button, Grid,
 } from 'patternfly-react';
+import { ToggleButton, ButtonToolbar } from 'react-bootstrap';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
-import { Field, reduxForm } from 'redux-form';
+import { Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import { formatDate, PermissionCheck } from '@entando/utils';
 import { REGULAR_SAVE_TYPE, APPROVE_SAVE_TYPE, CONTINUE_SAVE_TYPE } from 'state/edit-content/types';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
+
+import ToggleButtonGroupField from 'ui/common/form/ToggleButtonGroupField';
 
 const messages = defineMessages({
   chooseOption: {
@@ -65,17 +68,28 @@ const StickySave = ({
           </Row>
           <Row className="toolbar-pf-actions">
             <Col xs={12} md={6} className="StickySave__column">
-              <Col xs={12} className="no-padding">
+              <Col xs={12} className="no-padding ToggleButtonGroup">
                 <strong>
-                  <FormattedMessage id="cms.stickySave.status" defaultMessage="Status" />
+                  <FormattedMessage id="cms.stickySave.status" defaultMessage="Ready to be published" />
                 </strong>
-                <Field name="status" component="select" className="form-control StickySave__select">
-                  <option value="">
-                    {intl.formatMessage(messages.chooseOption)}
-                  </option>
-                  <option key="draft" value="draft">{intl.formatMessage(messages.draft)}</option>
-                  <option key="ready" value="ready">{intl.formatMessage(messages.ready)}</option>
-                </Field>
+                <ButtonToolbar>
+                  <Field
+                    name="status"
+                    component={ToggleButtonGroupField}
+                  >
+                    <ToggleButton
+                      checked
+                      value="ready"
+                    >
+                      <FormattedMessage id="cms.label.yes" />
+                    </ToggleButton>
+                    <ToggleButton
+                      value="draft"
+                    >
+                      <FormattedMessage id="cms.label.no" />
+                    </ToggleButton>
+                  </Field>
+                </ButtonToolbar>
               </Col>
             </Col>
             <Col xs={12} md={6} className="no-padding text-right">
@@ -86,7 +100,7 @@ const StickySave = ({
                   ...values,
                   saveType: REGULAR_SAVE_TYPE,
                 }))}
-                disabled={invalid || submitting}
+                disabled={invalid || submitting || !isDirty}
               >
                 {intl.formatMessage(messages.save)}
               </Button>
@@ -100,7 +114,7 @@ const StickySave = ({
                 </strong>
                 <Button
                   type="submit"
-                  disabled={invalid || submitting}
+                  disabled={invalid || submitting || !isDirty}
                   className="StickySave__actionButton"
                   onClick={handleSubmit(values => onSubmit({
                     ...values,
@@ -116,7 +130,7 @@ const StickySave = ({
                   <>
                     <Button
                       type="submit"
-                      disabled={invalid || submitting}
+                      disabled={invalid || submitting || !isDirty}
                       className="StickySave__actionButton"
                       bsStyle="success"
                       onClick={handleSubmit(values => onSubmit({
@@ -189,8 +203,4 @@ StickySave.defaultProps = {
   userPermissions: [],
 };
 
-const StickySaveContainer = reduxForm({
-  form: 'editcontentform',
-})(StickySave);
-
-export default withPermissionValues(StickySaveContainer);
+export default withPermissionValues(StickySave);
