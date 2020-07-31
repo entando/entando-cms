@@ -6,48 +6,47 @@ import {
 import ContentSearch from 'ui/common/content/ContentSearch';
 import ContentList from 'ui/common/content/ContentList';
 
-const AVAILABLE_COLUMNS = [
-  {
-    name: 'Name',
-    code: 'description',
+const messages = defineMessages({
+  description: {
+    id: 'cms.contents.description',
+    defaultMessage: 'Name',
   },
-  {
-    name: 'Last Edited',
-    code: 'lastModified',
+  lastModified: {
+    id: 'cms.contents.lastModified',
+    defaultMessage: 'Last Edited',
   },
-  {
-    name: 'Type',
-    code: 'typeCode',
+  typeCode: {
+    id: 'cms.contents.typeCode',
+    defaultMessage: 'Type',
   },
-  {
-    name: 'Created Date',
-    code: 'created',
+  created: {
+    id: 'cms.contents.created',
+    defaultMessage: 'Created date',
   },
+  downloadButton: {
+    id: 'cms.contents.downloadAs',
+    defaultMessage: 'Download As',
+  },
+  addContent: {
+    id: 'cms.contents.addContent',
+    defaultMessage: 'Add Content',
+  },
+  columns: {
+    id: 'cms.contents.columns',
+    defaultMessage: 'Columns',
+  },
+  selectedContents: {
+    id: 'cms.contents.selectedContents',
+    defaultMessage: 'You have selected {number} content(s), you can',
+  },
+});
+
+const AVAILABLE_COLUMN_CODES = [
+  'description', 'lastModified',
+  'typeCode', 'created',
 ];
 
 class Contents extends Component {
-  constructor(props) {
-    super(props);
-    this.messages = defineMessages({
-      downloadButton: {
-        id: 'cms.contents.downloadAs',
-        defaultMessage: 'Download As',
-      },
-      addContent: {
-        id: 'cms.contents.addContent',
-        defaultMessage: 'Add Content',
-      },
-      columns: {
-        id: 'cms.contents.columns',
-        defaultMessage: 'Columns',
-      },
-      selectedContents: {
-        id: 'cms.contents.selectedContents',
-        defaultMessage: 'You have selected {number} content(s), you can',
-      },
-    });
-  }
-
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
@@ -60,6 +59,11 @@ class Contents extends Component {
       contentTypes, currentColumnsShow, onSetContentType, sortingColumns,
       onSetSort, selectedRows, onAdvancedFilterSearch, onContentSelect,
     } = this.props;
+
+    const availableColumns = AVAILABLE_COLUMN_CODES.map(code => ({
+      name: intl.formatMessage(messages[code]),
+      code,
+    }));
 
     return (
       <div>
@@ -84,7 +88,7 @@ class Contents extends Component {
             onSetSort={onSetSort}
             selectedRows={selectedRows}
             onFilteredSearch={onFilteredSearch}
-            availableColumns={AVAILABLE_COLUMNS}
+            availableColumns={availableColumns}
             onContentSelect={onContentSelect}
           />
         </div>
