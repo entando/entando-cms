@@ -337,7 +337,7 @@ export default {
     'cms.stickySave.lastAutoSave': 'Last save was: ',
     'cms.stickySave.status': 'Status',
     'cms.content.status.unpublished': 'Unpublished',
-    'cms.content.status.unpublished.ready': 'Non pubblicato (pronto)',
+    'cms.content.status.unpublished.ready': 'Unpublished (ready)',
     'cms.content.status.pendingChanges': 'Published, with pending changes',
     'cms.content.status.pendingChanges.publicNotEqualReady': 'Published, with pending changes (ready)',
     'cms.content.status.pendingChanges.publicNotEqualDraft': 'Published, with pending changes (draft)',
