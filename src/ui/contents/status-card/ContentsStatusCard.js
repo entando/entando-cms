@@ -34,15 +34,15 @@ const contentStatusMsgs = defineMessages({
   },
   published: {
     id: 'cms.content.status.published',
-    defaultMessage: 'Approved',
+    defaultMessage: 'Published',
   },
   unpublished: {
     id: 'cms.content.status.unpublished',
-    defaultMessage: 'Work',
+    defaultMessage: 'Unpublished',
   },
   ready: {
-    id: 'cms.content.status.ready',
-    defaultMessage: 'Approved, with changes',
+    id: 'cms.content.status.pendingChanges',
+    defaultMessage: 'Published, with pending changes',
   },
 });
 

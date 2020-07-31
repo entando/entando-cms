@@ -27,7 +27,7 @@ class ContentListCard extends Component {
   }
 
   renderRows() {
-    const { contents } = this.props;
+    const { contents, intl } = this.props;
     if (!contents) {
       return null;
     }
@@ -35,7 +35,7 @@ class ContentListCard extends Component {
       contents.map(({
         description, id, typeDescription, lastModified, lastEditor, status, onLine,
       }) => {
-        const { color, title } = getContentStatusDetails(status, onLine);
+        const { color, title } = getContentStatusDetails(status, onLine, intl);
         return (
           <tr className="VersioningListRow" key={id}>
             <td className="VersioningListRow__td SingleContentCurrentVersion__description">{description}</td>
@@ -46,7 +46,7 @@ class ContentListCard extends Component {
             <td className="VersioningListRow__td text-center">
               <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
             </td>
-            <td className="VersioningListRow__td text-center">
+            <td className="VersioningListRow__td">
               {formatDate(lastModified)}
             </td>
           </tr>
@@ -109,7 +109,7 @@ class ContentListCard extends Component {
               <th className="text-center" width="12%">
                 <FormattedMessage id="contentPicker.status" />
               </th>
-              <th className="text-center" width="25%"><FormattedMessage id="cms.versioning.list.lastModify" /></th>
+              <th width="25%"><FormattedMessage id="cms.versioning.list.lastModify" /></th>
             </tr>
           </thead>
           <tbody>

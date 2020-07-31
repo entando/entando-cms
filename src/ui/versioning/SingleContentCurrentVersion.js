@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Spinner } from 'patternfly-react';
 import { formatDate } from '@entando/utils';
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
@@ -19,6 +19,7 @@ class SingleContentCurrentVersion extends Component {
 
   render() {
     const {
+      intl,
       content,
       loading,
       groups: allGroups,
@@ -29,7 +30,7 @@ class SingleContentCurrentVersion extends Component {
     const mainGroupObj = allGroups.filter(group => group.code === mainGroup)[0] || {};
     const readGroups = allGroups.filter(group => groups.includes(group.code))
       .map(group => group.name);
-    const { color, title } = getContentStatusDetails(status, onLine);
+    const { color, title } = getContentStatusDetails(status, onLine, intl);
     return (
       <div className="SingleContentCurrentVersion__wrap">
         <Spinner loading={!!loading}>
@@ -100,6 +101,7 @@ class SingleContentCurrentVersion extends Component {
 }
 
 SingleContentCurrentVersion.propTypes = {
+  intl: intlShape.isRequired,
   content: PropTypes.shape({
     description: PropTypes.string,
     lastModified: PropTypes.string,
@@ -131,4 +133,4 @@ SingleContentCurrentVersion.defaultProps = {
   groups: [],
 };
 
-export default SingleContentCurrentVersion;
+export default injectIntl(SingleContentCurrentVersion);
