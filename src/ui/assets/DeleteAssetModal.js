@@ -39,7 +39,7 @@ const DeleteAssetModal = ({ onConfirmDelete, info }) => {
     >
       <EmptyState>
         <EmptyStateIcon name="exclamation" type="fa" className="DeleteContentModal__icon" />
-        <EmptyStateTitle>
+        <EmptyStateTitle className="DeleteContentModal__title">
           <FormattedMessage id="cms.label.delete" />
           &nbsp;{info.description}
         </EmptyStateTitle>
