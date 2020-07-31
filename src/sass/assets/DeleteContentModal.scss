@@ -1,6 +1,6 @@
 .DeleteContentModal {
-    &__title {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+  &__title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
