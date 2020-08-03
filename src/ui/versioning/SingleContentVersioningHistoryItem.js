@@ -1,29 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { routeConverter, formatDate } from '@entando/utils';
 import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { ROUTE_CMS_VERSIONING_CONTENT_DETAIL } from 'app-init/routes';
 
-export const getContentVersionStatusDetails = (approved, onlineVersion) => {
+export const getContentVersionStatusDetails = (approved, onlineVersion, intl) => {
   let color = 'review';
-  let title = 'Public ≠ Ready';
+  let titleId = 'cms.content.status.pendingChanges';
   if (approved) {
     color = 'published';
-    title = 'Published';
+    titleId = 'cms.content.status.published';
   } else if (onlineVersion === 0) {
     color = 'unpublished';
-    title = 'Unpublished';
+    titleId = 'cms.content.status.unpublished';
   }
+  const title = intl.formatMessage({ id: titleId });
   return { color, title };
 };
 
 const SingleContentVersioningHistoryItem = ({
   description, username, versionDate, version, onClickRestore,
-  onClickDelete, contentId, id, approved, onlineVersion,
+  onClickDelete, contentId, id, approved, onlineVersion, intl,
 }) => {
-  const { color, title } = getContentVersionStatusDetails(approved, onlineVersion);
+  const { color, title } = getContentVersionStatusDetails(approved, onlineVersion, intl);
   return (
     <tr className="VersioningListRow">
       <td className="VersioningListRow__td text-center">
@@ -49,7 +50,7 @@ const SingleContentVersioningHistoryItem = ({
               ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
               { contentId, versionId: id },
             )}
-            label={<FormattedMessage id="cms.versioning.list.detail" defaultMessage="Detail" />}
+            label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
             className="VersioningListRow__menu-item-edit"
           />
           <MenuItem onClick={() => onClickRestore({
@@ -72,6 +73,7 @@ const SingleContentVersioningHistoryItem = ({
 
 
 SingleContentVersioningHistoryItem.propTypes = {
+  intl: intlShape.isRequired,
   description: PropTypes.string.isRequired,
   contentId: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
@@ -89,4 +91,4 @@ SingleContentVersioningHistoryItem.defaultProps = {
   onClickDelete: () => {},
 };
 
-export default SingleContentVersioningHistoryItem;
+export default injectIntl(SingleContentVersioningHistoryItem);

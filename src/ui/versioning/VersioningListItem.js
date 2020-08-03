@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { LinkMenuItem } from '@entando/menu';
 import { DropdownKebab } from 'patternfly-react';
 import { routeConverter, formatDate } from '@entando/utils';
@@ -9,9 +9,9 @@ import { getContentVersionStatusDetails } from 'ui/versioning/SingleContentVersi
 
 const VersioningListItem = ({
   id, contentType, description, username, versionDate,
-  version, approved, contentId, onlineVersion,
+  version, approved, contentId, onlineVersion, intl,
 }) => {
-  const { color, title } = getContentVersionStatusDetails(approved, onlineVersion);
+  const { color, title } = getContentVersionStatusDetails(approved, onlineVersion, intl);
   return (
     <tr className="VersioningListRow">
       <td className="VersioningListRow__td SingleContentCurrentVersion__description">{description}</td>
@@ -46,6 +46,7 @@ const VersioningListItem = ({
 
 
 VersioningListItem.propTypes = {
+  intl: intlShape.isRequired,
   contentType: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
@@ -57,4 +58,4 @@ VersioningListItem.propTypes = {
   onlineVersion: PropTypes.number.isRequired,
 };
 
-export default VersioningListItem;
+export default injectIntl(VersioningListItem);
