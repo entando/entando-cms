@@ -35,7 +35,7 @@ export const condenseAssetInfo = (asset, domain) => {
   const { versions, metadata } = asset;
   const isImg = asset.type === 'image';
   if (!metadata || !('Image Width' in metadata)) {
-    const newAsset = Object.assign(asset, { path: getURLAbsolute(domain, get(asset, 'path', '')) });
+    const newAsset = Object.assign(asset, { downloadUrl: getURLAbsolute(domain, get(asset, 'path', '')) });
     if (isImg && versions) {
       const newVersions = refineImageVersions(versions, domain);
       return { ...newAsset, ...newVersions };
@@ -58,7 +58,7 @@ export const condenseAssetInfo = (asset, domain) => {
     ...asset,
     ...newVersions,
     metadata: newMetadata,
-    downloadUrl: isImg ? newVersions.versions[0].path : asset.path,
+    downloadUrl: isImg ? newVersions.versions[0].path : getURLAbsolute(domain, get(asset, 'path', '')),
   };
 };
 
