@@ -55,19 +55,19 @@ export const mapStateToProps = (state, ownProps) => {
 export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
   onDidMount: () => {
     dispatch(checkStatus('published'));
-    dispatch(fetchContentsPaged(null,
-      null, null, false, '&status=published', ownerGroup, joinGroups));
+    dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
-  onFilteredSearch: (fetchParams, pagination, sortParams) => dispatch(
-    fetchContentsPaged(null,
-      pagination, sortParams, false, '&status=published', ownerGroup, joinGroups),
+  onFilteredSearch: (params, page, sort) => dispatch(
+    fetchContentsPaged({
+      page, sort, status: '&status=published', ownerGroup, joinGroups,
+    }),
   ),
   onAdvancedFilterSearch: () => {
-    dispatch(fetchContentsPaged(null, null, null, false, '&status=published', ownerGroup, joinGroups));
+    dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: columns => dispatch(setCurrentColumnsShow(columns)),

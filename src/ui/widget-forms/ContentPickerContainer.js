@@ -26,7 +26,7 @@ const toFilter = formState => Object.keys(formState).reduce((acc, key) => ({
 const getFilteredContents = (formState, ownerGroup, joinGroups) => {
   const filter = toFilter(formState);
   const filterParams = convertToQueryString(filter);
-  const ownerGroupQuery = `&forLinkingWithOwnerGroup=${ownerGroup}`;
+  const ownerGroupQuery = ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : '';
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   const contentParams = `${filterParams || '?'}&status=published${ownerGroupQuery}${joinGroupsQuery}`;

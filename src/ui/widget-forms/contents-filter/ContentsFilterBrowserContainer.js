@@ -91,17 +91,25 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
   onDidMount: () => {
     dispatch(setCurrentStatusShow('published'));
-    dispatch(fetchContentsPaged(null,
-      null, null, false, '&status=published', ownerGroup, joinGroups));
+    dispatch(fetchContentsPaged(
+      { status: '&status=published', ownerGroup, joinGroups },
+    ));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups(noPage));
     dispatch(fetchContentTypeListPaged(noPage));
     dispatch(fetchUsers(noPage));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
-  onFilteredSearch: (fetchParams, pagination, sortParams, tabSearch) => dispatch(
-    fetchContentsPaged(fetchParams, pagination, sortParams, tabSearch,
-      STATUS_PUBLISHED, ownerGroup, joinGroups),
+  onFilteredSearch: (params, page, sort, tabSearch) => dispatch(
+    fetchContentsPaged({
+      params,
+      page,
+      sort,
+      tabSearch,
+      status: STATUS_PUBLISHED,
+      ownerGroup,
+      joinGroups,
+    }),
   ),
   onSetTabSearch: tabSearch => dispatch(setTabSearch(tabSearch)),
   onCheckStatus: status => dispatch(checkStatus(status)),
@@ -110,16 +118,26 @@ export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
   onSetCurrentAuthorShow: (author, status) => {
     dispatch(setCurrentStatusShow('published'));
     dispatch(setCurrentAuthorShow(author));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author),
-      null, null, true, STATUS_PUBLISHED, ownerGroup, joinGroups));
+    dispatch(fetchContentsPaged({
+      params: paramsForStatusAndAuthor(status, author),
+      tabSearch: true,
+      status: STATUS_PUBLISHED,
+      ownerGroup,
+      joinGroups,
+    }));
   },
   onSetCurrentStatusShow: (status, author) => {
     dispatch(setCurrentStatusShow(status));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)),
-      null, null, true, '&status=published', ownerGroup, joinGroups);
+    dispatch(fetchContentsPaged({
+      params: paramsForStatusAndAuthor(status, author),
+      tabSearch: true,
+      status: '&status=published',
+      ownerGroup,
+      joinGroups,
+    }));
   },
   onAdvancedFilterSearch: () => {
-    dispatch(fetchContentsPaged(null, null, null, false, '&status=published', ownerGroup, joinGroups));
+    dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),

@@ -18,8 +18,7 @@ const RenderTextInput = ({
   xsClass,
   ...others
 }) => {
-  // eslint-disable-next-line no-unused-vars
-  const { mainGroup, langCode, restProps } = others;
+  const { restProps } = others;
   return (
     <div className={touched && error ? 'form-group has-error' : 'form-group'}>
       {hasLabel && labelSize > 0 && (

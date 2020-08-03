@@ -8,7 +8,7 @@ import { getPagination } from 'state/pagination/selectors';
 import {
   getContentType, getGroup, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentQuickFilter,
-  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow, getTabSearchEnabled,
+  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow,
 } from 'state/contents/selectors';
 import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
@@ -153,7 +153,7 @@ export const fetchContentsWithFilters = (
   const filters = [];
   const eq = FILTER_OPERATORS.EQUAL;
   const like = FILTER_OPERATORS.LIKE;
-  const ownerGroupQuery = `&forLinkingWithOwnerGroup=${quickFilterOwnerGroup}`;
+  const ownerGroupQuery = quickFilterOwnerGroup ? `&forLinkingWithOwnerGroup=${quickFilterOwnerGroup}` : '';
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   if (params) {
@@ -238,24 +238,24 @@ export const fetchContentsWithTabs = (
     operators,
     sorting,
   }), published ? '&status=published' : ''].join('');
-  const ownerGroupQuery = `&forLinkingWithOwnerGroup=${ownerGroup}`;
+  const ownerGroupQuery = ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : '';
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   const params = `${query}${ownerGroupQuery}${joinGroupsQuery}`;
   return dispatch(fetchContents(pagination, params));
 };
 
-export const fetchContentsPaged = (params, page, sort, tabSearch,
-  quickFilterStatusParam, quickFilterOwnerGroup, joinGroups) => (
-  dispatch, getState,
+export const fetchContentsPaged = ({
+  params, page, sort, tabSearch,
+  status, ownerGroup, joinGroups,
+} = {}) => (
+  dispatch,
 ) => {
-  const state = getState();
-  const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
-  if (tabSearchEnabled) {
-    return dispatch(fetchContentsWithTabs(page, sort, quickFilterOwnerGroup, joinGroups));
+  if (tabSearch) {
+    return dispatch(fetchContentsWithTabs(page, sort, ownerGroup, joinGroups));
   }
   return dispatch(fetchContentsWithFilters(params, page, sort,
-    quickFilterStatusParam, quickFilterOwnerGroup, joinGroups));
+    status, ownerGroup, joinGroups));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {
