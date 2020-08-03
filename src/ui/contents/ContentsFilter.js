@@ -134,8 +134,7 @@ class ContentsFilter extends Component {
             onClick={() => onCheckStatus(PUBLISHED)}
             onKeyDown={() => onCheckStatus(PUBLISHED)}
           >
-            <div className="ContentsFilter__status ContentsFilter__status--published" />
-            <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
+            <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
           </Checkbox>
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
@@ -146,8 +145,7 @@ class ContentsFilter extends Component {
             onClick={() => onCheckStatus(READY)}
             onKeyDown={() => onCheckStatus(READY)}
           >
-            <div className="ContentsFilter__status ContentsFilter__status--review" />
-            <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
+            <FormattedMessage id="cms.contents.ready" defaultMessage="Ready for approval" />
           </Checkbox>
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
@@ -158,8 +156,7 @@ class ContentsFilter extends Component {
             onClick={() => onCheckStatus(UNPUBLISHED)}
             onKeyDown={() => onCheckStatus(UNPUBLISHED)}
           >
-            <div className="ContentsFilter__status ContentsFilter__status--unpublished" />
-            <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
+            <FormattedMessage id="cms.contents.pendingChanges" defaultMessage="Pending changes" />
           </Checkbox>
         </Col>
       </div>

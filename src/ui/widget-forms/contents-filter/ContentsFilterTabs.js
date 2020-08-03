@@ -33,13 +33,13 @@ const ContentFilterTabs = ({
               <FormattedMessage id="cms.assets.list.all" defaultMessage="All" />
             </NavItem>
             <NavItem eventKey="draft">
-              <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
+              <FormattedMessage id="cms.contents.pendingChanges" defaultMessage="Pending Changes" />
             </NavItem>
             <NavItem eventKey="ready">
-              <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
+              <FormattedMessage id="cms.contents.ready" defaultMessage="Ready for approval" />
             </NavItem>
             <NavItem eventKey="published">
-              <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
+              <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
             </NavItem>
           </Nav>
         )

@@ -35,16 +35,16 @@ const ContentTabs = ({
     <div>
       <Nav bsClass="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary Contents__main-tab-bar" onSelect={null} style={{ fontSize: '14px' }}>
         <NavItem eventKey="all">
-          <FormattedMessage id="cms.assets.list.all" defaultMessage="All" />
+          <FormattedMessage id="cms.contents.list.all" defaultMessage="All" />
         </NavItem>
         <NavItem eventKey="draft">
-          <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
+          <FormattedMessage id="cms.contents.pendingChanges" defaultMessage="Pending Changes" />
         </NavItem>
         <NavItem eventKey="ready">
-          <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
+          <FormattedMessage id="cms.contents.readyPl" defaultMessage="Ready for approval" />
         </NavItem>
         <NavItem eventKey="published">
-          <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
+          <FormattedMessage id="cms.contents.publishedPl" defaultMessage="Published" />
         </NavItem>
       </Nav>
       <div className="Contents__main-action-button">

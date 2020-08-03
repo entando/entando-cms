@@ -21,12 +21,6 @@ const messages = defineMessages({
   new: {
     id: 'cms.new',
   },
-  draft: {
-    id: 'cms.contents.draft',
-  },
-  ready: {
-    id: 'cms.contents.ready',
-  },
   save: {
     id: 'cms.save',
   },
@@ -47,6 +41,11 @@ const messages = defineMessages({
   },
 });
 
+const isValidDateTimeStr = (dateTime) => {
+  const formattedDateTime = formatDate(dateTime);
+  return (typeof formattedDateTime === 'string') && !(['N/A', 'INVALID DATE'].includes(formattedDateTime.toUpperCase()));
+};
+
 const StickySave = ({
   lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
   onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions,
@@ -55,22 +54,26 @@ const StickySave = ({
     <Col xs={12} className="StickySave">
       <Row className="toolbar-pf table-view-pf-toolbar" style={{ backgroundColor: 'white' }}>
         <Col xs={12}>
-          <Row className="StickySave__row">
-            <Col xs={12} className="StickySave__column">
-              <strong>
-                <FormattedMessage
-                  id="cms.stickySave.lastAutoSave"
-                  defaultMessage="Last save was:"
-                />
-                {formatDate(lastAutoSaveTime)}
-              </strong>
-            </Col>
-          </Row>
+          {
+            isValidDateTimeStr(lastAutoSaveTime) ? (
+              <Row className="StickySave__row">
+                <Col xs={12} className="StickySave__column">
+                  <strong>
+                    <FormattedMessage
+                      id="cms.stickySave.lastAutoSave"
+                      defaultMessage="Last save was:"
+                    />
+                    {formatDate(lastAutoSaveTime)}
+                  </strong>
+                </Col>
+              </Row>
+            ) : ''
+          }
           <Row className="toolbar-pf-actions">
             <Col xs={12} md={6} className="StickySave__column">
               <Col xs={12} className="no-padding ToggleButtonGroup">
                 <strong>
-                  <FormattedMessage id="cms.stickySave.status" defaultMessage="Ready to be published" />
+                  <FormattedMessage id="cms.contents.ready" defaultMessage="Ready for approval" />
                 </strong>
                 <ButtonToolbar>
                   <Field
