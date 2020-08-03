@@ -16,6 +16,7 @@ const AssetBrowserModal = ({
   onAssetSelected,
   onModalOpened,
   ownerGroup,
+  joinGroups,
   name,
 }) => {
   const modalTitle = (
@@ -38,6 +39,7 @@ const AssetBrowserModal = ({
         browseMode
         onUseAsset={onAssetSelected}
         ownerGroup={ownerGroup}
+        joinGroups={joinGroups}
       />
     </GenericModalContainer>
   );
@@ -49,6 +51,7 @@ AssetBrowserModal.propTypes = {
   onModalOpened: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   ownerGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default AssetBrowserModal;

@@ -20,9 +20,9 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
-    const { mainGroup } = ownProps;
+    const { mainGroup, joinGroups } = ownProps;
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchAssetsPaged(pageDefault, 'file', mainGroup));
+    dispatch(fetchAssetsPaged(pageDefault, 'file', mainGroup, joinGroups));
     dispatch(fetchCategoryTree());
   },
   onClickAdd: name => dispatch(dispatch(setVisibleModal(`${ATTACH_MODAL_ID}${name}`))),

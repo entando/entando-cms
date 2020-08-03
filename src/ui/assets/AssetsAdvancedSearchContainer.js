@@ -14,7 +14,9 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
   },
-  onSubmit: values => dispatch(advancedSearchFilter(values, undefined, ownProps.ownerGroup)),
+  onSubmit: values => dispatch(advancedSearchFilter(
+    values, undefined, ownProps.ownerGroup, ownProps.joinGroups,
+  )),
 });
 
 const AssetsAdvancedSearchContainer = connect(

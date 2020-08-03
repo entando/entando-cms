@@ -5,17 +5,20 @@ import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
 import ContentConfigFormBody from 'ui/widget-forms/ContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
-import { fetchSearchPages } from 'state/pages/actions';
+import { fetchSearchPages, fetchPage } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
-import { formValueSelector, reduxForm, submit } from 'redux-form';
+import {
+  formValueSelector, reduxForm, submit, change,
+} from 'redux-form';
 import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 
 const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
 
@@ -27,6 +30,8 @@ export const mapStateToProps = (state, ownProps) => ({
   language: getLocale(state),
   widgetCode: ownProps.widgetCode,
   chosenContents: formValueSelector(MultipleContentsConfigContainerId)(state, 'contents'),
+  ownerGroup: formValueSelector(MultipleContentsConfigContainerId)(state, 'ownerGroup'),
+  joinGroups: formValueSelector(MultipleContentsConfigContainerId)(state, 'joinGroups'),
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -34,6 +39,11 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(fetchContentTemplateListPaged({ page: 1, pageSize: 0 }));
     dispatch(fetchLanguages({ page: 1, pageSize: 0 }));
     dispatch(fetchSearchPages({ page: 1, pageSize: 0 }));
+    dispatch(fetchPage(ownProps.pageCode, PAGE_STATUS_DRAFT)).then((res) => {
+      const { ownerGroup, joinGroups } = res.payload || {};
+      dispatch(change(MultipleContentsConfigContainerId, 'ownerGroup', ownerGroup));
+      dispatch(change(MultipleContentsConfigContainerId, 'joinGroups', joinGroups));
+    });
   },
   onSubmit: (values) => {
     dispatch(clearErrors());

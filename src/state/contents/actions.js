@@ -208,7 +208,9 @@ export const fetchContentsWithFilters = (
   return dispatch(fetchContents(pagination, query));
 };
 
-export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => {
+export const fetchContentsWithTabs = (
+  page, newSort, ownerGroup, joinGroups,
+) => (dispatch, getState) => {
   const state = getState();
   const pagination = page || getPagination(state, 'contents') || getPagination(state);
   const sortingColumns = getSortingColumns(state);
@@ -236,20 +238,24 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
     operators,
     sorting,
   }), published ? '&status=published' : ''].join('');
-  return dispatch(fetchContents(pagination, query));
+  const ownerGroupQuery = `&forLinkingWithOwnerGroup=${ownerGroup}`;
+  const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
+    ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
+  const params = `${query}${ownerGroupQuery}${joinGroupsQuery}`;
+  return dispatch(fetchContents(pagination, params));
 };
 
 export const fetchContentsPaged = (params, page, sort, tabSearch,
-  quickFilterStatusParam, quickFilterOwnerGroup, joingGroups) => (
+  quickFilterStatusParam, quickFilterOwnerGroup, joinGroups) => (
   dispatch, getState,
 ) => {
   const state = getState();
   const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
   if (tabSearchEnabled) {
-    return dispatch(fetchContentsWithTabs(page, sort));
+    return dispatch(fetchContentsWithTabs(page, sort, quickFilterOwnerGroup, joinGroups));
   }
   return dispatch(fetchContentsWithFilters(params, page, sort,
-    quickFilterStatusParam, quickFilterOwnerGroup, joingGroups));
+    quickFilterStatusParam, quickFilterOwnerGroup, joinGroups));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {

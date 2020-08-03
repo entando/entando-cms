@@ -26,6 +26,7 @@ const AttachAttributeField = ({
   langCode,
   langCodes,
   defaultLang,
+  joinGroups,
 }) => {
   const handleAssetSelected = (info) => {
     input.onChange({
@@ -64,6 +65,7 @@ const AttachAttributeField = ({
           name={`${input.name}.${langCode}`}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
+          joinGroups={joinGroups}
         />
       </>
     );
@@ -120,6 +122,7 @@ AttachAttributeField.propTypes = {
   langCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
   langCode: PropTypes.string.isRequired,
   defaultLang: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 AttachAttributeField.defaultProps = {
@@ -132,6 +135,7 @@ AttachAttributeField.defaultProps = {
   alignClass: 'text-right',
   help: null,
   inputSize: null,
+  joinGroups: [],
 };
 
 export default AttachAttributeField;

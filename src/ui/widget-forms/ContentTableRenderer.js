@@ -7,7 +7,7 @@ import { Button, ButtonGroup } from 'patternfly-react';
 import ContentsFilterBrowserContainer from 'ui/widget-forms/contents-filter/ContentsFilterBrowserContainer';
 
 const ContentTableRenderer = ({
-  fields, contentTemplates, intl, multipleContentsMode, ownerGroup,
+  fields, contentTemplates, intl, multipleContentsMode, ownerGroup, joinGroups,
 }) => {
   const handlePickContent = content => fields.push({
     ...content, contentId: content.id, modelId: null, contentDescription: content.description,
@@ -84,7 +84,6 @@ const ContentTableRenderer = ({
       </tr>
     );
   });
-
   return (
     <div className="FiltersSelectRenderer well">
       {multipleContentsMode && (
@@ -92,6 +91,7 @@ const ContentTableRenderer = ({
         pickedContents={contentRowIds}
         onContentPicked={handlePickContent}
         ownerGroup={ownerGroup}
+        joinGroups={joinGroups}
       />
       )}
       <Table bordered striped className="FiltersSelectRenderer__content-table-selected">
@@ -134,6 +134,7 @@ ContentTableRenderer.propTypes = {
   multipleContentsMode: PropTypes.bool,
   contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   ownerGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 ContentTableRenderer.defaultProps = {

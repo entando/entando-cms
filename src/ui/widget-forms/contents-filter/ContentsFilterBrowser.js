@@ -65,6 +65,15 @@ class ContentsFilterBrowser extends Component {
     onDidMount();
   }
 
+  componentDidUpdate(prevProps) {
+    const { ownerGroup, joinGroups, onFilteredSearch } = this.props;
+    if (ownerGroup !== '' && ownerGroup !== prevProps.ownerGroup) {
+      onFilteredSearch(null, null, null, false);
+    } else if (joinGroups && JSON.stringify(joinGroups) !== JSON.stringify(prevProps.joinGroups)) {
+      onFilteredSearch(null, null, null, false);
+    }
+  }
+
   componentWillUnmount() {
     const { onWillUnmount } = this.props;
     onWillUnmount();
@@ -205,6 +214,8 @@ ContentsFilterBrowser.propTypes = {
   users: PropTypes.arrayOf(PropTypes.shape({})),
   onWillUnmount: PropTypes.func.isRequired,
   pickedContents: PropTypes.arrayOf(PropTypes.string),
+  ownerGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 ContentsFilterBrowser.defaultProps = {

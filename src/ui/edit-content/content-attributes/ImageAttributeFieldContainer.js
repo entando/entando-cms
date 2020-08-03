@@ -21,10 +21,10 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
-    const { mainGroup } = ownProps;
+    const { mainGroup, joinGroups } = ownProps;
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(changeFileType('image'));
-    dispatch(fetchAssetsPaged(undefined, undefined, mainGroup));
+    dispatch(fetchAssetsPaged(undefined, undefined, mainGroup, joinGroups));
     dispatch(fetchCategoryTree());
   },
   onClickAdd: name => dispatch(setVisibleModal(`${IMAGE_MODAL_ID}${name}`)),

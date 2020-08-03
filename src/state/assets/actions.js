@@ -130,6 +130,7 @@ export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
   assetType = null,
   ownerGroup,
+  joinGroups,
 ) => (dispatch, getState) => {
   const state = getState();
   const fileType = assetType || getFileType(state);
@@ -154,7 +155,9 @@ export const fetchAssetsPaged = (
   }
 
   const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
-  return dispatch(fetchAssets(paginationMetadata, `?${params}${ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : ''}`));
+  const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
+    ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
+  return dispatch(fetchAssets(paginationMetadata, `?${params}${ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : ''}${joinGroupsQuery}`));
 };
 
 export const makeFilter = (value, op = FILTER_OPERATORS.EQUAL) => ({ value, op });
@@ -163,6 +166,7 @@ export const applyAssetsFilter = (
   filters,
   paginationMetadata = pageDefault,
   ownerGroup,
+  joinGroups,
 ) => (dispatch, getState) => {
   const { sorting } = getListFilterParams(getState());
   const filter = Object.entries(filters).reduce((curr, [key, entry]) => ({
@@ -179,7 +183,7 @@ export const applyAssetsFilter = (
 
   dispatch(setListFilterParams(filter));
   const page = getPagination(getState()) || paginationMetadata;
-  return dispatch(fetchAssetsPaged(page, undefined, ownerGroup));
+  return dispatch(fetchAssetsPaged(page, undefined, ownerGroup, joinGroups));
 };
 
 export const sortAssetsList = (
@@ -187,6 +191,7 @@ export const sortAssetsList = (
   direction = SORT_DIRECTIONS.ASCENDANT,
   paginationMetadata = pageDefault,
   ownerGroup,
+  joinGroups,
 ) => (dispatch, getState) => {
   const newSorting = { attribute, direction };
   const { sorting, ...others } = getListFilterParams(getState());
@@ -203,7 +208,7 @@ export const sortAssetsList = (
   };
   dispatch(setListFilterParams(filter));
   const page = getPagination(getState()) || paginationMetadata;
-  return dispatch(fetchAssetsPaged(page, undefined, ownerGroup));
+  return dispatch(fetchAssetsPaged(page, undefined, ownerGroup, joinGroups));
 };
 
 export const filterAssetsBySearch = (

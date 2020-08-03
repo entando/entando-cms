@@ -671,7 +671,7 @@ describe('state/contents/actions', () => {
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
-        .dispatch(fetchContentsPaged(null, null, null, false))
+        .dispatch(fetchContentsPaged(null, null, null, false, '', 'administrators', ['a']))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(5);

@@ -9,7 +9,7 @@ import {
 } from 'patternfly-react';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
-import ContentsFilterModalContainer from '../contents-filter/ContentsFilterModalContainer';
+import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
 
 export default class SingleContentConfigFormBody extends PureComponent {
   componentDidMount() {
@@ -31,6 +31,8 @@ export default class SingleContentConfigFormBody extends PureComponent {
       showFilterModal,
       onSelectContent,
       onSave,
+      ownerGroup,
+      joinGroups,
     } = this.props;
     const contentExists = chosenContent && (chosenContent.id || chosenContent.contentId);
     const handleCancelClick = () => {
@@ -100,6 +102,8 @@ export default class SingleContentConfigFormBody extends PureComponent {
                   submitting={submitting}
                   onSave={onSelectContent}
                   onDiscard={onDiscard}
+                  ownerGroup={ownerGroup}
+                  joinGroups={joinGroups}
                 />
 
                 { (content.contentId || content.id)
@@ -169,9 +173,13 @@ SingleContentConfigFormBody.propTypes = {
   showFilterModal: PropTypes.func.isRequired,
   onSelectContent: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  ownerGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 SingleContentConfigFormBody.defaultProps = {
   chosenContent: {},
   dirty: false,
+  ownerGroup: '',
+  joinGroups: [],
 };

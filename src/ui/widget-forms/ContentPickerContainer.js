@@ -23,10 +23,13 @@ const toFilter = formState => Object.keys(formState).reduce((acc, key) => ({
   operators: {},
 });
 
-const getFilteredContents = (formState) => {
+const getFilteredContents = (formState, ownerGroup, joinGroups) => {
   const filter = toFilter(formState);
   const filterParams = convertToQueryString(filter);
-  const contentParams = `${filterParams || '?'}&status=published`;
+  const ownerGroupQuery = `&forLinkingWithOwnerGroup=${ownerGroup}`;
+  const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
+    ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
+  const contentParams = `${filterParams || '?'}&status=published${ownerGroupQuery}${joinGroupsQuery}`;
   return getContents(noPaging, contentParams)
     .then(res => res.json())
     .then(json => json.payload);
@@ -35,7 +38,10 @@ const getFilteredContents = (formState) => {
 export const mapStateToProps = (state, ownProps) => ({
   contentTypeList: getContentTypeList(state),
   contentStatusList: [{ code: 'draft', name: 'Draft' }, { code: 'ready', name: 'Ready' }],
-  fetchContents: () => getFilteredContents(formValueSelector(ownProps.form)(state, 'typeCode', 'status')),
+  fetchContents: () => getFilteredContents(
+    formValueSelector(ownProps.form)(state, 'typeCode', 'status'),
+    ownProps.ownerGroup, ownProps.joinGroups,
+  ),
 });
 
 export const mapDispatchToProps = dispatch => ({

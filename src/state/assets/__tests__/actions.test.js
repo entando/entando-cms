@@ -463,7 +463,32 @@ describe('state/assets/actions', () => {
         },
         pagination: { global: { page: 1, pageSize: 10 } },
       });
-      store.dispatch(fetchAssetsPaged()).then(() => {
+      store.dispatch(fetchAssetsPaged(null, null, 'admin', ['a'])).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(4);
+        done();
+      });
+    });
+
+    it('fetchAssetsPaged with tabs and no join groups', (done) => {
+      const filterParams = {
+        formValues: { categories: ['yo', 'aa'] },
+        operators: { categories: 'like' },
+      };
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [],
+              filterParams,
+              fileType: 'image',
+              filteringCategories: ['cats'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store.dispatch(fetchAssetsPaged(null, null, 'admin')).then(() => {
         const actions = store.getActions();
         expect(actions).toHaveLength(4);
         done();

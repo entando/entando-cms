@@ -18,8 +18,6 @@ import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
-const ADMINISTRATOR_OWNER = 'administrator';
-
 export default class ContentConfigFormBody extends PureComponent {
   constructor(props) {
     super(props);
@@ -66,7 +64,8 @@ export default class ContentConfigFormBody extends PureComponent {
       onCancel,
       onDiscard,
       onSave,
-      initialValues,
+      ownerGroup,
+      joinGroups,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
@@ -175,7 +174,6 @@ export default class ContentConfigFormBody extends PureComponent {
       </Row>
     ) : null;
 
-    const { group: ownerGroup } = initialValues.widgetConfig || {};
     return (
       <Fragment>
         <h5>
@@ -191,7 +189,8 @@ export default class ContentConfigFormBody extends PureComponent {
                 contentTemplates={contentTemplates}
                 name="contents"
                 intl={intl}
-                ownerGroup={ownerGroup || ADMINISTRATOR_OWNER}
+                ownerGroup={ownerGroup}
+                joinGroups={joinGroups}
                 multipleContentsMode={multipleContentsMode}
               />
             </Col>
@@ -246,9 +245,8 @@ ContentConfigFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  initialValues: PropTypes.shape({
-    widgetConfig: PropTypes.shape({}).isRequired,
-  }).isRequired,
+  ownerGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -256,4 +254,6 @@ ContentConfigFormBody.defaultProps = {
   pages: [],
   chosenContents: [],
   dirty: false,
+  ownerGroup: '',
+  joinGroups: null,
 };

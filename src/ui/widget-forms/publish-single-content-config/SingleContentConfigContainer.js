@@ -13,7 +13,9 @@ import {
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
-import { ContentsFilterModalID } from '../contents-filter/ContentsFilterModal';
+import { ContentsFilterModalID } from 'ui/widget-forms/contents-filter/ContentsFilterModal';
+import { PAGE_STATUS_DRAFT } from 'state/pages/const';
+import { fetchPage } from 'state/pages/actions';
 
 const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
@@ -32,12 +34,19 @@ export const mapStateToProps = (state, ownProps) => {
     contentTemplates: getContentTemplateList(state),
     initialValues: widgetConfig || {},
     chosenContent: formValueSelector(SingleContentConfigContainerId)(state, 'chosenContent'),
+    ownerGroup: formValueSelector(SingleContentConfigContainerId)(state, 'ownerGroup'),
+    joinGroups: formValueSelector(SingleContentConfigContainerId)(state, 'joinGroups'),
   });
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
     dispatch(fetchContentTemplateListPaged({ page: 1, pageSize: 0 }));
+    dispatch(fetchPage(ownProps.pageCode, PAGE_STATUS_DRAFT)).then((res) => {
+      const { ownerGroup, joinGroups } = res.payload || {};
+      dispatch(change(SingleContentConfigContainerId, 'ownerGroup', ownerGroup));
+      dispatch(change(SingleContentConfigContainerId, 'joinGroups', joinGroups));
+    });
   },
   onSubmit: (values) => {
     dispatch(clearErrors());
