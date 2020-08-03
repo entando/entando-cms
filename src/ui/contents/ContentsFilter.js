@@ -128,13 +128,13 @@ class ContentsFilter extends Component {
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
             role="button"
-            tabIndex={-2}
+            tabIndex={-4}
             readOnly
-            checked={statusChecked === PUBLISHED}
-            onClick={() => onCheckStatus(PUBLISHED)}
-            onKeyDown={() => onCheckStatus(PUBLISHED)}
+            checked={statusChecked === UNPUBLISHED}
+            onClick={() => onCheckStatus(UNPUBLISHED)}
+            onKeyDown={() => onCheckStatus(UNPUBLISHED)}
           >
-            <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
+            <FormattedMessage id="cms.contents.pendingChanges" defaultMessage="Pending changes" />
           </Checkbox>
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
@@ -150,13 +150,13 @@ class ContentsFilter extends Component {
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
             role="button"
-            tabIndex={-4}
+            tabIndex={-2}
             readOnly
-            checked={statusChecked === UNPUBLISHED}
-            onClick={() => onCheckStatus(UNPUBLISHED)}
-            onKeyDown={() => onCheckStatus(UNPUBLISHED)}
+            checked={statusChecked === PUBLISHED}
+            onClick={() => onCheckStatus(PUBLISHED)}
+            onKeyDown={() => onCheckStatus(PUBLISHED)}
           >
-            <FormattedMessage id="cms.contents.pendingChanges" defaultMessage="Pending changes" />
+            <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
           </Checkbox>
         </Col>
       </div>
