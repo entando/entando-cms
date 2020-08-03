@@ -58,6 +58,22 @@ export class EditContentFormBody extends React.Component {
     return onDidMount(fetchContentParams);
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      dirty, changeStatus, content, status,
+    } = this.props;
+    if (dirty !== prevProps.dirty) {
+      if (dirty) {
+        if (status === prevProps.status) {
+          changeStatus('draft');
+        }
+      } else {
+        changeStatus((content || {}).status);
+      }
+    }
+  }
+
+
   componentWillUnmount() {
     const { onWillUnmount } = this.props;
     onWillUnmount();
@@ -287,6 +303,7 @@ export class EditContentFormBody extends React.Component {
               onLine={onLine}
               content={content}
               onUnpublish={onUnpublish}
+              {...this.props}
             />
           </div>
         </form>
@@ -335,6 +352,8 @@ EditContentFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   selectedOwnerGroup: PropTypes.string,
+  changeStatus: PropTypes.func.isRequired,
+  status: PropTypes.string,
 };
 
 EditContentFormBody.defaultProps = {
@@ -348,6 +367,7 @@ EditContentFormBody.defaultProps = {
   loading: false,
   groups: [],
   selectedOwnerGroup: '',
+  status: '',
 };
 
 const EditContentForm = reduxForm({

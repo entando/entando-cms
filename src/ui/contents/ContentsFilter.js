@@ -128,14 +128,13 @@ class ContentsFilter extends Component {
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
             role="button"
-            tabIndex={-2}
+            tabIndex={-4}
             readOnly
-            checked={statusChecked === PUBLISHED}
-            onClick={() => onCheckStatus(PUBLISHED)}
-            onKeyDown={() => onCheckStatus(PUBLISHED)}
+            checked={statusChecked === UNPUBLISHED}
+            onClick={() => onCheckStatus(UNPUBLISHED)}
+            onKeyDown={() => onCheckStatus(UNPUBLISHED)}
           >
-            <div className="ContentsFilter__status ContentsFilter__status--published" />
-            <FormattedMessage id="cms.contents.approved" defaultMessage="Approved" />
+            <FormattedMessage id="cms.contents.pendingChanges" defaultMessage="Pending changes" />
           </Checkbox>
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
@@ -146,20 +145,18 @@ class ContentsFilter extends Component {
             onClick={() => onCheckStatus(READY)}
             onKeyDown={() => onCheckStatus(READY)}
           >
-            <div className="ContentsFilter__status ContentsFilter__status--review" />
-            <FormattedMessage id="cms.contents.toApprove" defaultMessage="To Approve" />
+            <FormattedMessage id="cms.contents.ready" defaultMessage="Ready for approval" />
           </Checkbox>
           <Checkbox
             className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
             role="button"
-            tabIndex={-4}
+            tabIndex={-2}
             readOnly
-            checked={statusChecked === UNPUBLISHED}
-            onClick={() => onCheckStatus(UNPUBLISHED)}
-            onKeyDown={() => onCheckStatus(UNPUBLISHED)}
+            checked={statusChecked === PUBLISHED}
+            onClick={() => onCheckStatus(PUBLISHED)}
+            onKeyDown={() => onCheckStatus(PUBLISHED)}
           >
-            <div className="ContentsFilter__status ContentsFilter__status--unpublished" />
-            <FormattedMessage id="cms.contents.draft" defaultMessage="Draft" />
+            <FormattedMessage id="cms.contents.published" defaultMessage="Published" />
           </Checkbox>
         </Col>
       </div>

@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector, submit, destroy } from 'redux-form';
+import {
+  change, formValueSelector, submit, destroy,
+} from 'redux-form';
 import { routeConverter } from '@entando/utils';
 
 import {
@@ -64,6 +66,7 @@ export const mapStateToProps = state => ({
   saveType: getSaveType(state),
   content: getContent(state),
   contentType: getSelectedContentType(state),
+  status: formValueSelector('editcontentform')(state, 'status'),
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
@@ -116,6 +119,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
   onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('editcontentform')); },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
+  changeStatus: value => dispatch(change('editcontentform', 'status', value)),
 });
 
 const EditContentContainer = connect(
