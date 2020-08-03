@@ -52,7 +52,7 @@ class AssetsAdvancedSearchForm extends Component {
         <div className="clearfix form-group">
           <Col xs={2} sm={2} className="text-right mobile-left">
             <ControlLabel className="">
-              <FormattedMessage defaultMessage="Name" id="1" />
+              <FormattedMessage id="cms.label.name" defaultMessage="Name" />
             </ControlLabel>
           </Col>
           <Col xs={10} sm={9} className="AssetsAdvancedFilter__right-column">

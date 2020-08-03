@@ -49,7 +49,7 @@ const SingleContentVersioningHistoryItem = ({
               ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
               { contentId, versionId: id },
             )}
-            label={<FormattedMessage id="cms.versioning.list.detail" defaultMessage="Detail" />}
+            label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
             className="VersioningListRow__menu-item-edit"
           />
           <MenuItem onClick={() => onClickRestore({
