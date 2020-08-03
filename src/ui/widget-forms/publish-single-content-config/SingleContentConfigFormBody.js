@@ -104,6 +104,9 @@ export default class SingleContentConfigFormBody extends PureComponent {
                   onDiscard={onDiscard}
                   ownerGroup={ownerGroup}
                   joinGroups={joinGroups}
+                  compatibility={{
+                    joinGroups, ownerGroup,
+                  }}
                 />
 
                 { (content.contentId || content.id)

@@ -66,10 +66,8 @@ class ContentsFilterBrowser extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { ownerGroup, joinGroups, onFilteredSearch } = this.props;
-    if (ownerGroup !== '' && ownerGroup !== prevProps.ownerGroup) {
-      onFilteredSearch(null, null, null, false);
-    } else if (joinGroups && JSON.stringify(joinGroups) !== JSON.stringify(prevProps.joinGroups)) {
+    const { compatibility, onFilteredSearch } = this.props;
+    if (JSON.stringify(compatibility) !== JSON.stringify(prevProps.compatibility)) {
       onFilteredSearch(null, null, null, false);
     }
   }
@@ -214,8 +212,10 @@ ContentsFilterBrowser.propTypes = {
   users: PropTypes.arrayOf(PropTypes.shape({})),
   onWillUnmount: PropTypes.func.isRequired,
   pickedContents: PropTypes.arrayOf(PropTypes.string),
-  ownerGroup: PropTypes.string.isRequired,
-  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
+  compatibility: PropTypes.shape({
+    ownerGroup: PropTypes.string.isRequired,
+    joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }),
 };
 
 ContentsFilterBrowser.defaultProps = {
@@ -224,6 +224,7 @@ ContentsFilterBrowser.defaultProps = {
   pickedContents: null,
   onContentPicked: () => {},
   currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
+  compatibility: {},
 };
 
 

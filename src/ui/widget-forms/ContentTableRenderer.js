@@ -90,8 +90,10 @@ const ContentTableRenderer = ({
       <ContentsFilterBrowserContainer
         pickedContents={contentRowIds}
         onContentPicked={handlePickContent}
-        ownerGroup={ownerGroup}
-        joinGroups={joinGroups}
+        compatibility={{
+          joinGroups, ownerGroup,
+        }}
+        fetchOnMount={false}
       />
       )}
       <Table bordered striped className="FiltersSelectRenderer__content-table-selected">

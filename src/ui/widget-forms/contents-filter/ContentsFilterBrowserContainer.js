@@ -88,12 +88,17 @@ export const mapStateToProps = (state) => {
   });
 };
 
-export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
+export const mapDispatchToProps = (dispatch, {
+  compatibility: { ownerGroup, joinGroups } = {},
+  fetchOnMount,
+}) => ({
   onDidMount: () => {
     dispatch(setCurrentStatusShow('published'));
-    dispatch(fetchContentsPaged(
-      { status: '&status=published', ownerGroup, joinGroups },
-    ));
+    if (fetchOnMount) {
+      dispatch(fetchContentsPaged(
+        { status: '&status=published', ownerGroup, joinGroups },
+      ));
+    }
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups(noPage));
     dispatch(fetchContentTypeListPaged(noPage));
