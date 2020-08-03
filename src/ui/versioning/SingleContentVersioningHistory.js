@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape,
+} from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
 import SingleContentVersioningHistoryItem from 'ui/versioning/SingleContentVersioningHistoryItem';
 import RestoreContentVersionModalContainer from 'ui/versioning/RestoreContentVersionModalContainer';
 import DeleteContentVersionModalContainer from 'ui/versioning/DeleteContentVersionModalContainer';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -33,6 +36,7 @@ class SingleContentVersioningHistory extends Component {
 
   render() {
     const {
+      intl,
       versioningList,
       loading,
       page,
@@ -56,6 +60,11 @@ class SingleContentVersioningHistory extends Component {
           {...item}
         />
       ));
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     const renderData = versioningList.length === 0 ? (
       <FormattedMessage id="cms.versioning.noPreviousVersioning" defaultMessage="No previous revision." />
     ) : (
@@ -91,6 +100,7 @@ class SingleContentVersioningHistory extends Component {
           itemCount={totalItems}
           onPageSet={this.changePage}
           onPerPageSelect={this.changePageSize}
+          messages={messages}
         />
       </Fragment>
     );
@@ -107,6 +117,7 @@ class SingleContentVersioningHistory extends Component {
 }
 
 SingleContentVersioningHistory.propTypes = {
+  intl: intlShape.isRequired,
   versioningList: PropTypes.arrayOf(PropTypes.shape({})),
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
@@ -123,4 +134,4 @@ SingleContentVersioningHistory.defaultProps = {
   versioningList: [],
 };
 
-export default SingleContentVersioningHistory;
+export default injectIntl(SingleContentVersioningHistory);

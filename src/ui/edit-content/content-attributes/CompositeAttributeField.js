@@ -13,8 +13,19 @@ const CompositeAttributeField = ({
   fields,
   attribute,
   label,
+  langCode,
 }) => {
   const { code, compositeAttributes } = attribute;
+  const fieldNames = fields.map(name => name);
+  const mappedFieldNames = fields.getAll().reduce(
+    (acc, curr, idx) => {
+      const { code: fieldCode } = curr;
+      return {
+        ...acc,
+        [fieldCode]: fieldNames[idx],
+      };
+    }, {},
+  );
   return (
     <Row key={code}>
       <label className="control-label col-xs-2">
@@ -23,13 +34,18 @@ const CompositeAttributeField = ({
       <Col xs={10}>
         <Panel>
           <Panel.Body>
-            {fields.map((name, idx) => (
-              <AttributeField
-                key={compositeAttributes[idx].code}
-                name={name}
-                attribute={compositeAttributes[idx]}
-              />
-            ))}
+            {compositeAttributes.map((attr) => {
+              const { code: attrCode } = attr;
+              const fieldName = mappedFieldNames[attrCode];
+              return (
+                <AttributeField
+                  key={attrCode}
+                  name={fieldName}
+                  attribute={attr}
+                  langCode={langCode}
+                />
+              );
+            })}
           </Panel.Body>
         </Panel>
       </Col>
@@ -41,6 +57,7 @@ CompositeAttributeField.propTypes = {
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
   label: PropTypes.node.isRequired,
+  langCode: PropTypes.string.isRequired,
 };
 
 export default CompositeAttributeField;

@@ -1,4 +1,10 @@
 import { connect } from 'react-redux';
+import withPermissions from 'ui/common/auth/withPermissions';
+import {
+  CRUD_CONTENTS_PERMISSION,
+  SUPERUSER_PERMISSION,
+  MANAGE_RESOURCES_PERMISSION,
+} from 'state/permissions/const';
 
 import VersioningTypes from 'ui/versioning/VersioningTypes';
 
@@ -13,4 +19,8 @@ const VersioningTypesContainer = connect(
   mapDispatchToProps,
 )(VersioningTypes);
 
-export default VersioningTypesContainer;
+export default withPermissions([
+  CRUD_CONTENTS_PERMISSION,
+  SUPERUSER_PERMISSION,
+  MANAGE_RESOURCES_PERMISSION,
+])(VersioningTypesContainer);

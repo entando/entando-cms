@@ -99,6 +99,8 @@ export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, param
   })
 );
 
+const omitNoContentVersionsError = errors => errors.filter(error => !error.message.match(/a content versions with \w+ code could not be found/i));
+
 export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 }, params = '') => (dispatch, getState) => (
   new Promise((resolve) => {
     dispatch(toggleLoading('versionings'));
@@ -111,8 +113,9 @@ export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 
           dispatch(setPage(json.metaData));
         } else {
           dispatch(setVersionings([]));
-          dispatch(addErrors(json.errors.map(err => err.message)));
-          json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+          const filteredErrors = omitNoContentVersionsError(json.errors);
+          dispatch(addErrors(filteredErrors.map(err => err.message)));
+          filteredErrors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           dispatch(clearErrors());
         }
         dispatch(toggleLoading('versionings'));

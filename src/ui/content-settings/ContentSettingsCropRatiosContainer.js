@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addToast, TOAST_SUCCESS } from '@entando/messages';
+import { addToast, TOAST_SUCCESS, TOAST_ERROR } from '@entando/messages';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import { getCropRatios } from 'state/content-settings/selectors';
@@ -46,6 +46,15 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
         dispatch(addToast(intl.formatMessage(cropRatioSuccessMsgs.updated), TOAST_SUCCESS));
       }
     });
+  },
+  onError: (msg) => {
+    const errorMsg = defineMessages({
+      crop: {
+        id: `cms.contentsettings.${msg}`,
+        defaultMessage: 'Crop Error',
+      },
+    });
+    dispatch(addToast(intl.formatMessage(errorMsg.crop), TOAST_ERROR));
   },
 });
 

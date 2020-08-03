@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { setVisibleModal } from 'state/modal/actions';
 import { getInfo } from 'state/modal/selectors';
-import { sendDeleteAsset } from 'state/assets/actions';
+import { sendDeleteAsset, fetchAssetsCount } from 'state/assets/actions';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import { defineMessages, injectIntl } from 'react-intl';
 
@@ -28,6 +28,7 @@ export const mapDispatchToProps = (dispatch, { intl }) => ({
             TOAST_SUCCESS,
           ),
         );
+        dispatch(fetchAssetsCount(asset.type));
       }
     });
     dispatch(setVisibleModal(''));

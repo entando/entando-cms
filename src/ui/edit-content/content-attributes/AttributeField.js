@@ -119,11 +119,11 @@ const AttributeField = ({
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
-      actualName = `${name}.values.${langCode}`;
+      actualName = `${name}.values`;
       break;
     case TYPE_IMAGE:
       AttributeFieldComp = ImageAttributeFieldContainer;
-      actualName = `${name}.values.${langCode}`;
+      actualName = `${name}.values`;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
@@ -142,13 +142,16 @@ const AttributeField = ({
       name={actualName}
       attribute={attribute}
       component={AttributeFieldComp}
-      langCode={langCode}
       label={fieldLabel}
       hasLabel={hasLabel}
       validate={validate}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
       {...(type === TYPE_LINK && { langCode })}
+      {...(
+        [TYPE_LINK, TYPE_IMAGE, TYPE_ATTACH].includes(type)
+        && { langCode }
+      )}
       {...extraProps}
     />
   );

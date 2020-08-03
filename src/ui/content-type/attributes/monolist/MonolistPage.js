@@ -52,7 +52,7 @@ class MonolistPage extends Component {
                 <FormattedMessage id="cms.title" />
               </BreadcrumbItem>
               <BreadcrumbItem to={ROUTE_CMS_CONTENTTYPE_LIST}>
-                <FormattedMessage id="cms.contenttype.title" />
+                <FormattedMessage id="cms.menu.contenttypes" />
               </BreadcrumbItem>
               <BreadcrumbItem>
                 <FormattedMessage id="cms.label.edit" />: &nbsp;{contentTypeCode}

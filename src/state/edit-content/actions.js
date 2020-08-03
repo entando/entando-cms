@@ -3,6 +3,7 @@ import {
 } from '@entando/messages';
 import { initialize } from 'redux-form';
 import moment from 'moment';
+import { pickBy } from 'lodash';
 
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
@@ -10,7 +11,7 @@ import {
 
 import {
   TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP, TYPE_NUMBER,
-  TYPE_LIST, TYPE_MONOLIST,
+  TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE, TYPE_ATTACH,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import { toggleLoading } from 'state/loading/actions';
@@ -193,6 +194,15 @@ const convertNumberValue = (item) => {
   };
 };
 
+const checkAssetValueProps = (item) => {
+  const { values } = item;
+  const newVals = pickBy(values, val => !!val);
+  return {
+    ...item,
+    values: newVals,
+  };
+};
+
 const convertFieldValueByType = (item, type) => {
   switch (type) {
     case TYPE_BOOLEAN:
@@ -206,6 +216,9 @@ const convertFieldValueByType = (item, type) => {
     case TYPE_CHECKBOX:
     case TYPE_THREESTATE:
       return convertBoolToString(item, true);
+    case TYPE_IMAGE:
+    case TYPE_ATTACH:
+      return checkAssetValueProps(item);
     default:
       return item;
   }
@@ -222,10 +235,14 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
 
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);
   const transformedAttributes = attributes.map((attribute, i) => {
-    const { type } = contentTypeAttributes[i];
-    const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item, j) => {
-      const types = contentTypeAttributes[i].compositeAttributes;
-      return convertFieldValueByType(item, types[j].type);
+    const { type, compositeAttributes: cAtts } = contentTypeAttributes[i];
+    const mappedCompAttributes = cAtts && cAtts.length && cAtts.reduce((acc, curr) => ({
+      ...acc,
+      [curr.code]: curr,
+    }), {});
+    const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item) => {
+      const attr = mappedCompAttributes[item.code];
+      return convertFieldValueByType(item, attr.type);
     });
     const replaceBooleanDateStringsList = (arr = []) => arr.map((item) => {
       const { type: nestedType } = contentTypeAttributes[i].nestedAttribute;

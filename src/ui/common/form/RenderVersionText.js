@@ -29,7 +29,7 @@ const RenderVersionText = ({
         <strong>{version} </strong>
         {creatorText} {/* @TODO Update href value */}
         <a href="#user">
-          {creatorUserName}
+          {creatorUserName}{' '}
           {creatorUserName === currentUserName ? (
             <span className="label label-primary">{sameAuthorText}</span>
           ) : null}
@@ -38,7 +38,7 @@ const RenderVersionText = ({
         <a href="#user">
           {modifierUserName}
           {modifierUserName === currentUserName ? (
-            <span className="text-muted">({sameAuthorText})</span>
+            <span className="text-muted"> ({sameAuthorText})</span>
           ) : null}
         </a>
       </span>

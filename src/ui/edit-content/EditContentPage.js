@@ -8,15 +8,15 @@ import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import EditContentFormContainer from 'ui/edit-content/EditContentFormContainer';
 
 const EditContentPage = () => (
-  <Grid>
+  <Grid fluid>
     <Row>
-      <Col>
+      <Col xs={12}>
         <Breadcrumb>
           <BreadcrumbItem active>
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem to="/cms/contents">
-            <FormattedMessage id="cms.contents.title" defaultMessage="Contents" />
+            <FormattedMessage id="cms.menu.contents" defaultMessage="Contents" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
             <FormattedMessage id="cms.contents.edit.title" defaultMessage="Edit" />
@@ -25,7 +25,7 @@ const EditContentPage = () => (
       </Col>
     </Row>
     <Row>
-      <Col>
+      <Col xs={12}>
         <CMSPageTitle
           titleId="cms.contents.edit.title"
           helpId="cms.contents.edit.titletip"

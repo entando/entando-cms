@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import {
   Col,
@@ -24,8 +25,19 @@ const ImageAttributeField = ({
   onClickAdd,
   assetListBegin,
   mainGroup,
+  langCode,
+  langCodes,
+  defaultLang,
 }) => {
-  const handleAssetSelected = info => input.onChange(info);
+  const handleAssetSelected = (info) => {
+    input.onChange({
+      ...input.value,
+      ...(langCodes.reduce((acc, curr) => ({
+        ...acc,
+        [curr]: info,
+      }), {})),
+    });
+  };
 
   const containerClasses = touched && error ? 'form-group has-error' : 'form-group';
 
@@ -36,7 +48,7 @@ const ImageAttributeField = ({
         <Button
           bsStyle="primary"
           style={{ marginRight: 10 }}
-          onClick={() => onClickAdd(input.name)}
+          onClick={() => onClickAdd(`${input.name}.${langCode}`)}
         >
           <FormattedMessage id="cms.label.browse" defaultMessage="Browse" />
         </Button>
@@ -45,12 +57,12 @@ const ImageAttributeField = ({
           customClassName="UploadAsset--button-version"
           customDropzoneProps={{ noClick: true }}
           onAssetSelected={handleAssetSelected}
-          name={input.name}
+          name={`${input.name}.${langCode}`}
         />
         {errorBox}
         <AssetBrowserModal
           assetType="image"
-          name={input.name}
+          name={`${input.name}.${langCode}`}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
           ownerGroup={mainGroup}
@@ -60,10 +72,20 @@ const ImageAttributeField = ({
   };
 
   const renderAssetSelected = () => (
-    <AssetAttributeFieldInfoContainer input={input} />
+    <AssetAttributeFieldInfoContainer input={input} langCode={langCode} />
   );
 
-  const hasValue = !!input.value;
+  const hasValue = get(input, `value.${langCode}`, false);
+
+  if (!hasValue && defaultLang !== langCode) {
+    const hasDefLangValue = get(input, `value.${defaultLang}`, false);
+    if (hasDefLangValue) {
+      handleAssetSelected({
+        ...hasDefLangValue,
+        metadata: {},
+      });
+    }
+  }
 
   return (
     <div className={containerClasses}>
@@ -100,6 +122,9 @@ ImageAttributeField.propTypes = {
   onClickAdd: PropTypes.func.isRequired,
   assetListBegin: PropTypes.func.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  langCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  langCode: PropTypes.string.isRequired,
+  defaultLang: PropTypes.string.isRequired,
 };
 
 ImageAttributeField.defaultProps = {

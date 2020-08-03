@@ -1,6 +1,5 @@
 import React from 'react';
-import { configEnzymeAdapter } from 'testutils/helpers';
-import { shallow } from 'enzyme';
+import { configEnzymeAdapter, shallowWithIntl } from 'testutils/helpers';
 import { CONTENT_TYPES_OK_PAGE } from 'testutils/mocks/contentType';
 
 import ContentTypeList from 'ui/content-type/ContentTypeList';
@@ -23,7 +22,7 @@ const props = {
 describe('ContentTypeList', () => {
   let component;
   beforeEach(() => {
-    component = shallow(
+    component = shallowWithIntl(
       <ContentTypeList
         {...props}
         contentTypes={contentTypes}
@@ -40,7 +39,9 @@ describe('ContentTypeList', () => {
 
   it('errors without a page', () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    shallow(<ContentTypeList contentTypes={contentTypes} pageSize={1} totalItems={1} {...props} />);
+    shallowWithIntl(
+      <ContentTypeList contentTypes={contentTypes} pageSize={1} totalItems={1} {...props} />,
+    );
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockReset();
     consoleError.mockRestore();
@@ -48,7 +49,9 @@ describe('ContentTypeList', () => {
 
   it('errors without a pageSize', () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    shallow(<ContentTypeList contentTypes={contentTypes} page={1} totalItems={1} {...props} />);
+    shallowWithIntl(
+      <ContentTypeList contentTypes={contentTypes} page={1} totalItems={1} {...props} />,
+    );
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockReset();
     consoleError.mockRestore();
@@ -56,7 +59,9 @@ describe('ContentTypeList', () => {
 
   it('errors without totalItems', () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    shallow(<ContentTypeList contentTypes={contentTypes} pageSize={1} page={1} {...props} />);
+    shallowWithIntl(
+      <ContentTypeList contentTypes={contentTypes} pageSize={1} page={1} {...props} />,
+    );
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockReset();
     consoleError.mockRestore();
@@ -64,7 +69,7 @@ describe('ContentTypeList', () => {
 
   describe('test table component', () => {
     beforeEach(() => {
-      component = shallow(
+      component = shallowWithIntl(
         <ContentTypeList
           contentTypes={contentTypes}
           page={1}
@@ -87,7 +92,7 @@ describe('ContentTypeList', () => {
       });
 
       it('has a paginator', () => {
-        const paginator = component.find('Paginator');
+        const paginator = component.dive().find('Paginator');
         expect(paginator).toHaveLength(1);
       });
     });

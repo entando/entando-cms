@@ -39,7 +39,7 @@ export const ADD_CONTENT_OPENED_OK = {
 
 export const GET_CONTENT_RESPONSE_OK = {
   description: 'Article For Demo Purposes',
-  lastModify: '10/10/2020 01-01-01',
+  lastModified: '2020-10-10 01:01:01',
   lastEditor: 'admin',
   status: 'PUBLIC',
   onLine: true,

@@ -18,7 +18,7 @@ const EditContentTypeAttributePage = () => (
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem to={ROUTE_CMS_CONTENTTYPE_LIST}>
-            <FormattedMessage id="cms.contenttype.title" defaultMessage="Content Types" />
+            <FormattedMessage id="cms.menu.contenttypes" defaultMessage="Content Types" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
             <FormattedMessage id="cms.contenttype.edit.label" />

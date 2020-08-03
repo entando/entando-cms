@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage, injectIntl, intlShape,
+} from 'react-intl';
 import { Spinner, Paginator } from 'patternfly-react';
 import VersioningSearchForm from 'ui/versioning/VersioningSearchForm';
 import VersioningListItem from 'ui/versioning/VersioningListItem';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
 
@@ -32,6 +35,7 @@ class VersioningList extends Component {
 
   render() {
     const {
+      intl,
       versioningList,
       loading,
       page,
@@ -51,6 +55,11 @@ class VersioningList extends Component {
       .map(item => (
         <VersioningListItem key={item.id} {...item} />
       ));
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div className="VersioningList__wrap">
         <Spinner loading={!!loading}>
@@ -89,6 +98,7 @@ class VersioningList extends Component {
             itemCount={totalItems}
             onPageSet={this.changePage}
             onPerPageSelect={this.changePageSize}
+            messages={messages}
           />
         </Spinner>
       </div>
@@ -97,6 +107,7 @@ class VersioningList extends Component {
 }
 
 VersioningList.propTypes = {
+  intl: intlShape.isRequired,
   versioningList: PropTypes.arrayOf(PropTypes.shape({})),
   loading: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,
@@ -114,4 +125,4 @@ VersioningList.defaultProps = {
   contentTypes: [],
 };
 
-export default VersioningList;
+export default injectIntl(VersioningList);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedMessage, defineMessages,
+  FormattedMessage, defineMessages, injectIntl, intlShape,
 } from 'react-intl';
 import {
   Spinner,
@@ -17,6 +17,7 @@ import {
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 import AssetsListItem from 'ui/assets/AssetsListItem';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 const headers = [
   {
@@ -70,7 +71,7 @@ const fileTypes = [
   },
   {
     name: 'Documents',
-    id: 'documents',
+    id: 'file',
   },
 ];
 
@@ -148,6 +149,7 @@ class AssetsList extends Component {
 
   render() {
     const {
+      intl,
       loading,
       assets,
       filteringCategories,
@@ -369,6 +371,11 @@ class AssetsList extends Component {
         ) : null}
       </CardGrid>
     );
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div className="AssetsList__wrap">
         {content}
@@ -389,6 +396,7 @@ class AssetsList extends Component {
                 onPreviousPage={() => this.onPageChange(page - 1)}
                 onNextPage={() => this.onPageChange(page + 1)}
                 onLastPage={() => this.onPageChange(lastPage)}
+                messages={messages}
               />
             </Grid>
           </div>
@@ -399,6 +407,7 @@ class AssetsList extends Component {
 }
 
 AssetsList.propTypes = {
+  intl: intlShape.isRequired,
   loading: PropTypes.bool,
   assetsView: PropTypes.string.isRequired,
   fileType: PropTypes.string.isRequired,
@@ -457,4 +466,4 @@ AssetsList.defaultProps = {
   categoryTreeFetched: false,
 };
 
-export default AssetsList;
+export default injectIntl(AssetsList);

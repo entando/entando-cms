@@ -12,23 +12,18 @@ import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
 
-const QUICK_FILTERS = [
-  {
-    id: 'description',
-    title: 'Name',
-    filterType: 'text',
-  },
-  {
-    id: 'id',
-    title: 'Code',
-    filterType: 'text',
-  },
-];
-
 const messages = defineMessages({
   searchContent: {
     id: 'cms.contents.quickSearchPlaceHolder',
     defaultValue: 'Search Content',
+  },
+  code: {
+    id: 'cms.label.code',
+    defaultValue: 'Code',
+  },
+  name: {
+    id: 'cms.label.name',
+    defaultValue: 'Name',
   },
 });
 
@@ -171,6 +166,24 @@ class ContentsFilter extends Component {
     );
 
     const advancedFiltersVisibility = showAdvancedFilters ? 'block' : 'none';
+
+    const QUICK_FILTERS = [
+      {
+        id: 'description',
+        title: intl.formatMessage(messages.name),
+        filterType: 'text',
+      },
+      {
+        id: 'id',
+        title: intl.formatMessage(messages.code),
+        filterType: 'text',
+      },
+    ];
+
+    // WORKAROUND to prevent showing untranslated info coming from state at first render
+    const localizedCurrentQuickFilter = currentQuickFilter.title ? currentQuickFilter
+      : QUICK_FILTERS.filter(quickFilter => quickFilter.id === currentQuickFilter.id)[0];
+
     return (
       <div className="ContentsFilter">
         <Filter className="clearfix col-xs-12">
@@ -178,15 +191,15 @@ class ContentsFilter extends Component {
             <Filter.TypeSelector
               className="ContentsFilter__quick-filter-type"
               filterTypes={QUICK_FILTERS}
-              currentFilterType={currentQuickFilter}
+              currentFilterType={localizedCurrentQuickFilter}
               onFilterTypeSelected={e => this.onChangeQuickFilter(e)}
             />
           </Col>
           <Col xs={10} sm={9} className="no-padding ContentsFilter__right-column">
             <FormControl
               style={{ zIndex: '1' }}
-              type={currentQuickFilter.filterType}
-              value={currentQuickFilter.value}
+              type={localizedCurrentQuickFilter.filterType}
+              value={localizedCurrentQuickFilter.value}
               placeholder={intl.formatMessage(messages.searchContent)}
               onChange={e => this.onChangeQuickFilterSearchText(e)}
               onKeyPress={e => this.onValueKeyPress(e)}
@@ -318,6 +331,7 @@ class ContentsFilter extends Component {
         <div className="form-group">
           <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
             <Button
+              bsStyle="primary"
               className="ContentsFilter__search-button"
               onClick={() => onAdvancedFilterSearch()}
             >

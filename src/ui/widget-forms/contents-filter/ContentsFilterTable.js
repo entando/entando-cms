@@ -12,6 +12,7 @@ import {
 import * as resolve from 'table-resolver';
 import { formatDate } from '@entando/utils';
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
 class ContentsFilterTable extends Component {
   constructor(props) {
@@ -146,7 +147,7 @@ class ContentsFilterTable extends Component {
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
               const { status, onLine: hasPublicVersion } = rowData;
-              const { color, title } = getContentStatusDetails(status, hasPublicVersion);
+              const { color, title } = getContentStatusDetails(status, hasPublicVersion, intl);
               return (
                 <td className="text-center">
                   <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
@@ -195,7 +196,7 @@ class ContentsFilterTable extends Component {
 
   render() {
     const {
-      totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
+      intl, totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -206,6 +207,10 @@ class ContentsFilterTable extends Component {
       perPageOptions,
     };
     const contents = this.markSelectedContents();
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
 
     return (
       <Col>
@@ -246,6 +251,7 @@ class ContentsFilterTable extends Component {
             onPageInput={this.onPageInput}
             onNextPage={() => this.onPageChange(page + 1)}
             onLastPage={() => this.onPageChange(lastPage)}
+            messages={messages}
           />
         </div>
       </Col>

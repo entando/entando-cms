@@ -10,10 +10,11 @@ const propTypes = {
   onAdd: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 };
 
 const ContentSettingsCropRatios = ({
-  cropRatios, onAdd, onDelete, onUpdate,
+  cropRatios, onAdd, onDelete, onUpdate, onError,
 }) => (
   <div className="ContentSettingsCropRatios">
     <h3
@@ -47,13 +48,19 @@ const ContentSettingsCropRatios = ({
             value={cropRatio}
             onDelete={() => onDelete(cropRatio)}
             onSave={newValue => onUpdate(cropRatio, newValue)}
+            onError={onError}
           />
         </Col>
       </Row>
     ))}
     <Row>
       <Col xs={12} sm={5} smOffset={2}>
-        <RatioInput data-test-id="content-settings-crop-ratios-form-input" isNew onAdd={onAdd} />
+        <RatioInput
+          data-test-id="content-settings-crop-ratios-form-input"
+          isNew
+          onAdd={onAdd}
+          onError={onError}
+        />
       </Col>
     </Row>
   </div>

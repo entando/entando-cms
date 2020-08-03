@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ListViewItem,
-} from 'patternfly-react';
-
+import { ListViewItem } from 'patternfly-react';
 
 import ImagesListItemActions from 'ui/versioning/images/ImagesListItemActions';
 
-const ImagesListItem = ({ image, onClickRemove, onClickRecover }) => (
+const ImagesListItem = ({
+  image, onClickRemove, onClickRecover, domain,
+}) => (
   <ListViewItem
     actions={(
       <ImagesListItemActions
@@ -21,7 +20,11 @@ const ImagesListItem = ({ image, onClickRemove, onClickRecover }) => (
     compoundExpanded={false}
     description={(
       <div className="ImagesListItem">
-        <img src="https://picsum.photos/90/90" className="ImagesListItem__image" alt="my" />
+        <img
+          src={`${domain}/${image.versions && image.versions.length > 0 && image.versions[1].path}`}
+          className="ImagesListItem__image"
+          alt={image.description}
+        />
         <h4 className="ImagesListItem__description">{image.description}</h4>
       </div>
     )}
@@ -35,9 +38,15 @@ ImagesListItem.propTypes = {
     id: PropTypes.string,
     description: PropTypes.string,
     lastVersion: PropTypes.string,
+    versions: PropTypes.arrayOf(
+      PropTypes.shape({
+        path: PropTypes.string,
+      }),
+    ).isRequired,
   }).isRequired,
   onClickRemove: PropTypes.func,
   onClickRecover: PropTypes.func,
+  domain: PropTypes.string.isRequired,
 };
 
 ImagesListItem.defaultProps = {

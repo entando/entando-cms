@@ -15,30 +15,32 @@ import PublishContentModalContainer from 'ui/contents/PublishContentModalContain
 import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
+import paginatorMessages from 'ui/common/paginatorMessages';
 
-export const getContentStatusDetails = (status, hasPublicVersion) => {
+export const getContentStatusDetails = (status, hasPublicVersion, intl) => {
   const statusLowerCase = status.toLowerCase();
   let color = '';
-  let title = '';
+  let titleId = '';
   if (statusLowerCase === 'public') {
     color = 'published';
-    title = 'Published';
+    titleId = 'cms.content.status.published';
   } else if (statusLowerCase === 'ready') {
     color = 'review';
     if (hasPublicVersion) {
-      title = 'Public ≠ Ready';
+      titleId = 'cms.content.status.pendingChanges.publicNotEqualReady';
     } else {
-      title = 'Ready';
+      titleId = 'cms.content.status.unpublished.ready';
     }
   } else {
     color = 'unpublished';
     if (hasPublicVersion) {
-      title = 'Public ≠ Draft';
+      titleId = 'cms.content.status.pendingChanges.publicNotEqualDraft';
       color = 'review';
     } else {
-      title = 'Unpublished';
+      titleId = 'cms.content.status.unpublished';
     }
   }
+  const title = intl.formatMessage({ id: titleId });
   return { color, title };
 };
 
@@ -160,7 +162,7 @@ class ContentsTable extends Component {
             newCode = 'status';
             rowCellFormatter = (onLine, { rowData }) => {
               const { status, onLine: hasPublicVersion } = rowData;
-              const { color, title } = getContentStatusDetails(status, hasPublicVersion);
+              const { color, title } = getContentStatusDetails(status, hasPublicVersion, intl);
               return (
                 <td className="text-center">
                   <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
@@ -187,6 +189,9 @@ class ContentsTable extends Component {
                     <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
                       <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
                     </MenuItem>
+                    <MenuItem onClick={() => onClickClone(rowData)}>
+                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
+                    </MenuItem>
                     <PermissionCheck
                       requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
                       userPermissions={userPermissions}
@@ -195,9 +200,6 @@ class ContentsTable extends Component {
                         <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
                       </MenuItem>
                     </PermissionCheck>
-                    <MenuItem onClick={() => onClickClone(rowData)}>
-                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
-                    </MenuItem>
                     <PermissionCheck
                       requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
                       userPermissions={userPermissions}
@@ -243,7 +245,7 @@ class ContentsTable extends Component {
 
   render() {
     const {
-      totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
+      intl, totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -254,6 +256,11 @@ class ContentsTable extends Component {
       perPageOptions,
     };
     const contents = this.markSelectedContents();
+
+    const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
+      { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
+    ), {});
+
     return (
       <div>
         <div className="Contents__table">
@@ -294,6 +301,7 @@ class ContentsTable extends Component {
             onPageInput={this.onPageInput}
             onNextPage={() => this.onPageChange(page + 1)}
             onLastPage={() => this.onPageChange(lastPage)}
+            messages={messages}
           />
           <DeleteContentModalContainer />
           <PublishContentModalContainer />

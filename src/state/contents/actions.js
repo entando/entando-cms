@@ -28,9 +28,9 @@ export const leaveContentsPage = () => ({
   type: CLEAR_CONTENTS_STATE,
 });
 
-export const setContents = contents => ({
+export const setContents = (contents, namespace) => ({
   type: SET_CONTENTS,
-  payload: contents,
+  payload: { contents, namespace },
 });
 
 export const setTabSearch = tabSearch => ({
@@ -116,14 +116,14 @@ export const resetAuthorStatus = () => ({
 });
 
 export const fetchContents = (page = pageDefault,
-  params) => dispatch => new Promise((resolve) => {
+  params, namespace) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contents'));
   getContents(page, params)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
-          dispatch(setContents(json.payload));
-          dispatch(setPage(json.metaData, 'contents'));
+          dispatch(setContents(json.payload, namespace));
+          dispatch(setPage(json.metaData, namespace || 'contents'));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           dispatch(clearErrors());

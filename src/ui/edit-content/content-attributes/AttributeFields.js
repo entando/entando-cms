@@ -78,6 +78,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
       label={fieldLabel}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
+      langCode={langCode}
     />
   );
 };

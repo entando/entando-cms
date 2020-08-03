@@ -111,12 +111,9 @@ export class EditContentFormBody extends React.Component {
     const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && id && (
       <Row className="no-padding">
         <Panel>
-          <Panel.Heading>
-        Content Info
-          </Panel.Heading>
           <Panel.Body>
             <legend>
-          History
+              <FormattedMessage id="cms.versioning.history" defaultMessage="History" />
             </legend>
             <SingleContentVersioningHistoryContainer id={id} />
           </Panel.Body>
@@ -128,7 +125,7 @@ export class EditContentFormBody extends React.Component {
         <form
           className="EditContentForm form-horizontal"
         >
-          <div className="EditContentForm__content">
+          <Col className="EditContentForm__content" xs={12}>
             <Row className="InfoFormBody">
               <SectionTitle nameId="cms.contents.edit.info" />
               <fieldset className="no-padding">
@@ -274,7 +271,7 @@ export class EditContentFormBody extends React.Component {
               </Fragment>
             </div>
             {renderContentVersioningHistory}
-          </div>
+          </Col>
           <div className="AssetsList__footer">
             <StickySave
               intl={intl}

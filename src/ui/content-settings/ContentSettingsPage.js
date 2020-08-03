@@ -19,7 +19,7 @@ const ContentSettingsPage = () => (
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contentsettings.title" defaultMessage="Settings" />
+            <FormattedMessage id="cms.menu.contentsettings" defaultMessage="Settings" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>

@@ -223,4 +223,34 @@ describe('editContent thunks', () => {
           { listelements: { en: [{ value: false }] } }, { value: new Date().toISOString() }, { value: 'false' }],
       })).then(() => done());
   });
+
+  it('save new content without attribues', (done) => {
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
+    store = createMockStore({
+      apps:
+      { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
+      currentUser: { username: 'admin' },
+      form: { editcontentform: { values: {} } },
+    });
+    store
+      .dispatch(saveContent({})).then(() => done());
+  });
+
+  it('save new content with ', (done) => {
+    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
+    store = createMockStore({
+      apps:
+      { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
+      currentUser: { username: 'admin' },
+      form: {
+        editcontentform: {
+          values: {
+            attributes: [],
+          },
+        },
+      },
+    });
+    store
+      .dispatch(saveContent({})).then(() => done());
+  });
 });

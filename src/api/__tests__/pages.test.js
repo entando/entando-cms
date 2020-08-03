@@ -35,7 +35,7 @@ describe('api/pages', () => {
     it('makes the correct request', () => {
       getPage(PAGE_CODE);
       expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        uri: `/api/pages/${PAGE_CODE}?status=${PAGE_STATUS_DRAFT}`,
+        uri: `/api/pages/${PAGE_CODE}?status=${PAGE_STATUS_DRAFT}&`,
         method: METHODS.GET,
         useAuthentication: true,
       }));
@@ -44,7 +44,7 @@ describe('api/pages', () => {
     it('makes the correct request with other page status', () => {
       getPage(PAGE_CODE, PAGE_STATUS_PUBLISHED);
       expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        uri: `/api/pages/${PAGE_CODE}?status=${PAGE_STATUS_PUBLISHED}`,
+        uri: `/api/pages/${PAGE_CODE}?status=${PAGE_STATUS_PUBLISHED}&`,
         method: METHODS.GET,
         useAuthentication: true,
       }));
@@ -54,7 +54,7 @@ describe('api/pages', () => {
       makeRequest.mockImplementationOnce(jest.fn(({ errors }) => errors()));
       getPage(PAGE_CODE);
       expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        uri: `/api/pages/${PAGE_CODE}?status=${PAGE_STATUS_DRAFT}`,
+        uri: `/api/pages/${PAGE_CODE}?status=${PAGE_STATUS_DRAFT}&`,
         method: METHODS.GET,
         useAuthentication: true,
       }));
@@ -84,7 +84,7 @@ describe('api/pages', () => {
     it('makes the correct request', () => {
       getPageChildren(PAGE_CODE);
       expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        uri: `/api/pages?parentCode=${PAGE_CODE}`,
+        uri: `/api/pages?parentCode=${PAGE_CODE}&`,
         method: METHODS.GET,
         useAuthentication: true,
       }));
@@ -94,7 +94,7 @@ describe('api/pages', () => {
       makeRequest.mockImplementationOnce(jest.fn(({ errors }) => errors()));
       getPageChildren(PAGE_CODE);
       expect(makeRequest).toHaveBeenCalledWith(expect.objectContaining({
-        uri: `/api/pages?parentCode=${PAGE_CODE}`,
+        uri: `/api/pages?parentCode=${PAGE_CODE}&`,
         method: METHODS.GET,
         useAuthentication: true,
       }));
