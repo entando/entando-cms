@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { formValueSelector, submit, destroy } from 'redux-form';
+import {
+  change, formValueSelector, submit, destroy,
+} from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
@@ -56,6 +58,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
+  status: formValueSelector('editcontentform')(state, 'status'),
   selectedCategories: getJoinedCategories(state),
   saveType: getSaveType(state),
   loading: getLoading(state).editContent,
@@ -109,6 +112,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   },
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
+  changeStatus: value => dispatch(change('editcontentform', 'status', value)),
 });
 
 const EditContentContainer = connect(
