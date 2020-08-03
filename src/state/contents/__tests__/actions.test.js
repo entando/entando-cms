@@ -566,7 +566,7 @@ describe('state/contents/actions', () => {
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
-        .dispatch(fetchContentsPaged('?test=a'))
+        .dispatch(fetchContentsPaged({ params: '?test=a' }))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(5);
@@ -602,7 +602,7 @@ describe('state/contents/actions', () => {
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
-        .dispatch(fetchContentsPaged('?test=a'))
+        .dispatch(fetchContentsPaged({ params: '?test=a' }))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(5);
@@ -636,7 +636,7 @@ describe('state/contents/actions', () => {
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
-        .dispatch(fetchContentsPaged('?test=a'))
+        .dispatch(fetchContentsPaged({ params: '?test=a' }))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(5);
@@ -671,7 +671,109 @@ describe('state/contents/actions', () => {
         pagination: { global: { page: 1, pageSize: 10 } },
       });
       store
-        .dispatch(fetchContentsPaged(null, null, null, false))
+        .dispatch(fetchContentsPaged({ ownerGroup: 'administrators', joinGroups: ['a'] }))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(5);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          expect(actionTypes.includes(SET_CONTENTS)).toBe(true);
+          expect(actionTypes.includes(SET_PAGE)).toBe(true);
+          expect(actionTypes.includes(SELECT_ALL_ROWS)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('fetch contents with tab filter', (done) => {
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              currentAuthorShow: 'me',
+              currentStatusShow: 'published',
+              statusChecked: 'published',
+              currentQuickFilter: {},
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(fetchContentsPaged({ tabSearch: true, ownerGroup: 'administrators', joinGroups: ['a'] }))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(5);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          expect(actionTypes.includes(SET_CONTENTS)).toBe(true);
+          expect(actionTypes.includes(SET_PAGE)).toBe(true);
+          expect(actionTypes.includes(SELECT_ALL_ROWS)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('fetch contents with tab filter but without group params', (done) => {
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              currentAuthorShow: 'me',
+              currentStatusShow: 'published',
+              statusChecked: 'published',
+              currentQuickFilter: {},
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(fetchContentsPaged({ tabSearch: true }))
+        .then(() => {
+          const actionTypes = store.getActions().map(action => action.type);
+          expect(actionTypes).toHaveLength(5);
+          expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
+          expect(actionTypes.includes(SET_CONTENTS)).toBe(true);
+          expect(actionTypes.includes(SET_PAGE)).toBe(true);
+          expect(actionTypes.includes(SELECT_ALL_ROWS)).toBe(true);
+          done();
+        })
+        .catch(done.fail);
+    });
+    it('fetch contents with tab filter but without group params', (done) => {
+      store = mockStore({
+        apps: {
+          cms: {
+            contents: {
+              contents: [],
+              currentAuthorShow: 'me',
+              currentStatusShow: 'draft',
+              statusChecked: 'draft',
+              currentQuickFilter: {},
+              sortingColumns: {
+                created: {
+                  direction: 'ASC',
+                  position: 0,
+                },
+              },
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+      store
+        .dispatch(fetchContentsPaged({ tabSearch: true }))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
           expect(actionTypes).toHaveLength(5);

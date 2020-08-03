@@ -12,7 +12,7 @@ import {
 } from 'state/pages/types';
 import { getStatusMap } from 'state/pages/selectors';
 
-const HOMEPAGE_CODE = 'homepage';
+export const HOMEPAGE_CODE = 'homepage';
 
 const noopPromise = arg => new Promise(resolve => resolve(arg));
 
@@ -112,27 +112,30 @@ export const fetchSearchPages = (page = { page: 1, pageSize: 10 }, params = '') 
   }).catch(() => {});
 });
 
-export const fetchPageTree = pageCode => dispatch => new Promise((resolve) => {
+export const fetchPageTree = (pageCode, status, params) => dispatch => new Promise((resolve) => {
   if (pageCode === HOMEPAGE_CODE) {
     Promise.all([
-      fetchPage(pageCode)(dispatch),
-      fetchPageChildren(pageCode)(dispatch),
+      fetchPage(pageCode, status, params)(dispatch),
+      fetchPageChildren(pageCode, params)(dispatch),
     ]).then((responses) => {
       resolve([responses[0].payload].concat(responses[1].payload));
     });
   }
-  fetchPageChildren(pageCode)(dispatch).then((response) => {
+  fetchPageChildren(pageCode, params)(dispatch).then((response) => {
     resolve(response.payload);
   });
 });
 
-export const handleExpandPage = (pageCode = HOMEPAGE_CODE) => (dispatch, getState) => {
+export const handleExpandPage = (pageCode = HOMEPAGE_CODE,
+  status, mainGroup, joinGroups) => (dispatch, getState) => {
+  const extraGroupParams = (joinGroups && joinGroups.length > 0) ? `&forLinkingToExtraGroups=${joinGroups.join(',')}` : '';
+  const params = `forLinkingToOwnerGroup=${mainGroup}${extraGroupParams}`;
   const pageStatus = getStatusMap(getState())[pageCode];
   const toExpand = (!pageStatus || !pageStatus.expanded);
   const toLoad = (toExpand && (!pageStatus || !pageStatus.loaded));
   if (toLoad) {
     dispatch(setPageLoading(pageCode));
-    return fetchPageTree(pageCode)(dispatch)
+    return fetchPageTree(pageCode, status, params)(dispatch)
       .then((pages) => {
         dispatch(addPages(pages));
         dispatch(togglePageExpanded(pageCode, true));

@@ -45,6 +45,8 @@ const AttributeField = ({
   label,
   hasLabel,
   langCode,
+  mainGroup,
+  joinGroups,
 }) => {
   const {
     type,
@@ -143,6 +145,9 @@ const AttributeField = ({
       label={fieldLabel}
       hasLabel={hasLabel}
       validate={validate}
+      mainGroup={mainGroup}
+      joinGroups={joinGroups}
+      {...(type === TYPE_LINK && { langCode })}
       {...(
         [TYPE_LINK, TYPE_IMAGE, TYPE_ATTACH].includes(type)
         && { langCode }
@@ -158,12 +163,16 @@ AttributeField.propTypes = {
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
   langCode: PropTypes.string,
+  mainGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 AttributeField.defaultProps = {
   label: null,
   hasLabel: true,
   langCode: 'en',
+  mainGroup: '',
+  joinGroups: [],
 };
 
 export default AttributeField;

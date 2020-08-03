@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
-  setQuickFilter, setCurrentAuthorShow, setCurrentStatusShow,
-  fetchContentsPaged, setContentType, setSort, resetAuthorStatus,
+  setQuickFilter, fetchContentsPaged, setContentType, setSort, resetAuthorStatus,
+  checkStatus,
 } from 'state/contents/actions';
 import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -24,31 +23,11 @@ import { getLocale } from 'state/locale/selectors';
 import { getUsername } from '@entando/apimanager';
 import Contents from 'ui/common/content/Contents';
 
-const paramsForStatusAndAuthor = (status, author) => {
-  const published = status === 'published';
-  const all = author === 'all';
-  const eq = FILTER_OPERATORS.EQUAL;
-
-  const formValues = {
-    ...(!published && { status }),
-    ...(!all && { author }),
-  };
-  const operators = {
-    ...(!published && { status: eq }),
-    ...(!all && { author: eq }),
-  };
-  const query = `${convertToQueryString({
-    formValues,
-    operators,
-  })}${published ? '&status=published' : ''}`;
-
-  return query.slice(1);
-};
-
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (state, ownProps) => {
   const {
     page, lastPage, totalItems, pageSize,
   } = getPagination(state, 'contents') || getPagination(state);
+  const { ownerGroup } = ownProps;
   return ({
     loading: getLoading(state).contents,
     language: getLocale(state),
@@ -69,31 +48,26 @@ export const mapStateToProps = (state) => {
     sortingColumns: getSortingColumns(state),
     selectedRows: getSelectedRows(state),
     currentUsername: getUsername(state),
+    ownerGroup,
   });
 };
 
-export const mapDispatchToProps = (dispatch, { status: contentStatus, author: contentAuthor }) => ({
+export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
   onDidMount: () => {
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(contentStatus, contentAuthor),
-      null, null, false));
+    dispatch(checkStatus('published'));
+    dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(fetchCategoryTree());
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
-  onFilteredSearch: (fetchParams, pagination, sortParams, tabSearch) => dispatch(
-    fetchContentsPaged(fetchParams, pagination, sortParams, tabSearch),
+  onFilteredSearch: (params, page, sort) => dispatch(
+    fetchContentsPaged({
+      page, sort, status: '&status=published', ownerGroup, joinGroups,
+    }),
   ),
-  onSetCurrentAuthorShow: (author, status) => {
-    dispatch(setCurrentAuthorShow(author));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
-  },
-  onSetCurrentStatusShow: (status, author) => {
-    dispatch(setCurrentStatusShow(status));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
-  },
   onAdvancedFilterSearch: () => {
-    dispatch(fetchContentsPaged(null, null, null, false));
+    dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: columns => dispatch(setCurrentColumnsShow(columns)),

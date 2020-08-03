@@ -37,6 +37,7 @@ const DateAttributeField = ({
       input={attrInput}
       label={label}
       meta={meta}
+      alignClass="text-right"
       dateFormat={dateFormat}
       isClearable={false}
       {...rest}

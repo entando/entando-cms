@@ -22,9 +22,11 @@ const AttachAttributeField = ({
   help,
   onClickAdd,
   assetListBegin,
+  mainGroup,
   langCode,
   langCodes,
   defaultLang,
+  joinGroups,
 }) => {
   const handleAssetSelected = (info) => {
     input.onChange({
@@ -59,9 +61,11 @@ const AttachAttributeField = ({
         />
         <AssetBrowserModal
           assetType="file"
+          ownerGroup={mainGroup}
           name={`${input.name}.${langCode}`}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
+          joinGroups={joinGroups}
         />
       </>
     );
@@ -114,9 +118,11 @@ AttachAttributeField.propTypes = {
   }),
   onClickAdd: PropTypes.func.isRequired,
   assetListBegin: PropTypes.func.isRequired,
+  mainGroup: PropTypes.string.isRequired,
   langCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
   langCode: PropTypes.string.isRequired,
   defaultLang: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 AttachAttributeField.defaultProps = {
@@ -129,6 +135,7 @@ AttachAttributeField.defaultProps = {
   alignClass: 'text-right',
   help: null,
   inputSize: null,
+  joinGroups: [],
 };
 
 export default AttachAttributeField;

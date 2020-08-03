@@ -42,6 +42,7 @@ const ContentsFilterModal = (props) => {
       modalClassName="ContentsFilterModal"
     >
       <ContentsFilterBrowserContainer
+        fetchOnMount
         {...props}
       />
     </GenericModalContainer>

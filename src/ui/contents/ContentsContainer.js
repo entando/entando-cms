@@ -98,8 +98,10 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(fetchUsers(noPage));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
-  onFilteredSearch: (fetchParams, pagination, sortParams, tabSearch) => dispatch(
-    fetchContentsPaged(fetchParams, pagination, sortParams, tabSearch),
+  onFilteredSearch: (params, page, sort, tabSearch) => dispatch(
+    fetchContentsPaged({
+      params, page, sort, tabSearch,
+    }),
   ),
   onSetTabSearch: tabSearch => dispatch(setTabSearch(tabSearch)),
   onCheckStatus: status => dispatch(checkStatus(status)),
@@ -107,14 +109,20 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onCheckAuthor: author => dispatch(checkAuthor(author)),
   onSetCurrentAuthorShow: (author, status) => {
     dispatch(setCurrentAuthorShow(author));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
+    dispatch(fetchContentsPaged({
+      params: paramsForStatusAndAuthor(status, author),
+      tabSearch: true,
+    }));
   },
   onSetCurrentStatusShow: (status, author) => {
     dispatch(setCurrentStatusShow(status));
-    dispatch(fetchContentsPaged(paramsForStatusAndAuthor(status, author)), null, null, true);
+    dispatch(fetchContentsPaged({
+      params: paramsForStatusAndAuthor(status, author),
+      tabSearch: true,
+    }));
   },
   onAdvancedFilterSearch: () => {
-    dispatch(fetchContentsPaged(null, null, null, false));
+    dispatch(fetchContentsPaged());
     dispatch(resetAuthorStatus());
   },
   onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),

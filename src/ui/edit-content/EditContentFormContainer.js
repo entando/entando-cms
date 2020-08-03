@@ -58,6 +58,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
   selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
+  selectedOwnerGroup: formValueSelector('editcontentform')(state, 'mainGroup'),
   status: formValueSelector('editcontentform')(state, 'status'),
   selectedCategories: getJoinedCategories(state),
   saveType: getSaveType(state),

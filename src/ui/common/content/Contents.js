@@ -90,6 +90,7 @@ class Contents extends Component {
             onFilteredSearch={onFilteredSearch}
             availableColumns={availableColumns}
             onContentSelect={onContentSelect}
+            onAdvancedFilterSearch={onAdvancedFilterSearch}
           />
         </div>
       </div>

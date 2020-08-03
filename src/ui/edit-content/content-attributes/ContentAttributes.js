@@ -21,6 +21,7 @@ class ContentAttributes extends Component {
   render() {
     const {
       attributes, languages, reInitializeForm, content, typeCode, mainGroup,
+      joinGroups,
     } = this.props;
     return (
       <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
@@ -32,6 +33,7 @@ class ContentAttributes extends Component {
               content={content}
               typeCode={typeCode}
               mainGroup={mainGroup}
+              joinGroups={joinGroups}
               reInitializeForm={reInitializeForm}
               component={AttributeFields}
               attributes={attributes}
@@ -53,6 +55,7 @@ ContentAttributes.propTypes = {
   content: PropTypes.shape({}).isRequired,
   typeCode: PropTypes.string.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ContentAttributes;

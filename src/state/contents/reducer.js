@@ -37,7 +37,7 @@ const defaultState = {
   selectedRows: [],
   currentAuthorShow: 'all',
   currentStatusShow: 'all',
-  tabSearchEnabled: true,
+  tabSearchEnabled: false,
 };
 
 const reducer = (state = defaultState, action = {}) => {

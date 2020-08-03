@@ -8,7 +8,7 @@ import { getPagination } from 'state/pagination/selectors';
 import {
   getContentType, getGroup, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentQuickFilter,
-  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow, getTabSearchEnabled,
+  getSortingColumns, getCurrentAuthorShow, getCurrentStatusShow,
 } from 'state/contents/selectors';
 import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
@@ -138,7 +138,8 @@ export const fetchContents = (page = pageDefault,
 });
 
 export const fetchContentsWithFilters = (
-  params, newPagination, newSort, quickFilterStatusParam = '',
+  params, newPagination, newSort, quickFilterStatusParam = '', quickFilterOwnerGroup,
+  joinGroups,
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
@@ -152,8 +153,17 @@ export const fetchContentsWithFilters = (
   const filters = [];
   const eq = FILTER_OPERATORS.EQUAL;
   const like = FILTER_OPERATORS.LIKE;
+  const ownerGroupQuery = quickFilterOwnerGroup ? `&forLinkingWithOwnerGroup=${quickFilterOwnerGroup}` : '';
+  const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
+    ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   if (params) {
-    query = `${convertToQueryString({ sorting })}&${params}${quickFilterStatusParam}`;
+    const formValues = {
+      ...(qfValue && { [id]: qfValue }),
+    };
+    const operators = {
+      ...(qfValue && { [id]: FILTER_OPERATORS.LIKE }),
+    };
+    query = `${convertToQueryString({ formValues, operators, sorting })}&${params}${quickFilterStatusParam}${ownerGroupQuery}${joinGroupsQuery}`;
     return dispatch(fetchContents(pagination, query));
   }
   if (qfValue) {
@@ -194,11 +204,13 @@ export const fetchContentsWithFilters = (
     operators[att] = operator || eq;
     return null;
   });
-  query = `${convertToQueryString({ formValues, operators, sorting })}${categories}${quickFilterStatusParam || published}`;
+  query = `${convertToQueryString({ formValues, operators, sorting })}${categories}${quickFilterStatusParam || published}${ownerGroupQuery}${joinGroupsQuery}`;
   return dispatch(fetchContents(pagination, query));
 };
 
-export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => {
+export const fetchContentsWithTabs = (
+  page, newSort, ownerGroup, joinGroups,
+) => (dispatch, getState) => {
   const state = getState();
   const pagination = page || getPagination(state, 'contents') || getPagination(state);
   const sortingColumns = getSortingColumns(state);
@@ -226,18 +238,24 @@ export const fetchContentsWithTabs = (page, newSort) => (dispatch, getState) => 
     operators,
     sorting,
   }), published ? '&status=published' : ''].join('');
-  return dispatch(fetchContents(pagination, query));
+  const ownerGroupQuery = ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : '';
+  const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
+    ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
+  const params = `${query}${ownerGroupQuery}${joinGroupsQuery}`;
+  return dispatch(fetchContents(pagination, params));
 };
 
-export const fetchContentsPaged = (params, page, sort, tabSearch, quickFilterStatusParam) => (
-  dispatch, getState,
+export const fetchContentsPaged = ({
+  params, page, sort, tabSearch,
+  status, ownerGroup, joinGroups,
+} = {}) => (
+  dispatch,
 ) => {
-  const state = getState();
-  const tabSearchEnabled = tabSearch == null ? getTabSearchEnabled(state) : tabSearch;
-  if (tabSearchEnabled) {
-    return dispatch(fetchContentsWithTabs(page, sort));
+  if (tabSearch) {
+    return dispatch(fetchContentsWithTabs(page, sort, ownerGroup, joinGroups));
   }
-  return dispatch(fetchContentsWithFilters(params, page, sort, quickFilterStatusParam));
+  return dispatch(fetchContentsWithFilters(params, page, sort,
+    status, ownerGroup, joinGroups));
 };
 
 export const sendDeleteContent = id => dispatch => new Promise((resolve) => {

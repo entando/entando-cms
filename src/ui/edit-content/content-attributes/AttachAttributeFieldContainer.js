@@ -3,7 +3,6 @@ import AttachAttributeField from 'ui/edit-content/content-attributes/AttachAttri
 import { setVisibleModal } from 'state/modal/actions';
 import { getActiveLanguages, getLanguages, getDefaultLanguage } from 'state/languages/selectors';
 import {
-  setListFilterParams,
   fetchAssetsPaged,
   pageDefault,
 } from 'state/assets/actions';
@@ -19,11 +18,11 @@ export const mapStateToProps = (state) => {
   return { languages, langCodes, defaultLang };
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
-    dispatch(setListFilterParams({}));
+    const { mainGroup, joinGroups } = ownProps;
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-    dispatch(fetchAssetsPaged(pageDefault, 'file'));
+    dispatch(fetchAssetsPaged(pageDefault, 'file', mainGroup, joinGroups));
     dispatch(fetchCategoryTree());
   },
   onClickAdd: name => dispatch(dispatch(setVisibleModal(`${ATTACH_MODAL_ID}${name}`))),

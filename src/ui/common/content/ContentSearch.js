@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
   FormattedMessage, intlShape, defineMessages,
 } from 'react-intl';
@@ -49,19 +48,12 @@ class ContentSearch extends Component {
 
   onValueKeyPress(keyEvent) {
     const { currentQuickFilter, onAdvancedFilterSearch } = this.props;
-    const { id, value: currentValue } = currentQuickFilter;
+    const { value: currentValue } = currentQuickFilter;
 
     if (keyEvent.key === 'Enter' && currentValue && currentValue.length > 0) {
       keyEvent.stopPropagation();
       keyEvent.preventDefault();
-      const formValues = {
-        [id]: currentValue,
-      };
-      const operators = {
-        [id]: FILTER_OPERATORS.LIKE,
-      };
-      const query = convertToQueryString({ formValues, operators }).slice(1);
-      onAdvancedFilterSearch(query);
+      onAdvancedFilterSearch();
     }
   }
 

@@ -3,7 +3,6 @@ import ImageAttributeField from 'ui/edit-content/content-attributes/ImageAttribu
 import { setVisibleModal } from 'state/modal/actions';
 import { getActiveLanguages, getLanguages, getDefaultLanguage } from 'state/languages/selectors';
 import {
-  setListFilterParams,
   fetchAssetsPaged,
   changeFileType,
 } from 'state/assets/actions';
@@ -12,6 +11,7 @@ import { fetchCategoryTree } from 'state/categories/actions';
 
 import { IMAGE_MODAL_ID } from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
 
+
 export const mapStateToProps = (state) => {
   const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
   const langCodes = languages.map(({ code }) => code);
@@ -19,12 +19,12 @@ export const mapStateToProps = (state) => {
   return { languages, langCodes, defaultLang };
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
-    dispatch(setListFilterParams({}));
+    const { mainGroup, joinGroups } = ownProps;
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(changeFileType('image'));
-    dispatch(fetchAssetsPaged());
+    dispatch(fetchAssetsPaged(undefined, undefined, mainGroup, joinGroups));
     dispatch(fetchCategoryTree());
   },
   onClickAdd: name => dispatch(setVisibleModal(`${IMAGE_MODAL_ID}${name}`)),

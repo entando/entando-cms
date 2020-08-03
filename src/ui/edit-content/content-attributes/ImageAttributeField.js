@@ -24,6 +24,8 @@ const ImageAttributeField = ({
   help,
   onClickAdd,
   assetListBegin,
+  mainGroup,
+  joinGroups,
   langCode,
   langCodes,
   defaultLang,
@@ -64,6 +66,8 @@ const ImageAttributeField = ({
           name={`${input.name}.${langCode}`}
           onModalOpened={assetListBegin}
           onAssetSelected={handleAssetSelected}
+          ownerGroup={mainGroup}
+          joinGroups={joinGroups}
         />
       </>
     );
@@ -119,6 +123,8 @@ ImageAttributeField.propTypes = {
   }),
   onClickAdd: PropTypes.func.isRequired,
   assetListBegin: PropTypes.func.isRequired,
+  mainGroup: PropTypes.string.isRequired,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
   langCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
   langCode: PropTypes.string.isRequired,
   defaultLang: PropTypes.string.isRequired,
@@ -134,6 +140,7 @@ ImageAttributeField.defaultProps = {
   alignClass: 'text-right',
   help: null,
   inputSize: null,
+  joinGroups: [],
 };
 
 export default ImageAttributeField;

@@ -102,11 +102,12 @@ export class EditContentFormBody extends React.Component {
       onSave,
       loading,
       match: { params = {} },
+      selectedOwnerGroup,
     } = this.props;
     const { id } = params;
     const {
       version, lastModified, firstEditor: creatorUserName, lastEditor: modifierUserName,
-      onLine, mainGroup = defaultOwnerGroup,
+      onLine,
     } = content || {};
     const newContentsType = {
       typeDescription: cType.name,
@@ -123,7 +124,7 @@ export class EditContentFormBody extends React.Component {
     const showAllSettings = (workMode === WORK_MODE_ADD && ownerGroupDisabled)
     || workMode === WORK_MODE_EDIT;
     const showStyle = { style: { display: showAllSettings ? 'block' : 'none' } };
-    const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && (
+    const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && id && (
       <Row className="no-padding">
         <Panel>
           <Panel.Body>
@@ -278,7 +279,8 @@ export class EditContentFormBody extends React.Component {
                     attributes={content.attributes}
                     typeCode={typeCode}
                     content={content}
-                    mainGroup={mainGroup}
+                    mainGroup={selectedOwnerGroup}
+                    joinGroups={selectedJoinGroups}
                   />
                   )}
                 </Row>
@@ -349,6 +351,7 @@ EditContentFormBody.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   loading: PropTypes.bool,
+  selectedOwnerGroup: PropTypes.string,
   changeStatus: PropTypes.func.isRequired,
   status: PropTypes.string,
 };
@@ -363,6 +366,7 @@ EditContentFormBody.defaultProps = {
   dirty: false,
   loading: false,
   groups: [],
+  selectedOwnerGroup: '',
   status: '',
 };
 

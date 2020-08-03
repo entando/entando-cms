@@ -10,7 +10,6 @@ import {
 } from 'state/assets/selectors';
 import {
   applyAssetsFilter,
-  fetchAssets,
   setActiveFilters,
   setListFilterParams,
   fetchAssetsPaged,
@@ -57,25 +56,31 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {
-    if (ownProps.browseMode) {
-      dispatch(changeFileType(ownProps.assetType));
+    const {
+      browseMode, assetType, ownerGroup, joinGroups,
+    } = ownProps;
+    if (browseMode) {
+      dispatch(changeFileType(assetType));
     } else {
-      dispatch(setListFilterParams({}));
+      const filters = {};
+      dispatch(setListFilterParams(filters));
       dispatch(fetchGroups({ page: 1, pageSize: 0 }));
-      dispatch(fetchAssetsPaged());
+      dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
     }
   },
   onApplyFilteredSearch: (filters) => {
+    const { ownerGroup, joinGroups } = ownProps;
     dispatch(setActiveFilters(filters));
     let filtprops = {};
     if (filters.length) {
       const values = filters.length > 1 ? filters.map(filter => filter.code) : filters[0].code;
       filtprops = { categories: makeFilter(values) };
     }
-    dispatch(applyAssetsFilter(filtprops));
+    dispatch(applyAssetsFilter(filtprops, undefined, ownerGroup, joinGroups));
   },
   onResetFilteringCategories: () => dispatch(resetFilteringCategories()),
   onRemoveActiveFilter: (category, filteringCategories) => {
+    const { ownerGroup, joinGroups } = ownProps;
     dispatch(removeActiveFilter(category));
     dispatch(setAssetCategoryFilter(category));
     const newFilters = filteringCategories.filter(c => c.code !== category.code).map(c => c.code);
@@ -84,28 +89,29 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
         newFilters.length > 1 ? newFilters : newFilters[0],
       ),
     } : {};
-    dispatch(applyAssetsFilter(filtSend));
+    dispatch(applyAssetsFilter(filtSend, undefined, ownerGroup, joinGroups));
   },
   onChangeFileType: (fileType) => {
+    const { ownerGroup, joinGroups } = ownProps;
     dispatch(changeFileType(fileType));
-    dispatch(fetchAssetsPaged());
+    dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
   },
   onChangeAssetsView: (assetsView) => {
     dispatch(changeAssetsView(assetsView));
   },
-  fetchList: (page = pageDefault) => (
-    dispatch(fetchAssetsPaged(page))
-  ),
-  refetchAssets: (params) => {
-    dispatch(fetchAssets(params));
+  fetchList: (page = pageDefault) => {
+    const { ownerGroup, joinGroups } = ownProps;
+    dispatch(fetchAssetsPaged(page, undefined, ownerGroup, joinGroups));
   },
   onApplySort: (sortName) => {
-    dispatch(sortAssetsList(sortName));
+    const { ownerGroup, joinGroups } = ownProps;
+    dispatch(sortAssetsList(sortName, undefined, undefined, ownerGroup, joinGroups));
   },
   onRemoveAllActiveFilters: () => {
+    const { ownerGroup, joinGroups } = ownProps;
     dispatch(setActiveFilters([]));
     dispatch(setListFilterParams({}));
-    dispatch(fetchAssetsPaged());
+    dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
   },
   onAssetSelected: (item) => {
     dispatch(setVisibleModal(MODAL_ID));

@@ -64,6 +64,8 @@ export default class ContentConfigFormBody extends PureComponent {
       onCancel,
       onDiscard,
       onSave,
+      ownerGroup,
+      joinGroups,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
@@ -187,6 +189,8 @@ export default class ContentConfigFormBody extends PureComponent {
                 contentTemplates={contentTemplates}
                 name="contents"
                 intl={intl}
+                ownerGroup={ownerGroup}
+                joinGroups={joinGroups}
                 multipleContentsMode={multipleContentsMode}
               />
             </Col>
@@ -241,6 +245,8 @@ ContentConfigFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  ownerGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -248,4 +254,6 @@ ContentConfigFormBody.defaultProps = {
   pages: [],
   chosenContents: [],
   dirty: false,
+  ownerGroup: '',
+  joinGroups: null,
 };
