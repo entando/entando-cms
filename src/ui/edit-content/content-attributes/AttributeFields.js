@@ -20,6 +20,10 @@ import {
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
 const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
+  if (!attribute) {
+    return '';
+  }
+
   const {
     type, code, mandatory, listFilter, indexable, name: attName,
   } = attribute;
