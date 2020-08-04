@@ -27,7 +27,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, { history }) => ({
   onDidMount: (page = 1) => {
     dispatch(fetchContents({ page, pageSize: 5 }, '?sort=lastModified&direction=DESC', namespace));
-    dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
+    dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }, '', namespace));
   },
   onClickAddContent: (contentType) => {
     dispatch(setWorkMode(WORK_MODE_ADD));
