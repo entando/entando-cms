@@ -24,10 +24,12 @@ const cms = {
     it,
   },
   widgetForms: {
-    content_viewer: SingleContentConfigContainer,
-    content_viewer_list: ContentsQueryConfigContainer,
-    row_content_viewer_list: MultipleContentsConfigContainer,
-    search_result: null,
+    // widgetCode: content_viewer
+    viewerConfig: SingleContentConfigContainer,
+    // widgetCode: content_viewer_list
+    listViewerConfig: ContentsQueryConfigContainer,
+    // widgetCode: row_content_viewer_list
+    rowListViewerConfig: MultipleContentsConfigContainer,
   },
   persistData: {
     tableColumns: ['currentColumnsShow'],
