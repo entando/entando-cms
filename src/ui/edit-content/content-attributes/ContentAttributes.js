@@ -25,7 +25,7 @@ class ContentAttributes extends Component {
     } = this.props;
     return (
       <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
-        {languages.map(({ code }) => (
+        {languages.map(({ code, isDefault }) => (
           <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
             <FieldArray
               data-test-id="edit-content-content-attributes-field-array"
@@ -38,6 +38,7 @@ class ContentAttributes extends Component {
               component={AttributeFields}
               attributes={attributes}
               langCode={code}
+              isDefaultLang={isDefault}
             />
           </Tab>
         ))}
