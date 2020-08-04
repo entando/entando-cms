@@ -31,8 +31,6 @@ const max10Digits = value => (
 );
 const maxLength50 = maxLength(50);
 
-const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
-
 const messages = defineMessages({
   chooseContentType: {
     id: 'cms.label.select',
@@ -49,13 +47,7 @@ class AddContentTemplateFormBody extends Component {
     super(props);
     this.state = {
       modalOpened: false,
-      dictionary: [],
-      dictList: [],
-      dictMapped: {},
-      regLastToken: '',
-      rootCompleters: [],
     };
-    this.dotCommandExec = this.dotCommandExec.bind(this);
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
   }
@@ -65,37 +57,9 @@ class AddContentTemplateFormBody extends Component {
     onDidMount();
   }
 
-  componentDidUpdate(prevProps) {
-    const { dictionary: _dict } = this.props;
-    if (_dict.length !== prevProps.dictionary.length) {
-      this.populateDictState();
-    }
-  }
-
   componentWillUnmount() {
     const { onDidUnmount } = this.props;
     onDidUnmount();
-  }
-
-  populateDictState() {
-    const { dictionary: _dict } = this.props;
-    const dictMapped = _dict.reduce((acc, curr) => {
-      acc[curr.code] = curr.methods;
-      return acc;
-    }, {});
-
-    const dictionary = _dict.map(word => ({
-      caption: word.code,
-      value: word.code,
-      score: 10000,
-      meta: `${word.code} Object`,
-    }));
-
-    this.setState({
-      dictionary,
-      dictMapped,
-      dictList: [...dictionary],
-    });
   }
 
   handleModalOpen() {
@@ -106,74 +70,6 @@ class AddContentTemplateFormBody extends Component {
     this.setState({ modalOpened: false });
   }
 
-  findTokenInDictMap(token) {
-    const { dictMapped } = this.state;
-    return Object.keys(dictMapped).find((key) => {
-      const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
-      return keyRegEx.test(token);
-    });
-  }
-
-  resetRootSuggestions(editor) {
-    const { rootCompleters, dictionary } = this.state;
-    if (rootCompleters.length > 0) {
-      editor.completers = rootCompleters;
-    }
-    this.setState({
-      regLastToken: '',
-      dictList: [...dictionary],
-      rootCompleters: [],
-    });
-  }
-
-  insertMethodsToAutoCompleteArray(token, editor) {
-    const { dictionary, dictMapped: mapped } = this.state;
-    console.log('matched', token, dictionary, mapped);
-    editor.completer.popup.on('hide', () => this.resetRootSuggestions(editor));
-    this.setState({ rootCompleters: editor.completers });
-    const soloCompleter = editor.completers.filter(c => c.contentTemplate);
-    editor.completers = soloCompleter;
-    const dictList = Object.entries(mapped[token]).map(([key]) => ({
-      caption: key,
-      value: key,
-      score: 10001,
-      meta: `${token} Object Method`,
-      completer: {
-        insertMatch: (ed, data) => {
-          const { regLastToken, dictMapped } = this.state;
-          const insertedValue = data.value;
-          console.log('inserting', data, ed, ed.completer);
-          if (insertedValue in dictMapped[regLastToken]) {
-            ed.completer.insertMatch({ value: insertedValue });
-            this.resetRootSuggestions(editor);
-          }
-        },
-      },
-    }));
-    console.log('newDictlist', dictList);
-    this.setState({ regLastToken: token, dictList });
-  };
-
-  dotCommandExec(editor) {
-    const { selection, session } = editor;
-    console.log('dot');
-
-    const cpos = selection.getCursor();
-    const curLine = (session.getDocument().getLine(cpos.row)).trim();
-    const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
-    const curCmd = curTokens[0];
-    if (!curCmd) return;
-
-    const lastToken = curTokens[curTokens.length - 1];
-    editor.insert('.');
-
-    const tokenres = this.findTokenInDictMap(lastToken);
-
-    if (tokenres) {
-      this.insertMethodsToAutoCompleteArray(tokenres, editor);
-    }
-  }
-
   render() {
     const {
       handleSubmit, invalid, submitting, intl, mode, contentTypes,
@@ -181,8 +77,9 @@ class AddContentTemplateFormBody extends Component {
       onCancel,
       onDiscard,
       onSave,
+      dictionary,
     } = this.props;
-    const { modalOpened, dictList } = this.state;
+    const { modalOpened } = this.state;
 
     const handleCancelClick = () => {
       if (dirty) {
@@ -292,8 +189,7 @@ class AddContentTemplateFormBody extends Component {
               component={RenderContentTemplateInput}
               cols="50"
               rows="8"
-              dictionary={dictList}
-              loadSubMethods={this.dotCommandExec}
+              dictionary={dictionary}
               className="form-control"
               append={intl.formatMessage(messages.htmlModelAppend)}
               validate={[required]}

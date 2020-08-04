@@ -11,6 +11,8 @@ import 'brace/ext/language_tools';
 
 const langTools = ace.acequire('ace/ext/language_tools');
 
+const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
+
 const aceOnBlur = onBlur => (_event, editor) => {
   if (editor) {
     const value = editor.getValue();
@@ -22,8 +24,15 @@ class RenderContentTemplateInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      editor: null,
       dictionaryLoaded: false,
+      dictionary: [],
+      dictList: [],
+      dictMapped: {},
+      regLastToken: '',
+      rootCompleters: [],
     };
+    this.dotCommandExec = this.dotCommandExec.bind(this);
     this.onEditorLoad = this.onEditorLoad.bind(this);
   }
 
@@ -36,11 +45,10 @@ class RenderContentTemplateInput extends Component {
   }
 
   onEditorLoad(editor) {
-    const { loadSubMethods } = this.props;
     editor.commands.addCommand({
       name: 'dotCommandSubMethods',
       bindKey: { win: '.', mac: '.' },
-      exec: loadSubMethods,
+      exec: this.dotCommandExec,
     });
 
     editor.commands.on('afterExec', (e) => {
@@ -48,18 +56,108 @@ class RenderContentTemplateInput extends Component {
         editor.execCommand('startAutocomplete');
       }
     });
+
+    this.setState({ editor });
+  }
+
+  condenseDict() {
+    const { dictionary: _dict } = this.props;
+    const dictMapped = _dict.reduce((acc, curr) => {
+      acc[curr.code] = curr.methods;
+      return acc;
+    }, {});
+
+    const dictionary = _dict.map(word => ({
+      caption: word.code,
+      value: word.code,
+      score: 10000,
+      meta: `${word.code} Object`,
+    }));
+
+    this.setState({
+      dictionary,
+      dictMapped,
+      dictList: [...dictionary],
+    });
   }
 
   initCompleter() {
+    this.condenseDict();
+
     const contentTemplateCompleter = {
       contentTemplate: true,
       getCompletions: (editor, session, pos, prefix, callback) => {
-        const { dictionary } = this.props;
-        callback(null, dictionary);
+        const { dictList } = this.state;
+        callback(null, dictList);
       },
     };
     langTools.addCompleter(contentTemplateCompleter);
     this.setState({ dictionaryLoaded: true });
+  }
+
+  findTokenInDictMap(token) {
+    const { dictMapped } = this.state;
+    return Object.keys(dictMapped).find((key) => {
+      const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
+      return keyRegEx.test(token);
+    });
+  }
+
+  resetRootSuggestions() {
+    const { rootCompleters, dictionary, editor } = this.state;
+    if (rootCompleters.length > 0) {
+      editor.completers = rootCompleters;
+    }
+    this.setState({
+      regLastToken: '',
+      dictList: [...dictionary],
+      rootCompleters: [],
+    });
+  }
+
+  insertMethodsToAutoCompleteArray(token) {
+    const { dictMapped: mapped, editor } = this.state;
+    editor.completer.popup.on('hide', this.resetRootSuggestions.bind(this));
+    this.setState({ rootCompleters: editor.completers });
+    const soloCompleter = editor.completers.filter(c => c.contentTemplate);
+    editor.completers = soloCompleter;
+    const dictList = Object.entries(mapped[token]).map(([key]) => ({
+      caption: key,
+      value: key,
+      score: 10001,
+      meta: `${token} Object Method`,
+      completer: {
+        insertMatch: (ed, data) => {
+          const { regLastToken, dictMapped } = this.state;
+          const insertedValue = data.value;
+          console.log('inserting', data, ed, ed.completer);
+          if (insertedValue in dictMapped[regLastToken]) {
+            ed.completer.insertMatch({ value: insertedValue });
+            this.resetRootSuggestions();
+          }
+        },
+      },
+    }));
+    this.setState({ regLastToken: token, dictList });
+  }
+
+  dotCommandExec(editor) {
+    const { selection, session } = editor;
+
+    const cpos = selection.getCursor();
+    const curLine = (session.getDocument().getLine(cpos.row)).trim();
+    const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
+    const curCmd = curTokens[0];
+    if (!curCmd) return;
+
+    const lastToken = curTokens[curTokens.length - 1];
+    editor.insert('.');
+
+    const tokenres = this.findTokenInDictMap(lastToken);
+
+    if (tokenres) {
+      this.insertMethodsToAutoCompleteArray(tokenres);
+    }
   }
 
   render() {
@@ -133,7 +231,6 @@ RenderContentTemplateInput.propTypes = {
   prepend: PropTypes.node,
   append: PropTypes.string,
   alignClass: PropTypes.string,
-  loadSubMethods: PropTypes.func.isRequired,
 };
 
 RenderContentTemplateInput.defaultProps = {
