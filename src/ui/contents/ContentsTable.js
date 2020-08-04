@@ -30,6 +30,7 @@ export const getContentStatusDetails = (status, hasPublicVersion, intl) => {
       titleId = 'cms.content.status.pendingChanges.publicNotEqualReady';
     } else {
       titleId = 'cms.content.status.unpublished.ready';
+      color = 'unpublished';
     }
   } else {
     color = 'unpublished';
