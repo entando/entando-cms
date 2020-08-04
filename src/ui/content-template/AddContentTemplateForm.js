@@ -31,6 +31,8 @@ const max10Digits = value => (
 );
 const maxLength50 = maxLength(50);
 
+const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
+
 const messages = defineMessages({
   chooseContentType: {
     id: 'cms.label.select',
@@ -51,8 +53,9 @@ class AddContentTemplateFormBody extends Component {
       dictList: [],
       dictMapped: {},
       regLastToken: '',
+      rootCompleters: [],
     };
-    this.initCommands = this.initCommands.bind(this);
+    this.dotCommandExec = this.dotCommandExec.bind(this);
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
   }
@@ -103,69 +106,72 @@ class AddContentTemplateFormBody extends Component {
     this.setState({ modalOpened: false });
   }
 
-  initCommands(editor) {
-    const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
+  findTokenInDictMap(token) {
+    const { dictMapped } = this.state;
+    return Object.keys(dictMapped).find((key) => {
+      const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
+      return keyRegEx.test(token);
+    });
+  }
 
-    const findTokenInMap = (lastToken) => {
-      const { dictMapped } = this.state;
-      return Object.keys(dictMapped).find((key) => {
-        const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
-        return keyRegEx.test(lastToken);
-      });
-    };
+  resetRootSuggestions(editor) {
+    const { rootCompleters, dictionary } = this.state;
+    if (rootCompleters.length > 0) {
+      editor.completers = rootCompleters;
+    }
+    this.setState({
+      regLastToken: '',
+      dictList: [...dictionary],
+      rootCompleters: [],
+    });
+  }
 
-    const insertMethodsToAutoCompleteArray = (token) => {
-      this.setState({ regLastToken: token });
-      const { dictionary, dictMapped: mapped } = this.state;
-      const dictList = Object.entries(mapped[token]).map(([key]) => ({
-        caption: key,
-        value: key,
-        score: 10001,
-        meta: `${token} Object Method`,
-        completer: {
-          insertMatch: (ed, data) => {
-            const { regLastToken, dictMapped } = this.state;
-            const insertedValue = data.value;
-            if (insertedValue in dictMapped[regLastToken]) {
-              this.setState({ regLastToken: '', dictList: [...dictionary] });
-            }
+  insertMethodsToAutoCompleteArray(token, editor) {
+    const { dictionary, dictMapped: mapped } = this.state;
+    console.log('matched', token, dictionary, mapped);
+    editor.completer.popup.on('hide', () => this.resetRootSuggestions(editor));
+    this.setState({ rootCompleters: editor.completers });
+    const soloCompleter = editor.completers.filter(c => c.contentTemplate);
+    editor.completers = soloCompleter;
+    const dictList = Object.entries(mapped[token]).map(([key]) => ({
+      caption: key,
+      value: key,
+      score: 10001,
+      meta: `${token} Object Method`,
+      completer: {
+        insertMatch: (ed, data) => {
+          const { regLastToken, dictMapped } = this.state;
+          const insertedValue = data.value;
+          console.log('inserting', data, ed, ed.completer);
+          if (insertedValue in dictMapped[regLastToken]) {
             ed.completer.insertMatch({ value: insertedValue });
-          },
+            this.resetRootSuggestions(editor);
+          }
         },
-      })).concat(dictionary);
-      this.setState({ dictList });
-    };
+      },
+    }));
+    console.log('newDictlist', dictList);
+    this.setState({ regLastToken: token, dictList });
+  };
 
-    const dotCommandExec = () => {
-      const { selection, session } = editor;
+  dotCommandExec(editor) {
+    const { selection, session } = editor;
+    console.log('dot');
 
-      const cpos = selection.getCursor();
-      const curLine = (session.getDocument().getLine(cpos.row)).trim();
-      const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
-      const curCmd = curTokens[0];
-      if (!curCmd) return;
+    const cpos = selection.getCursor();
+    const curLine = (session.getDocument().getLine(cpos.row)).trim();
+    const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
+    const curCmd = curTokens[0];
+    if (!curCmd) return;
 
-      const lastToken = curTokens[curTokens.length - 1];
-      editor.insert('.');
+    const lastToken = curTokens[curTokens.length - 1];
+    editor.insert('.');
 
-      const tokenres = findTokenInMap(lastToken);
+    const tokenres = this.findTokenInDictMap(lastToken);
 
-      if (tokenres) {
-        insertMethodsToAutoCompleteArray(tokenres);
-      }
-    };
-
-    editor.commands.addCommand({
-      name: 'dotCommand1',
-      bindKey: { win: '.', mac: '.' },
-      exec: dotCommandExec,
-    });
-
-    editor.commands.on('afterExec', (e) => {
-      if (e.command.name === 'dotCommand1') {
-        editor.execCommand('startAutocomplete');
-      }
-    });
+    if (tokenres) {
+      this.insertMethodsToAutoCompleteArray(tokenres, editor);
+    }
   }
 
   render() {
@@ -287,7 +293,7 @@ class AddContentTemplateFormBody extends Component {
               cols="50"
               rows="8"
               dictionary={dictList}
-              onInitCommands={this.initCommands}
+              loadSubMethods={this.dotCommandExec}
               className="form-control"
               append={intl.formatMessage(messages.htmlModelAppend)}
               validate={[required]}
@@ -302,7 +308,7 @@ class AddContentTemplateFormBody extends Component {
                   labelId="cms.contenttemplate.form.stylesheet"
                   helpId="cms.contenttemplate.form.stylesheetHelp"
                 />
-)}
+              )}
             />
           </Col>
         </Row>

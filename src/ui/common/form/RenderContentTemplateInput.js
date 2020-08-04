@@ -24,6 +24,7 @@ class RenderContentTemplateInput extends Component {
     this.state = {
       dictionaryLoaded: false,
     };
+    this.onEditorLoad = this.onEditorLoad.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -34,14 +35,25 @@ class RenderContentTemplateInput extends Component {
     }
   }
 
+  onEditorLoad(editor) {
+    const { loadSubMethods } = this.props;
+    editor.commands.addCommand({
+      name: 'dotCommandSubMethods',
+      bindKey: { win: '.', mac: '.' },
+      exec: loadSubMethods,
+    });
+
+    editor.commands.on('afterExec', (e) => {
+      if (e.command.name === 'dotCommandSubMethods') {
+        editor.execCommand('startAutocomplete');
+      }
+    });
+  }
+
   initCompleter() {
-    const { dictionaryLoaded } = this.state;
     const contentTemplateCompleter = {
+      contentTemplate: true,
       getCompletions: (editor, session, pos, prefix, callback) => {
-        if (!dictionaryLoaded) {
-          const { onInitCommands } = this.props;
-          onInitCommands(editor);
-        }
         const { dictionary } = this.props;
         callback(null, dictionary);
       },
@@ -69,7 +81,7 @@ class RenderContentTemplateInput extends Component {
         }
         <Col xs={inputSize || 12 - labelSize}>
           {prepend}
-          {dictionaryLoaded ? (
+          {dictionaryLoaded && (
             <AceEditor
               mode="html"
               theme="tomorrow"
@@ -89,9 +101,10 @@ class RenderContentTemplateInput extends Component {
               onBlur={aceOnBlur(input.onBlur)}
               onChange={input.onChange}
               onFocus={input.onFocus}
+              onLoad={this.onEditorLoad}
               value={input.value}
             />
-          ) : null}
+          )}
           {append && <span className="AppendedLabel">{append}</span>}
           {touched && ((error && <span className="help-block">{error}</span>))}
         </Col>
@@ -120,7 +133,7 @@ RenderContentTemplateInput.propTypes = {
   prepend: PropTypes.node,
   append: PropTypes.string,
   alignClass: PropTypes.string,
-  onInitCommands: PropTypes.func,
+  loadSubMethods: PropTypes.func.isRequired,
 };
 
 RenderContentTemplateInput.defaultProps = {
@@ -133,7 +146,6 @@ RenderContentTemplateInput.defaultProps = {
   append: '',
   prepend: '',
   alignClass: 'text-right',
-  onInitCommands: () => {},
 };
 
 export default RenderContentTemplateInput;
