@@ -4,6 +4,7 @@ import {
   DropdownButton, MenuItem,
 } from 'patternfly-react';
 import { CSVLink } from 'react-csv';
+import Workbook from 'react-excel-workbook';
 import {
   intlShape, FormattedMessage,
 } from 'react-intl';
@@ -78,6 +79,23 @@ const ContentTabs = ({
           <li>
             <CSVLink data={contents} headers={csvHeaders}><span>CSV</span></CSVLink>
           </li>
+          <MenuItem eventKey="xls">
+            <Workbook filename="contents.xlsx" element={<div>XLS</div>}>
+              <Workbook.Sheet data={contents} name="contentsSheet">
+                {
+                  filteredAvailableColumns.map(
+                    column => (
+                      <Workbook.Column
+                        key={column.code}
+                        label={column.name}
+                        value={column.code}
+                      />
+                    ),
+                  )
+                }
+              </Workbook.Sheet>
+            </Workbook>
+          </MenuItem>
         </DropdownButton>
       </div>
       <div className="Contents__main-action-button">
