@@ -6,6 +6,7 @@ import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 import ContentPicker from 'ui/widget-forms/ContentPicker';
 import { getContents } from 'api/contents';
+import { parseJoinGroups } from 'helpers/joinGroups';
 
 const noPaging = { page: 1, pageSize: 0 };
 
@@ -23,10 +24,11 @@ const toFilter = formState => Object.keys(formState).reduce((acc, key) => ({
   operators: {},
 });
 
-const getFilteredContents = (formState, ownerGroup, joinGroups) => {
+const getFilteredContents = (formState, ownerGroup, joinGroupsToParse) => {
   const filter = toFilter(formState);
   const filterParams = convertToQueryString(filter);
   const ownerGroupQuery = ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : '';
+  const joinGroups = parseJoinGroups(joinGroupsToParse);
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   const contentParams = `${filterParams || '?'}&status=published${ownerGroupQuery}${joinGroupsQuery}`;
