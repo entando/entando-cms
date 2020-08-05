@@ -21,6 +21,7 @@ import {
   RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
+import { parseJoinGroups } from 'helpers/joinGroups';
 
 const pageDefault = { page: 1, pageSize: 10 };
 
@@ -139,7 +140,7 @@ export const fetchContents = (page = pageDefault,
 
 export const fetchContentsWithFilters = (
   params, newPagination, newSort, quickFilterStatusParam = '', quickFilterOwnerGroup,
-  joinGroups,
+  joinGroupsToParse,
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
@@ -154,6 +155,7 @@ export const fetchContentsWithFilters = (
   const eq = FILTER_OPERATORS.EQUAL;
   const like = FILTER_OPERATORS.LIKE;
   const ownerGroupQuery = quickFilterOwnerGroup ? `&forLinkingWithOwnerGroup=${quickFilterOwnerGroup}` : '';
+  const joinGroups = parseJoinGroups(joinGroupsToParse);
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   if (params) {
@@ -209,7 +211,7 @@ export const fetchContentsWithFilters = (
 };
 
 export const fetchContentsWithTabs = (
-  page, newSort, ownerGroup, joinGroups,
+  page, newSort, ownerGroup, joinGroupsToParse,
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = page || getPagination(state, 'contents') || getPagination(state);
@@ -239,6 +241,7 @@ export const fetchContentsWithTabs = (
     sorting,
   }), published ? '&status=published' : ''].join('');
   const ownerGroupQuery = ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : '';
+  const joinGroups = parseJoinGroups(joinGroupsToParse);
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   const params = `${query}${ownerGroupQuery}${joinGroupsQuery}`;
