@@ -10,8 +10,17 @@ import 'brace/snippets/html';
 import 'brace/ext/language_tools';
 
 const langTools = ace.acequire('ace/ext/language_tools');
+const tokenUtils = ace.acequire('ace/autocomplete/util');
 
 const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
+const isAttribFunction = term => /[a-zA-Z]+\([^)]*\)(\.[^)]*\))?/g.test(term);
+
+const createSuggestionItem = (key, namespace) => ({
+  caption: key,
+  value: key,
+  score: 10001,
+  meta: `${namespace} Object ${isAttribFunction(key) ? 'Method' : 'Property'}`,
+});
 
 const aceOnBlur = onBlur => (_event, editor) => {
   if (editor) {
@@ -29,10 +38,9 @@ class RenderContentTemplateInput extends Component {
       dictionary: [],
       dictList: [],
       dictMapped: {},
-      regLastToken: '',
       rootCompleters: [],
     };
-    this.dotCommandExec = this.dotCommandExec.bind(this);
+    // this.dotCommandExec = this.dotCommandExec.bind(this);
     this.onEditorLoad = this.onEditorLoad.bind(this);
   }
 
@@ -48,7 +56,7 @@ class RenderContentTemplateInput extends Component {
     editor.commands.addCommand({
       name: 'dotCommandSubMethods',
       bindKey: { win: '.', mac: '.' },
-      exec: this.dotCommandExec,
+      exec: () => editor.insert('.'),
     });
 
     editor.commands.on('afterExec', (e) => {
@@ -86,7 +94,43 @@ class RenderContentTemplateInput extends Component {
 
     const contentTemplateCompleter = {
       contentTemplate: true,
-      getCompletions: (editor, session, pos, prefix, callback) => {
+      getCompletions: (
+        editor,
+        session,
+        cursor,
+        prefix,
+        callback,
+      ) => {
+        const extracted = this.extractCodeFromCursor(cursor);
+        console.log('begin search', extracted, prefix);
+        const { namespace } = extracted;
+        if (!namespace) {
+          this.enableRootSuggestions();
+        } else {
+          const [rootSpace, ...subSpace] = namespace.split('.');
+
+          this.disableRootSuggestions();
+
+          const verified = subSpace.length
+            ? this.findTokenInDictMap(subSpace[0], rootSpace)
+            : this.findTokenInDictMap(rootSpace);
+          if (verified) {
+            const { dictMapped } = this.state;
+            if (verified.namespace) {
+              const mappedToken = dictMapped[verified.namespace];
+              const dictList = mappedToken[verified.term]
+                .map(entry => createSuggestionItem(entry, verified.namespace));
+              this.setState({ dictList });
+            } else {
+              const mappedToken = dictMapped[verified.term];
+              const dictList = Object.entries(mappedToken)
+                .map(([entry]) => createSuggestionItem(entry, verified.term));
+              this.setState({ dictList });
+            }
+          } else {
+            this.disableRootSuggestions();
+          }
+        }
         const { dictList } = this.state;
         callback(null, dictList);
       },
@@ -95,70 +139,96 @@ class RenderContentTemplateInput extends Component {
     this.setState({ dictionaryLoaded: true });
   }
 
-  findTokenInDictMap(token) {
-    const { dictMapped } = this.state;
-    return Object.keys(dictMapped).find((key) => {
-      const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
-      return keyRegEx.test(token);
-    });
+  extractCodeFromCursor({ row, column }) {
+    const { editor: { session } } = this.state;
+    const codeline = (session.getDocument().getLine(row)).trim();
+    const token = tokenUtils.retrievePrecedingIdentifier(codeline, column);
+    const wholeToken = tokenUtils.retrievePrecedingIdentifier(
+      codeline,
+      column,
+      /[.a-zA-Z_0-9$\-\u00A2-\uFFFF]/,
+    );
+    if (token === wholeToken) {
+      return { token, namespace: '' };
+    }
+    const namespace = wholeToken.replace(/.$/g, '');
+    return { token, namespace };
   }
 
-  resetRootSuggestions() {
+  findTokenInDictMap(token, parentToken) {
+    const { dictMapped } = this.state;
+    const findInDict = (term, dict) => {
+      return Object.keys(dict).find((key) => {
+        const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
+        return keyRegEx.test(term);
+      });
+    };
+    console.log(dictMapped, token, parentToken);
+    if (!parentToken) {
+      const term = findInDict(token, dictMapped);
+      return term && { term };
+    }
+    const namespace = findInDict(parentToken, dictMapped);
+    if (!namespace) {
+      return false;
+    }
+    const term = findInDict(token, dictMapped[parentToken]);
+    if (!term) return false;
+    return { term, namespace };
+  }
+
+  disableRootSuggestions() {
+    const { rootCompleters, editor } = this.state;
+    if (rootCompleters.length) {
+      this.setState({ rootCompleters: editor.completers });
+      const soloCompleter = editor.completers.filter(c => c.contentTemplate);
+      editor.completers = soloCompleter;
+    }
+  }
+
+  enableRootSuggestions() {
     const { rootCompleters, dictionary, editor } = this.state;
     if (rootCompleters.length > 0) {
       editor.completers = rootCompleters;
     }
     this.setState({
-      regLastToken: '',
       dictList: [...dictionary],
       rootCompleters: [],
     });
   }
 
-  insertMethodsToAutoCompleteArray(token) {
+  /* insertMethodsToAutoCompleteArray(token) {
     const { dictMapped: mapped, editor } = this.state;
     editor.completer.popup.on('hide', this.resetRootSuggestions.bind(this));
     this.setState({ rootCompleters: editor.completers });
     const soloCompleter = editor.completers.filter(c => c.contentTemplate);
     editor.completers = soloCompleter;
-    const dictList = Object.entries(mapped[token]).map(([key]) => ({
-      caption: key,
-      value: key,
-      score: 10001,
-      meta: `${token} Object Method`,
-      completer: {
-        insertMatch: (ed, data) => {
-          const { regLastToken, dictMapped } = this.state;
-          const insertedValue = data.value;
-          console.log('inserting', data, ed, ed.completer);
-          if (insertedValue in dictMapped[regLastToken]) {
-            ed.completer.insertMatch({ value: insertedValue });
-            this.resetRootSuggestions();
-          }
-        },
-      },
-    }));
+
+    const dictList = Object.entries(mapped[token])
+      .map(entry => createSuggestionItem(entry, mapped[token]));
     this.setState({ regLastToken: token, dictList });
   }
 
-  dotCommandExec(editor) {
-    const { selection, session } = editor;
+  beginExtractTokenFromEditor() {
+    const { editor, dotActivated } = this.state;
+    const { token, namespace } = this.extractTokenFromEditor();
+    if (!token && !namespace) return;
 
-    const cpos = selection.getCursor();
-    const curLine = (session.getDocument().getLine(cpos.row)).trim();
-    const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
-    const curCmd = curTokens[0];
-    if (!curCmd) return;
+    if (dotActivated) {
+      editor.insert('.');
+    }
 
-    const lastToken = curTokens[curTokens.length - 1];
-    editor.insert('.');
-
-    const tokenres = this.findTokenInDictMap(lastToken);
+    const tokenres = this.findTokenInDictMap(token, namespace);
 
     if (tokenres) {
       this.insertMethodsToAutoCompleteArray(tokenres);
     }
   }
+
+  dotCommandExec() {
+    this.setState({ dotActivated: true });
+    this.beginExtractTokenFromEditor();
+  } */
 
   render() {
     const {
