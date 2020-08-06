@@ -8,7 +8,7 @@ import { routeConverter } from '@entando/utils';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-import { fetchContentTypeListPaged, fetchContentType } from 'state/content-type/actions';
+import { fetchContentTypeListPaged, fetchContentType, clearSelectedContentType } from 'state/content-type/actions';
 import {
   fetchContentTemplateDictionary,
   sendPutContentTemplate,
@@ -45,14 +45,18 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onDidMount: () => {
-    dispatch(fetchContentTemplateDictionary())
-      .then(() => dispatch(fetchContentTypeListPaged({ pageSize: 0 })))
+    dispatch(fetchContentTypeListPaged({ pageSize: 0 }))
       .then(() => dispatch(fetchContentTemplate(params.id)))
-      .then(({ contentType }) => dispatch(fetchContentType(contentType)));
+      .then(({ contentType }) => dispatch(fetchContentType(contentType)))
+      .then(() => dispatch(fetchContentTemplateDictionary()));
   },
   onDidUnmount: () => {
     dispatch(clearContentTemplate());
     dispatch(clearContentTemplateDictionary());
+    dispatch(clearSelectedContentType());
+  },
+  onChangeContentType: ({ code }) => {
+    dispatch(fetchContentType(code));
   },
   onSubmit: values => dispatch(
     sendPutContentTemplate({

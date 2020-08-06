@@ -97,6 +97,13 @@ export const setSelectedContentType = contentType => ({
   },
 });
 
+export const clearSelectedContentType = () => ({
+  type: SET_SELECTED_CONTENT_TYPE,
+  payload: {
+    contentType: {},
+  },
+});
+
 export const setContentTypeReferenceStatus = contentTypeStatus => ({
   type: SET_CONTENT_TYPE_REFERENCE_STATUS,
   payload: {

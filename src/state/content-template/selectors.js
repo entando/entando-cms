@@ -40,11 +40,8 @@ export const getContentTemplateDictionary = createSelector(
 
 export const getContentTemplateDictionaryList = createSelector(
   [getContentTemplateDictionary, getMethodsSelectedAttribute],
-  (dictionary, attributeMethods) => {
-    if (!attributeMethods) {
-      return [];
-    }
-    return dictionary.list.map((object) => {
+  (dictionary, attributeMethods) => (
+    dictionary.list.map((object) => {
       const { code } = object;
       const methods = {
         ...(code === '$content' ? attributeMethods : {}),
@@ -59,6 +56,6 @@ export const getContentTemplateDictionaryList = createSelector(
             return acc;
           }, {}) : null,
       };
-    });
-  },
+    })
+  ),
 );

@@ -10,6 +10,14 @@ import {
 const TEST_STATE = {
   apps: {
     cms: {
+      contentType: {
+        selected: {
+          attributes: [
+            { code: 'Title', type: 'Text' },
+            { code: 'Subtitle', type: 'Text' },
+          ],
+        },
+      },
       contentTemplate: {
         list: ['hello', 'world'],
         opened: { name: 'ciao', id: 1 },
@@ -29,7 +37,7 @@ const TEST_STATE = {
             },
             {
               code: 'lecode',
-              methods: null,
+              methods: {},
             },
           ],
           map: { content: { getId: null } },

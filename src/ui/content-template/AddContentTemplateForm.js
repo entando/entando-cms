@@ -78,6 +78,7 @@ class AddContentTemplateFormBody extends Component {
       onDiscard,
       onSave,
       dictionary,
+      onChangeContentType,
     } = this.props;
     const { modalOpened } = this.state;
 
@@ -148,9 +149,10 @@ class AddContentTemplateFormBody extends Component {
                     helpId="cms.contenttemplate.form.contentTypeHelp"
                     required
                   />
-)}
+                )}
                 options={contentTypes}
                 labelKey="name"
+                onChange={onChangeContentType}
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
               />
@@ -165,7 +167,7 @@ class AddContentTemplateFormBody extends Component {
                   helpId="cms.contenttemplate.form.htmlmodelHelp"
                   required
                 />
-)}
+              )}
               prepend={(
                 <>
                   <Button
@@ -185,7 +187,7 @@ class AddContentTemplateFormBody extends Component {
                     <FormattedMessage id="cms.contenttemplate.form.htmlmodel.statusadminconf" />
                   </p>
                 </>
-)}
+              )}
               component={RenderContentTemplateInput}
               cols="50"
               rows="8"
@@ -244,6 +246,7 @@ AddContentTemplateFormBody.propTypes = {
   intl: intlShape.isRequired,
   dictionary: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  onChangeContentType: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,

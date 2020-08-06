@@ -11,15 +11,17 @@ import 'brace/ext/language_tools';
 
 const langTools = ace.acequire('ace/ext/language_tools');
 const tokenUtils = ace.acequire('ace/autocomplete/util');
+const { textCompleter, keyWordCompleter, snippetCompleter } = langTools;
+const defaultCompleters = [textCompleter, keyWordCompleter, snippetCompleter];
 
 const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
 const isAttribFunction = term => /[a-zA-Z]+\([^)]*\)(\.[^)]*\))?/g.test(term);
 
-const createSuggestionItem = (key, namespace) => ({
+const createSuggestionItem = (key, namespace, lvl = 0, meta = '') => ({
   caption: key,
   value: key,
-  score: 10001,
-  meta: `${namespace} Object ${isAttribFunction(key) ? 'Method' : 'Property'}`,
+  score: 10000 + lvl,
+  meta: meta || `${namespace} Object ${isAttribFunction(key) ? 'Method' : 'Property'}`,
 });
 
 const aceOnBlur = onBlur => (_event, editor) => {
@@ -38,20 +40,23 @@ class RenderContentTemplateInput extends Component {
       dictionary: [],
       dictList: [],
       dictMapped: {},
-      rootCompleters: [],
+      contentTemplateCompleter: null,
     };
-    this.onEditorLoad = this.onEditorLoad.bind(this);
+    this.onEditorLoaded = this.onEditorLoaded.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     const { dictionary } = this.props;
-    const { dictionaryLoaded } = this.state;
-    if (!dictionaryLoaded && dictionary.length !== prevProps.dictionary.length) {
-      this.initCompleter();
+    if (dictionary !== prevProps.dictionary) {
+      this.condenseRootDict();
     }
   }
 
-  onEditorLoad(editor) {
+  onEditorLoaded(editor) {
+    this.setState({ editor });
+
+    this.initCompleter();
+
     editor.commands.addCommand({
       name: 'dotCommandSubMethods',
       bindKey: { win: '.', mac: '.' },
@@ -80,38 +85,12 @@ class RenderContentTemplateInput extends Component {
         editor.execCommand('startAutocomplete');
       }
     });
-
-    this.setState({ editor });
-  }
-
-  condenseDict() {
-    const { dictionary: _dict } = this.props;
-    const dictMapped = _dict.reduce((acc, curr) => {
-      acc[curr.code] = curr.methods;
-      return acc;
-    }, {});
-
-    const dictionary = _dict.map(word => ({
-      caption: word.code,
-      value: word.code,
-      score: 10000,
-      meta: `${word.code} Object`,
-    }));
-
-    this.setState({
-      dictionary,
-      dictMapped,
-      dictList: [...dictionary],
-    });
   }
 
   initCompleter() {
-    this.condenseDict();
-
     const contentTemplateCompleter = {
-      contentTemplate: true,
       getCompletions: (
-        editor,
+        _editor,
         session,
         cursor,
         prefix,
@@ -133,12 +112,12 @@ class RenderContentTemplateInput extends Component {
             if (verified.namespace) {
               const mappedToken = dictMapped[verified.namespace];
               const dictList = mappedToken[verified.term]
-                .map(entry => createSuggestionItem(entry, verified.namespace));
+                .map(entry => createSuggestionItem(entry, verified.namespace, 2));
               this.setState({ dictList });
             } else {
               const mappedToken = dictMapped[verified.term];
               const dictList = Object.entries(mappedToken)
-                .map(([entry]) => createSuggestionItem(entry, verified.term));
+                .map(([entry]) => createSuggestionItem(entry, verified.term, 1));
               this.setState({ dictList });
             }
           } else {
@@ -149,8 +128,27 @@ class RenderContentTemplateInput extends Component {
         callback(null, dictList);
       },
     };
-    langTools.addCompleter(contentTemplateCompleter);
-    this.setState({ dictionaryLoaded: true });
+    langTools.setCompleters([...defaultCompleters, contentTemplateCompleter]);
+    this.setState({ contentTemplateCompleter });
+  }
+
+  condenseRootDict() {
+    const { dictionary: _dict } = this.props;
+    const dictMapped = _dict.reduce((acc, curr) => {
+      acc[curr.code] = curr.methods;
+      return acc;
+    }, {});
+
+    const dictionary = _dict.map(({ code }) => (
+      createSuggestionItem(code, code, 0, `${code} Object`)
+    ));
+
+    this.setState({
+      dictionary,
+      dictMapped,
+      dictList: [...dictionary],
+      dictionaryLoaded: true,
+    });
   }
 
   extractCodeFromCursor({ row, column }) {
@@ -191,22 +189,15 @@ class RenderContentTemplateInput extends Component {
   }
 
   disableRootSuggestions() {
-    const { rootCompleters, editor } = this.state;
-    if (!rootCompleters.length) {
-      this.setState({ rootCompleters: editor.completers });
-      const soloCompleter = editor.completers.filter(c => c.contentTemplate);
-      editor.completers = soloCompleter;
-    }
+    const { contentTemplateCompleter } = this.state;
+    langTools.setCompleters([contentTemplateCompleter]);
   }
 
   enableRootSuggestions() {
-    const { rootCompleters, dictionary, editor } = this.state;
-    if (rootCompleters.length) {
-      editor.completers = rootCompleters;
-    }
+    const { dictionary, contentTemplateCompleter } = this.state;
+    langTools.setCompleters([...defaultCompleters, contentTemplateCompleter]);
     this.setState({
       dictList: [...dictionary],
-      rootCompleters: [],
     });
   }
 
@@ -249,7 +240,7 @@ class RenderContentTemplateInput extends Component {
               onBlur={aceOnBlur(input.onBlur)}
               onChange={input.onChange}
               onFocus={input.onFocus}
-              onLoad={this.onEditorLoad}
+              onLoad={this.onEditorLoaded}
               value={input.value}
             />
           )}
