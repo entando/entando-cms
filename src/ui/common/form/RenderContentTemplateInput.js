@@ -40,7 +40,6 @@ class RenderContentTemplateInput extends Component {
       dictMapped: {},
       rootCompleters: [],
     };
-    // this.dotCommandExec = this.dotCommandExec.bind(this);
     this.onEditorLoad = this.onEditorLoad.bind(this);
   }
 
@@ -56,7 +55,24 @@ class RenderContentTemplateInput extends Component {
     editor.commands.addCommand({
       name: 'dotCommandSubMethods',
       bindKey: { win: '.', mac: '.' },
-      exec: () => editor.insert('.'),
+      exec: () => {
+        editor.insert('.');
+        const { selection } = editor;
+        const cursor = selection.getCursor();
+        const extracted = this.extractCodeFromCursor(cursor);
+        const { namespace } = extracted;
+        if (!namespace) {
+          this.enableRootSuggestions();
+        } else {
+          const [rootSpace, ...subSpace] = namespace.split('.');
+          const verified = subSpace.length
+            ? this.findTokenInDictMap(subSpace[0], rootSpace)
+            : this.findTokenInDictMap(rootSpace);
+          if (verified) {
+            this.disableRootSuggestions();
+          }
+        }
+      },
     });
 
     editor.commands.on('afterExec', (e) => {
@@ -102,19 +118,17 @@ class RenderContentTemplateInput extends Component {
         callback,
       ) => {
         const extracted = this.extractCodeFromCursor(cursor);
-        console.log('begin search', extracted, prefix);
         const { namespace } = extracted;
         if (!namespace) {
           this.enableRootSuggestions();
         } else {
           const [rootSpace, ...subSpace] = namespace.split('.');
 
-          this.disableRootSuggestions();
-
           const verified = subSpace.length
             ? this.findTokenInDictMap(subSpace[0], rootSpace)
             : this.findTokenInDictMap(rootSpace);
           if (verified) {
+            this.disableRootSuggestions();
             const { dictMapped } = this.state;
             if (verified.namespace) {
               const mappedToken = dictMapped[verified.namespace];
@@ -163,7 +177,6 @@ class RenderContentTemplateInput extends Component {
         return keyRegEx.test(term);
       });
     };
-    console.log(dictMapped, token, parentToken);
     if (!parentToken) {
       const term = findInDict(token, dictMapped);
       return term && { term };
@@ -179,7 +192,7 @@ class RenderContentTemplateInput extends Component {
 
   disableRootSuggestions() {
     const { rootCompleters, editor } = this.state;
-    if (rootCompleters.length) {
+    if (!rootCompleters.length) {
       this.setState({ rootCompleters: editor.completers });
       const soloCompleter = editor.completers.filter(c => c.contentTemplate);
       editor.completers = soloCompleter;
@@ -188,7 +201,7 @@ class RenderContentTemplateInput extends Component {
 
   enableRootSuggestions() {
     const { rootCompleters, dictionary, editor } = this.state;
-    if (rootCompleters.length > 0) {
+    if (rootCompleters.length) {
       editor.completers = rootCompleters;
     }
     this.setState({
@@ -196,39 +209,6 @@ class RenderContentTemplateInput extends Component {
       rootCompleters: [],
     });
   }
-
-  /* insertMethodsToAutoCompleteArray(token) {
-    const { dictMapped: mapped, editor } = this.state;
-    editor.completer.popup.on('hide', this.resetRootSuggestions.bind(this));
-    this.setState({ rootCompleters: editor.completers });
-    const soloCompleter = editor.completers.filter(c => c.contentTemplate);
-    editor.completers = soloCompleter;
-
-    const dictList = Object.entries(mapped[token])
-      .map(entry => createSuggestionItem(entry, mapped[token]));
-    this.setState({ regLastToken: token, dictList });
-  }
-
-  beginExtractTokenFromEditor() {
-    const { editor, dotActivated } = this.state;
-    const { token, namespace } = this.extractTokenFromEditor();
-    if (!token && !namespace) return;
-
-    if (dotActivated) {
-      editor.insert('.');
-    }
-
-    const tokenres = this.findTokenInDictMap(token, namespace);
-
-    if (tokenres) {
-      this.insertMethodsToAutoCompleteArray(tokenres);
-    }
-  }
-
-  dotCommandExec() {
-    this.setState({ dotActivated: true });
-    this.beginExtractTokenFromEditor();
-  } */
 
   render() {
     const {
