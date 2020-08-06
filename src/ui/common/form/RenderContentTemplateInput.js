@@ -169,12 +169,12 @@ class RenderContentTemplateInput extends Component {
 
   findTokenInDictMap(token, parentToken) {
     const { dictMapped } = this.state;
-    const findInDict = (term, dict) => {
-      return Object.keys(dict).find((key) => {
+    const findInDict = (term, dict) => (
+      Object.keys(dict).find((key) => {
         const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
         return keyRegEx.test(term);
-      });
-    };
+      })
+    );
     if (!parentToken) {
       const term = findInDict(token, dictMapped);
       return term && { term };

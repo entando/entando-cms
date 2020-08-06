@@ -20,6 +20,17 @@ import {
   TYPE_TIMESTAMP,
   TYPE_LINK,
   TYPE_IMAGE,
+  TYPE_TEXT_METHODS,
+  TYPE_NUMBER_METHODS,
+  TYPE_HYPERTEXT_METHODS,
+  TYPE_DATE_METHODS,
+  TYPE_ENUMERATOR_METHODS,
+  TYPE_ENUMERATOR_MAP_METHODS,
+  TYPE_BOOLEAN_METHODS,
+  TYPE_LIST_METHODS,
+  TYPE_COMPOSITE_METHODS,
+  TYPE_IMAGE_METHODS,
+  TYPE_LINK_METHODS,
 } from 'state/content-type/const';
 
 const NO_ATTRIBUTE_FOR_TYPE_LIST = [
@@ -182,70 +193,32 @@ export const getNewAttributeComposite = createSelector(
 
 export const getFormTypeValue = (state, formName) => formValueSelector(formName)(state, 'type');
 
-const getShapeMethodsByAttributeType = (type) => {
+export const getShapeMethodsByAttributeType = (type) => {
   switch (type) {
     case TYPE_TEXT:
     case TYPE_LONGTEXT:
-      return ['getTextForLang("<LANG_CODE>")', 'text', 'textMap("<LANG_CODE>")'];
-    case TYPE_NUMBER:
-      return ['number', 'value'];
-    case TYPE_HYPERTEXT:
-      return [
-        'getHead(<VALUE>)',
-        'getHeadEscaped(VALUE)',
-        'getTextAfterImage(<PERCENT_VALUE>)',
-        'getTextBeforeImage(<PERCENT_VALUE>)',
-        'getTextByRange(<START_PERCENT_VALUE>, <END_PERCENT_VALUE>)',
-        'getTextForLang("<LANG_CODE>")',
-        'text',
-        'textMap("<LANG_CODE>")',
-      ];
+      return TYPE_TEXT_METHODS;
+    case TYPE_NUMBER: return TYPE_NUMBER_METHODS;
+    case TYPE_HYPERTEXT: return TYPE_HYPERTEXT_METHODS;
     case TYPE_DATE:
     case TYPE_TIMESTAMP:
-      return ['fullDate', 'getFormattedDate("<DATE_PATTERN>")', 'longDate', 'mediumDate', 'shortDate'];
+      return TYPE_DATE_METHODS;
     case TYPE_ENUMERATOR:
     case TYPE_MONOTEXT:
-      return ['text'];
+      return TYPE_ENUMERATOR_METHODS;
     case TYPE_ENUMERATOR_MAP:
-      return ['mapKey', 'mapValue'];
+      return TYPE_ENUMERATOR_MAP_METHODS;
     case TYPE_BOOLEAN:
     case TYPE_THREESTATE:
     case TYPE_CHECKBOX:
-      return ['booleanValue', 'value'];
+      return TYPE_BOOLEAN_METHODS;
     case TYPE_MONOLIST:
     case TYPE_LIST:
-      return ['get(<INDEX>)', 'size()'];
-    case TYPE_IMAGE:
-      return [
-        'getImagePath(<SIZE_ID>)',
-        'getMetadata("<METADATA_CODE>")',
-        'getMetadataForLang("<METADATA_CODE>", "<LANG_CODE>")',
-        'getResource("<LANG_CODE>")',
-        'getResourceAltForLang("<LANG_CODE>")',
-        'getResourceDescriptionForLang("<LANG_CODE>")',
-        'getResourceLegendForLang("<LANG_CODE>")',
-        'getResourceTitleForLang("<LANG_CODE>")',
-        'getTextForLang("<LANG_CODE>")',
-        'resource',
-        'resourceAlt',
-        'resourceAltMap["<LANG_CODE>"]',
-        'resourceDescription',
-        'resourceDescriptionMap["<LANG_CODE>"]',
-        'resourceLegend',
-        'resourceLegendMap["<LANG_CODE>"]',
-        'resourceTitle',
-        'resourceTitleMap["<LANG_CODE>"]',
-        'text',
-        'textMap["<LANG_CODE>"]',
-      ];
-    case TYPE_LINK:
-      return [
-        'destination',
-        'getTextForLang("<LANG_CODE>")',
-        'symbolicLink',
-        'text',
-        'textMap["<LANG_CODE>"]',
-      ];
+      return TYPE_LIST_METHODS;
+    case TYPE_COMPOSITE:
+      return TYPE_COMPOSITE_METHODS;
+    case TYPE_IMAGE: return TYPE_IMAGE_METHODS;
+    case TYPE_LINK: return TYPE_LINK_METHODS;
     default:
       return [];
   }

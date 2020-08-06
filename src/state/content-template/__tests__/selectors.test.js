@@ -7,6 +7,10 @@ import {
   getContentTemplateDictionaryList,
 } from 'state/content-template/selectors';
 
+import {
+  getShapeMethodsByAttributeType,
+} from 'state/content-type/selectors';
+
 const TEST_STATE = {
   apps: {
     cms: {
@@ -32,12 +36,12 @@ const TEST_STATE = {
         dictionary: {
           list: [
             {
-              code: 'content',
+              code: '$content',
               methods: { getId: null },
             },
             {
               code: 'lecode',
-              methods: {},
+              methods: null,
             },
           ],
           map: { content: { getId: null } },
@@ -79,7 +83,22 @@ it('verify getContentTemplateFilterProps selector', () => {
 });
 
 it('verify getContentTemplateDictionaryList selector', () => {
+  const textMethods = getShapeMethodsByAttributeType('Text');
+  const res = [
+    {
+      code: '$content',
+      methods: {
+        Title: textMethods,
+        Subtitle: textMethods,
+        getId: null,
+      },
+    },
+    {
+      code: 'lecode',
+      methods: {},
+    },
+  ];
   const filtProps = getContentTemplateDictionaryList(TEST_STATE);
   expect(filtProps).toBeDefined();
-  expect(filtProps).toEqual(TEST_STATE.apps.cms.contentTemplate.dictionary.list);
+  expect(filtProps).toEqual(res);
 });
