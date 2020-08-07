@@ -75,15 +75,25 @@ class RenderContentTemplateInput extends Component {
             : this.findTokenInDictMap(rootSpace);
           if (verified) {
             this.disableRootSuggestions();
+          } else {
+            this.enableRootSuggestions();
           }
         }
+        editor.execCommand('startAutocomplete');
       },
     });
+  }
 
-    editor.commands.on('afterExec', (e) => {
-      if (e.command.name === 'dotCommandSubMethods') {
-        editor.execCommand('startAutocomplete');
-      }
+  disableRootSuggestions() {
+    const { contentTemplateCompleter } = this.state;
+    langTools.setCompleters([contentTemplateCompleter]);
+  }
+
+  enableRootSuggestions() {
+    const { dictionary, contentTemplateCompleter } = this.state;
+    langTools.setCompleters([...defaultCompleters, contentTemplateCompleter]);
+    this.setState({
+      dictList: [...dictionary],
     });
   }
 
@@ -96,7 +106,7 @@ class RenderContentTemplateInput extends Component {
         prefix,
         callback,
       ) => {
-        const extracted = this.extractCodeFromCursor(cursor);
+        const extracted = this.extractCodeFromCursor(cursor, prefix);
         const { namespace } = extracted;
         if (!namespace) {
           this.enableRootSuggestions();
@@ -151,10 +161,10 @@ class RenderContentTemplateInput extends Component {
     });
   }
 
-  extractCodeFromCursor({ row, column }) {
+  extractCodeFromCursor({ row, column }, prefixToken) {
     const { editor: { session } } = this.state;
     const codeline = (session.getDocument().getLine(row)).trim();
-    const token = tokenUtils.retrievePrecedingIdentifier(codeline, column);
+    const token = prefixToken || tokenUtils.retrievePrecedingIdentifier(codeline, column);
     const wholeToken = tokenUtils.retrievePrecedingIdentifier(
       codeline,
       column,
@@ -163,7 +173,7 @@ class RenderContentTemplateInput extends Component {
     if (token === wholeToken) {
       return { token, namespace: '' };
     }
-    const namespace = wholeToken.replace(/.$/g, '');
+    const namespace = wholeToken.replace(/\.$/g, '');
     return { token, namespace };
   }
 
@@ -186,19 +196,6 @@ class RenderContentTemplateInput extends Component {
     const term = findInDict(token, dictMapped[parentToken]);
     if (!term) return false;
     return { term, namespace };
-  }
-
-  disableRootSuggestions() {
-    const { contentTemplateCompleter } = this.state;
-    langTools.setCompleters([contentTemplateCompleter]);
-  }
-
-  enableRootSuggestions() {
-    const { dictionary, contentTemplateCompleter } = this.state;
-    langTools.setCompleters([...defaultCompleters, contentTemplateCompleter]);
-    this.setState({
-      dictList: [...dictionary],
-    });
   }
 
   render() {
