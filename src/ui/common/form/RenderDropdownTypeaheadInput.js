@@ -12,9 +12,12 @@ class RenderDropdownTypeaheadInput extends Component {
   }
 
   valueChanged(selected) {
-    const { input } = this.props;
+    const { input, onChange } = this.props;
     if (!selected.length) return;
     input.onChange(selected[0]);
+    if (onChange) {
+      onChange(selected[0]);
+    }
     const btn = document.querySelector('.DropdownTypeahead__dropdownbutton');
     btn.click();
   }
@@ -36,6 +39,7 @@ class RenderDropdownTypeaheadInput extends Component {
       alignClass,
       placeholder,
       options,
+      onChange,
       ...others
     } = this.props;
     return (
@@ -90,7 +94,7 @@ RenderDropdownTypeaheadInput.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func,
     name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
   }),
   label: PropTypes.node,
   labelSize: PropTypes.number,
@@ -106,6 +110,7 @@ RenderDropdownTypeaheadInput.propTypes = {
   placeholder: PropTypes.string,
   append: PropTypes.string,
   alignClass: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 RenderDropdownTypeaheadInput.defaultProps = {
@@ -120,6 +125,7 @@ RenderDropdownTypeaheadInput.defaultProps = {
   inputSize: null,
   append: '',
   alignClass: 'text-right',
+  onChange: null,
 };
 
 export default RenderDropdownTypeaheadInput;

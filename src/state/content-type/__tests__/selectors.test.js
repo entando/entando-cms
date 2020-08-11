@@ -8,6 +8,20 @@ import {
 } from 'testutils/mocks/contentType';
 
 import {
+  TYPE_TEXT_METHODS,
+  TYPE_NUMBER_METHODS,
+  TYPE_HYPERTEXT_METHODS,
+  TYPE_DATE_METHODS,
+  TYPE_ENUMERATOR_METHODS,
+  TYPE_ENUMERATOR_MAP_METHODS,
+  TYPE_BOOLEAN_METHODS,
+  TYPE_LIST_METHODS,
+  TYPE_COMPOSITE_METHODS,
+  TYPE_IMAGE_METHODS,
+  TYPE_LINK_METHODS,
+} from 'state/content-type/const';
+
+import {
   getContentTypeState,
   getContentTypeIdList,
   getContentTypeMap,
@@ -34,6 +48,8 @@ import {
   getMonolistAttributeType,
   getIsMonolistCompositeAttributeType,
   getNewAttributeComposite,
+  getMethodsSelectedAttribute,
+  getShapeMethodsByAttributeType,
 } from 'state/content-type/selectors';
 
 const TEST_STATE = {
@@ -382,5 +398,77 @@ describe('state/content-type/selectors', () => {
     };
     const res = getNewAttributeComposite(LIST_SELECTED4);
     expect(res).toEqual('boi');
+  });
+
+  it('verify getMethodsSelectedAttribute', () => {
+    const TEST_STATE_HAS_SELECTED = {
+      apps: {
+        cms: {
+          contentType: {
+            selected: {
+              attributes: [
+                { code: 'Title', type: 'Text' },
+                { code: 'Created', type: 'Date' },
+              ],
+            },
+          },
+        },
+      },
+    };
+    const res = getMethodsSelectedAttribute(TEST_STATE_HAS_SELECTED);
+    expect(res).toEqual({
+      Title: TYPE_TEXT_METHODS,
+      Created: TYPE_DATE_METHODS,
+    });
+  });
+
+  it('verify number on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Number');
+    expect(res).toEqual(TYPE_NUMBER_METHODS);
+  });
+
+  it('verify hypertext on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Hypertext');
+    expect(res).toEqual(TYPE_HYPERTEXT_METHODS);
+  });
+
+  it('verify enumerator on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Enumerator');
+    expect(res).toEqual(TYPE_ENUMERATOR_METHODS);
+  });
+
+  it('verify EnumeratorMap on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('EnumeratorMap');
+    expect(res).toEqual(TYPE_ENUMERATOR_MAP_METHODS);
+  });
+
+  it('verify boolean on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Boolean');
+    expect(res).toEqual(TYPE_BOOLEAN_METHODS);
+  });
+
+  it('verify monolist on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Monolist');
+    expect(res).toEqual(TYPE_LIST_METHODS);
+  });
+
+  it('verify composite on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Composite');
+    expect(res).toEqual(TYPE_COMPOSITE_METHODS);
+  });
+
+  it('verify image on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Image');
+    expect(res).toEqual(TYPE_IMAGE_METHODS);
+  });
+
+  it('verify link on getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('Link');
+    expect(res).toEqual(TYPE_LINK_METHODS);
+  });
+
+  it('return blank array on undefined getShapeMethodsByAttributeType', () => {
+    const res = getShapeMethodsByAttributeType('yos');
+    expect(res).toEqual([]);
   });
 });

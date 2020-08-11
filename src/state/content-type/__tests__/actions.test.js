@@ -49,6 +49,7 @@ import {
   sendPutAttributeFromContentTypeMonolist,
   sendDeleteAttributeFromContentType,
   setSelectedContentType,
+  clearSelectedContentType,
   setContentTypeAttributes,
   setSelectedAttributeRef,
   fetchContentTypeAttributeRefs,
@@ -210,6 +211,13 @@ describe('state/content-type/actions ', () => {
     });
     it('test setSelectedContentType action sets the correct type', () => {
       expect(action.type).toBe(SET_SELECTED_CONTENT_TYPE);
+    });
+  });
+  describe('clearSelectedContentType', () => {
+    it('test clearSelectedContentType action', () => {
+      action = clearSelectedContentType();
+      expect(action.type).toBe(SET_SELECTED_CONTENT_TYPE);
+      expect(action.payload).toEqual({ contentType: {} });
     });
   });
   describe('setSelectedAttributeRef', () => {

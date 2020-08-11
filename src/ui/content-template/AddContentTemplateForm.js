@@ -47,12 +47,7 @@ class AddContentTemplateFormBody extends Component {
     super(props);
     this.state = {
       modalOpened: false,
-      dictionary: [],
-      dictList: [],
-      dictMapped: {},
-      regLastToken: '',
     };
-    this.initCommands = this.initCommands.bind(this);
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
   }
@@ -62,37 +57,9 @@ class AddContentTemplateFormBody extends Component {
     onDidMount();
   }
 
-  componentDidUpdate(prevProps) {
-    const { dictionary: _dict } = this.props;
-    if (_dict.length !== prevProps.dictionary.length) {
-      this.populateDictState();
-    }
-  }
-
   componentWillUnmount() {
     const { onDidUnmount } = this.props;
     onDidUnmount();
-  }
-
-  populateDictState() {
-    const { dictionary: _dict } = this.props;
-    const dictMapped = _dict.reduce((acc, curr) => {
-      acc[curr.code] = curr.methods;
-      return acc;
-    }, {});
-
-    const dictionary = _dict.map(word => ({
-      caption: word.code,
-      value: word.code,
-      score: 10000,
-      meta: `${word.code} Object`,
-    }));
-
-    this.setState({
-      dictionary,
-      dictMapped,
-      dictList: [...dictionary],
-    });
   }
 
   handleModalOpen() {
@@ -103,71 +70,6 @@ class AddContentTemplateFormBody extends Component {
     this.setState({ modalOpened: false });
   }
 
-  initCommands(editor) {
-    const escChars = term => term.replace('$', '\\$').replace('#', '\\#');
-
-    const findTokenInMap = (lastToken) => {
-      const { dictMapped } = this.state;
-      return Object.keys(dictMapped).find((key) => {
-        const keyRegEx = new RegExp(`${escChars(key)}$`, 'g');
-        return keyRegEx.test(lastToken);
-      });
-    };
-
-    const insertMethodsToAutoCompleteArray = (token) => {
-      this.setState({ regLastToken: token });
-      const { dictionary, dictMapped: mapped } = this.state;
-      const dictList = Object.entries(mapped[token]).map(([key]) => ({
-        caption: key,
-        value: key,
-        score: 10001,
-        meta: `${token} Object Method`,
-        completer: {
-          insertMatch: (ed, data) => {
-            const { regLastToken, dictMapped } = this.state;
-            const insertedValue = data.value;
-            if (insertedValue in dictMapped[regLastToken]) {
-              this.setState({ regLastToken: '', dictList: [...dictionary] });
-            }
-            ed.completer.insertMatch({ value: insertedValue });
-          },
-        },
-      })).concat(dictionary);
-      this.setState({ dictList });
-    };
-
-    const dotCommandExec = () => {
-      const { selection, session } = editor;
-
-      const cpos = selection.getCursor();
-      const curLine = (session.getDocument().getLine(cpos.row)).trim();
-      const curTokens = curLine.slice(0, cpos.column).split(/\s+/);
-      const curCmd = curTokens[0];
-      if (!curCmd) return;
-
-      const lastToken = curTokens[curTokens.length - 1];
-      editor.insert('.');
-
-      const tokenres = findTokenInMap(lastToken);
-
-      if (tokenres) {
-        insertMethodsToAutoCompleteArray(tokenres);
-      }
-    };
-
-    editor.commands.addCommand({
-      name: 'dotCommand1',
-      bindKey: { win: '.', mac: '.' },
-      exec: dotCommandExec,
-    });
-
-    editor.commands.on('afterExec', (e) => {
-      if (e.command.name === 'dotCommand1') {
-        editor.execCommand('startAutocomplete');
-      }
-    });
-  }
-
   render() {
     const {
       handleSubmit, invalid, submitting, intl, mode, contentTypes,
@@ -175,8 +77,10 @@ class AddContentTemplateFormBody extends Component {
       onCancel,
       onDiscard,
       onSave,
+      dictionary,
+      onChangeContentType,
     } = this.props;
-    const { modalOpened, dictList } = this.state;
+    const { modalOpened } = this.state;
 
     const handleCancelClick = () => {
       if (dirty) {
@@ -245,9 +149,10 @@ class AddContentTemplateFormBody extends Component {
                     helpId="cms.contenttemplate.form.contentTypeHelp"
                     required
                   />
-)}
+                )}
                 options={contentTypes}
                 labelKey="name"
+                onChange={onChangeContentType}
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
               />
@@ -262,7 +167,7 @@ class AddContentTemplateFormBody extends Component {
                   helpId="cms.contenttemplate.form.htmlmodelHelp"
                   required
                 />
-)}
+              )}
               prepend={(
                 <>
                   <Button
@@ -282,12 +187,11 @@ class AddContentTemplateFormBody extends Component {
                     <FormattedMessage id="cms.contenttemplate.form.htmlmodel.statusadminconf" />
                   </p>
                 </>
-)}
+              )}
               component={RenderContentTemplateInput}
               cols="50"
               rows="8"
-              dictionary={dictList}
-              onInitCommands={this.initCommands}
+              dictionary={dictionary}
               className="form-control"
               append={intl.formatMessage(messages.htmlModelAppend)}
               validate={[required]}
@@ -302,7 +206,7 @@ class AddContentTemplateFormBody extends Component {
                   labelId="cms.contenttemplate.form.stylesheet"
                   helpId="cms.contenttemplate.form.stylesheetHelp"
                 />
-)}
+              )}
             />
           </Col>
         </Row>
@@ -342,6 +246,7 @@ AddContentTemplateFormBody.propTypes = {
   intl: intlShape.isRequired,
   dictionary: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  onChangeContentType: PropTypes.func.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   invalid: PropTypes.bool,
   onDidMount: PropTypes.func.isRequired,

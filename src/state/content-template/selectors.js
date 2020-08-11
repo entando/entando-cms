@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { getMethodsSelectedAttribute } from 'state/content-type/selectors';
 
 export const getContentTemplateState = state => state.apps.cms.contentTemplate;
 
@@ -38,14 +39,23 @@ export const getContentTemplateDictionary = createSelector(
 );
 
 export const getContentTemplateDictionaryList = createSelector(
-  getContentTemplateDictionary,
-  dictionary => dictionary.list.map(object => ({
-    ...object,
-    methods: object.methods ? Object.entries(object.methods).map(([key, m]) => (
-      [key.replace(/"/g, '\''), m]
-    )).reduce((acc, [key, m]) => {
-      acc[key] = m;
-      return acc;
-    }, {}) : null,
-  })),
+  [getContentTemplateDictionary, getMethodsSelectedAttribute],
+  (dictionary, attributeMethods) => (
+    dictionary.list.map((object) => {
+      const { code } = object;
+      const methods = {
+        ...(code === '$content' ? attributeMethods : {}),
+        ...object.methods,
+      };
+      return {
+        code,
+        methods: methods ? Object.entries(methods)
+          .map(([key, m]) => [key.replace(/"/g, '\''), m])
+          .reduce((acc, [key, m]) => {
+            acc[key] = m;
+            return acc;
+          }, {}) : null,
+      };
+    })
+  ),
 );

@@ -12,7 +12,7 @@ import {
   clearContentTemplate,
   clearContentTemplateDictionary,
 } from 'state/content-template/actions';
-import { fetchContentTypeListPaged } from 'state/content-type/actions';
+import { fetchContentTypeListPaged, fetchContentType, clearSelectedContentType } from 'state/content-type/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { ROUTE_CMS_CONTENTTEMPLATE_LIST } from 'app-init/routes';
 
@@ -41,6 +41,10 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidUnmount: () => {
     dispatch(clearContentTemplate());
     dispatch(clearContentTemplateDictionary());
+    dispatch(clearSelectedContentType());
+  },
+  onChangeContentType: ({ code }) => {
+    dispatch(fetchContentType(code));
   },
   onSubmit: values => (
     dispatch(sendPostContentTemplate({

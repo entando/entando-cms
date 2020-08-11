@@ -20,6 +20,17 @@ import {
   TYPE_TIMESTAMP,
   TYPE_LINK,
   TYPE_IMAGE,
+  TYPE_TEXT_METHODS,
+  TYPE_NUMBER_METHODS,
+  TYPE_HYPERTEXT_METHODS,
+  TYPE_DATE_METHODS,
+  TYPE_ENUMERATOR_METHODS,
+  TYPE_ENUMERATOR_MAP_METHODS,
+  TYPE_BOOLEAN_METHODS,
+  TYPE_LIST_METHODS,
+  TYPE_COMPOSITE_METHODS,
+  TYPE_IMAGE_METHODS,
+  TYPE_LINK_METHODS,
 } from 'state/content-type/const';
 
 const NO_ATTRIBUTE_FOR_TYPE_LIST = [
@@ -181,3 +192,42 @@ export const getNewAttributeComposite = createSelector(
 );
 
 export const getFormTypeValue = (state, formName) => formValueSelector(formName)(state, 'type');
+
+export const getShapeMethodsByAttributeType = (type) => {
+  switch (type) {
+    case TYPE_TEXT:
+    case TYPE_LONGTEXT:
+      return TYPE_TEXT_METHODS;
+    case TYPE_NUMBER: return TYPE_NUMBER_METHODS;
+    case TYPE_HYPERTEXT: return TYPE_HYPERTEXT_METHODS;
+    case TYPE_DATE:
+    case TYPE_TIMESTAMP:
+      return TYPE_DATE_METHODS;
+    case TYPE_ENUMERATOR:
+    case TYPE_MONOTEXT:
+      return TYPE_ENUMERATOR_METHODS;
+    case TYPE_ENUMERATOR_MAP:
+      return TYPE_ENUMERATOR_MAP_METHODS;
+    case TYPE_BOOLEAN:
+    case TYPE_THREESTATE:
+    case TYPE_CHECKBOX:
+      return TYPE_BOOLEAN_METHODS;
+    case TYPE_MONOLIST:
+    case TYPE_LIST:
+      return TYPE_LIST_METHODS;
+    case TYPE_COMPOSITE:
+      return TYPE_COMPOSITE_METHODS;
+    case TYPE_IMAGE: return TYPE_IMAGE_METHODS;
+    case TYPE_LINK: return TYPE_LINK_METHODS;
+    default:
+      return [];
+  }
+};
+
+export const getMethodsSelectedAttribute = createSelector(
+  [getSelectedContentTypeAttributes],
+  attributes => attributes && attributes.reduce((acc, { code, type }) => ({
+    ...acc,
+    [code]: getShapeMethodsByAttributeType(type),
+  }), {}),
+);
