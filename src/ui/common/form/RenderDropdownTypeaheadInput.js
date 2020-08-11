@@ -94,7 +94,7 @@ RenderDropdownTypeaheadInput.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func,
     name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
   }),
   label: PropTypes.node,
   labelSize: PropTypes.number,

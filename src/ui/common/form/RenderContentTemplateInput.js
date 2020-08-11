@@ -68,16 +68,16 @@ class RenderContentTemplateInput extends Component {
         const { namespace } = extracted;
         if (!namespace) {
           this.enableRootSuggestions();
+          return;
+        }
+        const [rootSpace, ...subSpace] = namespace.split('.');
+        const verified = subSpace.length
+          ? this.findTokenInDictMap(subSpace[0], rootSpace)
+          : this.findTokenInDictMap(rootSpace);
+        if (verified) {
+          this.disableRootSuggestions();
         } else {
-          const [rootSpace, ...subSpace] = namespace.split('.');
-          const verified = subSpace.length
-            ? this.findTokenInDictMap(subSpace[0], rootSpace)
-            : this.findTokenInDictMap(rootSpace);
-          if (verified) {
-            this.disableRootSuggestions();
-          } else {
-            this.enableRootSuggestions();
-          }
+          this.enableRootSuggestions();
         }
         editor.execCommand('startAutocomplete');
       },
