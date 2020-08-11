@@ -17,7 +17,6 @@ export const TYPE_IMAGE = 'Image';
 export const TYPE_LINK = 'Link';
 export const TYPE_MONOTEXT = 'Monotext';
 
-
 export const MODE_ADD = 'add';
 export const MODE_EDIT = 'edit';
 export const MODE_EDIT_COMPOSITE = 'editComposite';
