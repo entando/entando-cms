@@ -36,6 +36,7 @@ import {
   getAssets, createAsset, editAsset, deleteAsset, cloneAsset,
 } from 'api/assets';
 import { getPagination } from 'state/pagination/selectors';
+import { parseJoinGroups } from 'helpers/joinGroups';
 
 export const resetFilteringCategories = () => ({
   type: RESET_FILTERING_CATEGORIES,
@@ -130,7 +131,7 @@ export const fetchAssetsPaged = (
   paginationMetadata = pageDefault,
   assetType = null,
   ownerGroup,
-  joinGroups,
+  joinGroupsToParse,
 ) => (dispatch, getState) => {
   const state = getState();
   const fileType = assetType || getFileType(state);
@@ -155,6 +156,9 @@ export const fetchAssetsPaged = (
   }
 
   const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
+
+  const joinGroups = parseJoinGroups(joinGroupsToParse);
+
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   return dispatch(fetchAssets(paginationMetadata, `?${params}${ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : ''}${joinGroupsQuery}`));

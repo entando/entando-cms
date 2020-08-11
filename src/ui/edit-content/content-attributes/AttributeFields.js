@@ -19,7 +19,11 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
+const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDefaultLang) => {
+  if (!attribute) {
+    return '';
+  }
+
   const {
     type, code, mandatory, listFilter, indexable, name: attName,
   } = attribute;
@@ -31,7 +35,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
   const fieldLabel = (
     <FormLabel
       labelText={attName || code}
-      required={mandatory}
+      required={mandatory && isDefaultLang}
       helpText={helpText}
     />
   );
@@ -39,6 +43,12 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
   let fieldName = name;
   let FieldComp = Field;
   let AttributeFieldComp;
+
+  // the attribute should not be mandatory for non-default languages
+  const newAttribute = {
+    ...attribute,
+    mandatory: mandatory && isDefaultLang,
+  };
 
   switch (type) {
     case TYPE_COMPOSITE:
@@ -61,7 +71,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
         <AttributeField
           key={code}
           name={name}
-          attribute={attribute}
+          attribute={newAttribute}
           langCode={langCode}
           mainGroup={mainGroup}
           joinGroups={joinGroups}
@@ -73,7 +83,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
     <FieldComp
       key={code}
       name={fieldName}
-      attribute={attribute}
+      attribute={newAttribute}
       component={AttributeFieldComp}
       label={fieldLabel}
       mainGroup={mainGroup}
@@ -85,6 +95,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups) => {
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
+  isDefaultLang,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -110,7 +121,7 @@ const AttributeFields = ({
   }
 
   return fields.map((name, idx) => renderField(name, idx, attributes[idx],
-    langCode, mainGroup, joinGroups));
+    langCode, mainGroup, joinGroups, isDefaultLang));
 };
 
 AttributeFields.propTypes = {

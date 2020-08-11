@@ -69,8 +69,8 @@ class ContentsStatusCard extends Component {
 
     const columns = [
       [msgs.published, published],
-      [msgs.unpublished, unpublished],
       [msgs.ready, ready],
+      [msgs.unpublished, unpublished],
     ];
 
     const contentsAvailable = contents && contents.length > 0;
@@ -84,9 +84,9 @@ class ContentsStatusCard extends Component {
         key={language}
         data={{
           colors: {
-            [msgs.published]: '#00A0DF',
-            [msgs.unpublished]: '#A6A6A6',
-            [msgs.ready]: '#0066CC',
+            [msgs.published]: '#6CA100',
+            [msgs.ready]: '#F0AB00',
+            [msgs.unpublished]: '#72767B',
           },
           columns,
           type: 'donut',

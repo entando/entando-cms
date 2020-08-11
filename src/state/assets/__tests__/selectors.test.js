@@ -9,6 +9,7 @@ import {
   removePixelWord,
   getAssetSearchKeyword,
   getAssetsCount,
+  getURLAbsolute,
 } from 'state/assets/selectors';
 import { ASSET_RESPONSE } from 'testutils/mocks/assets';
 
@@ -21,6 +22,7 @@ const a = {
   id: 'a',
   name: 'yo',
   group: 'groupdo',
+  path: 'test',
   versions,
   metadata,
 };
@@ -28,6 +30,7 @@ const b = {
   id: 'b',
   name: 'mama',
   group: 'groupre',
+  path: 'test',
   versions,
   metadata,
 };
@@ -103,7 +106,8 @@ it('verify getAssetsList selector', () => {
   const addUrls = (ast) => {
     let newAsset = {
       ...ast,
-      downloadUrl: isImg(ast.type) ? ast.versions[0].path : ast.path,
+      downloadUrl: isImg(ast.type) ? ast.versions[0].path
+        : getURLAbsolute(TEST_STATE.api.domain, ast.path),
       categories: [],
     };
     if (isImg(ast.type)) {
