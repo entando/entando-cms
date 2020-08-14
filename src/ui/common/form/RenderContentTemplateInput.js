@@ -70,7 +70,14 @@ class RenderContentTemplateInput extends Component {
           this.enableRootSuggestions();
           return;
         }
+
         const [rootSpace, ...subSpace] = namespace.split('.');
+
+        if (subSpace.length > 1) {
+          this.enableRootSuggestions();
+          return;
+        }
+
         const verified = subSpace.length
           ? this.findTokenInDictMap(subSpace[0], rootSpace)
           : this.findTokenInDictMap(rootSpace);
