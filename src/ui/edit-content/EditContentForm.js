@@ -7,6 +7,7 @@ import {
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import Panel from 'react-bootstrap/lib/Panel';
 import { required } from '@entando/utils';
+import { Collapse } from 'react-collapse';
 
 import StickySave from 'ui/common/StickySave';
 import SectionTitle from 'ui/common/SectionTitle';
@@ -43,6 +44,17 @@ const messages = defineMessages({
 const defaultOwnerGroup = '';
 
 export class EditContentFormBody extends React.Component {
+  constructor(props) {
+    super(props);
+    const { workMode } = props;
+    this.state = {
+      infoOpen: workMode === WORK_MODE_EDIT,
+      groupsOpen: workMode === WORK_MODE_ADD,
+      categoriesOpen: false,
+      attributesOpen: false,
+    };
+  }
+
   componentDidMount() {
     const {
       initialize, onDidMount, match: { params = {} },
@@ -79,7 +91,22 @@ export class EditContentFormBody extends React.Component {
     onWillUnmount();
   }
 
+  setSection(sectionName, value) {
+    this.setState({
+      [sectionName]: value,
+    });
+  }
+
+  collapseSection(sectionName) {
+    this.setState(
+      ({ [sectionName]: currentVisibility }) => ({ [sectionName]: !currentVisibility }),
+    );
+  }
+
   render() {
+    const {
+      infoOpen, groupsOpen, categoriesOpen, attributesOpen,
+    } = this.state;
     const {
       intl,
       groups,
@@ -116,9 +143,17 @@ export class EditContentFormBody extends React.Component {
     const contentType = content.typeDescription || newContentsType.typeDescription || '';
     const typeCode = content.typeCode || newContentsType.typeCode;
     const groupsWithEmptyOption = [...groups];
+    const handleCollapseInfo = val => this.collapseSection('infoOpen', val);
+    const handleCollapseGroups = val => this.collapseSection('groupsOpen', val);
+    const handleCollapseCategories = val => this.collapseSection('categoriesOpen', val);
+    const handleCollapseAttributes = val => this.collapseSection('attributesOpen', val);
     const disableOwnerGroupFunction = (e) => {
       if (e.target.value) {
         onSetOwnerGroupDisable(true);
+      }
+      if (workMode === WORK_MODE_ADD) {
+        this.setSection('infoOpen', true);
+        this.setSection('categoriesOpen', true);
       }
     };
     const showAllSettings = (workMode === WORK_MODE_ADD && ownerGroupDisabled)
@@ -136,6 +171,7 @@ export class EditContentFormBody extends React.Component {
         </Panel>
       </Row>
     );
+
     return (
       <Spinner loading={!!loading}>
         <form
@@ -143,146 +179,174 @@ export class EditContentFormBody extends React.Component {
         >
           <Col className="EditContentForm__content" xs={12}>
             <Row className="InfoFormBody">
-              <SectionTitle nameId="cms.contents.edit.info" />
-              <fieldset className="no-padding">
-                <FormGroup>
-                  <Col xs={12}>
-                    <Field
-                      component={RenderVersionText}
-                      name="id"
-                      label={<FormLabel labelId="cms.contents.edit.version.label" />}
-                      version={version || '0.0'}
-                      labelSize={2}
-                      currentUserName={currentUserName}
-                      creatorUserName={creatorUserName || currentUserName}
-                      modifierUserName={modifierUserName || currentUserName}
-                      modifierText={intl.formatMessage(messages.modifier)}
-                      creatorText={intl.formatMessage(messages.creator)}
-                      sameAuthorText={intl.formatMessage(messages.sameAuthor)}
-                      disabled
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup>
-                  <Col xs={12}>
-                    <Field
-                      component={RenderTextInput}
-                      name="contentType"
-                      label={<FormLabel labelId="cms.contents.edit.contentType.label" />}
-                      disabled
-                      input={{ value: contentType }}
-                    />
-                  </Col>
-                </FormGroup>
-                <div id="contentDescriptionWrapper" {...showStyle}>
+              <SectionTitle
+                nameId="cms.contents.edit.info"
+                onClick={handleCollapseInfo}
+                collapsable
+                isOpened={infoOpen}
+              />
+              <Collapse isOpened={infoOpen}>
+                <fieldset className="no-padding">
+                  <FormGroup>
+                    <Col xs={12}>
+                      <Field
+                        component={RenderVersionText}
+                        name="id"
+                        label={<FormLabel labelId="cms.contents.edit.version.label" />}
+                        version={version || '0.0'}
+                        labelSize={2}
+                        currentUserName={currentUserName}
+                        creatorUserName={creatorUserName || currentUserName}
+                        modifierUserName={modifierUserName || currentUserName}
+                        modifierText={intl.formatMessage(messages.modifier)}
+                        creatorText={intl.formatMessage(messages.creator)}
+                        sameAuthorText={intl.formatMessage(messages.sameAuthor)}
+                        disabled
+                      />
+                    </Col>
+                  </FormGroup>
                   <FormGroup>
                     <Col xs={12}>
                       <Field
                         component={RenderTextInput}
-                        name="description"
-                        validate={[required]}
-                        label={(
-                          <FormLabel
-                            labelId="cms.contents.edit.contentDescription.label"
-                            helpId="cms.contents.edit.contentDescription.tooltip"
-                          />
-    )}
-                        placeholder={intl.formatMessage(messages.contentDesctiption)}
+                        name="contentType"
+                        label={<FormLabel labelId="cms.contents.edit.contentType.label" />}
+                        disabled
+                        input={{ value: contentType }}
                       />
                     </Col>
                   </FormGroup>
-                </div>
-              </fieldset>
-            </Row>
-            <Row className="GroupsFormBody">
-              <SectionTitle nameId="cms.contents.edit.groups" />
-              <fieldset className="no-padding">
-                <Col xs={12}>
-                  <FormGroup>
-                    <Field
-                      component={RenderSelectInput}
-                      name="mainGroup"
-                      onChange={disableOwnerGroupFunction}
-                      append={
-                      !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
-                        <button
-                          type="button"
-                          onClick={() => onSetOwnerGroupDisable(true)}
-                          className="btn btn-primary"
-                        >
-                          <FormattedMessage id="cms.contents.edit.groups.ownerGroup.button" />
-                        </button>
-                      ) : null
-                    }
-                      label={(
-                        <FormLabel
-                          labelId="cms.contents.edit.groups.ownerGroup.label"
-                          helpId="cms.contents.edit.groups.ownerGroup.tooltip"
-                          required
-                        />
-)}
-                      labelSize={2}
-                      options={groupsWithEmptyOption}
-                      optionValue="code"
-                      optionDisplayName="name"
-                      defaultOptionId="cms.label.chooseoption"
-                      disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
-                    />
-                  </FormGroup>
-                  <div id="contentGroupsWrapper" {...showStyle}>
+                  <div id="contentDescriptionWrapper" {...showStyle}>
                     <FormGroup>
-                      <FormGroup>
-                        <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
-                          <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
-                        </ControlLabel>
-                        <Col xs={12} sm={10}>
-                          <FieldArray
-                            component={MultiSelectRenderer}
-                            name="groups"
-                            intl={intl}
-                            options={groups}
-                            selectedValues={selectedJoinGroups}
-                            labelKey="name"
-                            valueKey="code"
-                          />
-                        </Col>
-                      </FormGroup>
+                      <Col xs={12}>
+                        <Field
+                          component={RenderTextInput}
+                          name="description"
+                          validate={[required]}
+                          label={(
+                            <FormLabel
+                              labelId="cms.contents.edit.contentDescription.label"
+                              helpId="cms.contents.edit.contentDescription.tooltip"
+                            />
+      )}
+                          placeholder={intl.formatMessage(messages.contentDesctiption)}
+                        />
+                      </Col>
                     </FormGroup>
                   </div>
-                </Col>
-              </fieldset>
+                </fieldset>
+              </Collapse>
+            </Row>
+            <Row className="GroupsFormBody">
+              <SectionTitle
+                nameId="cms.contents.edit.groups"
+                onClick={handleCollapseGroups}
+                collapsable
+                isOpened={groupsOpen}
+              />
+              <Collapse isOpened={groupsOpen}>
+                <fieldset className="no-padding">
+                  <Col xs={12}>
+                    <FormGroup>
+                      <Field
+                        component={RenderSelectInput}
+                        name="mainGroup"
+                        onChange={disableOwnerGroupFunction}
+                        append={
+                        !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
+                          <button
+                            type="button"
+                            onClick={() => onSetOwnerGroupDisable(true)}
+                            className="btn btn-primary"
+                          >
+                            <FormattedMessage id="cms.contents.edit.groups.ownerGroup.button" />
+                          </button>
+                        ) : null
+                      }
+                        label={(
+                          <FormLabel
+                            labelId="cms.contents.edit.groups.ownerGroup.label"
+                            helpId="cms.contents.edit.groups.ownerGroup.tooltip"
+                            required
+                          />
+  )}
+                        labelSize={2}
+                        options={groupsWithEmptyOption}
+                        optionValue="code"
+                        optionDisplayName="name"
+                        defaultOptionId="cms.label.chooseoption"
+                        disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
+                      />
+                    </FormGroup>
+                    <div id="contentGroupsWrapper" {...showStyle}>
+                      <FormGroup>
+                        <FormGroup>
+                          <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
+                            <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
+                          </ControlLabel>
+                          <Col xs={12} sm={10}>
+                            <FieldArray
+                              component={MultiSelectRenderer}
+                              name="groups"
+                              intl={intl}
+                              options={groups}
+                              selectedValues={selectedJoinGroups}
+                              labelKey="name"
+                              valueKey="code"
+                            />
+                          </Col>
+                        </FormGroup>
+                      </FormGroup>
+                    </div>
+                  </Col>
+                </fieldset>
+              </Collapse>
             </Row>
             <div id="attributesWrapper" {...showStyle}>
               <Fragment>
                 <Row className="GroupsFormBody">
-                  <SectionTitle nameId="cms.contents.edit.categories" />
-                  <fieldset className="no-padding">
-                    <FormGroup>
-                      <ControlLabel htmlFor="contentCategories" className="col-xs-2">
-                        <FormLabel labelId="cms.contents.edit.categories" />
-                      </ControlLabel>
-                      <Col xs={10}>
-                        <Field
-                          component={CategoryTreeContainer}
-                          language={language}
-                          name="contentCategories"
-                          treeNameId="cms.contents.edit.categories.categoriesTree"
-                        />
-                      </Col>
-                    </FormGroup>
-                  </fieldset>
+                  <SectionTitle
+                    nameId="cms.contents.edit.categories"
+                    onClick={handleCollapseCategories}
+                    collapsable
+                    isOpened={categoriesOpen}
+                  />
+                  <Collapse isOpened={categoriesOpen}>
+                    <fieldset className="no-padding">
+                      <FormGroup>
+                        <ControlLabel htmlFor="contentCategories" className="col-xs-2">
+                          <FormLabel labelId="cms.contents.edit.categories" />
+                        </ControlLabel>
+                        <Col xs={10}>
+                          <Field
+                            component={CategoryTreeContainer}
+                            language={language}
+                            name="contentCategories"
+                            treeNameId="cms.contents.edit.categories.categoriesTree"
+                          />
+                        </Col>
+                      </FormGroup>
+                    </fieldset>
+                  </Collapse>
                 </Row>
                 <Row>
-                  <SectionTitle nameId="cms.contents.edit.contentAttributes" />
-                  {(content.attributes || typeCode) && (
-                  <ContentAttributesContainer
-                    attributes={content.attributes}
-                    typeCode={typeCode}
-                    content={content}
-                    mainGroup={selectedOwnerGroup}
-                    joinGroups={selectedJoinGroups}
+                  <SectionTitle
+                    nameId="cms.contents.edit.contentAttributes"
+                    onClick={handleCollapseAttributes}
+                    collapsable
+                    isOpened={attributesOpen}
                   />
-                  )}
+                  <Collapse isOpened={attributesOpen}>
+                    {(content.attributes || typeCode) && (
+                    <ContentAttributesContainer
+                      attributes={content.attributes}
+                      typeCode={typeCode}
+                      content={content}
+                      mainGroup={selectedOwnerGroup}
+                      joinGroups={selectedJoinGroups}
+                    />
+                    )}
+                  </Collapse>
                 </Row>
               </Fragment>
             </div>
