@@ -98,10 +98,9 @@ export class EditContentFormBody extends React.Component {
   }
 
   collapseSection(sectionName) {
-    const { [sectionName]: currentVisibility } = this.state;
-    this.setState({
-      [sectionName]: !currentVisibility,
-    });
+    this.setState(
+      ({ [sectionName]: currentVisibility }) => ({ [sectionName]: !currentVisibility }),
+    );
   }
 
   render() {
