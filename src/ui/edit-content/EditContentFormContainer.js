@@ -12,6 +12,7 @@ import {
   clearEditContentForm,
   setOwnerGroupDisable,
   saveContent,
+  setWorkMode,
 } from 'state/edit-content/actions';
 import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
@@ -22,7 +23,6 @@ import { getLocale } from 'state/locale/selectors';
 import {
   getOwnerGroupDisabled,
   getContent,
-  getWorkMode,
   getGroups,
   getJoinedCategories,
   getSaveType,
@@ -31,7 +31,7 @@ import { getLoading } from 'state/loading/selectors';
 import {
   ROUTE_CMS_CONTENTS,
 } from 'app-init/routes';
-import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE } from 'state/edit-content/types';
+import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE, WORK_MODE_EDIT } from 'state/edit-content/types';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 const publishContentMsgs = defineMessages({
@@ -50,7 +50,7 @@ const publishContentMsgs = defineMessages({
 });
 
 export const mapStateToProps = (state, { match: { params } }) => ({
-  workMode: getWorkMode(state),
+  workMode: WORK_MODE_EDIT,
   language: getLocale(state),
   content: getContent(state),
   groups: getGroups(state),
@@ -67,6 +67,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onDidMount: (fetchContentParams) => {
+    dispatch(setWorkMode(WORK_MODE_EDIT));
     dispatch(fetchContent(fetchContentParams))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
     dispatch(fetchGroups({ page: 1, pageSize: 0 }));

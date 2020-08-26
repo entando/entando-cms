@@ -30,7 +30,6 @@ import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal'
 
 import {
   getGroups,
-  getWorkMode,
   getOwnerGroupDisabled,
   getSaveType,
   getContent,
@@ -55,7 +54,7 @@ const publishContentMsgs = defineMessages({
 });
 
 export const mapStateToProps = state => ({
-  workMode: getWorkMode(state),
+  workMode: WORK_MODE_ADD,
   language: getLocale(state),
   groups: getGroups(state),
   currentUser: getUsername(state),
