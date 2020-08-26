@@ -275,7 +275,7 @@ export class EditContentFormBody extends React.Component {
                         optionValue="code"
                         optionDisplayName="name"
                         defaultOptionId="cms.label.chooseoption"
-                        disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
+                        disabled={workMode === WORK_MODE_EDIT}
                       />
                     </FormGroup>
                     <div id="contentGroupsWrapper" {...showStyle}>
