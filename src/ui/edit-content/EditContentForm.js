@@ -130,6 +130,7 @@ export class EditContentFormBody extends React.Component {
       loading,
       match: { params = {} },
       selectedOwnerGroup,
+      resetSection,
     } = this.props;
     const { id } = params;
     const {
@@ -147,13 +148,15 @@ export class EditContentFormBody extends React.Component {
     const handleCollapseGroups = val => this.collapseSection('groupsOpen', val);
     const handleCollapseCategories = val => this.collapseSection('categoriesOpen', val);
     const handleCollapseAttributes = val => this.collapseSection('attributesOpen', val);
-    const disableOwnerGroupFunction = (e) => {
-      if (e.target.value) {
+    const handleOwnerGroupChange = (e) => {
+      if (e.target.value && workMode === WORK_MODE_EDIT) {
         onSetOwnerGroupDisable(true);
       }
       if (workMode === WORK_MODE_ADD) {
         this.setSection('infoOpen', true);
         this.setSection('categoriesOpen', true);
+        // reset attributes sections
+        resetSection('attributes');
       }
     };
     const showAllSettings = (workMode === WORK_MODE_ADD && ownerGroupDisabled)
@@ -251,7 +254,7 @@ export class EditContentFormBody extends React.Component {
                       <Field
                         component={RenderSelectInput}
                         name="mainGroup"
-                        onChange={disableOwnerGroupFunction}
+                        onChange={handleOwnerGroupChange}
                         append={
                         !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
                           <button
@@ -275,7 +278,7 @@ export class EditContentFormBody extends React.Component {
                         optionValue="code"
                         optionDisplayName="name"
                         defaultOptionId="cms.label.chooseoption"
-                        disabled={workMode === WORK_MODE_EDIT ? true : ownerGroupDisabled}
+                        disabled={workMode === WORK_MODE_EDIT}
                       />
                     </FormGroup>
                     <div id="contentGroupsWrapper" {...showStyle}>
@@ -418,6 +421,7 @@ EditContentFormBody.propTypes = {
   selectedOwnerGroup: PropTypes.string,
   changeStatus: PropTypes.func.isRequired,
   status: PropTypes.string,
+  resetSection: PropTypes.func.isRequired,
 };
 
 EditContentFormBody.defaultProps = {
