@@ -2,7 +2,19 @@
   margin-top: 20px;
 
   &__content {
-    padding-bottom: 200px;
+    height: calc(100vh - 400px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    @media (min-width: 376px) and (max-width: 670px) {
+      height: 50vh;
+      overflow-x: scroll;
+    }
+
+    @media (max-width: 375px) {
+      height: 45vh;
+      overflow-x: scroll;
+    }
   }
 
   @media only screen and (max-width: 768px) {
