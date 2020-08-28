@@ -149,7 +149,7 @@ export class EditContentFormBody extends React.Component {
     const handleCollapseCategories = val => this.collapseSection('categoriesOpen', val);
     const handleCollapseAttributes = val => this.collapseSection('attributesOpen', val);
     const handleOwnerGroupChange = (e) => {
-      if (e.target.value && workMode === WORK_MODE_EDIT) {
+      if (e.target.value) {
         onSetOwnerGroupDisable(true);
       }
       if (workMode === WORK_MODE_ADD) {
