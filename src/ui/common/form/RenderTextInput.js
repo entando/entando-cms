@@ -16,6 +16,7 @@ const RenderTextInput = ({
   type,
   hasLabel,
   xsClass,
+  forwardedRef,
   ...others
 }) => {
   const { restProps } = others;
@@ -33,6 +34,7 @@ const RenderTextInput = ({
           {...input}
           type={type}
           id={input.name}
+          ref={forwardedRef}
           placeholder={placeholder}
           className="form-control RenderTextInput"
           disabled={disabled}
@@ -49,6 +51,10 @@ RenderTextInput.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
   }),
+  forwardedRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]).isRequired,
   label: PropTypes.node,
   placeholder: PropTypes.string,
   meta: PropTypes.shape({
@@ -85,4 +91,7 @@ RenderTextInput.defaultProps = {
   hasLabel: true,
   xsClass: 'mobile-left',
 };
-export default RenderTextInput;
+
+export default React.forwardRef((props, ref) => (
+  <RenderTextInput {...props} forwardedRef={ref} />
+));

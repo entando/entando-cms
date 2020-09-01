@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
 import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
-const RenderSelectInput = ({
+const RenderSelectInputBody = ({
   input,
+  forwardedRef,
   meta: { touched, error },
   labelSize,
   alignClass,
@@ -59,6 +60,7 @@ const RenderSelectInput = ({
           size={size}
           className="form-control RenderSelectInput"
           disabled={disabled}
+          ref={forwardedRef}
         >
           {defaultOption}
           {optionsList}
@@ -69,11 +71,15 @@ const RenderSelectInput = ({
   );
 };
 
-RenderSelectInput.propTypes = {
+RenderSelectInputBody.propTypes = {
   intl: intlShape.isRequired,
   input: PropTypes.shape({
     name: PropTypes.string,
   }),
+  forwardedRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.shape({}),
@@ -99,7 +105,7 @@ RenderSelectInput.propTypes = {
   hasLabel: PropTypes.bool,
 };
 
-RenderSelectInput.defaultProps = {
+RenderSelectInputBody.defaultProps = {
   input: {},
   meta: {
     touched: false,
@@ -120,4 +126,10 @@ RenderSelectInput.defaultProps = {
   disabled: false,
   hasLabel: true,
 };
-export default injectIntl(RenderSelectInput);
+
+const RenderSelectInput = injectIntl(RenderSelectInputBody);
+
+export default React.forwardRef((props, ref) => (
+  <RenderSelectInput {...props} forwardedRef={ref} />
+));
+
