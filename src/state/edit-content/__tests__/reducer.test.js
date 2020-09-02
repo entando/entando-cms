@@ -7,6 +7,8 @@ import {
   setJoinedCategories,
   clearEditContentForm,
   setNewContentsType,
+  setMissingTranslations,
+  setSaveType,
 } from 'state/edit-content/actions';
 import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
 import { onJoinCategory, onUnjoinCategory } from 'state/categories/actions';
@@ -21,6 +23,8 @@ const defaultState = {
   contentType: '',
   groups: [],
   joinedCategories: [],
+  missingTranslations: [],
+  saveType: '',
 };
 
 describe('state/edit-content/reducer', () => {
@@ -133,6 +137,26 @@ describe('state/edit-content/reducer', () => {
     it('Joined categories array should be changed', () => {
       expect(state).toHaveProperty('joinedCategories');
       expect(state.joinedCategories).toEqual(['OFFICE']);
+    });
+  });
+  describe('after action setMissingTranslations', () => {
+    let state;
+    beforeEach(() => {
+      state = reducer({ missingTranslations: [] }, setMissingTranslations(['test1', 'test2']));
+    });
+    it('missingTranslations should be changed', () => {
+      expect(state).toHaveProperty('missingTranslations');
+      expect(state.missingTranslations).toEqual(['test1', 'test2']);
+    });
+  });
+  describe('after action setSaveType', () => {
+    let state;
+    beforeEach(() => {
+      state = reducer({ saveType: '' }, setSaveType('test'));
+    });
+    it('missingTranslations should be changed', () => {
+      expect(state).toHaveProperty('saveType');
+      expect(state.saveType).toEqual('test');
     });
   });
 });

@@ -9,6 +9,8 @@ import {
   SET_JOINED_CATEGORIES,
   SET_NEW_CONTENTS_TYPE,
   CLEAR_EDIT_CONTENT_FORM,
+  SET_MISSING_TRANSLATIONS,
+  SET_SAVE_TYPE,
 } from 'state/edit-content/types';
 
 const defaultState = {
@@ -19,6 +21,8 @@ const defaultState = {
   contentType: '',
   groups: [],
   joinedCategories: [],
+  missingTranslations: [],
+  saveType: '',
 };
 
 const reducer = (state = defaultState, action = {}) => {
@@ -85,6 +89,20 @@ const reducer = (state = defaultState, action = {}) => {
     case CLEAR_EDIT_CONTENT_FORM: {
       return {
         ...defaultState,
+      };
+    }
+    case SET_MISSING_TRANSLATIONS: {
+      const { missingTranslations } = action.payload;
+      return {
+        ...state,
+        missingTranslations,
+      };
+    }
+    case SET_SAVE_TYPE: {
+      const { saveType } = action.payload;
+      return {
+        ...state,
+        saveType,
       };
     }
     default:

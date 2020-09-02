@@ -13,6 +13,8 @@ import {
   setOwnerGroupDisable,
   saveContent,
   setWorkMode,
+  setMissingTranslations,
+  setSaveType,
 } from 'state/edit-content/actions';
 import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { sendPublishContent } from 'state/contents/actions';
@@ -26,6 +28,7 @@ import {
   getGroups,
   getJoinedCategories,
   getSaveType,
+  getMissingTranslations,
 } from 'state/edit-content/selectors';
 import { getLoading } from 'state/loading/selectors';
 import {
@@ -33,6 +36,8 @@ import {
 } from 'app-init/routes';
 import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE, WORK_MODE_EDIT } from 'state/edit-content/types';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+
+export const TranslationWarningModalID = 'TranslationWarningModal';
 
 const publishContentMsgs = defineMessages({
   published: {
@@ -63,6 +68,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   selectedCategories: getJoinedCategories(state),
   saveType: getSaveType(state),
   loading: getLoading(state).editContent,
+  missingTranslations: getMissingTranslations(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({
@@ -76,10 +82,11 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
-  onSubmit: (values, categories) => {
+  onSubmit: (values, categories, ignoreWarnings) => {
     const { saveType, contentId } = values;
-    return dispatch(saveContent(values, categories)).then((res) => {
+    return dispatch(saveContent(values, ignoreWarnings)).then((res) => {
       if (res) {
+        dispatch(setVisibleModal(''));
         dispatch(
           addToast(
             intl.formatMessage(publishContentMsgs.saved),
@@ -95,6 +102,10 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
           dispatch(fetchContent(`/${res.id}`));
         }
       }
+    }).catch((missingTranslation) => {
+      dispatch(setVisibleModal(TranslationWarningModalID));
+      dispatch(setMissingTranslations(missingTranslation));
+      dispatch(setSaveType(saveType));
     });
   },
   onUnpublish: content => dispatch(sendPublishContent(content.id, 'draft')).then((res) => {
@@ -115,6 +126,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
   onDiscard: () => { dispatch(setVisibleModal('')); history.push(routeConverter(ROUTE_CMS_CONTENTS)); },
   changeStatus: value => dispatch(change('editcontentform', 'status', value)),
+  closeModal: () => dispatch(setVisibleModal('')),
 });
 
 const EditContentContainer = connect(

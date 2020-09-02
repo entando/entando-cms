@@ -11,10 +11,11 @@ import {
 
 import {
   TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP, TYPE_NUMBER,
-  TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE, TYPE_ATTACH,
+  TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE, TYPE_ATTACH, TYPE_COMPOSITE,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import { toggleLoading } from 'state/loading/actions';
+import { getActiveLanguages, getLanguages } from 'state/languages/selectors';
 import {
   SET_CONTENT_ENTRY,
   SET_OWNER_GROUP_DISABLE,
@@ -24,6 +25,8 @@ import {
   SET_NEW_CONTENTS_TYPE,
   CLEAR_EDIT_CONTENT_FORM,
   WORK_MODE_ADD,
+  SET_MISSING_TRANSLATIONS,
+  SET_SAVE_TYPE,
 } from './types';
 import {
   getWorkMode, getContent as getStateContent, getJoinedCategories,
@@ -92,6 +95,16 @@ export const setWorkMode = mode => ({
 export const setGroups = groups => ({
   type: SET_GROUPS,
   payload: { groups },
+});
+
+export const setMissingTranslations = missingTranslations => ({
+  type: SET_MISSING_TRANSLATIONS,
+  payload: { missingTranslations },
+});
+
+export const setSaveType = saveType => ({
+  type: SET_SAVE_TYPE,
+  payload: { saveType },
 });
 
 export const fetchGroups = (page, params) => dispatch => new Promise((resolve) => {
@@ -224,10 +237,32 @@ const convertFieldValueByType = (item, type) => {
   }
 };
 
-export const saveContent = values => (dispatch, getState) => new Promise((resolve) => {
+// eslint-disable-next-line max-len
+export const saveContent = (values, ignoreWarnings) => (dispatch, getState) => new Promise((resolve, reject) => {
   const state = getState();
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
+  const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
+  const defaultLanguage = languages.filter(lang => lang.isDefault)[0];
+  const otherLanguages = languages.filter(lang => !lang.isDefault);
+  const missingTranslations = [];
+
+  const addMissingTranslations = index => (attribute, i) => {
+    const { values: attrValues = {}, code } = attribute;
+    if (attrValues[defaultLanguage.code]) {
+      otherLanguages.forEach((lang) => {
+        if (attrValues[lang.code] === undefined || attrValues[lang.code].length === 0) {
+          // translation does not exist
+          let attributePath = `attributes[${index}]`;
+          if (i !== undefined) {
+            attributePath = `${attributePath}.compositeelements[${i}]`;
+          }
+          missingTranslations.push({ lang: lang.code, attributeCode: code, attributePath });
+        }
+      });
+    }
+  };
+
   const {
     groups = [], mainGroup, description, status, attributes = [],
     contentType,
@@ -240,6 +275,14 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       ...acc,
       [curr.code]: curr,
     }), {});
+
+    // check if value has translations
+    if (type === TYPE_COMPOSITE) {
+      attribute.compositeelements.forEach(addMissingTranslations(i));
+    } else {
+      addMissingTranslations(i)(attribute);
+    }
+
     const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item) => {
       const attr = mappedCompAttributes[item.code];
       return convertFieldValueByType(item, attr.type);
@@ -283,6 +326,11 @@ export const saveContent = values => (dispatch, getState) => new Promise((resolv
       compositeelements: replaceBooleanDateStringsComposite(attribute.compositeelements),
     };
   });
+
+  if (!ignoreWarnings && missingTranslations.length) {
+    reject(missingTranslations);
+    return;
+  }
 
   const enhancedValues = {
     groups,

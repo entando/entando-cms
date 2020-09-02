@@ -13,3 +13,5 @@ export const CLEAR_EDIT_CONTENT_FORM = 'edit-content/clear-edit-content-form';
 export const REGULAR_SAVE_TYPE = 'edit-content/save-type-regular';
 export const APPROVE_SAVE_TYPE = 'edit-content/save-type-approve';
 export const CONTINUE_SAVE_TYPE = 'edit-content/save-type-continue';
+export const SET_MISSING_TRANSLATIONS = 'edit-content/set-missing-translations';
+export const SET_SAVE_TYPE = 'edit-content/set-save-type';
