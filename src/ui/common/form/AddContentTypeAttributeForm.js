@@ -55,6 +55,7 @@ export class AttributeFormBody extends Component {
       onDiscard,
       onSave,
       dirty,
+      languages,
     } = this.props;
     const isComposite = mode === MODE_ADD_COMPOSITE;
     const isEditComposite = mode === MODE_EDIT_COMPOSITE;
@@ -67,6 +68,7 @@ export class AttributeFormBody extends Component {
       <AttributeInfo
         isIndexable={selectedAttributeType.searchableOptionSupported}
         isSearchable={selectedAttributeType.indexableOptionSupported}
+        languages={languages}
       />
     ));
 
@@ -239,6 +241,7 @@ AttributeFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   dirty: PropTypes.bool,
+  languages: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 AttributeFormBody.defaultProps = {
@@ -255,6 +258,7 @@ AttributeFormBody.defaultProps = {
   allowedRoles: [],
   compositeAttributes: [],
   dirty: false,
+  languages: [],
 };
 
 const AttributeForm = reduxForm({

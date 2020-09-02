@@ -14,6 +14,7 @@ import {
   removeAttributeFromComposite,
   moveAttributeFromComposite,
 } from 'state/content-type/actions';
+import { fetchLanguages } from 'state/languages/actions';
 
 import {
   getContentTypeSelectedAttribute,
@@ -23,6 +24,8 @@ import {
   getActionModeContentTypeSelectedAttribute,
   getSelectedCompositeAttributes,
 } from 'state/content-type/selectors';
+
+import { getActiveLanguages } from 'state/languages/selectors';
 
 import { ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
 import { TYPE_COMPOSITE, MODE_ADD } from 'state/content-type/const';
@@ -41,11 +44,15 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   },
   allowedRoles: getContentTypeSelectedAttributeAllowedRoles(state),
   compositeAttributes: getSelectedCompositeAttributes(state),
+  languages: getActiveLanguages(state),
 });
+
+const nopage = { page: 1, pageSize: 0 };
 
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
   onDidMount: () => {
     dispatch(clearErrors());
+    dispatch(fetchLanguages(nopage));
     dispatch(fetchContentTypeAttributeRefs());
   },
   onSave: () => { dispatch(setVisibleModal('')); dispatch(submit('addAttribute')); },

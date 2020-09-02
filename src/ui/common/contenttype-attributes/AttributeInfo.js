@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
+import { isUndefined } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, FormGroup } from 'patternfly-react';
 import { required, maxLength } from '@entando/utils';
@@ -12,7 +13,9 @@ import { MODE_EDIT, MODE_ADD } from 'state/content-type/const';
 const maxLength10 = maxLength(10);
 const maxLength50 = maxLength(50);
 
-const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
+const AttributeInfo = ({
+  isSearchable, isIndexable, mode, languages,
+}) => {
   const renderSearchable = () => {
     const html = (
       <FormGroup>
@@ -40,6 +43,24 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
     );
     return isIndexable ? html : null;
   };
+
+  const normalizedLanguages = languages ? languages.map(lang => lang.code) : [];
+  const renderNameFields = !isUndefined(normalizedLanguages) ? normalizedLanguages
+    .map(langCode => (
+      <Field
+        key={langCode}
+        component={RenderTextInput}
+        name={`name.${langCode}`}
+        label={(
+          <FormLabel
+            langLabelText={langCode}
+            labelId="cms.contenttype.form.name"
+            helpId="validateForm.name.help"
+          />
+        )}
+        validate={[maxLength50]}
+      />
+    )) : null;
 
   return (
     <Row>
@@ -70,14 +91,7 @@ const AttributeInfo = ({ isSearchable, isIndexable, mode }) => {
             validate={[required, maxLength10]}
             disabled={mode === MODE_EDIT}
           />
-          <Field
-            component={RenderTextInput}
-            name="name"
-            label={
-              <FormLabel labelId="cms.contenttype.form.name" helpId="validateForm.name.help" />
-            }
-            validate={[maxLength50]}
-          />
+          {renderNameFields}
           <FormGroup>
             <label htmlFor="mandatory" className="col-xs-2 control-label">
               <FormLabel labelId="cms.label.mandatory" />
@@ -98,11 +112,13 @@ AttributeInfo.propTypes = {
   isSearchable: PropTypes.bool,
   isIndexable: PropTypes.bool,
   mode: PropTypes.string,
+  languages: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 AttributeInfo.defaultProps = {
   isSearchable: false,
   isIndexable: false,
+  languages: [],
 };
 
 AttributeInfo.defaultProps = {
