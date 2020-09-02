@@ -15,9 +15,11 @@ import AddContentTypeForm from 'ui/content-type/AddContentTypeForm';
 import { ROUTE_CMS_CONTENTTYPE_EDIT, ROUTE_CMS_CONTENTTYPE_LIST } from 'app-init/routes';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { getLocale } from 'state/locale/selectors';
 
 export const mapStateToProps = state => ({
   attributesType: getContentTypeAttributesIdList(state),
+  locale: getLocale(state),
 });
 
 const msgs = defineMessages({
