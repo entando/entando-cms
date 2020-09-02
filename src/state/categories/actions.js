@@ -130,12 +130,12 @@ export const fetchCategoryTreeAll = () => dispatch => new Promise((resolve) => {
   }).catch(() => {});
 });
 
-export const handleExpandCategory = (categoryCode = ROOT_CODE) => (
+export const handleExpandCategory = (categoryCode = ROOT_CODE, expanded = '') => (
   dispatch, getState,
 ) => new Promise(
   (resolve) => {
     const categoryStatus = getStatusMap(getState())[categoryCode];
-    const toExpand = !categoryStatus || !categoryStatus.expanded;
+    const toExpand = expanded !== '' ? expanded : (!categoryStatus || !categoryStatus.expanded);
     const toLoad = toExpand && (!categoryStatus || !categoryStatus.loaded);
     if (toLoad) {
       dispatch(setCategoryLoading(categoryCode));
