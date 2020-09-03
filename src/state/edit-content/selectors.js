@@ -36,3 +36,8 @@ export const getNewContentsType = createSelector(
   getEditContentState,
   editContent => editContent.contentType,
 );
+
+export const getMissingTranslations = createSelector(
+  getEditContentState,
+  editContent => editContent.missingTranslations,
+);

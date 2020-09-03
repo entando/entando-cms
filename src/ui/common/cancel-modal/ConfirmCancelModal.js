@@ -13,9 +13,9 @@ import {
 export const ConfirmCancelModalID = 'ConfirmCancelModal';
 
 const ConfirmCancelModal = ({
-  modalTitleText, onSave, onDiscard, invalid, submitting, contentText,
+  modalTitleText, onSave, onDiscard, invalid, submitting, contentText, buttonsList, modalId,
 }) => {
-  const buttons = [
+  const buttons = buttonsList || [
     <Button
       bsStyle="danger"
       id="ConfirmCancelModal__button-cancel"
@@ -42,7 +42,7 @@ const ConfirmCancelModal = ({
 
   return (
     <GenericModalContainer
-      modalId={ConfirmCancelModalID}
+      modalId={modalId || ConfirmCancelModalID}
       buttons={buttons}
       modalTitle={modalTitle}
       className="ConfirmCancelModal"
@@ -64,6 +64,8 @@ ConfirmCancelModal.propTypes = {
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   contentText: PropTypes.string,
+  buttonsList: PropTypes.arrayOf(PropTypes.element),
+  modalId: PropTypes.string,
 };
 
 ConfirmCancelModal.defaultProps = {
@@ -71,6 +73,8 @@ ConfirmCancelModal.defaultProps = {
   invalid: false,
   submitting: false,
   contentText: '',
+  buttonsList: undefined,
+  modalId: undefined,
 };
 
 export default ConfirmCancelModal;

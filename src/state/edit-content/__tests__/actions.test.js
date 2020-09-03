@@ -10,12 +10,16 @@ import {
   saveContent,
   setNewContentsType,
   clearEditContentForm,
+  setMissingTranslations,
+  setSaveType,
 } from 'state/edit-content/actions';
 import { GET_CONTENT_RESPONSE_OK } from 'testutils/mocks/editContent';
 import {
   SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, WORK_MODE_ADD, WORK_MODE_EDIT,
   CLEAR_EDIT_CONTENT_FORM,
   SET_NEW_CONTENTS_TYPE,
+  SET_MISSING_TRANSLATIONS,
+  SET_SAVE_TYPE,
 } from 'state/edit-content/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
@@ -44,6 +48,36 @@ const SET_GROUPS_PARAMS = {
   },
 };
 
+const SET_MISSING_TRANSLATIONS_PARAMS = {
+  type: SET_MISSING_TRANSLATIONS,
+  payload: {
+    missingTranslations: ['a', 'b'],
+  },
+};
+
+const SET_SAVE_TYPE_PARAMS = {
+  type: SET_SAVE_TYPE,
+  payload: {
+    saveType: 'test',
+  },
+};
+
+const languages = {
+  map: {
+    en: {
+      code: 'en',
+      isActive: true,
+      isDefault: true,
+    },
+    it: {
+      code: 'it',
+      isActive: false,
+      isDefault: false,
+    },
+  },
+  list: ['en', 'it'],
+};
+
 jest.mock('api/editContent', () => ({
   getContent: jest.fn(mockApi({ payload: { content: { categories: ['home'] } } })),
   getGroups: jest.fn(mockApi({ payload: ['a', 'b'] })),
@@ -51,6 +85,7 @@ jest.mock('api/editContent', () => ({
   putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } })),
 }));
 
+// eslint-disable-next-line no-import-assign
 selectors.getSelectedContentTypeAttributes = jest.fn();
 
 it('test setContentTemplateList action', () => {
@@ -73,6 +108,14 @@ it('test setNewContentsType action', () => {
 
 it('test setGroups action', () => {
   expect(setGroups(['a', 'b'])).toEqual(SET_GROUPS_PARAMS);
+});
+
+it('test setMissingTranslations action', () => {
+  expect(setMissingTranslations(['a', 'b'])).toEqual(SET_MISSING_TRANSLATIONS_PARAMS);
+});
+
+it('test setSaveType action', () => {
+  expect(setSaveType('test')).toEqual(SET_SAVE_TYPE_PARAMS);
 });
 
 describe('editContent thunks', () => {
@@ -182,7 +225,12 @@ describe('editContent thunks', () => {
     selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
     store = createMockStore({
       apps:
-      { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
+      {
+        cms: {
+          editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } },
+          languages,
+        },
+      },
       currentUser: { username: 'admin' },
       form: { editcontentform: { values: {} } },
     });
@@ -205,7 +253,12 @@ describe('editContent thunks', () => {
     ]);
     store = createMockStore({
       apps:
-      { cms: { editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } } },
+      {
+        cms: {
+          editContent: { workMode: WORK_MODE_EDIT, content: { id: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } },
+          languages,
+        },
+      },
       currentUser: { username: 'admin' },
       form: { editcontentform: { values: {} } },
     });

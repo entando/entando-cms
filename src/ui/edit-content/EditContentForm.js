@@ -2,13 +2,14 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import {
-  Row, Col, FormGroup, ControlLabel, Spinner,
+  Row, Col, FormGroup, ControlLabel, Spinner, Button,
 } from 'patternfly-react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import Panel from 'react-bootstrap/lib/Panel';
 import { required } from '@entando/utils';
 import { Collapse } from 'react-collapse';
 
+import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import StickySave from 'ui/common/StickySave';
 import SectionTitle from 'ui/common/SectionTitle';
 import FormLabel from 'ui/common/form/FormLabel';
@@ -131,6 +132,9 @@ export class EditContentFormBody extends React.Component {
       match: { params = {} },
       selectedOwnerGroup,
       resetSection,
+      closeModal,
+      missingTranslations,
+      saveType,
     } = this.props;
     const { id } = params;
     const {
@@ -174,6 +178,51 @@ export class EditContentFormBody extends React.Component {
         </Panel>
       </Row>
     );
+
+    const handleUpdateTranslations = () => {
+      if (missingTranslations.length) {
+        const { lang, attributePath } = missingTranslations[0];
+        // open language tab
+        const tabId = `content-attributes-tabs-tab-${lang}`;
+        document.getElementById(tabId).click();
+        // wait for tab to change
+        setTimeout(() => {
+          // set focus to element
+          const inputId = `${attributePath}.values.${lang}`;
+          const element = document.getElementById(inputId)
+          || document.getElementsByName(inputId)[0];
+          if (element) {
+            element.focus();
+          }
+        }, 500);
+      }
+    };
+
+    const modalButtons = [
+      <Button
+        bsStyle="warning"
+        id="TranslationWarningModal__button-ignore"
+        type="submit"
+        onClick={handleSubmit(values => onSubmit({
+          ...values,
+          saveType,
+        }, undefined, true))
+          }
+      >
+        <FormattedMessage id="cms.label.ignore" />
+      </Button>,
+      <Button
+        type="button"
+        bsStyle="primary"
+        id="TranslationWarningModal__button-update"
+        onClick={() => {
+          closeModal();
+          handleUpdateTranslations();
+        }}
+      >
+        <FormattedMessage id="cms.label.update" />
+      </Button>,
+    ];
 
     return (
       <Spinner loading={!!loading}>
@@ -374,6 +423,16 @@ export class EditContentFormBody extends React.Component {
             />
           </div>
         </form>
+        <ConfirmCancelModalContainer
+          modalId="TranslationWarningModal"
+          buttonsList={modalButtons}
+          modalTitleText={intl.formatMessage({ id: 'cms.contents.modal.missingTranslations.title' })}
+          contentText={intl.formatMessage({ id: 'cms.contents.modal.missingTranslations.content' })}
+          invalid={invalid}
+          submitting={submitting}
+          onSave={onSave}
+          onDiscard={onDiscard}
+        />
       </Spinner>
     );
   }
@@ -422,6 +481,12 @@ EditContentFormBody.propTypes = {
   changeStatus: PropTypes.func.isRequired,
   status: PropTypes.string,
   resetSection: PropTypes.func.isRequired,
+  missingTranslations: PropTypes.arrayOf(PropTypes.shape({
+    lang: PropTypes.string,
+    attributePath: PropTypes.string,
+  })).isRequired,
+  saveType: PropTypes.string.isRequired,
+  closeModal: PropTypes.string.isRequired,
 };
 
 EditContentFormBody.defaultProps = {

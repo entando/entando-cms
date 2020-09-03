@@ -103,6 +103,7 @@ jest.mock('api/contentSettings', () => ({
   })()),
 }));
 
+// eslint-disable-next-line no-import-assign
 selectors.getCropRatios = jest.fn();
 
 it('test setContentSettings action', () => {
