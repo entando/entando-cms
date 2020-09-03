@@ -34,7 +34,7 @@ const renderField = (name,
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
-  const i18nName = _.isObject(attName) ? (attName[locale] || code) : attName;
+  const i18nName = _.isObject(attName) ? (attName[locale] || code) : (attName || code);
   const fieldLabel = (
     <FormLabel
       labelText={i18nName}
@@ -43,7 +43,7 @@ const renderField = (name,
     />
   );
 
-  let fieldName = code;
+  let fieldName = name;
   let FieldComp = Field;
   let AttributeFieldComp;
 
@@ -55,17 +55,17 @@ const renderField = (name,
 
   switch (type) {
     case TYPE_COMPOSITE:
-      fieldName = `${code}.compositeelements`;
+      fieldName = `${name}.compositeelements`;
       FieldComp = FieldArray;
       AttributeFieldComp = CompositeAttributeField;
       break;
     case TYPE_LIST:
-      fieldName = `${code}.listelements.${langCode}`;
+      fieldName = `${name}.listelements.${langCode}`;
       FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
       break;
     case TYPE_MONOLIST:
-      fieldName = `${code}.elements`;
+      fieldName = `${name}.elements`;
       FieldComp = FieldArray;
       AttributeFieldComp = MonolistAttributeField;
       break;

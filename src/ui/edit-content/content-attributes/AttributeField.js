@@ -41,6 +41,7 @@ import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttribute
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
 
 const AttributeField = ({
+  name,
   attribute,
   label,
   hasLabel,
@@ -59,13 +60,12 @@ const AttributeField = ({
     validationRules,
   } = attribute;
 
-  const i18nName = _.isObject(attName) ? (attName[locale] || code) : attName;
+  const i18nName = _.isObject(attName) ? (attName[locale] || code) : (attName || code);
 
   const helpTextArr = [];
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
-
   const fieldLabel = label || (
     <FormLabel
       labelText={i18nName}
@@ -79,7 +79,7 @@ const AttributeField = ({
 
 
   let AttributeFieldComp;
-  let actualName = `${code}.value`;
+  let actualName = `${name}.value`;
   const extraProps = {};
 
   switch (type) {
@@ -103,7 +103,7 @@ const AttributeField = ({
       break;
     case TYPE_HYPERTEXT:
       AttributeFieldComp = HypertextAttributeField;
-      actualName = `${code}.values.${langCode}`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_NUMBER:
       validate.push(isNumber);
@@ -114,23 +114,23 @@ const AttributeField = ({
       break;
     case TYPE_LONGTEXT:
       AttributeFieldComp = LongtextAttributeField;
-      actualName = `${code}.values.${langCode}`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_TEXT:
       AttributeFieldComp = TextAttributeField;
-      actualName = `${code}.values.${langCode}`;
+      actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
-      actualName = `${code}.values`;
+      actualName = `${name}.values`;
       break;
     case TYPE_IMAGE:
       AttributeFieldComp = ImageAttributeFieldContainer;
-      actualName = `${code}.values`;
+      actualName = `${name}.values`;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
-      actualName = code;
+      actualName = name;
       if (mandatory) validate.push(linkValidate(langCode));
       break;
     case TYPE_MONOTEXT:
@@ -161,14 +161,14 @@ const AttributeField = ({
 };
 
 AttributeField.propTypes = {
-  name: PropTypes.shape({}).isRequired,
+  name: PropTypes.string.isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
   langCode: PropTypes.string,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
 };
 
 AttributeField.defaultProps = {
@@ -177,6 +177,7 @@ AttributeField.defaultProps = {
   langCode: 'en',
   mainGroup: '',
   joinGroups: [],
+  locale: '',
 };
 
 export default AttributeField;

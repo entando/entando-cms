@@ -58,7 +58,11 @@ ContentAttributes.propTypes = {
   typeCode: PropTypes.string.isRequired,
   mainGroup: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
+};
+
+ContentAttributes.defaultProps = {
+  locale: '',
 };
 
 export default ContentAttributes;
