@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { required, isNumber } from '@entando/utils';
+import _ from 'lodash';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
@@ -40,13 +41,13 @@ import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttribute
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
 
 const AttributeField = ({
-  name,
   attribute,
   label,
   hasLabel,
   langCode,
   mainGroup,
   joinGroups,
+  locale,
 }) => {
   const {
     type,
@@ -58,6 +59,8 @@ const AttributeField = ({
     validationRules,
   } = attribute;
 
+  const i18nName = _.isObject(attName) ? (attName[locale] || code) : attName;
+
   const helpTextArr = [];
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
@@ -65,7 +68,7 @@ const AttributeField = ({
 
   const fieldLabel = label || (
     <FormLabel
-      labelText={attName || code}
+      labelText={i18nName}
       required={mandatory}
       helpText={helpText}
     />
@@ -76,7 +79,7 @@ const AttributeField = ({
 
 
   let AttributeFieldComp;
-  let actualName = `${name}.value`;
+  let actualName = `${code}.value`;
   const extraProps = {};
 
   switch (type) {
@@ -100,7 +103,7 @@ const AttributeField = ({
       break;
     case TYPE_HYPERTEXT:
       AttributeFieldComp = HypertextAttributeField;
-      actualName = `${name}.values.${langCode}`;
+      actualName = `${code}.values.${langCode}`;
       break;
     case TYPE_NUMBER:
       validate.push(isNumber);
@@ -111,23 +114,23 @@ const AttributeField = ({
       break;
     case TYPE_LONGTEXT:
       AttributeFieldComp = LongtextAttributeField;
-      actualName = `${name}.values.${langCode}`;
+      actualName = `${code}.values.${langCode}`;
       break;
     case TYPE_TEXT:
       AttributeFieldComp = TextAttributeField;
-      actualName = `${name}.values.${langCode}`;
+      actualName = `${code}.values.${langCode}`;
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
-      actualName = `${name}.values`;
+      actualName = `${code}.values`;
       break;
     case TYPE_IMAGE:
       AttributeFieldComp = ImageAttributeFieldContainer;
-      actualName = `${name}.values`;
+      actualName = `${code}.values`;
       break;
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
-      actualName = name;
+      actualName = code;
       if (mandatory) validate.push(linkValidate(langCode));
       break;
     case TYPE_MONOTEXT:
@@ -158,13 +161,14 @@ const AttributeField = ({
 };
 
 AttributeField.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.shape({}).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
   langCode: PropTypes.string,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  locale: PropTypes.string.isRequired,
 };
 
 AttributeField.defaultProps = {

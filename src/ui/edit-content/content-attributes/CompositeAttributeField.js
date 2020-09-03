@@ -17,6 +17,7 @@ const CompositeAttributeField = ({
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
+  console.log('fieldNames', fieldNames, fields.getAll());
   const mappedFieldNames = fields.getAll().reduce(
     (acc, curr, idx) => {
       const { code: fieldCode } = curr;

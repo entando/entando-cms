@@ -5,6 +5,7 @@ import {
   FieldArray,
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
+import _ from 'lodash';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
@@ -19,7 +20,8 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDefaultLang) => {
+const renderField = (name,
+  idx, attribute, langCode, mainGroup, joinGroups, isDefaultLang, locale) => {
   if (!attribute) {
     return '';
   }
@@ -32,15 +34,16 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDe
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
+  const i18nName = _.isObject(attName) ? (attName[locale] || code) : attName;
   const fieldLabel = (
     <FormLabel
-      labelText={attName || code}
+      labelText={i18nName}
       required={mandatory && isDefaultLang}
       helpText={helpText}
     />
   );
 
-  let fieldName = name;
+  let fieldName = code;
   let FieldComp = Field;
   let AttributeFieldComp;
 
@@ -52,17 +55,17 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDe
 
   switch (type) {
     case TYPE_COMPOSITE:
-      fieldName = `${name}.compositeelements`;
+      fieldName = `${code}.compositeelements`;
       FieldComp = FieldArray;
       AttributeFieldComp = CompositeAttributeField;
       break;
     case TYPE_LIST:
-      fieldName = `${name}.listelements.${langCode}`;
+      fieldName = `${code}.listelements.${langCode}`;
       FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
       break;
     case TYPE_MONOLIST:
-      fieldName = `${name}.elements`;
+      fieldName = `${code}.elements`;
       FieldComp = FieldArray;
       AttributeFieldComp = MonolistAttributeField;
       break;
@@ -71,6 +74,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDe
         <AttributeField
           key={code}
           name={name}
+          locale={locale}
           attribute={newAttribute}
           langCode={langCode}
           mainGroup={mainGroup}
@@ -95,7 +99,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDe
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang,
+  isDefaultLang, locale,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -121,7 +125,7 @@ const AttributeFields = ({
   }
 
   return fields.map((name, idx) => renderField(name, idx, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang));
+    langCode, mainGroup, joinGroups, isDefaultLang, locale));
 };
 
 AttributeFields.propTypes = {
@@ -133,6 +137,7 @@ AttributeFields.propTypes = {
   mainGroup: PropTypes.string.isRequired,
   langCode: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  locale: PropTypes.string,
 };
 
 export default AttributeFields;
