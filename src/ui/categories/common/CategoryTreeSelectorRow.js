@@ -1,9 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import {
-  useRovingTabIndex,
-  useFocusEffect,
-} from "react-roving-tabindex";
+import { useRovingTabIndex, useFocusEffect } from "react-roving-tabindex";
 
 import TreeNodeFolderIcon from 'ui/common/tree-node/TreeNodeFolderIcon';
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
@@ -12,6 +9,7 @@ import {
   CONFIRM_KEYS,
   HORIZONTAL_ARROW_KEYS,
   KEY_RIGHT,
+  eventToConfirm,
 } from 'ui/common/accessibility/KeyCodes';
 
 const CategoryTreeSelectorRow = ({
@@ -40,20 +38,11 @@ const CategoryTreeSelectorRow = ({
   const categoryJoinable = category.depth !== 0;
   const categoryNotEmpty = !category.isEmpty;
 
-  const eventConfirmed = ({ type, keyCode }) => {
-    const clickConfirmed = type === 'click';
-    const keyConfirmed = type === 'keydown' && CONFIRM_KEYS.includes(keyCode);
-    return {
-      clickConfirmed,
-      keyConfirmed,
-    };
-  };
-
   const onClickExpand = (e) => {
     const {
       clickConfirmed,
       keyConfirmed,
-    } = eventConfirmed(e);
+    } = eventToConfirm(e);
 
     if (categoryNotEmpty && (clickConfirmed || keyConfirmed)) {
       onToggleExpandCategory(category.code);
@@ -71,7 +60,7 @@ const CategoryTreeSelectorRow = ({
     const {
       clickConfirmed,
       keyConfirmed,
-    } = eventConfirmed(e);
+    } = eventToConfirm(e);
     if (categoryJoinable && (clickConfirmed || keyConfirmed)) {
       onJoinCategory(category.code);
       setSelectedRow(category.code);

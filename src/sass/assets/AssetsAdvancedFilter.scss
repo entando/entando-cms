@@ -23,6 +23,11 @@
     font-family: "Open Sans";
     font-size: 13px;
     cursor: pointer;
+
+    &:focus {
+      outline: $color-pf-blue auto 1px;
+      background-color: $color-row-selected;
+    }
   }
 
   &__advanced-icon {

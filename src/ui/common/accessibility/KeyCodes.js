@@ -7,3 +7,12 @@ export const KEY_DOWN = 40;
 
 export const CONFIRM_KEYS = [KEY_ENTER, KEY_SPACE];
 export const HORIZONTAL_ARROW_KEYS = [KEY_LEFT, KEY_RIGHT];
+
+export const eventToConfirm = ({ type, keyCode }) => {
+  const clickConfirmed = type === 'click';
+  const keyConfirmed = type === 'keydown' && CONFIRM_KEYS.includes(keyCode);
+  return {
+    clickConfirmed,
+    keyConfirmed,
+  };
+};

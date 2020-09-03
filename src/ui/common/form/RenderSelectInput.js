@@ -79,7 +79,7 @@ RenderSelectInputBody.propTypes = {
   forwardedRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]).isRequired,
+  ]),
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.shape({}),
@@ -125,6 +125,7 @@ RenderSelectInputBody.defaultProps = {
   inputSize: null,
   disabled: false,
   hasLabel: true,
+  forwardedRef: null,
 };
 
 const RenderSelectInput = injectIntl(RenderSelectInputBody);
@@ -132,4 +133,3 @@ const RenderSelectInput = injectIntl(RenderSelectInputBody);
 export default React.forwardRef((props, ref) => (
   <RenderSelectInput {...props} forwardedRef={ref} />
 ));
-

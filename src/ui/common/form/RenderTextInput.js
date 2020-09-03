@@ -54,7 +54,7 @@ RenderTextInput.propTypes = {
   forwardedRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]).isRequired,
+  ]),
   label: PropTypes.node,
   placeholder: PropTypes.string,
   meta: PropTypes.shape({
@@ -90,6 +90,7 @@ RenderTextInput.defaultProps = {
   alignClass: 'text-right',
   hasLabel: true,
   xsClass: 'mobile-left',
+  forwardedRef: null,
 };
 
 export default React.forwardRef((props, ref) => (
