@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import _ from 'lodash';
 import { DropdownKebab, MenuItem } from 'patternfly-react';
 import { routeConverter } from '@entando/utils';
 import { LinkMenuItem } from '@entando/menu';
@@ -28,15 +29,17 @@ const AttributeListTableActions = ({
   onMoveDown,
   routeToEdit,
   entityCode,
+  locale,
 }) => attributes.map((attribute, index) => {
   const isMovableUp = index > 0;
   const isMovableDown = index < attributes.length - 1;
   const { type, nestedAttribute } = attribute;
-
+  const { name = {} } = attribute;
+  const localizedName = _.isObject(name) ? (name[locale] || '') : name;
   return (
     <tr key={attribute.code}>
       <td className="ContTypeAttributeListRow__td">{attribute.code}</td>
-      <td className="ContTypeAttributeListRow__td">{attribute.name}</td>
+      <td className="ContTypeAttributeListRow__td">{localizedName}</td>
       <td className="ContTypeAttributeListRow__td">
         {type === TYPE_LIST || type === TYPE_MONOLIST ? `${type}: ${nestedAttribute.type}` : type}
       </td>
@@ -100,6 +103,7 @@ AttributeListTableActions.propTypes = {
   onMoveDown: PropTypes.func,
   entityCode: PropTypes.string,
   routeToEdit: PropTypes.string,
+  locale: PropTypes.string,
 };
 
 AttributeListTableActions.defaultProps = {
@@ -109,6 +113,7 @@ AttributeListTableActions.defaultProps = {
   onMoveDown: null,
   entityCode: '',
   routeToEdit: '',
+  locale: '',
 };
 
 export default AttributeListTableActions;

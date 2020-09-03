@@ -42,6 +42,7 @@ export class AddContentTypeFormBody extends Component {
       onCancel,
       onDiscard,
       onSave,
+      locale,
     } = this.props;
     const handleCancelClick = () => {
       if (dirty) {
@@ -62,7 +63,7 @@ export class AddContentTypeFormBody extends Component {
       if (isEdit) {
         return (
           <Row>
-            <AttributeListTable entityCode={contentTypeCode} {...this.props} />
+            <AttributeListTable entityCode={contentTypeCode} {...this.props} locale={locale} />
             <DeleteAttributeModalContainer />
           </Row>
         );
@@ -244,6 +245,7 @@ AddContentTypeFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  locale: PropTypes.string,
 };
 
 AddContentTypeFormBody.defaultProps = {
@@ -256,6 +258,7 @@ AddContentTypeFormBody.defaultProps = {
   viewPages: [],
   contentTemplates: [],
   dirty: false,
+  locale: '',
 };
 
 const AddContentTypeForm = reduxForm({
