@@ -186,8 +186,9 @@ export class EditContentFormBody extends React.Component {
     const handleCollapseGroups = val => this.collapseSection('groupsOpen', val);
     const handleCollapseCategories = val => this.collapseSection('categoriesOpen', val);
     const handleCollapseAttributes = val => this.collapseSection('attributesOpen', val);
-    const showAllSettings = (workMode === WORK_MODE_ADD && (ownerGroupDisabled || ownerGroupSelected))
-    || workMode === WORK_MODE_EDIT;
+    const showAllSettings = (
+      workMode === WORK_MODE_ADD && (ownerGroupDisabled || ownerGroupSelected)
+    ) || workMode === WORK_MODE_EDIT;
     const showStyle = { style: { display: showAllSettings ? 'block' : 'none' } };
     const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && id && (
       <Row className="no-padding">
