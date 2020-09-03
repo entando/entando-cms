@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { required, isNumber } from '@entando/utils';
+import _ from 'lodash';
 
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
@@ -47,6 +48,7 @@ const AttributeField = ({
   langCode,
   mainGroup,
   joinGroups,
+  locale,
 }) => {
   const {
     type,
@@ -58,14 +60,15 @@ const AttributeField = ({
     validationRules,
   } = attribute;
 
+  const i18nName = _.isObject(attName) ? (attName[locale] || code) : (attName || code);
+
   const helpTextArr = [];
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
-
   const fieldLabel = label || (
     <FormLabel
-      labelText={attName || code}
+      labelText={i18nName}
       required={mandatory}
       helpText={helpText}
     />
@@ -165,6 +168,7 @@ AttributeField.propTypes = {
   langCode: PropTypes.string,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  locale: PropTypes.string,
 };
 
 AttributeField.defaultProps = {
@@ -173,6 +177,7 @@ AttributeField.defaultProps = {
   langCode: 'en',
   mainGroup: '',
   joinGroups: [],
+  locale: '',
 };
 
 export default AttributeField;

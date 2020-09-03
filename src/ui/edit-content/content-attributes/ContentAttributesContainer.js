@@ -8,6 +8,7 @@ import { fetchLanguages } from 'state/languages/actions';
 import { getAttrInitialValue } from 'helpers/attrUtils';
 import { getActiveLanguages, getLanguages } from 'state/languages/selectors';
 import { initialize } from 'redux-form';
+import { getLocale } from 'state/locale/selectors';
 
 export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => {
   const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
@@ -19,6 +20,7 @@ export const mapStateToProps = (state, { attributes: contentAttributes = [] }) =
       ...(contentAttributes[i] || (getAttrInitialValue(attr, langCodes))),
     })),
     languages,
+    locale: getLocale(state),
   };
 };
 
