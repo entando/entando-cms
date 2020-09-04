@@ -31,6 +31,7 @@ import { getViewPages } from 'state/pages/selectors';
 import { fetchViewPages } from 'state/pages/actions';
 import { getContentTemplateList } from 'state/content-template/selectors';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { getLocale } from 'state/locale/selectors';
 
 export const mapStateToProps = (state, { match: { params } }) => ({
   mode: 'edit',
@@ -41,6 +42,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   routeToEdit: ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_EDIT,
   viewPages: getViewPages(state),
   contentTemplates: getContentTemplateList(state),
+  locale: getLocale(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history }) => ({

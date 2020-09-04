@@ -17,6 +17,7 @@ import {
   removeAttributeFromComposite,
   moveAttributeFromComposite,
 } from 'state/content-type/actions';
+import { fetchLanguages } from 'state/languages/actions';
 
 import {
   getSelectedAttributeType,
@@ -29,6 +30,7 @@ import {
   getContentTypeSelectedAttributeSearchable,
   getContentTypeSelectedAttributeIndexable,
 } from 'state/content-type/selectors';
+import { getActiveLanguages } from 'state/languages/selectors';
 
 import {
   ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD,
@@ -55,11 +57,15 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   compositeAttributes: getSelectedCompositeAttributes(state),
   isMonolistCompositeType: getIsMonolistCompositeAttributeType(state),
   nestedAttributeComposite: formValueSelector('attribute')(state, 'nestedAttribute.type') || '',
+  languages: getActiveLanguages(state),
 });
+
+const nopage = { page: 1, pageSize: 0 };
 
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
   onDidMount: ({ contentTypeAttributeCode, attributeCode }) => {
     dispatch(clearErrors());
+    dispatch(fetchLanguages(nopage));
     dispatch(fetchAttributeFromContentType('attribute', contentTypeAttributeCode, attributeCode));
     dispatch(fetchContentTypeAttributeRefs());
   },

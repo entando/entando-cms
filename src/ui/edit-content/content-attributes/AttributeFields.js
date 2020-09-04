@@ -5,6 +5,7 @@ import {
   FieldArray,
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
+import _ from 'lodash';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
@@ -21,7 +22,7 @@ import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
 const renderField = (
   name, idx, attribute, langCode, mainGroup,
-  joinGroups, isDefaultLang, selectedLangTab,
+  joinGroups, isDefaultLang, locale, selectedLangTab,
 ) => {
   if (!attribute) {
     return '';
@@ -35,9 +36,10 @@ const renderField = (
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
+  const i18nName = _.isObject(attName) ? (attName[locale] || code) : (attName || code);
   const fieldLabel = (
     <FormLabel
-      labelText={attName || code}
+      labelText={i18nName}
       required={mandatory && isDefaultLang}
       helpText={helpText}
     />
@@ -74,6 +76,7 @@ const renderField = (
         <AttributeField
           key={code}
           name={name}
+          locale={locale}
           attribute={newAttribute}
           langCode={langCode}
           mainGroup={mainGroup}
@@ -100,7 +103,7 @@ const renderField = (
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang, selectedLangTab,
+  isDefaultLang, selectedLangTab, locale,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -126,7 +129,7 @@ const AttributeFields = ({
   }
 
   return fields.map((name, idx) => renderField(name, idx, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang, selectedLangTab));
+    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab));
 };
 
 AttributeFields.propTypes = {
@@ -139,6 +142,7 @@ AttributeFields.propTypes = {
   langCode: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   selectedLangTab: PropTypes.string.isRequired,
+  locale: PropTypes.string,
 };
 
 export default AttributeFields;

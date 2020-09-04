@@ -12,6 +12,7 @@ const AttributeListTable = ({
   onMoveDown,
   entityCode,
   routeToEdit,
+  locale,
 }) => {
   const renderTable = () => (
     <Col xs={10} xsOffset={2}>
@@ -48,6 +49,7 @@ const AttributeListTable = ({
             onMoveUp={onMoveUp}
             onMoveDown={onMoveDown}
             entityCode={entityCode}
+            locale={locale}
             routeToEdit={routeToEdit}
             name="attributes"
             component={AttributeListTableActions}
@@ -68,6 +70,7 @@ AttributeListTable.propTypes = {
   onMoveDown: PropTypes.func,
   entityCode: PropTypes.string,
   routeToEdit: PropTypes.string,
+  locale: PropTypes.string,
 };
 
 AttributeListTable.defaultProps = {
@@ -77,6 +80,7 @@ AttributeListTable.defaultProps = {
   onMoveDown: null,
   entityCode: '',
   routeToEdit: '',
+  locale: '',
 };
 
 export default AttributeListTable;

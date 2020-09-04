@@ -62,6 +62,7 @@ export class EditContentTypeAttributeFormBody extends Component {
       onDiscard,
       onSave,
       dirty,
+      languages,
     } = this.props;
 
     const isComposite = mode === MODE_EDIT_COMPOSITE || mode === MODE_ADD_COMPOSITE;
@@ -75,7 +76,12 @@ export class EditContentTypeAttributeFormBody extends Component {
     const renderAttributeInfo = () => (isComposite ? (
       <AttributeInfoComposite />
     ) : (
-      <AttributeInfo isSearchable={isSearchable} isIndexable={isIndexable} mode={mode} />
+      <AttributeInfo
+        isSearchable={isSearchable}
+        isIndexable={isIndexable}
+        mode={mode}
+        languages={languages}
+      />
     ));
 
     const handleCancelClick = () => {
@@ -254,6 +260,7 @@ EditContentTypeAttributeFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   dirty: PropTypes.bool,
+  languages: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 EditContentTypeAttributeFormBody.defaultProps = {
@@ -269,6 +276,7 @@ EditContentTypeAttributeFormBody.defaultProps = {
   isSearchable: false,
   isIndexable: false,
   dirty: false,
+  languages: [],
 };
 
 const EditContentTypeAttributeForm = reduxForm({
