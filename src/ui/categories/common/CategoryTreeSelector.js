@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Button, Label } from 'patternfly-react';
-import { RovingTabIndexProvider } from "react-roving-tabindex";
+import { RovingTabIndexProvider } from 'react-roving-tabindex';
 
 import CategoryTreeSelectorRow from 'ui/categories/common/CategoryTreeSelectorRow';
 
@@ -16,7 +16,6 @@ const CategoryTreeSelector = ({
   getJoinedCategoriesByCodes: joinedCategories,
   onUnjoinCategory,
 }) => {
-
   const contentCategoriesText = joinedCategories && joinedCategories.length > 0 ? (
     <h4>
       <FormattedMessage id="cms.contents.edit.contentCategoryList" />

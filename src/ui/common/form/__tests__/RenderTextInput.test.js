@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import { configEnzymeAdapter } from 'testutils/helpers';
-import RenderTextInput from 'ui/common/form/RenderTextInput';
+import { RenderTextInputBody as RenderTextInput } from 'ui/common/form/RenderTextInput';
 
 configEnzymeAdapter();
 

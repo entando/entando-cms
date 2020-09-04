@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
 
-const RenderTextInput = ({
+export const RenderTextInputBody = ({
   input,
   append,
   label,
@@ -47,7 +47,7 @@ const RenderTextInput = ({
   );
 };
 
-RenderTextInput.propTypes = {
+RenderTextInputBody.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
   }),
@@ -74,7 +74,7 @@ RenderTextInput.propTypes = {
   hasLabel: PropTypes.bool,
 };
 
-RenderTextInput.defaultProps = {
+RenderTextInputBody.defaultProps = {
   input: {},
   label: '',
   placeholder: '',
@@ -94,5 +94,5 @@ RenderTextInput.defaultProps = {
 };
 
 export default React.forwardRef((props, ref) => (
-  <RenderTextInput {...props} forwardedRef={ref} />
+  <RenderTextInputBody {...props} forwardedRef={ref} />
 ));

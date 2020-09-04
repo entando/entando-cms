@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox } from 'react-bootstrap';
-import { useRovingTabIndex, useFocusEffect } from "react-roving-tabindex";
+import { useRovingTabIndex, useFocusEffect } from 'react-roving-tabindex';
 
 import RowSpinner from 'ui/common/RowSpinner';
 import { CONFIRM_KEYS, eventToConfirm } from 'ui/common/accessibility/KeyCodes';

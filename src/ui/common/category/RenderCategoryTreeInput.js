@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { RovingTabIndexProvider } from "react-roving-tabindex";
+import { RovingTabIndexProvider } from 'react-roving-tabindex';
 
 import SearchFormInput from 'ui/common/form/RenderSearchFormInput';
 import { Col, ControlLabel } from 'patternfly-react';

@@ -14,6 +14,7 @@ const CompositeAttributeField = ({
   attribute,
   label,
   langCode,
+  selectedLangTab,
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -43,6 +44,7 @@ const CompositeAttributeField = ({
                   name={fieldName}
                   attribute={attr}
                   langCode={langCode}
+                  selectedLangTab={selectedLangTab}
                 />
               );
             })}
@@ -58,6 +60,7 @@ CompositeAttributeField.propTypes = {
   attribute: PropTypes.shape(attributeShape).isRequired,
   label: PropTypes.node.isRequired,
   langCode: PropTypes.string.isRequired,
+  selectedLangTab: PropTypes.string.isRequired,
 };
 
 export default CompositeAttributeField;

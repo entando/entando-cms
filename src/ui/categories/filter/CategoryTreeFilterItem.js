@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { useRovingTabIndex, useFocusEffect } from "react-roving-tabindex";
+import { useRovingTabIndex, useFocusEffect } from 'react-roving-tabindex';
 
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
 import RowSpinner from 'ui/common/RowSpinner';

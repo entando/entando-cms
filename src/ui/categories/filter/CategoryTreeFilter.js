@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { RovingTabIndexProvider } from "react-roving-tabindex";
+import { RovingTabIndexProvider } from 'react-roving-tabindex';
 
 import SearchFormInput from 'ui/common/form/RenderSearchFormInput';
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';

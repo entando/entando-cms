@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useRovingTabIndex, useFocusEffect } from "react-roving-tabindex";
+import { useRovingTabIndex, useFocusEffect } from 'react-roving-tabindex';
 
 import TreeNodeFolderIcon from 'ui/common/tree-node/TreeNodeFolderIcon';
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';

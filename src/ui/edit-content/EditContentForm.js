@@ -43,6 +43,19 @@ const messages = defineMessages({
 
 const defaultOwnerGroup = '';
 
+const fieldFocus = (el, addDelay) => {
+  const focusEl = el.current;
+  if (!focusEl) {
+    return;
+  }
+  const runFocus = () => focusEl.getRenderedComponent().focus();
+  if (addDelay) {
+    setTimeout(runFocus, addDelay);
+  } else {
+    runFocus();
+  }
+};
+
 export class EditContentFormBody extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +85,7 @@ export class EditContentFormBody extends React.Component {
     if (contentId == null) {
       initialize({ mainGroup: defaultOwnerGroup, contentType });
       // this.ownerGroupInput.current.getRenderedComponent().focus();
-      this.fieldFocus(this.ownerGroupInput);
+      fieldFocus(this.ownerGroupInput);
     }
     return onDidMount(fetchContentParams);
   }
@@ -90,21 +103,10 @@ export class EditContentFormBody extends React.Component {
         changeStatus((content || {}).status);
       }
     }
-  }
-
-  fieldFocus(el, addDelay) {
-    const focusEl = el.current;
-    if (!focusEl) {
-      return;
-    }
-    const runFocus = () => focusEl.getRenderedComponent().focus();
-    if (addDelay) {
-      setTimeout(runFocus, addDelay);
-    } else {
-      runFocus();
+    if (content !== prevProps.content) {
+      fieldFocus(this.descriptionInput);
     }
   }
-
 
   componentWillUnmount() {
     const { onWillUnmount } = this.props;
@@ -123,7 +125,7 @@ export class EditContentFormBody extends React.Component {
     );
   }
 
-  handleOwnerGroupChange (e) {
+  handleOwnerGroupChange(e) {
     const {
       workMode,
       onSetOwnerGroupDisable,
@@ -138,9 +140,9 @@ export class EditContentFormBody extends React.Component {
       this.setSection('ownerGroupSelected', true);
       // reset attributes sections
       resetSection('attributes');
-      this.fieldFocus(this.descriptionInput, 10);
+      fieldFocus(this.descriptionInput, 10);
     }
-  };
+  }
 
   render() {
     const {

@@ -19,7 +19,10 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDefaultLang) => {
+const renderField = (
+  name, idx, attribute, langCode, mainGroup,
+  joinGroups, isDefaultLang, selectedLangTab,
+) => {
   if (!attribute) {
     return '';
   }
@@ -75,6 +78,7 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDe
           langCode={langCode}
           mainGroup={mainGroup}
           joinGroups={joinGroups}
+          selectedLangTab={selectedLangTab}
         />
       );
   }
@@ -89,13 +93,14 @@ const renderField = (name, idx, attribute, langCode, mainGroup, joinGroups, isDe
       mainGroup={mainGroup}
       joinGroups={joinGroups}
       langCode={langCode}
+      selectedLangTab={selectedLangTab}
     />
   );
 };
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang,
+  isDefaultLang, selectedLangTab,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -121,7 +126,7 @@ const AttributeFields = ({
   }
 
   return fields.map((name, idx) => renderField(name, idx, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang));
+    langCode, mainGroup, joinGroups, isDefaultLang, selectedLangTab));
 };
 
 AttributeFields.propTypes = {
@@ -133,6 +138,7 @@ AttributeFields.propTypes = {
   mainGroup: PropTypes.string.isRequired,
   langCode: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  selectedLangTab: PropTypes.string.isRequired,
 };
 
 export default AttributeFields;
