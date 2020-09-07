@@ -1,6 +1,10 @@
 .CategoryTreeSelector {
   margin-bottom: 0;
 
+  &__row:focus {
+    background-color: $color-row-selected;
+  }
+
   &__expand-area {
     display: table-cell;
     outline: 0;

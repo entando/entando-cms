@@ -8,6 +8,14 @@ import { FormattedMessage } from 'react-intl';
 import AttributeFields from 'ui/edit-content/content-attributes/AttributeFields';
 
 class ContentAttributes extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedLang: 'en',
+    };
+    this.handleSelectedLang = this.handleSelectedLang.bind(this);
+  }
+
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
@@ -18,13 +26,23 @@ class ContentAttributes extends Component {
     onWillUnmount();
   }
 
+  handleSelectedLang(selectedLang) {
+    this.setState({ selectedLang });
+  }
+
   render() {
     const {
       attributes, languages, reInitializeForm, content, typeCode, mainGroup,
       joinGroups, locale,
     } = this.props;
+    const { selectedLang } = this.state;
     return (
-      <Tabs defaultActiveKey="en" animation={false} id="content-attributes-tabs">
+      <Tabs
+        defaultActiveKey="en"
+        animation={false}
+        id="content-attributes-tabs"
+        onSelect={this.handleSelectedLang}
+      >
         {languages.map(({ code, isDefault }) => (
           <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
             <FieldArray
@@ -38,6 +56,7 @@ class ContentAttributes extends Component {
               component={AttributeFields}
               attributes={attributes}
               langCode={code}
+              selectedLangTab={selectedLang}
               isDefaultLang={isDefault}
               locale={locale}
             />

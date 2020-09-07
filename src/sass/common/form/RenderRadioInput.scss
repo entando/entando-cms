@@ -1,0 +1,6 @@
+.RenderRadioInput {
+  // sass-lint:disable class-name-format
+  & > .btn-group:focus-within {
+    outline: $color-pf-blue auto 1px;
+  }
+}

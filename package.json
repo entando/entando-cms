@@ -36,6 +36,7 @@
     "react-excel-workbook": "0.0.4",
     "react-html-table-to-excel": "^2.0.0",
     "react-quill-2": "^2.0.2",
+    "react-roving-tabindex": "^1.0.0",
     "uuid": "^8.1.0"
   },
   "scripts": {

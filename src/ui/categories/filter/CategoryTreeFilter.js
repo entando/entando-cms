@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { RovingTabIndexProvider } from 'react-roving-tabindex';
 
 import SearchFormInput from 'ui/common/form/RenderSearchFormInput';
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
 import CategoryTreeFileItem from 'ui/categories/filter/CategoryTreeFilterItem';
+
+import { eventToConfirm } from 'ui/common/accessibility/KeyCodes';
 
 class CategoryTreeFilter extends React.Component {
   constructor(props) {
@@ -25,11 +28,18 @@ class CategoryTreeFilter extends React.Component {
   }
 
 
-  onExpandTree() {
-    const { treeExpanded } = this.state;
-    this.setState({
-      treeExpanded: !treeExpanded,
-    });
+  onExpandTree(e) {
+    const {
+      clickConfirmed,
+      keyConfirmed,
+    } = eventToConfirm(e);
+
+    if (clickConfirmed || keyConfirmed) {
+      const { treeExpanded } = this.state;
+      this.setState({
+        treeExpanded: !treeExpanded,
+      });
+    }
   }
 
   onApply(cat, fileType) {
@@ -125,6 +135,7 @@ class CategoryTreeFilter extends React.Component {
                     role="button"
                     onClick={this.onExpandTree}
                     onKeyDown={this.onExpandTree}
+                    tabIndex={0}
                   >
                     <TreeNodeExpandedIcon expanded={treeExpanded} />
                     <span className="CategoryTreeFilter__title">
@@ -133,11 +144,14 @@ class CategoryTreeFilter extends React.Component {
                   </th>
                 </tr>
               </thead>
-            )
-          }
-            {
-            treeExpanded ? <tbody>{categoryRows}</tbody> : null
-          }
+            )}
+            {treeExpanded ? (
+              <tbody>
+                <RovingTabIndexProvider direction="vertical">
+                  {categoryRows}
+                </RovingTabIndexProvider>
+              </tbody>
+            ) : null}
           </table>
           <br />
         </div>

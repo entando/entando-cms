@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Button, Label } from 'patternfly-react';
+import { RovingTabIndexProvider } from 'react-roving-tabindex';
 
 import CategoryTreeSelectorRow from 'ui/categories/common/CategoryTreeSelectorRow';
 
@@ -10,6 +11,7 @@ const CategoryTreeSelector = ({
   language,
   categories,
   onJoinCategory,
+  onToggleExpandCategory,
   onExpandCategory,
   getJoinedCategoriesByCodes: joinedCategories,
   onUnjoinCategory,
@@ -50,6 +52,7 @@ const CategoryTreeSelector = ({
       language={language}
       selectedRow={selectedRow}
       setSelectedRow={setSelectedRow}
+      onToggleExpandCategory={onToggleExpandCategory}
       onExpandCategory={onExpandCategory}
       onJoinCategory={onJoinCategory}
       onUnjoinCategory={onUnjoinCategory}
@@ -70,7 +73,11 @@ const CategoryTreeSelector = ({
             </th>
           </tr>
         </thead>
-        <tbody>{categoryRows}</tbody>
+        <tbody>
+          <RovingTabIndexProvider direction="vertical">
+            {categoryRows}
+          </RovingTabIndexProvider>
+        </tbody>
       </table>
       <br />
       <div>
@@ -83,6 +90,7 @@ const CategoryTreeSelector = ({
 
 CategoryTreeSelector.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.shape({})),
+  onToggleExpandCategory: PropTypes.func,
   onExpandCategory: PropTypes.func,
   onJoinCategory: PropTypes.func,
   onUnjoinCategory: PropTypes.func,
@@ -100,6 +108,7 @@ CategoryTreeSelector.propTypes = {
 CategoryTreeSelector.defaultProps = {
   categories: [],
   getJoinedCategoriesByCodes: [],
+  onToggleExpandCategory: () => {},
   onExpandCategory: () => {},
   onJoinCategory: () => {},
   onUnjoinCategory: () => {},

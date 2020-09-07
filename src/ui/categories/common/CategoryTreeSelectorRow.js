@@ -1,30 +1,87 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useRovingTabIndex, useFocusEffect } from 'react-roving-tabindex';
 
 import TreeNodeFolderIcon from 'ui/common/tree-node/TreeNodeFolderIcon';
 import TreeNodeExpandedIcon from 'ui/common/tree-node/TreeNodeExpandedIcon';
 import RowSpinner from 'ui/common/RowSpinner';
+import {
+  CONFIRM_KEYS,
+  HORIZONTAL_ARROW_KEYS,
+  KEY_RIGHT,
+  eventToConfirm,
+} from 'ui/common/accessibility/KeyCodes';
 
 const CategoryTreeSelectorRow = ({
   i,
   category,
   language,
+  disabled,
   onJoinCategory,
+  onToggleExpandCategory,
   onExpandCategory,
   selectedRow,
   setSelectedRow,
   input: { onChange },
 }) => {
-  const onClickExpand = () => {
-    if (!category.isEmpty) {
-      onExpandCategory(category.code);
+  const ref = useRef(null);
+
+  const [
+    tabIndex,
+    focused,
+    handleKeyDownRove,
+    handleClickRove,
+  ] = useRovingTabIndex(ref, disabled);
+
+  useFocusEffect(focused, ref);
+
+  const categoryJoinable = category.depth !== 0;
+  const categoryNotEmpty = !category.isEmpty;
+
+  const onClickExpand = (e) => {
+    const {
+      clickConfirmed,
+      keyConfirmed,
+    } = eventToConfirm(e);
+
+    if (categoryNotEmpty && (clickConfirmed || keyConfirmed)) {
+      onToggleExpandCategory(category.code);
+    }
+    if (clickConfirmed) {
+      handleKeyDownRove(e);
+    }
+    if (keyConfirmed) {
+      handleClickRove(e);
     }
   };
+
   const onClickSelect = () => setSelectedRow(category.code);
-  const onClickJoin = () => {
-    onJoinCategory(category.code);
-    setSelectedRow(category.code);
-    onChange(category.code);
+  const onClickJoin = (e) => {
+    const {
+      clickConfirmed,
+      keyConfirmed,
+    } = eventToConfirm(e);
+    if (categoryJoinable && (clickConfirmed || keyConfirmed)) {
+      onJoinCategory(category.code);
+      setSelectedRow(category.code);
+      onChange(category.code);
+    }
+    if (clickConfirmed) {
+      handleKeyDownRove(e);
+    }
+    if (keyConfirmed) {
+      handleClickRove(e);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (categoryNotEmpty && HORIZONTAL_ARROW_KEYS.includes(e.keyCode)) {
+      onExpandCategory(category.code, e.keyCode === KEY_RIGHT);
+    } else if (categoryJoinable && CONFIRM_KEYS.includes(e.keyCode)) {
+      onClickJoin(e);
+    } else {
+      handleKeyDownRove(e);
+    }
   };
 
   const className = ['CategoryTreeSelector__column-td'];
@@ -36,7 +93,7 @@ const CategoryTreeSelectorRow = ({
     className.push('info');
   }
 
-  const joinMark = category.depth !== 0 ? (
+  const joinMark = categoryJoinable ? (
     <span
       className="icon fa fa-plus CategoryTreeSelector__join-mark"
       role="button"
@@ -46,7 +103,14 @@ const CategoryTreeSelectorRow = ({
     />
   ) : null;
   return (
-    <tr key={category.code} className="CategoryTreeSelector__row">
+    <tr
+      key={category.code}
+      ref={ref}
+      tabIndex={tabIndex}
+      className="CategoryTreeSelector__row"
+      onKeyDown={handleKeyDown}
+      onClick={handleClickRove}
+    >
       <td className={className.join(' ').trim()}>
         <span
           role="button"
@@ -85,6 +149,8 @@ CategoryTreeSelectorRow.propTypes = {
     depth: PropTypes.number,
     loading: PropTypes.bool,
   }).isRequired,
+  disabled: PropTypes.bool,
+  onToggleExpandCategory: PropTypes.func,
   onExpandCategory: PropTypes.func,
   onJoinCategory: PropTypes.func,
   language: PropTypes.string.isRequired,
@@ -97,9 +163,11 @@ CategoryTreeSelectorRow.propTypes = {
 };
 
 CategoryTreeSelectorRow.defaultProps = {
+  onToggleExpandCategory: () => {},
   onExpandCategory: () => {},
   onJoinCategory: () => {},
   selectedRow: '',
+  disabled: false,
 };
 
 export default CategoryTreeSelectorRow;

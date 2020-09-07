@@ -10,7 +10,10 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onExpandCategory: categoryCode => dispatch(handleExpandCategory(categoryCode)),
+  onToggleExpandCategory: categoryCode => dispatch(handleExpandCategory(categoryCode)),
+  onExpandCategory: (categoryCode, expanded) => (
+    dispatch(handleExpandCategory(categoryCode, expanded))
+  ),
   onJoinCategory: categoryCode => dispatch(onJoinCategory(categoryCode)),
   onUnjoinCategory: categoryCode => dispatch(onUnjoinCategory(categoryCode)),
 });

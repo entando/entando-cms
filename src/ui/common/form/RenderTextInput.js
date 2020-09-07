@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, ControlLabel } from 'patternfly-react';
 
-const RenderTextInput = ({
+export const RenderTextInputBody = ({
   input,
   append,
   label,
@@ -16,6 +16,7 @@ const RenderTextInput = ({
   type,
   hasLabel,
   xsClass,
+  forwardedRef,
   ...others
 }) => {
   const { restProps } = others;
@@ -33,6 +34,7 @@ const RenderTextInput = ({
           {...input}
           type={type}
           id={input.name}
+          ref={forwardedRef}
           placeholder={placeholder}
           className="form-control RenderTextInput"
           disabled={disabled}
@@ -45,10 +47,14 @@ const RenderTextInput = ({
   );
 };
 
-RenderTextInput.propTypes = {
+RenderTextInputBody.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
   }),
+  forwardedRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   label: PropTypes.node,
   placeholder: PropTypes.string,
   meta: PropTypes.shape({
@@ -68,7 +74,7 @@ RenderTextInput.propTypes = {
   hasLabel: PropTypes.bool,
 };
 
-RenderTextInput.defaultProps = {
+RenderTextInputBody.defaultProps = {
   input: {},
   label: '',
   placeholder: '',
@@ -84,5 +90,9 @@ RenderTextInput.defaultProps = {
   alignClass: 'text-right',
   hasLabel: true,
   xsClass: 'mobile-left',
+  forwardedRef: null,
 };
-export default RenderTextInput;
+
+export default React.forwardRef((props, ref) => (
+  <RenderTextInputBody {...props} forwardedRef={ref} />
+));

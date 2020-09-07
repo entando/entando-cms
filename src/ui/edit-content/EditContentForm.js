@@ -44,16 +44,34 @@ const messages = defineMessages({
 
 const defaultOwnerGroup = '';
 
+const fieldFocus = (el, addDelay) => {
+  const focusEl = el.current;
+  if (!focusEl) {
+    return;
+  }
+  const runFocus = () => focusEl.getRenderedComponent().focus();
+  if (addDelay) {
+    setTimeout(runFocus, addDelay);
+  } else {
+    runFocus();
+  }
+};
+
 export class EditContentFormBody extends React.Component {
   constructor(props) {
     super(props);
     const { workMode } = props;
+    this.ownerGroupInput = React.createRef();
+    this.descriptionInput = React.createRef();
     this.state = {
       infoOpen: workMode === WORK_MODE_EDIT,
       groupsOpen: workMode === WORK_MODE_ADD,
+      ownerGroupSelected: false,
       categoriesOpen: false,
       attributesOpen: false,
     };
+
+    this.handleOwnerGroupChange = this.handleOwnerGroupChange.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +85,7 @@ export class EditContentFormBody extends React.Component {
     // if contentId from params is null, it means we are creating a new content
     if (contentId == null) {
       initialize({ mainGroup: defaultOwnerGroup, contentType });
+      fieldFocus(this.ownerGroupInput);
     }
     return onDidMount(fetchContentParams);
   }
@@ -84,8 +103,10 @@ export class EditContentFormBody extends React.Component {
         changeStatus((content || {}).status);
       }
     }
+    if (content !== prevProps.content) {
+      fieldFocus(this.descriptionInput);
+    }
   }
-
 
   componentWillUnmount() {
     const { onWillUnmount } = this.props;
@@ -104,9 +125,28 @@ export class EditContentFormBody extends React.Component {
     );
   }
 
+  handleOwnerGroupChange(e) {
+    const {
+      workMode,
+      onSetOwnerGroupDisable,
+      resetSection,
+    } = this.props;
+    if (e.target.value && workMode === WORK_MODE_EDIT) {
+      onSetOwnerGroupDisable(true);
+    }
+    if (workMode === WORK_MODE_ADD) {
+      this.setSection('infoOpen', true);
+      this.setSection('categoriesOpen', true);
+      this.setSection('ownerGroupSelected', true);
+      // reset attributes sections
+      resetSection('attributes');
+      fieldFocus(this.descriptionInput, 10);
+    }
+  }
+
   render() {
     const {
-      infoOpen, groupsOpen, categoriesOpen, attributesOpen,
+      infoOpen, groupsOpen, categoriesOpen, attributesOpen, ownerGroupSelected,
     } = this.state;
     const {
       intl,
@@ -131,7 +171,6 @@ export class EditContentFormBody extends React.Component {
       loading,
       match: { params = {} },
       selectedOwnerGroup,
-      resetSection,
       closeModal,
       missingTranslations,
       saveType,
@@ -152,19 +191,9 @@ export class EditContentFormBody extends React.Component {
     const handleCollapseGroups = val => this.collapseSection('groupsOpen', val);
     const handleCollapseCategories = val => this.collapseSection('categoriesOpen', val);
     const handleCollapseAttributes = val => this.collapseSection('attributesOpen', val);
-    const handleOwnerGroupChange = (e) => {
-      if (e.target.value) {
-        onSetOwnerGroupDisable(true);
-      }
-      if (workMode === WORK_MODE_ADD) {
-        this.setSection('infoOpen', true);
-        this.setSection('categoriesOpen', true);
-        // reset attributes sections
-        resetSection('attributes');
-      }
-    };
-    const showAllSettings = (workMode === WORK_MODE_ADD && ownerGroupDisabled)
-    || workMode === WORK_MODE_EDIT;
+    const showAllSettings = (
+      workMode === WORK_MODE_ADD && (ownerGroupDisabled || ownerGroupSelected)
+    ) || workMode === WORK_MODE_EDIT;
     const showStyle = { style: { display: showAllSettings ? 'block' : 'none' } };
     const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && id && (
       <Row className="no-padding">
@@ -274,6 +303,8 @@ export class EditContentFormBody extends React.Component {
                         <Field
                           component={RenderTextInput}
                           name="description"
+                          forwardRef
+                          ref={this.descriptionInput}
                           validate={[required]}
                           label={(
                             <FormLabel
@@ -303,7 +334,9 @@ export class EditContentFormBody extends React.Component {
                       <Field
                         component={RenderSelectInput}
                         name="mainGroup"
-                        onChange={handleOwnerGroupChange}
+                        onChange={this.handleOwnerGroupChange}
+                        forwardRef
+                        ref={this.ownerGroupInput}
                         append={
                         !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
                           <button

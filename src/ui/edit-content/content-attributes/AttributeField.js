@@ -48,6 +48,7 @@ const AttributeField = ({
   langCode,
   mainGroup,
   joinGroups,
+  selectedLangTab,
   locale,
 }) => {
   const {
@@ -150,10 +151,9 @@ const AttributeField = ({
       validate={validate}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
-      {...(type === TYPE_LINK && { langCode })}
       {...(
-        [TYPE_LINK, TYPE_IMAGE, TYPE_ATTACH].includes(type)
-        && { langCode }
+        [TYPE_LINK, TYPE_IMAGE, TYPE_ATTACH, TYPE_BOOLEAN, TYPE_THREESTATE].includes(type)
+        && { langCode, selectedLangTab }
       )}
       {...extraProps}
     />
@@ -168,6 +168,7 @@ AttributeField.propTypes = {
   langCode: PropTypes.string,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
 };
 

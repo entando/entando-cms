@@ -13,12 +13,15 @@ import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderDatePickerInput from 'ui/common/form/RenderDatePickerInput';
 import AssetSearchFormContainer from 'ui/assets/search/AssetSearchFormContainer';
 
+import { eventToConfirm } from 'ui/common/accessibility/KeyCodes';
+
 class AssetsAdvancedSearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showAdvancedFilters: false,
     };
+    this.onToggleAdvancedFilters = this.onToggleAdvancedFilters.bind(this);
   }
 
   componentDidMount() {
@@ -26,11 +29,18 @@ class AssetsAdvancedSearchForm extends Component {
     onDidMount();
   }
 
-  onToggleAdvancedFilters() {
-    const { showAdvancedFilters } = this.state;
-    this.setState({
-      showAdvancedFilters: !showAdvancedFilters,
-    });
+  onToggleAdvancedFilters(e) {
+    const {
+      clickConfirmed,
+      keyConfirmed,
+    } = eventToConfirm(e);
+
+    if (clickConfirmed || keyConfirmed) {
+      const { showAdvancedFilters } = this.state;
+      this.setState({
+        showAdvancedFilters: !showAdvancedFilters,
+      });
+    }
   }
 
   render() {
@@ -63,9 +73,9 @@ class AssetsAdvancedSearchForm extends Component {
           <div
             className="AssetsAdvancedFilter__advanced-filters-text"
             role="button"
-            onClick={() => this.onToggleAdvancedFilters()}
-            onKeyDown={() => this.onToggleAdvancedFilters()}
-            tabIndex={-1}
+            onClick={this.onToggleAdvancedFilters}
+            onKeyDown={this.onToggleAdvancedFilters}
+            tabIndex={0}
           >
             {advancedFilterIcon} <FormattedMessage id="cms.contents.advancedFilters" defaultMessage="Advanced Filters" />
           </div>

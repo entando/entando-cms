@@ -78,6 +78,7 @@ class RenderListField extends Component {
           attribute={rest.attribute}
           component={CompositeAttributeField}
           label={fieldLabel}
+          {...rest}
         />
       );
     };

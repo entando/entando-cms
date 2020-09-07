@@ -12,8 +12,14 @@ const ThreeStateAttributeField = ({
   label,
   input,
   meta,
+  langCode,
+  selectedLangTab,
   ...rest
 }) => {
+  if (langCode !== selectedLangTab) {
+    return null;
+  }
+
   const toggleElements = [
     { id: 'true', label: <FormattedMessage id="cms.label.yes" /> },
     { id: 'false', label: <FormattedMessage id="cms.label.no" /> },
@@ -46,6 +52,8 @@ ThreeStateAttributeField.propTypes = {
   label: PropTypes.node.isRequired,
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
   meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
+  langCode: PropTypes.string.isRequired,
+  selectedLangTab: PropTypes.string.isRequired,
 };
 
 export default ThreeStateAttributeField;
