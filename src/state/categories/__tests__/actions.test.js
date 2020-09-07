@@ -127,6 +127,20 @@ describe('state/categories/actions', () => {
         .catch(done.fail);
     });
 
+    it('when loading an already expanded category (home) set category expanded to true', (done) => {
+      store = mockStore(STATE_NORMALIZED);
+      store
+        .dispatch(handleExpandCategory('home', true))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
+          expect(actions[0].payload).toHaveProperty('expanded', true);
+          done();
+        })
+        .catch(done.fail);
+    });
+
     it('when loading root category, should download the root and its children', (done) => {
       store = mockStore({
         apps: {

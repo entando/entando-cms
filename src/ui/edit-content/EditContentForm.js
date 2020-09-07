@@ -172,7 +172,6 @@ export class EditContentFormBody extends React.Component {
       loading,
       match: { params = {} },
       selectedOwnerGroup,
-      resetSection,
       closeModal,
       missingTranslations,
       saveType,
