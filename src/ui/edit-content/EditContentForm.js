@@ -85,7 +85,6 @@ export class EditContentFormBody extends React.Component {
     // if contentId from params is null, it means we are creating a new content
     if (contentId == null) {
       initialize({ mainGroup: defaultOwnerGroup, contentType });
-      // this.ownerGroupInput.current.getRenderedComponent().focus();
       fieldFocus(this.ownerGroupInput);
     }
     return onDidMount(fetchContentParams);
