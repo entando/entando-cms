@@ -1,23 +1,19 @@
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
-import SingleContentConfigFormBody from 'ui/widget-forms/publish-single-content-config/SingleContentConfigFormBody';
+import SingleContentConfigForm, { SingleContentConfigFormBody, SingleContentConfigContainerId } from 'ui/widget-forms/publish-single-content-config/SingleContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import {
-  formValueSelector, reduxForm, submit, change,
+  formValueSelector, submit, change,
 } from 'redux-form';
-import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 import { ContentsFilterModalID } from 'ui/widget-forms/contents-filter/ContentsFilterModal';
 import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 import { fetchPage } from 'state/pages/actions';
-
-const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
 export const mapStateToProps = (state, ownProps) => {
   let propWidgetConfig = ownProps.widgetConfig;
@@ -33,7 +29,7 @@ export const mapStateToProps = (state, ownProps) => {
   return ({
     contentTemplates: getContentTemplateList(state),
     initialValues: widgetConfig || {},
-    chosenContent: formValueSelector(SingleContentConfigContainerId)(state, 'chosenContent'),
+    chosenContent: formValueSelector(SingleContentConfigContainerId)(state, 'chosenContent') || {},
     ownerGroup: formValueSelector(SingleContentConfigContainerId)(state, 'ownerGroup'),
     joinGroups: formValueSelector(SingleContentConfigContainerId)(state, 'joinGroups'),
   });
@@ -85,8 +81,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
+export const formBody = connect(mapStateToProps, mapDispatchToProps, null, {
+  pure: false,
+})(SingleContentConfigFormBody);
+
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
-})(injectIntl(reduxForm({
-  form: SingleContentConfigContainerId,
-})(SingleContentConfigFormBody)));
+})(SingleContentConfigForm);
