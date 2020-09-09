@@ -19,6 +19,8 @@ import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelMod
 
 import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 
+export const ContentsQueryContainerId = `widgets.${CONTENTS_QUERY_CONFIG}`;
+
 const maxLength70 = maxLength(70);
 const CATEGORY_HOME = 'home';
 
@@ -497,7 +499,7 @@ ContentsQueryFormBody.defaultProps = {
 };
 
 const ContentsQueryConfig = reduxForm({
-  form: `widgets.${CONTENTS_QUERY_CONFIG}`,
+  form: ContentsQueryContainerId,
 })(ContentsQueryFormBody);
 
 export default ContentsQueryConfig;

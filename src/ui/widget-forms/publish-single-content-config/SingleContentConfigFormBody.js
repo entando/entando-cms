@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-  intlShape, FormattedMessage, injectIntl,
+  intlShape, FormattedMessage,
 } from 'react-intl';
 import { reduxForm, Field } from 'redux-form';
 import {
@@ -15,10 +15,19 @@ import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
-class SingleContentConfigFormBase extends PureComponent {
+export class SingleContentConfigFormBody extends PureComponent {
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
+  }
+
+  enclosedWithForm(fields) {
+    const { handleSubmit } = this.props;
+    return (
+      <form onSubmit={handleSubmit} className="form-horizontal SingleContentConfigForm well">
+        {fields}
+      </form>
+    );
   }
 
   renderActionButtons() {
@@ -27,6 +36,7 @@ class SingleContentConfigFormBase extends PureComponent {
       onCancel,
       onDiscard,
       invalid,
+      dirty,
       submitting,
     } = this.props;
 
@@ -91,7 +101,7 @@ class SingleContentConfigFormBase extends PureComponent {
           {item.descr}
         </option>
       ));
-    
+
     return (
       <div>
         <span className="icon fa fa-puzzle-piece" title="Widget" />
@@ -159,15 +169,6 @@ class SingleContentConfigFormBase extends PureComponent {
     );
   }
 
-  enclosedWithForm(fields) {
-    const { handleSubmit } = this.props;
-    return (
-      <form onSubmit={handleSubmit} className="form-horizontal SingleContentConfigForm well">
-        {fields}        
-      </form>
-    );
-  }
-
   render() {
     const {
       paramsMode,
@@ -201,7 +202,7 @@ class SingleContentConfigFormBase extends PureComponent {
   }
 }
 
-SingleContentConfigFormBase.propTypes = {
+SingleContentConfigFormBody.propTypes = {
   intl: intlShape.isRequired,
   contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onDidMount: PropTypes.func.isRequired,
@@ -223,15 +224,13 @@ SingleContentConfigFormBase.propTypes = {
   paramsMode: PropTypes.bool,
 };
 
-SingleContentConfigFormBase.defaultProps = {
+SingleContentConfigFormBody.defaultProps = {
   chosenContent: {},
   dirty: false,
   ownerGroup: '',
   joinGroups: [],
   paramsMode: false,
 };
-
-export const SingleContentConfigFormBody = injectIntl(SingleContentConfigFormBase);
 
 export default reduxForm({
   form: SingleContentConfigContainerId,

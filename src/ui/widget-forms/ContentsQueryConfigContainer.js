@@ -14,16 +14,13 @@ import { fetchContentTemplatesByContentType } from 'state/content-template/actio
 
 import { getContentTypeList, getSelectedContentType } from 'state/content-type/selectors';
 import { getCategoryTree } from 'state/categories/selectors';
-import ContentsQueryConfig from 'ui/widget-forms/ContentsQueryConfig';
+import ContentsQueryConfig, { ContentsQueryContainerId, ContentsQueryFormBody } from 'ui/widget-forms/ContentsQueryConfig';
 import { getContentTemplateList } from 'state/content-template/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
-import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
-
-const ContentsQueryContainerId = `widgets.${CONTENTS_QUERY_CONFIG}`;
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -93,6 +90,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
   },
 });
+
+export const formBody = connect(mapStateToProps, mapDispatchToProps, null, {
+  pure: false,
+})(injectIntl(ContentsQueryFormBody));
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,

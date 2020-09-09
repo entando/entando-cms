@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
+import { injectIntl } from 'react-intl';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
 import SingleContentConfigForm, { SingleContentConfigFormBody, SingleContentConfigContainerId } from 'ui/widget-forms/publish-single-content-config/SingleContentConfigFormBody';
@@ -83,8 +84,8 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export const formBody = connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
-})(SingleContentConfigFormBody);
+})(injectIntl(SingleContentConfigFormBody));
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
-})(SingleContentConfigForm);
+})(injectIntl(SingleContentConfigForm));

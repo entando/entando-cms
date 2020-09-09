@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
-import ContentConfigFormBody from 'ui/widget-forms/ContentConfigFormBody';
+import ContentConfigForm, { MultipleContentsConfigContainerId, ContentConfigFormBody } from 'ui/widget-forms/ContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
 import { fetchSearchPages, fetchPage } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
@@ -15,12 +15,9 @@ import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import {
   formValueSelector, reduxForm, submit, change,
 } from 'redux-form';
-import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 import { PAGE_STATUS_DRAFT } from 'state/pages/const';
-
-const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
 
 export const mapStateToProps = (state, ownProps) => ({
   contentTemplates: getContentTemplateList(state),
@@ -81,8 +78,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
+export const formBody = connect(mapStateToProps, mapDispatchToProps, null, {
+  pure: false,
+})(injectIntl(ContentConfigFormBody));
+
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
-})(injectIntl(reduxForm({
-  form: MultipleContentsConfigContainerId,
-})(ContentConfigFormBody)));
+})(injectIntl(ContentConfigForm));

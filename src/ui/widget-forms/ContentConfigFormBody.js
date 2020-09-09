@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'react-intl';
-import { FieldArray, Field } from 'redux-form';
+import { reduxForm, FieldArray, Field } from 'redux-form';
 import {
   Button, Row, Col, Alert,
 } from 'patternfly-react';
@@ -18,7 +18,9 @@ import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
-export default class ContentConfigFormBody extends PureComponent {
+export const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
+
+export class ContentConfigFormBody extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,10 +51,10 @@ export default class ContentConfigFormBody extends PureComponent {
     }).sort((a, b) => (a.level > b.level ? 1 : -1));
   }
 
-  render() {
+  renderFormFields() {
     const {
       contentTemplates,
-      handleSubmit,
+      paramsMode,
       invalid,
       submitting,
       languages,
@@ -176,27 +178,22 @@ export default class ContentConfigFormBody extends PureComponent {
 
     return (
       <Fragment>
-        <h5>
-          <span className="icon fa fa-puzzle-piece" title="Widget" />
-          {' '}
-          <FormattedMessage id="widget.multipleContents.config.title" defaultMessage="Content List" />
-        </h5>
-        <form onSubmit={handleSubmit} className="form-horizontal">
-          <Row>
-            <Col xs={12}>
-              <FieldArray
-                component={ContentTableRenderer}
-                contentTemplates={contentTemplates}
-                name="contents"
-                intl={intl}
-                ownerGroup={ownerGroup}
-                joinGroups={joinGroups}
-                multipleContentsMode={multipleContentsMode}
-              />
-            </Col>
-          </Row>
-          {renderPublishingSettings}
-          {renderExtraOptions}
+        <Row>
+          <Col xs={12}>
+            <FieldArray
+              component={ContentTableRenderer}
+              contentTemplates={contentTemplates}
+              name="contents"
+              intl={intl}
+              ownerGroup={ownerGroup}
+              joinGroups={joinGroups}
+              multipleContentsMode={multipleContentsMode}
+            />
+          </Col>
+        </Row>
+        {renderPublishingSettings}
+        {renderExtraOptions}
+        {!paramsMode && (
           <Row>
             <Col xs={12}>
               <Button
@@ -223,7 +220,31 @@ export default class ContentConfigFormBody extends PureComponent {
               />
             </Col>
           </Row>
-        </form>
+        )}
+      </Fragment>
+    );
+  }
+
+  renderWithForm(formContent) {
+    const { handleSubmit } = this.props;
+    return (
+      <form onSubmit={handleSubmit} className="form-horizontal">
+        {formContent}
+      </form>
+    );
+  }
+
+  render() {
+    const { paramsMode } = this.props;
+    const formFields = this.renderFormFields();
+    return (
+      <Fragment>
+        <h5>
+          <span className="icon fa fa-puzzle-piece" title="Widget" />
+          {' '}
+          <FormattedMessage id="widget.multipleContents.config.title" defaultMessage="Content List" />
+        </h5>
+        {paramsMode ? formFields : this.renderWithForm(formFields)}
       </Fragment>
     );
   }
@@ -247,6 +268,7 @@ ContentConfigFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  paramsMode: PropTypes.bool,
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -256,4 +278,9 @@ ContentConfigFormBody.defaultProps = {
   dirty: false,
   ownerGroup: '',
   joinGroups: null,
+  paramsMode: false,
 };
+
+export default reduxForm({
+  form: MultipleContentsConfigContainerId,
+})(ContentConfigFormBody);
