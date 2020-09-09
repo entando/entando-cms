@@ -26,8 +26,8 @@ const cms = {
   widgetForms: {
     // widgetCode: content_viewer
     viewerConfig: {
-      defaulta: SingleContentConfigContainer,
-      formBody: SingleContentConfigBody, 
+      default: SingleContentConfigContainer,
+      body: SingleContentConfigBody,
     },
     // widgetCode: content_viewer_list
     listViewerConfig: ContentsQueryConfigContainer,
