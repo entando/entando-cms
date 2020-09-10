@@ -2,6 +2,8 @@
   margin-bottom: 0;
 
   &__row:focus {
+    outline: $color-primary solid 1px;
+    box-shadow: 0 0 1px 2px $color-primary;
     background-color: $color-row-selected;
   }
 
