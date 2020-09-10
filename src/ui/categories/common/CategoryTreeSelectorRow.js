@@ -97,7 +97,7 @@ const CategoryTreeSelectorRow = ({
     <span
       className="icon fa fa-plus CategoryTreeSelector__join-mark"
       role="button"
-      tabIndex={i}
+      tabIndex={-1}
       onClick={onClickJoin}
       onKeyDown={onClickJoin}
     />
