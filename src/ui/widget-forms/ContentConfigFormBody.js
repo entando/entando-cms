@@ -54,7 +54,8 @@ export class ContentConfigFormBody extends PureComponent {
   renderFormFields() {
     const {
       contentTemplates,
-      paramsMode,
+      extFormName,
+      putPrefixField,
       invalid,
       submitting,
       languages,
@@ -83,7 +84,7 @@ export class ContentConfigFormBody extends PureComponent {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`title_${langCode}`}
+          name={putPrefixField(`title_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="app.title" />}
           validate={[maxLength70]}
         />
@@ -94,7 +95,7 @@ export class ContentConfigFormBody extends PureComponent {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`linkDescr_${langCode}`}
+          name={putPrefixField(`linkDescr_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
           validate={[maxLength70]}
         />
@@ -129,7 +130,7 @@ export class ContentConfigFormBody extends PureComponent {
                 {renderTitleFields}
                 <Field
                   component={RenderSelectInput}
-                  name="pageLink"
+                  name={putPrefixField('pageLink')}
                   label={
                     <FormLabel labelId="widget.form.page" />
               }
@@ -160,7 +161,7 @@ export class ContentConfigFormBody extends PureComponent {
               <div>
                 <Field
                   component={RenderSelectInput}
-                  name="maxElemForItem"
+                  name={putPrefixField('maxElemForItem')}
                   label={
                     <FormLabel labelId="widget.form.elementsPP" />
                 }
@@ -183,7 +184,7 @@ export class ContentConfigFormBody extends PureComponent {
             <FieldArray
               component={ContentTableRenderer}
               contentTemplates={contentTemplates}
-              name="contents"
+              name={putPrefixField('contents')}
               intl={intl}
               ownerGroup={ownerGroup}
               joinGroups={joinGroups}
@@ -193,7 +194,7 @@ export class ContentConfigFormBody extends PureComponent {
         </Row>
         {renderPublishingSettings}
         {renderExtraOptions}
-        {!paramsMode && (
+        {!extFormName && (
           <Row>
             <Col xs={12}>
               <Button
@@ -235,7 +236,7 @@ export class ContentConfigFormBody extends PureComponent {
   }
 
   render() {
-    const { paramsMode } = this.props;
+    const { extFormName } = this.props;
     const formFields = this.renderFormFields();
     return (
       <Fragment>
@@ -244,7 +245,7 @@ export class ContentConfigFormBody extends PureComponent {
           {' '}
           <FormattedMessage id="widget.multipleContents.config.title" defaultMessage="Content List" />
         </h5>
-        {paramsMode ? formFields : this.renderWithForm(formFields)}
+        {extFormName ? formFields : this.renderWithForm(formFields)}
       </Fragment>
     );
   }
@@ -268,7 +269,8 @@ ContentConfigFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
-  paramsMode: PropTypes.bool,
+  extFormName: PropTypes.string,
+  putPrefixField: PropTypes.func,
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -278,7 +280,8 @@ ContentConfigFormBody.defaultProps = {
   dirty: false,
   ownerGroup: '',
   joinGroups: null,
-  paramsMode: false,
+  extFormName: '',
+  putPrefixField: name => name,
 };
 
 export default reduxForm({

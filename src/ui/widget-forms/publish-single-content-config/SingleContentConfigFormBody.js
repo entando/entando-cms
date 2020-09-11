@@ -84,7 +84,8 @@ export class SingleContentConfigFormBody extends PureComponent {
       onDiscard,
       ownerGroup,
       joinGroups,
-      paramsMode,
+      extFormName,
+      putPrefixField,
     } = this.props;
 
     const content = chosenContent;
@@ -120,9 +121,9 @@ export class SingleContentConfigFormBody extends PureComponent {
         >
           <FormattedMessage id="cms.contents.change" />
         </Button>
-        <Field name="chosenContent" component="div" />
+        <Field name={putPrefixField('chosenContent')} component="div" />
         <Field
-          name="chosenContent.contentId"
+          name={putPrefixField('chosenContent.contentId')}
           component="span"
         />
         <div className="SingleContentConfigFormBody__templateTitle">
@@ -132,7 +133,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           />
           <span><FormattedMessage id="widget.form.contentTemplate" /></span>
           <Field
-            name="chosenContent.contentDescription"
+            name={putPrefixField('chosenContent.contentDescription')}
             component="span"
           />
         </div>
@@ -155,7 +156,7 @@ export class SingleContentConfigFormBody extends PureComponent {
             <Col xs={12}>
               <Field
                 component="select"
-                name="chosenContent.modelId"
+                name={putPrefixField('chosenContent.modelId')}
                 className="form-control"
               >
                 {contentTemplateOptions}
@@ -164,14 +165,14 @@ export class SingleContentConfigFormBody extends PureComponent {
           </Row>
           )
         }
-        {!paramsMode && this.renderActionButtons()}
+        {!extFormName && this.renderActionButtons()}
       </div>
     );
   }
 
   render() {
     const {
-      paramsMode,
+      extFormName,
       invalid,
       submitting,
       intl,
@@ -185,10 +186,10 @@ export class SingleContentConfigFormBody extends PureComponent {
       <Fragment>
         <Row>
           <Col xs={12}>
-            {paramsMode ? formFields : this.enclosedWithForm(formFields)}
+            {extFormName ? formFields : this.enclosedWithForm(formFields)}
           </Col>
         </Row>
-        {!paramsMode && (
+        {!extFormName && (
           <ConfirmCancelModalContainer
             contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
             invalid={invalid}
@@ -221,7 +222,8 @@ SingleContentConfigFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
-  paramsMode: PropTypes.bool,
+  extFormName: PropTypes.string,
+  putPrefixField: PropTypes.func,
 };
 
 SingleContentConfigFormBody.defaultProps = {
@@ -229,7 +231,8 @@ SingleContentConfigFormBody.defaultProps = {
   dirty: false,
   ownerGroup: '',
   joinGroups: [],
-  paramsMode: false,
+  extFormName: '',
+  putPrefixField: name => name,
 };
 
 export default reduxForm({

@@ -74,8 +74,8 @@ export class ContentsQueryFormBody extends Component {
       contentTypes, contentType, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
       intl, onChangeFilterValue, onResetFilterOption, onChangeFilterAttribute,
-      languages, onToggleInclusiveOr, selectedInclusiveOr, paramsMode,
-      invalid, submitting, dirty, onCancel, onDiscard, onSave,
+      languages, onToggleInclusiveOr, selectedInclusiveOr, extFormName,
+      invalid, submitting, dirty, onCancel, onDiscard, onSave, putPrefixField,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -94,7 +94,7 @@ export class ContentsQueryFormBody extends Component {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`title_${langCode}`}
+          name={putPrefixField(`title_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="app.title" />}
           validate={[maxLength70]}
         />
@@ -105,7 +105,7 @@ export class ContentsQueryFormBody extends Component {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`linkDescr_${langCode}`}
+          name={putPrefixField(`linkDescr_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
           validate={[maxLength70]}
         />
@@ -209,7 +209,7 @@ export class ContentsQueryFormBody extends Component {
               />
               <Field
                 component={RenderSelectInput}
-                name="contentType"
+                name={putPrefixField('contentType')}
                 label={
                   <FormLabel labelId="dataModel.type" />
                   }
@@ -236,7 +236,7 @@ export class ContentsQueryFormBody extends Component {
                   <div>
                     <Field
                       component={RenderSelectInput}
-                      name="modelId"
+                      name={putPrefixField('modelId')}
                       label={
                         <FormLabel labelId="widget.form.contentTemplate" />
                     }
@@ -247,7 +247,7 @@ export class ContentsQueryFormBody extends Component {
                     />
                     <Field
                       component={RenderSelectInput}
-                      name="maxElemForItem"
+                      name={putPrefixField('maxElemForItem')}
                       label={
                         <FormLabel labelId="widget.form.elementsPP" />
                     }
@@ -258,7 +258,7 @@ export class ContentsQueryFormBody extends Component {
                     />
                     <Field
                       component={RenderSelectInput}
-                      name="maxElements"
+                      name={putPrefixField('maxElements')}
                       label={
                         <FormLabel labelId="widget.form.maxElements" />
                     }
@@ -289,7 +289,7 @@ export class ContentsQueryFormBody extends Component {
                     <Col xs={12} sm={10}>
                       <FieldArray
                         component={MultiFilterSelectRenderer}
-                        name="categories"
+                        name={putPrefixField('categories')}
                         options={allCategories}
                         selectedValues={renderCategories}
                         labelKey="name"
@@ -316,7 +316,7 @@ export class ContentsQueryFormBody extends Component {
                       <FieldArray
                         intl={intl}
                         component={FiltersSelectRenderer}
-                        name="filters"
+                        name={putPrefixField('filters')}
                         options={filters}
                         onResetFilterOption={onResetFilterOption}
                         onChangeFilterValue={onChangeFilterValue}
@@ -347,7 +347,7 @@ export class ContentsQueryFormBody extends Component {
                     {renderTitleFields}
                     <Field
                       component={RenderSelectInput}
-                      name="pageLink"
+                      name={putPrefixField('pageLink')}
                       label={
                         <FormLabel labelId="widget.form.page" />
                     }
@@ -380,7 +380,7 @@ export class ContentsQueryFormBody extends Component {
                       <FieldArray
                         intl={intl}
                         component={FiltersSelectRenderer}
-                        name="userFilters"
+                        name={putPrefixField('userFilters')}
                         options={frontendFilters}
                         suboptions={frontendFiltersSuboptions}
                         onResetFilterOption={onResetFilterOption}
@@ -397,7 +397,7 @@ export class ContentsQueryFormBody extends Component {
           </Row>
         </div>
         <br />
-        {!paramsMode && (
+        {!extFormName && (
           <Row>
             <Col xs={12}>
               {renderSaveButton}
@@ -436,7 +436,7 @@ export class ContentsQueryFormBody extends Component {
   }
 
   render() {
-    const { paramsMode } = this.props;
+    const { extFormName } = this.props;
     const formFields = this.renderFormFields();
     return (
       <Fragment>
@@ -445,7 +445,7 @@ export class ContentsQueryFormBody extends Component {
           {' '}
           <FormattedMessage id="widget.contentsQuery.config.title" defaultMessage="Content Search Query" />
         </h5>
-        {paramsMode ? formFields : this.renderWithForm(formFields)}
+        {extFormName ? formFields : this.renderWithForm(formFields)}
       </Fragment>
     );
   }
@@ -479,7 +479,8 @@ ContentsQueryFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  paramsMode: PropTypes.bool,
+  extFormName: PropTypes.string,
+  putPrefixField: PropTypes.func,
 };
 
 ContentsQueryFormBody.defaultProps = {
@@ -495,7 +496,8 @@ ContentsQueryFormBody.defaultProps = {
   selectedContentType: '',
   selectedInclusiveOr: '',
   dirty: false,
-  paramsMode: false,
+  extFormName: '',
+  putPrefixField: name => name,
 };
 
 const ContentsQueryConfig = reduxForm({
