@@ -257,9 +257,9 @@ ContentConfigFormBody.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.shape({})),
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  invalid: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func,
+  invalid: PropTypes.bool,
+  submitting: PropTypes.bool,
   language: PropTypes.string.isRequired,
   widgetCode: PropTypes.string.isRequired,
   chosenContents: PropTypes.arrayOf(PropTypes.shape({})),
@@ -281,6 +281,9 @@ ContentConfigFormBody.defaultProps = {
   ownerGroup: '',
   joinGroups: null,
   extFormName: '',
+  invalid: false,
+  submitting: false,
+  handleSubmit: () => {},
   putPrefixField: name => name,
 };
 

@@ -30,22 +30,21 @@ export const mapStateToProps = (state, ownProps) => {
     } : null;
   const formToUse = get(ownProps, 'extFormName', SingleContentConfigContainerId);
   const parentField = get(ownProps, 'input.name', '');
-  const putPrefixField = field => parentField !== '' ? `${parentField}.${field}` : field; 
-  console.log('parentField', parentField);
-  return ({
+  const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
+  return {
     contentTemplates: getContentTemplateList(state),
     initialValues: widgetConfig || {},
     chosenContent: formValueSelector(formToUse)(state, putPrefixField('chosenContent')) || {},
     ownerGroup: formValueSelector(formToUse)(state, putPrefixField('ownerGroup')),
     joinGroups: formValueSelector(formToUse)(state, putPrefixField('joinGroups')),
-  });
+  };
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', SingleContentConfigContainerId);
   const parentField = get(ownProps, 'input.name', '');
-  const putPrefixField = field => parentField !== '' ? `${parentField}.${field}` : field; 
-  return{
+  const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
+  return {
     onDidMount: () => {
       dispatch(fetchContentTemplateListPaged({ page: 1, pageSize: 0 }));
       dispatch(fetchPage(ownProps.pageCode, PAGE_STATUS_DRAFT)).then((res) => {

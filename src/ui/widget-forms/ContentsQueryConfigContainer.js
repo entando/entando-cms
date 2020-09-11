@@ -28,7 +28,7 @@ const nopage = { page: 1, pageSize: 0 };
 export const mapStateToProps = (state, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', ContentsQueryContainerId);
   const parentField = get(ownProps, 'input.name', '');
-  const putPrefixField = field => parentField !== '' ? `${parentField}.${field}` : field; 
+  const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
   return {
     initialValues: ownProps.widgetConfig,
     language: getLocale(state),
@@ -47,11 +47,7 @@ export const mapStateToProps = (state, ownProps) => {
 export const mapDispatchToProps = (dispatch, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', ContentsQueryContainerId);
   const parentField = get(ownProps, 'input.name', '');
-  console.log('parentField', parentField);
-  const putPrefixField = (field) => {
-    console.log(parentField, `${parentField}.${field}`, formToUse);
-    return parentField !== '' ? `${parentField}.${field}` : field;
-  };
+  const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
   return {
     onDidMount: () => {
       dispatch(fetchLanguages(nopage));

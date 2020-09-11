@@ -23,7 +23,7 @@ import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 export const mapStateToProps = (state, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', MultipleContentsConfigContainerId);
   const parentField = get(ownProps, 'input.name', '');
-  const putPrefixField = field => parentField !== '' ? `${parentField}.${field}` : field; 
+  const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
   return {
     contentTemplates: getContentTemplateList(state),
     initialValues: ownProps.widgetConfig || {},
@@ -40,7 +40,7 @@ export const mapStateToProps = (state, ownProps) => {
 export const mapDispatchToProps = (dispatch, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', MultipleContentsConfigContainerId);
   const parentField = get(ownProps, 'input.name', '');
-  const putPrefixField = field => parentField !== '' ? `${parentField}.${field}` : field; 
+  const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
   return {
     onDidMount: () => {
       dispatch(fetchContentTemplateListPaged({ page: 1, pageSize: 0 }));
