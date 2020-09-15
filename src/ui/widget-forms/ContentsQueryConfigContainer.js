@@ -41,7 +41,7 @@ export const mapStateToProps = (state, ownProps) => {
     selectedContentType: formValueSelector(formToUse)(state, putPrefixField('contentType')),
     selectedCategories: formValueSelector(formToUse)(state, putPrefixField('categories')),
     selectedInclusiveOr: formValueSelector(formToUse)(state, putPrefixField('orClauseCategoryFilter')),
-  }
+  };
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => {

@@ -277,6 +277,7 @@ ContentConfigFormBody.propTypes = {
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
+  cloneMode: PropTypes.bool,
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -291,6 +292,7 @@ ContentConfigFormBody.defaultProps = {
   submitting: false,
   handleSubmit: () => {},
   putPrefixField: name => name,
+  cloneMode: false,
 };
 
 export default reduxForm({

@@ -46,7 +46,7 @@ export class ContentsQueryFormBody extends Component {
         filters: true,
         extraOptions: true,
         frontendFilters: true,
-      })
+      });
     }
     onDidMount();
   }
