@@ -18,25 +18,21 @@ import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 import { fetchPage } from 'state/pages/actions';
 
 export const mapStateToProps = (state, ownProps) => {
-  let propWidgetConfig = ownProps.widgetConfig;
-  let widgetConfig = null;
-  if (propWidgetConfig !== null && propWidgetConfig !== undefined) {
-    const { contents, ...rest } = propWidgetConfig;
-    propWidgetConfig = rest;
-  }
-  widgetConfig = propWidgetConfig !== null && propWidgetConfig !== undefined
-    ? {
-      chosenContent: propWidgetConfig.contentId ? propWidgetConfig : null,
-    } : null;
   const formToUse = get(ownProps, 'extFormName', SingleContentConfigContainerId);
   const parentField = get(ownProps, 'input.name', '');
   const putPrefixField = field => (parentField !== '' ? `${parentField}.${field}` : field);
+  const formSelect = formValueSelector(formToUse);
+  let widgetConfig = null;
+  if (ownProps.widgetConfig !== null && ownProps.widgetConfig !== undefined) {
+    const { contents, ...rest } = ownProps.widgetConfig;
+    widgetConfig = rest;
+  }
   return {
     contentTemplates: getContentTemplateList(state),
     initialValues: widgetConfig || {},
-    chosenContent: formValueSelector(formToUse)(state, putPrefixField('chosenContent')) || {},
-    ownerGroup: formValueSelector(formToUse)(state, putPrefixField('ownerGroup')),
-    joinGroups: formValueSelector(formToUse)(state, putPrefixField('joinGroups')),
+    chosenContent: widgetConfig,
+    ownerGroup: formSelect(state, putPrefixField('ownerGroup')),
+    joinGroups: formSelect(state, putPrefixField('joinGroups')),
   };
 };
 
@@ -57,15 +53,15 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     onSubmit: (values) => {
       dispatch(clearErrors());
       const {
-        pageCode, frameId, intl, history,
+        pageCode, frameId, intl, history, widgetCode,
       } = ownProps;
-      const content = values.chosenContent || {};
-      const payload = {
-        contentId: content.id || content.contentId,
-        ...(content.modelId != null && { modelId: content.modelId }),
-        contentDescription: content.description || content.contentDescription,
+      const configItem = {
+        config: {
+          ...values,
+          ...(values.modelId != null && { modelId: values.modelId }),
+        },
+        code: widgetCode,
       };
-      const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
       dispatch(clearErrors());
       return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
         if (res) {
@@ -86,7 +82,8 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     },
     showFilterModal: () => dispatch(setVisibleModal(ContentsFilterModalID)),
     onSelectContent: (selectContent) => {
-      dispatch(change(formToUse, putPrefixField('chosenContent'), selectContent));
+      dispatch(change(formToUse, putPrefixField('contentId'), selectContent.id));
+      dispatch(change(formToUse, putPrefixField('contentDescription'), selectContent.description));
       dispatch(setVisibleModal(''));
     },
   };

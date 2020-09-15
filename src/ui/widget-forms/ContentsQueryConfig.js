@@ -39,7 +39,15 @@ export class ContentsQueryFormBody extends Component {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { cloneMode, onDidMount } = this.props;
+    if (cloneMode) {
+      this.setState({
+        publishingSettings: true,
+        filters: true,
+        extraOptions: true,
+        frontendFilters: true,
+      })
+    }
     onDidMount();
   }
 
@@ -481,6 +489,7 @@ ContentsQueryFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
+  cloneMode: PropTypes.bool,
 };
 
 ContentsQueryFormBody.defaultProps = {
@@ -498,6 +507,7 @@ ContentsQueryFormBody.defaultProps = {
   dirty: false,
   extFormName: '',
   putPrefixField: name => name,
+  cloneMode: false,
 };
 
 const ContentsQueryConfig = reduxForm({

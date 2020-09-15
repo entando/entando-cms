@@ -30,7 +30,13 @@ export class ContentConfigFormBody extends PureComponent {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { onDidMount, cloneMode } = this.props;
+    if (cloneMode) {
+      this.setState({
+        extraOptionsOpen: true,
+        publishingSettingsOpen: true,
+      });
+    }
     onDidMount();
   }
 

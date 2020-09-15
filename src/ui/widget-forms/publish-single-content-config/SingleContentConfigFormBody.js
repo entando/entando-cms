@@ -4,6 +4,7 @@ import {
   intlShape, FormattedMessage,
 } from 'react-intl';
 import { reduxForm, Field } from 'redux-form';
+import { get } from 'lodash';
 import {
   Button, Row, Col,
 } from 'patternfly-react';
@@ -16,9 +17,32 @@ import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
 export class SingleContentConfigFormBody extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedContent: null,
+    };
+    this.handleContentSelect = this.handleContentSelect.bind(this);
+  }
+
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { chosenContent } = this.props;
+    const { selectedContent } = this.state;
+    if (prevProps.chosenContent !== chosenContent && !selectedContent) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ selectedContent: chosenContent });
+    }
+  }
+
+  handleContentSelect(selectedContent) {
+    const { onSelectContent } = this.props;
+    this.setState({ selectedContent });
+    onSelectContent(selectedContent);
   }
 
   enclosedWithForm(fields) {
@@ -32,13 +56,14 @@ export class SingleContentConfigFormBody extends PureComponent {
 
   renderActionButtons() {
     const {
-      chosenContent,
       onCancel,
       onDiscard,
       invalid,
       dirty,
       submitting,
     } = this.props;
+
+    const { selectedContent } = this.state;
 
     const handleCancelClick = () => {
       if (dirty) {
@@ -48,7 +73,7 @@ export class SingleContentConfigFormBody extends PureComponent {
       }
     };
 
-    const contentExists = chosenContent && (chosenContent.id || chosenContent.contentId);
+    const contentExists = get(selectedContent, 'id', get(selectedContent, 'contentId', false));
     return (
       <Row className="SingleContentConfigFormBody__actionBar">
         <Col xs={12}>
@@ -78,9 +103,7 @@ export class SingleContentConfigFormBody extends PureComponent {
       invalid,
       submitting,
       intl,
-      chosenContent,
       showFilterModal,
-      onSelectContent,
       onDiscard,
       ownerGroup,
       joinGroups,
@@ -88,9 +111,13 @@ export class SingleContentConfigFormBody extends PureComponent {
       putPrefixField,
     } = this.props;
 
-    const content = chosenContent;
-    const contentTypeCodeSub = content.contentId !== undefined ? content.contentId.substr(0, 3) : '';
-    const contentTypeCode = content.typeCode || contentTypeCodeSub;
+    const { selectedContent } = this.state;
+
+    const content = selectedContent;
+    const contentId = get(content, 'contentId', get(content, 'id', ''));
+    const contentDescription = get(content, 'contentDescription', get(content, 'description', ''));
+    const typeCodeSub = contentId ? contentId.substr(0, 3) : '';
+    const contentTypeCode = get(content, 'typeCode', typeCodeSub);
 
     const filterByCode = contentTemplate => contentTemplate.contentType === contentTypeCode;
     const contentTemplatesByContentType = [{ id: 'default', descr: intl.formatMessage({ id: 'widget.form.default' }) },
@@ -112,7 +139,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           requireFields={false}
         />
         <h3>
-          <FormattedMessage id="widget.singleContent.config.content" />: {content.contentId || content.id} - {content.contentDescription || content.description}
+          <FormattedMessage id="widget.singleContent.config.content" />: {contentId} - {contentDescription}
         </h3>
         <Button
           className="ChooseContentBody__cancel--btn"
@@ -123,7 +150,7 @@ export class SingleContentConfigFormBody extends PureComponent {
         </Button>
         <Field name={putPrefixField('chosenContent')} component="div" />
         <Field
-          name={putPrefixField('chosenContent.contentId')}
+          name={putPrefixField('contentId')}
           component="span"
         />
         <div className="SingleContentConfigFormBody__templateTitle">
@@ -133,7 +160,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           />
           <span><FormattedMessage id="widget.form.contentTemplate" /></span>
           <Field
-            name={putPrefixField('chosenContent.contentDescription')}
+            name={putPrefixField('contentDescription')}
             component="span"
           />
         </div>
@@ -141,7 +168,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           modalTitleText={intl.formatMessage({ id: 'cms.contents.modal.filter.title' })}
           invalid={invalid}
           submitting={submitting}
-          onSave={onSelectContent}
+          onSave={this.handleContentSelect}
           onDiscard={onDiscard}
           ownerGroup={ownerGroup}
           joinGroups={joinGroups}
@@ -150,21 +177,19 @@ export class SingleContentConfigFormBody extends PureComponent {
           }}
         />
 
-        { (content.contentId || content.id)
-          && (
+        {contentId && (
           <Row>
             <Col xs={12}>
               <Field
                 component="select"
-                name={putPrefixField('chosenContent.modelId')}
+                name={putPrefixField('modelId')}
                 className="form-control"
               >
                 {contentTemplateOptions}
               </Field>
             </Col>
           </Row>
-          )
-        }
+        )}
         {!extFormName && this.renderActionButtons()}
       </div>
     );
@@ -207,9 +232,9 @@ SingleContentConfigFormBody.propTypes = {
   intl: intlShape.isRequired,
   contentTemplates: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onDidMount: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  invalid: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func,
+  invalid: PropTypes.bool,
+  submitting: PropTypes.bool,
   chosenContent: PropTypes.shape({
     id: PropTypes.string,
     contentId: PropTypes.string,
@@ -232,6 +257,9 @@ SingleContentConfigFormBody.defaultProps = {
   ownerGroup: '',
   joinGroups: [],
   extFormName: '',
+  handleSubmit: () => {},
+  invalid: false,
+  submitting: false,
   putPrefixField: name => name,
 };
 
