@@ -3,9 +3,9 @@ import { cms as state } from 'state/rootReducer';
 import { routes, routesDir } from 'ui/App';
 import en from 'locales/en';
 import it from 'locales/it';
-import SingleContentConfigContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigContainer';
-import MultipleContentsConfigContainer from 'ui/widget-forms/MultipleContentsConfigContainer';
-import ContentsQueryConfigContainer from 'ui/widget-forms/ContentsQueryConfigContainer';
+import SingleContentConfigContainer, { formBody as SingleContentConfigBody } from 'ui/widget-forms/publish-single-content-config/SingleContentConfigContainer';
+import MultipleContentsConfigContainer, { formBody as MultipleContentsConfigBody } from 'ui/widget-forms/MultipleContentsConfigContainer';
+import ContentsQueryConfigContainer, { formBody as ContentsQueryFormBody } from 'ui/widget-forms/ContentsQueryConfigContainer';
 import ContentsStatusCardContainer from 'ui/contents/status-card/ContentsStatusCardContainer';
 import ContentListCardContainer from 'ui/contents/list-card/ContentListCardContainer';
 
@@ -25,11 +25,20 @@ const cms = {
   },
   widgetForms: {
     // widgetCode: content_viewer
-    viewerConfig: SingleContentConfigContainer,
+    viewerConfig: {
+      default: SingleContentConfigContainer,
+      body: SingleContentConfigBody,
+    },
     // widgetCode: content_viewer_list
-    listViewerConfig: ContentsQueryConfigContainer,
+    listViewerConfig: {
+      default: ContentsQueryConfigContainer,
+      body: ContentsQueryFormBody,
+    },
     // widgetCode: row_content_viewer_list
-    rowListViewerConfig: MultipleContentsConfigContainer,
+    rowListViewerConfig: {
+      default: MultipleContentsConfigContainer,
+      body: MultipleContentsConfigBody,
+    },
   },
   persistData: {
     tableColumns: ['currentColumnsShow'],

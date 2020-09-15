@@ -19,8 +19,13 @@ import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelMod
 
 import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 
+export const ContentsQueryContainerId = `widgets.${CONTENTS_QUERY_CONFIG}`;
+
 const maxLength70 = maxLength(70);
 const CATEGORY_HOME = 'home';
+
+const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
+  .map(i => Object.assign({}, { code: i, name: i }));
 
 export class ContentsQueryFormBody extends Component {
   constructor(props) {
@@ -34,7 +39,15 @@ export class ContentsQueryFormBody extends Component {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { cloneMode, onDidMount } = this.props;
+    if (cloneMode) {
+      this.setState({
+        publishingSettings: true,
+        filters: true,
+        extraOptions: true,
+        frontendFilters: true,
+      });
+    }
     onDidMount();
   }
 
@@ -64,24 +77,19 @@ export class ContentsQueryFormBody extends Component {
     }).sort((a, b) => (a.level > b.level ? 1 : -1));
   }
 
-  render() {
+  renderFormFields() {
     const {
       contentTypes, contentType, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
       intl, onChangeFilterValue, onResetFilterOption, onChangeFilterAttribute,
-      languages, onToggleInclusiveOr, selectedInclusiveOr, handleSubmit,
-      invalid, submitting, dirty, onCancel, onDiscard, onSave,
+      languages, onToggleInclusiveOr, selectedInclusiveOr, extFormName,
+      invalid, submitting, dirty, onCancel, onDiscard, onSave, putPrefixField,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
       extraOptions, frontendFilters: frontendFiltersPanel,
     } = this.state;
-    const onSubmit = (ev) => {
-      ev.preventDefault();
-      handleSubmit();
-    };
-    const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
-      .map(i => Object.assign({}, { code: i, name: i }));
+
     const normalizedCategories = this.normalizeTitles(
       categories.filter(c => c.code !== CATEGORY_HOME),
     );
@@ -94,7 +102,7 @@ export class ContentsQueryFormBody extends Component {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`title_${langCode}`}
+          name={putPrefixField(`title_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="app.title" />}
           validate={[maxLength70]}
         />
@@ -105,7 +113,7 @@ export class ContentsQueryFormBody extends Component {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`linkDescr_${langCode}`}
+          name={putPrefixField(`linkDescr_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
           validate={[maxLength70]}
         />
@@ -200,209 +208,204 @@ export class ContentsQueryFormBody extends Component {
 
     return (
       <Fragment>
-        <h5>
-          <span className="icon fa fa-puzzle-piece" title="Widget" />
-          {' '}
-          <FormattedMessage id="widget.contentsQuery.config.title" defaultMessage="Content Search Query" />
-        </h5>
-        <form onSubmit={onSubmit} className="form-horizontal ContentsQueryForm">
+        <Row>
+          <Col xs={12}>
+            <fieldset className="no-padding">
+              <FormSectionTitle
+                titleId="app.info"
+                requireFields={false}
+              />
+              <Field
+                component={RenderSelectInput}
+                name={putPrefixField('contentType')}
+                label={
+                  <FormLabel labelId="dataModel.type" />
+                  }
+                options={contentTypes}
+                optionValue="code"
+                optionDisplayName="name"
+                defaultOptionId="app.enumerator.none"
+                onChange={handleContentTypeChange}
+              />
+            </fieldset>
+          </Col>
+        </Row>
+        <div className={selectedContentType ? 'visible' : 'hidden'}>
           <Row>
             <Col xs={12}>
               <fieldset className="no-padding">
                 <FormSectionTitle
-                  titleId="app.info"
+                  titleId="widget.form.publishingSettings"
                   requireFields={false}
+                  collapsable
+                  onClick={handleCollapsePublishingSettings}
                 />
-                <Field
-                  component={RenderSelectInput}
-                  name="contentType"
-                  label={
-                    <FormLabel labelId="dataModel.type" />
+                <Collapse isOpened={publishingSettings}>
+                  <div>
+                    <Field
+                      component={RenderSelectInput}
+                      name={putPrefixField('modelId')}
+                      label={
+                        <FormLabel labelId="widget.form.contentTemplate" />
                     }
-                  options={contentTypes}
-                  optionValue="code"
-                  optionDisplayName="name"
-                  defaultOptionId="app.enumerator.none"
-                  onChange={handleContentTypeChange}
-                />
+                      options={contentTemplates}
+                      optionValue="id"
+                      optionDisplayName="descr"
+                      defaultOptionId="widget.form.default"
+                    />
+                    <Field
+                      component={RenderSelectInput}
+                      name={putPrefixField('maxElemForItem')}
+                      label={
+                        <FormLabel labelId="widget.form.elementsPP" />
+                    }
+                      options={elementNumbers}
+                      optionValue="code"
+                      optionDisplayName="name"
+                      defaultOptionId="user.profile.all"
+                    />
+                    <Field
+                      component={RenderSelectInput}
+                      name={putPrefixField('maxElements')}
+                      label={
+                        <FormLabel labelId="widget.form.maxElements" />
+                    }
+                      options={elementNumbers}
+                      optionValue="code"
+                      optionDisplayName="name"
+                      defaultOptionId="user.profile.all"
+                    />
+                  </div>
+                </Collapse>
               </fieldset>
             </Col>
           </Row>
-          <div className={selectedContentType ? 'visible' : 'hidden'}>
-            <Row>
-              <Col xs={12}>
-                <fieldset className="no-padding">
-                  <FormSectionTitle
-                    titleId="widget.form.publishingSettings"
-                    requireFields={false}
-                    collapsable
-                    onClick={handleCollapsePublishingSettings}
-                  />
-                  <Collapse isOpened={publishingSettings}>
-                    <div>
-                      <Field
-                        component={RenderSelectInput}
-                        name="modelId"
-                        label={
-                          <FormLabel labelId="widget.form.contentTemplate" />
-                      }
-                        options={contentTemplates}
-                        optionValue="id"
-                        optionDisplayName="descr"
-                        defaultOptionId="widget.form.default"
+          <Row>
+            <Col xs={12}>
+              <fieldset className="no-padding">
+                <FormSectionTitle
+                  titleId="widget.form.filters"
+                  requireFields={false}
+                  collapsable
+                  onClick={handleCollapseFilters}
+                />
+                <Collapse isOpened={filtersPanel}>
+                  <FormGroup>
+                    <label htmlFor="categories" className="col-xs-2 control-label">
+                      <FormLabel labelId="menu.categories" />
+                    </label>
+                    <Col xs={12} sm={10}>
+                      <FieldArray
+                        component={MultiFilterSelectRenderer}
+                        name={putPrefixField('categories')}
+                        options={allCategories}
+                        selectedValues={renderCategories}
+                        labelKey="name"
+                        valueKey="code"
+                        allMode
                       />
-                      <Field
-                        component={RenderSelectInput}
-                        name="maxElemForItem"
-                        label={
-                          <FormLabel labelId="widget.form.elementsPP" />
-                      }
-                        options={elementNumbers}
-                        optionValue="code"
-                        optionDisplayName="name"
-                        defaultOptionId="user.profile.all"
-                      />
-                      <Field
-                        component={RenderSelectInput}
-                        name="maxElements"
-                        label={
-                          <FormLabel labelId="widget.form.maxElements" />
-                      }
-                        options={elementNumbers}
-                        optionValue="code"
-                        optionDisplayName="name"
-                        defaultOptionId="user.profile.all"
-                      />
-                    </div>
-                  </Collapse>
-                </fieldset>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={12}>
-                <fieldset className="no-padding">
-                  <FormSectionTitle
-                    titleId="widget.form.filters"
-                    requireFields={false}
-                    collapsable
-                    onClick={handleCollapseFilters}
-                  />
-                  <Collapse isOpened={filtersPanel}>
-                    <FormGroup>
-                      <label htmlFor="categories" className="col-xs-2 control-label">
-                        <FormLabel labelId="menu.categories" />
-                      </label>
-                      <Col xs={12} sm={10}>
-                        <FieldArray
-                          component={MultiFilterSelectRenderer}
-                          name="categories"
-                          options={allCategories}
-                          selectedValues={renderCategories}
-                          labelKey="name"
-                          valueKey="code"
-                          allMode
+                      <div className="ContentsQueryForm__inclusiveOr">
+                        <Field
+                          component={ButtonComponent}
+                          toggleElement={inclusiveOrOptions}
+                          name="orClauseCategoryFilter"
                         />
-                        <div className="ContentsQueryForm__inclusiveOr">
-                          <Field
-                            component={ButtonComponent}
-                            toggleElement={inclusiveOrOptions}
-                            name="orClauseCategoryFilter"
-                          />
-                        </div>
-                        <span className="help-block">
-                          <FormattedMessage id="widget.form.inclusiveOrTip" />
-                        </span>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup>
-                      <label htmlFor="categories" className="col-xs-2 control-label">
-                        <FormLabel labelId="app.filter" />
-                      </label>
-                      <Col xs={12} sm={10}>
-                        <FieldArray
-                          intl={intl}
-                          component={FiltersSelectRenderer}
-                          name="filters"
-                          options={filters}
-                          onResetFilterOption={onResetFilterOption}
-                          onChangeFilterValue={onChangeFilterValue}
-                          onChangeFilterAttribute={onChangeFilterAttribute}
-                          filterName="filters"
-                          attributeFilterChoices={attributeFilters}
-                        />
-                      </Col>
-                    </FormGroup>
-                  </Collapse>
-                </fieldset>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={12}>
-                <fieldset className="no-padding">
-                  <FormSectionTitle
-                    titleId="widget.form.extraOptions"
-                    requireFields={false}
-                    collapsable
-                    onClick={handleCollapseExtraOptions}
-                  />
-                  <Collapse isOpened={extraOptions}>
-                    <Alert type="info" onDismiss={null}>
-                      <FormattedMessage id="widget.form.extraOptionsDescription" />
-                    </Alert>
-                    <div>
-                      {renderTitleFields}
-                      <Field
-                        component={RenderSelectInput}
-                        name="pageLink"
-                        label={
-                          <FormLabel labelId="widget.form.page" />
-                      }
-                        options={normalizedPages}
-                        optionValue="code"
-                        optionDisplayName="name"
-                        defaultOptionId="app.enumerator.none"
+                      </div>
+                      <span className="help-block">
+                        <FormattedMessage id="widget.form.inclusiveOrTip" />
+                      </span>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup>
+                    <label htmlFor="categories" className="col-xs-2 control-label">
+                      <FormLabel labelId="app.filter" />
+                    </label>
+                    <Col xs={12} sm={10}>
+                      <FieldArray
+                        intl={intl}
+                        component={FiltersSelectRenderer}
+                        name={putPrefixField('filters')}
+                        options={filters}
+                        onResetFilterOption={onResetFilterOption}
+                        onChangeFilterValue={onChangeFilterValue}
+                        onChangeFilterAttribute={onChangeFilterAttribute}
+                        filterName="filters"
+                        attributeFilterChoices={attributeFilters}
                       />
-                      {renderLinkTextFields}
-                    </div>
-                  </Collapse>
-                </fieldset>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={12}>
-                <fieldset className="no-padding">
-                  <FormSectionTitle
-                    titleId="widget.form.frontendFilters"
-                    requireFields={false}
-                    collapsable
-                    onClick={handleCollapseFrontendFilters}
-                  />
-                  <Collapse isOpened={frontendFiltersPanel}>
-                    <FormGroup className="clearfix">
-                      <label htmlFor="categories" className="col-xs-2 control-label">
-                        <FormLabel labelId="app.filter" />
-                      </label>
-                      <Col xs={12} sm={10}>
-                        <FieldArray
-                          intl={intl}
-                          component={FiltersSelectRenderer}
-                          name="userFilters"
-                          options={frontendFilters}
-                          suboptions={frontendFiltersSuboptions}
-                          onResetFilterOption={onResetFilterOption}
-                          onChangeFilterValue={onChangeFilterValue}
-                          onChangeFilterAttribute={onChangeFilterAttribute}
-                          filterName="frontendFilters"
-                          attributeFilterChoices={attributeFilters}
-                        />
-                      </Col>
-                    </FormGroup>
-                  </Collapse>
-                </fieldset>
-              </Col>
-            </Row>
-          </div>
-          <br />
+                    </Col>
+                  </FormGroup>
+                </Collapse>
+              </fieldset>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <fieldset className="no-padding">
+                <FormSectionTitle
+                  titleId="widget.form.extraOptions"
+                  requireFields={false}
+                  collapsable
+                  onClick={handleCollapseExtraOptions}
+                />
+                <Collapse isOpened={extraOptions}>
+                  <Alert type="info" onDismiss={null}>
+                    <FormattedMessage id="widget.form.extraOptionsDescription" />
+                  </Alert>
+                  <div>
+                    {renderTitleFields}
+                    <Field
+                      component={RenderSelectInput}
+                      name={putPrefixField('pageLink')}
+                      label={
+                        <FormLabel labelId="widget.form.page" />
+                    }
+                      options={normalizedPages}
+                      optionValue="code"
+                      optionDisplayName="name"
+                      defaultOptionId="app.enumerator.none"
+                    />
+                    {renderLinkTextFields}
+                  </div>
+                </Collapse>
+              </fieldset>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <fieldset className="no-padding">
+                <FormSectionTitle
+                  titleId="widget.form.frontendFilters"
+                  requireFields={false}
+                  collapsable
+                  onClick={handleCollapseFrontendFilters}
+                />
+                <Collapse isOpened={frontendFiltersPanel}>
+                  <FormGroup className="clearfix">
+                    <label htmlFor="categories" className="col-xs-2 control-label">
+                      <FormLabel labelId="app.filter" />
+                    </label>
+                    <Col xs={12} sm={10}>
+                      <FieldArray
+                        intl={intl}
+                        component={FiltersSelectRenderer}
+                        name={putPrefixField('userFilters')}
+                        options={frontendFilters}
+                        suboptions={frontendFiltersSuboptions}
+                        onResetFilterOption={onResetFilterOption}
+                        onChangeFilterValue={onChangeFilterValue}
+                        onChangeFilterAttribute={onChangeFilterAttribute}
+                        filterName="frontendFilters"
+                        attributeFilterChoices={attributeFilters}
+                      />
+                    </Col>
+                  </FormGroup>
+                </Collapse>
+              </fieldset>
+            </Col>
+          </Row>
+        </div>
+        <br />
+        {!extFormName && (
           <Row>
             <Col xs={12}>
               {renderSaveButton}
@@ -422,7 +425,35 @@ export class ContentsQueryFormBody extends Component {
               />
             </Col>
           </Row>
-        </form>
+        )}
+      </Fragment>
+    );
+  }
+
+  renderWithForm(formContent) {
+    const { handleSubmit } = this.props;
+    const onSubmit = (ev) => {
+      ev.preventDefault();
+      handleSubmit();
+    };
+    return (
+      <form onSubmit={onSubmit} className="form-horizontal ContentsQueryForm">
+        {formContent}
+      </form>
+    );
+  }
+
+  render() {
+    const { extFormName } = this.props;
+    const formFields = this.renderFormFields();
+    return (
+      <Fragment>
+        <h5>
+          <span className="icon fa fa-puzzle-piece" title="Widget" />
+          {' '}
+          <FormattedMessage id="widget.contentsQuery.config.title" defaultMessage="Content Search Query" />
+        </h5>
+        {extFormName ? formFields : this.renderWithForm(formFields)}
       </Fragment>
     );
   }
@@ -456,6 +487,9 @@ ContentsQueryFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  extFormName: PropTypes.string,
+  putPrefixField: PropTypes.func,
+  cloneMode: PropTypes.bool,
 };
 
 ContentsQueryFormBody.defaultProps = {
@@ -471,10 +505,13 @@ ContentsQueryFormBody.defaultProps = {
   selectedContentType: '',
   selectedInclusiveOr: '',
   dirty: false,
+  extFormName: '',
+  putPrefixField: name => name,
+  cloneMode: false,
 };
 
 const ContentsQueryConfig = reduxForm({
-  form: `widgets.${CONTENTS_QUERY_CONFIG}`,
+  form: ContentsQueryContainerId,
 })(ContentsQueryFormBody);
 
 export default ContentsQueryConfig;

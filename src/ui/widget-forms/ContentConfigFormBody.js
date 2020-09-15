@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'react-intl';
-import { FieldArray, Field } from 'redux-form';
+import { reduxForm, FieldArray, Field } from 'redux-form';
 import {
   Button, Row, Col, Alert,
 } from 'patternfly-react';
@@ -18,7 +18,9 @@ import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
-export default class ContentConfigFormBody extends PureComponent {
+export const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
+
+export class ContentConfigFormBody extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +30,13 @@ export default class ContentConfigFormBody extends PureComponent {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { onDidMount, cloneMode } = this.props;
+    if (cloneMode) {
+      this.setState({
+        extraOptionsOpen: true,
+        publishingSettingsOpen: true,
+      });
+    }
     onDidMount();
   }
 
@@ -49,10 +57,11 @@ export default class ContentConfigFormBody extends PureComponent {
     }).sort((a, b) => (a.level > b.level ? 1 : -1));
   }
 
-  render() {
+  renderFormFields() {
     const {
       contentTemplates,
-      handleSubmit,
+      extFormName,
+      putPrefixField,
       invalid,
       submitting,
       languages,
@@ -81,7 +90,7 @@ export default class ContentConfigFormBody extends PureComponent {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`title_${langCode}`}
+          name={putPrefixField(`title_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="app.title" />}
           validate={[maxLength70]}
         />
@@ -92,7 +101,7 @@ export default class ContentConfigFormBody extends PureComponent {
         <Field
           key={langCode}
           component={RenderTextInput}
-          name={`linkDescr_${langCode}`}
+          name={putPrefixField(`linkDescr_${langCode}`)}
           label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
           validate={[maxLength70]}
         />
@@ -127,7 +136,7 @@ export default class ContentConfigFormBody extends PureComponent {
                 {renderTitleFields}
                 <Field
                   component={RenderSelectInput}
-                  name="pageLink"
+                  name={putPrefixField('pageLink')}
                   label={
                     <FormLabel labelId="widget.form.page" />
               }
@@ -158,7 +167,7 @@ export default class ContentConfigFormBody extends PureComponent {
               <div>
                 <Field
                   component={RenderSelectInput}
-                  name="maxElemForItem"
+                  name={putPrefixField('maxElemForItem')}
                   label={
                     <FormLabel labelId="widget.form.elementsPP" />
                 }
@@ -176,27 +185,22 @@ export default class ContentConfigFormBody extends PureComponent {
 
     return (
       <Fragment>
-        <h5>
-          <span className="icon fa fa-puzzle-piece" title="Widget" />
-          {' '}
-          <FormattedMessage id="widget.multipleContents.config.title" defaultMessage="Content List" />
-        </h5>
-        <form onSubmit={handleSubmit} className="form-horizontal">
-          <Row>
-            <Col xs={12}>
-              <FieldArray
-                component={ContentTableRenderer}
-                contentTemplates={contentTemplates}
-                name="contents"
-                intl={intl}
-                ownerGroup={ownerGroup}
-                joinGroups={joinGroups}
-                multipleContentsMode={multipleContentsMode}
-              />
-            </Col>
-          </Row>
-          {renderPublishingSettings}
-          {renderExtraOptions}
+        <Row>
+          <Col xs={12}>
+            <FieldArray
+              component={ContentTableRenderer}
+              contentTemplates={contentTemplates}
+              name={putPrefixField('contents')}
+              intl={intl}
+              ownerGroup={ownerGroup}
+              joinGroups={joinGroups}
+              multipleContentsMode={multipleContentsMode}
+            />
+          </Col>
+        </Row>
+        {renderPublishingSettings}
+        {renderExtraOptions}
+        {!extFormName && (
           <Row>
             <Col xs={12}>
               <Button
@@ -223,7 +227,31 @@ export default class ContentConfigFormBody extends PureComponent {
               />
             </Col>
           </Row>
-        </form>
+        )}
+      </Fragment>
+    );
+  }
+
+  renderWithForm(formContent) {
+    const { handleSubmit } = this.props;
+    return (
+      <form onSubmit={handleSubmit} className="form-horizontal">
+        {formContent}
+      </form>
+    );
+  }
+
+  render() {
+    const { extFormName } = this.props;
+    const formFields = this.renderFormFields();
+    return (
+      <Fragment>
+        <h5>
+          <span className="icon fa fa-puzzle-piece" title="Widget" />
+          {' '}
+          <FormattedMessage id="widget.multipleContents.config.title" defaultMessage="Content List" />
+        </h5>
+        {extFormName ? formFields : this.renderWithForm(formFields)}
       </Fragment>
     );
   }
@@ -235,9 +263,9 @@ ContentConfigFormBody.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.shape({})),
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  invalid: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func,
+  invalid: PropTypes.bool,
+  submitting: PropTypes.bool,
   language: PropTypes.string.isRequired,
   widgetCode: PropTypes.string.isRequired,
   chosenContents: PropTypes.arrayOf(PropTypes.shape({})),
@@ -247,6 +275,9 @@ ContentConfigFormBody.propTypes = {
   onSave: PropTypes.func.isRequired,
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  extFormName: PropTypes.string,
+  putPrefixField: PropTypes.func,
+  cloneMode: PropTypes.bool,
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -256,4 +287,14 @@ ContentConfigFormBody.defaultProps = {
   dirty: false,
   ownerGroup: '',
   joinGroups: null,
+  extFormName: '',
+  invalid: false,
+  submitting: false,
+  handleSubmit: () => {},
+  putPrefixField: name => name,
+  cloneMode: false,
 };
+
+export default reduxForm({
+  form: MultipleContentsConfigContainerId,
+})(ContentConfigFormBody);
