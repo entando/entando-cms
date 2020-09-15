@@ -29,14 +29,15 @@ const renderField = (
   }
 
   const {
-    type, code, mandatory, listFilter, indexable, name: attName,
+    type, code, mandatory, listFilter, indexable, names: attName,
   } = attribute;
 
   const helpTextArr = [];
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
-  const i18nName = _.isObject(attName) ? (attName[locale] || code) : (attName || code);
+  const i18nName = _.isObject(attName)
+    ? (attName[selectedLangTab || locale] || code) : (attName || code);
   const fieldLabel = (
     <FormLabel
       labelText={i18nName}
@@ -111,7 +112,7 @@ const AttributeFields = ({
     const atts = [];
     attributes.forEach((attr) => {
       const {
-        type, code, value, values, elements, compositeelements, listelements, name,
+        type, code, value, values, elements, compositeelements, listelements, names,
       } = attr;
       atts.push({
         code,
@@ -120,7 +121,7 @@ const AttributeFields = ({
         elements,
         compositeelements,
         listelements,
-        name,
+        names,
       });
     });
     reInitializeForm('editcontentform', {

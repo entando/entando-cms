@@ -54,14 +54,15 @@ const AttributeField = ({
   const {
     type,
     code,
-    name: attName,
+    names: attName,
     mandatory,
     listFilter,
     indexable,
     validationRules,
   } = attribute;
 
-  const i18nName = _.isObject(attName) ? (attName[locale] || code) : (attName || code);
+  const i18nName = _.isObject(attName)
+    ? (attName[selectedLangTab || locale] || code) : (attName || code);
 
   const helpTextArr = [];
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');

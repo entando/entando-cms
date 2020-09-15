@@ -34,8 +34,8 @@ const AttributeListTableActions = ({
   const isMovableUp = index > 0;
   const isMovableDown = index < attributes.length - 1;
   const { type, nestedAttribute } = attribute;
-  const { name = {} } = attribute;
-  const localizedName = _.isObject(name) ? (name[locale] || '') : name;
+  const { names = {} } = attribute;
+  const localizedName = _.isObject(names) ? (names[locale] || '') : names;
   return (
     <tr key={attribute.code}>
       <td className="ContTypeAttributeListRow__td">{attribute.code}</td>
