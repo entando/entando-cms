@@ -4,7 +4,7 @@ import {
   intlShape, FormattedMessage,
 } from 'react-intl';
 import { reduxForm, Field } from 'redux-form';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import {
   Button, Row, Col,
 } from 'patternfly-react';
@@ -33,7 +33,11 @@ export class SingleContentConfigFormBody extends PureComponent {
   componentDidUpdate(prevProps) {
     const { chosenContent } = this.props;
     const { selectedContent } = this.state;
-    if (prevProps.chosenContent !== chosenContent && !selectedContent) {
+    if (
+      prevProps.chosenContent !== chosenContent
+      && !isEmpty(chosenContent)
+      && isEmpty(selectedContent)
+    ) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ selectedContent: chosenContent });
     }
