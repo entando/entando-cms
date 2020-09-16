@@ -50,7 +50,7 @@ const AttributeInfo = ({
       <Field
         key={langCode}
         component={RenderTextInput}
-        name={`name.${langCode}`}
+        name={`names.${langCode}`}
         label={(
           <FormLabel
             langLabelText={langCode}
