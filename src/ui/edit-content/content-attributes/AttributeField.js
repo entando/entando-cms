@@ -62,7 +62,7 @@ const AttributeField = ({
   } = attribute;
 
   const i18nName = _.isObject(attName)
-    ? (attName[selectedLangTab || locale] || code) : (attName || code);
+    ? (attName[locale] || code) : (attName || code);
 
   const helpTextArr = [];
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
