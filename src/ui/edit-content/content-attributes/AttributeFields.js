@@ -37,7 +37,7 @@ const renderField = (
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
   const i18nName = _.isObject(attName)
-    ? (attName[selectedLangTab || locale] || code) : (attName || code);
+    ? (attName[locale] || code) : (attName || code);
   const fieldLabel = (
     <FormLabel
       labelText={i18nName}
