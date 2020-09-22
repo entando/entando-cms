@@ -20,7 +20,7 @@ import { setVisibleModal } from 'state/modal/actions';
 import { fetchContentType } from 'state/content-type/actions';
 import { sendPublishContent } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
-import { ROUTE_CMS_CONTENTS } from 'app-init/routes';
+import { ROUTE_CMS_CONTENTS, WIDGET_CONFIG_ROUTE } from 'app-init/routes';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 
 import EditContentForm from 'ui/edit-content/EditContentForm';
@@ -96,12 +96,25 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
             TOAST_SUCCESS,
           ),
         );
+        let callbackRoute = routeConverter(ROUTE_CMS_CONTENTS);
+        const contentId = res.id ? res.id : res[0].id;
+        
+        const queryString = window.location.search;
+        if (queryString.includes('callback')) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const widgetConfigRoute = routeConverter(WIDGET_CONFIG_ROUTE, {
+            widget: urlParams.get('callbackWidget'),
+            page: urlParams.get('callbackPage'),
+            frame: urlParams.get('callbackFrame'),
+          })
+          callbackRoute = `${widgetConfigRoute}?contentId=${contentId}`;
+        }
+
         if (saveType === APPROVE_SAVE_TYPE) {
-          const contentId = res.id ? res.id : res[0].id;
           dispatch(sendPublishContent(contentId, 'published'));
-          history.push(routeConverter(ROUTE_CMS_CONTENTS));
+          history.push(callbackRoute);
         } else if (saveType !== CONTINUE_SAVE_TYPE) {
-          history.push(routeConverter(ROUTE_CMS_CONTENTS));
+          history.push(callbackRoute);
         } else if (res && res[0]) {
           dispatch(setWorkMode(WORK_MODE_EDIT));
           dispatch(fetchContent(`/${res[0].id}`));

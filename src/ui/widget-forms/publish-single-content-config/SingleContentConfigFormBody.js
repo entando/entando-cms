@@ -6,15 +6,37 @@ import {
 import { reduxForm, Field } from 'redux-form';
 import { get, isEmpty } from 'lodash';
 import {
-  Button, Row, Col,
+  Button, Row, Col, DropdownButton, MenuItem,
 } from 'patternfly-react';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
+import { getContentStatusDetails } from 'ui/contents/ContentsTable';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
+
+const ContentTableRow = ({content, intl}) => {
+  const {description, firstEditor, lastModified, typeDescription, created, onLine, status, mainGroup} = content;
+  const { color, title } = getContentStatusDetails(status, onLine, intl);
+
+  return (
+    <tr>
+      <td>{description}</td>
+      <td>{firstEditor}</td>
+      <td>{lastModified}</td>
+      <td>{typeDescription}</td>
+      <td>{created}</td>
+      <td className="text-center">
+        <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
+      </td>
+      <td className="text-center">
+        <span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />
+      </td>
+    </tr>
+  )
+}
 
 export class SingleContentConfigFormBody extends PureComponent {
   constructor(props) {
@@ -113,6 +135,8 @@ export class SingleContentConfigFormBody extends PureComponent {
       joinGroups,
       extFormName,
       putPrefixField,
+      contentTypes,
+      onClickAddContent,
     } = this.props;
 
     const { selectedContent } = this.state;
@@ -142,21 +166,68 @@ export class SingleContentConfigFormBody extends PureComponent {
           titleId="app.info"
           requireFields={false}
         />
-        <h3>
-          <FormattedMessage id="widget.singleContent.config.content" />: {contentId} - {contentDescription}
-        </h3>
-        <Button
-          className="ChooseContentBody__cancel--btn"
-          bsStyle="default"
-          onClick={showFilterModal}
-        >
-          <FormattedMessage id="cms.contents.change" />
-        </Button>
+        <Row>
+          <Col xs={6}>
+            <h3 className="SingleContentConfigFormBody__contentTitle">
+              <FormattedMessage id="widget.singleContent.config.content" />: {contentId} - {contentDescription}
+            </h3>
+          </Col>
+          <Col xs={6} className="SingleContentConfigFormBody__addButtons">
+            <Button
+              className="ChooseContentBody__add--existing"
+              bsStyle="primary"
+              onClick={showFilterModal}
+            >
+              {content ? <FormattedMessage id="widget.singleContent.config.changeContent" /> : <FormattedMessage id="widget.singleContent.config.addExistingContent" />}
+            </Button>
+            {' '}
+            <DropdownButton
+              bsStyle="primary"
+              title={intl.formatMessage({ id: 'widget.singleContent.config.addNewContent' })}
+              id="addContent"
+            >
+              {
+                contentTypes.map(contentType => (
+                  <MenuItem
+                    eventKey={contentType.code}
+                    key={contentType.code}
+                    onClick={() => onClickAddContent(
+                      { typeCode: contentType.code, typeDescription: contentType.name },
+                    )}
+                  >
+                    {contentType.name}
+                  </MenuItem>
+                ))
+              }
+            </DropdownButton>
+          </Col>
+        </Row>
+        
         <Field name={putPrefixField('chosenContent')} component="div" />
         <Field
           name={putPrefixField('contentId')}
           component="span"
         />
+
+        <div className="SingleContentConfigFormBody__table">
+          <table className="table dataTable table-striped table-bordered">
+            <thead>
+              <tr>
+                <th><FormattedMessage id="cms.contents.description" /></th>
+                <th><FormattedMessage id="cms.contents.firstEditor" /></th>
+                <th><FormattedMessage id="cms.contents.lastModified" /></th>
+                <th><FormattedMessage id="cms.contents.typeCode" /></th>
+                <th><FormattedMessage id="cms.contents.created" /></th>
+                <th><FormattedMessage id="cms.contents.onLine" /></th>
+                <th><FormattedMessage id="cms.contents.restriction" /></th>
+              </tr>
+            </thead>
+            <tbody>
+              { contentId.length > 0 && <ContentTableRow content={content} intl={intl} /> }
+            </tbody>
+          </table>
+        </div>
+
         <div className="SingleContentConfigFormBody__templateTitle">
           <FormSectionTitle
             titleId="widget.form.publishingSettings"
@@ -253,6 +324,7 @@ SingleContentConfigFormBody.propTypes = {
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
+  onClickAddContent: PropTypes.func.isRequired,
 };
 
 SingleContentConfigFormBody.defaultProps = {
