@@ -20,7 +20,6 @@ import { getContentTypeList } from 'state/content-type/selectors';
 import { setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { setCurrentStatusShow } from 'state/contents/actions';
 import { WORK_MODE_ADD } from 'state/edit-content/types';
-import { getContentById } from 'api/contents';
 
 export const mapStateToProps = (state, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', SingleContentConfigContainerId);
@@ -93,7 +92,9 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(setVisibleModal(''));
     },
     onClickAddContent: (contentType) => {
-      const { history, pageCode, widgetCode, frameId } = ownProps;
+      const {
+        history, pageCode, widgetCode, frameId,
+      } = ownProps;
       dispatch(setWorkMode(WORK_MODE_ADD));
       dispatch(setCurrentStatusShow('all'));
       dispatch(setNewContentsType(contentType));

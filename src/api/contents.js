@@ -1,5 +1,7 @@
 import { makeRequest, METHODS } from '@entando/apimanager';
-import { RESPONSE_CONTENTS_OK, RESPONSE_DELETE_OK, RESPONSE_PUBLISH_OK, RESPONSE_SINGLE_CONTENT } from 'testutils/mocks/contents';
+import {
+  RESPONSE_CONTENTS_OK, RESPONSE_DELETE_OK, RESPONSE_PUBLISH_OK, RESPONSE_SINGLE_CONTENT,
+} from 'testutils/mocks/contents';
 
 const contentsPath = '/api/plugins/cms/contents';
 

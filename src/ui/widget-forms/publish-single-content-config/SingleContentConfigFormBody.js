@@ -11,33 +11,12 @@ import {
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
-import { getContentStatusDetails } from 'ui/contents/ContentsTable';
 import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
+import ContentTableRow from 'ui/widget-forms/publish-single-content-config/ContentTableRow';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
-
-const ContentTableRow = ({content, intl}) => {
-  const {description, firstEditor, lastModified, typeDescription, created, onLine, status, mainGroup} = content;
-  const { color, title } = getContentStatusDetails(status, onLine, intl);
-
-  return (
-    <tr>
-      <td>{description}</td>
-      <td>{firstEditor}</td>
-      <td>{lastModified}</td>
-      <td>{typeDescription}</td>
-      <td>{created}</td>
-      <td className="text-center">
-        <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
-      </td>
-      <td className="text-center">
-        <span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />
-      </td>
-    </tr>
-  )
-}
 
 export class SingleContentConfigFormBody extends PureComponent {
   constructor(props) {
@@ -51,10 +30,10 @@ export class SingleContentConfigFormBody extends PureComponent {
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
-    
+
     // fetch content from URL params
     const queryString = window.location.search;
-    if(queryString.includes('contentId')) {
+    if (queryString.includes('contentId')) {
       const urlParams = new URLSearchParams(queryString);
       const contentId = urlParams.get('contentId');
       this.fetchContentById(contentId);
@@ -65,12 +44,16 @@ export class SingleContentConfigFormBody extends PureComponent {
     const { chosenContent } = this.props;
     const { selectedContent } = this.state;
     const isNewContent = window.location.search.includes('contentId');
+<<<<<<< HEAD
     if (
       prevProps.chosenContent !== chosenContent
       && !isEmpty(chosenContent)
       && isEmpty(selectedContent)
       && !isNewContent
     ) {
+=======
+    if (prevProps.chosenContent !== chosenContent && !selectedContent && !isNewContent) {
+>>>>>>> fixing eslint
       if (chosenContent.status) {
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ selectedContent: chosenContent });
@@ -80,7 +63,7 @@ export class SingleContentConfigFormBody extends PureComponent {
     }
   }
 
-  async fetchContentById (contentId) {
+  async fetchContentById(contentId) {
     const response = await getContentById(contentId);
     const json = await response.json();
     if (response.ok) {
@@ -226,7 +209,7 @@ export class SingleContentConfigFormBody extends PureComponent {
             </DropdownButton>
           </Col>
         </Row>
-        
+
         <Field name={putPrefixField('chosenContent')} component="div" />
         <Field
           name={putPrefixField('contentId')}
@@ -337,6 +320,7 @@ SingleContentConfigFormBody.propTypes = {
   chosenContent: PropTypes.shape({
     id: PropTypes.string,
     contentId: PropTypes.string,
+    status: PropTypes.string,
   }),
   dirty: PropTypes.bool,
   onDiscard: PropTypes.func.isRequired,
@@ -349,6 +333,10 @@ SingleContentConfigFormBody.propTypes = {
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
   onClickAddContent: PropTypes.func.isRequired,
+  contentTypes: PropTypes.arrayOf(PropTypes.shape({
+    code: PropTypes.string,
+    name: PropTypes.string,
+  })),
 };
 
 SingleContentConfigFormBody.defaultProps = {
@@ -361,6 +349,7 @@ SingleContentConfigFormBody.defaultProps = {
   invalid: false,
   submitting: false,
   putPrefixField: name => name,
+  contentTypes: {},
 };
 
 export default reduxForm({

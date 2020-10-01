@@ -98,7 +98,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
         );
         let callbackRoute = routeConverter(ROUTE_CMS_CONTENTS);
         const contentId = res.id ? res.id : res[0].id;
-        
+
         const queryString = window.location.search;
         if (queryString.includes('callback')) {
           const urlParams = new URLSearchParams(window.location.search);
@@ -106,7 +106,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
             widget: urlParams.get('callbackWidget'),
             page: urlParams.get('callbackPage'),
             frame: urlParams.get('callbackFrame'),
-          })
+          });
           callbackRoute = `${widgetConfigRoute}?contentId=${contentId}`;
         }
 
