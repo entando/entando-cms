@@ -12,6 +12,7 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
+import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 
@@ -50,18 +51,41 @@ export class SingleContentConfigFormBody extends PureComponent {
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
+    
+    // fetch content from URL params
+    const queryString = window.location.search;
+    if(queryString.includes('contentId')) {
+      const urlParams = new URLSearchParams(queryString);
+      const contentId = urlParams.get('contentId');
+      this.fetchContentById(contentId);
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { chosenContent } = this.props;
     const { selectedContent } = this.state;
+    const isNewContent = window.location.search.includes('contentId');
     if (
       prevProps.chosenContent !== chosenContent
       && !isEmpty(chosenContent)
       && isEmpty(selectedContent)
+      && !isNewContent
     ) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ selectedContent: chosenContent });
+      if (chosenContent.status) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ selectedContent: chosenContent });
+      } else {
+        this.fetchContentById(chosenContent.contentId);
+      }
+    }
+  }
+
+  async fetchContentById (contentId) {
+    const response = await getContentById(contentId);
+    const json = await response.json();
+    if (response.ok) {
+      const selectedContent = json.payload;
+      this.handleContentSelect(selectedContent);
     }
   }
 

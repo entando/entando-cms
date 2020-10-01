@@ -7,6 +7,12 @@ export const RESPONSE_CONTENTS_OK = [
   },
 ];
 
+export const RESPONSE_SINGLE_CONTENT = [
+  {
+    id: 'NEW1',
+  },
+];
+
 export const RESPONSE_DELETE_OK = {
   result: 'ok',
 };

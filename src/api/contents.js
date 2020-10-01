@@ -1,5 +1,5 @@
 import { makeRequest, METHODS } from '@entando/apimanager';
-import { RESPONSE_CONTENTS_OK, RESPONSE_DELETE_OK, RESPONSE_PUBLISH_OK } from 'testutils/mocks/contents';
+import { RESPONSE_CONTENTS_OK, RESPONSE_DELETE_OK, RESPONSE_PUBLISH_OK, RESPONSE_SINGLE_CONTENT } from 'testutils/mocks/contents';
 
 const contentsPath = '/api/plugins/cms/contents';
 
@@ -10,6 +10,14 @@ export const getContents = (page, params = '') => makeRequest({
   mockResponse: RESPONSE_CONTENTS_OK,
   useAuthentication: true,
 }, page);
+
+export const getContentById = id => makeRequest({
+  uri: `${contentsPath}/${id}`,
+  method: METHODS.GET,
+  contentType: 'application/json',
+  mockResponse: RESPONSE_SINGLE_CONTENT,
+  useAuthentication: true,
+});
 
 export const deleteContent = id => makeRequest({
   uri: `${contentsPath}/${id}`,

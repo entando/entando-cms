@@ -20,6 +20,7 @@ import { getContentTypeList } from 'state/content-type/selectors';
 import { setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { setCurrentStatusShow } from 'state/contents/actions';
 import { WORK_MODE_ADD } from 'state/edit-content/types';
+import { getContentById } from 'api/contents';
 
 export const mapStateToProps = (state, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', SingleContentConfigContainerId);
@@ -52,13 +53,6 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
         const { ownerGroup, joinGroups } = res.payload || {};
         dispatch(change(formToUse, putPrefixField('ownerGroup'), ownerGroup));
         dispatch(change(formToUse, putPrefixField('joinGroups'), joinGroups));
-
-        // get content from url
-        const queryString = window.location.search;
-        if(queryString.includes('contentId')) {
-          const urlParams = new URLSearchParams(queryString);
-          
-        }
       });
     },
     putPrefixField,
