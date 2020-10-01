@@ -44,16 +44,12 @@ export class SingleContentConfigFormBody extends PureComponent {
     const { chosenContent } = this.props;
     const { selectedContent } = this.state;
     const isNewContent = window.location.search.includes('contentId');
-<<<<<<< HEAD
     if (
       prevProps.chosenContent !== chosenContent
       && !isEmpty(chosenContent)
       && isEmpty(selectedContent)
       && !isNewContent
     ) {
-=======
-    if (prevProps.chosenContent !== chosenContent && !selectedContent && !isNewContent) {
->>>>>>> fixing eslint
       if (chosenContent.status) {
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ selectedContent: chosenContent });
