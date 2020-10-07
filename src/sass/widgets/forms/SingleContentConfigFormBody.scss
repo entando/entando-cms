@@ -14,15 +14,15 @@
     margin-top: 15px;
   }
 
-  &__contentTitle {
+  &__contentTitle { // sass-lint:disable-line class-name-format
     margin: 0;
   }
 
-  &__table {
+  &__table { // sass-lint:disable-line class-name-format
     margin-top: 10px;
   }
 
-  &__addButtons {
+  &__addButtons { // sass-lint:disable-line class-name-format
     text-align: right;
   }
 }
