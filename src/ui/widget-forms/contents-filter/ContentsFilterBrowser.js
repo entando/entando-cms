@@ -6,7 +6,7 @@ import ContentsFilter from 'ui/contents/ContentsFilter';
 import ContentsFilterTabs from 'ui/widget-forms/contents-filter/ContentsFilterTabs';
 import ContentsFilterTable from 'ui/widget-forms/contents-filter/ContentsFilterTable';
 
-const messages = defineMessages({
+export const messages = defineMessages({
   description: {
     id: 'cms.contents.description',
     defaultMessage: 'Name',
@@ -53,7 +53,7 @@ const messages = defineMessages({
   },
 });
 
-const AVAILABLE_COLUMN_CODES = [
+export const AVAILABLE_COLUMN_CODES = [
   'description', 'firstEditor', 'lastModified',
   'typeCode', 'created', 'mainGroup', 'groups',
   'onLine', 'restriction', 'code',

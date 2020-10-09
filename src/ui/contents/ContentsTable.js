@@ -17,7 +17,7 @@ import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
-export const getContentStatusDetails = (status, hasPublicVersion, intl) => {
+export const getContentStatusDetails = (status = '', hasPublicVersion, intl) => {
   const statusLowerCase = status.toLowerCase();
   let color = '';
   let titleId = '';

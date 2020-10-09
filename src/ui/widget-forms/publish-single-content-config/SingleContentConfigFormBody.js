@@ -6,13 +6,15 @@ import {
 import { reduxForm, Field } from 'redux-form';
 import { get, isEmpty } from 'lodash';
 import {
-  Button, Row, Col,
+  Button, Row, Col, DropdownButton, MenuItem,
 } from 'patternfly-react';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
+import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
+import ContentTableRow from 'ui/widget-forms/publish-single-content-config/ContentTableRow';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
@@ -28,18 +30,41 @@ export class SingleContentConfigFormBody extends PureComponent {
   componentDidMount() {
     const { onDidMount } = this.props;
     onDidMount();
+
+    // fetch content from URL params
+    const queryString = window.location.search;
+    if (queryString.includes('contentId')) {
+      const urlParams = new URLSearchParams(queryString);
+      const contentId = urlParams.get('contentId');
+      this.fetchContentById(contentId);
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { chosenContent } = this.props;
     const { selectedContent } = this.state;
+    const isNewContent = window.location.search.includes('contentId');
     if (
       prevProps.chosenContent !== chosenContent
       && !isEmpty(chosenContent)
       && isEmpty(selectedContent)
+      && !isNewContent
     ) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ selectedContent: chosenContent });
+      if (chosenContent.status) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ selectedContent: chosenContent });
+      } else {
+        this.fetchContentById(chosenContent.contentId);
+      }
+    }
+  }
+
+  async fetchContentById(contentId) {
+    const response = await getContentById(contentId);
+    const json = await response.json();
+    if (response.ok) {
+      const selectedContent = json.payload;
+      this.handleContentSelect(selectedContent);
     }
   }
 
@@ -113,6 +138,8 @@ export class SingleContentConfigFormBody extends PureComponent {
       joinGroups,
       extFormName,
       putPrefixField,
+      contentTypes,
+      onClickAddContent,
     } = this.props;
 
     const { selectedContent } = this.state;
@@ -142,21 +169,68 @@ export class SingleContentConfigFormBody extends PureComponent {
           titleId="app.info"
           requireFields={false}
         />
-        <h3>
-          <FormattedMessage id="widget.singleContent.config.content" />: {contentId} - {contentDescription}
-        </h3>
-        <Button
-          className="ChooseContentBody__cancel--btn"
-          bsStyle="default"
-          onClick={showFilterModal}
-        >
-          <FormattedMessage id="cms.contents.change" />
-        </Button>
+        <Row>
+          <Col xs={6}>
+            <h3 className="SingleContentConfigFormBody__contentTitle">
+              <FormattedMessage id="widget.singleContent.config.content" />: {contentId} - {contentDescription}
+            </h3>
+          </Col>
+          <Col xs={6} className="SingleContentConfigFormBody__addButtons">
+            <Button
+              className="ChooseContentBody__add--existing"
+              bsStyle="primary"
+              onClick={showFilterModal}
+            >
+              {content ? <FormattedMessage id="widget.singleContent.config.changeContent" /> : <FormattedMessage id="widget.singleContent.config.addExistingContent" />}
+            </Button>
+            {' '}
+            <DropdownButton
+              bsStyle="primary"
+              title={intl.formatMessage({ id: 'widget.singleContent.config.addNewContent' })}
+              id="addContent"
+            >
+              {
+                contentTypes.map(contentType => (
+                  <MenuItem
+                    eventKey={contentType.code}
+                    key={contentType.code}
+                    onClick={() => onClickAddContent(
+                      { typeCode: contentType.code, typeDescription: contentType.name },
+                    )}
+                  >
+                    {contentType.name}
+                  </MenuItem>
+                ))
+              }
+            </DropdownButton>
+          </Col>
+        </Row>
+
         <Field name={putPrefixField('chosenContent')} component="div" />
         <Field
           name={putPrefixField('contentId')}
           component="span"
         />
+
+        <div className="SingleContentConfigFormBody__table">
+          <table className="table dataTable table-striped table-bordered">
+            <thead>
+              <tr>
+                <th><FormattedMessage id="cms.contents.description" /></th>
+                <th><FormattedMessage id="cms.contents.firstEditor" /></th>
+                <th><FormattedMessage id="cms.contents.lastModified" /></th>
+                <th><FormattedMessage id="cms.contents.typeCode" /></th>
+                <th><FormattedMessage id="cms.contents.created" /></th>
+                <th><FormattedMessage id="cms.contents.onLine" /></th>
+                <th><FormattedMessage id="cms.contents.restriction" /></th>
+              </tr>
+            </thead>
+            <tbody>
+              { contentId.length > 0 && <ContentTableRow content={content} intl={intl} /> }
+            </tbody>
+          </table>
+        </div>
+
         <div className="SingleContentConfigFormBody__templateTitle">
           <FormSectionTitle
             titleId="widget.form.publishingSettings"
@@ -242,6 +316,7 @@ SingleContentConfigFormBody.propTypes = {
   chosenContent: PropTypes.shape({
     id: PropTypes.string,
     contentId: PropTypes.string,
+    status: PropTypes.string,
   }),
   dirty: PropTypes.bool,
   onDiscard: PropTypes.func.isRequired,
@@ -253,6 +328,11 @@ SingleContentConfigFormBody.propTypes = {
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
+  onClickAddContent: PropTypes.func.isRequired,
+  contentTypes: PropTypes.arrayOf(PropTypes.shape({
+    code: PropTypes.string,
+    name: PropTypes.string,
+  })),
 };
 
 SingleContentConfigFormBody.defaultProps = {
@@ -265,6 +345,7 @@ SingleContentConfigFormBody.defaultProps = {
   invalid: false,
   submitting: false,
   putPrefixField: name => name,
+  contentTypes: {},
 };
 
 export default reduxForm({
