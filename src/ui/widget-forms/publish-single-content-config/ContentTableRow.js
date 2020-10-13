@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { intlShape } from 'react-intl';
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
 
-const ContentTableRow = ({ content, intl }) => {
+const ContentTableRow = ({ content = {}, intl }) => {
   const {
     description, firstEditor, lastModified, typeDescription, created, onLine, status, mainGroup,
   } = content;
@@ -33,9 +33,11 @@ ContentTableRow.propTypes = {
     lastModified: PropTypes.string,
     typeDescription: PropTypes.string,
     created: PropTypes.string,
-    onLine: PropTypes.string,
+    onLine: PropTypes.bool,
     status: PropTypes.string,
     mainGroup: PropTypes.string,
   }).isRequired,
   intl: intlShape.isRequired,
 };
+
+export default ContentTableRow;

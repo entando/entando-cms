@@ -190,7 +190,7 @@ export class SingleContentConfigFormBody extends PureComponent {
               id="addContent"
             >
               {
-                contentTypes.map(contentType => (
+                contentTypes && contentTypes.map(contentType => (
                   <MenuItem
                     eventKey={contentType.code}
                     key={contentType.code}
