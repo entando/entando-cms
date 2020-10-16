@@ -33,7 +33,7 @@ ContentTableRow.propTypes = {
     lastModified: PropTypes.string,
     typeDescription: PropTypes.string,
     created: PropTypes.string,
-    onLine: PropTypes.string,
+    onLine: PropTypes.bool,
     status: PropTypes.string,
     mainGroup: PropTypes.string,
   }).isRequired,
