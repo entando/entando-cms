@@ -2,7 +2,7 @@ import { addErrors } from '@entando/messages';
 import { flattenDeep } from 'lodash';
 
 import {
-  getPage, getPageChildren, getViewPages, getSearchPages,
+  getPage, getPageChildren, getViewPages, getSearchPages, deletePage,
 } from 'api/pages';
 import { toggleLoading } from 'state/loading/actions';
 import {
@@ -177,3 +177,14 @@ export const fetchPageTreeAll = () => dispatch => new Promise((resolve) => {
     });
   }).catch(() => {});
 });
+
+
+export const sendDeletePage = page => async (dispatch) => {
+  try {
+    const response = await deletePage(page);
+    const json = await response.json();
+    dispatch(addErrors(json.errors.map(e => e.message)));
+  } catch (e) {
+    // do nothing
+  }
+};

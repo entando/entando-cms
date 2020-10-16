@@ -39,3 +39,5 @@ ContentTableRow.propTypes = {
   }).isRequired,
   intl: intlShape.isRequired,
 };
+
+export default ContentTableRow;
