@@ -48,7 +48,7 @@ const isValidDateTimeStr = (dateTime) => {
 
 const StickySave = ({
   lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
-  onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions,
+  onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions, enableTranslationWarning,
 }) => (
   <Grid className="no-padding">
     <Col xs={12} className="StickySave">
@@ -102,7 +102,7 @@ const StickySave = ({
                 onClick={handleSubmit(values => onSubmit({
                   ...values,
                   saveType: REGULAR_SAVE_TYPE,
-                }))}
+                }, undefined, !enableTranslationWarning))}
                 disabled={invalid || submitting || !isDirty}
               >
                 {intl.formatMessage(messages.save)}
@@ -122,7 +122,7 @@ const StickySave = ({
                   onClick={handleSubmit(values => onSubmit({
                     ...values,
                     saveType: CONTINUE_SAVE_TYPE,
-                  }))}
+                  }, undefined, !enableTranslationWarning))}
                 >
                   {intl.formatMessage(messages.saveAndContinue)}
                 </Button>
@@ -140,7 +140,7 @@ const StickySave = ({
                         ...values,
                         contentId: content.id,
                         saveType: APPROVE_SAVE_TYPE,
-                      }))}
+                      }, undefined, !enableTranslationWarning))}
                     >
                       {intl.formatMessage(messages.saveAndApprove)}
                     </Button>
