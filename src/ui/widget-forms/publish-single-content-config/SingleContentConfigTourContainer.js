@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { getUsername } from '@entando/apimanager';
 
 import SingleContentConfigTour from 'ui/widget-forms/publish-single-content-config/SingleContentConfigTour';
 import { selectSingleRow } from 'state/contents/actions';
 import {
-  getAppTourlastStep, getAppTourProgress, getPublishStatus, getTourCreatedPage,
+  getAppTourlastStep, getAppTourProgress, getPublishStatus, getTourCreatedPage, getWizardEnabled,
 } from 'state/app-tour/selectors';
 import { getContents } from 'state/contents/selectors';
 import { setAppTourLastStep, setAppTourProgress } from 'state/app-tour/actions';
@@ -18,7 +17,7 @@ export const mapStateToProps = (state, { lockBodyScroll = true }) => {
   const pageCode = (getTourCreatedPage(state) || {}).code || '';
   return {
     username: getUsername(state),
-    wizardEnabled: formValueSelector('user')(state, 'wizardEnabled'),
+    wizardEnabled: getWizardEnabled(state),
     appTourProgress: getAppTourProgress(state),
     appTourLastStep: getAppTourlastStep(state),
     lockBodyScroll,
