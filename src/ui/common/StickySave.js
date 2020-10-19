@@ -48,7 +48,8 @@ const isValidDateTimeStr = (dateTime) => {
 
 const StickySave = ({
   lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
-  onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions, enableTranslationWarning,
+  onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions,
+  enableTranslationWarning,
 }) => (
   <Grid className="no-padding">
     <Col xs={12} className="StickySave">
@@ -196,6 +197,7 @@ StickySave.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   userPermissions: PropTypes.arrayOf(PropTypes.string),
+  enableTranslationWarning: PropTypes.bool.isRequired,
 };
 
 StickySave.defaultProps = {
