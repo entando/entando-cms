@@ -26,6 +26,7 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getUsername } from '@entando/apimanager';
 import { getSelectedContentType } from 'state/content-type/selectors';
+import { getTranslationWarning } from 'state/user-preferences/selectors';
 import { getLocale } from 'state/locale/selectors';
 
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
@@ -72,6 +73,7 @@ export const mapStateToProps = state => ({
   contentType: getSelectedContentType(state),
   status: formValueSelector('editcontentform')(state, 'status'),
   missingTranslations: getMissingTranslations(state),
+  enableTranslationWarning: getTranslationWarning(state),
 });
 
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({

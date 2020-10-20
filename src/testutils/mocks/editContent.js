@@ -16,6 +16,7 @@ export const EDIT_CONTENT_OPENED_OK = {
   language: undefined,
   loading: undefined,
   saveType: undefined,
+  enableTranslationWarning: true,
 };
 
 export const ADD_CONTENT_OPENED_OK = {
@@ -35,6 +36,7 @@ export const ADD_CONTENT_OPENED_OK = {
     contentType: 'NEWS',
     version: '0.0',
   },
+  enableTranslationWarning: true,
 };
 
 export const GET_CONTENT_RESPONSE_OK = {
