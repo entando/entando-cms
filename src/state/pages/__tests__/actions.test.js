@@ -12,7 +12,7 @@ import {
   LOGIN_PAYLOAD, NOTFOUND_PAYLOAD, FREE_PAGES_PAYLOAD,
 } from 'testutils/mocks/pages';
 import {
-  getPage, getPageChildren, getViewPages, getSearchPages,
+  getPage, getPageChildren, getViewPages, getSearchPages, deletePage,
 } from 'api/pages';
 import { getStatusMap } from 'state/pages/selectors';
 
@@ -20,8 +20,10 @@ import {
   addPages, setPageLoading, setPageLoaded, togglePageExpanded,
   handleExpandPage, fetchViewPages, setViewPages, setSearchPages,
   fetchSearchPages, clearTree, setBatchExpanded, fetchPageTreeAll,
+  sendDeletePage,
 } from 'state/pages/actions';
 import { TOGGLE_LOADING } from 'state/loading/types';
+import { ADD_ERRORS } from 'state/categories/types';
 
 jest.mock('state/pages/selectors', () => ({
   getStatusMap: jest.fn(),
@@ -32,6 +34,7 @@ jest.mock('api/pages', () => ({
   getSearchPages: jest.fn(mockApi({ payload: [] })),
   getPage: jest.fn(),
   getPageChildren: jest.fn(),
+  deletePage: jest.fn(mockApi({ payload: [] })),
 }));
 
 const mockStore = configureStore([thunk]);
@@ -288,6 +291,36 @@ describe('state/pages/actions', () => {
         expect(actionTypes.includes(BATCH_TOGGLE_EXPANDED)).toBe(true);
         done();
       }).catch(done.fail);
+    });
+  });
+
+  describe('sendDeletePage', () => {
+    let store;
+    beforeEach(() => {
+      store = mockStore(INITIALIZED_STATE);
+    });
+
+    it('calls removePage and router', (done) => {
+      store.dispatch(sendDeletePage(DASHBOARD_PAYLOAD)).then(() => {
+        expect(deletePage).toHaveBeenCalled();
+        const actions = store.getActions();
+        expect(actions).toHaveLength(1);
+        done();
+      }).catch(done.fail);
+    });
+
+    it('if the response is not ok, dispatch add errors', async () => {
+      deletePage.mockImplementation(mockApi({ errors: true }));
+      return store.dispatch(sendDeletePage(DASHBOARD_PAYLOAD)).catch((e) => {
+        expect(deletePage).toHaveBeenCalled();
+        const actions = store.getActions();
+        expect(actions).toHaveLength(1);
+        expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+        expect(e).toHaveProperty('errors');
+        e.errors.forEach((error, index) => {
+          expect(error.message).toEqual(actions[0].payload.errors[index]);
+        });
+      });
     });
   });
 });

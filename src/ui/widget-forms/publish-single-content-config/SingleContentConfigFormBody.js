@@ -15,6 +15,7 @@ import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import ContentTableRow from 'ui/widget-forms/publish-single-content-config/ContentTableRow';
+import SingleContentConfigTourContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigTourContainer';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
@@ -107,7 +108,7 @@ export class SingleContentConfigFormBody extends PureComponent {
       <Row className="SingleContentConfigFormBody__actionBar">
         <Col xs={12}>
           <Button
-            className="pull-right AddContentTypeFormBody__save--btn"
+            className="pull-right AddContentTypeFormBody__save--btn app-tour-step-21"
             type="submit"
             bsStyle="primary"
             disabled={invalid || submitting || !contentExists}
@@ -140,6 +141,7 @@ export class SingleContentConfigFormBody extends PureComponent {
       putPrefixField,
       contentTypes,
       onClickAddContent,
+      appTourProgress,
     } = this.props;
 
     const { selectedContent } = this.state;
@@ -177,9 +179,9 @@ export class SingleContentConfigFormBody extends PureComponent {
           </Col>
           <Col xs={6} className="SingleContentConfigFormBody__addButtons">
             <Button
-              className="ChooseContentBody__add--existing"
+              className="ChooseContentBody__add--existing app-tour-step-18"
               bsStyle="primary"
-              onClick={showFilterModal}
+              onClick={() => showFilterModal(appTourProgress)}
             >
               {content ? <FormattedMessage id="widget.singleContent.config.changeContent" /> : <FormattedMessage id="widget.singleContent.config.addExistingContent" />}
             </Button>
@@ -291,6 +293,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           <Col xs={12}>
             {extFormName ? formFields : this.enclosedWithForm(formFields)}
           </Col>
+          <SingleContentConfigTourContainer />
         </Row>
         {!extFormName && (
           <ConfirmCancelModalContainer
@@ -333,6 +336,7 @@ SingleContentConfigFormBody.propTypes = {
     code: PropTypes.string,
     name: PropTypes.string,
   })),
+  appTourProgress: PropTypes.string,
 };
 
 SingleContentConfigFormBody.defaultProps = {
@@ -346,6 +350,7 @@ SingleContentConfigFormBody.defaultProps = {
   submitting: false,
   putPrefixField: name => name,
   contentTypes: {},
+  appTourProgress: '',
 };
 
 export default reduxForm({

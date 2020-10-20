@@ -75,3 +75,10 @@ export const getSearchPages = (page = { page: 1, pageSize: 10 }, params = '') =>
   },
   page,
 );
+
+export const deletePage = page => makeRequest({
+  uri: `/api/pages/${page.code}`,
+  method: METHODS.DELETE,
+  mockResponse: { code: `${page.code}` },
+  useAuthentication: true,
+});

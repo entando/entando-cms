@@ -18,6 +18,7 @@ const ContentsFilterModal = (props) => {
     <Button
       type="button"
       bsStyle="primary"
+      className="app-tour-step-20"
       disabled={invalid || submitting || !contentChosen}
       id="ContentsFilterModal__button-save"
       onClick={() => {
