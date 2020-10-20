@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { required, isNumber } from '@entando/utils';
+import { required, isNumber, email } from '@entando/utils';
 import _ from 'lodash';
 
 import FormLabel from 'ui/common/form/FormLabel';
@@ -23,6 +23,7 @@ import {
   TYPE_IMAGE,
   TYPE_LINK,
   TYPE_MONOTEXT,
+  TYPE_EMAIL,
 } from 'state/content-type/const';
 import BooleanAttributeField from 'ui/edit-content/content-attributes/BooleanAttributeField';
 import CheckboxAttributeField from 'ui/edit-content/content-attributes/CheckboxAttributeField';
@@ -39,6 +40,7 @@ import AttachAttributeFieldContainer from 'ui/edit-content/content-attributes/At
 import ImageAttributeFieldContainer from 'ui/edit-content/content-attributes/ImageAttributeFieldContainer';
 import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
+import EmailAttributeField from 'ui/edit-content/content-attributes/EmailAttributeField';
 
 const AttributeField = ({
   name,
@@ -76,7 +78,7 @@ const AttributeField = ({
     />
   );
 
-  const validate = getAttrValidators({ ...validationRules, mandatory });
+  const validate = getAttrValidators({ ...validationRules, mandatory }, type);
   if (mandatory) validate.push(required);
 
 
@@ -121,6 +123,11 @@ const AttributeField = ({
     case TYPE_TEXT:
       AttributeFieldComp = TextAttributeField;
       actualName = `${name}.values.${langCode}`;
+      break;
+    case TYPE_EMAIL:
+      validate.push(email);
+      AttributeFieldComp = EmailAttributeField;
+      actualName = `${name}.values`;
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
