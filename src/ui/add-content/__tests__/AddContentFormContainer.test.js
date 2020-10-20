@@ -28,6 +28,11 @@ const TEST_STATE = {
     },
   },
   currentUser: { username: 'admin' },
+  userPreferences: {
+    wizard: true,
+    translationWarning: true,
+    loadOnPageSelect: true,
+  },
 };
 
 configEnzymeAdapter();
