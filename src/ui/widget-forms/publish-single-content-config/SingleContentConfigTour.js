@@ -77,6 +77,7 @@ class SingleContentConfigTour extends React.Component {
     } = this.props;
 
     const step18Element = document.querySelector('.app-tour-step-18');
+    const step19Cancel = document.querySelector('.GenericModal__cancel');
     const step20Element = document.querySelector('.app-tour-step-20');
     const step21Element = document.querySelector('.app-tour-step-21');
     const step21Cancel = document.querySelector('.AddContentTypeFormBody__cancel--btn');
@@ -144,6 +145,7 @@ class SingleContentConfigTour extends React.Component {
         step: 19,
         onNext: () => onNextSelectContent(contents[0]),
         onBack: ({ goTo }) => {
+          simulateMouseClick(step19Cancel);
           this.onNextStep(18, goTo);
         },
         stepInteraction: true,
@@ -162,7 +164,8 @@ class SingleContentConfigTour extends React.Component {
         onNext: () => simulateMouseClick(step21Element),
         nextButtonDisabled: !step21Element,
         onBack: ({ goTo }) => {
-          this.onNextStep(20, goTo);
+          simulateMouseClick(step18Element);
+          this.onNextStep(19, goTo);
         },
         stepInteraction: true,
       },

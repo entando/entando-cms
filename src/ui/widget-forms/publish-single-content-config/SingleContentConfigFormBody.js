@@ -16,6 +16,7 @@ import { getContentById } from 'api/contents';
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import ContentTableRow from 'ui/widget-forms/publish-single-content-config/ContentTableRow';
 import SingleContentConfigTourContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigTourContainer';
+import { APP_TOUR_STARTED } from 'state/app-tour/const';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
 
@@ -91,12 +92,13 @@ export class SingleContentConfigFormBody extends PureComponent {
       invalid,
       dirty,
       submitting,
+      appTourProgress,
     } = this.props;
 
     const { selectedContent } = this.state;
 
     const handleCancelClick = () => {
-      if (dirty) {
+      if (dirty && appTourProgress !== APP_TOUR_STARTED) {
         onCancel();
       } else {
         onDiscard();
@@ -283,6 +285,7 @@ export class SingleContentConfigFormBody extends PureComponent {
       intl,
       onSave,
       onDiscard,
+      appTourProgress,
     } = this.props;
 
     const formFields = this.renderFormFields();
@@ -295,7 +298,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           </Col>
           <SingleContentConfigTourContainer />
         </Row>
-        {!extFormName && (
+        {!extFormName && appTourProgress !== APP_TOUR_STARTED && (
           <ConfirmCancelModalContainer
             contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
             invalid={invalid}
