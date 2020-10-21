@@ -36,6 +36,7 @@ import {
 } from 'app-init/routes';
 import { CONTINUE_SAVE_TYPE, APPROVE_SAVE_TYPE, WORK_MODE_EDIT } from 'state/edit-content/types';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { getTranslationWarning } from 'state/user-preferences/selectors';
 
 export const TranslationWarningModalID = 'TranslationWarningModal';
 
@@ -69,6 +70,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   saveType: getSaveType(state),
   loading: getLoading(state).editContent,
   missingTranslations: getMissingTranslations(state),
+  enableTranslationWarning: getTranslationWarning(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history, intl }) => ({

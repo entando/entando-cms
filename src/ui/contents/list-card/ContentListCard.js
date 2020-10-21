@@ -14,6 +14,7 @@ class ContentListCard extends Component {
   constructor(props) {
     super(props);
     this.changePage = this.changePage.bind(this);
+    this.changePageSize = this.changePageSize.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +25,11 @@ class ContentListCard extends Component {
   changePage(page) {
     const { onDidMount } = this.props;
     onDidMount(page);
+  }
+
+  changePageSize(pageSize) {
+    const { onDidMount } = this.props;
+    onDidMount(1, pageSize);
   }
 
   renderRows() {
@@ -57,13 +63,13 @@ class ContentListCard extends Component {
 
   render() {
     const {
-      intl, pagination: { page, totalItems }, contentTypes,
+      intl, pagination: { page, totalItems, pageSize: perPage }, contentTypes,
       onClickAddContent, userPermissions,
     } = this.props;
     const pagination = {
       page,
-      perPage: 5,
-      perPageOptions: [5],
+      perPage,
+      perPageOptions: [5, 10, 15],
     };
     const renderAddContentButton = hasAccess(
       [SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION], userPermissions,
@@ -121,6 +127,7 @@ class ContentListCard extends Component {
           viewType="table"
           itemCount={totalItems}
           onPageSet={this.changePage}
+          onPerPageSelect={this.changePageSize}
           messages={messages}
         />
         <Clearfix />
@@ -138,6 +145,7 @@ ContentListCard.propTypes = {
   pagination: PropTypes.shape({
     page: PropTypes.number.isRequired,
     totalItems: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
   }),
   onClickAddContent: PropTypes.func.isRequired,
 };

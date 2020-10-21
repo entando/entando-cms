@@ -16,7 +16,7 @@ const GenericModal = ({
 }) => {
   const footer = modalFooter || (
     <Modal.Footer>
-      <Button bsStyle="default" className="btn-cancel" onClick={onCloseModal}>
+      <Button bsStyle="default" className="btn-cancel GenericModal__cancel" onClick={onCloseModal}>
         <FormattedMessage id="cms.label.cancel" />
       </Button>
       {buttons.map(button => (
