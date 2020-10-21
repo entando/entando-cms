@@ -290,12 +290,6 @@ export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch,
       addMissingTranslations(i)(attribute);
     }
 
-    // check if value needs amended translations
-    if (oldAttributes) {
-      // console.log(oldAttributes);
-      // console.log(attribute);
-    }
-
     const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item) => {
       const attr = mappedCompAttributes[item.code];
       return convertFieldValueByType(item, attr.type);
