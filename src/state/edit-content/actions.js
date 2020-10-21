@@ -252,7 +252,8 @@ export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch,
     if (attrValues[defaultLanguage.code]) {
       otherLanguages.forEach((lang) => {
         if ((attrValues[lang.code] === undefined || attrValues[lang.code].length === 0)
-        || (oldAttributes && attrValues[defaultLanguage.code] !== oldAttributes[index].values[defaultLanguage.code] 
+        || (oldAttributes
+        && attrValues[defaultLanguage.code] !== oldAttributes[index].values[defaultLanguage.code]
         && attrValues[lang.code] === oldAttributes[index].values[lang.code]
         && oldAttributes[index].values[lang.code] !== undefined)) {
           // translation does not exist or is missing ammendments

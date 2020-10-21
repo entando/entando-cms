@@ -184,6 +184,7 @@ StickySave.propTypes = {
   intl: intlShape.isRequired,
   content: PropTypes.shape({
     id: PropTypes.string,
+    attributes: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   lastAutoSaveTime: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
