@@ -272,9 +272,6 @@ export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch,
     contentType,
   } = values;
 
-  console.log(oldAttributes);
-  console.log(attributes);
-
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);
   const transformedAttributes = attributes.map((attribute, i) => {
     const { type, compositeAttributes: cAtts } = contentTypeAttributes[i];
