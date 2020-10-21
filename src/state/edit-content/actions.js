@@ -238,7 +238,7 @@ const convertFieldValueByType = (item, type) => {
 };
 
 // eslint-disable-next-line max-len
-export const saveContent = (values, ignoreWarnings) => (dispatch, getState) => new Promise((resolve, reject) => {
+export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch, getState) => new Promise((resolve, reject) => {
   const state = getState();
   const categories = getJoinedCategories(state);
   const workMode = getWorkMode(state);
@@ -251,8 +251,11 @@ export const saveContent = (values, ignoreWarnings) => (dispatch, getState) => n
     const { values: attrValues = {}, code } = attribute;
     if (attrValues[defaultLanguage.code]) {
       otherLanguages.forEach((lang) => {
-        if (attrValues[lang.code] === undefined || attrValues[lang.code].length === 0) {
-          // translation does not exist
+        if ((attrValues[lang.code] === undefined || attrValues[lang.code].length === 0)
+        || (oldAttributes && attrValues[defaultLanguage.code] !== oldAttributes[index].values[defaultLanguage.code] 
+        && attrValues[lang.code] === oldAttributes[index].values[lang.code]
+        && oldAttributes[index].values[lang.code] !== undefined)) {
+          // translation does not exist or is missing ammendments
           let attributePath = `attributes[${index}]`;
           if (i !== undefined) {
             attributePath = `${attributePath}.compositeelements[${i}]`;
@@ -268,6 +271,9 @@ export const saveContent = (values, ignoreWarnings) => (dispatch, getState) => n
     contentType,
   } = values;
 
+  console.log(oldAttributes);
+  console.log(attributes);
+
   const contentTypeAttributes = getSelectedContentTypeAttributes(state);
   const transformedAttributes = attributes.map((attribute, i) => {
     const { type, compositeAttributes: cAtts } = contentTypeAttributes[i];
@@ -281,6 +287,12 @@ export const saveContent = (values, ignoreWarnings) => (dispatch, getState) => n
       attribute.compositeelements.forEach(addMissingTranslations(i));
     } else {
       addMissingTranslations(i)(attribute);
+    }
+
+    // check if value needs amended translations
+    if (oldAttributes) {
+      // console.log(oldAttributes);
+      // console.log(attribute);
     }
 
     const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item) => {

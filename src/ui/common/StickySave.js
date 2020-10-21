@@ -103,7 +103,7 @@ const StickySave = ({
                 onClick={handleSubmit(values => onSubmit({
                   ...values,
                   saveType: REGULAR_SAVE_TYPE,
-                }, undefined, !enableTranslationWarning))}
+                }, undefined, !enableTranslationWarning, content.attributes))}
                 disabled={invalid || submitting || !isDirty}
               >
                 {intl.formatMessage(messages.save)}
@@ -123,7 +123,7 @@ const StickySave = ({
                   onClick={handleSubmit(values => onSubmit({
                     ...values,
                     saveType: CONTINUE_SAVE_TYPE,
-                  }, undefined, !enableTranslationWarning))}
+                  }, undefined, !enableTranslationWarning, content.attributes))}
                 >
                   {intl.formatMessage(messages.saveAndContinue)}
                 </Button>
@@ -141,7 +141,7 @@ const StickySave = ({
                         ...values,
                         contentId: content.id,
                         saveType: APPROVE_SAVE_TYPE,
-                      }, undefined, !enableTranslationWarning))}
+                      }, undefined, !enableTranslationWarning, content.attributes))}
                     >
                       {intl.formatMessage(messages.saveAndApprove)}
                     </Button>

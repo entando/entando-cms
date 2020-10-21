@@ -84,9 +84,9 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
-  onSubmit: (values, categories, ignoreWarnings) => {
+  onSubmit: (values, categories, ignoreWarnings, oldAttributes) => {
     const { saveType, contentId } = values;
-    return dispatch(saveContent(values, ignoreWarnings)).then((res) => {
+    return dispatch(saveContent(values, ignoreWarnings, oldAttributes)).then((res) => {
       if (res) {
         dispatch(setVisibleModal(''));
         dispatch(
