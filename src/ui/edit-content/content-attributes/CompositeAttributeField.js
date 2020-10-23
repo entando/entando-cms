@@ -6,6 +6,7 @@ import {
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
 
+import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
 import attributeShape from './attributeShape';
 import AttributeField from './AttributeField';
 
@@ -28,30 +29,26 @@ const CompositeAttributeField = ({
     }, {},
   );
   return (
-    <Row key={code}>
-      <label className="control-label col-xs-2">
-        {label}
-      </label>
-      <Col xs={10}>
-        <Panel>
-          <Panel.Body>
-            {compositeAttributes.map((attr) => {
-              const { code: attrCode } = attr;
-              const fieldName = mappedFieldNames[attrCode];
-              return (
-                <AttributeField
-                  key={attrCode}
-                  name={fieldName}
-                  attribute={attr}
-                  langCode={langCode}
-                  selectedLangTab={selectedLangTab}
-                />
-              );
-            })}
-          </Panel.Body>
-        </Panel>
-      </Col>
-    </Row>
+    <ContentFormFieldCollapse label={label}>
+      <Panel className="RenderListField__body">
+        <Panel.Body>
+          {compositeAttributes.map((attr) => {
+            const { code: attrCode } = attr;
+            const fieldName = mappedFieldNames[attrCode];
+            return (
+              <AttributeField
+                key={attrCode}
+                name={fieldName}
+                attribute={attr}
+                langCode={langCode}
+                selectedLangTab={selectedLangTab}
+                isSub
+              />
+            );
+          })}
+        </Panel.Body>
+      </Panel>
+    </ContentFormFieldCollapse>
   );
 };
 

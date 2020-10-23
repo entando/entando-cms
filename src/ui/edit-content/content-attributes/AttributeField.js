@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { required, isNumber } from '@entando/utils';
-import _ from 'lodash';
+import { isObject } from 'lodash';
 
+import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
 import { getAttrValidators, linkValidate } from 'helpers/attrValidation';
@@ -45,11 +46,13 @@ const AttributeField = ({
   attribute,
   label,
   hasLabel,
+  labelSize,
   langCode,
   mainGroup,
   joinGroups,
   selectedLangTab,
   locale,
+  isSub,
 }) => {
   const {
     type,
@@ -61,7 +64,7 @@ const AttributeField = ({
     validationRules,
   } = attribute;
 
-  const i18nName = _.isObject(attName)
+  const i18nName = isObject(attName)
     ? (attName[locale] || code) : (attName || code);
 
   const helpTextArr = [];
@@ -142,13 +145,14 @@ const AttributeField = ({
       return null;
   }
 
-  return (
+  const field = (
     <Field
       name={actualName}
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}
       hasLabel={hasLabel}
+      labelSize={labelSize}
       validate={validate}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
@@ -159,6 +163,10 @@ const AttributeField = ({
       {...extraProps}
     />
   );
+
+  return isSub ? field : (
+    <ContentFormFieldCollapse label={fieldLabel}>{field}</ContentFormFieldCollapse>
+  );
 };
 
 AttributeField.propTypes = {
@@ -167,10 +175,12 @@ AttributeField.propTypes = {
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
   langCode: PropTypes.string,
+  labelSize: PropTypes.number,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
+  isSub: PropTypes.bool,
 };
 
 AttributeField.defaultProps = {
@@ -180,6 +190,8 @@ AttributeField.defaultProps = {
   mainGroup: '',
   joinGroups: [],
   locale: '',
+  labelSize: 2,
+  isSub: false,
 };
 
 export default AttributeField;

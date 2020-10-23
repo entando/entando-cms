@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import {
@@ -259,15 +259,16 @@ export class EditContentFormBody extends React.Component {
           className="EditContentForm form-horizontal"
         >
           <Col className="EditContentForm__content" xs={12}>
-            <Row className="InfoFormBody">
+            <Row className="InfoFormBody EditContentForm__outer-fieldset">
               <SectionTitle
                 nameId="cms.contents.edit.info"
                 onClick={handleCollapseInfo}
                 collapsable
+                noRequired
                 isOpened={infoOpen}
               />
               <Collapse isOpened={infoOpen}>
-                <fieldset className="no-padding">
+                <fieldset className="EditContentForm__fieldset">
                   <FormGroup>
                     <Col xs={12}>
                       <Field
@@ -320,15 +321,16 @@ export class EditContentFormBody extends React.Component {
                 </fieldset>
               </Collapse>
             </Row>
-            <Row className="GroupsFormBody">
+            <Row className="GroupsFormBody EditContentForm__outer-fieldset">
               <SectionTitle
                 nameId="cms.contents.edit.groups"
                 onClick={handleCollapseGroups}
                 collapsable
+                noRequired
                 isOpened={groupsOpen}
               />
               <Collapse isOpened={groupsOpen}>
-                <fieldset className="no-padding">
+                <fieldset className="EditContentForm__fieldset">
                   <Col xs={12}>
                     <FormGroup>
                       <Field
@@ -387,54 +389,53 @@ export class EditContentFormBody extends React.Component {
                 </fieldset>
               </Collapse>
             </Row>
-            <div id="attributesWrapper" {...showStyle}>
-              <Fragment>
-                <Row className="GroupsFormBody">
-                  <SectionTitle
-                    nameId="cms.contents.edit.categories"
-                    onClick={handleCollapseCategories}
-                    collapsable
-                    isOpened={categoriesOpen}
-                  />
-                  <Collapse isOpened={categoriesOpen}>
-                    <fieldset className="no-padding">
-                      <FormGroup>
-                        <ControlLabel htmlFor="contentCategories" className="col-xs-2">
-                          <FormLabel labelId="cms.contents.edit.categories" />
-                        </ControlLabel>
-                        <Col xs={10}>
-                          <Field
-                            component={CategoryTreeContainer}
-                            language={language}
-                            name="contentCategories"
-                            treeNameId="cms.contents.edit.categories.categoriesTree"
-                          />
-                        </Col>
-                      </FormGroup>
-                    </fieldset>
-                  </Collapse>
-                </Row>
-                <Row>
-                  <SectionTitle
-                    nameId="cms.contents.edit.contentAttributes"
-                    onClick={handleCollapseAttributes}
-                    collapsable
-                    isOpened={attributesOpen}
-                  />
-                  <Collapse isOpened={attributesOpen}>
-                    {(content.attributes || typeCode) && (
-                    <ContentAttributesContainer
-                      attributes={content.attributes}
-                      typeCode={typeCode}
-                      content={content}
-                      mainGroup={selectedOwnerGroup}
-                      joinGroups={selectedJoinGroups}
-                    />
-                    )}
-                  </Collapse>
-                </Row>
-              </Fragment>
+
+            <Row className="GroupsFormBody EditContentForm__outer-fieldset">
+              <SectionTitle
+                nameId="cms.contents.edit.categories"
+                onClick={handleCollapseCategories}
+                collapsable
+                noRequired
+                isOpened={categoriesOpen}
+              />
+              <Collapse isOpened={categoriesOpen}>
+                <fieldset className="EditContentForm__fieldset">
+                  <FormGroup>
+                    <ControlLabel htmlFor="contentCategories" className="col-xs-2">
+                      <FormLabel labelId="cms.contents.edit.categories" />
+                    </ControlLabel>
+                    <Col xs={10}>
+                      <Field
+                        component={CategoryTreeContainer}
+                        language={language}
+                        name="contentCategories"
+                        treeNameId="cms.contents.edit.categories.categoriesTree"
+                      />
+                    </Col>
+                  </FormGroup>
+                </fieldset>
+              </Collapse>
+            </Row>
+
+            <div id="attributesWrapper" className="EditContentForm__attributes-area">
+              <Row>
+                <SectionTitle
+                  nameId="cms.contents.edit.contentAttributes"
+                  onClick={handleCollapseAttributes}
+                  isOpened={attributesOpen}
+                />
+                {(content.attributes || typeCode) && (
+                <ContentAttributesContainer
+                  attributes={content.attributes}
+                  typeCode={typeCode}
+                  content={content}
+                  mainGroup={selectedOwnerGroup}
+                  joinGroups={selectedJoinGroups}
+                />
+                )}
+              </Row>
             </div>
+
             {renderContentVersioningHistory}
           </Col>
           <div className="AssetsList__footer">

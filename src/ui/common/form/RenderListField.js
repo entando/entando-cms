@@ -7,6 +7,7 @@ import {
 import { FieldArray } from 'redux-form';
 import Panel from 'react-bootstrap/lib/Panel';
 
+import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import { getAttrInitialValue } from 'helpers/attrUtils';
 import { TYPE_COMPOSITE } from 'state/content-type/const';
@@ -84,11 +85,22 @@ class RenderListField extends Component {
     };
     return (
       <div>
-        <FormGroup>
-          <label className="col-xs-2 text-right control-label">
-            <div>{label}</div>
-          </label>
-          <Col xs={10}>
+        <ContentFormFieldCollapse label={label}>
+          <div className="RenderListField__body">
+            <FormGroup>
+              <label className="col-xs-2 control-label">
+                Add {label}
+              </label>
+              <Col xs={10} className="text-right">
+                <Button
+                  bsStyle="primary"
+                  title="Add"
+                  onClick={() => fields.push(getAttrInitialValue(rest.attribute))}
+                >
+                  <FormattedMessage id="cms.label.add" />
+                </Button>
+              </Col>
+            </FormGroup>
             {fields.map((name, index) => (
               <Panel key={name}>
                 <Panel.Heading>
@@ -116,6 +128,7 @@ class RenderListField extends Component {
                       <AttributeField
                         name={name}
                         label={index + 1}
+                        isSub
                         {...rest}
                         hasLabel={false}
                       />
@@ -124,15 +137,8 @@ class RenderListField extends Component {
                 </Panel.Body>
               </Panel>
             ))}
-            <Button
-              bsStyle="primary"
-              title="Add"
-              onClick={() => fields.push(getAttrInitialValue(rest.attribute))}
-            >
-              <FormattedMessage id="cms.label.add" />
-            </Button>
-          </Col>
-        </FormGroup>
+          </div>
+        </ContentFormFieldCollapse>
       </div>
     );
   }

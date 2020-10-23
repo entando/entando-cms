@@ -29,9 +29,7 @@ const AddContentPage = () => (
         <CMSPageTitle
           titleId="cms.contents.add.title"
           helpId="cms.contents.edit.titletip"
-          position="pull-right"
           noHeaderMargin
-          largeTitle
         />
         <div className="FormGroupSeparator" />
       </Col>
