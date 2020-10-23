@@ -127,7 +127,6 @@ const AttributeField = ({
     case TYPE_EMAIL:
       validate.push(email);
       AttributeFieldComp = EmailAttributeField;
-      actualName = `${name}.values`;
       break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
