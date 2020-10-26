@@ -439,7 +439,7 @@ export class EditContentFormBody extends React.Component {
 
             {renderContentVersioningHistory}
           </Col>
-          <div className="AssetsList__footer">
+          <div className="AssetsList__footer startLeftPos">
             <StickySave
               intl={intl}
               lastAutoSaveTime={lastModified}
