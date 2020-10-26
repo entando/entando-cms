@@ -133,7 +133,7 @@ const AttributeFields = ({
     });
   }
 
-  return fields.map((name, idx) => renderField(name, idx, attributes[idx],
+  return fields.map((name, idx) => renderField(name, attributes[idx],
     langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab));
 };
 

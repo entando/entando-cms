@@ -33,10 +33,11 @@ class RenderListField extends Component {
     const {
       fields, label, ...rest
     } = this.props;
-    const { name: attName } = rest.attribute;
+    const { code, name: attName } = rest.attribute;
+    const attCode = attName || code;
     const renderCompositeAttributeField = (name) => {
       const {
-        code, mandatory, listFilter, indexable,
+        mandatory, listFilter, indexable,
       } = rest.attribute;
       const helpTextArr = [];
       if (listFilter) helpTextArr.push('Can be used as a filter in lists');
@@ -66,12 +67,12 @@ class RenderListField extends Component {
         <ContentFormFieldCollapse label={label}>
           <div className="RenderListField__body">
             <FormGroup className={fields.length > 0 && 'RenderListField__topcontrol--has-items'}>
-              <label className="col-xs-2" htmlFor={`add${attName}`}>
+              <label className="col-xs-2" htmlFor={`add${attCode}`}>
                 <FormattedMessage id="cms.contents.addlist" values={{ listname: label }} />
               </label>
               <Col xs={10} className="text-right">
                 <Button
-                  id={`add${attName}`}
+                  id={`add${attCode}`}
                   bsStyle="primary"
                   title="Add"
                   onClick={() => fields.push(getAttrInitialValue(rest.attribute))}
@@ -116,11 +117,11 @@ RenderListField.propTypes = {
     length: PropTypes.number,
     swap: PropTypes.func,
   }).isRequired,
-  label: PropTypes.node,
+  label: PropTypes.string,
 };
 
 RenderListField.defaultProps = {
-  label: null,
+  label: '',
 };
 
 export default RenderListField;
