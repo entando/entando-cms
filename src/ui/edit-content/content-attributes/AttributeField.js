@@ -78,7 +78,7 @@ const AttributeField = ({
     />
   );
 
-  const validate = getAttrValidators({ ...validationRules, mandatory }, type);
+  const validate = [];
   if (mandatory) validate.push(required);
 
 
@@ -125,6 +125,7 @@ const AttributeField = ({
       actualName = `${name}.values.${langCode}`;
       break;
     case TYPE_EMAIL:
+      validationRules.regex = null;
       validate.push(email);
       AttributeFieldComp = EmailAttributeField;
       break;
@@ -148,6 +149,8 @@ const AttributeField = ({
       return null;
   }
 
+  const validateWithRules = [...validate, ...getAttrValidators({ ...validationRules, mandatory })];
+
   return (
     <Field
       name={actualName}
@@ -155,7 +158,7 @@ const AttributeField = ({
       component={AttributeFieldComp}
       label={fieldLabel}
       hasLabel={hasLabel}
-      validate={validate}
+      validate={validateWithRules}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
       {...(
