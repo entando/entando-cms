@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { memoize } from 'lodash';
 import { maxLength, minLength } from '@entando/utils';
+import { TYPE_EMAIL } from 'state/content-type/const';
 
 const number = value => !Number.isNaN(parseFloat(value));
 
@@ -133,15 +134,15 @@ export const attrValidatorsObj = {
   regex: memoize(regex),
 };
 
-export const getAttrValidators = (validationRules) => {
+export const getAttrValidators = (validationRules, type) => {
   const validators = [];
-
   Object.keys(validationRules).forEach((key) => {
     if (
       validationRules[key] !== null
       && validationRules[key] !== false
       && attrValidatorsObj[key]
     ) {
+      if (validationRules.regex && type === TYPE_EMAIL && key === 'regex') return;
       validators.push(attrValidatorsObj[key](validationRules[key]));
     }
   });
