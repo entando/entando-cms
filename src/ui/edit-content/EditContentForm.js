@@ -66,7 +66,6 @@ export class EditContentFormBody extends React.Component {
     this.state = {
       infoOpen: workMode === WORK_MODE_EDIT,
       groupsOpen: workMode === WORK_MODE_ADD,
-      ownerGroupSelected: false,
       categoriesOpen: false,
       attributesOpen: false,
     };
@@ -137,7 +136,6 @@ export class EditContentFormBody extends React.Component {
     if (workMode === WORK_MODE_ADD) {
       this.setSection('infoOpen', true);
       this.setSection('categoriesOpen', true);
-      this.setSection('ownerGroupSelected', true);
       // reset attributes sections
       resetSection('attributes');
       fieldFocus(this.descriptionInput, 10);

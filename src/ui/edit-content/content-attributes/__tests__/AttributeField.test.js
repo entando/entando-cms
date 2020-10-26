@@ -43,7 +43,7 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
         type: attrType,
         code: 'Test attribute code',
       };
-      const wrapper = shallow(<AttributeField attribute={attribute} />);
+      const wrapper = shallow(<AttributeField attribute={attribute} isSub />);
       expect(wrapper.prop('component').name).toEqual(attrCompName);
     });
   });
@@ -54,7 +54,7 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
       type: 'Attach',
       code: 'Test attribute code',
     };
-    const wrapper = shallow(<AttributeField attribute={attribute} />);
+    const wrapper = shallow(<AttributeField attribute={attribute} isSub />);
     const connectedComp = wrapper.prop('component');
     expect(connectedComp.WrappedComponent.name).toEqual(attrCompName);
   });
@@ -65,7 +65,7 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
       type: 'Image',
       code: 'Test attribute code',
     };
-    const wrapper = shallow(<AttributeField attribute={attribute} />);
+    const wrapper = shallow(<AttributeField attribute={attribute} isSub />);
     const connectedComp = wrapper.prop('component');
     expect(connectedComp.WrappedComponent.name).toEqual(attrCompName);
   });
@@ -76,7 +76,7 @@ describe('ui/edit-content/content-attributes/AttributeField', () => {
       type: 'Hypertext',
       code: 'Test attribute code',
     };
-    const wrapper = shallow(<AttributeField attribute={attribute} />);
+    const wrapper = shallow(<AttributeField attribute={attribute} isSub />);
     const connectedComp = wrapper.prop('component');
     expect(connectedComp.WrappedComponent.name).toEqual(attrCompName);
   });
