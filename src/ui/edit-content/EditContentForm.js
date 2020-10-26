@@ -146,7 +146,7 @@ export class EditContentFormBody extends React.Component {
 
   render() {
     const {
-      infoOpen, groupsOpen, categoriesOpen, attributesOpen, ownerGroupSelected,
+      infoOpen, groupsOpen, categoriesOpen, attributesOpen,
     } = this.state;
     const {
       intl,
@@ -191,10 +191,6 @@ export class EditContentFormBody extends React.Component {
     const handleCollapseGroups = val => this.collapseSection('groupsOpen', val);
     const handleCollapseCategories = val => this.collapseSection('categoriesOpen', val);
     const handleCollapseAttributes = val => this.collapseSection('attributesOpen', val);
-    const showAllSettings = (
-      workMode === WORK_MODE_ADD && (ownerGroupDisabled || ownerGroupSelected)
-    ) || workMode === WORK_MODE_EDIT;
-    const showStyle = { style: { display: showAllSettings ? 'block' : 'none' } };
     const renderContentVersioningHistory = workMode === WORK_MODE_EDIT && id && (
       <Row className="no-padding">
         <Panel>
@@ -253,12 +249,16 @@ export class EditContentFormBody extends React.Component {
       </Button>,
     ];
 
+    const classContentArea = ['EditContentForm__content', ...(
+      workMode === WORK_MODE_EDIT ? ['EditContentForm__content--editmode'] : []
+    )];
+
     return (
       <Spinner loading={!!loading}>
         <form
           className="EditContentForm form-horizontal"
         >
-          <Col className="EditContentForm__content" xs={12}>
+          <Col className={classContentArea} xs={12}>
             <Row className="InfoFormBody EditContentForm__outer-fieldset">
               <SectionTitle
                 nameId="cms.contents.edit.info"
@@ -298,7 +298,7 @@ export class EditContentFormBody extends React.Component {
                       />
                     </Col>
                   </FormGroup>
-                  <div id="contentDescriptionWrapper" {...showStyle}>
+                  <div id="contentDescriptionWrapper">
                     <FormGroup>
                       <Col xs={12}>
                         <Field
@@ -311,6 +311,7 @@ export class EditContentFormBody extends React.Component {
                             <FormLabel
                               labelId="cms.contents.edit.contentDescription.label"
                               helpId="cms.contents.edit.contentDescription.tooltip"
+                              required
                             />
       )}
                           placeholder={intl.formatMessage(messages.contentDesctiption)}
@@ -365,7 +366,7 @@ export class EditContentFormBody extends React.Component {
                         disabled={workMode === WORK_MODE_EDIT}
                       />
                     </FormGroup>
-                    <div id="contentGroupsWrapper" {...showStyle}>
+                    <div id="contentGroupsWrapper">
                       <FormGroup>
                         <FormGroup>
                           <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">

@@ -16,6 +16,7 @@ const CompositeAttributeField = ({
   label,
   langCode,
   selectedLangTab,
+  isSub,
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -28,25 +29,45 @@ const CompositeAttributeField = ({
       };
     }, {},
   );
+
+  const panelBody = (
+    <Panel.Body>
+      {compositeAttributes.map((attr) => {
+        const { code: attrCode } = attr;
+        const fieldName = mappedFieldNames[attrCode];
+        return (
+          <AttributeField
+            key={attrCode}
+            name={fieldName}
+            attribute={attr}
+            langCode={langCode}
+            selectedLangTab={selectedLangTab}
+            isSub
+          />
+        );
+      })}
+    </Panel.Body>
+  );
+
+
+  if (isSub) {
+    return (
+      <Row key={code}>
+        <label className="control-label col-xs-2">
+          {label}
+        </label>
+        <Col xs={10}>
+          <Panel>
+            {panelBody}
+          </Panel>
+        </Col>
+      </Row>
+    );
+  }
   return (
     <ContentFormFieldCollapse label={label}>
       <Panel className="RenderListField__body">
-        <Panel.Body>
-          {compositeAttributes.map((attr) => {
-            const { code: attrCode } = attr;
-            const fieldName = mappedFieldNames[attrCode];
-            return (
-              <AttributeField
-                key={attrCode}
-                name={fieldName}
-                attribute={attr}
-                langCode={langCode}
-                selectedLangTab={selectedLangTab}
-                isSub
-              />
-            );
-          })}
-        </Panel.Body>
+        {panelBody}
       </Panel>
     </ContentFormFieldCollapse>
   );
@@ -58,6 +79,11 @@ CompositeAttributeField.propTypes = {
   label: PropTypes.node.isRequired,
   langCode: PropTypes.string.isRequired,
   selectedLangTab: PropTypes.string.isRequired,
+  isSub: PropTypes.bool,
+};
+
+CompositeAttributeField.defaultProps = {
+  isSub: false,
 };
 
 export default CompositeAttributeField;

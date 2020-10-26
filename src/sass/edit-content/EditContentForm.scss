@@ -1,8 +1,12 @@
 .EditContentForm {
   &__content {
-    padding-bottom: 120px;
+    padding-bottom: 90px;
     overflow-y: scroll;
     overflow-x: hidden;
+
+    &--editmode {
+      padding-bottom: 200px;
+    }
 
     @media (min-width: 376px) and (max-width: 670px) {
       height: 50vh;
@@ -39,8 +43,7 @@
   }
 
   .tab-content { //sass-lint:disable-line class-name-format
-    margin-top: 20px;
-    margin-left: 95px;
+    margin: 20px 0 40px 95px;
   }
 
   .ql-editor { //sass-lint:disable-line class-name-format

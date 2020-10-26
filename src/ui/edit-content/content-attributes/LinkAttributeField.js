@@ -6,7 +6,7 @@ import {
 } from 'redux-form';
 import { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
-import { Col, Button } from 'patternfly-react';
+import { Col, Row, Button } from 'patternfly-react';
 import { Panel } from 'react-bootstrap';
 
 import RenderButton from 'ui/common/form/RenderButton';
@@ -108,7 +108,7 @@ class LinkAttributeField extends Component {
     return (
       <>
         {dest ? (
-          <div>
+          <Row>
             <label className="control-label col-xs-2">
               {label}
             </label>
@@ -145,7 +145,7 @@ class LinkAttributeField extends Component {
                 </Panel.Body>
               </Panel>
             </Col>
-          </div>
+          </Row>
         ) : (
           <RenderButton
             bsStyle="primary"

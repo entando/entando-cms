@@ -20,8 +20,10 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
+const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
+
 const renderField = (
-  name, idx, attribute, langCode, mainGroup,
+  name, attribute, langCode, mainGroup,
   joinGroups, isDefaultLang, locale, selectedLangTab,
 ) => {
   if (!attribute) {
@@ -38,7 +40,7 @@ const renderField = (
   const helpText = helpTextArr.join('<br>');
   const i18nName = _.isObject(attName)
     ? (attName[locale] || code) : (attName || code);
-  const fieldLabel = (
+  const fieldLabel = COMPLEX_ATTRIBUTES.includes(type) ? i18nName : (
     <FormLabel
       labelText={i18nName}
       required={mandatory && isDefaultLang}

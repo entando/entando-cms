@@ -400,6 +400,8 @@ export default {
     'cms.contents.groups': 'Join Groups',
     'cms.contents.onLine': 'Status',
     'cms.contents.status': 'Restrictions',
+    'cms.contents.addlist': 'Add {listname}',
+    'cms.contents.listitemlabel': 'List {num}',
     'cms.contents.versioning.name': 'Name',
     'cms.contents.versioning.date': 'Date',
     'cms.contents.versioning.author': 'Author',

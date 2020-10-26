@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { CONFIRM_KEYS } from 'ui/common/accessibility/KeyCodes';
 
 const SectionTitle = ({
-  nameId, label, onClick, collapsable, isOpened, noRequired,
+  nameId, label, onClick, collapsable, isOpened, noRequired, children, className,
 }) => {
   const handleKeyDown = (e) => {
     if (CONFIRM_KEYS.includes(e.keyCode)) {
@@ -12,6 +12,9 @@ const SectionTitle = ({
     }
   };
   const classNames = ['SectionTitle'];
+  if (className) {
+    classNames.push(className);
+  }
   if (!collapsable) {
     classNames.push('SectionTitle__non-collapsable');
   }
@@ -27,12 +30,17 @@ const SectionTitle = ({
         collapsable
         && <span className={`icon fa fa-chevron-${isOpened ? 'down' : 'right'} SectionTitle__collapse-button`} />
       }
-      {label ? label : (
+      {label || (
         <FormattedMessage id={nameId} defaultMessage="Info" />
       )}
       {!noRequired && (
         <span className="SectionTitle__tip">
           <FormattedMessage id="cms.contents.edit.tip" defaultMessage="* Required Fields" />
+        </span>
+      )}
+      {children && (
+        <span className="pull-right">
+          {children}
         </span>
       )}
     </div>
@@ -46,6 +54,8 @@ SectionTitle.propTypes = {
   collapsable: PropTypes.bool,
   isOpened: PropTypes.bool,
   noRequired: PropTypes.bool,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  className: PropTypes.string,
 };
 
 SectionTitle.defaultProps = {
@@ -55,6 +65,8 @@ SectionTitle.defaultProps = {
   collapsable: false,
   isOpened: false,
   noRequired: false,
+  children: null,
+  className: '',
 };
 
 export default SectionTitle;
