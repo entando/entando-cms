@@ -12,6 +12,11 @@ class RoleSelectRenderer extends Component {
     this.select = null;
   }
 
+  getLabel(role) {
+    const { labelFn, labelKey } = this.props;
+    return labelFn ? labelFn(role) : role[labelKey];
+  }
+
   pushField() {
     if (!this.select || !this.select.value) {
       return;
@@ -57,13 +62,11 @@ class RoleSelectRenderer extends Component {
     }
 
     const renderTags = selectedValues.map((value, i) => (
-      <div key={value}>
-        <h3>
-          <FormattedMessage id="cms.contenttype.labelrole.assigned" />
-        </h3>
+      <div key={value} className="clearfix">
+        { i === 0 && <h3><FormattedMessage id="cms.contenttype.labelrole.assigned" /></h3>}
         <hr />
         <Col xs={4}>
-          <p>{options.find(opt => opt[valueKey] === value)[labelKey]}</p>
+          <p>{this.getLabel(options.find(opt => opt[valueKey] === value))}</p>
         </Col>
         <Col xs={8}>
           <Button
@@ -116,6 +119,7 @@ RoleSelectRenderer.propTypes = {
   valueKey: PropTypes.string,
   labelKey: PropTypes.string,
   emptyOptionTextId: PropTypes.string,
+  labelFn: PropTypes.func,
 };
 
 RoleSelectRenderer.defaultProps = {
@@ -123,6 +127,7 @@ RoleSelectRenderer.defaultProps = {
   valueKey: 'value',
   labelKey: 'label',
   emptyOptionTextId: '',
+  labelFn: null,
 };
 
 export default injectIntl(RoleSelectRenderer);

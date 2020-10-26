@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { required, isNumber } from '@entando/utils';
+import { required, isNumber, email } from '@entando/utils';
 import { isObject } from 'lodash';
 
 import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
@@ -24,6 +24,7 @@ import {
   TYPE_IMAGE,
   TYPE_LINK,
   TYPE_MONOTEXT,
+  TYPE_EMAIL,
 } from 'state/content-type/const';
 import BooleanAttributeField from 'ui/edit-content/content-attributes/BooleanAttributeField';
 import CheckboxAttributeField from 'ui/edit-content/content-attributes/CheckboxAttributeField';
@@ -40,6 +41,7 @@ import AttachAttributeFieldContainer from 'ui/edit-content/content-attributes/At
 import ImageAttributeFieldContainer from 'ui/edit-content/content-attributes/ImageAttributeFieldContainer';
 import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
+import EmailAttributeField from 'ui/edit-content/content-attributes/EmailAttributeField';
 
 const AttributeField = ({
   name,
@@ -79,7 +81,7 @@ const AttributeField = ({
     />
   );
 
-  const validate = getAttrValidators({ ...validationRules, mandatory });
+  const validate = [];
   if (mandatory) validate.push(required);
 
 
@@ -125,6 +127,11 @@ const AttributeField = ({
       AttributeFieldComp = TextAttributeField;
       actualName = `${name}.values.${langCode}`;
       break;
+    case TYPE_EMAIL:
+      validationRules.regex = null;
+      validate.push(email);
+      AttributeFieldComp = EmailAttributeField;
+      break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
       actualName = `${name}.values`;
@@ -145,6 +152,8 @@ const AttributeField = ({
       return null;
   }
 
+  const validateWithRules = [...validate, ...getAttrValidators({ ...validationRules, mandatory })];
+
   const field = (
     <Field
       name={actualName}
@@ -153,7 +162,7 @@ const AttributeField = ({
       label={fieldLabel}
       hasLabel={hasLabel}
       labelSize={labelSize}
-      validate={validate}
+      validate={validateWithRules}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
       {...(
