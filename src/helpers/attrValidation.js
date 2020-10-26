@@ -142,7 +142,7 @@ export const getAttrValidators = (validationRules, type) => {
       && validationRules[key] !== false
       && attrValidatorsObj[key]
     ) {
-      if (validationRules.regex && type === TYPE_EMAIL) return;
+      if (validationRules.regex && type === TYPE_EMAIL && key === 'regex') return;
       validators.push(attrValidatorsObj[key](validationRules[key]));
     }
   });

@@ -2,8 +2,9 @@ import {
   equalDate, equalNumber, equalString,
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
-  regex, linkValidate,
+  regex, linkValidate, getAttrValidators,
 } from 'helpers/attrValidation';
+import { TYPE_EMAIL, TYPE_TEXT } from 'state/content-type/const';
 
 describe('helpers/attrValidation', () => {
   describe('equalDate', () => {
@@ -179,6 +180,31 @@ describe('helpers/attrValidation', () => {
         values: { en: 'test' },
       });
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getAttrValidators', () => {
+    const validationRules = {
+      equalString: () => {},
+      regex: () => {},
+    };
+
+    it('should return length of rules array same as length of validationRules if attr type is not email', () => {
+      const validaionArray = getAttrValidators(validationRules, TYPE_TEXT);
+      expect(validaionArray.length).toBe(Object.keys(validationRules).length);
+    });
+
+    it('should return length of rules array minus 1 of validationRules if attr type is email and validator is regex', () => {
+      const validaionArray = getAttrValidators(validationRules, TYPE_EMAIL);
+      expect(validaionArray.length).toBe(Object.keys(validationRules).length - 1);
+    });
+
+    it('should return length of rules array same as length of validationRules if attr type is email and validator is not regex', () => {
+      const validaionArray = getAttrValidators({
+        equalString: () => {},
+        rangeStartString: () => {},
+      }, TYPE_EMAIL);
+      expect(validaionArray.length).toBe(Object.keys(validationRules).length);
     });
   });
 });
