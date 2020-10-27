@@ -76,6 +76,7 @@ class RichTextEditor extends Component {
     this.state = {
       modal: '',
       editorToolbarId: 'editor-toolbar',
+      editorCanWrite: false,
     };
     this.reactQuill = createRef();
     this.quill = null;
@@ -116,6 +117,7 @@ class RichTextEditor extends Component {
         viewSource: this.handleViewSource.bind(this),
       };
       this.setState({ editorToolbarId: `editor-toolbar_${langCode}_${attrCode}` });
+      window.setTimeout(() => this.setState({ editorCanWrite: true }), 100);
     }
   }
 
@@ -208,7 +210,7 @@ class RichTextEditor extends Component {
       placeholder, disabled, input, mainGroup, joinGroups,
     } = this.props;
 
-    const { modal, editorToolbarId } = this.state;
+    const { modal, editorToolbarId, editorCanWrite } = this.state;
 
     return (
       <div>
@@ -222,6 +224,7 @@ class RichTextEditor extends Component {
           disabled={disabled}
           modules={this.modules}
           formats={this.formats}
+          readOnly={!editorCanWrite}
         />
         <LinkConfigModal
           isVisible={modal === 'enlink'}
