@@ -58,4 +58,19 @@
       }
     }
   }
+
+  &__tablerow-tooltip {
+    // sass-lint:disable class-name-format nesting-depth no-qualifying-elements
+    .tooltip-inner {
+      max-width: none;
+
+      tr:first-child {
+        th,
+        td {
+          border-top: 0;
+        }
+      }
+    }
+    // sass-lint:enable class_name-format nesting-depth no-qualifying-elements
+  }
 }
