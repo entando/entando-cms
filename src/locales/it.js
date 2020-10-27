@@ -401,6 +401,8 @@ export default {
     'cms.contents.groups': 'Unisciti ai Gruppi',
     'cms.contents.onLine': 'Stato',
     'cms.contents.status': 'Restrizioni',
+    'cms.contents.addlist': 'Aggiungi {listname}',
+    'cms.contents.listitemlabel': 'Elenco {num}',
     'cms.contents.selectContentType': 'Seleziona un Tipo di Contenuto',
     'cms.contents.selectGroup': 'Seleziona un Gruppo',
     'cms.contents.selectedContents': 'Hai selezionato {number} contenuti, puoi',

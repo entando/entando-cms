@@ -6,6 +6,7 @@ import {
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
 
+import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
 import attributeShape from './attributeShape';
 import AttributeField from './AttributeField';
 
@@ -15,6 +16,8 @@ const CompositeAttributeField = ({
   label,
   langCode,
   selectedLangTab,
+  isSub,
+  openedAtStart,
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -27,40 +30,63 @@ const CompositeAttributeField = ({
       };
     }, {},
   );
+
+  const panelBody = (
+    <Panel.Body>
+      {compositeAttributes.map((attr) => {
+        const { code: attrCode } = attr;
+        const fieldName = mappedFieldNames[attrCode];
+        return (
+          <AttributeField
+            key={attrCode}
+            name={fieldName}
+            attribute={attr}
+            langCode={langCode}
+            selectedLangTab={selectedLangTab}
+            isSub
+          />
+        );
+      })}
+    </Panel.Body>
+  );
+
+
+  if (isSub) {
+    return (
+      <Row key={code}>
+        <label className="control-label col-xs-2">
+          {label}
+        </label>
+        <Col xs={10}>
+          <Panel>
+            {panelBody}
+          </Panel>
+        </Col>
+      </Row>
+    );
+  }
   return (
-    <Row key={code}>
-      <label className="control-label col-xs-2">
-        {label}
-      </label>
-      <Col xs={10}>
-        <Panel>
-          <Panel.Body>
-            {compositeAttributes.map((attr) => {
-              const { code: attrCode } = attr;
-              const fieldName = mappedFieldNames[attrCode];
-              return (
-                <AttributeField
-                  key={attrCode}
-                  name={fieldName}
-                  attribute={attr}
-                  langCode={langCode}
-                  selectedLangTab={selectedLangTab}
-                />
-              );
-            })}
-          </Panel.Body>
-        </Panel>
-      </Col>
-    </Row>
+    <ContentFormFieldCollapse label={label} showContentAtStart={openedAtStart}>
+      <Panel className="RenderListField__body">
+        {panelBody}
+      </Panel>
+    </ContentFormFieldCollapse>
   );
 };
 
 CompositeAttributeField.propTypes = {
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
-  label: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
   langCode: PropTypes.string.isRequired,
   selectedLangTab: PropTypes.string.isRequired,
+  isSub: PropTypes.bool,
+  openedAtStart: PropTypes.bool,
+};
+
+CompositeAttributeField.defaultProps = {
+  isSub: false,
+  openedAtStart: false,
 };
 
 export default CompositeAttributeField;

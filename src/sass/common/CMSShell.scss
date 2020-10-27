@@ -15,6 +15,25 @@
   }
 }
 
+// sass-lint:disable force-element-nesting class-name-format nesting-depth
+.container-pf-nav-pf-vertical {
+  .CMSShell__fixed-heading {
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    padding-top: 7px;
+    background-color: $color-white;
+    z-index: 1029;
+
+    & + div {
+      margin-top: 95px;
+    }
+  }
+}
+// sass-lint:enable force-element-nesting class-name-format nesting-depth
+
 .BrandMenu__navbar-brand.navbar-brand { // sass-lint:disable-line force-element-nesting class-name-format
   img {
     display: inline-block;
@@ -68,7 +87,7 @@
 }
 
 .FormGroupSeparator {
-  border-bottom: 1px solid $color-rating-filter-star-empty;
+  border-bottom: 1px solid $color-black;
   color: $dark-color-separator;
   font-size: 12px;
 }

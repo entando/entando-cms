@@ -26,7 +26,7 @@ const MonolistAttributeField = ({
 
 MonolistAttributeField.propTypes = {
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
-  label: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
   meta: PropTypes.shape(fieldArrayMetaPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
 };

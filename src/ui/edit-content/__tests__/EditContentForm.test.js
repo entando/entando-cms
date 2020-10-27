@@ -54,15 +54,12 @@ describe('ui/edit-content/EditContentForm', () => {
       expect(component.exists()).toBe(true);
       const contentDescriptionWrapper = component.find('#contentDescriptionWrapper');
       expect(contentDescriptionWrapper.exists()).toBe(true);
-      expect(contentDescriptionWrapper.prop('style')).toHaveProperty('display', 'none');
 
       const categoriesWrapper = component.find('#contentGroupsWrapper');
       expect(categoriesWrapper.exists()).toBe(true);
-      expect(categoriesWrapper.prop('style')).toHaveProperty('display', 'none');
 
       const attributesWrapper = component.find('#attributesWrapper');
       expect(attributesWrapper.exists()).toBe(true);
-      expect(attributesWrapper.prop('style')).toHaveProperty('display', 'none');
     });
 
     it('render component without crash and parts are shown if ownerGroup is chosen', () => {
@@ -75,15 +72,12 @@ describe('ui/edit-content/EditContentForm', () => {
       expect(component.exists()).toBe(true);
       const contentDescriptionWrapper = component.find('#contentDescriptionWrapper');
       expect(contentDescriptionWrapper.exists()).toBe(true);
-      expect(contentDescriptionWrapper.prop('style')).toHaveProperty('display', 'block');
 
       const categoriesWrapper = component.find('#contentGroupsWrapper');
       expect(categoriesWrapper.exists()).toBe(true);
-      expect(categoriesWrapper.prop('style')).toHaveProperty('display', 'block');
 
       const attributesWrapper = component.find('#attributesWrapper');
       expect(attributesWrapper.exists()).toBe(true);
-      expect(attributesWrapper.prop('style')).toHaveProperty('display', 'block');
     });
 
     it('render component without crash and parts are shown if ownerGroup is not chosen but work mode is Edit', () => {
@@ -96,15 +90,12 @@ describe('ui/edit-content/EditContentForm', () => {
       expect(component.exists()).toBe(true);
       const contentDescriptionWrapper = component.find('#contentDescriptionWrapper');
       expect(contentDescriptionWrapper.exists()).toBe(true);
-      expect(contentDescriptionWrapper.prop('style')).toHaveProperty('display', 'block');
 
       const categoriesWrapper = component.find('#contentGroupsWrapper');
       expect(categoriesWrapper.exists()).toBe(true);
-      expect(categoriesWrapper.prop('style')).toHaveProperty('display', 'block');
 
       const attributesWrapper = component.find('#attributesWrapper');
       expect(attributesWrapper.exists()).toBe(true);
-      expect(attributesWrapper.prop('style')).toHaveProperty('display', 'block');
     });
   });
 });
