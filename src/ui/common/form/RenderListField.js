@@ -31,7 +31,7 @@ class RenderListField extends Component {
 
   render() {
     const {
-      fields, label, ...rest
+      fields, label, openedAtStart, ...rest
     } = this.props;
     const { code, name: attName } = rest.attribute;
     const attCode = attName || code;
@@ -64,7 +64,7 @@ class RenderListField extends Component {
     };
     return (
       <div>
-        <ContentFormFieldCollapse label={label}>
+        <ContentFormFieldCollapse label={label} showContentAtStart={openedAtStart}>
           <div className="RenderListField__body">
             <FormGroup className={fields.length > 0 && 'RenderListField__topcontrol--has-items'}>
               <label className="col-xs-2" htmlFor={`add${attCode}`}>
@@ -118,10 +118,12 @@ RenderListField.propTypes = {
     swap: PropTypes.func,
   }).isRequired,
   label: PropTypes.string,
+  openedAtStart: PropTypes.bool,
 };
 
 RenderListField.defaultProps = {
   label: '',
+  openedAtStart: false,
 };
 
 export default RenderListField;

@@ -430,6 +430,7 @@ export class EditContentFormBody extends React.Component {
                   content={content}
                   mainGroup={selectedOwnerGroup}
                   joinGroups={selectedJoinGroups}
+                  isNewContent={workMode === WORK_MODE_ADD}
                 />
                 )}
               </Row>

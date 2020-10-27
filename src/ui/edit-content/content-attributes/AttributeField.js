@@ -55,6 +55,7 @@ const AttributeField = ({
   selectedLangTab,
   locale,
   isSub,
+  openedAtStart,
 }) => {
   const {
     type,
@@ -174,7 +175,7 @@ const AttributeField = ({
   );
 
   return isSub ? field : (
-    <ContentFormFieldCollapse label={fieldLabel}>{field}</ContentFormFieldCollapse>
+    <ContentFormFieldCollapse label={fieldLabel} showContentAtStart={openedAtStart}>{field}</ContentFormFieldCollapse>
   );
 };
 
@@ -190,6 +191,7 @@ AttributeField.propTypes = {
   selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
   isSub: PropTypes.bool,
+  openedAtStart: PropTypes.bool,
 };
 
 AttributeField.defaultProps = {
@@ -201,6 +203,7 @@ AttributeField.defaultProps = {
   locale: '',
   labelSize: 2,
   isSub: false,
+  openedAtStart: false,
 };
 
 export default AttributeField;

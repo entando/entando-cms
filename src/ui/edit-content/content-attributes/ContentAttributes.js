@@ -33,7 +33,7 @@ class ContentAttributes extends Component {
   render() {
     const {
       attributes, languages, reInitializeForm, content, typeCode, mainGroup,
-      joinGroups, locale,
+      joinGroups, locale, isNewContent,
     } = this.props;
     const { selectedLang } = this.state;
     return (
@@ -59,6 +59,7 @@ class ContentAttributes extends Component {
               selectedLangTab={selectedLang}
               isDefaultLang={isDefault}
               locale={locale}
+              expanded={isNewContent}
             />
           </Tab>
         ))}
@@ -78,10 +79,12 @@ ContentAttributes.propTypes = {
   mainGroup: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
   locale: PropTypes.string,
+  isNewContent: PropTypes.bool,
 };
 
 ContentAttributes.defaultProps = {
   locale: '',
+  isNewContent: false,
 };
 
 export default ContentAttributes;

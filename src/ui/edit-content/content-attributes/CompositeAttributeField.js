@@ -17,6 +17,7 @@ const CompositeAttributeField = ({
   langCode,
   selectedLangTab,
   isSub,
+  openedAtStart,
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -65,7 +66,7 @@ const CompositeAttributeField = ({
     );
   }
   return (
-    <ContentFormFieldCollapse label={label}>
+    <ContentFormFieldCollapse label={label} showContentAtStart={openedAtStart}>
       <Panel className="RenderListField__body">
         {panelBody}
       </Panel>
@@ -80,10 +81,12 @@ CompositeAttributeField.propTypes = {
   langCode: PropTypes.string.isRequired,
   selectedLangTab: PropTypes.string.isRequired,
   isSub: PropTypes.bool,
+  openedAtStart: PropTypes.bool,
 };
 
 CompositeAttributeField.defaultProps = {
   isSub: false,
+  openedAtStart: false,
 };
 
 export default CompositeAttributeField;
