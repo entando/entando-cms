@@ -9,7 +9,7 @@ import EditContentFormContainer from 'ui/edit-content/EditContentFormContainer';
 
 const EditContentPage = () => (
   <Grid fluid>
-    <Row>
+    <Row className="CMSShell__fix-heading startTopPos startLeftPos">
       <Col xs={12}>
         <Breadcrumb>
           <BreadcrumbItem active>
@@ -23,8 +23,6 @@ const EditContentPage = () => (
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>
-    </Row>
-    <Row>
       <Col xs={12}>
         <CMSPageTitle
           titleId="cms.contents.edit.title"
