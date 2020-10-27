@@ -21,6 +21,9 @@ import {
   getCurrentQuickFilter, getCurrentStatusShow,
   getFilteringCategories, getSelectedRows, getSortingColumns, getStatusChecked,
 } from 'state/contents/selectors';
+
+import { setAppTourLastStep } from 'state/app-tour/actions';
+
 import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getGroups } from 'state/edit-content/selectors';
@@ -149,7 +152,10 @@ export const mapDispatchToProps = (dispatch, {
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetGroup: group => dispatch(setGroup(group)),
   onSetSort: sort => dispatch(setSort(sort)),
-  onSelectRow: content => dispatch(selectSingleRow(content)),
+  onSelectRow: (content) => {
+    dispatch(setAppTourLastStep(20));
+    dispatch(selectSingleRow(content));
+  },
   onWillUnmount: () => dispatch(leaveContentsPage()),
 });
 

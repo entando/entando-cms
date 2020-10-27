@@ -24,6 +24,11 @@ const TEST_STATE = {
   },
   loading: {},
   currentUser: { username: 'admin' },
+  userPreferences: {
+    wizard: true,
+    translationWarning: true,
+    loadOnPageSelect: true,
+  },
 };
 
 const TEST_OWN_PROPS = {

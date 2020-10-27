@@ -234,7 +234,7 @@ class ContentsFilterTable extends Component {
             }}
           >
             <Table.Header headerRows={resolve.headerRows({ columns })} />
-            <Table.Body rows={contents} rowKey="id" />
+            <Table.Body rows={contents} rowKey="id" className="app-tour-step-19" />
           </Table.PfProvider>
           <PaginationRow
             itemCount={totalItems}

@@ -7,7 +7,7 @@ import { getContentTemplateList } from 'state/content-template/selectors';
 import SingleContentConfigForm, { SingleContentConfigFormBody, SingleContentConfigContainerId } from 'ui/widget-forms/publish-single-content-config/SingleContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
-import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
+import { ROUTE_APP_BUILDER_PAGE_CONFIG, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
 import {
   formValueSelector, submit, change,
 } from 'redux-form';
@@ -16,6 +16,13 @@ import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal'
 import { ContentsFilterModalID } from 'ui/widget-forms/contents-filter/ContentsFilterModal';
 import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 import { fetchPage } from 'state/pages/actions';
+import { getContentTypeList } from 'state/content-type/selectors';
+import { setNewContentsType, setWorkMode } from 'state/edit-content/actions';
+import { setCurrentStatusShow } from 'state/contents/actions';
+import { WORK_MODE_ADD } from 'state/edit-content/types';
+import { getAppTourProgress } from 'state/app-tour/selectors';
+import { APP_TOUR_STARTED } from 'state/app-tour/const';
+import { setAppTourLastStep } from 'state/app-tour/actions';
 
 export const mapStateToProps = (state, ownProps) => {
   const formToUse = get(ownProps, 'extFormName', SingleContentConfigContainerId);
@@ -33,6 +40,8 @@ export const mapStateToProps = (state, ownProps) => {
     chosenContent: widgetConfig,
     ownerGroup: formSelect(state, putPrefixField('ownerGroup')),
     joinGroups: formSelect(state, putPrefixField('joinGroups')),
+    contentTypes: getContentTypeList(state),
+    appTourProgress: getAppTourProgress(state),
   };
 };
 
@@ -69,22 +78,45 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
             intl.formatMessage({ id: 'widget.update.success' }),
             TOAST_SUCCESS,
           ));
+          dispatch(setAppTourLastStep(22));
           history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
         }
       });
     },
-    onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(SingleContentConfigContainerId)); },
+    onSave: () => {
+      dispatch(setAppTourLastStep(22));
+      dispatch(setVisibleModal(''));
+      dispatch(submit(SingleContentConfigContainerId));
+    },
     onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
     onDiscard: () => {
       dispatch(setVisibleModal(''));
       const { history, pageCode } = ownProps;
       history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
     },
-    showFilterModal: () => dispatch(setVisibleModal(ContentsFilterModalID)),
+    showFilterModal: (appTourProgress) => {
+      if (appTourProgress === APP_TOUR_STARTED) {
+        dispatch(setAppTourLastStep(19));
+      }
+      dispatch(setVisibleModal(ContentsFilterModalID));
+    },
     onSelectContent: (selectContent) => {
       dispatch(change(formToUse, putPrefixField('contentId'), selectContent.id));
       dispatch(change(formToUse, putPrefixField('contentDescription'), selectContent.description));
       dispatch(setVisibleModal(''));
+      dispatch(setAppTourLastStep(21));
+    },
+    onClickAddContent: (contentType) => {
+      const {
+        history, pageCode, widgetCode, frameId,
+      } = ownProps;
+      dispatch(setWorkMode(WORK_MODE_ADD));
+      dispatch(setCurrentStatusShow('all'));
+      dispatch(setNewContentsType(contentType));
+      const newRoute = routeConverter(ROUTE_CMS_ADD_CONTENT, { contentType: contentType.typeCode });
+      history.push(
+        `${newRoute}?callbackWidget=${widgetCode}&callbackPage=${pageCode}&callbackFrame=${frameId}`,
+      );
     },
   };
 };

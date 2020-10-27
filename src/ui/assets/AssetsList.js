@@ -380,7 +380,7 @@ class AssetsList extends Component {
       <div className="AssetsList__wrap">
         {content}
         {!loading && !hideFooter && (
-          <div className="AssetsList__footer">
+          <div className="AssetsList__footer startLeftPos">
             <Grid>
               <PaginationRow
                 viewType={PAGINATION_VIEW_TYPES[0]}

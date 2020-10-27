@@ -21,5 +21,6 @@ export const ROUTE_CMS_VERSIONING = '/cms/versioning';
 export const ROUTE_CMS_VERSIONING_CONTENTS = '/cms/versioning/contents';
 export const ROUTE_CMS_VERSIONING_CONTENT_HISTORY = '/cms/versioning/:contentId';
 export const ROUTE_CMS_VERSIONING_CONTENT_DETAIL = '/cms/versioning/contents/:contentId/versions/:versionId';
+export const WIDGET_CONFIG_ROUTE = '/widget/config/:widget/page/:page/frame/:frame';
 
 export const ROUTE_CATEGORIES = '/category';

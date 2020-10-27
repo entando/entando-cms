@@ -13,7 +13,7 @@ const helpIcon = (helpId, position) => (helpId ? (
           </p>
         </Popover>
 )}
-      placement="left"
+      placement={position === 'pull-right' ? 'left' : 'right'}
       trigger={['click']}
       rootClose
     >

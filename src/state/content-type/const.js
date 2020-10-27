@@ -16,6 +16,7 @@ export const TYPE_ATTACH = 'Attach';
 export const TYPE_IMAGE = 'Image';
 export const TYPE_LINK = 'Link';
 export const TYPE_MONOTEXT = 'Monotext';
+export const TYPE_EMAIL = 'Email';
 
 export const MODE_ADD = 'add';
 export const MODE_EDIT = 'edit';

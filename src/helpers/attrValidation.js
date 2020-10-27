@@ -135,7 +135,6 @@ export const attrValidatorsObj = {
 
 export const getAttrValidators = (validationRules) => {
   const validators = [];
-
   Object.keys(validationRules).forEach((key) => {
     if (
       validationRules[key] !== null

@@ -1,6 +1,6 @@
 {
   "name": "@entando/cms",
-  "version": "0.2.162",
+  "version": "0.2.172",
   "license": "LGPL-3.0",
   "description": "Entando CMS app",
   "keywords": [
@@ -25,6 +25,7 @@
   "dependencies": {
     "@entando/apimanager": "^6.5.2",
     "@entando/pagetreeselector": "^2.0.0",
+    "body-scroll-lock": "^3.1.5",
     "brace": "^0.11.1",
     "react-ace": "^7.0.2",
     "react-bootstrap-typeahead": "^3.4.6",
@@ -37,6 +38,7 @@
     "react-html-table-to-excel": "^2.0.0",
     "react-quill-2": "^2.0.2",
     "react-roving-tabindex": "^1.0.0",
+    "reactour": "^1.18.0",
     "uuid": "^8.1.0"
   },
   "scripts": {
@@ -239,6 +241,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "sass-lint": "^1.12.1",
+    "styled-components": "^4.4.1",
     "update-pkg-extended": "^2.2.1"
   },
   "peerDependencies": {
@@ -259,6 +262,6 @@
     "url": "https://github.com/entando/entando-cms/issues"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "@entando/cms@0.2.161",
+  "_id": "@entando/cms@0.2.171",
   "homepage": "https://github.com/entando/entando-cms#readme"
 }

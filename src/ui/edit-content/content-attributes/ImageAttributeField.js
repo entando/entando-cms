@@ -20,6 +20,7 @@ const ImageAttributeField = ({
   label,
   labelSize,
   inputSize,
+  hasLabel,
   alignClass,
   help,
   onClickAdd,
@@ -91,11 +92,13 @@ const ImageAttributeField = ({
 
   return (
     <div className={containerClasses}>
-      <Col xs={labelSize} className={alignClass}>
-        <ControlLabel>
-          {label} {help}
-        </ControlLabel>
-      </Col>
+      {hasLabel && (
+        <Col xs={labelSize} className={alignClass}>
+          <ControlLabel>
+            {label} {help}
+          </ControlLabel>
+        </Col>
+      )}
       <Col xs={inputSize || 12 - labelSize}>
         {hasValue ? renderAssetSelected() : renderChoose()}
       </Col>
@@ -116,6 +119,7 @@ ImageAttributeField.propTypes = {
   alignClass: PropTypes.string,
   help: PropTypes.node,
   inputSize: PropTypes.number,
+  hasLabel: PropTypes.bool,
   label: PropTypes.node.isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
@@ -137,6 +141,7 @@ ImageAttributeField.defaultProps = {
     error: {},
   },
   labelSize: 2,
+  hasLabel: true,
   alignClass: 'text-right',
   help: null,
   inputSize: null,

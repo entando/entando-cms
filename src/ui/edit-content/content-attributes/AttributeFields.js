@@ -5,7 +5,7 @@ import {
   FieldArray,
   fieldArrayFieldsPropTypes,
 } from 'redux-form';
-import _ from 'lodash';
+import { isObject } from 'lodash';
 
 import AttributeField from 'ui/edit-content/content-attributes/AttributeField';
 import CompositeAttributeField from 'ui/edit-content/content-attributes/CompositeAttributeField';
@@ -20,9 +20,11 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
+const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
+
 const renderField = (
-  name, idx, attribute, langCode, mainGroup,
-  joinGroups, isDefaultLang, locale, selectedLangTab,
+  name, attribute, langCode, mainGroup,
+  joinGroups, isDefaultLang, locale, selectedLangTab, expanded,
 ) => {
   if (!attribute) {
     return '';
@@ -36,9 +38,9 @@ const renderField = (
   if (listFilter) helpTextArr.push('Can be used as a filter in lists');
   if (indexable) helpTextArr.push('Searchable');
   const helpText = helpTextArr.join('<br>');
-  const i18nName = _.isObject(attName)
+  const i18nName = isObject(attName)
     ? (attName[locale] || code) : (attName || code);
-  const fieldLabel = (
+  const fieldLabel = COMPLEX_ATTRIBUTES.includes(type) ? i18nName : (
     <FormLabel
       labelText={i18nName}
       required={mandatory && isDefaultLang}
@@ -80,9 +82,12 @@ const renderField = (
           locale={locale}
           attribute={newAttribute}
           langCode={langCode}
+          labelSize={0}
+          hasLabel={false}
           mainGroup={mainGroup}
           joinGroups={joinGroups}
           selectedLangTab={selectedLangTab}
+          openedAtStart={expanded}
         />
       );
   }
@@ -98,13 +103,14 @@ const renderField = (
       joinGroups={joinGroups}
       langCode={langCode}
       selectedLangTab={selectedLangTab}
+      openedAtStart={expanded}
     />
   );
 };
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang, selectedLangTab, locale,
+  isDefaultLang, selectedLangTab, locale, expanded,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -129,8 +135,8 @@ const AttributeFields = ({
     });
   }
 
-  return fields.map((name, idx) => renderField(name, idx, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab));
+  return fields.map((name, idx) => renderField(name, attributes[idx],
+    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab, expanded));
 };
 
 AttributeFields.propTypes = {
@@ -144,6 +150,7 @@ AttributeFields.propTypes = {
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
+  expanded: PropTypes.bool.isRequired,
 };
 
 export default AttributeFields;

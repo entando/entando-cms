@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { required, isNumber } from '@entando/utils';
-import _ from 'lodash';
+import { required, isNumber, email } from '@entando/utils';
+import { isObject } from 'lodash';
 
+import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
 import FormLabel from 'ui/common/form/FormLabel';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
 import { getAttrValidators, linkValidate } from 'helpers/attrValidation';
@@ -23,6 +24,7 @@ import {
   TYPE_IMAGE,
   TYPE_LINK,
   TYPE_MONOTEXT,
+  TYPE_EMAIL,
 } from 'state/content-type/const';
 import BooleanAttributeField from 'ui/edit-content/content-attributes/BooleanAttributeField';
 import CheckboxAttributeField from 'ui/edit-content/content-attributes/CheckboxAttributeField';
@@ -39,17 +41,21 @@ import AttachAttributeFieldContainer from 'ui/edit-content/content-attributes/At
 import ImageAttributeFieldContainer from 'ui/edit-content/content-attributes/ImageAttributeFieldContainer';
 import LinkAttributeField from 'ui/edit-content/content-attributes/LinkAttributeField';
 import MonotextAttributeField from 'ui/edit-content/content-attributes/MonotextAttributeField';
+import EmailAttributeField from 'ui/edit-content/content-attributes/EmailAttributeField';
 
 const AttributeField = ({
   name,
   attribute,
   label,
   hasLabel,
+  labelSize,
   langCode,
   mainGroup,
   joinGroups,
   selectedLangTab,
   locale,
+  isSub,
+  openedAtStart,
 }) => {
   const {
     type,
@@ -61,7 +67,7 @@ const AttributeField = ({
     validationRules,
   } = attribute;
 
-  const i18nName = _.isObject(attName)
+  const i18nName = isObject(attName)
     ? (attName[locale] || code) : (attName || code);
 
   const helpTextArr = [];
@@ -76,7 +82,7 @@ const AttributeField = ({
     />
   );
 
-  const validate = getAttrValidators({ ...validationRules, mandatory });
+  const validate = [];
   if (mandatory) validate.push(required);
 
 
@@ -122,6 +128,11 @@ const AttributeField = ({
       AttributeFieldComp = TextAttributeField;
       actualName = `${name}.values.${langCode}`;
       break;
+    case TYPE_EMAIL:
+      validationRules.regex = null;
+      validate.push(email);
+      AttributeFieldComp = EmailAttributeField;
+      break;
     case TYPE_ATTACH:
       AttributeFieldComp = AttachAttributeFieldContainer;
       actualName = `${name}.values`;
@@ -142,14 +153,17 @@ const AttributeField = ({
       return null;
   }
 
-  return (
+  const validateWithRules = [...validate, ...getAttrValidators({ ...validationRules, mandatory })];
+
+  const field = (
     <Field
       name={actualName}
       attribute={attribute}
       component={AttributeFieldComp}
       label={fieldLabel}
       hasLabel={hasLabel}
-      validate={validate}
+      labelSize={labelSize}
+      validate={validateWithRules}
       mainGroup={mainGroup}
       joinGroups={joinGroups}
       {...(
@@ -159,6 +173,15 @@ const AttributeField = ({
       {...extraProps}
     />
   );
+
+  return isSub ? field : (
+    <ContentFormFieldCollapse
+      label={fieldLabel}
+      showContentAtStart={openedAtStart}
+    >
+      {field}
+    </ContentFormFieldCollapse>
+  );
 };
 
 AttributeField.propTypes = {
@@ -167,10 +190,13 @@ AttributeField.propTypes = {
   label: PropTypes.node,
   hasLabel: PropTypes.bool,
   langCode: PropTypes.string,
+  labelSize: PropTypes.number,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
+  isSub: PropTypes.bool,
+  openedAtStart: PropTypes.bool,
 };
 
 AttributeField.defaultProps = {
@@ -180,6 +206,9 @@ AttributeField.defaultProps = {
   mainGroup: '',
   joinGroups: [],
   locale: '',
+  labelSize: 2,
+  isSub: false,
+  openedAtStart: false,
 };
 
 export default AttributeField;

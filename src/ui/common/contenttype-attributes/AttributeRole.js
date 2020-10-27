@@ -31,6 +31,8 @@ class AttributeRole extends Component {
         );
       }
 
+      const getAttributeRoleLabel = item => `${item.value} - ${item.text}`;
+
       return (
         <FormGroup>
           <label htmlFor="attrRole" className="col-xs-2 control-label">
@@ -43,6 +45,7 @@ class AttributeRole extends Component {
               options={selectAllowedOptions}
               selectedValues={joinAllowedOptions}
               labelKey="text"
+              labelFn={getAttributeRoleLabel}
               valueKey="value"
               emptyOptionTextId="cms.contenttype.labelrole.choose"
             />
