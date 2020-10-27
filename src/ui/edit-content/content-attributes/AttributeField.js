@@ -175,7 +175,12 @@ const AttributeField = ({
   );
 
   return isSub ? field : (
-    <ContentFormFieldCollapse label={fieldLabel} showContentAtStart={openedAtStart}>{field}</ContentFormFieldCollapse>
+    <ContentFormFieldCollapse
+      label={fieldLabel}
+      showContentAtStart={openedAtStart}
+    >
+      {field}
+    </ContentFormFieldCollapse>
   );
 };
 
