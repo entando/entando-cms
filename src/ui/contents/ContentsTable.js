@@ -8,6 +8,7 @@ import {
   selectionHeaderCellFormatter, selectionCellFormatter, sortableHeaderCellFormatter,
   tableCellFormatter, actionHeaderCellFormatter, MenuItem,
 } from 'patternfly-react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { formatDate, PermissionCheck } from '@entando/utils';
 import * as resolve from 'table-resolver';
 import DeleteContentModalContainer from 'ui/contents/DeleteContentModalContainer';
@@ -48,6 +49,7 @@ export const getContentStatusDetails = (status = '', hasPublicVersion, intl) => 
 class ContentsTable extends Component {
   constructor(props) {
     super(props);
+
     // enables our custom header formatters extensions to reactabular
     this.customHeaderFormatters = customHeaderFormattersDefinition;
     this.onSort = this.onSort.bind(this);
@@ -125,8 +127,43 @@ class ContentsTable extends Component {
         let newCode = code;
         switch (ac.code) {
           case 'description':
-            rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
-            );
+            rowCellFormatter = (name, { rowData: { id, attributes } }) => {
+              const getAttrValue = attr => (attr.value && attr.value.urlDest)
+                || (typeof attr.value !== 'object' && attr.value)
+                || (attr.values && typeof attr.values.en !== 'object' && attr.values.en);
+
+              const tooltipDetails = (
+                <table className="table" style={{ marginBottom: 0 }}>
+                  <tbody>
+                    {attributes.filter(attr => getAttrValue(attr)).map(attr => (
+                      <tr key={attr.code}>
+                        <th>{attr.code}</th>
+                        <td>{getAttrValue(attr)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              );
+
+              return (
+                <OverlayTrigger
+                  placement="top"
+                  overlay={(
+                    <Tooltip id={`tooltip-${id}`} className="Contents__tablerow-tooltip">
+                      {tooltipDetails}
+                    </Tooltip>
+                  )}
+                >
+                  <td
+                    className="Contents__name-td"
+                    style={{ textOverflow: 'ellipsis' }}
+                  >
+                    {name}
+
+                  </td>
+                </OverlayTrigger>
+              );
+            };
             break;
           case 'code':
             rowCellFormatter = (_, { rowData }) => <td>{rowData.id}</td>;
