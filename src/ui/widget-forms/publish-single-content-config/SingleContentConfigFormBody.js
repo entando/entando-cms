@@ -9,16 +9,15 @@ import {
   Button, Row, Col, DropdownButton, MenuItem,
 } from 'patternfly-react';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
-import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
 import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import ContentTableRow from 'ui/widget-forms/publish-single-content-config/ContentTableRow';
 import SingleContentConfigTourContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigTourContainer';
-import { APP_TOUR_STARTED } from 'state/app-tour/const';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
+const contentDoesNotExist = value => (value ? undefined : <FormattedMessage id="validateForm.required" />);
 
 export class SingleContentConfigFormBody extends PureComponent {
   constructor(props) {
@@ -85,50 +84,6 @@ export class SingleContentConfigFormBody extends PureComponent {
     );
   }
 
-  renderActionButtons() {
-    const {
-      onCancel,
-      onDiscard,
-      invalid,
-      dirty,
-      submitting,
-      appTourProgress,
-    } = this.props;
-
-    const { selectedContent } = this.state;
-
-    const handleCancelClick = () => {
-      if (dirty && appTourProgress !== APP_TOUR_STARTED) {
-        onCancel();
-      } else {
-        onDiscard();
-      }
-    };
-
-    const contentExists = get(selectedContent, 'id', get(selectedContent, 'contentId', false));
-    return (
-      <Row className="SingleContentConfigFormBody__actionBar">
-        <Col xs={12}>
-          <Button
-            className="pull-right AddContentTypeFormBody__save--btn app-tour-step-21"
-            type="submit"
-            bsStyle="primary"
-            disabled={invalid || submitting || !contentExists}
-          >
-            <FormattedMessage id="app.save" />
-          </Button>
-          <Button
-            className="pull-right AddContentTypeFormBody__cancel--btn"
-            bsStyle="default"
-            onClick={handleCancelClick}
-          >
-            <FormattedMessage id="cms.label.cancel" />
-          </Button>
-        </Col>
-      </Row>
-    );
-  }
-
   renderFormFields() {
     const {
       contentTemplates,
@@ -136,10 +91,8 @@ export class SingleContentConfigFormBody extends PureComponent {
       submitting,
       intl,
       showFilterModal,
-      onDiscard,
       ownerGroup,
       joinGroups,
-      extFormName,
       putPrefixField,
       contentTypes,
       onClickAddContent,
@@ -210,10 +163,14 @@ export class SingleContentConfigFormBody extends PureComponent {
           </Col>
         </Row>
 
-        <Field name={putPrefixField('chosenContent')} component="div" />
+        <Field
+          name={putPrefixField('chosenContent')}
+          component="div"
+        />
         <Field
           name={putPrefixField('contentId')}
           component="span"
+          validate={[contentDoesNotExist]}
         />
 
         <div className="SingleContentConfigFormBody__table">
@@ -251,7 +208,6 @@ export class SingleContentConfigFormBody extends PureComponent {
           invalid={invalid}
           submitting={submitting}
           onSave={this.handleContentSelect}
-          onDiscard={onDiscard}
           ownerGroup={ownerGroup}
           joinGroups={joinGroups}
           compatibility={{
@@ -272,7 +228,6 @@ export class SingleContentConfigFormBody extends PureComponent {
             </Col>
           </Row>
         )}
-        {!extFormName && this.renderActionButtons()}
       </div>
     );
   }
@@ -280,12 +235,6 @@ export class SingleContentConfigFormBody extends PureComponent {
   render() {
     const {
       extFormName,
-      invalid,
-      submitting,
-      intl,
-      onSave,
-      onDiscard,
-      appTourProgress,
     } = this.props;
 
     const formFields = this.renderFormFields();
@@ -298,15 +247,6 @@ export class SingleContentConfigFormBody extends PureComponent {
           </Col>
           <SingleContentConfigTourContainer />
         </Row>
-        {!extFormName && appTourProgress !== APP_TOUR_STARTED && (
-          <ConfirmCancelModalContainer
-            contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
-            invalid={invalid}
-            submitting={submitting}
-            onSave={onSave}
-            onDiscard={onDiscard}
-          />
-        )}
       </Fragment>
     );
   }
@@ -324,12 +264,8 @@ SingleContentConfigFormBody.propTypes = {
     contentId: PropTypes.string,
     status: PropTypes.string,
   }),
-  dirty: PropTypes.bool,
-  onDiscard: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
   showFilterModal: PropTypes.func.isRequired,
   onSelectContent: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   extFormName: PropTypes.string,
@@ -344,7 +280,6 @@ SingleContentConfigFormBody.propTypes = {
 
 SingleContentConfigFormBody.defaultProps = {
   chosenContent: {},
-  dirty: false,
   ownerGroup: '',
   joinGroups: [],
   extFormName: '',
