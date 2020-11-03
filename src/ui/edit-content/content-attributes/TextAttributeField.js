@@ -5,6 +5,7 @@ import {
   fieldMetaPropTypes,
 } from 'redux-form';
 
+import CopyTextButton from 'ui/common/button/CopyTextButton';
 import TextInput from 'ui/common/form/RenderTextInput';
 
 const TextAttributeField = ({
@@ -29,6 +30,7 @@ const TextAttributeField = ({
       input={attrInput}
       label={label}
       meta={meta}
+      endButtons={<CopyTextButton text={attrInput.value} />}
       {...rest}
     />
   );

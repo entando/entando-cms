@@ -9,6 +9,7 @@ import {
 import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
 import RenderRichTextEditor from 'ui/common/form/RenderRichTextEditor';
 import { getEditorSettings } from 'state/content-settings/selectors';
+import CopyTextButton from 'ui/common/button/CopyTextButton';
 
 const HypertextAttributeField = ({
   label,
@@ -47,6 +48,9 @@ const HypertextAttributeField = ({
       meta={meta}
       rows={3}
       cols={50}
+      topBarOptions={(
+        <CopyTextButton text={attrInput.value} />
+      )}
       {...rest}
     />
   );

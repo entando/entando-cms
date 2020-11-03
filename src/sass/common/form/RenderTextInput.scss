@@ -1,0 +1,15 @@
+.RenderTextInput {
+  &__input-body {
+    display: flex;
+    border: 1px solid $color-vertical-grey;
+
+    & > input {
+      flex: 1;
+      border: 0;
+    }
+
+    &__endbuttons {
+      border-left: 1px solid $color-vertical-grey;
+    }
+  }
+}

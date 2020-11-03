@@ -112,7 +112,7 @@ export const copyAttributeEngValue = (attribute, attributeType) => (dispatch, ge
 
 export const duplicateEngFieldValues = () => (dispatch, getState) => {
   const state = getState();
-  
+
   const traverseAttributes = (attributeValues, attributeList) => {
     const mappedAttributes = attributeList.reduce(
       (curr, attribute) => ({ ...curr, [attribute.code]: attribute }),

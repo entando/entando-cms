@@ -17,6 +17,7 @@ export const RenderTextInputBody = ({
   hasLabel,
   xsClass,
   forwardedRef,
+  endButtons,
   ...others
 }) => {
   const { restProps } = others;
@@ -30,16 +31,23 @@ export const RenderTextInputBody = ({
         </Col>
       )}
       <Col xs={12} sm={inputSize || 12 - labelSize}>
-        <input
-          {...input}
-          type={type}
-          id={input.name}
-          ref={forwardedRef}
-          placeholder={placeholder}
-          className="form-control RenderTextInput"
-          disabled={disabled}
-          {...restProps}
-        />
+        <div className="RenderTextInput__input-body">
+          <input
+            {...input}
+            type={type}
+            id={input.name}
+            ref={forwardedRef}
+            placeholder={placeholder}
+            className="form-control RenderTextInput"
+            disabled={disabled}
+            {...restProps}
+          />
+          {endButtons && (
+            <div className="RenderTextAreaInput__endbuttons">
+              {endButtons}
+            </div>
+          )}
+        </div>
         {append && <span className="AppendedLabel">{append}</span>}
         {touched && (error && <span className="help-block">{error}</span>)}
       </Col>
@@ -72,6 +80,10 @@ RenderTextInputBody.propTypes = {
   alignClass: PropTypes.string,
   xsClass: PropTypes.string,
   hasLabel: PropTypes.bool,
+  endButtons: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 RenderTextInputBody.defaultProps = {
@@ -91,6 +103,7 @@ RenderTextInputBody.defaultProps = {
   hasLabel: true,
   xsClass: 'mobile-left',
   forwardedRef: null,
+  endButtons: null,
 };
 
 export default React.forwardRef((props, ref) => (
