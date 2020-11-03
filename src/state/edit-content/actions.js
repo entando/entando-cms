@@ -1,21 +1,27 @@
 import {
   addErrors, addToast, clearErrors, TOAST_ERROR,
 } from '@entando/messages';
-import { initialize } from 'redux-form';
+import { initialize, formValueSelector, change } from 'redux-form';
 import moment from 'moment';
-import { pickBy } from 'lodash';
+import { pickBy, isObject, cloneDeep } from 'lodash';
 
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
 
 import {
-  TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP, TYPE_NUMBER,
-  TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE, TYPE_ATTACH, TYPE_COMPOSITE,
+  TYPE_DATE, TYPE_CHECKBOX, TYPE_BOOLEAN, TYPE_THREESTATE, TYPE_TIMESTAMP,
+  TYPE_NUMBER, TYPE_LIST, TYPE_MONOLIST, TYPE_IMAGE, TYPE_ATTACH, TYPE_EMAIL,
+  TYPE_COMPOSITE, TYPE_TEXT, TYPE_LONGTEXT, TYPE_HYPERTEXT, TYPE_LINK,
 } from 'state/content-type/const';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 import { toggleLoading } from 'state/loading/actions';
-import { getActiveLanguages, getLanguages } from 'state/languages/selectors';
+import {
+  getActiveLanguages,
+  getLanguages,
+  getDefaultLanguage,
+  getActiveNonDefaultLanguages,
+} from 'state/languages/selectors';
 import {
   SET_CONTENT_ENTRY,
   SET_OWNER_GROUP_DISABLE,
@@ -81,6 +87,82 @@ export const fetchContent = params => dispatch => new Promise((resolve, reject) 
     })
     .catch(() => { dispatch(toggleLoading('editContent')); });
 });
+
+export const copyAttributeEngValue = (attribute, attributeType) => (dispatch, getState) => {
+  const state = getState();
+  const deflang = getDefaultLanguage(state);
+  const otherLanguages = getActiveNonDefaultLanguages(state).map(({ code }) => code);
+  switch (attributeType) {
+    case TYPE_TEXT:
+    case TYPE_HYPERTEXT:
+    case TYPE_LONGTEXT:
+    case TYPE_IMAGE:
+    case TYPE_EMAIL:
+    case TYPE_LINK: {
+      const { [deflang]: mainlangvalue } = attribute.values;
+      const newValues = otherLanguages.reduce((acc, key) => (
+        { ...acc, [key]: isObject(mainlangvalue) ? cloneDeep(mainlangvalue) : mainlangvalue }
+      ), { ...attribute.values });
+      return { ...attribute, values: newValues };
+    }
+    default:
+      return attribute;
+  }
+};
+
+export const duplicateEngFieldValues = () => (dispatch, getState) => {
+  const state = getState();
+  
+  const traverseAttributes = (attributeValues, attributeList) => {
+    const mappedAttributes = attributeList.reduce(
+      (curr, attribute) => ({ ...curr, [attribute.code]: attribute }),
+      {},
+    );
+    console.log('lets traverse', attributeValues, attributeList);
+    return attributeValues.map((attribute) => {
+      const { code } = attribute;
+      const { [code]: typeAttributes } = mappedAttributes;
+      const { type } = typeAttributes;
+      switch (type) {
+        case TYPE_COMPOSITE: {
+          const { compositeelements } = attribute;
+          const { compositeAttributes } = typeAttributes;
+          const newElements = traverseAttributes(compositeelements, compositeAttributes);
+          return { ...attribute, compositeelements: newElements };
+        }
+        case TYPE_MONOLIST: {
+          const { elements } = attribute;
+          const { nestedAttribute } = typeAttributes;
+          const newElements = traverseAttributes(elements, [nestedAttribute]);
+          return { ...attribute, elements: newElements };
+        }
+        case TYPE_LIST: {
+          const { nestedAttribute } = typeAttributes;
+          const { values: listelements } = dispatch(copyAttributeEngValue(
+            { values: attribute.listelements },
+            nestedAttribute.type,
+          ));
+          return { ...attribute, listelements };
+        }
+        default:
+          return dispatch(copyAttributeEngValue(attribute, type));
+      }
+    });
+  };
+
+  const mainAttributeValues = formValueSelector('editcontentform')(
+    state, 'attributes',
+  );
+
+  dispatch(change(
+    'editcontentform',
+    'attributes',
+    traverseAttributes(
+      mainAttributeValues,
+      getSelectedContentTypeAttributes(state),
+    ),
+  ));
+};
 
 export const setOwnerGroupDisable = disabled => ({
   type: SET_OWNER_GROUP_DISABLE,
