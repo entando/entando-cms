@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Row, Col, Button, Grid,
+  Row, Col, Button, DropdownButton, MenuItem,
 } from 'patternfly-react';
 import { ToggleButton, ButtonToolbar } from 'react-bootstrap';
 import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
@@ -50,135 +50,108 @@ const StickySave = ({
   lastAutoSaveTime, intl, invalid, submitting, onLine, onSubmit, handleSubmit,
   onUnpublish, content, isDirty, onCancel, onDiscard, onSave, userPermissions,
   enableTranslationWarning,
-}) => (
-  <Grid className="no-padding">
+}) => {
+  const handleActionSelected = (saveType) => {
+    handleSubmit(values => onSubmit({
+      ...values,
+      saveType,
+    }, undefined, !enableTranslationWarning, content.attributes));
+  };
+
+  return (
     <Col xs={12} className="StickySave">
-      <Row className="toolbar-pf table-view-pf-toolbar" style={{ backgroundColor: 'white' }}>
-        <Col xs={12}>
-          {
-            isValidDateTimeStr(lastAutoSaveTime) ? (
-              <Row className="StickySave__row">
-                <Col xs={12} className="StickySave__column">
-                  <strong>
-                    <FormattedMessage
-                      id="cms.stickySave.lastAutoSave"
-                      defaultMessage="Last save was:"
-                    />
-                    {formatDate(lastAutoSaveTime)}
-                  </strong>
-                </Col>
-              </Row>
-            ) : ''
-          }
-          <Row className="toolbar-pf-actions">
-            <Col xs={12} md={6} className="StickySave__column">
-              <Col xs={12} className="no-padding ToggleButtonGroup">
-                <strong>
-                  <FormattedMessage id="cms.contents.ready" defaultMessage="Ready for approval" />
-                </strong>
-                <ButtonToolbar>
-                  <Field
-                    name="status"
-                    component={ToggleButtonGroupField}
-                  >
-                    <ToggleButton
-                      checked
-                      value="ready"
-                    >
-                      <FormattedMessage id="cms.label.yes" />
-                    </ToggleButton>
-                    <ToggleButton
-                      value="draft"
-                    >
-                      <FormattedMessage id="cms.label.no" />
-                    </ToggleButton>
-                  </Field>
-                </ButtonToolbar>
-              </Col>
-            </Col>
-            <Col xs={12} md={6} className="no-padding text-right">
-              <Button
-                bsStyle="primary"
-                type="submit"
-                onClick={handleSubmit(values => onSubmit({
-                  ...values,
-                  saveType: REGULAR_SAVE_TYPE,
-                }, undefined, !enableTranslationWarning, content.attributes))}
+      <Row className="StickySave__row--top">
+        <Col xs={12} className="text-right">
+          {isValidDateTimeStr(lastAutoSaveTime) && (
+            <strong className="StickySave__btnlabel">
+              <FormattedMessage
+                id="cms.stickySave.lastAutoSave"
+                defaultMessage="Last save was:"
+              />
+              {formatDate(lastAutoSaveTime)}
+            </strong>
+          )}
+          <Button
+            className="AddContentTypeFormBody__cancel--btn"
+            bsStyle="default"
+            onClick={isDirty ? onCancel : onDiscard}
+          >
+            <FormattedMessage id="cms.label.cancel" />
+          </Button>
+          <DropdownButton
+            title="Save"
+            id="saveopts"
+            onSelect={handleActionSelected}
+          >
+            <MenuItem eventKey={REGULAR_SAVE_TYPE}>
+              <FormattedMessage id="cms.save" />
+            </MenuItem>
+            <MenuItem
+              eventKey={CONTINUE_SAVE_TYPE}
+              disabled={invalid || submitting || !isDirty}
+              className="StickySave__actionButton"
+            >
+              <FormattedMessage id="cms.saveAndContinue" />
+            </MenuItem>
+            <PermissionCheck
+              requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+              userPermissions={userPermissions}
+            >
+              <MenuItem
+                eventKey={APPROVE_SAVE_TYPE}
                 disabled={invalid || submitting || !isDirty}
               >
-                {intl.formatMessage(messages.save)}
-              </Button>
-            </Col>
-          </Row>
-          <Row className="toolbar-pf-results">
-            <Col xs={12} md={8} lg={6} lgOffset={6} mdOffset={4} className="no-padding">
-              <Col xs={12} className="text-right">
-                <strong className="StickySave__saveText">
-                  <FormattedMessage id="cms.setContentAs" defaultMessage="Set content as" />
-                </strong>
-                <Button
-                  type="submit"
-                  disabled={invalid || submitting || !isDirty}
-                  className="StickySave__actionButton"
-                  onClick={handleSubmit(values => onSubmit({
-                    ...values,
-                    saveType: CONTINUE_SAVE_TYPE,
-                  }, undefined, !enableTranslationWarning, content.attributes))}
-                >
-                  {intl.formatMessage(messages.saveAndContinue)}
-                </Button>
-                <PermissionCheck
-                  requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
-                  userPermissions={userPermissions}
-                >
-                  <>
-                    <Button
-                      type="submit"
-                      disabled={invalid || submitting || !isDirty}
-                      className="StickySave__actionButton"
-                      bsStyle="success"
-                      onClick={handleSubmit(values => onSubmit({
-                        ...values,
-                        contentId: content.id,
-                        saveType: APPROVE_SAVE_TYPE,
-                      }, undefined, !enableTranslationWarning, content.attributes))}
-                    >
-                      {intl.formatMessage(messages.saveAndApprove)}
-                    </Button>
-                    {onLine && (
-                      <Button
-                        className="StickySave__actionButton"
-                        bsStyle="warning"
-                        onClick={() => onUnpublish(content)}
-                      >
-                        <span className="icon fa fa-pause" />
-                        {` ${intl.formatMessage(messages.unpublish)}`}
-                      </Button>
-                    )}
-                  </>
-                </PermissionCheck>
-                <Button
-                  className="AddContentTypeFormBody__cancel--btn"
-                  bsStyle="default"
-                  onClick={isDirty ? onCancel : onDiscard}
-                >
-                  <FormattedMessage id="cms.label.cancel" />
-                </Button>
-                <ConfirmCancelModalContainer
-                  contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
-                  invalid={invalid}
-                  submitting={submitting}
-                  onSave={onSave}
-                  onDiscard={onDiscard}
-                />
-              </Col>
-            </Col>
-          </Row>
+                <FormattedMessage id="cms.saveAndApprove" />
+              </MenuItem>
+            </PermissionCheck>
+          </DropdownButton>
+          {onLine && (
+            <Button
+              className="StickySave__actionButton StickySave__btnwide"
+              bsStyle="warning"
+              onClick={() => onUnpublish(content)}
+            >
+              <span className="icon fa fa-pause" />
+              {` ${intl.formatMessage(messages.unpublish)}`}
+            </Button>
+          )}
         </Col>
       </Row>
+      <Row className="StickySave__row">
+        <Col xs={12} className="StickySave__column ToggleButtonGroup text-right">
+          <strong className="StickySave__btnlabel">
+            <FormattedMessage id="cms.contents.ready" defaultMessage="Ready for approval" />
+          </strong>
+          <ButtonToolbar>
+            <Field
+              name="status"
+              component={ToggleButtonGroupField}
+            >
+              <ToggleButton
+                checked
+                value="ready"
+              >
+                <FormattedMessage id="cms.label.yes" />
+              </ToggleButton>
+              <ToggleButton
+                value="draft"
+              >
+                <FormattedMessage id="cms.label.no" />
+              </ToggleButton>
+            </Field>
+          </ButtonToolbar>
+        </Col>
+      </Row>
+      <ConfirmCancelModalContainer
+        contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
+        invalid={invalid}
+        submitting={submitting}
+        onSave={onSave}
+        onDiscard={onDiscard}
+      />
     </Col>
-  </Grid>
-);
+  );
+};
 
 StickySave.propTypes = {
   intl: intlShape.isRequired,

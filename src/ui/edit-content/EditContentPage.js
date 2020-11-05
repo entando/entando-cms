@@ -27,7 +27,6 @@ const EditContentPage = () => (
         <CMSPageTitle
           titleId="cms.contents.edit.title"
           helpId="cms.contents.edit.titletip"
-          position="pull-right"
           noHeaderMargin
           largeTitle
         />

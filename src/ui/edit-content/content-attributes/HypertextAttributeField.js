@@ -36,6 +36,7 @@ const HypertextAttributeField = ({
         input={attrInput}
         label={label}
         meta={meta}
+        extraOptions={<CopyTextButton text={attrInput.value} />}
         {...rest}
       />
     );
