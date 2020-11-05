@@ -14,33 +14,6 @@ import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
 import ToggleButtonGroupField from 'ui/common/form/ToggleButtonGroupField';
 
-const messages = defineMessages({
-  chooseOption: {
-    id: 'cms.chooseAnOption',
-  },
-  new: {
-    id: 'cms.new',
-  },
-  save: {
-    id: 'cms.save',
-  },
-  saveAndApprove: {
-    id: 'cms.saveAndApprove',
-  },
-  unpublish: {
-    id: 'cms.unpublish',
-  },
-  setContentAs: {
-    id: 'cms.setContentAs',
-  },
-  cancel: {
-    id: 'cms.label.cancel',
-  },
-  saveAndContinue: {
-    id: 'cms.saveAndContinue',
-  },
-});
-
 const isValidDateTimeStr = (dateTime) => {
   const formattedDateTime = formatDate(dateTime);
   return (typeof formattedDateTime === 'string') && !(['N/A', 'INVALID DATE'].includes(formattedDateTime.toUpperCase()));
@@ -52,10 +25,14 @@ const StickySave = ({
   enableTranslationWarning,
 }) => {
   const handleActionSelected = (saveType) => {
-    handleSubmit(values => onSubmit({
-      ...values,
-      saveType,
-    }, undefined, !enableTranslationWarning, content.attributes));
+    console.log('dosave', saveType, handleSubmit, onSubmit);
+    handleSubmit((values) => {
+      console.log(values);
+      onSubmit({
+        ...values,
+        saveType,
+      }, undefined, !enableTranslationWarning, content.attributes);
+    });
   };
 
   return (
@@ -83,7 +60,10 @@ const StickySave = ({
             id="saveopts"
             onSelect={handleActionSelected}
           >
-            <MenuItem eventKey={REGULAR_SAVE_TYPE}>
+            <MenuItem
+              eventKey={REGULAR_SAVE_TYPE}
+              disabled={invalid || submitting || !isDirty}
+            >
               <FormattedMessage id="cms.save" />
             </MenuItem>
             <MenuItem
@@ -112,7 +92,7 @@ const StickySave = ({
               onClick={() => onUnpublish(content)}
             >
               <span className="icon fa fa-pause" />
-              {` ${intl.formatMessage(messages.unpublish)}`}
+              {` ${intl.formatMessage({ id: 'cms.unpublish' })}`}
             </Button>
           )}
         </Col>

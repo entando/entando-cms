@@ -16,6 +16,8 @@ const HypertextAttributeField = ({
   input,
   meta,
   isRTE,
+  langCode,
+  locale,
   ...rest
 }) => {
   const { name, value: inputValue, onChange: inputOnChange } = input;
@@ -36,7 +38,11 @@ const HypertextAttributeField = ({
         input={attrInput}
         label={label}
         meta={meta}
-        extraOptions={<CopyTextButton text={attrInput.value} />}
+        langCode={langCode}
+        {...(
+          langCode === locale
+          && { extraOptions: (<CopyTextButton text={attrInput.value} />) }
+        )}
         {...rest}
       />
     );
@@ -49,8 +55,9 @@ const HypertextAttributeField = ({
       meta={meta}
       rows={3}
       cols={50}
-      topBarOptions={(
-        <CopyTextButton text={attrInput.value} />
+      {...(
+        langCode === locale
+        && { topBarOptions: (<CopyTextButton text={attrInput.value} />) }
       )}
       {...rest}
     />
@@ -62,6 +69,8 @@ HypertextAttributeField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
   meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
   isRTE: PropTypes.bool,
+  langCode: PropTypes.string.isRequired,
+  locale: PropTypes.string.isRequired,
 };
 
 HypertextAttributeField.defaultProps = {
