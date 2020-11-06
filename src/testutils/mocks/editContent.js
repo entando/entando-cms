@@ -161,7 +161,7 @@ export const CONTENT_FORM_ATTRIBUTE_VALUES = {
       },
     },
     {
-      code: 'Authors',
+      code: 'Author',
       compositeelements: [
         {
           code: 'AuthorName',

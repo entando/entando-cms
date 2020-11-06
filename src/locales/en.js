@@ -338,6 +338,7 @@ export default {
     'cms.contents.edit.duplicate': 'Duplicate',
     'cms.contents.edit.label.duplicate': 'Duplicate Contents',
     'cms.contents.edit.label.duplicateHelp': 'Copy and paste the content from this language tab to others',
+    'cms.contents.edit.copytext': 'Copy Text',
     'cms.stickySave.lastAutoSave': 'Last save was: ',
     'cms.content.status.unpublished': 'Unpublished',
     'cms.content.status.unpublished.ready': 'Unpublished (ready)',

@@ -346,11 +346,11 @@ export const ATTRIBUTE_MONOLIST_COMPOSITE = {
 };
 
 export const COMPOSITE_ATTRIBUTE_VALUESONLY = {
-  code: 'Authors',
+  code: 'Author',
   type: 'Composite',
-  name: 'Authors',
+  name: 'Author',
   names: {
-    en: 'Authors',
+    en: 'Author',
   },
   nestedAttribute: null,
   compositeAttributes: [
@@ -384,7 +384,7 @@ export const MONOLIST_COMPOSITE_ATTRIBUTE_VALUESONLY = {
   names: {
     en: 'Authors',
   },
-  nestedAttribute: { ...COMPOSITE_ATTRIBUTE_VALUESONLY },
+  nestedAttribute: { ...COMPOSITE_ATTRIBUTE_VALUESONLY, code: 'Authors' },
   compositeAttributes: null,
 };
 

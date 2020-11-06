@@ -29,7 +29,7 @@ import { TOGGLE_LOADING } from 'state/loading/types';
 import {
   getContent, getGroups, postAddContent, putUpdateContent,
 } from 'api/editContent';
-import * as selectors from 'state/content-type/selectors';
+import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 
 const SET_CONTENT = {
   type: SET_CONTENT_ENTRY,
@@ -89,8 +89,9 @@ jest.mock('api/editContent', () => ({
   putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } })),
 }));
 
-// eslint-disable-next-line no-import-assign
-selectors.getSelectedContentTypeAttributes = jest.fn();
+jest.mock('state/content-type/selectors', () => ({
+  getSelectedContentTypeAttributes: jest.fn(),
+}));
 
 it('test setContentTemplateList action', () => {
   expect(setContentEntry(GET_CONTENT_RESPONSE_OK)).toEqual(SET_CONTENT);
@@ -226,28 +227,30 @@ describe('editContent thunks', () => {
   });
 
   it('duplicate en values to it', () => {
-    store = createMockStore({
+    getSelectedContentTypeAttributes.mockImplementationOnce(jest.requireActual('state/content-type/selectors').getSelectedContentTypeAttributes);
+    const elstate = {
       apps: {
         cms: {
           languages,
           editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } },
-          form: {
-            editcontentform: {
-              values: { ...CONTENT_FORM_ATTRIBUTE_VALUES },
-            },
-          },
           contentType: {
             selected: { ...NEWS_CTYPE },
           },
         },
       },
-    });
+      form: {
+        editcontentform: {
+          values: { ...CONTENT_FORM_ATTRIBUTE_VALUES },
+        },
+      },
+    };
+    store = createMockStore(elstate);
 
     store.dispatch(duplicateEngFieldValues());
   });
 
   it('save new content', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
+    getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
     store = createMockStore({
       apps:
       {
@@ -264,7 +267,7 @@ describe('editContent thunks', () => {
   });
 
   it('save add content', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [
+    getSelectedContentTypeAttributes.mockImplementation(() => [
       { type: 'Boolean' },
       { type: 'Timestamp' },
       { type: 'Monolist', nestedAttribute: { type: 'Boolean' } },
@@ -307,7 +310,7 @@ describe('editContent thunks', () => {
   });
 
   it('save new content without attribues', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
+    getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
@@ -319,7 +322,7 @@ describe('editContent thunks', () => {
   });
 
   it('save new content with ', (done) => {
-    selectors.getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
+    getSelectedContentTypeAttributes.mockImplementation(() => [{ type: 'Text' }]);
     store = createMockStore({
       apps:
       { cms: { editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } } },
