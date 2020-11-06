@@ -17,6 +17,7 @@ describe('ui/edit-content/content-attributes/ContentAttributes', () => {
       onWillUnmount={onWillUnmountMock}
       attributes={attributes}
       languages={LANGUAGES_LIST}
+      defaultLang={{ code: 'en' }}
     />,
   );
 

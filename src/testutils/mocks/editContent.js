@@ -74,3 +74,143 @@ export const POST_CONTENT_ADD_RESPONSE_OK = {
   id: 10013,
   contentType: { typeCode: 'NEWS', typeDescription: 'News' },
 };
+
+export const CONTENT_FORM_ATTRIBUTE_VALUES = {
+  attributes: [
+    {
+      code: 'title',
+      value: null,
+      values: {
+        en: 'News here we go',
+      },
+    },
+    {
+      code: 'body',
+      value: null,
+      values: {
+        en: 'wolowolo',
+      },
+    },
+    {
+      code: 'image',
+      value: null,
+      values: {
+        en: {
+          id: 'entandoAtWork',
+          type: 'image',
+          name: 'Entando at Work',
+          group: 'free',
+          categories: [],
+          versions: [
+            {
+              dimensions: '90x90 px',
+              path: 'entando_at_work_7_d1.jpg',
+              size: '0 Kb',
+            },
+          ],
+          metadata: null,
+          downloadUrl: 'http://localhost:8090',
+        },
+      },
+      names: {
+        en: 'image',
+      },
+    },
+    {
+      code: 'Authors',
+      value: null,
+      values: {},
+      elements: [
+        {
+          code: 'Authors',
+          compositeelements: [
+            {
+              code: 'AuthorName',
+              value: null,
+              values: {
+                en: 'Jenny',
+              },
+            },
+            {
+              code: 'AuthorFace',
+              value: null,
+              values: {
+                en: {
+                  id: 'entandoAtWork',
+                  type: 'image',
+                  name: 'Entando at Work',
+                  group: 'free',
+                  categories: [],
+                  versions: [
+                    {
+                      dimensions: '90x90 px',
+                      path: 'entando_at_work_7_d1.jpg',
+                      size: '0 Kb',
+                    },
+                  ],
+                  metadata: null,
+                  downloadUrl: 'http://localhost:8090',
+                },
+              },
+            },
+          ],
+        },
+      ],
+      names: {
+        en: 'Authors',
+      },
+    },
+    {
+      code: 'Authors',
+      compositeelements: [
+        {
+          code: 'AuthorName',
+          value: null,
+          values: {
+            en: 'Jenny',
+          },
+          elements: [],
+          compositeelements: [],
+          listelements: {},
+        },
+        {
+          code: 'AuthorFace',
+          value: null,
+          values: {
+            en: {
+              id: 'entandoAtWork',
+              type: 'image',
+              name: 'Entando at Work',
+              group: 'free',
+              categories: [],
+              versions: [
+                {
+                  dimensions: '90x90 px',
+                  path: 'entando_at_work_7_d1.jpg',
+                  size: '0 Kb',
+                },
+              ],
+              metadata: null,
+              downloadUrl: 'http://localhost:8090',
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'Emails',
+      value: null,
+      listelements: {
+        en: [
+          {
+            code: 'Emails',
+            value: 'jeff@go.com',
+          },
+        ],
+      },
+      names: {
+        en: 'Emails',
+      },
+    },
+  ],
+};

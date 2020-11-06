@@ -18,9 +18,9 @@
         box-shadow: none;
       }
     }
+  }
 
-    &__endbuttons {
-      border-left: 1px solid $color-vertical-grey;
-    }
+  &__endbuttons {
+    border-left: 1px solid $color-vertical-grey;
   }
 }

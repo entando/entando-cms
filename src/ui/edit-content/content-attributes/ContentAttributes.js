@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import {
   FieldArray,
 } from 'redux-form';
-import { Tabs, Tab, Row, Col, Button } from 'patternfly-react';
+import {
+  Tabs,
+  Tab,
+  Row,
+  Col,
+  Button,
+} from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 import AttributeFields from 'ui/edit-content/content-attributes/AttributeFields';
 import FormLabel from 'ui/common/form/FormLabel';

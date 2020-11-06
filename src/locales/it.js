@@ -317,7 +317,7 @@ export default {
     'cms.contents.title': 'Contenuti',
     'cms.contents.code': 'Codice',
     'cms.contents.addToPool': 'Azioni',
-    'cms.contents.add.title': 'Aggiungi',
+    'cms.contents.add.title': 'Aggiungi Contenuto',
     'cms.contents.edit.title': 'Modifica Contenuto',
     'cms.contents.edit.info': 'Info',
     'cms.contents.edit.groups': 'Gruppi',

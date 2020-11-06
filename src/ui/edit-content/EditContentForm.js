@@ -209,13 +209,21 @@ export class EditContentFormBody extends React.Component {
         const tabId = `content-attributes-tabs-tab-${lang}`;
         document.getElementById(tabId).click();
         // wait for tab to change
+
         setTimeout(() => {
           // set focus to element
           const inputId = `${attributePath}.values.${lang}`;
           const element = document.getElementById(inputId)
           || document.getElementsByName(inputId)[0];
+
           if (element) {
-            element.focus();
+            const fieldCollapse = element.closest('.ContentFormFieldCollapse');
+            if (fieldCollapse && fieldCollapse.classList.contains('closed')) {
+              fieldCollapse.querySelector('[role=button]').click();
+              setTimeout(() => element.focus(), 100);
+            } else {
+              element.focus();
+            }
           }
         }, 500);
       }

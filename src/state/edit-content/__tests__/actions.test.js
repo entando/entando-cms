@@ -12,8 +12,12 @@ import {
   clearEditContentForm,
   setMissingTranslations,
   setSaveType,
+  duplicateEngFieldValues,
 } from 'state/edit-content/actions';
-import { GET_CONTENT_RESPONSE_OK } from 'testutils/mocks/editContent';
+import {
+  NEWS_CTYPE,
+} from 'testutils/mocks/contentType';
+import { GET_CONTENT_RESPONSE_OK, CONTENT_FORM_ATTRIBUTE_VALUES } from 'testutils/mocks/editContent';
 import {
   SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, WORK_MODE_ADD, WORK_MODE_EDIT,
   CLEAR_EDIT_CONTENT_FORM,
@@ -219,6 +223,27 @@ describe('editContent thunks', () => {
         done();
       })
       .catch(done.fail);
+  });
+
+  it('duplicate en values to it', () => {
+    store = createMockStore({
+      apps: {
+        cms: {
+          languages,
+          editContent: { workMode: WORK_MODE_ADD, contentType: { typeCode: 'NEWS', typeDescription: 'News' } },
+          form: {
+            editcontentform: {
+              values: { ...CONTENT_FORM_ATTRIBUTE_VALUES },
+            },
+          },
+          contentType: {
+            selected: { ...NEWS_CTYPE },
+          },
+        },
+      },
+    });
+
+    store.dispatch(duplicateEngFieldValues());
   });
 
   it('save new content', (done) => {

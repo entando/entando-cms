@@ -118,7 +118,6 @@ export const duplicateEngFieldValues = () => (dispatch, getState) => {
       (curr, attribute) => ({ ...curr, [attribute.code]: attribute }),
       {},
     );
-    console.log('lets traverse', attributeValues, attributeList);
     return attributeValues.map((attribute) => {
       const { code } = attribute;
       const { [code]: typeAttributes } = mappedAttributes;

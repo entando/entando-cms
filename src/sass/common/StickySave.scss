@@ -16,6 +16,17 @@
     padding: 18px 0;
   }
 
+  .StickySave__saveDropdown {
+    width: 102px;
+    text-align: left;
+
+    & > span { //sass-lint:disable-line class-name-format
+      float: right;
+      margin-top: 6px;
+      margin-right: -3px;
+    }
+  }
+
   .StickySave__row--top {
     padding: 8px 0;
 
@@ -36,6 +47,21 @@
 
   .StickySave__btnlabel {
     margin-right: 10px;
+    display: inline-block;
+    line-height: 2em;
+    vertical-align: middle;
+
+    // sass-lint:disable class-name-format force-element-nesting
+    &.withSep {
+      padding-right: 10px;
+      border-right: 1px solid $color-ultra-grey-border;
+      color: $color-dim-grey;
+
+      span {
+        color: $color-inactive-dark;
+      }
+    }
+    // sass-lint:enable class-name-format force-element-nesting
   }
 
   &__select {
@@ -49,7 +75,7 @@
   }
 }
 
-.container-pf-nav-pf-vertical {
+.container-pf-nav-pf-vertical { //sass-lint:disable-line class-name-format
   .StickySave__sidetop {
     position: fixed;
     top: 60px;

@@ -13,6 +13,23 @@ const state = {
           ],
         },
       },
+      languages: {
+        map: {
+          it: {
+            code: 'it',
+            description: 'Italiano',
+            isActive: false,
+            isDefault: false,
+          },
+          en: {
+            code: 'en',
+            description: 'English',
+            isActive: true,
+            isDefault: true,
+          },
+        },
+        list: ['it', 'en'],
+      },
       contents: {
         selected: {
           attributes: [
