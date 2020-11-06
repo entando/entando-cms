@@ -5,9 +5,9 @@ import { Col, ControlLabel } from 'patternfly-react';
 import RichTextEditor from 'ui/common/rich-text-editor/RichTextEditor';
 
 const RenderRichTextEditor = ({
-  meta: { touched, error }, hasLabel, labelSize,
-  alignClass, input, label, help, append, langCode,
-  placeholder, disabled, attribute, mainGroup, joinGroups,
+  meta: { touched, error }, hasLabel, labelSize, alignClass,
+  input, label, help, append, langCode, placeholder, disabled,
+  attribute, mainGroup, joinGroups, extraOptions,
 }) => (
   <div className={`RenderRichTextEditor ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
     {hasLabel && (
@@ -26,6 +26,7 @@ const RenderRichTextEditor = ({
         mainGroup={mainGroup}
         disabled={disabled}
         joinGroups={joinGroups}
+        extraOptions={extraOptions}
       />
       {append && <span className="AppendedLabel">{append}</span>}
       {touched && ((error && <span className="help-block">{error}</span>))}
@@ -55,6 +56,10 @@ RenderRichTextEditor.propTypes = {
   hasLabel: PropTypes.bool,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  extraOptions: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 RenderRichTextEditor.defaultProps = {
@@ -71,6 +76,7 @@ RenderRichTextEditor.defaultProps = {
   langCode: 'en',
   mainGroup: '',
   joinGroups: [],
+  extraOptions: null,
 };
 
 export default RenderRichTextEditor;

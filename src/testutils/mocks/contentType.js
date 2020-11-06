@@ -345,6 +345,49 @@ export const ATTRIBUTE_MONOLIST_COMPOSITE = {
   compositeAttributes: null,
 };
 
+export const COMPOSITE_ATTRIBUTE_VALUESONLY = {
+  code: 'Author',
+  type: 'Composite',
+  name: 'Author',
+  names: {
+    en: 'Author',
+  },
+  nestedAttribute: null,
+  compositeAttributes: [
+    {
+      code: 'AuthorName',
+      type: 'Text',
+      name: 'AuthorName',
+      names: {
+        en: 'AuthorName',
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    },
+    {
+      code: 'AuthorFace',
+      type: 'Image',
+      name: 'AuthorFace',
+      names: {
+        en: 'AuthorFace',
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    },
+  ],
+};
+
+export const MONOLIST_COMPOSITE_ATTRIBUTE_VALUESONLY = {
+  code: 'Authors',
+  type: 'Monolist',
+  name: 'Authors',
+  names: {
+    en: 'Authors',
+  },
+  nestedAttribute: { ...COMPOSITE_ATTRIBUTE_VALUESONLY, code: 'Authors' },
+  compositeAttributes: null,
+};
+
 export const GET_GROUPS_RESPONSE_OK = {
   payload: [
     {
@@ -380,4 +423,75 @@ export const GET_CATEGORIES_RESPONSE_OK = {
   metaData: {
     parentCode: 'service',
   },
+};
+
+export const NEWS_CTYPE = {
+  code: 'NWS',
+  name: 'News',
+  status: '0',
+  attributes: [
+    {
+      code: 'title',
+      type: 'Text',
+      name: null,
+      names: {
+        en: 'title',
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    },
+    {
+      code: 'body',
+      type: 'Hypertext',
+      name: 'Main Body',
+      names: {
+        en: 'body',
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    },
+    {
+      code: 'image',
+      type: 'Image',
+      name: null,
+      names: {
+        en: 'image',
+      },
+      roles: [],
+      disablingCodes: [],
+      nestedAttribute: null,
+      compositeAttributes: null,
+    },
+    {
+      code: 'link',
+      type: 'Link',
+      name: 'Link',
+      names: {
+        en: 'link',
+      },
+      nestedAttribute: null,
+      compositeAttributes: null,
+    },
+    { ...MONOLIST_COMPOSITE_ATTRIBUTE_VALUESONLY },
+    { ...COMPOSITE_ATTRIBUTE_VALUESONLY },
+    {
+      code: 'Emails',
+      type: 'List',
+      name: 'Emails',
+      names: {
+        en: 'Emails',
+      },
+      nestedAttribute: {
+        code: 'Emails',
+        type: 'Email',
+        name: 'Emails',
+        names: {
+          en: 'Emails',
+        },
+        nestedAttribute: null,
+        compositeAttributes: null,
+      },
+      compositeAttributes: null,
+    },
+  ],
 };

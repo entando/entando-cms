@@ -207,14 +207,14 @@ class RichTextEditor extends Component {
 
   render() {
     const {
-      placeholder, disabled, input, mainGroup, joinGroups,
+      placeholder, disabled, input, mainGroup, joinGroups, extraOptions,
     } = this.props;
 
     const { modal, editorToolbarId, editorCanWrite } = this.state;
 
     return (
       <div>
-        <EditorToolbar name={editorToolbarId} />
+        <EditorToolbar name={editorToolbarId} extraOptions={extraOptions} />
         <ReactQuill
           {...input}
           ref={this.reactQuill}
@@ -256,6 +256,10 @@ RichTextEditor.propTypes = {
   langCode: PropTypes.string,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  extraOptions: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 RichTextEditor.defaultProps = {
@@ -265,6 +269,7 @@ RichTextEditor.defaultProps = {
   langCode: 'en',
   mainGroup: '',
   joinGroups: [],
+  extraOptions: null,
 };
 
 export default RichTextEditor;

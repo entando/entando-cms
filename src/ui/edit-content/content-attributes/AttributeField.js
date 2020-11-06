@@ -170,6 +170,10 @@ const AttributeField = ({
         [TYPE_LINK, TYPE_IMAGE, TYPE_ATTACH, TYPE_BOOLEAN, TYPE_THREESTATE].includes(type)
         && { langCode, selectedLangTab }
       )}
+      {...(
+        [TYPE_TEXT, TYPE_LONGTEXT, TYPE_HYPERTEXT].includes(type)
+        && { langCode, locale }
+      )}
       {...extraProps}
     />
   );

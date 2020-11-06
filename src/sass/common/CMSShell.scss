@@ -1,12 +1,18 @@
 .CMSShell {
   margin-bottom: 20px;
 
-  // sass-lint:disable class-name-format
+  // sass-lint:disable class-name-format force-element-nesting
   .breadcrumb {
     margin-bottom: 0;
+    padding: 10px 15px 11px 0;
     border-bottom: 1px solid $color-pf-black-300;
   }
-  // sass-lint:enable class-name-format
+
+  &__fixed-heading .breadcrumb.editcontent {
+    border-bottom: 0;
+  }
+
+  // sass-lint:enable class-name-format force-element-nesting
 
   &__page-title {
     padding-bottom: 10px;

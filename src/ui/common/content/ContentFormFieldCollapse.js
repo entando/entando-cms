@@ -10,7 +10,7 @@ const ContentFormFieldCollapse = ({ label, children, showContentAtStart }) => {
   const handleCollapse = () => setOpened(!opened);
 
   return (
-    <div className="ContentFormFieldCollapse">
+    <div className={`ContentFormFieldCollapse ${opened ? 'opened' : 'closed'}`}>
       <SectionTitle
         label={label}
         onClick={handleCollapse}

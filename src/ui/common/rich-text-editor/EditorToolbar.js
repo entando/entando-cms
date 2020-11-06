@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compact } from 'lodash';
 
 const enlinkIcon = (
   <svg
@@ -163,12 +164,21 @@ const maximizeIcon = (
   </svg>
 );
 
-const ToolbarGroup = ({ children }) => (
-  <span className="ql-formats">{children}</span>
+const ToolbarGroup = ({ children, className }) => (
+  <span
+    className={compact(['ql-formats', className]).join(' ')}
+  >
+    {children}
+  </span>
 );
 
 ToolbarGroup.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
+
+ToolbarGroup.defaultProps = {
+  className: '',
 };
 
 const renderToolbarButton = (format, value, icon, tooltipText) => (
@@ -177,7 +187,7 @@ const renderToolbarButton = (format, value, icon, tooltipText) => (
   </button>
 );
 
-const EditorToolbar = ({ name }) => (
+const EditorToolbar = ({ name, extraOptions }) => (
   <div id={name} style={{ borderBottom: 'none' }}>
     <ToolbarGroup>
       {renderToolbarButton('history', 'undo', undoIcon, 'Undo (Ctrl + Z)')}
@@ -222,15 +232,23 @@ const EditorToolbar = ({ name }) => (
     <ToolbarGroup>
       {renderToolbarButton('viewSource', undefined, undefined, 'Source')}
     </ToolbarGroup>
+    {extraOptions && (
+      <ToolbarGroup className="pull-right">{extraOptions}</ToolbarGroup>
+    )}
   </div>
 );
 
 EditorToolbar.propTypes = {
   name: PropTypes.string,
+  extraOptions: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 EditorToolbar.defaultProps = {
   name: 'editor-toolbar',
+  extraOptions: null,
 };
 
 export default EditorToolbar;

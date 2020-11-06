@@ -209,13 +209,21 @@ export class EditContentFormBody extends React.Component {
         const tabId = `content-attributes-tabs-tab-${lang}`;
         document.getElementById(tabId).click();
         // wait for tab to change
+
         setTimeout(() => {
           // set focus to element
           const inputId = `${attributePath}.values.${lang}`;
           const element = document.getElementById(inputId)
           || document.getElementsByName(inputId)[0];
+
           if (element) {
-            element.focus();
+            const fieldCollapse = element.closest('.ContentFormFieldCollapse');
+            if (fieldCollapse && fieldCollapse.classList.contains('closed')) {
+              fieldCollapse.querySelector('[role=button]').click();
+              setTimeout(() => element.focus(), 100);
+            } else {
+              element.focus();
+            }
           }
         }, 500);
       }
@@ -256,6 +264,24 @@ export class EditContentFormBody extends React.Component {
         <form
           className="EditContentForm form-horizontal"
         >
+          <div className="StickySave__sidetop">
+            <StickySave
+              intl={intl}
+              lastAutoSaveTime={lastModified}
+              onSubmit={onSubmit}
+              handleSubmit={handleSubmit}
+              invalid={invalid}
+              isDirty={dirty}
+              onCancel={onCancel}
+              onDiscard={onDiscard}
+              onSave={onSave}
+              submitting={submitting}
+              onLine={onLine}
+              content={content}
+              onUnpublish={onUnpublish}
+              {...this.props}
+            />
+          </div>
           <Col className={classContentArea} xs={12}>
             <Row className="InfoFormBody EditContentForm__outer-fieldset">
               <SectionTitle
@@ -438,24 +464,6 @@ export class EditContentFormBody extends React.Component {
 
             {renderContentVersioningHistory}
           </Col>
-          <div className="AssetsList__footer startLeftPos">
-            <StickySave
-              intl={intl}
-              lastAutoSaveTime={lastModified}
-              onSubmit={onSubmit}
-              handleSubmit={handleSubmit}
-              invalid={invalid}
-              isDirty={dirty}
-              onCancel={onCancel}
-              onDiscard={onDiscard}
-              onSave={onSave}
-              submitting={submitting}
-              onLine={onLine}
-              content={content}
-              onUnpublish={onUnpublish}
-              {...this.props}
-            />
-          </div>
         </form>
         <ConfirmCancelModalContainer
           modalId="TranslationWarningModal"

@@ -11,7 +11,7 @@ const EditContentPage = () => (
   <Grid fluid>
     <Row className="CMSShell__fixed-heading startTopPos startLeftPos">
       <Col xs={12}>
-        <Breadcrumb>
+        <Breadcrumb className="editcontent">
           <BreadcrumbItem active>
             <FormattedMessage id="cms.title" defaultMessage="CMS" />
           </BreadcrumbItem>
@@ -27,7 +27,6 @@ const EditContentPage = () => (
         <CMSPageTitle
           titleId="cms.contents.edit.title"
           helpId="cms.contents.edit.titletip"
-          position="pull-right"
           noHeaderMargin
           largeTitle
         />
