@@ -21,7 +21,7 @@ const AssetsListItem = ({
   } = asset;
   const fileType = versions == null ? 'file' : 'image';
   const previewRender = fileType === 'image' ? (
-    <img src={asset.previewUrl} alt="Preview" />
+    <img src={`${asset.previewUrl}?updatedAt=${asset.updatedAt}`} alt="Preview" />
   ) : (
     <div className="fa fa-file-text AssetsList__item-file" />
   );
