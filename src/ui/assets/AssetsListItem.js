@@ -101,6 +101,7 @@ AssetsListItem.propTypes = {
       PropTypes.string,
     ]),
     versions: PropTypes.arrayOf(PropTypes.shape({})),
+    updatedAt: PropTypes.string,
   }).isRequired,
   onEditClicked: PropTypes.func.isRequired,
   onDuplicateClicked: PropTypes.func.isRequired,
