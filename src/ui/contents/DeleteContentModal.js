@@ -39,9 +39,9 @@ const DeleteContentModal = ({ onConfirmDelete, info }) => {
     >
       <EmptyState>
         <EmptyStateIcon name="exclamation" type="fa" className="DeleteContentModal__icon" />
-        <EmptyStateTitle>
+        <EmptyStateTitle className="overflow-ellipsis">
           <FormattedMessage id="cms.label.delete" />
-          &nbsp;{info.description}
+          <span title={info.description}>&nbsp;{info.description}</span>
         </EmptyStateTitle>
         <EmptyStateInfo className="DeleteContentModal__info">
           <FormattedMessage id="cms.label.modal.confirmdelete" values={{ code: info.id }} />

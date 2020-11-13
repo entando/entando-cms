@@ -50,7 +50,7 @@ const PublishContentModal = ({ onConfirmPublish, info }) => {
         <EmptyStateIcon name="exclamation" type="fa" className="DeleteContentModal__icon" />
         <EmptyStateTitle>
           <FormattedMessage id={title} />
-          <div style={{ whiteSpace: 'pre-line' }}>
+          <div className="overflow-ellipsis" title={renderDescriptions} style={{ whiteSpace: 'pre-line' }}>
             &nbsp;{renderDescriptions}
           </div>
         </EmptyStateTitle>
