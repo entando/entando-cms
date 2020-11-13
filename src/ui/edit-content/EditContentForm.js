@@ -6,7 +6,7 @@ import {
 } from 'patternfly-react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import Panel from 'react-bootstrap/lib/Panel';
-import { required } from '@entando/utils';
+import { required, maxLength } from '@entando/utils';
 import { Collapse } from 'react-collapse';
 
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
@@ -22,6 +22,8 @@ import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorCont
 import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
 import ContentAttributesContainer from 'ui/edit-content/content-attributes/ContentAttributesContainer';
 import SingleContentVersioningHistoryContainer from 'ui/versioning/SingleContentVersioningHistoryContainer';
+
+const maxLength255 = maxLength(255);
 
 const messages = defineMessages({
   contentDesctiption: {
@@ -330,7 +332,7 @@ export class EditContentFormBody extends React.Component {
                           name="description"
                           forwardRef
                           ref={this.descriptionInput}
-                          validate={[required]}
+                          validate={[required, maxLength255]}
                           label={(
                             <FormLabel
                               labelId="cms.contents.edit.contentDescription.label"
