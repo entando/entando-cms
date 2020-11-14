@@ -9,6 +9,31 @@ import ContentsQueryConfigContainer, { formBody as ContentsQueryFormBody } from 
 import ContentsStatusCardContainer from 'ui/contents/status-card/ContentsStatusCardContainer';
 import ContentListCardContainer from 'ui/contents/list-card/ContentListCardContainer';
 
+const widgetFormsWithWidgetCodes = {  
+  'content_viewer': {
+    default: SingleContentConfigContainer,
+    body: SingleContentConfigBody,
+  },  
+  'content_viewer_list': {
+    default: ContentsQueryConfigContainer,
+    body: ContentsQueryFormBody,
+  },  
+  'row_content_viewer_list': {
+    default: MultipleContentsConfigContainer,
+    body: MultipleContentsConfigBody,
+  },
+};
+
+const widgetForms = {
+  ...widgetFormsWithWidgetCodes,
+  // config action for widgetCode content_viewer
+  viewerConfig: widgetFormsWithWidgetCodes['content_viewer'],
+  // config action for widgetCode content_viewer_list
+  listViewerConfig: widgetFormsWithWidgetCodes['content_viewer_list'],
+  // config action for widgetCode row_content_viewer_list
+  rowListViewerConfig: widgetFormsWithWidgetCodes['row_content_viewer_list'],
+};
+
 const cms = {
   id: 'cms',
   menu,
@@ -23,23 +48,7 @@ const cms = {
     en,
     it,
   },
-  widgetForms: {
-    // widgetCode: content_viewer
-    viewerConfig: {
-      default: SingleContentConfigContainer,
-      body: SingleContentConfigBody,
-    },
-    // widgetCode: content_viewer_list
-    listViewerConfig: {
-      default: ContentsQueryConfigContainer,
-      body: ContentsQueryFormBody,
-    },
-    // widgetCode: row_content_viewer_list
-    rowListViewerConfig: {
-      default: MultipleContentsConfigContainer,
-      body: MultipleContentsConfigBody,
-    },
-  },
+  widgetForms,
   persistData: {
     tableColumns: ['currentColumnsShow'],
   },

@@ -1,12 +1,9 @@
 import { connect } from 'react-redux';
-import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
+import { clearErrors } from '@entando/messages';
 import { get } from 'lodash';
 import { injectIntl } from 'react-intl';
-import { change, formValueSelector, submit } from 'redux-form';
-import { routeConverter } from '@entando/utils';
-import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
+import { change, formValueSelector } from 'redux-form';
 
-import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
@@ -20,8 +17,6 @@ import { getContentTemplateList } from 'state/content-template/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
-import { setVisibleModal } from 'state/modal/actions';
-import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -56,27 +51,6 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(fetchSearchPages(nopage));
     },
     putPrefixField,
-    onSubmit: (values) => {
-      const {
-        pageCode, frameId, widgetCode, history, intl,
-      } = ownProps;
-      const checkedValues = Object.assign({}, values);
-      if (values.modelId === '') delete checkedValues.modelId;
-      checkedValues.filters = checkedValues.filters && checkedValues.filters.filter(f => f != null);
-      checkedValues.userFilters = checkedValues.userFilters
-      && checkedValues.userFilters.filter(f => f != null);
-      const configItem = Object.assign({ config: checkedValues }, { code: widgetCode });
-      dispatch(clearErrors());
-      dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
-        if (res) {
-          dispatch(addToast(
-            intl.formatMessage({ id: 'widget.update.success' }),
-            TOAST_SUCCESS,
-          ));
-          history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-        }
-      });
-    },
     onResetFilterOption: (name, i) => (
       dispatch(change(formToUse, `${name}.[${i}].option`, ''))
     ),
@@ -95,20 +69,31 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onResetModelId: () => dispatch(change(formToUse, putPrefixField('modelId'), '')),
     onToggleInclusiveOr: value => dispatch(change(formToUse, putPrefixField('orClauseCategoryFilter'), value === 'true' ? '' : 'true')),
-    onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(ContentsQueryContainerId)); },
-    onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
-    onDiscard: () => {
-      dispatch(setVisibleModal(''));
-      const { history, pageCode } = ownProps;
-      history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-    },
   };
 };
+
+const beforeSubmit = (dispatch, values) => new Promise((resolve) => {
+  const checkedValues = Object.assign({}, values);
+  if (values.modelId === '') delete checkedValues.modelId;
+  checkedValues.filters = checkedValues.filters && checkedValues.filters.filter(f => f != null);
+  checkedValues.userFilters = checkedValues.userFilters
+      && checkedValues.userFilters.filter(f => f != null);
+  dispatch(clearErrors());
+  resolve(checkedValues);
+});
 
 export const formBody = connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(ContentsQueryFormBody));
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {
+formBody.reduxFormId = ContentsQueryContainerId;
+formBody.beforeSubmit = beforeSubmit;
+
+const ContentsQueryContainer = connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(ContentsQueryConfig));
+
+ContentsQueryContainer.reduxFormId = ContentsQueryContainerId;
+ContentsQueryContainer.beforeSubmit = beforeSubmit;
+
+export default ContentsQueryContainer;

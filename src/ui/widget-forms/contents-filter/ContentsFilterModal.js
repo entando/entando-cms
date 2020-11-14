@@ -10,7 +10,7 @@ export const ContentsFilterModalID = 'ContentsFilterModal';
 
 const ContentsFilterModal = (props) => {
   const {
-    modalTitleText, onSave, invalid,
+    modalTitleText, onSave,
     submitting, lastSelectedRow,
   } = props;
   const contentChosen = lastSelectedRow && (lastSelectedRow.id || lastSelectedRow.contentId);
@@ -19,7 +19,7 @@ const ContentsFilterModal = (props) => {
       type="button"
       bsStyle="primary"
       className="app-tour-step-20"
-      disabled={invalid || submitting || !contentChosen}
+      disabled={submitting || !contentChosen}
       id="ContentsFilterModal__button-save"
       onClick={() => {
         onSave(lastSelectedRow);
@@ -53,7 +53,6 @@ const ContentsFilterModal = (props) => {
 ContentsFilterModal.propTypes = {
   modalTitleText: PropTypes.string,
   onSave: PropTypes.func.isRequired,
-  invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   lastSelectedRow: PropTypes.shape({
     id: PropTypes.string,
@@ -63,7 +62,6 @@ ContentsFilterModal.propTypes = {
 
 ContentsFilterModal.defaultProps = {
   modalTitleText: '',
-  invalid: false,
   submitting: false,
   lastSelectedRow: {},
 };

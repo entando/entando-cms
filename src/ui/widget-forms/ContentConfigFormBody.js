@@ -2,9 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { reduxForm, FieldArray, Field } from 'redux-form';
-import {
-  Button, Row, Col, Alert,
-} from 'patternfly-react';
+import { Row, Col, Alert } from 'patternfly-react';
 import { Collapse } from 'react-collapse';
 import { isUndefined } from 'lodash';
 import { maxLength } from '@entando/utils';
@@ -13,12 +11,12 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
-import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
 
 export const MultipleContentsConfigContainerId = `widgets.${MULTIPLE_CONTENTS_CONFIG}`;
+const noContentsChosen = values => (values && values.length > 0 ? undefined : <FormattedMessage id="validateForm.required" />);
 
 export class ContentConfigFormBody extends PureComponent {
   constructor(props) {
@@ -60,19 +58,11 @@ export class ContentConfigFormBody extends PureComponent {
   renderFormFields() {
     const {
       contentTemplates,
-      extFormName,
       putPrefixField,
-      invalid,
-      submitting,
       languages,
       pages,
       intl,
       widgetCode,
-      chosenContents,
-      dirty,
-      onCancel,
-      onDiscard,
-      onSave,
       ownerGroup,
       joinGroups,
     } = this.props;
@@ -80,7 +70,6 @@ export class ContentConfigFormBody extends PureComponent {
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
-    const noContents = chosenContents.length === 0;
 
     const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 50, 100, 500]
       .map(i => Object.assign({}, { code: i, name: i }));
@@ -109,14 +98,6 @@ export class ContentConfigFormBody extends PureComponent {
 
     const handleCollapsePublishingSettings = () => this.collapseSection('publishingSettingsOpen');
     const handleCollapseExtraOptions = () => this.collapseSection('extraOptionsOpen');
-
-    const handleCancelClick = () => {
-      if (dirty) {
-        onCancel();
-      } else {
-        onDiscard();
-      }
-    };
 
     const renderExtraOptions = multipleContentsMode ? (
       <Row>
@@ -195,39 +176,12 @@ export class ContentConfigFormBody extends PureComponent {
               ownerGroup={ownerGroup}
               joinGroups={joinGroups}
               multipleContentsMode={multipleContentsMode}
+              validate={[noContentsChosen]}
             />
           </Col>
         </Row>
         {renderPublishingSettings}
         {renderExtraOptions}
-        {!extFormName && (
-          <Row>
-            <Col xs={12}>
-              <Button
-                className="pull-right AddContentTypeFormBody__save--btn"
-                type="submit"
-                bsStyle="primary"
-                disabled={invalid || submitting || noContents}
-              >
-                <FormattedMessage id="app.save" />
-              </Button>
-              <Button
-                className="pull-right AddContentTypeFormBody__cancel--btn"
-                bsStyle="default"
-                onClick={handleCancelClick}
-              >
-                <FormattedMessage id="cms.label.cancel" />
-              </Button>
-              <ConfirmCancelModalContainer
-                contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
-                invalid={invalid}
-                submitting={submitting}
-                onSave={onSave}
-                onDiscard={onDiscard}
-              />
-            </Col>
-          </Row>
-        )}
       </Fragment>
     );
   }
@@ -264,15 +218,8 @@ ContentConfigFormBody.propTypes = {
   pages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func,
-  invalid: PropTypes.bool,
-  submitting: PropTypes.bool,
   language: PropTypes.string.isRequired,
   widgetCode: PropTypes.string.isRequired,
-  chosenContents: PropTypes.arrayOf(PropTypes.shape({})),
-  dirty: PropTypes.bool,
-  onDiscard: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   extFormName: PropTypes.string,
@@ -283,13 +230,9 @@ ContentConfigFormBody.propTypes = {
 ContentConfigFormBody.defaultProps = {
   languages: [],
   pages: [],
-  chosenContents: [],
-  dirty: false,
   ownerGroup: '',
   joinGroups: null,
   extFormName: '',
-  invalid: false,
-  submitting: false,
   handleSubmit: () => {},
   putPrefixField: name => name,
   cloneMode: false,

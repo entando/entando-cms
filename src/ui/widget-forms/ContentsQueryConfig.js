@@ -15,13 +15,13 @@ import FormLabel from 'ui/common/form/FormLabel';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
-import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 
 import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 
 export const ContentsQueryContainerId = `widgets.${CONTENTS_QUERY_CONFIG}`;
 
 const maxLength70 = maxLength(70);
+const contentTypeDoesNotExist = value => (value ? undefined : <FormattedMessage id="validateForm.required" />);
 const CATEGORY_HOME = 'home';
 
 const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
@@ -82,8 +82,8 @@ export class ContentsQueryFormBody extends Component {
       contentTypes, contentType, contentTemplates, categories, pages,
       onResetModelId, selectedContentType, selectedCategories,
       intl, onChangeFilterValue, onResetFilterOption, onChangeFilterAttribute,
-      languages, onToggleInclusiveOr, selectedInclusiveOr, extFormName,
-      invalid, submitting, dirty, onCancel, onDiscard, onSave, putPrefixField,
+      languages, onToggleInclusiveOr, selectedInclusiveOr,
+      putPrefixField,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -152,18 +152,6 @@ export class ContentsQueryFormBody extends Component {
       </Button>
     );
 
-    const renderSaveButton = selectedContentType
-      && (
-      <Button
-        className="pull-right AddContentTypeFormBody__save--btn"
-        type="submit"
-        bsStyle="primary"
-        disabled={invalid || submitting}
-      >
-        <FormattedMessage id="app.save" />
-      </Button>
-      );
-
     const attributeFilters = getListAttributeFilters();
 
     const filters = [
@@ -198,14 +186,6 @@ export class ContentsQueryFormBody extends Component {
     const handleCollapseExtraOptions = () => this.collapseSection('extraOptions');
     const handleCollapseFrontendFilters = () => this.collapseSection('frontendFilters');
 
-    const handleCancelClick = () => {
-      if (dirty) {
-        onCancel();
-      } else {
-        onDiscard();
-      }
-    };
-
     return (
       <Fragment>
         <Row>
@@ -226,6 +206,7 @@ export class ContentsQueryFormBody extends Component {
                 optionDisplayName="name"
                 defaultOptionId="app.enumerator.none"
                 onChange={handleContentTypeChange}
+                validate={[contentTypeDoesNotExist]}
               />
             </fieldset>
           </Col>
@@ -404,28 +385,6 @@ export class ContentsQueryFormBody extends Component {
             </Col>
           </Row>
         </div>
-        <br />
-        {!extFormName && (
-          <Row>
-            <Col xs={12}>
-              {renderSaveButton}
-              <Button
-                className="pull-right AddContentTypeFormBody__cancel--btn"
-                bsStyle="default"
-                onClick={handleCancelClick}
-              >
-                <FormattedMessage id="cms.label.cancel" />
-              </Button>
-              <ConfirmCancelModalContainer
-                contentText={intl.formatMessage({ id: 'cms.label.modal.confirmCancel' })}
-                invalid={invalid}
-                submitting={submitting}
-                onSave={onSave}
-                onDiscard={onDiscard}
-              />
-            </Col>
-          </Row>
-        )}
       </Fragment>
     );
   }
@@ -465,8 +424,6 @@ ContentsQueryFormBody.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.shape({})),
   onDidMount: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  invalid: PropTypes.bool,
-  submitting: PropTypes.bool,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})),
   contentType: PropTypes.shape({
     attributes: PropTypes.arrayOf(PropTypes.shape({})),
@@ -483,18 +440,12 @@ ContentsQueryFormBody.propTypes = {
   onResetModelId: PropTypes.func.isRequired,
   selectedContentType: PropTypes.string,
   selectedInclusiveOr: PropTypes.string,
-  dirty: PropTypes.bool,
-  onDiscard: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
   cloneMode: PropTypes.bool,
 };
 
 ContentsQueryFormBody.defaultProps = {
-  invalid: false,
-  submitting: false,
   languages: [],
   contentTypes: [],
   contentType: {},
@@ -504,7 +455,6 @@ ContentsQueryFormBody.defaultProps = {
   selectedCategories: [],
   selectedContentType: '',
   selectedInclusiveOr: '',
-  dirty: false,
   extFormName: '',
   putPrefixField: name => name,
   cloneMode: false,

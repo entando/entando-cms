@@ -1,18 +1,16 @@
 import { connect } from 'react-redux';
-import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
+import { clearErrors } from '@entando/messages';
 import { get } from 'lodash';
 import { injectIntl } from 'react-intl';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
 import SingleContentConfigForm, { SingleContentConfigFormBody, SingleContentConfigContainerId } from 'ui/widget-forms/publish-single-content-config/SingleContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
-import { sendPutWidgetConfig } from 'state/page-config/actions';
-import { ROUTE_APP_BUILDER_PAGE_CONFIG, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
+import { ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
 import {
-  formValueSelector, submit, change,
+  formValueSelector, change,
 } from 'redux-form';
 import { setVisibleModal } from 'state/modal/actions';
-import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 import { ContentsFilterModalID } from 'ui/widget-forms/contents-filter/ContentsFilterModal';
 import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 import { fetchPage } from 'state/pages/actions';
@@ -59,41 +57,6 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     putPrefixField,
-    onSubmit: (values) => {
-      dispatch(clearErrors());
-      const {
-        pageCode, frameId, intl, history, widgetCode,
-      } = ownProps;
-      const configItem = {
-        config: {
-          ...values,
-          ...(values.modelId != null && { modelId: values.modelId }),
-        },
-        code: widgetCode,
-      };
-      dispatch(clearErrors());
-      return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
-        if (res) {
-          dispatch(addToast(
-            intl.formatMessage({ id: 'widget.update.success' }),
-            TOAST_SUCCESS,
-          ));
-          dispatch(setAppTourLastStep(22));
-          history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-        }
-      });
-    },
-    onSave: () => {
-      dispatch(setAppTourLastStep(22));
-      dispatch(setVisibleModal(''));
-      dispatch(submit(SingleContentConfigContainerId));
-    },
-    onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
-    onDiscard: () => {
-      dispatch(setVisibleModal(''));
-      const { history, pageCode } = ownProps;
-      history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-    },
     showFilterModal: (appTourProgress) => {
       if (appTourProgress === APP_TOUR_STARTED) {
         dispatch(setAppTourLastStep(19));
@@ -121,10 +84,28 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
+const beforeSubmit = (dispatch, values) => new Promise((resolve) => {
+  const configItem = {
+    ...values,
+    ...(values.modelId != null && { modelId: values.modelId }),
+  };
+  dispatch(clearErrors());
+  dispatch(setAppTourLastStep(22));
+  resolve(configItem);
+});
+
 export const formBody = connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(SingleContentConfigFormBody));
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {
+formBody.reduxFormId = SingleContentConfigContainerId;
+formBody.beforeSubmit = beforeSubmit;
+
+const SingleContentConfigContainer = connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false,
 })(injectIntl(SingleContentConfigForm));
+
+SingleContentConfigContainer.reduxFormId = SingleContentConfigContainerId;
+SingleContentConfigContainer.beforeSubmit = beforeSubmit;
+
+export default SingleContentConfigContainer;
