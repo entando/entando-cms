@@ -85,7 +85,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onIncompleteData: () => history.push(routeConverter(ROUTE_CMS_CONTENTS)),
   onSubmit: (values, categories, ignoreWarnings, oldAttributes) => {
-    const { saveType, contentId } = values;
+    const { saveType, id } = values;
     return dispatch(saveContent(values, ignoreWarnings, oldAttributes)).then((res) => {
       if (res) {
         dispatch(setVisibleModal(''));
@@ -96,7 +96,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
           ),
         );
         if (saveType === APPROVE_SAVE_TYPE) {
-          dispatch(sendPublishContent(contentId, 'published'));
+          dispatch(sendPublishContent(id, 'published'));
           history.push(routeConverter(ROUTE_CMS_CONTENTS));
         } else if (saveType !== CONTINUE_SAVE_TYPE) {
           history.push(routeConverter(ROUTE_CMS_CONTENTS));
