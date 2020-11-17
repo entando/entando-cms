@@ -37,6 +37,7 @@ import {
 } from 'api/assets';
 import { getPagination } from 'state/pagination/selectors';
 import { parseJoinGroups } from 'helpers/joinGroups';
+import { svgToBlob } from 'helpers/imageUtils';
 
 export const resetFilteringCategories = () => ({
   type: RESET_FILTERING_CATEGORIES,
@@ -344,12 +345,24 @@ export const sendPostAssetEdit = ({ id, ...others }, file) => dispatch => new Pr
     .catch(() => { });
 });
 
-export const sendUploadAsset = file => dispatch => new Promise((resolve) => {
+export const sendUploadAsset = file => dispatch => new Promise(async (resolve) => {
   const {
     fileObject, group, categories, filename,
   } = file;
+
+  let namedFile;
+
+  // Check if file is an svg image, then convert to png or jpeg (i.e. embedded image) if true.
+  if (fileObject.type.includes('svg')) {
+    const imgBlob = await svgToBlob(fileObject);
+    const imgType = imgBlob.type.split('/')[1];
+    const newFilename = filename.replace(/[.]svg$/, `.${imgType}`);
+    namedFile = new File([imgBlob], newFilename, { type: `image/${imgType}` });
+  } else {
+    namedFile = new File([fileObject], filename, { type: fileObject.type });
+  }
+
   const type = fileObject.type.startsWith('image') ? 'image' : 'file';
-  const namedFile = new File([fileObject], filename, { type: fileObject.type });
   const formData = new FormData();
   formData.append('file', namedFile);
   formData.append('metadata', JSON.stringify({
