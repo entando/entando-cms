@@ -15,7 +15,6 @@ import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
 import ContentTableRow from 'ui/widget-forms/publish-single-content-config/ContentTableRow';
-import SingleContentConfigTourContainer from 'ui/widget-forms/publish-single-content-config/SingleContentConfigTourContainer';
 import { APP_TOUR_STARTED } from 'state/app-tour/const';
 
 export const SingleContentConfigContainerId = `widgets.${SINGLE_CONTENT_CONFIG}`;
@@ -296,7 +295,6 @@ export class SingleContentConfigFormBody extends PureComponent {
           <Col xs={12}>
             {extFormName ? formFields : this.enclosedWithForm(formFields)}
           </Col>
-          <SingleContentConfigTourContainer />
         </Row>
         {!extFormName && appTourProgress !== APP_TOUR_STARTED && (
           <ConfirmCancelModalContainer
