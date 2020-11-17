@@ -1,6 +1,7 @@
 import { mockApi } from 'testutils/helpers';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import 'jest-canvas-mock';
 import {
   setAssetCategoryFilter,
   setActiveFilters,
@@ -21,6 +22,7 @@ import {
   fetchAssetsPaged,
   advancedSearchFilter,
   sendCloneAsset,
+  sendUploadAsset,
 } from 'state/assets/actions';
 import { SORT_DIRECTIONS } from '@entando/utils';
 import {
@@ -39,13 +41,12 @@ import {
 import { SET_PAGE } from 'state/pagination/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
-  getAssets, editAsset, deleteAsset, cloneAsset,
+  getAssets, editAsset, deleteAsset, cloneAsset, createAsset,
 } from 'api/assets';
 
 const ADD_ERRORS = 'errors/add-errors';
 const CLEAR_ERRORS = 'errors/clear-errors';
 const ADD_TOAST = 'toasts/add-toast';
-
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -55,6 +56,7 @@ jest.mock('api/assets', () => ({
   editAsset: jest.fn(res => mockApi({ payload: res })()),
   deleteAsset: jest.fn(id => mockApi({ payload: { id } })()),
   cloneAsset: jest.fn(id => mockApi({ payload: { id } })()),
+  createAsset: jest.fn(payload => mockApi({ payload })()),
 }));
 
 describe('state/assets/actions', () => {
@@ -597,6 +599,91 @@ describe('state/assets/actions', () => {
           done();
         })
         .catch(done.fail);
+    });
+  });
+
+  describe('sendUploadAsset', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      store = mockStore({
+        apps: {
+          cms: {
+            assets: {
+              assets: [], filterParams: {}, fileType: 'image', filteringCategories: ['news'],
+            },
+          },
+        },
+        pagination: { global: { page: 1, pageSize: 10 } },
+      });
+    });
+
+    it('should call createAsset with correct form data', (done) => {
+      const file = {
+        fileObject: new Blob(['test'], { type: 'application/json' }),
+        group: 'testgroup',
+        categories: ['cat1', 'cat2'],
+        filename: 'testfile.json',
+      };
+      store
+        .dispatch(sendUploadAsset(file))
+        .then(() => {
+          const createAssetArg = createAsset.mock.calls[0][0];
+          expect(createAssetArg).toBeInstanceOf(FormData);
+          expect(createAssetArg.get('file')).toBeInstanceOf(File);
+          const expectedMetadata = JSON.stringify({ group: file.group, categories: file.categories, type: 'file' });
+          expect(createAssetArg.get('metadata')).toBe(expectedMetadata);
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          done();
+        }).catch(done.fail);
+    });
+
+    it('should convert svg to bitmap image before calling createAsset with correct form data', (done) => {
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+          <circle cx="25" cy="25" r="20"/>
+        </svg>
+      `;
+      const file = {
+        fileObject: new Blob([svg], { type: 'image/svg+xml' }),
+        group: 'testgroup',
+        categories: ['cat1', 'cat2'],
+        filename: 'testfile.svg',
+      };
+      store
+        .dispatch(sendUploadAsset(file))
+        .then(() => {
+          const createAssetArg = createAsset.mock.calls[0][0];
+          expect(createAssetArg).toBeInstanceOf(FormData);
+          const formFile = createAssetArg.get('file');
+          expect(formFile).toBeInstanceOf(File);
+          expect(formFile.name).toBe('testfile.png');
+          const expectedMetadata = JSON.stringify({ group: file.group, categories: file.categories, type: 'image' });
+          expect(createAssetArg.get('metadata')).toBe(expectedMetadata);
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+          done();
+        }).catch(done.fail);
+    });
+
+    it('should dispatch correct actions when error occurs', (done) => {
+      createAsset.mockImplementationOnce(mockApi({ errors: true }));
+      const file = {
+        fileObject: new Blob(['test'], { type: 'application/json' }),
+        group: 'testgroup',
+        categories: ['cat1', 'cat2'],
+        filename: 'testfile.json',
+      };
+      store
+        .dispatch(sendUploadAsset(file))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions).toHaveLength(3);
+          expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+          expect(actions[1]).toHaveProperty('type', 'errors/clear-errors');
+          expect(actions[2]).toHaveProperty('type', 'toasts/add-toast');
+          done();
+        }).catch(done.fail);
     });
   });
 
