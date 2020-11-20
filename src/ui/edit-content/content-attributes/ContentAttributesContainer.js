@@ -8,6 +8,7 @@ import { fetchContentSettings } from 'state/content-settings/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getAttrInitialValue } from 'helpers/attrUtils';
 import { getActiveLanguages, getLanguages, getDefaultLanguage } from 'state/languages/selectors';
+import { getDisplayAttributes } from 'state/user-preferences/selectors';
 import { initialize } from 'redux-form';
 import { getLocale } from 'state/locale/selectors';
 
@@ -23,6 +24,7 @@ export const mapStateToProps = (state, { attributes: contentAttributes = [] }) =
     defaultLang: getDefaultLanguage(state),
     languages,
     locale: getLocale(state),
+    defaultExpanded: getDisplayAttributes(state),
   };
 };
 

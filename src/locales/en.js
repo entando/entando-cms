@@ -349,6 +349,8 @@ export default {
     'cms.contents.edit.titletip': 'The CONTENT section allows users to manage existing content, access content lists, and add new content. Users can also approve, suspend, or delete content. In Entando, Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.edit.contentAttributes': 'Content Attributes',
     'cms.contents.edit.contentAttributes.language': 'Attributes can only be edited in the default language section.',
+    'cms.contents.edit.showAttributes': 'Show attributes',
+    'cms.contents.edit.hideAttributes': 'Hide attributes',
     'cms.menu.contents': 'Management',
     'cms.contents.list.all': 'All',
     'cms.contents.tip': 'The Content section allows users to manage existing content, access content lists, and add new content. Users can also approve, suspend, or delete content. In Entando, Content is a structured element that represents a set of information built using Content Attributes.',

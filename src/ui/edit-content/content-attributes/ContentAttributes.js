@@ -17,10 +17,14 @@ import FormLabel from 'ui/common/form/FormLabel';
 class ContentAttributes extends Component {
   constructor(props) {
     super(props);
+    const { defaultExpanded } = this.props;
+
     this.state = {
       selectedLang: 'en',
+      open: defaultExpanded,
     };
     this.handleSelectedLang = this.handleSelectedLang.bind(this);
+    this.handleToggleAttributes = this.handleToggleAttributes.bind(this);
   }
 
   componentDidMount() {
@@ -37,12 +41,16 @@ class ContentAttributes extends Component {
     this.setState({ selectedLang });
   }
 
+  handleToggleAttributes() {
+    this.setState(state => ({ open: !state.open }));
+  }
+
   render() {
     const {
       attributes, languages, reInitializeForm, content, typeCode, mainGroup,
-      joinGroups, locale, isNewContent, defaultLang, onDuplicateContent,
+      joinGroups, locale, isNewContent, defaultLang, onDuplicateContent, defaultExpanded,
     } = this.props;
-    const { selectedLang } = this.state;
+    const { selectedLang, open } = this.state;
     return (
       <Tabs
         defaultActiveKey={defaultLang.code}
@@ -52,20 +60,37 @@ class ContentAttributes extends Component {
       >
         {languages.map(({ code, isDefault }) => (
           <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
-            {isDefault && (
-              <Row>
-                <Col xs={12} className="text-right">
-                  <FormLabel
-                    labelId="cms.contents.edit.label.duplicate"
-                    defaultMessage="Duplicate Content Option"
-                    helpId="cms.contents.edit.label.duplicateHelp"
-                  />
-                  <Button onClick={onDuplicateContent}>
-                    <FormattedMessage id="cms.contents.edit.duplicate" />
+            <Row>
+              <Col xs={12} className="text-right">
+                {
+                isDefault && (
+                  <>
+                    <FormLabel
+                      labelId="cms.contents.edit.label.duplicate"
+                      defaultMessage="Duplicate Content Option"
+                      helpId="cms.contents.edit.label.duplicateHelp"
+                    />
+                    <Button onClick={onDuplicateContent}>
+                      <FormattedMessage id="cms.contents.edit.duplicate" />
+                    </Button>
+                    {' '}
+                  </>
+                )
+              }
+                {
+                !isNewContent && (
+                  <Button onClick={this.handleToggleAttributes}>
+                    {
+                      !open
+                        ? <FormattedMessage id="cms.contents.edit.showAttributes" />
+                        : <FormattedMessage id="cms.contents.edit.hideAttributes" />
+                    }
                   </Button>
-                </Col>
-              </Row>
-            )}
+                )
+              }
+              </Col>
+            </Row>
+
             <FieldArray
               data-test-id="edit-content-content-attributes-field-array"
               name="attributes"
@@ -80,7 +105,8 @@ class ContentAttributes extends Component {
               selectedLangTab={selectedLang}
               isDefaultLang={isDefault}
               locale={locale}
-              expanded={isNewContent}
+              open={open}
+              expanded={isNewContent || defaultExpanded}
             />
           </Tab>
         ))}
@@ -105,11 +131,13 @@ ContentAttributes.propTypes = {
   defaultLang: PropTypes.shape({
     code: PropTypes.string,
   }).isRequired,
+  defaultExpanded: PropTypes.bool,
 };
 
 ContentAttributes.defaultProps = {
   locale: '',
   isNewContent: false,
+  defaultExpanded: false,
 };
 
 export default ContentAttributes;

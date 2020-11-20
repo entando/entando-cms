@@ -349,6 +349,8 @@ export default {
     'cms.contents.edit.titletip': 'La sezione INDICE ti consente di gestire i contenuti esistenti, accedere all\'elenco dei contenuti, aggiungere nuovi contenuti. Puoi anche approvare, sospendere o eliminare i contenuti. In Entando, un contenuto è un elemento strutturato che rappresenta un insieme di informazioni costruite utilizzando gli attributi del contenuto.',
     'cms.contents.edit.contentAttributes': 'Attributi del Contenuto',
     'cms.contents.edit.contentAttributes.language': 'Gli attributi possono essere modificati solo nella sezione della lingua predefinita',
+    'cms.contents.edit.showAttributes': 'Mostra attributi',
+    'cms.contents.edit.hideAttributes': 'Nascondi attributi',
     'cms.menu.contents': 'Gestione',
     'cms.contents.list.all': 'Tutti',
     'cms.contents.tip': 'La sezione INDICE ti consente di gestire i contenuti esistenti, accedere all\'elenco dei contenuti, aggiungere nuovi contenuti. Puoi anche approvare, sospendere o eliminare i contenuti. In Entando, un contenuto è un elemento strutturato che rappresenta un insieme di informazioni costruite utilizzando gli attributi del contenuto.',

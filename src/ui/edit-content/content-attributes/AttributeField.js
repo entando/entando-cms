@@ -56,6 +56,7 @@ const AttributeField = ({
   locale,
   isSub,
   openedAtStart,
+  open,
 }) => {
   const {
     type,
@@ -182,6 +183,7 @@ const AttributeField = ({
     <ContentFormFieldCollapse
       label={fieldLabel}
       showContentAtStart={openedAtStart}
+      open={open}
     >
       {field}
     </ContentFormFieldCollapse>
@@ -201,6 +203,7 @@ AttributeField.propTypes = {
   locale: PropTypes.string,
   isSub: PropTypes.bool,
   openedAtStart: PropTypes.bool,
+  open: PropTypes.bool,
 };
 
 AttributeField.defaultProps = {
@@ -213,6 +216,7 @@ AttributeField.defaultProps = {
   labelSize: 2,
   isSub: false,
   openedAtStart: false,
+  open: false,
 };
 
 export default AttributeField;

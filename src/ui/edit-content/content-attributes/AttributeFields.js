@@ -24,7 +24,7 @@ const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
 
 const renderField = (
   name, attribute, langCode, mainGroup,
-  joinGroups, isDefaultLang, locale, selectedLangTab, expanded,
+  joinGroups, isDefaultLang, locale, selectedLangTab, expanded, open,
 ) => {
   if (!attribute) {
     return '';
@@ -88,6 +88,7 @@ const renderField = (
           joinGroups={joinGroups}
           selectedLangTab={selectedLangTab}
           openedAtStart={expanded}
+          open={open}
         />
       );
   }
@@ -104,13 +105,14 @@ const renderField = (
       langCode={langCode}
       selectedLangTab={selectedLangTab}
       openedAtStart={expanded}
+      open={open}
     />
   );
 };
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang, selectedLangTab, locale, expanded,
+  isDefaultLang, selectedLangTab, locale, expanded, open,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -136,7 +138,7 @@ const AttributeFields = ({
   }
 
   return fields.map((name, idx) => renderField(name, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab, expanded));
+    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab, expanded, open));
 };
 
 AttributeFields.propTypes = {
