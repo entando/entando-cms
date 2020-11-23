@@ -50,6 +50,11 @@ import {
   getNewAttributeComposite,
   getMethodsSelectedAttribute,
   getShapeMethodsByAttributeType,
+  getContentTypeSelectedAttributeAllowedRoleCodeList,
+  getContentTypeSelectedAttributeAssignedRolesList,
+  getContentTypeSelectedAttributeUnownedRoles,
+  getContentTypeSelectedAttributeDeletedValues,
+  getContentTypeSelectedAttributeRoleChoices,
 } from 'state/content-type/selectors';
 
 const TEST_STATE = {
@@ -119,7 +124,8 @@ const STATE_ATTRIBUTES = {
             listAttribute: [1],
             searchableOptionSupported: [2],
             indexableOptionSupported: [3],
-            allowedRoles: [4],
+            assignedRoles: { bbc: 'lecode' },
+            allowedRoles: [{ code: 'bbc' }, { code: 'dde' }],
             allowedDisablingCodes: [5],
           },
         },
@@ -278,6 +284,26 @@ describe('state/content-type/selectors', () => {
 
   it('verify getContentTypeSelectedAttributeAllowedRoles selector is defined', () => {
     expect(getContentTypeSelectedAttributeAllowedRoles(STATE_ATTRIBUTES)).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedAttributeAllowedRoleCodeList selector is defined', () => {
+    expect(getContentTypeSelectedAttributeAllowedRoleCodeList(STATE_ATTRIBUTES)).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedAttributeAssignedRolesList selector is defined', () => {
+    expect(getContentTypeSelectedAttributeAssignedRolesList('lecode')(STATE_ATTRIBUTES)).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedAttributeUnownedRoles selector is defined', () => {
+    expect(getContentTypeSelectedAttributeUnownedRoles(STATE_ATTRIBUTES)).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedAttributeDeletedValues selector is defined', () => {
+    expect(getContentTypeSelectedAttributeDeletedValues('lecode', [])).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedAttributeRoleChoices selector is defined', () => {
+    expect(getContentTypeSelectedAttributeRoleChoices('lecode', [])).toBeDefined();
   });
 
   it('verify getContentTypeSelectedAttributeallowedDisablingCodes selector is defined', () => {

@@ -358,6 +358,7 @@ export const fetchContentTypeAttributeRefs = (page = { page: 1, pageSize: 0 }, p
 });
 
 export const fetchContentTypeAttributeRef = (
+  contentTypeCode,
   contentTypeAttributeCode,
   routeFunc,
   selectedAttributeType = '',
@@ -379,7 +380,7 @@ export const fetchContentTypeAttributeRef = (
   if (typeAttribute === TYPE_COMPOSITE && actionMode === MODE_ADD_ATTRIBUTE_COMPOSITE) {
     resolve();
   } else {
-    getContentTypeAttribute(typeAttribute)
+    getContentTypeAttribute(contentTypeCode, typeAttribute)
       .then((response) => {
         response.json().then((json) => {
           if (response.ok) {
@@ -476,7 +477,10 @@ export const fetchAttributeFromContentType = (formName, contentTypeCode, attribu
           if (actionMode !== MODE_ADD_ATTRIBUTE_COMPOSITE) {
             dispatch(initialize(formName, payload));
             dispatch(setSelectedContentTypeAttribute(json.payload));
-            dispatch(fetchContentTypeAttributeRef(getSelectedAttributeType(getState())));
+            dispatch(fetchContentTypeAttributeRef(
+              contentTypeCode,
+              getSelectedAttributeType(getState()),
+            ));
           }
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));

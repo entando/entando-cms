@@ -13,15 +13,22 @@ class AttributeRole extends Component {
   }
 
   render() {
-    const { joinAllowedOptions, allowedRoles } = this.props;
+    const { joinAllowedOptions, allowedRoles, allRoles } = this.props;
 
     const selectAllowedOptions = allowedRoles.map(item => ({
       value: item.code,
       text: item.descr,
     }));
 
+    const allOptions = allRoles.map(item => (
+      {
+        value: item.code,
+        text: item.descr,
+      }
+    ));
+
     const roleWrapper = () => {
-      if (isEmpty(allowedRoles)) {
+      if (isEmpty(allowedRoles) && isEmpty(joinAllowedOptions)) {
         return (
           <FormGroup>
             <Col xs={10}>
@@ -43,6 +50,7 @@ class AttributeRole extends Component {
               component={RoleSelectRenderer}
               name="joinRoles"
               options={selectAllowedOptions}
+              allRoles={allOptions}
               selectedValues={joinAllowedOptions}
               labelKey="text"
               labelFn={getAttributeRoleLabel}
@@ -77,12 +85,19 @@ AttributeRole.propTypes = {
       descr: PropTypes.string,
     }),
   ),
+  allRoles: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+      descr: PropTypes.string,
+    }),
+  ),
   joinAllowedOptions: PropTypes.arrayOf(PropTypes.string),
 };
 
 AttributeRole.defaultProps = {
   onDidMount: () => {},
   allowedRoles: [],
+  allRoles: [],
   joinAllowedOptions: [],
 };
 

@@ -118,8 +118,8 @@ export const getContentTypeAttributes = (page = { page: 1, pageSize: 10 }, param
   page,
 );
 
-export const getContentTypeAttribute = attributeTypeCode => makeRequest({
-  uri: `/api/plugins/cms/contentTypeAttributes/${attributeTypeCode}`,
+export const getContentTypeAttribute = (contentTypeCode, attributeTypeCode) => makeRequest({
+  uri: `/api/plugins/cms/contentTypeAttributes/${contentTypeCode}/attribute/${attributeTypeCode}`,
   method: METHODS.GET,
   mockResponse: CONTENT_TYPE_ATTRIBUTE,
   useAuthentication: true,

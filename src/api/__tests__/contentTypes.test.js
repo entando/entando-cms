@@ -361,21 +361,21 @@ describe('api/getContentTypes', () => {
       });
     });
   });
-  describe('api/contentTypeAttributes', () => {
+  describe('api/contentTypeAttribute', () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
-    describe('getContentTypeAttributes', () => {
+    describe('getContentTypeAttribute', () => {
       it('returns a promise', () => {
         expect(getContentTypeAttribute()).toBeInstanceOf(Promise);
       });
 
       it('if successful, returns a attributes response', () => {
-        getContentTypeAttribute('code');
+        getContentTypeAttribute('code', 'dods');
         expect(makeRequest).toHaveBeenCalledWith(
           expect.objectContaining({
             ...correctRequest,
-            uri: '/api/plugins/cms/contentTypeAttributes/code',
+            uri: '/api/plugins/cms/contentTypeAttributes/code/attribute/dods',
             mockResponse: CONTENT_TYPE_ATTRIBUTE,
           }),
         );

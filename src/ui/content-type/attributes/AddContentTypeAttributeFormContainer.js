@@ -21,6 +21,7 @@ import {
   getContentTypeSelectedAttributeCode,
   getContentTypeAttributesIdList,
   getContentTypeSelectedAttributeAllowedRoles,
+  getContentTypeSelectedAttributeRoleChoices,
   getActionModeContentTypeSelectedAttribute,
   getSelectedCompositeAttributes,
 } from 'state/content-type/selectors';
@@ -32,20 +33,27 @@ import { TYPE_COMPOSITE, MODE_ADD } from 'state/content-type/const';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-export const mapStateToProps = (state, { match: { params } }) => ({
-  mode: getActionModeContentTypeSelectedAttribute(state) || 'add',
-  contentTypeAttributeCode: params.entityCode,
-  joinAllowedOptions: formValueSelector('addAttribute')(state, 'joinRoles') || [],
-  selectedAttributeType: getContentTypeSelectedAttribute(state),
-  attributesList: getContentTypeAttributesIdList(state),
-  initialValues: {
-    type: getContentTypeSelectedAttributeCode(state),
-    compositeAttributeType: TYPE_COMPOSITE,
-  },
-  allowedRoles: getContentTypeSelectedAttributeAllowedRoles(state),
-  compositeAttributes: getSelectedCompositeAttributes(state),
-  languages: getActiveLanguages(state),
-});
+export const mapStateToProps = (state, { match: { params } }) => {
+  const joinAllowedOptions = formValueSelector('addAttribute')(state, 'joinRoles') || [];
+  return {
+    mode: getActionModeContentTypeSelectedAttribute(state) || 'add',
+    contentTypeAttributeCode: params.entityCode,
+    joinAllowedOptions,
+    selectedAttributeType: getContentTypeSelectedAttribute(state),
+    attributesList: getContentTypeAttributesIdList(state),
+    initialValues: {
+      type: getContentTypeSelectedAttributeCode(state),
+      compositeAttributeType: TYPE_COMPOSITE,
+    },
+    allRoles: getContentTypeSelectedAttributeAllowedRoles(state),
+    allowedRoles: getContentTypeSelectedAttributeRoleChoices(
+      params.entityCode,
+      joinAllowedOptions,
+    )(state),
+    compositeAttributes: getSelectedCompositeAttributes(state),
+    languages: getActiveLanguages(state),
+  };
+};
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -79,6 +87,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(setActionMode(MODE_ADD));
     dispatch(
       fetchContentTypeAttributeRef(
+        entityCode,
         attributeCode,
         () => history.push(routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode })),
         code,
