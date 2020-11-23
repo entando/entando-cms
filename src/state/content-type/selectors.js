@@ -1,6 +1,14 @@
 import { createSelector } from 'reselect';
 import { formValueSelector } from 'redux-form';
-import { get, isEmpty, isUndefined } from 'lodash';
+import {
+  get,
+  isEmpty,
+  isUndefined,
+  difference,
+  xor,
+  union,
+} from 'lodash';
+
 import {
   TYPE_MONOLIST,
   TYPE_LIST,
@@ -85,7 +93,9 @@ export const getContentTypeSelectedAttributeSearchable = state => state.apps.cms
 export const getContentTypeSelectedAttributeIndexable = state => state.apps.cms
   . contentType.attributes.selected.indexableOptionSupported;
 export const getContentTypeSelectedAttributeAllowedRoles = state => state.apps.cms
-  . contentType.attributes.selected.allowedRoles;
+  .contentType.attributes.selected.allowedRoles || [];
+export const getContentTypeSelectedAttributeAssignedRoles = state => state.apps.cms
+  .contentType.attributes.selected.assignedRoles || {};
 export const getContentTypeSelectedAttributeallowedDisablingCodes = state => state.apps.cms
   . contentType.attributes.selected.allowedDisablingCodes;
 export const getContentTypeSelectedAttributeIsList = state => get(state.apps.cms.contentType.attributes.selected, 'listAttribute');
@@ -100,6 +110,53 @@ export const getParentSelectedAttribute = createSelector(
   parentSelected => (
     parentSelected.length ? parentSelected[parentSelected.length - 1] : {}
   ),
+);
+
+export const getContentTypeSelectedAttributeAllowedRoleCodeList = createSelector(
+  getContentTypeSelectedAttributeAllowedRoles,
+  allRoles => allRoles.map(role => role.code),
+);
+
+export const getContentTypeSelectedAttributeAssignedRolesList = attributeCode => (
+  createSelector(
+    [getContentTypeSelectedAttributeAssignedRoles],
+    assignedRoles => Object.keys(assignedRoles)
+      .filter(roleCode => assignedRoles[roleCode] === attributeCode),
+  )
+);
+
+export const getContentTypeSelectedAttributeUnownedRoles = createSelector(
+  [
+    getContentTypeSelectedAttributeAllowedRoleCodeList,
+    getContentTypeSelectedAttributeAssignedRoles,
+  ],
+  (allRoles, assignedRoles) => difference(
+    allRoles,
+    Object.keys(assignedRoles),
+  ),
+);
+
+export const getContentTypeSelectedAttributeDeletedValues = (
+  attributeCode,
+  roleValues,
+) => createSelector(
+  getContentTypeSelectedAttributeAssignedRolesList(attributeCode),
+  allRoles => xor(allRoles, roleValues),
+);
+
+export const getContentTypeSelectedAttributeRoleChoices = (
+  attributeCode,
+  roleValues,
+) => createSelector(
+  [
+    getContentTypeSelectedAttributeAllowedRoles,
+    getContentTypeSelectedAttributeUnownedRoles,
+    getContentTypeSelectedAttributeDeletedValues(attributeCode, roleValues),
+  ],
+  (allRoles, noOwnerRoles, deletedRoles) => {
+    const roleChoices = union(noOwnerRoles, deletedRoles);
+    return allRoles.filter(roleInfo => roleChoices.includes(roleInfo.code));
+  },
 );
 
 export const getContentTypeList = createSelector(

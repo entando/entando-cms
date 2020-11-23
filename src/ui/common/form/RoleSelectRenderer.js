@@ -31,6 +31,7 @@ class RoleSelectRenderer extends Component {
   render() {
     const {
       options,
+      allRoles,
       selectedValues,
       labelKey,
       valueKey,
@@ -61,12 +62,14 @@ class RoleSelectRenderer extends Component {
       );
     }
 
-    const renderTags = selectedValues.map((value, i) => (
+    const renderTags = allRoles && allRoles.length ? selectedValues.map((value, i) => (
       <div key={value} className="clearfix">
         { i === 0 && <h3><FormattedMessage id="cms.contenttype.labelrole.assigned" /></h3>}
         <hr />
         <Col xs={4}>
-          <p>{this.getLabel(options.find(opt => opt[valueKey] === value))}</p>
+          <p>
+            {this.getLabel(allRoles.find(opt => opt[valueKey] === value))}
+          </p>
         </Col>
         <Col xs={8}>
           <Button
@@ -78,30 +81,34 @@ class RoleSelectRenderer extends Component {
           </Button>
         </Col>
       </div>
-    ));
+    )) : [];
 
     return (
       <div className="RoleSelectRenderer">
-        <InputGroup>
-          <select
-            className="form-control"
-            ref={(select) => {
-              this.select = select;
-            }}
-          >
-            {filteredOptions}
-          </select>
-          <span className="input-group-btn">
-            <Button
-              className="RoleSelectRenderer__add-btn"
-              bsStyle="primary"
-              onClick={this.pushField}
-            >
-              <FormattedMessage id="cms.label.add" />
-            </Button>
-          </span>
-        </InputGroup>
-        <br />
+        {filteredOptions.length && (
+          <>
+            <InputGroup>
+              <select
+                className="form-control"
+                ref={(select) => {
+                  this.select = select;
+                }}
+              >
+                {filteredOptions}
+              </select>
+              <span className="input-group-btn">
+                <Button
+                  className="RoleSelectRenderer__add-btn"
+                  bsStyle="primary"
+                  onClick={this.pushField}
+                >
+                  <FormattedMessage id="cms.label.add" />
+                </Button>
+              </span>
+            </InputGroup>
+            <br />
+          </>
+        )}
         {renderTags}
       </div>
     );
@@ -115,6 +122,7 @@ RoleSelectRenderer.propTypes = {
     remove: PropTypes.func,
   }).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  allRoles: PropTypes.arrayOf(PropTypes.shape({})),
   selectedValues: PropTypes.arrayOf(PropTypes.string),
   valueKey: PropTypes.string,
   labelKey: PropTypes.string,
@@ -124,6 +132,7 @@ RoleSelectRenderer.propTypes = {
 
 RoleSelectRenderer.defaultProps = {
   selectedValues: [],
+  allRoles: [],
   valueKey: 'value',
   labelKey: 'label',
   emptyOptionTextId: '',

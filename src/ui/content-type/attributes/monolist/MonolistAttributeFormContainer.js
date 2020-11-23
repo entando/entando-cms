@@ -52,6 +52,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     if (mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(
         fetchContentTypeAttributeRef(
+          contentTypeCode,
           TYPE_COMPOSITE,
           () => history.push(
             routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
@@ -80,6 +81,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     dispatch(setActionMode(MODE_ADD_SUB_ATTRIBUTE_MONOLIST_COMPOSITE));
     dispatch(
       fetchContentTypeAttributeRef(
+        contentTypeCode,
         type,
         () => history.push(
           routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, { entityCode: contentTypeCode }),

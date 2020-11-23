@@ -840,7 +840,7 @@ describe('state/content-type/actions ', () => {
         getFormTypeValue.mockReturnValue(TYPE_COMPOSITE);
         getActionModeContentTypeSelectedAttribute.mockReturnValue(MODE_ADD_ATTRIBUTE_COMPOSITE);
         store
-          .dispatch(fetchContentTypeAttributeRef('TYPE_COMPOSITE', routeFunc, TYPE_COMPOSITE))
+          .dispatch(fetchContentTypeAttributeRef('AA1', 'TYPE_COMPOSITE', routeFunc, TYPE_COMPOSITE))
           .then(() => {
             expect(getContentTypeAttribute).not.toHaveBeenCalled();
             const actions = store.getActions();
@@ -864,7 +864,7 @@ describe('state/content-type/actions ', () => {
         getActionModeContentTypeSelectedAttribute.mockReturnValue(MODE_ADD_ATTRIBUTE_COMPOSITE);
         getFormTypeValue.mockReturnValueOnce(TYPE_COMPOSITE);
         store
-          .dispatch(fetchContentTypeAttributeRef('attribute_code', routeFunc))
+          .dispatch(fetchContentTypeAttributeRef('AA1', 'attribute_code', routeFunc))
           .then(() => {
             const actions = store.getActions(MODE_ADD_ATTRIBUTE_COMPOSITE);
             expect(getContentTypeAttribute).toHaveBeenCalled();
@@ -881,7 +881,7 @@ describe('state/content-type/actions ', () => {
         getContentTypeAttribute.mockImplementation(mockApi({ payload: CONTENT_TYPE_ATTRIBUTE }));
         getActionModeContentTypeSelectedAttribute.mockReturnValue(MODE_ADD);
         store
-          .dispatch(fetchContentTypeAttributeRef('attribute_code', routeFunc))
+          .dispatch(fetchContentTypeAttributeRef('AA1', 'attribute_code', routeFunc))
           .then(() => {
             expect(routeFunc).toHaveBeenCalled();
             done();

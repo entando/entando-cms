@@ -23,6 +23,7 @@ import {
   getSelectedAttributeType,
   getContentTypeAttributesIdList,
   getContentTypeSelectedAttributeAllowedRoles,
+  getContentTypeSelectedAttributeRoleChoices,
   getSelectedCompositeAttributes,
   getActionModeContentTypeSelectedAttribute,
   getContentTypeSelectedAttribute,
@@ -40,25 +41,31 @@ import {
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
-export const mapStateToProps = (state, { match: { params } }) => ({
-  mode: getActionModeContentTypeSelectedAttribute(state) || 'edit',
-  attributeCode: params.attributeCode,
-  contentTypeAttributeCode: params.entityCode,
-  joinAllowedOptions:
-    formValueSelector('attribute')(state, 'joinRoles')
+export const mapStateToProps = (state, { match: { params } }) => {
+  const joinAllowedOptions = formValueSelector('attribute')(state, 'joinRoles')
     || formValueSelector('attribute')(state, 'joinAllowedOptions')
-    || [],
-  selectedAttributeType: getSelectedAttributeType(state),
-  selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
-  isSearchable: getContentTypeSelectedAttributeIndexable(state),
-  isIndexable: getContentTypeSelectedAttributeSearchable(state),
-  attributesList: getContentTypeAttributesIdList(state),
-  allowedRoles: getContentTypeSelectedAttributeAllowedRoles(state),
-  compositeAttributes: getSelectedCompositeAttributes(state),
-  isMonolistCompositeType: getIsMonolistCompositeAttributeType(state),
-  nestedAttributeComposite: formValueSelector('attribute')(state, 'nestedAttribute.type') || '',
-  languages: getActiveLanguages(state),
-});
+    || [];
+  return {
+    mode: getActionModeContentTypeSelectedAttribute(state) || 'edit',
+    attributeCode: params.attributeCode,
+    contentTypeAttributeCode: params.entityCode,
+    joinAllowedOptions,
+    selectedAttributeType: getSelectedAttributeType(state),
+    selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
+    isSearchable: getContentTypeSelectedAttributeIndexable(state),
+    isIndexable: getContentTypeSelectedAttributeSearchable(state),
+    attributesList: getContentTypeAttributesIdList(state),
+    allRoles: getContentTypeSelectedAttributeAllowedRoles(state),
+    allowedRoles: getContentTypeSelectedAttributeRoleChoices(
+      params.attributeCode,
+      joinAllowedOptions,
+    )(state),
+    compositeAttributes: getSelectedCompositeAttributes(state),
+    isMonolistCompositeType: getIsMonolistCompositeAttributeType(state),
+    nestedAttributeComposite: formValueSelector('attribute')(state, 'nestedAttribute.type') || '',
+    languages: getActiveLanguages(state),
+  };
+};
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -101,6 +108,7 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
     const { attributeCode, contentTypeAttributeCode, selectedAttributeType } = props;
     dispatch(
       fetchContentTypeAttributeRef(
+        contentTypeAttributeCode,
         attributeCode,
         () => history.push(routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_ADD, {
           entityCode: contentTypeAttributeCode,
