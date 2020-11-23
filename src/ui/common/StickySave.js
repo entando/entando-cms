@@ -45,6 +45,7 @@ const StickySave = ({
         </Button>
         <DropdownButton
           title={intl.formatMessage({ id: 'cms.save' })}
+          bsStyle="primary"
           id="saveopts"
           className="StickySave__saveDropdown"
         >
