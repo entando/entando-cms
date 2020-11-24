@@ -10,6 +10,7 @@ import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
 import RenderRichTextEditor from 'ui/common/form/RenderRichTextEditor';
 import { getEditorSettings } from 'state/content-settings/selectors';
 import CopyTextButton from 'ui/common/button/CopyTextButton';
+import DebouncedInput from 'ui/common/form/DebouncedInput';
 
 const HypertextAttributeField = ({
   label,
@@ -56,7 +57,7 @@ const HypertextAttributeField = ({
     }
   }
 
-  return <Component {...compProps} />;
+  return <DebouncedInput inputComponent={Component} {...compProps} />;
 };
 
 HypertextAttributeField.propTypes = {

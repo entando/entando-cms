@@ -6,6 +6,7 @@ import {
 } from 'redux-form';
 
 import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
+import DebouncedInput from 'ui/common/form/DebouncedInput';
 
 const LongtextAttributeField = ({
   label,
@@ -25,7 +26,8 @@ const LongtextAttributeField = ({
   };
 
   return (
-    <TextAreaInput
+    <DebouncedInput
+      inputComponent={TextAreaInput}
       input={attrInput}
       label={label}
       meta={meta}

@@ -6,6 +6,7 @@ import {
 } from 'redux-form';
 
 import TextInput from 'ui/common/form/RenderTextInput';
+import DebouncedInput from 'ui/common/form/DebouncedInput';
 
 const MonotextAttributeField = ({
   label,
@@ -25,7 +26,8 @@ const MonotextAttributeField = ({
   };
 
   return (
-    <TextInput
+    <DebouncedInput
+      inputComponent={TextInput}
       input={attrInput}
       label={label}
       meta={meta}
