@@ -1,5 +1,4 @@
 .Contents {
-
   &__body {
     margin-top: 15px;
     // padding-bottom: 90px;
@@ -40,6 +39,10 @@
     font-size: 12px;
     @media (min-width: 991px) {
       overflow: visible;
+    }
+
+    & .disabled { // sass-lint:disable-line class-name-format
+      pointer-events: none;
     }
   }
 
