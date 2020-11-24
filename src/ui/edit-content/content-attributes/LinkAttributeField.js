@@ -97,6 +97,7 @@ class LinkAttributeField extends Component {
         input.onChange({
           ...input.value,
           values: {
+            ...(values || {}),
             [langCode]: event.target.value,
           },
         });
