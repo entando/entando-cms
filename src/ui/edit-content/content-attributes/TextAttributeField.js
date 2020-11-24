@@ -7,6 +7,7 @@ import {
 
 import CopyTextButton from 'ui/common/button/CopyTextButton';
 import TextInput from 'ui/common/form/RenderTextInput';
+import DebouncedInput from 'ui/common/form/DebouncedInput';
 
 const TextAttributeField = ({
   label,
@@ -28,7 +29,8 @@ const TextAttributeField = ({
   };
 
   return (
-    <TextInput
+    <DebouncedInput
+      inputComponent={TextInput}
       input={attrInput}
       label={label}
       meta={meta}

@@ -43,9 +43,9 @@ class ContentAttributes extends Component {
       joinGroups, locale, isNewContent, defaultLang, onDuplicateContent,
     } = this.props;
     const { selectedLang } = this.state;
-    return (
+    return defaultLang && (
       <Tabs
-        defaultActiveKey={defaultLang.code}
+        defaultActiveKey={defaultLang}
         animation={false}
         id="content-attributes-tabs"
         onSelect={this.handleSelectedLang}
@@ -53,18 +53,18 @@ class ContentAttributes extends Component {
         {languages.map(({ code, isDefault }) => (
           <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
             {isDefault && (
-              <Row>
-                <Col xs={12} className="text-right">
-                  <FormLabel
-                    labelId="cms.contents.edit.label.duplicate"
-                    defaultMessage="Duplicate Content Option"
-                    helpId="cms.contents.edit.label.duplicateHelp"
-                  />
-                  <Button onClick={onDuplicateContent}>
-                    <FormattedMessage id="cms.contents.edit.duplicate" />
-                  </Button>
-                </Col>
-              </Row>
+            <Row>
+              <Col xs={12} className="text-right">
+                <FormLabel
+                  labelId="cms.contents.edit.label.duplicate"
+                  defaultMessage="Duplicate Content Option"
+                  helpId="cms.contents.edit.label.duplicateHelp"
+                />
+                <Button onClick={onDuplicateContent}>
+                  <FormattedMessage id="cms.contents.edit.duplicate" />
+                </Button>
+              </Col>
+            </Row>
             )}
             <FieldArray
               data-test-id="edit-content-content-attributes-field-array"
@@ -102,9 +102,7 @@ ContentAttributes.propTypes = {
   locale: PropTypes.string,
   isNewContent: PropTypes.bool,
   onDuplicateContent: PropTypes.func.isRequired,
-  defaultLang: PropTypes.shape({
-    code: PropTypes.string,
-  }).isRequired,
+  defaultLang: PropTypes.string.isRequired,
 };
 
 ContentAttributes.defaultProps = {

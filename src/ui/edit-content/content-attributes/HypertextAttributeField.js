@@ -10,6 +10,7 @@ import TextAreaInput from 'ui/common/form/RenderTextAreaInput';
 import RenderRichTextEditor from 'ui/common/form/RenderRichTextEditor';
 import { getEditorSettings } from 'state/content-settings/selectors';
 import CopyTextButton from 'ui/common/button/CopyTextButton';
+import DebouncedInput from 'ui/common/form/DebouncedInput';
 
 const HypertextAttributeField = ({
   label,
@@ -32,36 +33,31 @@ const HypertextAttributeField = ({
     },
   };
 
+  let Component = TextAreaInput;
+  const compProps = {
+    input: attrInput,
+    label,
+    meta,
+    ...rest,
+  };
+  const copyOption = <CopyTextButton text={attrInput.value} />;
+  const langIsLocale = langCode === locale;
+
   if (isRTE) {
-    return (
-      <RenderRichTextEditor
-        input={attrInput}
-        label={label}
-        meta={meta}
-        langCode={langCode}
-        {...(
-          langCode === locale
-          && { extraOptions: (<CopyTextButton text={attrInput.value} />) }
-        )}
-        {...rest}
-      />
-    );
+    Component = RenderRichTextEditor;
+    compProps.langCode = langCode;
+    if (langIsLocale) {
+      compProps.extraOptions = copyOption;
+    }
+  } else {
+    compProps.rows = 3;
+    compProps.cols = 50;
+    if (langIsLocale) {
+      compProps.topBarOptions = copyOption;
+    }
   }
 
-  return (
-    <TextAreaInput
-      input={attrInput}
-      label={label}
-      meta={meta}
-      rows={3}
-      cols={50}
-      {...(
-        langCode === locale
-        && { topBarOptions: (<CopyTextButton text={attrInput.value} />) }
-      )}
-      {...rest}
-    />
-  );
+  return <DebouncedInput inputComponent={Component} {...compProps} />;
 };
 
 HypertextAttributeField.propTypes = {

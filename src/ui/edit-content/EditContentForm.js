@@ -530,7 +530,7 @@ EditContentFormBody.propTypes = {
     attributePath: PropTypes.string,
   })).isRequired,
   saveType: PropTypes.string.isRequired,
-  closeModal: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 EditContentFormBody.defaultProps = {
