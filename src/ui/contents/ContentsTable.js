@@ -217,38 +217,53 @@ class ContentsTable extends Component {
             break;
           case 'actions':
             headerCellFormatter = actionHeaderCellFormatter;
-            rowCellFormatter = (value, { rowData }) => [
-              <Table.Actions key="1" style={{ width: 'inherit' }}>
-                <div>
-                  <Table.DropdownKebab id="actionsKebab" pullRight>
-                    <MenuItem onClick={() => onEditContent(rowData.id)}>
-                      <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
-                    </MenuItem>
-                    <MenuItem onClick={() => onClickDelete(rowData)} disabled={rowData.onLine}>
-                      <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-                    </MenuItem>
-                    <MenuItem onClick={() => onClickClone(rowData)}>
-                      <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
-                    </MenuItem>
-                    <PermissionCheck
-                      requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
-                      userPermissions={userPermissions}
-                    >
-                      <MenuItem onClick={() => onClickPublish([rowData], true)} disabled={rowData.status === 'PUBLIC'}>
-                        <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
-                      </MenuItem>
-                    </PermissionCheck>
-                    <PermissionCheck
-                      requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
-                      userPermissions={userPermissions}
-                    >
-                      <MenuItem onClick={() => onClickPublish([rowData], false)} disabled={rowData.status !== 'PUBLIC' && !rowData.onLine}>
-                        <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
-                      </MenuItem>
-                    </PermissionCheck>
-                  </Table.DropdownKebab>
-                </div>
-              </Table.Actions>];
+            rowCellFormatter = (value, { rowData }) => {
+              const unpublishDisabled = rowData.status !== 'PUBLIC' && !rowData.onLine;
+              const publishDisabled = rowData.status === 'PUBLIC';
+              return (
+                [
+                  <Table.Actions key="1" style={{ width: 'inherit' }}>
+                    <div>
+                      <Table.DropdownKebab id="actionsKebab" pullRight>
+                        <MenuItem onClick={() => onEditContent(rowData.id)}>
+                          <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => !rowData.onLine && onClickDelete(rowData)}
+                          disabled={rowData.onLine}
+                        >
+                          <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+                        </MenuItem>
+                        <MenuItem onClick={() => onClickClone(rowData)}>
+                          <FormattedMessage id="cms.contents.clone" defaultMessage="Clone" />
+                        </MenuItem>
+                        <PermissionCheck
+                          requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+                          userPermissions={userPermissions}
+                        >
+                          <MenuItem
+                            onClick={() => !publishDisabled && onClickPublish([rowData], true)}
+                            disabled={publishDisabled}
+                          >
+                            <FormattedMessage id="cms.label.publish" defaultMessage="Publish" />
+                          </MenuItem>
+                        </PermissionCheck>
+                        <PermissionCheck
+                          requiredPermissions={VALIDATE_CONTENTS_PERMISSION}
+                          userPermissions={userPermissions}
+                        >
+                          <MenuItem
+                            onClick={() => !unpublishDisabled && onClickPublish([rowData], false)}
+                            disabled={unpublishDisabled}
+                          >
+                            <FormattedMessage id="cms.label.unpublish" defaultMessage="Unpublish" />
+                          </MenuItem>
+                        </PermissionCheck>
+                      </Table.DropdownKebab>
+                    </div>
+                  </Table.Actions>]
+              );
+            };
             break;
           default:
             break;
