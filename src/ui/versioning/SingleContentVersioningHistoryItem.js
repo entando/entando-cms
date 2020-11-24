@@ -78,7 +78,7 @@ SingleContentVersioningHistoryItem.propTypes = {
   contentId: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
-  versionDate: PropTypes.number.isRequired,
+  versionDate: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
   onClickRestore: PropTypes.func,
   onClickDelete: PropTypes.func,

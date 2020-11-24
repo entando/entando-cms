@@ -45,7 +45,7 @@ class ContentAttributes extends Component {
     const { selectedLang } = this.state;
     return (
       <Tabs
-        defaultActiveKey={defaultLang.code}
+        defaultActiveKey={defaultLang}
         animation={false}
         id="content-attributes-tabs"
         onSelect={this.handleSelectedLang}
@@ -102,9 +102,7 @@ ContentAttributes.propTypes = {
   locale: PropTypes.string,
   isNewContent: PropTypes.bool,
   onDuplicateContent: PropTypes.func.isRequired,
-  defaultLang: PropTypes.shape({
-    code: PropTypes.string,
-  }).isRequired,
+  defaultLang: PropTypes.string.isRequired,
 };
 
 ContentAttributes.defaultProps = {
