@@ -43,7 +43,7 @@ class ContentAttributes extends Component {
       joinGroups, locale, isNewContent, defaultLang, onDuplicateContent,
     } = this.props;
     const { selectedLang } = this.state;
-    return (
+    return defaultLang && (
       <Tabs
         defaultActiveKey={defaultLang}
         animation={false}
@@ -53,18 +53,18 @@ class ContentAttributes extends Component {
         {languages.map(({ code, isDefault }) => (
           <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
             {isDefault && (
-              <Row>
-                <Col xs={12} className="text-right">
-                  <FormLabel
-                    labelId="cms.contents.edit.label.duplicate"
-                    defaultMessage="Duplicate Content Option"
-                    helpId="cms.contents.edit.label.duplicateHelp"
-                  />
-                  <Button onClick={onDuplicateContent}>
-                    <FormattedMessage id="cms.contents.edit.duplicate" />
-                  </Button>
-                </Col>
-              </Row>
+            <Row>
+              <Col xs={12} className="text-right">
+                <FormLabel
+                  labelId="cms.contents.edit.label.duplicate"
+                  defaultMessage="Duplicate Content Option"
+                  helpId="cms.contents.edit.label.duplicateHelp"
+                />
+                <Button onClick={onDuplicateContent}>
+                  <FormattedMessage id="cms.contents.edit.duplicate" />
+                </Button>
+              </Col>
+            </Row>
             )}
             <FieldArray
               data-test-id="edit-content-content-attributes-field-array"
