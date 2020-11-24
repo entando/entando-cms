@@ -41,7 +41,7 @@
       overflow: visible;
     }
 
-    & .disabled {
+    & .disabled { // sass-lint:disable-line class-name-format
       pointer-events: none;
     }
   }
