@@ -232,7 +232,7 @@ class AssetsList extends Component {
     const renderAppliedFilters = activeFilters && !loading && (
       <Toolbar.Results className="AssetsList__toolbar-results">
         <span className="AssetsList__items-count">
-          {itemsEnd} <FormattedMessage id="cms.assets.list.of" /> {totalItems}{' '}
+          {assets.length} <FormattedMessage id="cms.assets.list.of" /> {totalItems}{' '}
           <FormattedMessage id="cms.assets.list.items" />
         </span>
         <Filter.ActiveLabel className="AssetsList__filters-label">
