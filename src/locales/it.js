@@ -73,6 +73,7 @@ export default {
     'cms.label.details': 'Dettaglio',
     'cms.label.ignore': 'Ignorare',
     'cms.label.update': 'Aggiornare',
+    'cms.label.textEditor': 'Editor di testo RTF',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'Contenuti',
     'cms.menu.contentlist': 'Contenuti',

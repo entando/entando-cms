@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage, injectIntl, intlShape, defineMessages,
 } from 'react-intl';
-import { CKEDITOR_OPTION_NODE } from 'state/content-settings/const';
 import RadioInput from 'ui/common/form/RenderRadioInput';
 
 import {
@@ -14,6 +13,10 @@ const messages = defineMessages({
   none: {
     id: 'cms.label.none',
     defaultMessage: 'None',
+  },
+  texteditor: {
+    id: 'cms.label.textEditor',
+    defaultMessage: 'Text Editor',
   },
   saving: {
     id: 'cms.label.saving',
@@ -59,7 +62,10 @@ class ContentSettingsGeneral extends Component {
         id: 'none',
         label: intl.formatMessage(messages.none),
       },
-      CKEDITOR_OPTION_NODE,
+      {
+        id: 'fckeditor',
+        label: intl.formatMessage(messages.texteditor),
+      },
     ];
 
     const saving = intl.formatMessage(messages.saving);

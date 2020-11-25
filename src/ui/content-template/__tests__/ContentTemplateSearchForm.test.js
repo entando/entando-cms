@@ -47,6 +47,6 @@ describe('ui/content-template/ContentTemplateSearchForm', () => {
   it('contains the submit button', () => {
     const element = component.find('Button[type="submit"]');
     expect(element.exists()).toBe(true);
-    expect(element.hasClass('SearchForm__button')).toBe(true);
+    expect(element.hasClass('ContentTemplateList__searchform--button')).toBe(true);
   });
 });

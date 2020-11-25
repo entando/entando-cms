@@ -73,6 +73,7 @@ export default {
     'cms.label.details': 'Details',
     'cms.label.ignore': 'Ignore',
     'cms.label.update': 'Update',
+    'cms.label.textEditor': 'Rich Text Editor',
     'cms.menu.dashboard': 'Dashboard',
     'cms.menu.cms': 'Content',
     'cms.menu.contentlist': 'Content List',
