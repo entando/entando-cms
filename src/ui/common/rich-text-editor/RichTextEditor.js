@@ -117,12 +117,16 @@ class RichTextEditor extends Component {
         viewSource: this.handleViewSource.bind(this),
       };
       this.setState({ editorToolbarId: `editor-toolbar_${langCode}_${attrCode}` });
-      window.setTimeout(() => this.setState({ editorCanWrite: true }), 100);
+      this.timeout = window.setTimeout(() => this.setState({ editorCanWrite: true }), 100);
     }
   }
 
   componentDidUpdate() {
     this.attachQuillRefs();
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.timeout);
   }
 
   get modules() {
