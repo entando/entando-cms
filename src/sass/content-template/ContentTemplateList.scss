@@ -8,9 +8,12 @@
   }
 
   &__searchform {
-
     .container-fluid .row > div { // sass-lint:disable-line force-element-nesting class-name-format
-      padding: 0;
+      padding: 20px 0;
+    }
+
+    &--button {
+      height: 26px;
     }
   }
 
@@ -25,7 +28,7 @@
   &__filter-searchby-label.label.label-default { // sass-lint:disable-line class-name-format force-element-nesting
     display: block;
     position: absolute;
-    top: -18px;
+    top: 0;
     padding: 0;
     background: none;
     color: $color-thin-light-grey;
@@ -36,6 +39,7 @@
 
   &__filter-searchby-dropdown.btn { // sass-lint:disable-line class-name-format force-element-nesting
     width: calc(100% - 1px);
+    height: 25px;
     margin-right: 5px;
     text-align: left;
 

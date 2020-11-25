@@ -35,7 +35,7 @@ const ContentTemplateListPage = () => (
       </Col>
     </Row>
     <Row className="ContentTemplateList__filter">
-      <Col xs={9}>
+      <Col xs={8} xsOffset={2}>
         <ContentTemplateSearchFormContainer />
       </Col>
       <Col xs={1} />

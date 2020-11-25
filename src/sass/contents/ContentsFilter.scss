@@ -2,7 +2,6 @@
   margin-top: 30px;
   padding-top: 40px;
   padding-bottom: 10px;
-  background-color: white;
   border: $color-ultra-grey-border 1px solid;
   overflow: auto;
 
@@ -19,6 +18,7 @@
 
       button {
         width: 100%;
+        background-color: $color-vertical-grey;
         font-family: "Open Sans";
         font-size: 13px;
         font-weight: bold;

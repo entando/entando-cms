@@ -58,7 +58,7 @@ class AssetsAdvancedSearchForm extends Component {
     );
     const advancedFiltersVisibility = showAdvancedFilters ? 'block' : 'none';
     return (
-      <div className="AssetsAdvancedFilter clearfix" onSubmit={handleSubmit}>
+      <div className="AssetsAdvancedFilter clearfix well" onSubmit={handleSubmit}>
         <div className="clearfix form-group">
           <Col xs={2} sm={2} className="text-right mobile-left">
             <ControlLabel className="">

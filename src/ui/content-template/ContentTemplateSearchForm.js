@@ -45,7 +45,7 @@ class ContentTemplateSearchFormBody extends Component {
       selectedAttribute,
     } = this.props;
     return (
-      <form className="ContentTemplateList__searchform" onSubmit={handleSubmit}>
+      <form className="ContentTemplateList__searchform well" onSubmit={handleSubmit}>
         <Grid fluid>
           <Row>
             <Col xs={3} className="ContentTemplateList__filter-searchby">
@@ -75,7 +75,7 @@ class ContentTemplateSearchFormBody extends Component {
               />
             </Col>
             <Col xs={1}>
-              <Button className="SearchForm__button" type="submit">
+              <Button className="ContentTemplateList__searchform--button" bsStyle="primary" type="submit">
                 <Icon name="search" />
               </Button>
             </Col>

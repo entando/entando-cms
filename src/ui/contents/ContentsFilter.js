@@ -182,7 +182,7 @@ class ContentsFilter extends Component {
       : QUICK_FILTERS.filter(quickFilter => quickFilter.id === currentQuickFilter.id)[0];
 
     return (
-      <div className="ContentsFilter">
+      <div className="ContentsFilter well">
         <Filter className="clearfix col-xs-12">
           <Col xs={6} sm={2} className="ContentsFilter__left-column">
             <Filter.TypeSelector
