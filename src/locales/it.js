@@ -354,6 +354,7 @@ export default {
     'cms.contents.tip': 'La sezione INDICE ti consente di gestire i contenuti esistenti, accedere all\'elenco dei contenuti, aggiungere nuovi contenuti. Puoi anche approvare, sospendere o eliminare i contenuti. In Entando, un contenuto è un elemento strutturato che rappresenta un insieme di informazioni costruite utilizzando gli attributi del contenuto.',
     'cms.contents.quickSearchPlaceHolder': 'Cerca Contenuto',
     'cms.contents.advancedFilters': 'Filtri Avanzati',
+    'cms.contents.advancedFilters.invalidDatesRange': 'Intervallo di date non valido',
     'cms.contents.contentType': 'Tipo di Contenuto',
     'cms.contents.group': 'Gruppo',
     'cms.contents.statusMain': 'Stato',

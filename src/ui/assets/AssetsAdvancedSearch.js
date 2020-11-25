@@ -7,6 +7,7 @@ import {
 import {
   Col, Button, ControlLabel,
 } from 'patternfly-react';
+import moment from 'moment';
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -45,7 +46,7 @@ class AssetsAdvancedSearchForm extends Component {
 
   render() {
     const {
-      intl, groups, handleSubmit,
+      intl, groups, handleSubmit, invalid, submitting,
     } = this.props;
     const { showAdvancedFilters } = this.state;
     const advancedFilterIcon = (
@@ -117,6 +118,7 @@ class AssetsAdvancedSearchForm extends Component {
                 hasCalendarIcon
                 inputSize={8}
                 labelSize={1}
+
               />
             </Col>
           </div>
@@ -147,6 +149,7 @@ class AssetsAdvancedSearchForm extends Component {
             className="AssetsAdvancedFilter__search-button"
             type="submit"
             bsStyle="primary"
+            disabled={invalid || submitting}
             onClick={() => handleSubmit()}
           >
             <FormattedMessage id="cms.contents.search" defaultMessage="Search" />
@@ -157,21 +160,38 @@ class AssetsAdvancedSearchForm extends Component {
   }
 }
 
+
 AssetsAdvancedSearchForm.propTypes = {
   intl: intlShape.isRequired,
   onDidMount: PropTypes.func.isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})),
+  invalid: PropTypes.bool,
+  submitting: PropTypes.bool,
   handleSubmit: PropTypes.func.isRequired,
 };
 
 AssetsAdvancedSearchForm.defaultProps = {
   groups: [],
+  submitting: false,
+  invalid: false,
+};
+
+const validate = (values, props) => {
+  const errors = {};
+  const isAfter = moment(values.fromDate, 'DD/MM/YYYY').isAfter(moment(values.toDate, 'DD/MM/YYYY'));
+  if (isAfter || (!values.fromDate && values.toDate) || (values.fromDate && !values.toDate)) {
+    errors.fromDate = props.intl.formatMessage({ id: 'cms.contents.advancedFilters.invalidDatesRange', defaultMessage: 'Invalid date range' });
+  } else {
+    errors.fromDate = '';
+  }
+  return errors;
 };
 
 const AssetsAdvancedSearch = reduxForm({
   form: 'assetsAdvancedSearch',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
+  validate,
 })(AssetsAdvancedSearchForm);
 
 export default injectIntl(AssetsAdvancedSearch);

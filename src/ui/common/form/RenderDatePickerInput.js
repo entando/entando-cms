@@ -49,7 +49,7 @@ class RenderDatePickerInput extends Component {
       </span>
     ) : null;
     return (
-      <div className="form-group">
+      <div className={`RenderDatePickerInput ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
         {hasLabel && (
         <Col xs={12} sm={labelSize} className={`${alignClass} ${xsClass}`}>
           <ControlLabel htmlFor={name}>
