@@ -65,7 +65,7 @@ class ContentSettingsGeneral extends Component {
       {
         id: 'fckeditor',
         label: intl.formatMessage(messages.texteditor),
-      }
+      },
     ];
 
     const saving = intl.formatMessage(messages.saving);
