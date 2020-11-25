@@ -262,11 +262,16 @@ export const advancedSearchFilter = (
   const {
     group, owner, fromDate, toDate,
   } = values;
-  const getDateTime = date => moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD-hh.mm.ss');
+  const getFromDateTime = date => moment(date, 'DD/MM/YYYY').set({
+    hour: 0, minute: 0, second: 0, millisecond: 0,
+  }).format('YYYY-MM-DD-HH.mm.ss');
+  const getToDateTime = date => moment(date, 'DD/MM/YYYY').set({
+    hour: 23, minute: 59, second: 59, millisecond: 0,
+  }).format('YYYY-MM-DD-HH.mm.ss');
   const valuesFilters = {
     ...(toDate && {
       toDateTimeString: {
-        value: getDateTime(toDate),
+        value: getToDateTime(toDate),
         op: FILTER_OPERATORS.LESS_THAN,
       },
     }),
@@ -284,7 +289,7 @@ export const advancedSearchFilter = (
     }),
     ...(fromDate && {
       createdAt: {
-        value: getDateTime(fromDate),
+        value: getFromDateTime(fromDate),
         op: FILTER_OPERATORS.GREATER_THAN,
       },
     }),

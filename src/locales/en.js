@@ -355,6 +355,7 @@ export default {
     'cms.contents.tip': 'The Content section allows users to manage existing content, access content lists, and add new content. Users can also approve, suspend, or delete content. In Entando, Content is a structured element that represents a set of information built using Content Attributes.',
     'cms.contents.quickSearchPlaceHolder': 'Search Content',
     'cms.contents.advancedFilters': 'Advanced Filters',
+    'cms.contents.advancedFilters.invalidDatesRange': 'Invalid date range',
     'cms.contents.contentType': 'Content Type',
     'cms.contents.group': 'Group',
     'cms.contents.statusMain': 'Status',
