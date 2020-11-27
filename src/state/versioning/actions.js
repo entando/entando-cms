@@ -9,6 +9,7 @@ import {
   getVersioningConfig, putVersioningConfig, recoverResource,
 } from 'api/versioning';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_VERSIONING, NAMESPACE_VERSION_HISTORY } from 'state/pagination/const';
 import { toggleLoading } from 'state/loading/actions';
 import { getCurrentPage, getPageSize } from 'state/pagination/selectors';
 import { initialize } from 'redux-form';
@@ -60,7 +61,7 @@ export const fetchVersionings = (page = { page: 1, pageSize: 10 }, params = '') 
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setVersionings(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, NAMESPACE_VERSIONING));
         } else {
           dispatch(setVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -83,7 +84,7 @@ export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, param
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setResourceVersionings(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, NAMESPACE_VERSIONING));
         } else {
           dispatch(setResourceVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -110,7 +111,7 @@ export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setVersionings(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, NAMESPACE_VERSION_HISTORY));
         } else {
           dispatch(setVersionings([]));
           const filteredErrors = omitNoContentVersionsError(json.errors);

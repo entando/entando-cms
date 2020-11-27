@@ -4,6 +4,7 @@ import {
   getGroup,
 } from 'api/groups';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_GROUPS } from 'state/pagination/const';
 import { toggleLoading } from 'state/loading/actions';
 import {
   SET_GROUPS,
@@ -42,7 +43,7 @@ export const fetchGroups = (page = { page: 1, pageSize: 10 }, params = '') => di
       if (response.ok) {
         dispatch(setGroups(data.payload));
         dispatch(toggleLoading('groups'));
-        dispatch(setPage(data.metaData));
+        dispatch(setPage(data.metaData, NAMESPACE_GROUPS));
         resolve();
       } else {
         dispatch(addErrors(data.errors.map(err => err.message)));

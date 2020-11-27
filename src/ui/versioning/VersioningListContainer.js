@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { getLoading } from 'state/loading/selectors';
-import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 
@@ -11,14 +12,19 @@ import { fetchVersionings, setSelectedVersioningType } from 'state/versioning/ac
 
 const noPage = { page: 1, pageSize: 0 };
 
-export const mapStateToProps = state => ({
-  loading: getLoading(state).versionings,
-  page: getCurrentPage(state),
-  totalItems: getTotalItems(state),
-  pageSize: getPageSize(state),
-  contentTypes: getContentTypeList(state),
-  versioningList: getVersioningList(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, totalItems, pageSize,
+  } = getPagination(state, NAMESPACE_VERSIONING);
+  return {
+    loading: getLoading(state).versionings,
+    page,
+    totalItems,
+    pageSize,
+    contentTypes: getContentTypeList(state),
+    versioningList: getVersioningList(state),
+  };
+};
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {

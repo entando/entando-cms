@@ -5,6 +5,7 @@ import {
   SET_LOGGED_USER_PERMISSIONS,
   CLEAR_LOGGED_USER_PERMISSIONS,
 } from 'state/permissions/types';
+import { NAMESPACE_PERMISSIONS } from 'state/pagination/const';
 import { getPermissionsIdList } from 'state/permissions/selectors';
 import { getPermissions, getMyGroupPermissions } from 'api/permissions';
 import { setPage } from 'state/pagination/actions';
@@ -35,7 +36,7 @@ export const fetchPermissions = (page = { page: 1, pageSize: 0 }, params = '') =
       response.json().then((data) => {
         if (response.ok) {
           dispatch(setPermissions(data.payload));
-          dispatch(setPage(data.metaData));
+          dispatch(setPage(data.metaData, NAMESPACE_PERMISSIONS));
           resolve();
         } else {
           dispatch(addErrors(data.errors.map(err => err.message)));

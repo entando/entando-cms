@@ -26,6 +26,7 @@ import {
   SET_ASSET_COUNT,
 } from 'state/assets/types';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_ASSETS } from 'state/pagination/const';
 import { toggleLoading } from 'state/loading/actions';
 import {
   getFileType,
@@ -103,7 +104,7 @@ export const fetchAssets = (page, params) => dispatch => new Promise((resolve) =
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setAssets(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, NAMESPACE_ASSETS));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
         }

@@ -25,6 +25,7 @@ import {
 import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
 import { getGroups } from 'state/edit-content/selectors';
@@ -63,7 +64,7 @@ const paramsForStatusAndAuthor = (status, author) => {
 export const mapStateToProps = (state) => {
   const {
     page, lastPage, totalItems, pageSize,
-  } = getPagination(state, 'contents') || getPagination(state);
+  } = getPagination(state, NAMESPACE_CONTENTS);
   return ({
     loading: getLoading(state).contents,
     language: getLocale(state),

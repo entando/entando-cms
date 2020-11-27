@@ -4,7 +4,8 @@ import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getLoading } from 'state/loading/selectors';
-import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { getResourceVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
@@ -14,16 +15,22 @@ import ImagesList from 'ui/versioning/images/ImagesList';
 import { REMOVE_RESOURCE_MODAL_ID } from 'ui/versioning/common/RemoveResourceModal';
 import { RECOVER_RESOURCE_MODAL_ID } from 'ui/versioning/common/RecoverResourceModal';
 
-export const mapStateToProps = state => ({
-  loading: getLoading(state).versionings,
-  pagination: {
-    page: getCurrentPage(state),
-    pageSize: getPageSize(state),
-  },
-  totalItems: getTotalItems(state),
-  images: getResourceVersioningList(state),
-  domain: getDomain(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, totalItems, pageSize,
+  } = getPagination(state, NAMESPACE_VERSIONING);
+
+  return {
+    loading: getLoading(state).versionings,
+    pagination: {
+      page,
+      pageSize,
+    },
+    totalItems,
+    images: getResourceVersioningList(state),
+    domain: getDomain(state),
+  };
+};
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {

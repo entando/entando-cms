@@ -5,19 +5,25 @@ import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { fetchSingleVersioningHistory, setSelectedVersioningType } from 'state/versioning/actions';
 import { getVersioningList } from 'state/versioning/selectors';
-import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSION_HISTORY } from 'state/pagination/const';
 
 import SingleContentVersioningHistory from 'ui/versioning/SingleContentVersioningHistory';
 import { DELETE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/DeleteContentVersionModal';
 import { RESTORE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/RestoreContentVersionModal';
 
-export const mapStateToProps = state => ({
-  loading: getLoading(state).versionings,
-  page: getCurrentPage(state),
-  totalItems: getTotalItems(state),
-  pageSize: getPageSize(state),
-  versioningList: getVersioningList(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, totalItems, pageSize,
+  } = getPagination(state, NAMESPACE_VERSION_HISTORY);
+  return {
+    loading: getLoading(state).versionings,
+    page,
+    totalItems,
+    pageSize,
+    versioningList: getVersioningList(state),
+  };
+};
 
 export const mapDispatchToProps = (dispatch, { id, match: { params } }) => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {

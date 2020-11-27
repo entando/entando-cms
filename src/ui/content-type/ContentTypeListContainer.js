@@ -3,18 +3,24 @@ import { getContentTypeList } from 'state/content-type/selectors';
 import { fetchContentTypeListPaged, sendPostRefreshContentType } from 'state/content-type/actions';
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
-import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_CONTENT_TYPES } from 'state/pagination/const';
 
 import ContentTypeList from 'ui/content-type/ContentTypeList';
 import { MODAL_ID } from 'ui/content-type/DeleteContentTypeModal';
 
-export const mapStateToProps = state => ({
-  contentTypes: getContentTypeList(state),
-  loading: getLoading(state).contentTypeList,
-  page: getCurrentPage(state),
-  totalItems: getTotalItems(state),
-  pageSize: getPageSize(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, totalItems, pageSize,
+  } = getPagination(state, NAMESPACE_CONTENT_TYPES);
+  return {
+    contentTypes: getContentTypeList(state),
+    loading: getLoading(state).contentTypeList,
+    page,
+    totalItems,
+    pageSize,
+  };
+};
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => dispatch(fetchContentTypeListPaged(page)),

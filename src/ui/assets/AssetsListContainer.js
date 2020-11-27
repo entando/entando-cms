@@ -23,36 +23,40 @@ import {
   resetFilteringCategories,
   setAssetCategoryFilter,
 } from 'state/assets/actions';
-import {
-  getLastPage, getPageSize, getTotalItems, getCurrentPage,
-} from 'state/pagination/selectors';
 import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getCategoryTree, getCategoryTreeFetched } from 'state/categories/selectors';
 import AssetsList from 'ui/assets/AssetsList';
+import { NAMESPACE_ASSETS } from 'state/pagination/const';
+import { getPagination } from 'state/pagination/selectors';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
 import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
 import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetModal';
 
-export const mapStateToProps = state => ({
-  assets: getAssetsList(state),
-  language: getLocale(state),
-  filteringCategories: getFilteringCategories(state),
-  activeFilters: getActiveFilters(state),
-  assetsView: getAssetsView(state),
-  fileType: getFileType(state),
-  loading: getLoading(state).assets,
-  sort: getListFilterParams(state).sorting || {},
-  lastPage: getLastPage(state),
-  pageSize: getPageSize(state),
-  totalItems: getTotalItems(state),
-  page: getCurrentPage(state),
-  categories: getCategoryTree(state),
-  categoryTreeFetched: getCategoryTreeFetched(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, lastPage, totalItems, pageSize,
+  } = getPagination(state, NAMESPACE_ASSETS);
+  return {
+    assets: getAssetsList(state),
+    language: getLocale(state),
+    filteringCategories: getFilteringCategories(state),
+    activeFilters: getActiveFilters(state),
+    assetsView: getAssetsView(state),
+    fileType: getFileType(state),
+    loading: getLoading(state).assets,
+    sort: getListFilterParams(state).sorting || {},
+    lastPage,
+    pageSize,
+    totalItems,
+    page,
+    categories: getCategoryTree(state),
+    categoryTreeFetched: getCategoryTreeFetched(state),
+  };
+};
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onDidMount: () => {

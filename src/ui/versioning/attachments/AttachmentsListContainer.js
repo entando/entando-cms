@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { getDomain } from '@entando/apimanager';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
-import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getResourceVersioningList } from 'state/versioning/selectors';
@@ -13,16 +14,21 @@ import { REMOVE_RESOURCE_MODAL_ID } from 'ui/versioning/common/RemoveResourceMod
 import { RECOVER_RESOURCE_MODAL_ID } from 'ui/versioning/common/RecoverResourceModal';
 import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
 
-export const mapStateToProps = state => ({
-  loading: getLoading(state).versionings,
-  pagination: {
-    page: getCurrentPage(state),
-    pageSize: getPageSize(state),
-  },
-  totalItems: getTotalItems(state),
-  attachments: getResourceVersioningList(state),
-  domain: getDomain(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, totalItems, pageSize,
+  } = getPagination(state, NAMESPACE_VERSIONING);
+  return {
+    loading: getLoading(state).versionings,
+    pagination: {
+      page,
+      pageSize,
+    },
+    totalItems,
+    attachments: getResourceVersioningList(state),
+    domain: getDomain(state),
+  };
+};
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: (page = { page: 1, pageSize: 10 }) => {
