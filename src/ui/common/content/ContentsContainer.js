@@ -16,6 +16,7 @@ import {
   getSelectedRows,
 } from 'state/contents/selectors';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
 import { getGroups } from 'state/edit-content/selectors';
@@ -26,7 +27,7 @@ import Contents from 'ui/common/content/Contents';
 export const mapStateToProps = (state, ownProps) => {
   const {
     page, lastPage, totalItems, pageSize,
-  } = getPagination(state, 'contents') || getPagination(state);
+  } = getPagination(state, NAMESPACE_CONTENTS);
   const { ownerGroup } = ownProps;
   return ({
     loading: getLoading(state).contents,

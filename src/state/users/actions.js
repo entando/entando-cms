@@ -6,6 +6,7 @@ import {
   getUsers,
 } from 'api/users';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_USERS } from 'state/pagination/const';
 import { toggleLoading } from 'state/loading/actions';
 import { SET_USERS } from 'state/users/types';
 
@@ -25,7 +26,7 @@ export const fetchUsers = (page = { page: 1, pageSize: 10 }, params = '') => dis
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setUsers(json.payload));
-          dispatch(setPage(json.metaData, 'users'));
+          dispatch(setPage(json.metaData, NAMESPACE_USERS));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));

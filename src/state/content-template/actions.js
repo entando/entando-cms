@@ -4,6 +4,7 @@ import {
 } from '@entando/messages';
 import { initialize } from 'redux-form';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_CONTENT_TEMPLATES } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
 import {
   SET_CONTENT_TEMPLATES,
@@ -75,7 +76,7 @@ export const fetchContentTemplateList = (page = pageDefault, params = '') => dis
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setContentTemplateList(json.payload));
-        dispatch(setPage(json.metaData, 'contentTemplates'));
+        dispatch(setPage(json.metaData, NAMESPACE_CONTENT_TEMPLATES));
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
       }

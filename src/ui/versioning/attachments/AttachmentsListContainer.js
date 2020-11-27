@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { getDomain } from '@entando/apimanager';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getResourceVersioningList } from 'state/versioning/selectors';
@@ -16,7 +17,7 @@ import AttachmentsList from 'ui/versioning/attachments/AttachmentsList';
 export const mapStateToProps = (state) => {
   const {
     page, totalItems, pageSize,
-  } = getPagination(state, 'versionings') || getPagination(state);
+  } = getPagination(state, NAMESPACE_VERSIONING);
   return {
     loading: getLoading(state).versionings,
     pagination: {

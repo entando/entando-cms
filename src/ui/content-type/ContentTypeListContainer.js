@@ -4,6 +4,7 @@ import { fetchContentTypeListPaged, sendPostRefreshContentType } from 'state/con
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_CONTENT_TYPES } from 'state/pagination/const';
 
 import ContentTypeList from 'ui/content-type/ContentTypeList';
 import { MODAL_ID } from 'ui/content-type/DeleteContentTypeModal';
@@ -11,7 +12,7 @@ import { MODAL_ID } from 'ui/content-type/DeleteContentTypeModal';
 export const mapStateToProps = (state) => {
   const {
     page, totalItems, pageSize,
-  } = getPagination(state, 'contentTypes') || getPagination(state);
+  } = getPagination(state, NAMESPACE_CONTENT_TYPES);
   return {
     contentTypes: getContentTypeList(state),
     loading: getLoading(state).contentTypeList,

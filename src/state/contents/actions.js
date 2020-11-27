@@ -4,6 +4,7 @@ import {
   getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
 } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getPagination } from 'state/pagination/selectors';
 import {
   getContentType, getGroup, getFilteringCategories,
@@ -117,14 +118,14 @@ export const resetAuthorStatus = () => ({
 });
 
 export const fetchContents = (page = pageDefault,
-  params, namespace) => dispatch => new Promise((resolve) => {
+  params, namespace = NAMESPACE_CONTENTS) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contents'));
   getContents(page, params)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setContents(json.payload, namespace));
-          dispatch(setPage(json.metaData, namespace || 'contents'));
+          dispatch(setPage(json.metaData, namespace));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           dispatch(clearErrors());
@@ -143,7 +144,7 @@ export const fetchContentsWithFilters = (
   joinGroupsToParse,
 ) => (dispatch, getState) => {
   const state = getState();
-  const pagination = newPagination || getPagination(state, 'contents') || getPagination(state);
+  const pagination = newPagination || getPagination(state, NAMESPACE_CONTENTS);
   const sortingColumns = getSortingColumns(state);
   const quickFilter = getCurrentQuickFilter(state);
   const { id, value: qfValue } = quickFilter;
@@ -214,7 +215,7 @@ export const fetchContentsWithTabs = (
   page, newSort, ownerGroup, joinGroupsToParse,
 ) => (dispatch, getState) => {
   const state = getState();
-  const pagination = page || getPagination(state, 'contents') || getPagination(state);
+  const pagination = page || getPagination(state, NAMESPACE_CONTENTS);
   const sortingColumns = getSortingColumns(state);
   const columnKey = Object.keys(sortingColumns)[0];
   const sortDirection = sortingColumns[columnKey].direction;

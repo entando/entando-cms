@@ -8,6 +8,7 @@ import {
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_CONTENT_TEMPLATES } from 'state/pagination/const';
 
 import ContentTemplateList from 'ui/content-template/ContentTemplateList';
 import { MODAL_ID } from 'ui/content-template/DeleteContentTemplateModal';
@@ -15,7 +16,7 @@ import { MODAL_ID } from 'ui/content-template/DeleteContentTemplateModal';
 export const mapStateToProps = (state) => {
   const {
     page, totalItems, pageSize,
-  } = getPagination(state, 'contentTemplates') || getPagination(state);
+  } = getPagination(state, NAMESPACE_CONTENT_TEMPLATES);
   return {
     contentTemplates: getContentTemplateList(state),
     loading: getLoading(state).contentTemplateList,

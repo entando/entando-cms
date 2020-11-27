@@ -28,6 +28,7 @@ import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getCategoryTree, getCategoryTreeFetched } from 'state/categories/selectors';
 import AssetsList from 'ui/assets/AssetsList';
+import { NAMESPACE_ASSETS } from 'state/pagination/const';
 import { getPagination } from 'state/pagination/selectors';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
@@ -38,7 +39,7 @@ import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetMod
 export const mapStateToProps = (state) => {
   const {
     page, lastPage, totalItems, pageSize,
-  } = getPagination(state, 'assets') || getPagination(state);
+  } = getPagination(state, NAMESPACE_ASSETS);
   return {
     assets: getAssetsList(state),
     language: getLocale(state),

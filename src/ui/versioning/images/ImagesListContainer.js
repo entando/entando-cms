@@ -5,6 +5,7 @@ import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { getResourceVersioningList } from 'state/versioning/selectors';
 import {
   setSelectedVersioningType,
@@ -17,7 +18,7 @@ import { RECOVER_RESOURCE_MODAL_ID } from 'ui/versioning/common/RecoverResourceM
 export const mapStateToProps = (state) => {
   const {
     page, totalItems, pageSize,
-  } = getPagination(state, 'versionings') || getPagination(state);
+  } = getPagination(state, NAMESPACE_VERSIONING);
 
   return {
     loading: getLoading(state).versionings,

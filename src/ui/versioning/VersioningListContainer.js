@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import { getLoading } from 'state/loading/selectors';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
 
@@ -14,7 +15,7 @@ const noPage = { page: 1, pageSize: 0 };
 export const mapStateToProps = (state) => {
   const {
     page, totalItems, pageSize,
-  } = getPagination(state, 'versionings') || getPagination(state);
+  } = getPagination(state, NAMESPACE_VERSIONING);
   return {
     loading: getLoading(state).versionings,
     page,

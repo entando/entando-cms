@@ -14,6 +14,7 @@ import {
 } from 'state/contents/actions';
 import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getLoading } from 'state/loading/selectors';
 import {
   getAccessChecked, getAuthorChecked,
@@ -65,7 +66,7 @@ const paramsForStatusAndAuthor = (status, author) => {
 export const mapStateToProps = (state) => {
   const {
     page, lastPage, totalItems, pageSize,
-  } = getPagination(state, 'contents') || getPagination(state);
+  } = getPagination(state, NAMESPACE_CONTENTS);
   return ({
     loading: getLoading(state).contents,
     language: getLocale(state),

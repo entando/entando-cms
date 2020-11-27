@@ -6,6 +6,7 @@ import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { fetchSingleVersioningHistory, setSelectedVersioningType } from 'state/versioning/actions';
 import { getVersioningList } from 'state/versioning/selectors';
 import { getPagination } from 'state/pagination/selectors';
+import { NAMESPACE_VERSION_HISTORY } from 'state/pagination/const';
 
 import SingleContentVersioningHistory from 'ui/versioning/SingleContentVersioningHistory';
 import { DELETE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/DeleteContentVersionModal';
@@ -14,7 +15,7 @@ import { RESTORE_CONTENT_VERSION_MODAL_ID } from 'ui/versioning/RestoreContentVe
 export const mapStateToProps = (state) => {
   const {
     page, totalItems, pageSize,
-  } = getPagination(state, 'versionHistory') || getPagination(state);
+  } = getPagination(state, NAMESPACE_VERSION_HISTORY);
   return {
     loading: getLoading(state).versionings,
     page,

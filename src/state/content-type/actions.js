@@ -5,6 +5,7 @@ import {
 import moment from 'moment';
 import { isUndefined } from 'lodash';
 import { setPage } from 'state/pagination/actions';
+import { NAMESPACE_CONTENT_TYPES } from 'state/pagination/const';
 import {
   SET_CONTENT_TYPES,
   SET_CONTENT_TYPE_REFERENCE_STATUS,
@@ -201,7 +202,11 @@ export const setNewAttributeComposite = attributeData => ({
 });
 
 // thunks
-export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, params = '', namespace = 'contentTypes') => dispatch => new Promise((resolve) => {
+export const fetchContentTypeListPaged = (
+  page = { page: 1, pageSize: 10 },
+  params = '',
+  namespace = NAMESPACE_CONTENT_TYPES,
+) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contentTypeList'));
   getContentTypes(page, params)
     .then((response) => {
