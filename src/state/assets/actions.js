@@ -103,7 +103,7 @@ export const fetchAssets = (page, params) => dispatch => new Promise((resolve) =
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setAssets(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, 'assets'));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
         }

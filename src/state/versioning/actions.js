@@ -60,7 +60,7 @@ export const fetchVersionings = (page = { page: 1, pageSize: 10 }, params = '') 
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setVersionings(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, 'versionings'));
         } else {
           dispatch(setVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -83,7 +83,7 @@ export const fetchResourceVersionings = (page = { page: 1, pageSize: 10 }, param
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setResourceVersionings(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, 'versionings'));
         } else {
           dispatch(setResourceVersionings([]));
           dispatch(addErrors(json.errors.map(err => err.message)));
@@ -110,7 +110,7 @@ export const fetchSingleVersioningHistory = (id, page = { page: 1, pageSize: 10 
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setVersionings(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, 'versionHistory'));
         } else {
           dispatch(setVersionings([]));
           const filteredErrors = omitNoContentVersionsError(json.errors);

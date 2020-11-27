@@ -201,7 +201,7 @@ export const setNewAttributeComposite = attributeData => ({
 });
 
 // thunks
-export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, params = '', namespace) => dispatch => new Promise((resolve) => {
+export const fetchContentTypeListPaged = (page = { page: 1, pageSize: 10 }, params = '', namespace = 'contentTypes') => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contentTypeList'));
   getContentTypes(page, params)
     .then((response) => {

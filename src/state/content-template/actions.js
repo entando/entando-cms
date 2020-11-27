@@ -75,7 +75,7 @@ export const fetchContentTemplateList = (page = pageDefault, params = '') => dis
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setContentTemplateList(json.payload));
-        dispatch(setPage(json.metaData));
+        dispatch(setPage(json.metaData, 'contentTemplates'));
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
       }

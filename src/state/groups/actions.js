@@ -42,7 +42,7 @@ export const fetchGroups = (page = { page: 1, pageSize: 10 }, params = '') => di
       if (response.ok) {
         dispatch(setGroups(data.payload));
         dispatch(toggleLoading('groups'));
-        dispatch(setPage(data.metaData));
+        dispatch(setPage(data.metaData, 'groups'));
         resolve();
       } else {
         dispatch(addErrors(data.errors.map(err => err.message)));

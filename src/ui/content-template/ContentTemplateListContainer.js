@@ -7,19 +7,24 @@ import {
 } from 'state/content-template/actions';
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
-import { getCurrentPage, getTotalItems, getPageSize } from 'state/pagination/selectors';
+import { getPagination } from 'state/pagination/selectors';
 
 import ContentTemplateList from 'ui/content-template/ContentTemplateList';
 import { MODAL_ID } from 'ui/content-template/DeleteContentTemplateModal';
 
-export const mapStateToProps = state => ({
-  contentTemplates: getContentTemplateList(state),
-  loading: getLoading(state).contentTemplateList,
-  page: getCurrentPage(state),
-  totalItems: getTotalItems(state),
-  pageSize: getPageSize(state),
-  filters: getContentTemplateFilters(state),
-});
+export const mapStateToProps = (state) => {
+  const {
+    page, totalItems, pageSize,
+  } = getPagination(state, 'contentTemplates') || getPagination(state);
+  return {
+    contentTemplates: getContentTemplateList(state),
+    loading: getLoading(state).contentTemplateList,
+    page,
+    totalItems,
+    pageSize,
+    filters: getContentTemplateFilters(state),
+  };
+};
 
 export const mapDispatchToProps = dispatch => ({
   onDidMount: () => {

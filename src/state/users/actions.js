@@ -25,7 +25,7 @@ export const fetchUsers = (page = { page: 1, pageSize: 10 }, params = '') => dis
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setUsers(json.payload));
-          dispatch(setPage(json.metaData));
+          dispatch(setPage(json.metaData, 'users'));
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
