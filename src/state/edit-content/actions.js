@@ -237,7 +237,7 @@ export const sendPutEditContent = (id, editContentObject) => dispatch => new Pro
     .catch(() => {}),
 );
 
-const convertBoolToString = (item, hasNull = false) => {
+const convertStringToBool = (item, hasNull = false) => {
   const { value } = item;
   const newValue = ((val) => {
     switch (val) {
@@ -300,7 +300,7 @@ const checkAssetValueProps = (item) => {
 const convertFieldValueByType = (item, type) => {
   switch (type) {
     case TYPE_BOOLEAN:
-      return convertBoolToString(item);
+      return convertStringToBool(item);
     case TYPE_DATE:
       return convertDateValue(item);
     case TYPE_TIMESTAMP:
@@ -309,7 +309,7 @@ const convertFieldValueByType = (item, type) => {
       return convertNumberValue(item);
     case TYPE_CHECKBOX:
     case TYPE_THREESTATE:
-      return convertBoolToString(item, true);
+      return convertStringToBool(item, true);
     case TYPE_IMAGE:
     case TYPE_ATTACH:
       return checkAssetValueProps(item);
@@ -383,7 +383,7 @@ export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch,
       return convertTimestampValue(attribute);
     }
     if (type === TYPE_CHECKBOX || type === TYPE_BOOLEAN || type === TYPE_THREESTATE) {
-      return convertBoolToString(attribute, type !== TYPE_BOOLEAN);
+      return convertStringToBool(attribute, type !== TYPE_BOOLEAN);
     }
     if (type === TYPE_NUMBER) {
       return convertNumberValue(attribute);
