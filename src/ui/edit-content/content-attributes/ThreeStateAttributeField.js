@@ -31,7 +31,7 @@ const ThreeStateAttributeField = ({
   const attrInput = {
     ...input,
     name,
-    value: inputValue || 'none',
+    value: inputValue === '' ? 'none' : `${inputValue}`,
     onChange: (val) => {
       inputOnChange(val);
     },

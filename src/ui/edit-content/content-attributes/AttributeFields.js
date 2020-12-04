@@ -17,10 +17,26 @@ import {
   TYPE_LIST,
   TYPE_MONOLIST,
   TYPE_TIMESTAMP,
+  TYPE_BOOLEAN,
+  TYPE_CHECKBOX,
+  TYPE_THREESTATE,
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
 const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
+
+const toFieldValue = (attrValue, type) => {
+  switch (type) {
+    case TYPE_TIMESTAMP:
+      return getDateTimeObjFromStr(attrValue);
+    case TYPE_BOOLEAN:
+    case TYPE_CHECKBOX:
+    case TYPE_THREESTATE:
+      return attrValue === null ? 'none' : `${attrValue}`;
+    default:
+      return attrValue;
+  }
+};
 
 const renderField = (
   name, attribute, langCode, mainGroup,
@@ -122,7 +138,7 @@ const AttributeFields = ({
       } = attr;
       atts.push({
         code,
-        value: type === TYPE_TIMESTAMP ? (getDateTimeObjFromStr(value)) : value,
+        value: toFieldValue(value, type),
         values,
         elements,
         compositeelements,
