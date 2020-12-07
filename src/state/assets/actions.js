@@ -157,7 +157,7 @@ export const fetchAssetsPaged = (
     ).join('');
   }
 
-  const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&');
+  const params = compact([convertToQueryString(newFilters).slice(1), typeParams, categoryParams]).join('&').replace('toDateTimeString', 'createdAt');
 
   const joinGroups = parseJoinGroups(joinGroupsToParse);
 
