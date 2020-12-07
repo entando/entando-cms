@@ -96,7 +96,6 @@ export const copyAttributeEngValue = (attribute, attributeType) => (dispatch, ge
     case TYPE_TEXT:
     case TYPE_HYPERTEXT:
     case TYPE_LONGTEXT:
-    case TYPE_IMAGE:
     case TYPE_EMAIL:
     case TYPE_LINK: {
       const { [deflang]: mainlangvalue } = attribute.values;
