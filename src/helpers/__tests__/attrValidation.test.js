@@ -2,7 +2,7 @@ import {
   equalDate, equalNumber, equalString,
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
-  regex, linkValidate,
+  regex, linkValidate, noTagsOnly,
 } from 'helpers/attrValidation';
 
 describe('helpers/attrValidation', () => {
@@ -154,6 +154,17 @@ describe('helpers/attrValidation', () => {
 
     it('should return undefined if value matches regex', () => {
       const result = regex(regexStr)('test5');
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('noTagsOnly', () => {
+    it('should return a message since code does not have any text', () => {
+      const result = noTagsOnly('<p><br /></p>');
+      expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should return undefined since code has some text', () => {
+      const result = noTagsOnly('<p>yomama</p>');
       expect(result).toBeUndefined();
     });
   });

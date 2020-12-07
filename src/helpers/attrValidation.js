@@ -93,6 +93,12 @@ export const rangeStartNumber = num => value => (
     ) : undefined
 );
 
+export const noTagsOnly = memoize(value => (
+  value.replace(/(<([^>]+)>)/gi, '') !== ''
+    ? undefined
+    : <FormattedMessage id="validateForm.required" />
+));
+
 export const rangeStartString = str => value => (
   value < str
     ? (
