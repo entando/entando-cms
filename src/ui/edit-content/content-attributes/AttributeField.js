@@ -147,7 +147,7 @@ const AttributeField = ({
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
       actualName = name;
-      if (mandatory) validate.push(linkValidate(langCode));
+      validate.push(linkValidate(langCode, mandatory));
       break;
     case TYPE_MONOTEXT:
       AttributeFieldComp = MonotextAttributeField;
