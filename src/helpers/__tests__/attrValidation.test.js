@@ -171,7 +171,7 @@ describe('helpers/attrValidation', () => {
 
   describe('linkValidate', () => {
     it('should return a message if link value is empty', () => {
-      const result = linkValidate('en')({
+      const result = linkValidate('en', true)({
         value: {},
         values: { en: 'test' },
       });
@@ -185,7 +185,7 @@ describe('helpers/attrValidation', () => {
       expect(result.type.displayName).toBe('FormattedMessage');
     });
     it('should return undefined if link has both value and values', () => {
-      const result = linkValidate('en')({
+      const result = linkValidate('en', true)({
         value: { symbolicDestination: 'test' },
         values: { en: 'test' },
       });

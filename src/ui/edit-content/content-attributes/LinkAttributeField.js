@@ -13,6 +13,7 @@ import RenderButton from 'ui/common/form/RenderButton';
 import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
 import LinkConfigModal from 'ui/common/modal/LinkConfigModal';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
+import FormLabel from 'ui/common/form/FormLabel';
 
 class LinkAttributeField extends Component {
   constructor() {
@@ -126,7 +127,7 @@ class LinkAttributeField extends Component {
                   </div>
                   <RenderTextInput
                     input={textInput}
-                    label="Text"
+                    label={<FormLabel labelText="Text" required />}
                   />
                   <div className="text-right">
                     <Button
