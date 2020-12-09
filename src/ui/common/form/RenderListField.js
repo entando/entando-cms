@@ -98,6 +98,7 @@ class RenderListField extends Component {
                     isSub
                     {...rest}
                     hasLabel={false}
+                    attribute={{ ...rest.attribute, mandatory: true }}
                   />
                 )}
               </RenderListFieldItem>
