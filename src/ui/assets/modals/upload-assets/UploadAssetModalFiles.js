@@ -19,6 +19,7 @@ const UploadAssetModalFiles = (props) => {
     categories,
     language,
     loading,
+    lockGroup,
   } = props;
 
   return (
@@ -73,6 +74,7 @@ const UploadAssetModalFiles = (props) => {
                   optionDisplayName="name"
                   optionValue="code"
                   options={group}
+                  disabled={!!lockGroup}
                   validate={[required]}
                 />
               </Col>
@@ -110,11 +112,13 @@ UploadAssetModalFiles.propTypes = {
     remove: PropTypes.func,
   }).isRequired,
   loading: PropTypes.shape({}).isRequired,
+  lockGroup: PropTypes.string,
 };
 
 UploadAssetModalFiles.defaultProps = {
   categories: [],
   group: [],
+  lockGroup: '',
 };
 
 export default UploadAssetModalFiles;

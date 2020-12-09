@@ -8,6 +8,7 @@ import UploadAssetModalContainer from 'ui/assets/modals/upload-assets/UploadAsse
 const AssetsUpload = ({
   onUpload, onAssetSelected, name, customClassName,
   customTriggerComponent, customDropzoneProps,
+  ownerGroup,
 }) => {
   const handleDrop = useCallback((acceptedFiles) => {
     onUpload(acceptedFiles);
@@ -53,6 +54,7 @@ const AssetsUpload = ({
       </div>
       <UploadAssetModalContainer
         onAssetSelected={onAssetSelected}
+        lockGroup={ownerGroup}
         name={name}
       />
     </>
@@ -66,6 +68,7 @@ AssetsUpload.propTypes = {
   customTriggerComponent: PropTypes.func,
   customClassName: PropTypes.string,
   customDropzoneProps: PropTypes.shape({}),
+  ownerGroup: PropTypes.string,
 };
 
 AssetsUpload.defaultProps = {
@@ -75,6 +78,7 @@ AssetsUpload.defaultProps = {
   customTriggerComponent: null,
   customClassName: '',
   customDropzoneProps: {},
+  ownerGroup: '',
 };
 
 export default AssetsUpload;
