@@ -194,7 +194,7 @@ export default {
     'cms.contenttemplate.delete.label': 'Elimina il template di contenuto',
     'cms.contenttemplate.searchFilter.valueName': 'Nome',
     'cms.contenttemplate.list.contentTypeHeader': 'Tipo di contenuto',
-    'cms.contenttemplate.list.contentTypeIdHeader': 'ID',
+    'cms.contenttemplate.list.contentTypeIdHeader': 'Codice',
     'cms.contenttemplate.list.contentTemplateNameHeader': 'Nome template di contenuto',
     'cms.contenttemplate.list.actionsHeader': 'Azioni',
     'cms.contenttemplate.list.infoDeleted': '{modelname} rimosso',
