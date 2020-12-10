@@ -164,3 +164,7 @@ export const linkValidate = memoize((langCode, required = false) => input => (
     />
     ) : undefined
 ));
+
+export const listRequired = value => (
+  !value || !value.length ? <FormattedMessage id="validateForm.required" /> : undefined
+);

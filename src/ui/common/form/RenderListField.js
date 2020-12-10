@@ -117,7 +117,7 @@ RenderListField.propTypes = {
     length: PropTypes.number,
     swap: PropTypes.func,
   }).isRequired,
-  label: PropTypes.string,
+  label: PropTypes.node,
   openedAtStart: PropTypes.bool,
 };
 

@@ -2,7 +2,7 @@ import {
   equalDate, equalNumber, equalString,
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
-  regex, linkValidate, noTagsOnly,
+  regex, linkValidate, noTagsOnly, listRequired,
 } from 'helpers/attrValidation';
 
 describe('helpers/attrValidation', () => {
@@ -190,6 +190,17 @@ describe('helpers/attrValidation', () => {
         values: { en: 'test' },
       });
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('listRequired', () => {
+    it('should return a message if value is empty', () => {
+      expect(listRequired(null).type.displayName).toBe('FormattedMessage');
+      expect(listRequired(undefined).type.displayName).toBe('FormattedMessage');
+      expect(listRequired([]).type.displayName).toBe('FormattedMessage');
+    });
+    it('should return undefined if value is not empty', () => {
+      expect(listRequired([{}])).toBeUndefined();
     });
   });
 });

@@ -22,8 +22,7 @@ import {
   TYPE_THREESTATE,
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
-
-const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
+import { listRequired } from 'helpers/attrValidation';
 
 const toFieldValue = (attrValue, type) => {
   switch (type) {
@@ -56,10 +55,13 @@ const renderField = (
   const helpText = helpTextArr.join('<br>');
   const i18nName = isObject(attName)
     ? (attName[locale] || code) : (attName || code);
-  const fieldLabel = COMPLEX_ATTRIBUTES.includes(type) ? i18nName : (
+
+  const defaultAndMandatory = isDefaultLang && mandatory;
+
+  const fieldLabel = (
     <FormLabel
       labelText={i18nName}
-      required={mandatory && isDefaultLang}
+      required={defaultAndMandatory}
       helpText={helpText}
     />
   );
@@ -71,8 +73,10 @@ const renderField = (
   // the attribute should not be mandatory for non-default languages
   const newAttribute = {
     ...attribute,
-    mandatory: mandatory && isDefaultLang,
+    mandatory: defaultAndMandatory,
   };
+
+  const validate = [];
 
   switch (type) {
     case TYPE_COMPOSITE:
@@ -84,11 +88,13 @@ const renderField = (
       fieldName = `${name}.listelements.${langCode}`;
       FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
+      if (defaultAndMandatory) validate.push(listRequired);
       break;
     case TYPE_MONOLIST:
       fieldName = `${name}.elements`;
       FieldComp = FieldArray;
       AttributeFieldComp = MonolistAttributeField;
+      if (defaultAndMandatory) validate.push(listRequired);
       break;
     default:
       return (
@@ -120,6 +126,7 @@ const renderField = (
       langCode={langCode}
       selectedLangTab={selectedLangTab}
       openedAtStart={expanded}
+      validate={validate}
     />
   );
 };
