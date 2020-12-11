@@ -44,7 +44,7 @@ class ContentTemplateSearchFormBody extends Component {
       onChangeSearchType,
       selectedAttribute,
     } = this.props;
-    console.log('selectedAtrribute', selectedAttribute);
+
     return (
       <form className="ContentTemplateList__searchform well" onSubmit={handleSubmit}>
         <Grid fluid>
