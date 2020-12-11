@@ -330,7 +330,7 @@ export default {
     'cms.contents.edit.groups.ownerGroup.tooltip': 'Set the main group now, or some aspects may be unstable.',
     'cms.contents.edit.tip': '* Required Fields',
     'cms.contents.edit.contentType.label': 'Content type',
-    'cms.contents.edit.contentDescription.label': 'Description',
+    'cms.contents.edit.contentDescription.label': 'Name',
     'cms.contents.edit.contentDescription.tooltip': 'Provide a description or the title will be used, if available.',
     'cms.contents.edit.contentDescription.placeholder': 'Descriptions help users archive, sort, and find contents.',
     'cms.contents.edit.version.label': 'Version',

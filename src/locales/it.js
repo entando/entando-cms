@@ -330,7 +330,7 @@ export default {
     'cms.contents.edit.groups.ownerGroup.tooltip': 'Dovresti impostare il gruppo principale in questo momento, altrimenti alcune cose diventeranno imprecise.',
     'cms.contents.edit.tip': '* Campi richiesti',
     'cms.contents.edit.contentType.label': 'Tipo di Contenuto',
-    'cms.contents.edit.contentDescription.label': 'Descrizione',
+    'cms.contents.edit.contentDescription.label': 'Nome',
     'cms.contents.edit.contentDescription.tooltip': 'Fornisci una descrizione o userò il titolo se disponibile.',
     'cms.contents.edit.contentDescription.placeholder': 'Le descrizioni ti aiutano ad archiviare, ordinare e trovare contenuti',
     'cms.contents.edit.version.label': 'Versione',
