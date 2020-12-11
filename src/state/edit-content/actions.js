@@ -244,6 +244,10 @@ const convertStringToBool = (item, hasNull = false) => {
         return true;
       case 'false':
         return false;
+      case true:
+        return true;
+      case false:
+        return false;
       default:
         return hasNull ? null : false;
     }
