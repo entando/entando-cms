@@ -135,18 +135,16 @@ export class AddContentTypeFormBody extends Component {
               component={RenderSelectInput}
               options={selectContentTemplateOptions}
               label={
-                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplate" required />
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplate" />
               }
-              validate={[required]}
               name="defaultContentModel"
             />
             <Field
               component={RenderSelectInput}
               options={selectContentTemplateOptions}
               label={
-                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplateLists" required />
+                <FormLabel labelId="cms.contenttype.form.metadata.defaultContentTemplateLists" />
               }
-              validate={[required]}
               name="defaultContentModelList"
             />
           </div>

@@ -297,4 +297,6 @@ ContentConfigFormBody.defaultProps = {
 
 export default reduxForm({
   form: MultipleContentsConfigContainerId,
+  keepDirtyOnReinitialize: true,
+  enableReinitialize: true,
 })(ContentConfigFormBody);
