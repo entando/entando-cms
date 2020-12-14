@@ -18,6 +18,8 @@ const CompositeAttributeField = ({
   selectedLangTab,
   isSub,
   openedAtStart,
+  mainGroup,
+  joinGroups,
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -43,6 +45,8 @@ const CompositeAttributeField = ({
             attribute={attr}
             langCode={langCode}
             selectedLangTab={selectedLangTab}
+            mainGroup={mainGroup}
+            joinGroups={joinGroups}
             isSub
           />
         );
@@ -82,11 +86,15 @@ CompositeAttributeField.propTypes = {
   selectedLangTab: PropTypes.string.isRequired,
   isSub: PropTypes.bool,
   openedAtStart: PropTypes.bool,
+  mainGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
 };
 
 CompositeAttributeField.defaultProps = {
   isSub: false,
   openedAtStart: false,
+  mainGroup: '',
+  joinGroups: [],
 };
 
 export default CompositeAttributeField;
