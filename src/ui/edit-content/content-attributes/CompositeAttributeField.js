@@ -81,7 +81,7 @@ const CompositeAttributeField = ({
 CompositeAttributeField.propTypes = {
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   langCode: PropTypes.string.isRequired,
   selectedLangTab: PropTypes.string.isRequired,
   isSub: PropTypes.bool,
