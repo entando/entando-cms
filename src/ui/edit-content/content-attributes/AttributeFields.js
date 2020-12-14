@@ -23,8 +23,6 @@ import {
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 
-const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
-
 const toFieldValue = (attrValue, type) => {
   switch (type) {
     case TYPE_TIMESTAMP:
@@ -56,7 +54,7 @@ const renderField = (
   const helpText = helpTextArr.join('<br>');
   const i18nName = isObject(attName)
     ? (attName[locale] || code) : (attName || code);
-  const fieldLabel = COMPLEX_ATTRIBUTES.includes(type) ? i18nName : (
+  const fieldLabel = (
     <FormLabel
       labelText={i18nName}
       required={mandatory && isDefaultLang}

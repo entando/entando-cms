@@ -54,7 +54,7 @@ const AssetsUpload = ({
       </div>
       <UploadAssetModalContainer
         onAssetSelected={onAssetSelected}
-        lockGroup={ownerGroup}
+        ownerGroup={ownerGroup}
         name={name}
       />
     </>

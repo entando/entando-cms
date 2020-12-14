@@ -43,12 +43,12 @@ const amendFilePayloadWithGroup = (payload, group) => ({
   })),
 });
 
-export const mapDispatchToProps = (dispatch, { intl, onAssetSelected, lockGroup }) => ({
+export const mapDispatchToProps = (dispatch, { intl, onAssetSelected, ownerGroup }) => ({
   onModalOpen: (payload) => {
     dispatch(fetchCategoryTreeAll());
     dispatch(initialize(
       FORM_NAME,
-      lockGroup ? amendFilePayloadWithGroup(payload, lockGroup) : payload,
+      ownerGroup ? amendFilePayloadWithGroup(payload, ownerGroup) : payload,
     ));
   },
   onSubmit: ({ files }) => {
