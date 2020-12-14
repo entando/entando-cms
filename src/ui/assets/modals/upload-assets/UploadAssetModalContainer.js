@@ -35,10 +35,21 @@ export const mapStateToProps = state => ({
   categories: getCategoryTree(state),
 });
 
-export const mapDispatchToProps = (dispatch, { intl, onAssetSelected }) => ({
+const amendFilePayloadWithGroup = (payload, group) => ({
+  ...payload,
+  files: payload.files.map(file => ({
+    ...file,
+    group,
+  })),
+});
+
+export const mapDispatchToProps = (dispatch, { intl, onAssetSelected, ownerGroup }) => ({
   onModalOpen: (payload) => {
     dispatch(fetchCategoryTreeAll());
-    dispatch(initialize(FORM_NAME, payload));
+    dispatch(initialize(
+      FORM_NAME,
+      ownerGroup ? amendFilePayloadWithGroup(payload, ownerGroup) : payload,
+    ));
   },
   onSubmit: ({ files }) => {
     const uploadPromises = files.map(({ fileId, ...file }, index) => {

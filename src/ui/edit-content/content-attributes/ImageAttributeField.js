@@ -60,6 +60,7 @@ const ImageAttributeField = ({
           customDropzoneProps={{ noClick: true }}
           onAssetSelected={handleAssetSelected}
           name={`${input.name}.${langCode}`}
+          ownerGroup={mainGroup}
         />
         {errorBox}
         <AssetBrowserModal
