@@ -3,6 +3,7 @@ import {
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
   regex, linkValidate, noTagsOnly, listRequired,
+  compositeOneOfExists,
 } from 'helpers/attrValidation';
 
 describe('helpers/attrValidation', () => {
@@ -165,6 +166,43 @@ describe('helpers/attrValidation', () => {
     });
     it('should return undefined since code has some text', () => {
       const result = noTagsOnly('<p>yomama</p>');
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('compositeOneOfExists', () => {
+    it('should return a message since not one of the fields have any values', () => {
+      const result = compositeOneOfExists('en')([
+        {
+          code: 'AAto',
+          value: '',
+        }, {
+          code: 'Btext',
+          values: {
+            en: '',
+            it: '',
+          },
+        }, {
+          code: 'bububu',
+          value: null,
+        }]);
+      expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should return undefined since code has some text', () => {
+      const result = compositeOneOfExists('en')([
+        {
+          code: 'AAto',
+          value: '',
+        }, {
+          code: 'Btext',
+          values: {
+            en: 'bots',
+            it: '',
+          },
+        }, {
+          code: 'bububu',
+          value: false,
+        }]);
       expect(result).toBeUndefined();
     });
   });

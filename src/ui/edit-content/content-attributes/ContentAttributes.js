@@ -79,6 +79,7 @@ class ContentAttributes extends Component {
               langCode={code}
               selectedLangTab={selectedLang}
               isDefaultLang={isDefault}
+              defaultLang={defaultLang}
               locale={locale}
               expanded={isNewContent}
             />

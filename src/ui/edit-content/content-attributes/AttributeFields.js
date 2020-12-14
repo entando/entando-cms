@@ -22,7 +22,7 @@ import {
   TYPE_THREESTATE,
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
-import { listRequired } from 'helpers/attrValidation';
+import { listRequired, compositeOneOfExists } from 'helpers/attrValidation';
 
 const toFieldValue = (attrValue, type) => {
   switch (type) {
@@ -38,8 +38,8 @@ const toFieldValue = (attrValue, type) => {
 };
 
 const renderField = (
-  name, attribute, langCode, mainGroup,
-  joinGroups, isDefaultLang, locale, selectedLangTab, expanded,
+  name, attribute, langCode, mainGroup, joinGroups, isDefaultLang,
+  defaultLang, locale, selectedLangTab, expanded,
 ) => {
   if (!attribute) {
     return '';
@@ -83,6 +83,9 @@ const renderField = (
       fieldName = `${name}.compositeelements`;
       FieldComp = FieldArray;
       AttributeFieldComp = CompositeAttributeField;
+      if (defaultAndMandatory) {
+        validate.push(compositeOneOfExists(defaultLang));
+      }
       break;
     case TYPE_LIST:
       fieldName = `${name}.listelements.${langCode}`;
@@ -133,7 +136,7 @@ const renderField = (
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang, selectedLangTab, locale, expanded,
+  isDefaultLang, defaultLang, selectedLangTab, locale, expanded,
 }) => {
   if (fields.length < attributes.length) {
     // initialize fields with values from attributes prop through `.push()` method
@@ -158,8 +161,8 @@ const AttributeFields = ({
     });
   }
 
-  return fields.map((name, idx) => renderField(name, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab, expanded));
+  return fields.map((name, idx) => renderField(name, attributes[idx], langCode, mainGroup,
+    joinGroups, isDefaultLang, defaultLang, locale, selectedLangTab, expanded));
 };
 
 AttributeFields.propTypes = {
@@ -174,6 +177,7 @@ AttributeFields.propTypes = {
   selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
   expanded: PropTypes.bool.isRequired,
+  defaultLang: PropTypes.string.isRequired,
 };
 
 export default AttributeFields;
