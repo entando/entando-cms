@@ -67,10 +67,7 @@ class RenderListField extends Component {
         <ContentFormFieldCollapse label={label} showContentAtStart={openedAtStart}>
           <div className="RenderListField__body">
             <FormGroup className={fields.length > 0 && 'RenderListField__topcontrol--has-items'}>
-              <label className="col-xs-2" htmlFor={`add${attCode}`}>
-                <FormattedMessage id="cms.contents.addlist" values={{ listname: label }} />
-              </label>
-              <Col xs={10} className="text-right">
+              <Col xs={12} className="text-right">
                 <Button
                   id={`add${attCode}`}
                   bsStyle="primary"
@@ -118,7 +115,7 @@ RenderListField.propTypes = {
     length: PropTypes.number,
     swap: PropTypes.func,
   }).isRequired,
-  label: PropTypes.string,
+  label: PropTypes.node,
   openedAtStart: PropTypes.bool,
 };
 
