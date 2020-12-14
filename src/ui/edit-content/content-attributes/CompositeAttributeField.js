@@ -4,6 +4,7 @@ import { Row, Col } from 'patternfly-react';
 import { Panel } from 'react-bootstrap';
 import {
   fieldArrayFieldsPropTypes,
+  fieldArrayMetaPropTypes,
 } from 'redux-form';
 
 import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
@@ -20,6 +21,7 @@ const CompositeAttributeField = ({
   openedAtStart,
   mainGroup,
   joinGroups,
+  meta: { submitFailed, error },
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -51,6 +53,7 @@ const CompositeAttributeField = ({
           />
         );
       })}
+      {submitFailed && (error && <span className="help-block">{error}</span>)}
     </Panel.Body>
   );
 
@@ -88,6 +91,7 @@ CompositeAttributeField.propTypes = {
   openedAtStart: PropTypes.bool,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  meta: PropTypes.shape(fieldArrayMetaPropTypes).isRequired,
 };
 
 CompositeAttributeField.defaultProps = {

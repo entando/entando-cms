@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { memoize } from 'lodash';
+import { memoize, isNull, isBoolean } from 'lodash';
 import { maxLength, minLength } from '@entando/utils';
 
 const number = value => !Number.isNaN(parseFloat(value));
@@ -97,6 +97,25 @@ export const noTagsOnly = memoize(value => (
   value.replace(/(<([^>]+)>)/gi, '') !== ''
     ? undefined
     : <FormattedMessage id="validateForm.required" />
+));
+
+export const compositeOneOfExists = defaultLangCode => memoize(compositeFieldValues => (
+  compositeFieldValues.some(fieldValue => (
+    (
+      !isNull(fieldValue.value)
+      && (
+        isBoolean(fieldValue.value)
+        || fieldValue.value
+      )
+    ) || (
+      fieldValue.values && fieldValue.values[defaultLangCode]
+        && !isNull(fieldValue.values[defaultLangCode])
+        && (
+          isBoolean(fieldValue.values[defaultLangCode])
+          || fieldValue.values[defaultLangCode]
+        )
+    )
+  )) ? undefined : <FormattedMessage id="validateForm.required" />
 ));
 
 export const rangeStartString = str => value => (
