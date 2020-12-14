@@ -19,6 +19,7 @@ const UploadAssetModalFiles = (props) => {
     categories,
     language,
     loading,
+    ownerGroup,
   } = props;
 
   return (
@@ -73,6 +74,7 @@ const UploadAssetModalFiles = (props) => {
                   optionDisplayName="name"
                   optionValue="code"
                   options={group}
+                  disabled={!!ownerGroup}
                   validate={[required]}
                 />
               </Col>
@@ -110,11 +112,13 @@ UploadAssetModalFiles.propTypes = {
     remove: PropTypes.func,
   }).isRequired,
   loading: PropTypes.shape({}).isRequired,
+  ownerGroup: PropTypes.string,
 };
 
 UploadAssetModalFiles.defaultProps = {
   categories: [],
   group: [],
+  ownerGroup: '',
 };
 
 export default UploadAssetModalFiles;
