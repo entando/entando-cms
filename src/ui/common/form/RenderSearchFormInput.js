@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from 'patternfly-react';
 
 const RenderSearchFormInput = ({
-  input, meta, onClear, placeholder, textfieldClass, onValueChange, ...others
+  input, meta, onClear, placeholder, textfieldClass, onValueChange, type, ...others
 }) => {
   const [hasKeyword, setHasKeyword] = useState(false);
   const inputRef = useRef(null);
@@ -30,7 +30,7 @@ const RenderSearchFormInput = ({
             name: 'search',
             onChange: handleValueChange,
           })}
-        type="text"
+        type={type}
         className="SearchForm__textbox--base"
         placeholder={placeholder}
         {...others}
@@ -54,6 +54,7 @@ RenderSearchFormInput.propTypes = {
   onClear: PropTypes.func,
   textfieldClass: PropTypes.string,
   onValueChange: PropTypes.func,
+  type: PropTypes.string,
 };
 
 RenderSearchFormInput.defaultProps = {
@@ -63,6 +64,7 @@ RenderSearchFormInput.defaultProps = {
   onClear: () => {},
   textfieldClass: '',
   onValueChange: () => {},
+  type: 'text',
 };
 
 export default RenderSearchFormInput;
