@@ -29,6 +29,7 @@ import {
   TYPE_COMPOSITE,
   TYPE_MONOLIST,
   MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE,
+  TYPE_MONOTEXT,
 } from 'state/content-type/const';
 
 const NO_INFO_ATTRIBUTE = [TYPE_BOOLEAN, TYPE_CHECKBOX, TYPE_THREESTATE];
@@ -102,6 +103,7 @@ export class MonolistAttributeFormBody extends Component {
     const renderSelectedAttribute = () => {
       switch (attributeType) {
         case TYPE_TEXT:
+        case TYPE_MONOTEXT:
           return (
             <FormSection name="validationRules">
               <AttributeHypeLongMonoTextSettings {...this.props} />
