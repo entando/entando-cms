@@ -365,6 +365,7 @@ export class EditContentFormBody extends React.Component {
                         name="mainGroup"
                         onChange={this.handleOwnerGroupChange}
                         forwardRef
+                        validate={[required]}
                         ref={this.ownerGroupInput}
                         append={
                         !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
