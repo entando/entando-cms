@@ -139,20 +139,33 @@ const AttributeFields = ({
   isDefaultLang, defaultLang, selectedLangTab, locale, expanded,
 }) => {
   if (fields.length < attributes.length) {
-    // initialize fields with values from attributes prop through `.push()` method
-    // as it cannot be set directly from props
     const atts = [];
     attributes.forEach((attr) => {
       const {
-        type, code, value, values, elements, compositeelements, listelements, names,
+        type, code, value, values, elements, compositeelements,
+        listelements, names, compositeAttributes, nestedAttribute,
       } = attr;
       atts.push({
         code,
         value: toFieldValue(value, type),
         values,
-        elements,
-        compositeelements,
-        listelements,
+        elements: elements && elements.map(el => ({
+          ...el,
+          value: toFieldValue(el.value, nestedAttribute.type),
+        })),
+        compositeelements: compositeelements && compositeelements.map((el, idx) => ({
+          ...el,
+          value: toFieldValue(el.value, compositeAttributes[idx].type),
+        })),
+        listelements: {
+          ...listelements,
+          ...(listelements && listelements[locale] ? {
+            [locale]: listelements[locale].map(el => ({
+              ...el,
+              value: toFieldValue(el.value, nestedAttribute.type),
+            })),
+          } : {}),
+        },
         names,
       });
     });
