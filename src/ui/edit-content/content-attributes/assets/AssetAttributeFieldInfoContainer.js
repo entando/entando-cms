@@ -77,7 +77,7 @@ export const mapDispatchToProps = (dispatch, { input, langCode }) => ({
       [langCode]: inputValue,
     });
   },
-  onRemoveValue: () => input.onChange(null),
+  onRemoveValue: () => input.onChange({}),
 });
 
 const AssetAttributeFieldInfoContainer = connect(
