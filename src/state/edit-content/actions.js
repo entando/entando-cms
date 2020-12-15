@@ -361,10 +361,12 @@ export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch,
     }), {});
 
     // check if value has translations
-    if (type === TYPE_COMPOSITE) {
-      attribute.compositeelements.forEach(addMissingTranslations(i));
-    } else {
-      addMissingTranslations(i)(attribute);
+    if (type !== TYPE_ATTACH) {
+      if (type === TYPE_COMPOSITE) {
+        attribute.compositeelements.forEach(addMissingTranslations(i));
+      } else {
+        addMissingTranslations(i)(attribute);
+      }
     }
 
     const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item) => {
