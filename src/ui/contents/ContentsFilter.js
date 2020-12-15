@@ -44,16 +44,20 @@ class ContentsFilter extends Component {
 
   onChangeQuickFilter(e) {
     const { currentQuickFilter, onSetQuickFilter } = this.props;
-    currentQuickFilter.id = e.id;
-    currentQuickFilter.title = e.title;
-    onSetQuickFilter(currentQuickFilter);
+    onSetQuickFilter({
+      ...currentQuickFilter,
+      id: e.id,
+      title: e.title,
+    });
   }
 
   onChangeQuickFilterSearchText(e) {
     e.preventDefault();
     const { currentQuickFilter, onSetQuickFilter } = this.props;
-    currentQuickFilter.value = e.target.value;
-    onSetQuickFilter(currentQuickFilter);
+    onSetQuickFilter({
+      ...currentQuickFilter,
+      value: e.target.value,
+    });
   }
 
   onValueKeyPress(keyEvent) {
