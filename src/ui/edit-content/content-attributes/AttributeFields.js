@@ -128,6 +128,7 @@ const renderField = (
       joinGroups={joinGroups}
       langCode={langCode}
       selectedLangTab={selectedLangTab}
+      isDefaultLang={isDefaultLang}
       openedAtStart={expanded}
       validate={validate}
     />
@@ -191,6 +192,7 @@ AttributeFields.propTypes = {
   locale: PropTypes.string,
   expanded: PropTypes.bool.isRequired,
   defaultLang: PropTypes.string.isRequired,
+  isDefaultLang: PropTypes.bool.isRequired,
 };
 
 export default AttributeFields;
