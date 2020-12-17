@@ -21,6 +21,7 @@ const CompositeAttributeField = ({
   openedAtStart,
   mainGroup,
   joinGroups,
+  isDefaultLang,
   meta: { submitFailed, error },
 }) => {
   const { code, compositeAttributes } = attribute;
@@ -38,13 +39,19 @@ const CompositeAttributeField = ({
   const panelBody = (
     <Panel.Body>
       {compositeAttributes.map((attr) => {
-        const { code: attrCode } = attr;
+        const { code: attrCode, mandatory } = attr;
         const fieldName = mappedFieldNames[attrCode];
+
+        const newAttr = {
+          ...attr,
+          mandatory: isDefaultLang && mandatory,
+        };
+
         return (
           <AttributeField
             key={attrCode}
             name={fieldName}
-            attribute={attr}
+            attribute={newAttr}
             langCode={langCode}
             selectedLangTab={selectedLangTab}
             mainGroup={mainGroup}
@@ -91,6 +98,7 @@ CompositeAttributeField.propTypes = {
   openedAtStart: PropTypes.bool,
   mainGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  isDefaultLang: PropTypes.bool.isRequired,
   meta: PropTypes.shape(fieldArrayMetaPropTypes).isRequired,
 };
 
