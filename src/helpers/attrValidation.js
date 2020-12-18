@@ -99,8 +99,8 @@ export const noTagsOnly = memoize(value => (
     : <FormattedMessage id="validateForm.required" />
 ));
 
-export const compositeOneOfExists = defaultLangCode => memoize(compositeFieldValues => (
-  compositeFieldValues.some(fieldValue => (
+export const compositeOneOfExists = memoize(defaultLangCode => compositeFieldValues => (
+  compositeFieldValues && compositeFieldValues.some(fieldValue => (
     (
       !isNull(fieldValue.value)
       && (
