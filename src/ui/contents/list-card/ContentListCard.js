@@ -106,22 +106,24 @@ class ContentListCard extends Component {
           <FormattedMessage id="dashboard.content.title" defaultMessage="Content" />
           {renderAddContentButton}
         </h2>
-        <table className="ContentListCardTable__table table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th width="35%"><FormattedMessage id="contentPicker.description" /></th>
-              <th width="13%"><FormattedMessage id="cms.contents.versioning.author" /></th>
-              <th width="15%"><FormattedMessage id="contentPicker.type" /></th>
-              <th className="text-center" width="12%">
-                <FormattedMessage id="contentPicker.status" />
-              </th>
-              <th width="25%"><FormattedMessage id="cms.versioning.list.lastModify" /></th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.renderRows()}
-          </tbody>
-        </table>
+        <div className="ContentListCardTable__wrapper">
+          <table className="ContentListCardTable__table table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th width="35%"><FormattedMessage id="contentPicker.description" /></th>
+                <th width="13%"><FormattedMessage id="cms.contents.versioning.author" /></th>
+                <th width="15%"><FormattedMessage id="contentPicker.type" /></th>
+                <th className="text-center" width="12%">
+                  <FormattedMessage id="contentPicker.status" />
+                </th>
+                <th width="25%"><FormattedMessage id="cms.versioning.list.lastModify" /></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.renderRows()}
+            </tbody>
+          </table>
+        </div>
         <Paginator
           pagination={pagination}
           viewType="table"
