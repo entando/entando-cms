@@ -23,7 +23,15 @@
     }
   }
 
-  .ContentListCardTable__table {
-    margin: 2em 0 0 0;
+  .ContentListCardTable {
+    &__wrapper {
+      @media (max-width: 426px) {
+        overflow-x: auto;
+      }
+    }
+
+    &__table {
+      margin: 2em 0 0 0;
+    }
   }
 }
