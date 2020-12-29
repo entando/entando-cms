@@ -1,15 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   FormattedMessage, defineMessages, injectIntl, intlShape,
 } from 'react-intl';
 import { Row, Col } from 'patternfly-react';
 import { Field } from 'redux-form';
-import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import { required } from '@entando/utils';
-import { MODE_EDIT, MODE_ADD } from 'state/content-type/const';
 
 export const element = value => (value && !/^[a-zA-Z0-9_]+([^\s]{1}[a-zA-Z0-9_]+)*$/i.test(value) ? (
   <FormattedMessage id="validateForm.element" />
@@ -17,12 +14,7 @@ export const element = value => (value && !/^[a-zA-Z0-9_]+([^\s]{1}[a-zA-Z0-9_]+
   undefined
 ));
 
-const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode, intl }) => {
-  const selectAllowedOptions = enumeratorExtractorBeans.map(item => ({
-    value: item,
-    text: item,
-  }));
-
+const AttributeEnumSettings = ({ intl }) => {
   const msgs = defineMessages({
     enumStaticItemsHelp: {
       id: 'cms.contenttype.enumeratorStaticItems.help',
@@ -49,22 +41,6 @@ const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode, intl }) => {
             name="enumeratorStaticItemsSeparator"
             label={<FormLabel labelId="cms.contenttype.enumeratorStaticItemsSeparator" />}
           />
-          {mode === MODE_ADD ? (
-            <Field
-              component={RenderSelectInput}
-              options={selectAllowedOptions}
-              defaultOptionId="cms.label.chooseoption"
-              label={<FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />}
-              name="enumeratorExtractorBean"
-            />
-          ) : (
-            <Field
-              component={RenderTextInput}
-              name="enumeratorExtractorBean"
-              label={<FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />}
-              disabled
-            />
-          )}
         </fieldset>
       </Col>
     </Row>
@@ -73,13 +49,6 @@ const AttributeEnumSettings = ({ enumeratorExtractorBeans, mode, intl }) => {
 
 AttributeEnumSettings.propTypes = {
   intl: intlShape.isRequired,
-  enumeratorExtractorBeans: PropTypes.arrayOf(PropTypes.string),
-  mode: PropTypes.oneOf([MODE_ADD, MODE_EDIT]),
-};
-
-AttributeEnumSettings.defaultProps = {
-  enumeratorExtractorBeans: [],
-  mode: MODE_ADD,
 };
 
 export default injectIntl(AttributeEnumSettings);
