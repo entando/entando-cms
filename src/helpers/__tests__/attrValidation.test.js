@@ -8,7 +8,7 @@ import {
 
 describe('helpers/attrValidation', () => {
   describe('equalDate', () => {
-    const date = '21/11/2019';
+    const date = '2019-11-21 00:00:00';
 
     it('should return a message if date is not equal to value', () => {
       const result = equalDate(date)('20/11/2019');
@@ -50,7 +50,7 @@ describe('helpers/attrValidation', () => {
   });
 
   describe('rangeEndDate', () => {
-    const date = '21/11/2019';
+    const date = '2019-11-21 00:00:00';
 
     it('should return a message if date is more than value', () => {
       const result = rangeEndDate(date)('22/11/2019');
@@ -98,7 +98,7 @@ describe('helpers/attrValidation', () => {
   });
 
   describe('rangeStartDate', () => {
-    const date = '21/11/2019';
+    const date = '2019-11-21 00:00:00';
 
     it('should return a message if date is more than value', () => {
       const result = rangeStartDate(date)('20/11/2019');

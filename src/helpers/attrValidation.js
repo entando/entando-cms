@@ -5,16 +5,21 @@ import { maxLength, minLength } from '@entando/utils';
 
 const number = value => !Number.isNaN(parseFloat(value));
 
-export const equalDate = date => value => (
-  value !== date
-    ? (
-      <FormattedMessage
-        id="validateForm.equalDate"
-        values={{ date: <b>{date}</b> }}
-        defaultMessage="Must be equal to {date}"
-      />
-    ) : undefined
-);
+const revDateFormat = dateStr => dateStr.split('/').reverse().join('/');
+
+export const equalDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return value => (
+    (dateStr && value && new Date(revDateFormat(value)).getTime() !== date.getTime())
+      ? (
+        <FormattedMessage
+          id="validateForm.equalDate"
+          values={{ date: <b>{dateStr}</b> }}
+          defaultMessage="Must be equal to {date}"
+        />
+      ) : undefined
+  );
+};
 
 export const equalNumber = num => value => (
   number(value) && parseFloat(value) !== num
@@ -38,16 +43,19 @@ export const equalString = str => value => (
     ) : undefined
 );
 
-export const rangeEndDate = date => value => (
-  value > date
-    ? (
-      <FormattedMessage
-        id="validateForm.rangeEndDate"
-        values={{ date: <b>{date}</b> }}
-        defaultMessage="Must be equal to or before {date}"
-      />
-    ) : undefined
-);
+export const rangeEndDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return value => (
+    (dateStr && value && new Date(revDateFormat(value)) > date)
+      ? (
+        <FormattedMessage
+          id="validateForm.rangeEndDate"
+          values={{ date: <b>{dateStr}</b> }}
+          defaultMessage="Must be equal to or before {date}"
+        />
+      ) : undefined
+  );
+};
 
 export const rangeEndNumber = num => value => (
   number(value) && parseFloat(value) > num
@@ -71,16 +79,19 @@ export const rangeEndString = str => value => (
     ) : undefined
 );
 
-export const rangeStartDate = date => value => (
-  value < date
-    ? (
-      <FormattedMessage
-        id="validateForm.rangeStartDate"
-        values={{ date: <b>{date}</b> }}
-        defaultMessage="Must be after {date}"
-      />
-    ) : undefined
-);
+export const rangeStartDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return value => (
+    (dateStr && value && new Date(revDateFormat(value)) < date)
+      ? (
+        <FormattedMessage
+          id="validateForm.rangeStartDate"
+          values={{ date: <b>{dateStr}</b> }}
+          defaultMessage="Must be after {date}"
+        />
+      ) : undefined
+  );
+};
 
 export const rangeStartNumber = num => value => (
   number(value) && parseFloat(value) < num
