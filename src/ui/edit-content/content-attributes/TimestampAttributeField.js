@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
@@ -26,14 +26,13 @@ const TimestampAttributeField = ({
   };
 
   const { name, value: inputValue, onChange: inputOnChange } = input;
-
   const {
     date, hours, minutes, seconds,
-  } = inputValue;
-  let actualValue = inputValue;
+  } = inputValue instanceof Object ? inputValue : { date: inputValue };
+
   let inputDateFormat = dateFormat;
   if (date && date.includes('-')) inputDateFormat = 'YYYY-MM-DD';
-  actualValue = {
+  const actualValue = {
     date: date && moment(date, inputDateFormat).format(dateFormat),
     hours,
     minutes,
@@ -52,6 +51,10 @@ const TimestampAttributeField = ({
       });
     },
   };
+
+  useEffect(() => {
+    attrInput.onChange(actualValue.date);
+  }, []);
 
   return (
     <DateTimePickerInput

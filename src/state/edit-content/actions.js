@@ -244,6 +244,10 @@ const convertStringToBool = (item, hasNull = false) => {
         return true;
       case 'false':
         return false;
+      case true:
+        return true;
+      case false:
+        return false;
       default:
         return hasNull ? null : false;
     }
@@ -361,10 +365,12 @@ export const saveContent = (values, ignoreWarnings, oldAttributes) => (dispatch,
     }), {});
 
     // check if value has translations
-    if (type === TYPE_COMPOSITE) {
-      attribute.compositeelements.forEach(addMissingTranslations(i));
-    } else {
-      addMissingTranslations(i)(attribute);
+    if (type !== TYPE_ATTACH) {
+      if (type === TYPE_COMPOSITE) {
+        attribute.compositeelements.forEach(addMissingTranslations(i));
+      } else {
+        addMissingTranslations(i)(attribute);
+      }
     }
 
     const replaceBooleanDateStringsComposite = (arr = []) => arr.map((item) => {

@@ -4,6 +4,7 @@ import { Row, Col } from 'patternfly-react';
 import { Panel } from 'react-bootstrap';
 import {
   fieldArrayFieldsPropTypes,
+  fieldArrayMetaPropTypes,
 } from 'redux-form';
 
 import ContentFormFieldCollapse from 'ui/common/content/ContentFormFieldCollapse';
@@ -18,6 +19,10 @@ const CompositeAttributeField = ({
   selectedLangTab,
   isSub,
   openedAtStart,
+  mainGroup,
+  joinGroups,
+  isDefaultLang,
+  meta: { submitFailed, error },
 }) => {
   const { code, compositeAttributes } = attribute;
   const fieldNames = fields.map(name => name);
@@ -34,19 +39,28 @@ const CompositeAttributeField = ({
   const panelBody = (
     <Panel.Body>
       {compositeAttributes.map((attr) => {
-        const { code: attrCode } = attr;
+        const { code: attrCode, mandatory } = attr;
         const fieldName = mappedFieldNames[attrCode];
+
+        const newAttr = {
+          ...attr,
+          mandatory: isDefaultLang && mandatory,
+        };
+
         return (
           <AttributeField
             key={attrCode}
             name={fieldName}
-            attribute={attr}
+            attribute={newAttr}
             langCode={langCode}
             selectedLangTab={selectedLangTab}
+            mainGroup={mainGroup}
+            joinGroups={joinGroups}
             isSub
           />
         );
       })}
+      {submitFailed && (error && <span className="help-block">{error}</span>)}
     </Panel.Body>
   );
 
@@ -77,16 +91,22 @@ const CompositeAttributeField = ({
 CompositeAttributeField.propTypes = {
   fields: PropTypes.shape(fieldArrayFieldsPropTypes).isRequired,
   attribute: PropTypes.shape(attributeShape).isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   langCode: PropTypes.string.isRequired,
   selectedLangTab: PropTypes.string.isRequired,
   isSub: PropTypes.bool,
   openedAtStart: PropTypes.bool,
+  mainGroup: PropTypes.string,
+  joinGroups: PropTypes.arrayOf(PropTypes.string),
+  isDefaultLang: PropTypes.bool.isRequired,
+  meta: PropTypes.shape(fieldArrayMetaPropTypes).isRequired,
 };
 
 CompositeAttributeField.defaultProps = {
   isSub: false,
   openedAtStart: false,
+  mainGroup: '',
+  joinGroups: [],
 };
 
 export default CompositeAttributeField;

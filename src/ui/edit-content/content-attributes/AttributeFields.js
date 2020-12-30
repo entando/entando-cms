@@ -22,8 +22,7 @@ import {
   TYPE_THREESTATE,
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
-
-const COMPLEX_ATTRIBUTES = [TYPE_LIST, TYPE_MONOLIST, TYPE_COMPOSITE];
+import { listRequired, compositeOneOfExists } from 'helpers/attrValidation';
 
 const toFieldValue = (attrValue, type) => {
   switch (type) {
@@ -39,8 +38,8 @@ const toFieldValue = (attrValue, type) => {
 };
 
 const renderField = (
-  name, attribute, langCode, mainGroup,
-  joinGroups, isDefaultLang, locale, selectedLangTab, expanded,
+  name, attribute, langCode, mainGroup, joinGroups, isDefaultLang,
+  defaultLang, locale, selectedLangTab, expanded,
 ) => {
   if (!attribute) {
     return '';
@@ -56,10 +55,13 @@ const renderField = (
   const helpText = helpTextArr.join('<br>');
   const i18nName = isObject(attName)
     ? (attName[locale] || code) : (attName || code);
-  const fieldLabel = COMPLEX_ATTRIBUTES.includes(type) ? i18nName : (
+
+  const defaultAndMandatory = isDefaultLang && mandatory;
+
+  const fieldLabel = (
     <FormLabel
       labelText={i18nName}
-      required={mandatory && isDefaultLang}
+      required={defaultAndMandatory}
       helpText={helpText}
     />
   );
@@ -71,24 +73,31 @@ const renderField = (
   // the attribute should not be mandatory for non-default languages
   const newAttribute = {
     ...attribute,
-    mandatory: mandatory && isDefaultLang,
+    mandatory: defaultAndMandatory,
   };
+
+  const validate = [];
 
   switch (type) {
     case TYPE_COMPOSITE:
       fieldName = `${name}.compositeelements`;
       FieldComp = FieldArray;
       AttributeFieldComp = CompositeAttributeField;
+      if (defaultAndMandatory) {
+        validate.push(compositeOneOfExists(defaultLang));
+      }
       break;
     case TYPE_LIST:
       fieldName = `${name}.listelements.${langCode}`;
       FieldComp = FieldArray;
       AttributeFieldComp = ListAttributeField;
+      if (defaultAndMandatory) validate.push(listRequired);
       break;
     case TYPE_MONOLIST:
       fieldName = `${name}.elements`;
       FieldComp = FieldArray;
       AttributeFieldComp = MonolistAttributeField;
+      if (defaultAndMandatory) validate.push(listRequired);
       break;
     default:
       return (
@@ -119,30 +128,45 @@ const renderField = (
       joinGroups={joinGroups}
       langCode={langCode}
       selectedLangTab={selectedLangTab}
+      isDefaultLang={isDefaultLang}
       openedAtStart={expanded}
+      validate={validate}
     />
   );
 };
 
 const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
-  isDefaultLang, selectedLangTab, locale, expanded,
+  isDefaultLang, defaultLang, selectedLangTab, locale, expanded,
 }) => {
   if (fields.length < attributes.length) {
-    // initialize fields with values from attributes prop through `.push()` method
-    // as it cannot be set directly from props
     const atts = [];
     attributes.forEach((attr) => {
       const {
-        type, code, value, values, elements, compositeelements, listelements, names,
+        type, code, value, values, elements, compositeelements,
+        listelements, names, compositeAttributes, nestedAttribute,
       } = attr;
       atts.push({
         code,
         value: toFieldValue(value, type),
         values,
-        elements,
-        compositeelements,
-        listelements,
+        elements: elements && elements.map(el => ({
+          ...el,
+          value: toFieldValue(el.value, nestedAttribute.type),
+        })),
+        compositeelements: compositeelements && compositeelements.map((el, idx) => ({
+          ...el,
+          value: toFieldValue(el.value, compositeAttributes[idx].type),
+        })),
+        listelements: {
+          ...listelements,
+          ...(listelements && listelements[locale] ? {
+            [locale]: listelements[locale].map(el => ({
+              ...el,
+              value: toFieldValue(el.value, nestedAttribute.type),
+            })),
+          } : {}),
+        },
         names,
       });
     });
@@ -151,8 +175,8 @@ const AttributeFields = ({
     });
   }
 
-  return fields.map((name, idx) => renderField(name, attributes[idx],
-    langCode, mainGroup, joinGroups, isDefaultLang, locale, selectedLangTab, expanded));
+  return fields.map((name, idx) => renderField(name, attributes[idx], langCode, mainGroup,
+    joinGroups, isDefaultLang, defaultLang, locale, selectedLangTab, expanded));
 };
 
 AttributeFields.propTypes = {
@@ -167,6 +191,8 @@ AttributeFields.propTypes = {
   selectedLangTab: PropTypes.string.isRequired,
   locale: PropTypes.string,
   expanded: PropTypes.bool.isRequired,
+  defaultLang: PropTypes.string.isRequired,
+  isDefaultLang: PropTypes.bool.isRequired,
 };
 
 export default AttributeFields;

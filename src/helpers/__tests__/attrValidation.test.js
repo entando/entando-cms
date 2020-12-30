@@ -2,7 +2,8 @@ import {
   equalDate, equalNumber, equalString,
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
-  regex, linkValidate, noTagsOnly,
+  regex, linkValidate, noTagsOnly, listRequired,
+  compositeOneOfExists,
 } from 'helpers/attrValidation';
 
 describe('helpers/attrValidation', () => {
@@ -169,9 +170,46 @@ describe('helpers/attrValidation', () => {
     });
   });
 
+  describe('compositeOneOfExists', () => {
+    it('should return a message since not one of the fields have any values', () => {
+      const result = compositeOneOfExists('en')([
+        {
+          code: 'AAto',
+          value: '',
+        }, {
+          code: 'Btext',
+          values: {
+            en: '',
+            it: '',
+          },
+        }, {
+          code: 'bububu',
+          value: null,
+        }]);
+      expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should return undefined since code has some text', () => {
+      const result = compositeOneOfExists('en')([
+        {
+          code: 'AAto',
+          value: '',
+        }, {
+          code: 'Btext',
+          values: {
+            en: 'bots',
+            it: '',
+          },
+        }, {
+          code: 'bububu',
+          value: false,
+        }]);
+      expect(result).toBeUndefined();
+    });
+  });
+
   describe('linkValidate', () => {
     it('should return a message if link value is empty', () => {
-      const result = linkValidate('en')({
+      const result = linkValidate('en', true)({
         value: {},
         values: { en: 'test' },
       });
@@ -185,11 +223,22 @@ describe('helpers/attrValidation', () => {
       expect(result.type.displayName).toBe('FormattedMessage');
     });
     it('should return undefined if link has both value and values', () => {
-      const result = linkValidate('en')({
+      const result = linkValidate('en', true)({
         value: { symbolicDestination: 'test' },
         values: { en: 'test' },
       });
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('listRequired', () => {
+    it('should return a message if value is empty', () => {
+      expect(listRequired(null).type.displayName).toBe('FormattedMessage');
+      expect(listRequired(undefined).type.displayName).toBe('FormattedMessage');
+      expect(listRequired([]).type.displayName).toBe('FormattedMessage');
+    });
+    it('should return undefined if value is not empty', () => {
+      expect(listRequired([{}])).toBeUndefined();
     });
   });
 });

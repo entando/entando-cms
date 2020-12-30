@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { memoize } from 'lodash';
+import { memoize, isNull, isBoolean } from 'lodash';
 import { maxLength, minLength } from '@entando/utils';
 
 const number = value => !Number.isNaN(parseFloat(value));
@@ -110,6 +110,25 @@ export const noTagsOnly = memoize(value => (
     : <FormattedMessage id="validateForm.required" />
 ));
 
+export const compositeOneOfExists = memoize(defaultLangCode => compositeFieldValues => (
+  compositeFieldValues && compositeFieldValues.some(fieldValue => (
+    (
+      !isNull(fieldValue.value)
+      && (
+        isBoolean(fieldValue.value)
+        || fieldValue.value
+      )
+    ) || (
+      fieldValue.values && fieldValue.values[defaultLangCode]
+        && !isNull(fieldValue.values[defaultLangCode])
+        && (
+          isBoolean(fieldValue.values[defaultLangCode])
+          || fieldValue.values[defaultLangCode]
+        )
+    )
+  )) ? undefined : <FormattedMessage id="validateForm.required" />
+));
+
 export const rangeStartString = str => value => (
   value < str
     ? (
@@ -165,11 +184,17 @@ export const getAttrValidators = (validationRules) => {
   return validators;
 };
 
-export const linkValidate = memoize(langCode => input => (
-  !input.value.symbolicDestination || !input.values[langCode]
-    ? (
-      <FormattedMessage
-        id="validateForm.required"
-      />
+export const linkValidate = memoize((langCode, required = false) => input => (
+  input && input.value && (
+    (required && !input.value.symbolicDestination)
+    || (input.value.symbolicDestination && !input.values[langCode])
+  ) ? (
+    <FormattedMessage
+      id="validateForm.required"
+    />
     ) : undefined
 ));
+
+export const listRequired = value => (
+  !value || !value.length ? <FormattedMessage id="validateForm.required" /> : undefined
+);

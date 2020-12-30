@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   FormattedMessage, defineMessages, injectIntl, intlShape,
 } from 'react-intl';
@@ -8,7 +7,6 @@ import { Field } from 'redux-form';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import { required } from '@entando/utils';
-import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 
 export const elements = value => (value && !/^(\w+)=([^\s]+)$/i.test(value) ? (
   <FormattedMessage id="validateForm.elements" />
@@ -16,12 +14,7 @@ export const elements = value => (value && !/^(\w+)=([^\s]+)$/i.test(value) ? (
   undefined
 ));
 
-const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => {
-  const selectAllowedOptions = enumeratorMapExtractorBeans.map(item => ({
-    value: item.code,
-    text: item.descr,
-  }));
-
+const AttributeEnumEnumMapSettings = ({ intl }) => {
   const msgs = defineMessages({
     enumStaticItemsMapHelp: {
       id: 'cms.contenttype.enumeratorStaticItemsMap.help',
@@ -48,15 +41,6 @@ const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => 
             name="enumeratorStaticItemsSeparator"
             label={<FormLabel labelId="cms.contenttype.enumeratorStaticItemsSeparator" />}
           />
-          {enumeratorMapExtractorBeans.length > 0 ? (
-            <Field
-              component={RenderSelectInput}
-              options={selectAllowedOptions}
-              defaultOptionId="cms.label.chooseoption"
-              label={<FormLabel labelId="cms.contenttype.enumeratorExtractorBean" />}
-              name="enumeratorMapExtractorBeans"
-            />
-          ) : null}
         </fieldset>
       </Col>
     </Row>
@@ -64,16 +48,6 @@ const AttributeEnumEnumMapSettings = ({ enumeratorMapExtractorBeans, intl }) => 
 };
 AttributeEnumEnumMapSettings.propTypes = {
   intl: intlShape.isRequired,
-  enumeratorMapExtractorBeans: PropTypes.arrayOf(
-    PropTypes.shape({
-      code: PropTypes.string,
-      descr: PropTypes.string,
-    }),
-  ),
-};
-
-AttributeEnumEnumMapSettings.defaultProps = {
-  enumeratorMapExtractorBeans: [],
 };
 
 export default injectIntl(AttributeEnumEnumMapSettings);
