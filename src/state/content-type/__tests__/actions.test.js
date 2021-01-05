@@ -706,12 +706,15 @@ describe('state/content-type/actions ', () => {
       beforeEach(() => {
         history = createMockHistory();
       });
+
+      const attribute = { code: 'AAA', nestedAttribute: {} };
+
       it('sendPutAttributeFromContentTypeMonolist calls router ROUTE_CONTENT_TYPE_EDIT', (done) => {
         putAttributeFromContentType.mockImplementationOnce(
           mockApi({ payload: { type: 'Monolist' } }),
         );
         store
-          .dispatch(sendPutAttributeFromContentTypeMonolist({ code: 'AAA' }, 'Monolist', history))
+          .dispatch(sendPutAttributeFromContentTypeMonolist(attribute, 'Monolist', history))
           .then(() => {
             expect(putAttributeFromContentType).toHaveBeenCalled();
             done();
@@ -722,7 +725,7 @@ describe('state/content-type/actions ', () => {
       it('sendPutAttributeFromContentTypeMonolist calls ADD_ERROR actions', (done) => {
         putAttributeFromContentType.mockImplementationOnce(mockApi({ errors: true }));
         store
-          .dispatch(sendPutAttributeFromContentTypeMonolist('AAA'))
+          .dispatch(sendPutAttributeFromContentTypeMonolist(attribute))
           .then(() => {
             const actions = store.getActions();
             expect(actions).toHaveLength(1);
