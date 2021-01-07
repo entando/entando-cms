@@ -598,10 +598,50 @@ export const sendPostAttributeFromContentTypeMonolist = (
     .catch(() => {});
 });
 
+const convertDate = date => `${date
+  .split('/')
+  .reverse()
+  .join('-')} 00:00:00`;
+
+const convertDateValidationRules = (validationRules) => {
+  const rules = {};
+  if (validationRules) {
+    const {
+      rangeStartDate,
+      rangeEndDate,
+      equalDate,
+      rangeStartDateAttribute,
+      rangeEndDateAttribute,
+      equalDateAttribute,
+    } = validationRules;
+
+    rules.rangeStartDate = rangeStartDate && convertDate(rangeStartDate);
+    rules.rangeEndDate = rangeEndDate && convertDate(rangeEndDate);
+    rules.equalDate = equalDate && convertDate(equalDate);
+    rules.rangeStartDateAttribute = rangeStartDateAttribute
+    && convertDate(rangeStartDateAttribute);
+    rules.rangeEndDateAttribute = rangeEndDateAttribute
+    && convertDate(rangeEndDateAttribute);
+    rules.equalDateAttribute = equalDateAttribute
+    && convertDate(equalDateAttribute);
+  }
+  return rules;
+};
+
 export const sendPutAttributeFromContentTypeMonolist = (
   attributeObject, entityCode, history,
 ) => dispatch => new Promise((resolve) => {
-  putAttributeFromContentType(entityCode, attributeObject)
+  const { nestedAttribute } = attributeObject;
+  const payload = {
+    ...attributeObject,
+    nestedAttribute: {
+      ...nestedAttribute,
+      ...(nestedAttribute.type === TYPE_DATE ? ({
+        validationRules: convertDateValidationRules(nestedAttribute.validationRules),
+      }) : {}),
+    },
+  };
+  putAttributeFromContentType(entityCode, payload)
     .then((response) => {
       response.json().then((json) => {
         if (!response.ok) {
@@ -615,12 +655,9 @@ export const sendPutAttributeFromContentTypeMonolist = (
     .catch(() => {});
 });
 
-const converDate = date => `${date
-  .split('/')
-  .reverse()
-  .join('-')} 00:00:00`;
-
 const getPayloadFromTypeAttribute = (values, allowedRoles) => {
+  const { nestedAttribute } = values;
+  const nestedAttributeType = values.listNestedType || (nestedAttribute && nestedAttribute.type);
   let payload = {
     ...values,
     code: values.code,
@@ -629,38 +666,17 @@ const getPayloadFromTypeAttribute = (values, allowedRoles) => {
       ? values.joinRoles.map(roleId => ({ code: roleId, descr: allowedRoles[roleId] }))
       : [],
     nestedAttribute: {
-      ...values.nestedAttribute,
-      type: values.listNestedType || (values.nestedAttribute && values.nestedAttribute.type),
+      ...nestedAttribute,
+      type: nestedAttributeType,
       code: values.code,
       enumeratorStaticItems: 'default',
       enumeratorStaticItemsSeparator: ',',
     },
   };
   if (payload.type === TYPE_DATE) {
-    const validationRules = {};
-    if (payload.validationRules) {
-      const {
-        rangeStartDate,
-        rangeEndDate,
-        equalDate,
-        rangeStartDateAttribute,
-        rangeEndDateAttribute,
-        equalDateAttribute,
-      } = payload.validationRules;
-
-      validationRules.rangeStartDate = rangeStartDate && converDate(rangeStartDate);
-      validationRules.rangeEndDate = rangeEndDate && converDate(rangeEndDate);
-      validationRules.equalDate = equalDate && converDate(equalDate);
-      validationRules.rangeStartDateAttribute = rangeStartDateAttribute
-      && converDate(rangeStartDateAttribute);
-      validationRules.rangeEndDateAttribute = rangeEndDateAttribute
-      && converDate(rangeEndDateAttribute);
-      validationRules.equalDateAttribute = equalDateAttribute
-      && converDate(equalDateAttribute);
-    }
     payload = {
       ...payload,
-      validationRules,
+      validationRules: convertDateValidationRules(payload.validationRules),
     };
   }
   return payload;
