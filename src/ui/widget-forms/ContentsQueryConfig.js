@@ -16,6 +16,7 @@ import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
+import NoDefaultWarningModal from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
 
 import { CONTENTS_QUERY_CONFIG } from 'ui/widget-forms/const';
 
@@ -426,6 +427,7 @@ export class ContentsQueryFormBody extends Component {
             </Col>
           </Row>
         )}
+        <NoDefaultWarningModal />
       </Fragment>
     );
   }

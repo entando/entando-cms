@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
-import { get } from 'lodash';
+import { get, isUndefined, isNull } from 'lodash';
 import { injectIntl } from 'react-intl';
 import { change, formValueSelector, submit } from 'redux-form';
 import { routeConverter } from '@entando/utils';
@@ -22,6 +22,7 @@ import { getSearchPagesRaw } from 'state/pages/selectors';
 import { getActiveLanguages } from 'state/languages/selectors';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { NoDefaultWarningModalId } from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
 
 const nopage = { page: 1, pageSize: 0 };
 
@@ -60,22 +61,27 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       const {
         pageCode, frameId, widgetCode, history, intl,
       } = ownProps;
-      const checkedValues = Object.assign({}, values);
+      const { contentTypeDetails, ...checkedValues } = values;
       if (values.modelId === '') delete checkedValues.modelId;
       checkedValues.filters = checkedValues.filters && checkedValues.filters.filter(f => f != null);
       checkedValues.userFilters = checkedValues.userFilters
       && checkedValues.userFilters.filter(f => f != null);
       const configItem = Object.assign({ config: checkedValues }, { code: widgetCode });
       dispatch(clearErrors());
-      dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
-        if (res) {
-          dispatch(addToast(
-            intl.formatMessage({ id: 'widget.update.success' }),
-            TOAST_SUCCESS,
-          ));
-          history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-        }
-      });
+
+      if ((isUndefined(values.modelId) || values.modelId === '') && isNull(contentTypeDetails.defaultContentModelList)) {
+        return dispatch(setVisibleModal(NoDefaultWarningModalId));
+      } else {
+        dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+          if (res) {
+            dispatch(addToast(
+              intl.formatMessage({ id: 'widget.update.success' }),
+              TOAST_SUCCESS,
+            ));
+            history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+          }
+        });
+      }
     },
     onResetFilterOption: (name, i) => (
       dispatch(change(formToUse, `${name}.[${i}].option`, ''))
@@ -90,7 +96,8 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     onChangeContentType: (contentType) => {
       if (contentType) {
         dispatch(fetchContentTemplatesByContentType(contentType));
-        dispatch(fetchContentType(contentType));
+        dispatch(fetchContentType(contentType))
+          .then(ctype => dispatch(change(formToUse, putPrefixField('contentTypeDetails'), ctype)));
       }
     },
     onResetModelId: () => dispatch(change(formToUse, putPrefixField('modelId'), '')),
