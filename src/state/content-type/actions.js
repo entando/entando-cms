@@ -224,13 +224,19 @@ export const fetchContentTypeListPaged = (
     .catch(() => {});
 });
 
-export const fetchContentType = contentTypeCode => dispatch => new Promise((resolve, reject) => {
+export const fetchContentType = (
+  contentTypeCode,
+  initForm = true,
+) => dispatch => new Promise((resolve, reject) => {
   getContentType(contentTypeCode)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
           dispatch(setSelectedContentType(json.payload));
-          dispatch(initialize('ContentType', json.payload));
+          if (initForm) {
+            dispatch(initialize('ContentType', json.payload));
+          }
+          resolve(json.payload);
         } else {
           dispatch(addErrors(json.errors.map(err => err.message)));
           reject();
