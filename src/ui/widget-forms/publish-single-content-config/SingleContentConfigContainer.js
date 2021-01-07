@@ -76,22 +76,19 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
         code: widgetCode,
       };
 
-      console.log(values, values.modelId, chosenContentType.defaultContentModel);
-      
       if ((isUndefined(values.modelId) || values.modelId === 'default') && isNull(chosenContentType.defaultContentModel)) {
         return dispatch(setVisibleModal(NoDefaultWarningModalId));
-      } else {
-        return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
-          if (res) {
-            dispatch(addToast(
-              intl.formatMessage({ id: 'widget.update.success' }),
-              TOAST_SUCCESS,
-            ));
-            dispatch(setAppTourLastStep(22));
-            history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-          }
-        });
       }
+      return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+        if (res) {
+          dispatch(addToast(
+            intl.formatMessage({ id: 'widget.update.success' }),
+            TOAST_SUCCESS,
+          ));
+          dispatch(setAppTourLastStep(22));
+          history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+        }
+      });
     },
     onSave: () => {
       dispatch(setAppTourLastStep(22));

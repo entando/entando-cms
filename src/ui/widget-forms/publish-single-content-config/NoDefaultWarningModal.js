@@ -12,7 +12,7 @@ import {
 
 export const NoDefaultWarningModalId = 'NoDefaultWarningModal';
 
-const NoDefaultWarningModal = () => {
+const NoDefaultWarningModal = ({ multipleMode }) => {
   const modalTitle = (
     <Modal.Title>
       <FormattedMessage id="widget.warning.nodefaulttemplate.title" />
@@ -31,11 +31,19 @@ const NoDefaultWarningModal = () => {
           <FormattedMessage id="widget.warning.nodefaulttemplate.title" />
         </EmptyStateTitle>
         <EmptyStateInfo className="NoDefaultWarningModal__info">
-          <FormattedMessage id="widget.warning.nodefaulttemplate.describe" />
+          <FormattedMessage id={`widget.warning.nodefaulttemplate.${multipleMode ? 'multi' : ''}describe`} />
         </EmptyStateInfo>
       </EmptyState>
     </GenericModalContainer>
   );
+};
+
+NoDefaultWarningModal.propTypes = {
+  multipleMode: PropTypes.bool,
+};
+
+NoDefaultWarningModal.defaultProps = {
+  multipleMode: false,
 };
 
 export default NoDefaultWarningModal;

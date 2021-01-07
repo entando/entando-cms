@@ -345,6 +345,7 @@ SingleContentConfigFormBody.propTypes = {
     name: PropTypes.string,
   })),
   appTourProgress: PropTypes.string,
+  loadContentTypeDetails: PropTypes.func.isRequired,
 };
 
 SingleContentConfigFormBody.defaultProps = {

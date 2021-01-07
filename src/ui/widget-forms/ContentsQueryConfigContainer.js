@@ -70,18 +70,17 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(clearErrors());
 
       if ((isUndefined(values.modelId) || values.modelId === '') && isNull(contentTypeDetails.defaultContentModelList)) {
-        return dispatch(setVisibleModal(NoDefaultWarningModalId));
-      } else {
-        dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
-          if (res) {
-            dispatch(addToast(
-              intl.formatMessage({ id: 'widget.update.success' }),
-              TOAST_SUCCESS,
-            ));
-            history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
-          }
-        });
+        dispatch(setVisibleModal(NoDefaultWarningModalId));
       }
+      dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
+        if (res) {
+          dispatch(addToast(
+            intl.formatMessage({ id: 'widget.update.success' }),
+            TOAST_SUCCESS,
+          ));
+          history.push(routeConverter(ROUTE_APP_BUILDER_PAGE_CONFIG, { pageCode }));
+        }
+      });
     },
     onResetFilterOption: (name, i) => (
       dispatch(change(formToUse, `${name}.[${i}].option`, ''))

@@ -6,7 +6,7 @@ import {
   Button, Row, Col, Alert,
 } from 'patternfly-react';
 import { Collapse } from 'react-collapse';
-import { isUndefined } from 'lodash';
+import { isUndefined, get, uniq } from 'lodash';
 import { maxLength } from '@entando/utils';
 import ContentTableRenderer from 'ui/widget-forms/ContentTableRenderer';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
@@ -14,6 +14,7 @@ import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
+import NoDefaultWarningModal from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
 import { MULTIPLE_CONTENTS_CONFIG } from 'ui/widget-forms/const';
 
 const maxLength70 = maxLength(70);
@@ -38,6 +39,22 @@ export class ContentConfigFormBody extends PureComponent {
       });
     }
     onDidMount();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { chosenContents: prevContents } = prevProps;
+    const { chosenContents, chosenContentTypes, pushContentTypeDetails } = this.props;
+    if (chosenContents !== prevContents) {
+      const chosenContentTypeIds = chosenContentTypes.map(({ code }) => code);
+      const contentTypesToLoad = uniq(
+        chosenContents.map((content) => {
+          const contentId = get(content, 'contentId', get(content, 'id', ''));
+          const typeCodeSub = contentId ? contentId.substr(0, 3) : '';
+          return get(content, 'typeCode', typeCodeSub);
+        }),
+      ).filter(code => !chosenContentTypeIds.includes(code));
+      pushContentTypeDetails(contentTypesToLoad);
+    }
   }
 
   collapseSection(sectionName) {
@@ -196,6 +213,10 @@ export class ContentConfigFormBody extends PureComponent {
               joinGroups={joinGroups}
               multipleContentsMode={multipleContentsMode}
             />
+            <FieldArray
+              name={putPrefixField('chosenContentTypes')}
+              component="span"
+            />
           </Col>
         </Row>
         {renderPublishingSettings}
@@ -225,6 +246,7 @@ export class ContentConfigFormBody extends PureComponent {
                 onSave={onSave}
                 onDiscard={onDiscard}
               />
+              <NoDefaultWarningModal multipleMode />
             </Col>
           </Row>
         )}
@@ -273,6 +295,8 @@ ContentConfigFormBody.propTypes = {
   onDiscard: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  pushContentTypeDetails: PropTypes.func.isRequired,
+  chosenContentTypes: PropTypes.arrayOf(PropTypes.shape({})),
   ownerGroup: PropTypes.string,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   extFormName: PropTypes.string,
@@ -284,6 +308,7 @@ ContentConfigFormBody.defaultProps = {
   languages: [],
   pages: [],
   chosenContents: [],
+  chosenContentTypes: [],
   dirty: false,
   ownerGroup: '',
   joinGroups: null,

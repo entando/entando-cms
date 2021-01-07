@@ -224,7 +224,10 @@ export const fetchContentTypeListPaged = (
     .catch(() => {});
 });
 
-export const fetchContentType = (contentTypeCode, initForm = true) => dispatch => new Promise((resolve, reject) => {
+export const fetchContentType = (
+  contentTypeCode,
+  initForm = true,
+) => dispatch => new Promise((resolve, reject) => {
   getContentType(contentTypeCode)
     .then((response) => {
       response.json().then((json) => {

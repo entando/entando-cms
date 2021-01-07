@@ -507,6 +507,7 @@ export default {
     'contentPicker.searchPlaceholder': 'Cerca un contenuto per nome o codice',
     'widget.warning.nodefaulttemplate.title': 'Modello di contenuto predefinito non trovato',
     'widget.warning.nodefaulttemplate.describe': 'Non esiste un modello di contenuto predefinito per questo tipo di contenuto. Seleziona un modello specifico o definisci un modello di contenuto predefinito per questo tipo.',
+    'widget.warning.nodefaulttemplate.multidescribe': 'Uno dei tuoi contenuti non ha un modello di contenuto predefinito (elenco) del suo tipo di contenuto. Assicurati che tutti i tipi di contenuto dell\'elenco fornito abbiano almeno un modello di contenuto predefinito.',
     'widget.singleContent.config.title': 'Singolo Contenuto',
     'widget.singleContent.config.content': 'Contenuto',
     'widget.singleContent.config.contentTemplate': 'Template di contenuto',
