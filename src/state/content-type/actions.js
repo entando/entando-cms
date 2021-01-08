@@ -450,7 +450,9 @@ export const fetchAttributeFromContentType = (formName, contentTypeCode, attribu
             joinAllowedOptions: joinRoles,
             compositeAttributeType: TYPE_COMPOSITE,
           };
-          if (json.payload.type === TYPE_DATE) {
+          const { type, nestedAttribute } = payload;
+          const nestedAttributeType = nestedAttribute && nestedAttribute.type;
+          if (type === TYPE_DATE || nestedAttributeType === TYPE_DATE) {
             let {
               rangeStartDate,
               rangeEndDate,
@@ -458,7 +460,7 @@ export const fetchAttributeFromContentType = (formName, contentTypeCode, attribu
               rangeStartDateAttribute,
               rangeEndDateAttribute,
               equalDateAttribute,
-            } = json.payload.validationRules;
+            } = nestedAttributeType ? nestedAttribute.validationRules : payload.validationRules;
             rangeStartDate = rangeStartDate && fmtDateDDMMYYY(rangeStartDate);
             rangeEndDate = rangeEndDate && fmtDateDDMMYYY(rangeEndDate);
             equalDate = equalDate && fmtDateDDMMYYY(equalDate);
@@ -466,16 +468,24 @@ export const fetchAttributeFromContentType = (formName, contentTypeCode, attribu
             && fmtDateDDMMYYY(rangeStartDateAttribute);
             rangeEndDateAttribute = rangeEndDateAttribute && fmtDateDDMMYYY(rangeEndDateAttribute);
             equalDateAttribute = equalDateAttribute && fmtDateDDMMYYY(equalDateAttribute);
+            const validationRules = {
+              rangeStartDate,
+              rangeEndDate,
+              equalDate,
+              rangeStartDateAttribute,
+              rangeEndDateAttribute,
+              equalDateAttribute,
+            };
             payload = {
               ...payload,
-              validationRules: {
-                rangeStartDate,
-                rangeEndDate,
-                equalDate,
-                rangeStartDateAttribute,
-                rangeEndDateAttribute,
-                equalDateAttribute,
-              },
+              ...(nestedAttributeType ? {
+                nestedAttribute: {
+                  ...nestedAttribute,
+                  validationRules,
+                },
+              } : {
+                validationRules,
+              }),
             };
           }
           const actionMode = getActionModeContentTypeSelectedAttribute(getState());
@@ -526,15 +536,16 @@ export const sendPutAttributeFromContentType = (attributeObject, entityCode, mod
   dispatch,
   getState,
 ) => new Promise((resolve) => {
+  const list = getContentTypeSelectedAttributeType(getState());
   putAttributeFromContentType(entityCode, attributeObject)
     .then((response) => {
       response.json().then((json) => {
         if (!response.ok) {
           dispatch(addErrors(json.errors.map(err => err.message)));
-        } else if (
+        } else if (list || (
           json.payload.type === TYPE_MONOLIST
             && !getIsMonolistCompositeAttributeType(getState())
-        ) {
+        )) {
           history.push(
             routeConverter(ROUTE_CMS_CONTENT_TYPE_ATTRIBUTE_MONOLIST_ADD, {
               entityCode,
