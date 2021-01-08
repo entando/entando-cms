@@ -11,6 +11,7 @@ import {
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
+import NoDefaultWarningModal from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
 import { getContentById } from 'api/contents';
 
 import { SINGLE_CONTENT_CONFIG } from 'ui/widget-forms/const';
@@ -70,7 +71,11 @@ export class SingleContentConfigFormBody extends PureComponent {
   }
 
   handleContentSelect(selectedContent) {
-    const { onSelectContent } = this.props;
+    const { onSelectContent, loadContentTypeDetails } = this.props;
+    const contentId = get(selectedContent, 'contentId', get(selectedContent, 'id', ''));
+    const typeCodeSub = contentId ? contentId.substr(0, 3) : '';
+    const contentTypeCode = get(selectedContent, 'typeCode', typeCodeSub);
+    loadContentTypeDetails(contentTypeCode);
     this.setState({ selectedContent });
     onSelectContent(selectedContent);
   }
@@ -214,6 +219,7 @@ export class SingleContentConfigFormBody extends PureComponent {
           name={putPrefixField('contentId')}
           component="span"
         />
+        <Field name={putPrefixField('chosenContentType')} component="span" />
 
         <div className="SingleContentConfigFormBody__table">
           <table className="table dataTable table-striped table-bordered">
@@ -257,6 +263,7 @@ export class SingleContentConfigFormBody extends PureComponent {
             joinGroups, ownerGroup,
           }}
         />
+        <NoDefaultWarningModal />
 
         {contentId && (
           <Row>
@@ -338,6 +345,7 @@ SingleContentConfigFormBody.propTypes = {
     name: PropTypes.string,
   })),
   appTourProgress: PropTypes.string,
+  loadContentTypeDetails: PropTypes.func.isRequired,
 };
 
 SingleContentConfigFormBody.defaultProps = {

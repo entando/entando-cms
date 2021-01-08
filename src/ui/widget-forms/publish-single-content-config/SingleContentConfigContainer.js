@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
-import { get } from 'lodash';
+import { get, isUndefined, isNull } from 'lodash';
 import { injectIntl } from 'react-intl';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
@@ -13,10 +13,12 @@ import {
 } from 'redux-form';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
+import { NoDefaultWarningModalId } from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
 import { ContentsFilterModalID } from 'ui/widget-forms/contents-filter/ContentsFilterModal';
 import { PAGE_STATUS_DRAFT } from 'state/pages/const';
 import { fetchPage } from 'state/pages/actions';
-import { getContentTypeList } from 'state/content-type/selectors';
+import { getContentTypeList, getSelectedContentType } from 'state/content-type/selectors';
+import { fetchContentType } from 'state/content-type/actions';
 import { setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { setCurrentStatusShow } from 'state/contents/actions';
 import { WORK_MODE_ADD } from 'state/edit-content/types';
@@ -36,6 +38,7 @@ export const mapStateToProps = (state, ownProps) => {
   }
   return {
     contentTemplates: getContentTemplateList(state),
+    contentType: getSelectedContentType(state),
     initialValues: widgetConfig || {},
     chosenContent: widgetConfig,
     ownerGroup: formSelect(state, putPrefixField('ownerGroup')),
@@ -64,14 +67,18 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       const {
         pageCode, frameId, intl, history, widgetCode,
       } = ownProps;
+      const { chosenContentType, ...otherValues } = values;
       const configItem = {
         config: {
-          ...values,
+          ...otherValues,
           ...(values.modelId != null && { modelId: values.modelId }),
         },
         code: widgetCode,
       };
-      dispatch(clearErrors());
+
+      if ((isUndefined(values.modelId) || values.modelId === 'default') && isNull(chosenContentType.defaultContentModel)) {
+        return dispatch(setVisibleModal(NoDefaultWarningModalId));
+      }
       return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
         if (res) {
           dispatch(addToast(
@@ -88,6 +95,10 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(setVisibleModal(''));
       dispatch(submit(SingleContentConfigContainerId));
     },
+    loadContentTypeDetails: contentTypeCode => dispatch(fetchContentType(contentTypeCode, false))
+      .then(ctype => (
+        dispatch(change(formToUse, putPrefixField('chosenContentType'), ctype))
+      )),
     onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
     onDiscard: () => {
       dispatch(setVisibleModal(''));

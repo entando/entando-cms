@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { get } from 'lodash';
+import { get, isNull } from 'lodash';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { routeConverter } from '@entando/utils';
 import { getContentTemplateList } from 'state/content-template/selectors';
 import ContentConfigForm, { MultipleContentsConfigContainerId, ContentConfigFormBody } from 'ui/widget-forms/ContentConfigFormBody';
 import { fetchContentTemplateListPaged } from 'state/content-template/actions';
+import { fetchContentType } from 'state/content-type/actions';
+import { NoDefaultWarningModalId } from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
 import { fetchSearchPages, fetchPage } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
@@ -14,7 +16,7 @@ import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import {
-  formValueSelector, submit, change,
+  formValueSelector, submit, change, arrayPush,
 } from 'redux-form';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
@@ -32,6 +34,7 @@ export const mapStateToProps = (state, ownProps) => {
     language: getLocale(state),
     widgetCode: ownProps.widgetCode,
     chosenContents: formValueSelector(formToUse)(state, putPrefixField('contents')),
+    chosenContentTypes: formValueSelector(formToUse)(state, putPrefixField('chosenContentTypes')),
     ownerGroup: formValueSelector(formToUse)(state, putPrefixField('ownerGroup')),
     joinGroups: formValueSelector(formToUse)(state, putPrefixField('joinGroups')),
   };
@@ -53,23 +56,38 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     putPrefixField,
-    onSubmit: (values) => {
+    onSubmit: ({ chosenContentTypes, ...values }) => {
       dispatch(clearErrors());
       const {
         pageCode, frameId, intl, history,
       } = ownProps;
       const contents = values.contents || [];
-      const configContents = contents.map(cc => Object.assign(
-        {},
-        {
-          contentId: cc.contentId,
-          ...(cc.modelId != null && { modelId: cc.modelId }),
-          contentDescription: cc.contentDescription,
-        },
-      ));
+      let hasNoDefaultTemplates = false;
+      const configContents = contents.map((cc) => {
+        if (!hasNoDefaultTemplates) {
+          const contentId = get(cc, 'contentId', get(cc, 'id', ''));
+          const typeCodeSub = contentId ? contentId.substr(0, 3) : '';
+          const contentTypeCode = get(cc, 'typeCode', typeCodeSub);
+          const theContentType = chosenContentTypes.find(
+            contentType => contentType.code === contentTypeCode,
+          );
+          hasNoDefaultTemplates = ((!cc.modelId || cc.modelId === 'default') && isNull(theContentType.defaultContentModelList));
+        }
+        return Object.assign(
+          {},
+          {
+            contentId: cc.contentId,
+            ...(cc.modelId != null && { modelId: cc.modelId }),
+            contentDescription: cc.contentDescription,
+          },
+        );
+      });
       const payload = { ...values, contents: configContents };
       const configItem = Object.assign({ config: payload }, { code: ownProps.widgetCode });
       dispatch(clearErrors());
+      if (hasNoDefaultTemplates) {
+        return dispatch(setVisibleModal(NoDefaultWarningModalId));
+      }
       return dispatch(sendPutWidgetConfig(pageCode, frameId, configItem)).then((res) => {
         if (res) {
           dispatch(addToast(
@@ -80,6 +98,14 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
         }
       });
     },
+    pushContentTypeDetails: contentTypeCodes => (
+      contentTypeCodes.forEach(contentTypeCode => (
+        dispatch(fetchContentType(contentTypeCode, false))
+          .then(ctype => (
+            dispatch(arrayPush(formToUse, putPrefixField('chosenContentTypes'), ctype))
+          ))
+      ))
+    ),
     onSave: () => { dispatch(setVisibleModal('')); dispatch(submit(MultipleContentsConfigContainerId)); },
     onCancel: () => dispatch(setVisibleModal(ConfirmCancelModalID)),
     onDiscard: () => {
