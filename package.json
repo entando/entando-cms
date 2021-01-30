@@ -219,7 +219,7 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "commander": "^4.1.0",
     "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-jest-dom": "^3.0.1",
