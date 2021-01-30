@@ -259,7 +259,7 @@
     "patternfly-react": "^1.19.1",
     "react-bootstrap": "^0.32.1",
     "react-datepicker": "^1.4.1",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.2.0"
   },
   "bugs": {
     "url": "https://github.com/entando/entando-cms/issues"
