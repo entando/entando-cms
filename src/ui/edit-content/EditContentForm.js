@@ -16,6 +16,7 @@ import FormLabel from 'ui/common/form/FormLabel';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderVersionText from 'ui/common/form/RenderVersionText';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
+import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
 import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
 import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorContainer';
 
@@ -126,13 +127,13 @@ export class EditContentFormBody extends React.Component {
     );
   }
 
-  handleOwnerGroupChange(e) {
+  handleOwnerGroupChange(code) {
     const {
       workMode,
       onSetOwnerGroupDisable,
       resetSection,
     } = this.props;
-    if (e.target.value && workMode === WORK_MODE_EDIT) {
+    if (code && workMode === WORK_MODE_EDIT) {
       onSetOwnerGroupDisable(true);
     }
     if (workMode === WORK_MODE_ADD) {
@@ -361,56 +362,40 @@ export class EditContentFormBody extends React.Component {
                   <Col xs={12}>
                     <FormGroup>
                       <Field
-                        component={RenderSelectInput}
+                        component={RenderDropdownTypeaheadInput}
                         name="mainGroup"
-                        onChange={this.handleOwnerGroupChange}
-                        forwardRef
-                        validate={[required]}
-                        ref={this.ownerGroupInput}
-                        append={
-                        !ownerGroupDisabled && workMode === WORK_MODE_ADD ? (
-                          <button
-                            type="button"
-                            onClick={() => onSetOwnerGroupDisable(true)}
-                            className="btn btn-primary"
-                          >
-                            <FormattedMessage id="cms.contents.edit.groups.ownerGroup.button" />
-                          </button>
-                        ) : null
-                      }
                         label={(
                           <FormLabel
                             labelId="cms.contents.edit.groups.ownerGroup.label"
                             helpId="cms.contents.edit.groups.ownerGroup.tooltip"
                             required
                           />
-  )}
-                        labelSize={2}
+                        )}
                         options={groupsWithEmptyOption}
-                        optionValue="code"
-                        optionDisplayName="name"
-                        defaultOptionId="cms.label.chooseoption"
+                        labelSize={2}
+                        labelKey="name"
+                        valueKey="code"
+                        onChange={this.handleOwnerGroupChange}
                         disabled={workMode === WORK_MODE_EDIT}
+                        placeholder={intl.formatMessage({ id: 'cms.label.chooseoption' })}
+                        validate={[required]}
                       />
                     </FormGroup>
                     <div id="contentGroupsWrapper">
                       <FormGroup>
-                        <FormGroup>
-                          <ControlLabel htmlFor="groups" className="col-xs-12 col-sm-2 text-right">
+                        <Field
+                          component={RenderDropdownTypeaheadInput}
+                          name="groups"
+                          multiple
+                          label={(
                             <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
-                          </ControlLabel>
-                          <Col xs={12} sm={10}>
-                            <FieldArray
-                              component={MultiSelectRenderer}
-                              name="groups"
-                              intl={intl}
-                              options={groups}
-                              selectedValues={selectedJoinGroups}
-                              labelKey="name"
-                              valueKey="code"
-                            />
-                          </Col>
-                        </FormGroup>
+                          )}
+                          options={groups}
+                          labelSize={2}
+                          labelKey="name"
+                          valueKey="code"
+                          placeholder={intl.formatMessage({ id: 'cms.label.chooseoption' })}
+                        />
                       </FormGroup>
                     </div>
                   </Col>

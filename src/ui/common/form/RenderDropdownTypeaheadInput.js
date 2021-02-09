@@ -1,40 +1,42 @@
 import React, { Component } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Col, ControlLabel, DropdownButton } from 'patternfly-react';
+import { get } from 'lodash';
+import { Col, ControlLabel } from 'patternfly-react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 class RenderDropdownTypeaheadInput extends Component {
   constructor(props) {
     super(props);
-    this.refTypeahead = React.createRef();
-    this.typeaheadFocus = this.typeaheadFocus.bind(this);
     this.valueChanged = this.valueChanged.bind(this);
   }
 
   valueChanged(selected) {
-    const { input, onChange } = this.props;
-    if (!selected.length) return;
-    input.onChange(selected[0]);
+    const {
+      input,
+      onChange,
+      multiple,
+      valueKey,
+    } = this.props;
+    const value = multiple ? selected.map(({ code }) => code) : get(selected, `0.${valueKey}`, '');
+    input.onChange(value);
     if (onChange) {
-      onChange(selected[0]);
+      onChange(value);
     }
-    const btn = document.querySelector('.DropdownTypeahead__dropdownbutton');
-    btn.click();
-  }
-
-  typeaheadFocus() {
-    setTimeout(() => this.refTypeahead.current.focus(), 10);
   }
 
   render() {
     const {
       input,
       meta: { touched, error },
+      intl,
+      multiple,
       label,
       help,
       labelSize,
       inputSize,
       labelKey,
+      valueKey,
       append,
       alignClass,
       placeholder,
@@ -42,6 +44,36 @@ class RenderDropdownTypeaheadInput extends Component {
       onChange,
       ...others
     } = this.props;
+
+    const filterBy = (option, state) => {
+      if (!multiple && state.selected.length) {
+        return true;
+      }
+      return option[valueKey].toLowerCase().indexOf(state.text.toLowerCase()) > -1;
+    };
+
+    const choices = multiple ? options.filter(option => (
+      !input.value.includes(get(option, valueKey, option))
+    )) : options;
+
+    const selected = options.filter((option) => {
+      const optionValue = get(option, valueKey, option);
+      if (multiple) {
+        return input.value.includes(optionValue);
+      }
+      return optionValue === input.value;
+    });
+
+    const renderToggleButton = ({ isMenuShown, onClick }) => (
+      <button
+        className={`DropdownTypeahead__toggle-button fa fa-angle-${isMenuShown ? 'up' : 'down'}`}
+        onClick={(e) => {
+          e.preventDefault();
+          onClick(e);
+        }}
+      />
+    );
+
     return (
       <div
         className={
@@ -60,28 +92,22 @@ class RenderDropdownTypeaheadInput extends Component {
           ''
         )}
         <Col xs={inputSize || 12 - labelSize}>
-          <DropdownButton
-            title={(input.value && input.value[labelKey]) || placeholder}
+          <Typeahead
+            filterBy={filterBy}
             id={input.name}
-            className="DropdownTypeahead__dropdownbutton"
-            onClick={this.typeaheadFocus}
+            multiple={multiple}
+            options={choices}
+            emptyLabel={intl.formatMessage({ id: options.length === selected.length ? 'app.noOptions' : 'app.noMatchOptions' })}
+            labelKey={labelKey}
+            placeholder={placeholder}
+            selected={selected}
+            onChange={this.valueChanged}
             disabled={others.disabled}
-            rootCloseEvent="click"
           >
-            <Typeahead
-              selectHintOnEnter
-              clearButton
-              id={input.name}
-              options={options}
-              ref={this.refTypeahead}
-              labelKey={labelKey}
-              filterBy={[labelKey]}
-              placeholder={placeholder}
-              onChange={this.valueChanged}
-              className="DropdownTypeahead__droparea"
-              {...others}
-            />
-          </DropdownButton>
+            {({ isMenuShown, toggleMenu }) => (
+              renderToggleButton({ isMenuShown, onClick: toggleMenu })
+            )}
+          </Typeahead>
           {append && <span className="AppendedLabel">{append}</span>}
           {touched && (error && <span className="help-block">{error}</span>)}
         </Col>
@@ -94,8 +120,13 @@ RenderDropdownTypeaheadInput.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func,
     name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string),
+    ]),
   }),
+  intl: intlShape.isRequired,
+  multiple: PropTypes.bool,
   label: PropTypes.node,
   labelSize: PropTypes.number,
   labelKey: PropTypes.string,
@@ -111,6 +142,7 @@ RenderDropdownTypeaheadInput.propTypes = {
   append: PropTypes.string,
   alignClass: PropTypes.string,
   onChange: PropTypes.func,
+  valueKey: PropTypes.string,
 };
 
 RenderDropdownTypeaheadInput.defaultProps = {
@@ -126,6 +158,8 @@ RenderDropdownTypeaheadInput.defaultProps = {
   append: '',
   alignClass: 'text-right',
   onChange: null,
+  valueKey: '',
+  multiple: false,
 };
 
-export default RenderDropdownTypeaheadInput;
+export default injectIntl(RenderDropdownTypeaheadInput);

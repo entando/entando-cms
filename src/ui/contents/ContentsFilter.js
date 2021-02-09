@@ -11,6 +11,7 @@ import { Checkbox } from 'react-bootstrap';
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
+import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
 
 const messages = defineMessages({
   searchContent: {
@@ -233,16 +234,17 @@ class ContentsFilter extends Component {
             />
           </div>
           <div className="ContentsFilter__advanced-filter form-group">
-            <RenderSelectInput
+            <RenderDropdownTypeaheadInput
+              input={{ name: 'group' }}
+              label={<FormLabel labelId="cms.contents.group" defaultMessage="Group" />}
               inputSize={9}
               labelSize={2}
-              label={<FormLabel labelId="cms.contents.group" defaultMessage="Content Type" />}
-              alignClass="text-right"
               options={groups}
-              optionValue="code"
-              optionDisplayName="name"
-              defaultOptionId="cms.contents.selectGroup"
-              input={{ onChange: e => onSetGroup(e.target.value) }}
+              alignClass="text-right"
+              labelKey="name"
+              valueKey="code"
+              onChange={groupcode => onSetGroup(groupcode)}
+              placeholder={intl.formatMessage({ id: 'cms.contents.selectGroup' })}
             />
           </div>
           <div className="ContentsFilter__advanced-filter form-group">
