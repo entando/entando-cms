@@ -4,7 +4,7 @@ import { intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import {
   Row, Col, FormGroup, ControlLabel, Spinner, Button,
 } from 'patternfly-react';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import Panel from 'react-bootstrap/lib/Panel';
 import { required, maxLength } from '@entando/utils';
 import { Collapse } from 'react-collapse';
@@ -15,9 +15,7 @@ import SectionTitle from 'ui/common/SectionTitle';
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderVersionText from 'ui/common/form/RenderVersionText';
-import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
-import MultiSelectRenderer from 'ui/common/form/MultiSelectRenderer';
 import CategoryTreeContainer from 'ui/categories/common/CategoryTreeSelectorContainer';
 
 import { WORK_MODE_ADD, WORK_MODE_EDIT } from 'state/edit-content/types';
@@ -161,9 +159,7 @@ export class EditContentFormBody extends React.Component {
       submitting,
       onUnpublish,
       selectedJoinGroups,
-      ownerGroupDisabled,
       contentType: cType,
-      onSetOwnerGroupDisable,
       currentUser: currentUserName,
       dirty,
       onCancel,
@@ -490,7 +486,6 @@ EditContentFormBody.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialize: PropTypes.func.isRequired,
   onDidMount: PropTypes.func.isRequired,
-  ownerGroupDisabled: PropTypes.bool,
   onSetOwnerGroupDisable: PropTypes.func.isRequired,
   match: PropTypes.shape({ params: PropTypes.shape({}) }).isRequired,
   onIncompleteData: PropTypes.func.isRequired,
@@ -520,7 +515,6 @@ EditContentFormBody.propTypes = {
 };
 
 EditContentFormBody.defaultProps = {
-  ownerGroupDisabled: false,
   selectedJoinGroups: [],
   content: {},
   invalid: false,

@@ -96,6 +96,7 @@ class ContentsFilterBrowser extends Component {
       onAdvancedFilterSearch, users,
       pickedContents,
       onContentPicked,
+      groupFilter,
     } = this.props;
 
     const availableColumns = AVAILABLE_COLUMN_CODES.map(code => ({
@@ -111,6 +112,7 @@ class ContentsFilterBrowser extends Component {
           currentQuickFilter={currentQuickFilter}
           onSetQuickFilter={onSetQuickFilter}
           contentTypes={contentTypes}
+          groupFilter={groupFilter}
           groups={groups}
           filteringCategories={filteringCategories}
           statusChecked={statusChecked}
@@ -186,6 +188,7 @@ ContentsFilterBrowser.propTypes = {
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  groupFilter: PropTypes.string,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   sortingColumns: PropTypes.shape({}).isRequired,
   onCheckStatus: PropTypes.func.isRequired,
@@ -225,6 +228,7 @@ ContentsFilterBrowser.defaultProps = {
   onContentPicked: () => {},
   currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
   compatibility: {},
+  groupFilter: '',
 };
 
 

@@ -21,6 +21,7 @@ import {
   getContents, getCurrentAuthorShow,
   getCurrentQuickFilter, getCurrentStatusShow,
   getFilteringCategories, getSelectedRows, getSortingColumns, getStatusChecked,
+  getGroup,
 } from 'state/contents/selectors';
 
 import { setAppTourLastStep } from 'state/app-tour/actions';
@@ -73,6 +74,7 @@ export const mapStateToProps = (state) => {
     contents: getContents(state),
     currentQuickFilter: getCurrentQuickFilter(state),
     groups: getGroups(state),
+    groupFilter: getGroup(state),
     contentTypes: getContentTypeList(state),
     filteringCategories: getFilteringCategories(state),
     statusChecked: getStatusChecked(state),
