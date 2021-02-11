@@ -1,5 +1,5 @@
 import React from 'react';
-import { configEnzymeAdapter } from 'testutils/helpers';
+import { configEnzymeAdapter, mockRenderWithIntl } from 'testutils/helpers';
 import { mount } from 'enzyme';
 
 import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
@@ -13,16 +13,16 @@ describe('ui/common/form/RenderDropdownTypeaheadInput', () => {
     id: 'a',
   };
 
-  const component = mount(<RenderDropdownTypeaheadInput {...props} />);
+  const component = mount(mockRenderWithIntl(<RenderDropdownTypeaheadInput {...props} />));
 
   it('renders without crashing', () => {
     expect(component.exists()).toEqual(true);
   });
 
-  it('checks DropdownButton and its props', () => {
-    const el = component.find('DropdownButton');
+  it('checks Toggle button and its props', () => {
+    const el = component.find('button');
     expect(el.exists()).toEqual(true);
-    expect(el.at(0).hasClass('DropdownTypeahead__dropdownbutton')).toEqual(true);
+    expect(el.hasClass('DropdownTypeahead__toggle-button')).toEqual(true);
   });
 
   it('checks Typeahead and option props', () => {

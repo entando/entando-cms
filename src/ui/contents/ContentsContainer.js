@@ -20,7 +20,7 @@ import {
   getContents, getCurrentQuickFilter, getFilteringCategories,
   getStatusChecked, getAccessChecked, getAuthorChecked, getCurrentAuthorShow,
   getCurrentStatusShow, getSortingColumns,
-  getSelectedRows,
+  getSelectedRows, getGroup,
 } from 'state/contents/selectors';
 import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
@@ -71,6 +71,7 @@ export const mapStateToProps = (state) => {
     contents: getContents(state),
     currentQuickFilter: getCurrentQuickFilter(state),
     groups: getGroups(state),
+    groupFilter: getGroup(state),
     contentTypes: getContentTypeList(state),
     filteringCategories: getFilteringCategories(state),
     statusChecked: getStatusChecked(state),

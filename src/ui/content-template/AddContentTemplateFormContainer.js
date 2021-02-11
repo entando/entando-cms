@@ -43,7 +43,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(clearContentTemplateDictionary());
     dispatch(clearSelectedContentType());
   },
-  onChangeContentType: ({ code }) => {
+  onChangeContentType: (code) => {
     dispatch(fetchContentType(code));
   },
   onSubmit: values => (

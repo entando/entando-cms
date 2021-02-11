@@ -11,6 +11,7 @@ import { Checkbox } from 'react-bootstrap';
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
+import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
 
 const messages = defineMessages({
   searchContent: {
@@ -88,7 +89,7 @@ class ContentsFilter extends Component {
 
   render() {
     const {
-      currentQuickFilter, intl, contentTypes, groups, language, filteringCategories,
+      currentQuickFilter, intl, contentTypes, groups, language, filteringCategories, groupFilter,
       statusChecked, onCheckStatus, accessChecked, onCheckAccess, authorChecked, onCheckAuthor,
       onSetContentType, onSetGroup, currentUsername, onAdvancedFilterSearch, users, inModal,
     } = this.props;
@@ -122,7 +123,7 @@ class ContentsFilter extends Component {
 
 
     const renderedContentsStatusFilter = !inModal && (
-      <div className="ContentsFilter__advanced-filter ContentsFilter__advanced-filter--close form-group">
+      <div className="row form-group">
         <Col xs={12} sm={2} className="text-right mobile-left">
           <ControlLabel>
             <FormLabel labelId="cms.contents.statusMain" />
@@ -166,8 +167,6 @@ class ContentsFilter extends Component {
       </div>
     );
 
-    const advancedFiltersVisibility = showAdvancedFilters ? 'block' : 'none';
-
     const QUICK_FILTERS = [
       {
         id: 'description',
@@ -207,7 +206,7 @@ class ContentsFilter extends Component {
             />
           </Col>
         </Filter>
-        <Col xs={6} xsOffset={0} sm={6} smOffset={2} className="ContentsFilter__right-column">
+        <Col xs={12} xsOffset={0} sm={10} smOffset={2} className="ContentsFilter__right-column">
           <div
             className="ContentsFilter__advanced-filters-text"
             role="button"
@@ -218,117 +217,119 @@ class ContentsFilter extends Component {
             {advancedFilterIcon} <FormattedMessage id="cms.contents.advancedFilters" defaultMessage="Advanced Filters" />
           </div>
         </Col>
-        <div className="ContentsFilter__advanced-filters" style={{ display: advancedFiltersVisibility }}>
-          <div className="ContentsFilter__advanced-filter form-group">
-            <RenderSelectInput
-              inputSize={9}
-              labelSize={2}
-              label={<FormLabel labelId="cms.contents.contentType" defaultMessage="Content Type" />}
-              alignClass="text-right"
-              options={contentTypes}
-              optionValue="code"
-              optionDisplayName="name"
-              defaultOptionId="cms.contents.selectContentType"
-              input={{ onChange: e => onSetContentType(e.target.value) }}
-            />
-          </div>
-          <div className="ContentsFilter__advanced-filter form-group">
-            <RenderSelectInput
-              inputSize={9}
-              labelSize={2}
-              label={<FormLabel labelId="cms.contents.group" defaultMessage="Content Type" />}
-              alignClass="text-right"
-              options={groups}
-              optionValue="code"
-              optionDisplayName="name"
-              defaultOptionId="cms.contents.selectGroup"
-              input={{ onChange: e => onSetGroup(e.target.value) }}
-            />
-          </div>
-          <div className="ContentsFilter__advanced-filter form-group">
-            <Col xs={12} sm={2} className="text-right mobile-left">
-              <ControlLabel>
-                <FormLabel labelId="cms.contents.edit.categories" />
-              </ControlLabel>
-            </Col>
-            <Col xs={12} sm={10}>
-              <CategoryTreeFilterContainer
-                language={language}
-                filteringCategories={filteringCategories}
-                assetType="image"
-                mobile
-                minimal
-                filterSubject="content"
+        {showAdvancedFilters && (
+          <>
+            <div className="row form-group">
+              <RenderSelectInput
+                inputSize={9}
+                labelSize={2}
+                label={<FormLabel labelId="cms.contents.contentType" defaultMessage="Content Type" />}
+                alignClass="text-right"
+                options={contentTypes}
+                optionValue="code"
+                optionDisplayName="name"
+                defaultOptionId="cms.contents.selectContentType"
+                input={{ onChange: e => onSetContentType(e.target.value) }}
               />
-            </Col>
-          </div>
-          { renderedContentsStatusFilter }
-          <div className="ContentsFilter__advanced-filter form-group">
-            <Col xs={12} sm={2} className="text-right mobile-left">
-              <ControlLabel>
-                <FormLabel labelId="cms.contents.restriction" defaultMessage="Restrictions" />
-              </ControlLabel>
-            </Col>
-            <Col xs={12} sm={10}>
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-5}
-                readOnly
-                checked={accessChecked === OPEN}
-                onClick={() => onCheckAccess(OPEN)}
-                onKeyDown={() => onCheckAccess(OPEN)}
-              >
-                <i className="fa fa-unlock ContentsFilter__access-icon" />
-                <FormattedMessage id="cms.contents.open" defaultMessage="Open" />
-              </Checkbox>
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-5}
-                readOnly
-                checked={accessChecked === RESTRICTED}
-                onClick={() => onCheckAccess(RESTRICTED)}
-                onKeyDown={() => onCheckAccess(RESTRICTED)}
-              >
-                <i className="fa fa-lock ContentsFilter__access-icon" />
-                <FormattedMessage id="cms.contents.restricted" defaultMessage="Restricted" />
-              </Checkbox>
-            </Col>
-          </div>
-          <div className="ContentsFilter__advanced-filter form-group">
-            <Col xs={12} sm={2} className="text-right mobile-left">
-              <ControlLabel>
-                <FormLabel labelId="cms.contents.showMe" defaultMessage="Show me" />
-              </ControlLabel>
-            </Col>
-            <Col xs={12} sm={10} className="ContentsFilter__users-wrapper">
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-7}
-                readOnly
-                checked={authorChecked === ALL}
-                onClick={() => onCheckAuthor(ALL)}
-                onKeyDown={() => onCheckAuthor(ALL)}
-              >
-                <FormattedMessage id="cms.contents.allContents" defaultMessage="All Contents" />
-              </Checkbox>
-              <Checkbox
-                className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
-                role="button"
-                tabIndex={-8}
-                readOnly
-                checked={authorChecked === currentUsername}
-                onClick={() => onCheckAuthor(currentUsername)}
-                onKeyDown={() => onCheckAuthor(currentUsername)}
-              >
-                <FormattedMessage id="cms.contents.onlyMine" defaultMessage="Only Mine" />
-              </Checkbox>
-              {renderedUsers}
-            </Col>
-          </div>
-        </div>
+            </div>
+            <div className="row form-group">
+              <RenderDropdownTypeaheadInput
+                input={{ name: 'group', value: groupFilter, onChange: groupcode => onSetGroup(groupcode) }}
+                label={<FormLabel labelId="cms.contents.group" defaultMessage="Group" />}
+                inputSize={9}
+                labelSize={2}
+                options={groups}
+                alignClass="text-right"
+                labelKey="name"
+                valueKey="code"
+                placeholder={intl.formatMessage({ id: 'cms.contents.selectGroup' })}
+              />
+            </div>
+            <div className="row form-group">
+              <Col xs={12} sm={2} className="text-right mobile-left">
+                <ControlLabel>
+                  <FormLabel labelId="cms.contents.edit.categories" />
+                </ControlLabel>
+              </Col>
+              <Col xs={12} sm={10}>
+                <CategoryTreeFilterContainer
+                  language={language}
+                  filteringCategories={filteringCategories}
+                  assetType="image"
+                  mobile
+                  minimal
+                  filterSubject="content"
+                />
+              </Col>
+            </div>
+            { renderedContentsStatusFilter }
+            <div className="row form-group">
+              <Col xs={12} sm={2} className="text-right mobile-left">
+                <ControlLabel>
+                  <FormLabel labelId="cms.contents.restriction" defaultMessage="Restrictions" />
+                </ControlLabel>
+              </Col>
+              <Col xs={12} sm={10}>
+                <Checkbox
+                  className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+                  role="button"
+                  tabIndex={-5}
+                  readOnly
+                  checked={accessChecked === OPEN}
+                  onClick={() => onCheckAccess(OPEN)}
+                  onKeyDown={() => onCheckAccess(OPEN)}
+                >
+                  <i className="fa fa-unlock ContentsFilter__access-icon" />
+                  <FormattedMessage id="cms.contents.open" defaultMessage="Open" />
+                </Checkbox>
+                <Checkbox
+                  className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+                  role="button"
+                  tabIndex={-5}
+                  readOnly
+                  checked={accessChecked === RESTRICTED}
+                  onClick={() => onCheckAccess(RESTRICTED)}
+                  onKeyDown={() => onCheckAccess(RESTRICTED)}
+                >
+                  <i className="fa fa-lock ContentsFilter__access-icon" />
+                  <FormattedMessage id="cms.contents.restricted" defaultMessage="Restricted" />
+                </Checkbox>
+              </Col>
+            </div>
+            <div className="row form-group">
+              <Col xs={12} sm={2} className="text-right mobile-left">
+                <ControlLabel>
+                  <FormLabel labelId="cms.contents.showMe" defaultMessage="Show me" />
+                </ControlLabel>
+              </Col>
+              <Col xs={12} sm={10} className="ContentsFilter__users-wrapper">
+                <Checkbox
+                  className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+                  role="button"
+                  tabIndex={-7}
+                  readOnly
+                  checked={authorChecked === ALL}
+                  onClick={() => onCheckAuthor(ALL)}
+                  onKeyDown={() => onCheckAuthor(ALL)}
+                >
+                  <FormattedMessage id="cms.contents.allContents" defaultMessage="All Contents" />
+                </Checkbox>
+                <Checkbox
+                  className="ContentsFilter__item-cb ContentsFilter__item-cb--responsive"
+                  role="button"
+                  tabIndex={-8}
+                  readOnly
+                  checked={authorChecked === currentUsername}
+                  onClick={() => onCheckAuthor(currentUsername)}
+                  onKeyDown={() => onCheckAuthor(currentUsername)}
+                >
+                  <FormattedMessage id="cms.contents.onlyMine" defaultMessage="Only Mine" />
+                </Checkbox>
+                {renderedUsers}
+              </Col>
+            </div>
+          </>
+        )}
         <div className="form-group">
           <Col xs={12} sm={2} smOffset={9} className="text-right mobile-center">
             <Button
@@ -366,6 +367,7 @@ ContentsFilter.propTypes = {
   onCheckAuthor: PropTypes.func.isRequired,
   onSetContentType: PropTypes.func.isRequired,
   onSetGroup: PropTypes.func.isRequired,
+  groupFilter: PropTypes.string,
   currentUsername: PropTypes.string.isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -374,6 +376,7 @@ ContentsFilter.propTypes = {
 
 ContentsFilter.defaultProps = {
   inModal: false,
+  groupFilter: '',
 };
 
 export default ContentsFilter;

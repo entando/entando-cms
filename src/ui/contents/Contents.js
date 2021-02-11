@@ -108,7 +108,7 @@ class Contents extends Component {
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
       onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
-      onAdvancedFilterSearch, users, userPermissions,
+      onAdvancedFilterSearch, users, userPermissions, groupFilter,
     } = this.props;
 
     const availableColumns = AVAILABLE_COLUMN_CODES.map(code => ({
@@ -167,6 +167,7 @@ class Contents extends Component {
           onCheckAuthor={onCheckAuthor}
           authorChecked={authorChecked}
           onSetContentType={onSetContentType}
+          groupFilter={groupFilter}
           onSetGroup={onSetGroup}
           currentUsername={currentUsername}
           onAdvancedFilterSearch={onAdvancedFilterSearch}
@@ -235,6 +236,7 @@ Contents.propTypes = {
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  groupFilter: PropTypes.string,
   filteringCategories: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onCheckStatus: PropTypes.func.isRequired,
   statusChecked: PropTypes.string.isRequired,
@@ -273,6 +275,7 @@ Contents.defaultProps = {
   users: [],
   userPermissions: [],
   currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
+  groupFilter: '',
 };
 
 export default withPermissionValues(Contents);

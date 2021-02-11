@@ -152,6 +152,7 @@ class AddContentTemplateFormBody extends Component {
                 )}
                 options={contentTypes}
                 labelKey="name"
+                valueKey="code"
                 onChange={onChangeContentType}
                 placeholder={intl.formatMessage(messages.chooseContentType)}
                 validate={[required]}
