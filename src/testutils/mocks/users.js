@@ -1,3 +1,18 @@
+export const USER = {
+  username: 'login',
+  registration: '2018-01-08 00:00:00',
+  lastLogin: '2018-01-08 00:00:00',
+  lastPasswordChange: '2018-01-08 00:00:00',
+  status: 'active',
+  passwordChangeRequired: true,
+  profileAttributes: {
+    fullName: '',
+    email: '',
+  },
+  accountNotExpired: true,
+  credentialsNotExpired: true,
+};
+
 export const USERS = [
   {
     username: 'admin',

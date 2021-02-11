@@ -3,6 +3,15 @@ import { configEnzymeAdapter } from 'testutils/helpers';
 import { mapStateToProps, mapDispatchToProps } from 'ui/add-content/AddContentFormContainer';
 import { ADD_CONTENT_OPENED_OK } from 'testutils/mocks/editContent';
 
+jest.mock('state/user-preferences/selectors', () => ({
+  getUserPreferences: jest.fn(() => ({})),
+  getTranslationWarning: jest.fn(() => true),
+}));
+
+jest.mock('state/users/selectors', () => ({
+  getSelectedUserAuthorities: jest.fn(),
+}));
+
 const TEST_STATE = {
   apps: {
     cms: {
@@ -39,7 +48,7 @@ configEnzymeAdapter();
 
 describe('AddContentFormContainer connection to redux', () => {
   it('maps editContent properties from state to AddContentForm', () => {
-    expect(mapStateToProps(TEST_STATE)).toEqual(ADD_CONTENT_OPENED_OK);
+    expect(mapStateToProps(TEST_STATE, { match: {} })).toEqual(ADD_CONTENT_OPENED_OK);
   });
 
   it('verify that onDidMount and onSetOwnerGroupDisable are defined and called in mapDispatchToProps', () => {

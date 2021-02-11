@@ -171,7 +171,12 @@ const AttributeFields = ({
       });
     });
     reInitializeForm('editcontentform', {
-      ...content, attributes: atts, contentType: typeCode, mainGroup, joinGroups,
+      ...content,
+      attributes: atts,
+      contentType: typeCode,
+      mainGroup,
+      joinGroups,
+      groups: joinGroups,
     });
   }
 
