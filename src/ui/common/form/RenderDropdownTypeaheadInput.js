@@ -98,7 +98,7 @@ class RenderDropdownTypeaheadInput extends Component {
             id={input.name}
             multiple={multiple}
             options={choices}
-            emptyLabel={intl.formatMessage({ id: options.length === selected.length ? 'app.noOptions' : 'app.noMatchOptions' })}
+            emptyLabel={intl.formatMessage({ id: options.length === selected.length ? 'cms.label.noOptions' : 'cms.label.noMatchOptions' })}
             labelKey={labelKey}
             placeholder={placeholder}
             selected={selected}
