@@ -43,8 +43,6 @@ const messages = defineMessages({
   },
 });
 
-const defaultOwnerGroup = '';
-
 const fieldFocus = (el, addDelay) => {
   const focusEl = el.current;
   if (!focusEl) {
@@ -76,7 +74,7 @@ export class EditContentFormBody extends React.Component {
 
   componentDidMount() {
     const {
-      initialize, onDidMount, match: { params = {} },
+      onDidMount, match: { params = {} },
       onIncompleteData,
     } = this.props;
     const { id: contentId, contentType } = params;
@@ -84,7 +82,6 @@ export class EditContentFormBody extends React.Component {
     if (contentType == null && contentId == null) return onIncompleteData();
     // if contentId from params is null, it means we are creating a new content
     if (contentId == null) {
-      initialize({ mainGroup: defaultOwnerGroup, contentType });
       fieldFocus(this.ownerGroupInput);
     }
     return onDidMount(fetchContentParams);

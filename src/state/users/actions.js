@@ -1,20 +1,28 @@
 import {
   addToast, addErrors, TOAST_ERROR,
 } from '@entando/messages';
+import { getUsername } from '@entando/apimanager';
 
 import {
+  getUserAuthorities,
   getUsers,
 } from 'api/users';
 import { setPage } from 'state/pagination/actions';
 import { NAMESPACE_USERS } from 'state/pagination/const';
 import { toggleLoading } from 'state/loading/actions';
-import { SET_USERS } from 'state/users/types';
-
+import { SET_USERS, SET_SELECTED_USER_AUTHORITIES } from 'state/users/types';
 
 export const setUsers = users => ({
   type: SET_USERS,
   payload: {
     users,
+  },
+});
+
+export const setSelectedUserAuthorities = authorities => ({
+  type: SET_SELECTED_USER_AUTHORITIES,
+  payload: {
+    authorities,
   },
 });
 
@@ -37,3 +45,19 @@ export const fetchUsers = (page = { page: 1, pageSize: 10 }, params = '') => dis
     }).catch(() => {});
   })
 );
+
+export const fetchCurrentUserAuthorities = () => async (dispatch, getState) => {
+  const username = getUsername(getState());
+  try {
+    const response = await getUserAuthorities(username);
+    const json = await response.json();
+    if (response.ok) {
+      dispatch(setSelectedUserAuthorities(json.payload));
+    } else {
+      dispatch(addErrors(json.errors.map(e => e.message)));
+      json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+    }
+  } catch (e) {
+    // do nothing
+  }
+};

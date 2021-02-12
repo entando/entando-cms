@@ -37,6 +37,11 @@ export const ADD_CONTENT_OPENED_OK = {
     version: '0.0',
   },
   enableTranslationWarning: true,
+  initialValues: {
+    mainGroup: undefined,
+    groups: undefined,
+    contentType: undefined,
+  },
 };
 
 export const GET_CONTENT_RESPONSE_OK = {

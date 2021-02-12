@@ -3,6 +3,7 @@ import {
   getUsersIdList,
   getUsersMap,
   getUserList,
+  getSelectedUserAuthorities,
 } from 'state/users/selectors';
 
 jest.mock('state/locale/selectors', () => ({ getLocale: () => ('en') }));
@@ -13,6 +14,7 @@ const TEST_STATE = {
       users: {
         list: [],
         map: {},
+        authorities: [],
       },
     },
   },
@@ -33,5 +35,9 @@ describe('state/users/selectors', () => {
 
   it('verify getUserList selector', () => {
     expect(getUserList(TEST_STATE)).toEqual([]);
+  });
+
+  it('verify getSelectedUserAuthorities selector', () => {
+    expect(getSelectedUserAuthorities(TEST_STATE)).toEqual([]);
   });
 });

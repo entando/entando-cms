@@ -11,6 +11,7 @@ describe('state/users/reducer', () => {
     expect(typeof state).toBe('object');
     expect(state).toHaveProperty('list', []);
     expect(state).toHaveProperty('map', {});
+    expect(state).toHaveProperty('authorities', []);
   });
 
   describe('after action SET_USERS', () => {

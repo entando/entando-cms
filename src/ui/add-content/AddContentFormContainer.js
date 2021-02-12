@@ -26,7 +26,7 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import EditContentForm from 'ui/edit-content/EditContentForm';
 import { getUsername } from '@entando/apimanager';
 import { getSelectedContentType } from 'state/content-type/selectors';
-import { getTranslationWarning } from 'state/user-preferences/selectors';
+import { getTranslationWarning, getUserPreferences } from 'state/user-preferences/selectors';
 import { getLocale } from 'state/locale/selectors';
 
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
@@ -41,6 +41,8 @@ import {
 import {
   CONTINUE_SAVE_TYPE, WORK_MODE_ADD, WORK_MODE_EDIT, APPROVE_SAVE_TYPE,
 } from 'state/edit-content/types';
+import { fetchCurrentUserAuthorities } from 'state/users/actions';
+import { getSelectedUserAuthorities } from 'state/users/selectors';
 
 export const TranslationWarningModalID = 'TranslationWarningModal';
 
@@ -59,22 +61,39 @@ const publishContentMsgs = defineMessages({
   },
 });
 
-export const mapStateToProps = state => ({
-  workMode: WORK_MODE_ADD,
-  language: getLocale(state),
-  groups: getGroups(state),
-  currentUser: getUsername(state),
-  ownerGroupDisabled: getOwnerGroupDisabled(state),
-  selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
-  selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),
-  selectedOwnerGroup: formValueSelector('editcontentform')(state, 'mainGroup'),
-  saveType: getSaveType(state),
-  content: getContent(state),
-  contentType: getSelectedContentType(state),
-  status: formValueSelector('editcontentform')(state, 'status'),
-  missingTranslations: getMissingTranslations(state),
-  enableTranslationWarning: getTranslationWarning(state),
-});
+export const mapStateToProps = (state, ownProps) => {
+  const { match: { params = {} } } = ownProps;
+  const userPreferences = getUserPreferences(state);
+  const userAuthorities = getSelectedUserAuthorities(state) || [];
+  const authorityWithAdmin = userAuthorities.find(ua => ua.role === 'admin') || {};
+  const defaultOwnerGroup = userPreferences.defaultContentOwnerGroup || authorityWithAdmin.group;
+  const defaultJoinGroups = userPreferences.defaultContentJoinGroups;
+  const { id: contentId, contentType } = params;
+
+  return ({
+    workMode: WORK_MODE_ADD,
+    language: getLocale(state),
+    groups: getGroups(state),
+    currentUser: getUsername(state),
+    ownerGroupDisabled: getOwnerGroupDisabled(state),
+    selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
+    selectedCategories: formValueSelector('editcontentform')(state, 'contentCategories'),
+    selectedOwnerGroup: formValueSelector('editcontentform')(state, 'mainGroup'),
+    saveType: getSaveType(state),
+    content: getContent(state),
+    contentType: getSelectedContentType(state),
+    status: formValueSelector('editcontentform')(state, 'status'),
+    missingTranslations: getMissingTranslations(state),
+    enableTranslationWarning: getTranslationWarning(state),
+    ...(contentId == null && {
+      initialValues: {
+        mainGroup: defaultOwnerGroup,
+        groups: defaultJoinGroups,
+        contentType,
+      },
+    }),
+  });
+};
 
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onDidMount: () => {
@@ -83,6 +102,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(fetchCategoryTree());
     dispatch(fetchContentType(params.contentType))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
+    dispatch(fetchCurrentUserAuthorities());
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
