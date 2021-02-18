@@ -9,10 +9,10 @@ import {
 } from 'patternfly-react';
 import moment from 'moment';
 import FormLabel from 'ui/common/form/FormLabel';
-import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderDatePickerInput from 'ui/common/form/RenderDatePickerInput';
 import AssetSearchFormContainer from 'ui/assets/search/AssetSearchFormContainer';
+import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
 
 import { eventToConfirm } from 'ui/common/accessibility/KeyCodes';
 
@@ -47,7 +47,9 @@ class AssetsAdvancedSearchForm extends Component {
   render() {
     const {
       intl, groups, handleSubmit, invalid, submitting,
+      groupFilter, onSetGroup,
     } = this.props;
+
     const { showAdvancedFilters } = this.state;
     const advancedFilterIcon = (
       <i
@@ -123,24 +125,17 @@ class AssetsAdvancedSearchForm extends Component {
             </Col>
           </div>
           <div className="AssetsAdvancedFilter__advanced-filter clearfix">
-            <Field
+            <RenderDropdownTypeaheadInput
               name="group"
-              component={RenderSelectInput}
-              onClear={this.clearSearch}
+              input={{ name: 'group', value: groupFilter, onChange: groupcode => onSetGroup(groupcode) }}
+              label={<FormLabel labelId="cms.contents.group" helpId="cms.contents.edit.groups.ownerGroup.tooltip" defaultMessage="Group" />}
               inputSize={4}
               labelSize={2}
-              label={(
-                <FormLabel
-                  labelId="cms.contents.group"
-                  helpId="cms.contents.edit.groups.ownerGroup.tooltip"
-                  defaultMessage="Group"
-                />
-)}
-              alignClass="text-right"
               options={groups}
-              optionValue="code"
-              optionDisplayName="name"
-              defaultOptionId="cms.contents.selectGroup"
+              alignClass="text-right"
+              labelKey="name"
+              valueKey="code"
+              placeholder={intl.formatMessage({ id: 'cms.contents.selectGroup' })}
             />
           </div>
         </div>
@@ -168,12 +163,15 @@ AssetsAdvancedSearchForm.propTypes = {
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   handleSubmit: PropTypes.func.isRequired,
+  groupFilter: PropTypes.string,
+  onSetGroup: PropTypes.func.isRequired,
 };
 
 AssetsAdvancedSearchForm.defaultProps = {
   groups: [],
   submitting: false,
   invalid: false,
+  groupFilter: '',
 };
 
 const validate = (values, props) => {
