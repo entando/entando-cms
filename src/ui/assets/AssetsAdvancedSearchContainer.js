@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import { change, formValueSelector } from 'redux-form';
 import { fetchGroups } from 'state/edit-content/actions';
 import { getGroups } from 'state/edit-content/selectors';
 
@@ -8,6 +9,7 @@ import { advancedSearchFilter } from 'state/assets/actions';
 
 export const mapStateToProps = state => ({
   groups: getGroups(state),
+  groupFilter: formValueSelector('assetsAdvancedSearch')(state, 'group'),
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -17,6 +19,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   onSubmit: values => dispatch(advancedSearchFilter(
     values, undefined, ownProps.ownerGroup, ownProps.joinGroups,
   )),
+  onSetGroup: group => dispatch(change('assetsAdvancedSearch', 'group', group)),
 });
 
 const AssetsAdvancedSearchContainer = connect(
