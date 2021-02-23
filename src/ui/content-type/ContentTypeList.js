@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage, injectIntl, intlShape,
 } from 'react-intl';
-import { Spinner, Paginator } from 'patternfly-react';
+import {
+  Spinner,
+  Paginator,
+  DropdownKebab,
+  MenuItem,
+} from 'patternfly-react';
+import { DataTable } from '@entando/datatable';
+import { LinkMenuItem } from '@entando/menu';
+import { routeConverter } from '@entando/utils';
+import { ROUTE_CMS_CONTENTTYPE_EDIT } from 'app-init/routes';
+import ContentTypeStatusIcon from 'ui/content-type/ContentTypeStatusIcon';
 import ContentTypeReferenceStatusContainer from 'ui/content-type/ContentTypeReferenceStatusContainer';
 import DeleteContentTypeModalContainer from 'ui/content-type/DeleteContentTypeModalContainer';
-import ContentTypeListItem from 'ui/content-type/ContentTypeListItem';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
 const perPageOptions = [5, 10, 15, 25, 50];
@@ -20,8 +29,44 @@ class ContentTypeList extends Component {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { onDidMount, columnOrder, onSetColumnOrder } = this.props;
+    if (!columnOrder.length) {
+      onSetColumnOrder(['name', 'code', 'status']);
+    }
     onDidMount();
+  }
+
+  getColumnDefs() {
+    const { columnOrder, intl } = this.props;
+
+    const columnDefs = {
+      name: {
+        Header: <FormattedMessage id="cms.contenttype.list.contentTypeNameHeader" />,
+      },
+      code: {
+        Header: <FormattedMessage id="cms.contenttype.list.contentTypeCodeHeader" />,
+        attributes: {
+          style: { width: '10%' },
+        },
+      },
+      status: {
+        Header: <FormattedMessage id="cms.contenttype.list.contentTypeStatusHeader" />,
+        attributes: {
+          style: { width: '10%' },
+        },
+        Cell: ({ row: { original: { status } } }) => (
+          <ContentTypeStatusIcon
+            status={status}
+            title={intl.formatMessage({ id: `cms.contenttype.list.status.${status}` })}
+          />
+        ),
+      },
+    };
+
+    return columnOrder.map(column => ({
+      ...columnDefs[column],
+      accessor: column,
+    }));
   }
 
   changePage(page) {
@@ -40,6 +85,7 @@ class ContentTypeList extends Component {
       contentTypes,
       loading,
       onClickDelete,
+      onSetColumnOrder,
       onClickReload,
       page,
       pageSize,
@@ -52,14 +98,34 @@ class ContentTypeList extends Component {
       perPageOptions,
     };
 
-    const renderRow = contentTypes.map(item => (
-      <ContentTypeListItem
-        key={item.code}
-        onDelete={onClickDelete}
-        onReload={onClickReload}
-        {...item}
-      />
-    ));
+    const columns = this.getColumnDefs() || [];
+
+    const rowAction = {
+      Header: <FormattedMessage id="cms.contenttype.list.actionsHeader" />,
+      cellAttributes: {
+        className: 'text-center',
+      },
+      Cell: ({ values: { code, name } }) => {
+        const onDelete = () => onClickDelete({ name, code });
+        const onReload = () => onClickReload(code);
+        return (
+          <DropdownKebab pullRight id={`ContentTypeList-dropdown-${code}`}>
+            <LinkMenuItem
+              id={`conttype-id${code}`}
+              to={routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code })}
+              label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
+              className="ContentTypeList__menu-item-edit"
+            />
+            <MenuItem className="ContentTypeList__menu-item-reload" onClick={onReload}>
+              <FormattedMessage id="cms.label.reload" defaultMessage="Refresh" />
+            </MenuItem>
+            <MenuItem className="ContentTypeList__menu-item-delete" onClick={onDelete}>
+              <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+            </MenuItem>
+          </DropdownKebab>
+        );
+      },
+    };
 
     const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
       { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
@@ -69,25 +135,18 @@ class ContentTypeList extends Component {
       <div className="ContentTypeList__wrap">
         <Spinner loading={!!loading}>
           <ContentTypeReferenceStatusContainer />
-          <table className="table table-striped table-bordered table-hover ContentTypeList__table">
-            <thead>
-              <tr>
-                <th>
-                  <FormattedMessage id="cms.contenttype.list.contentTypeNameHeader" />
-                </th>
-                <th width="10%">
-                  <FormattedMessage id="cms.contenttype.list.contentTypeCodeHeader" />
-                </th>
-                <th width="10%">
-                  <FormattedMessage id="cms.contenttype.list.contentTypeStatusHeader" />
-                </th>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.contenttype.list.actionsHeader" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>{renderRow}</tbody>
-          </table>
+          <DataTable
+            columns={columns}
+            data={contentTypes}
+            rowAction={rowAction}
+            columnResizable
+            onColumnReorder={onSetColumnOrder}
+            classNames={{
+              table: 'table-striped table-hover ContentTypeList__table',
+              row: 'ContentTypeList',
+              cell: 'ContentTypeList__td',
+            }}
+          />
           <Paginator
             pagination={pagination}
             viewType="table"
@@ -113,10 +172,14 @@ ContentTypeList.propTypes = {
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
+  columnOrder: PropTypes.arrayOf(PropTypes.string),
+  onSetColumnOrder: PropTypes.func,
 };
 
 ContentTypeList.defaultProps = {
   loading: false,
+  onSetColumnOrder: () => {},
+  columnOrder: [],
 };
 
 export default injectIntl(ContentTypeList);

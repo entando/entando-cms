@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage, injectIntl, intlShape,
 } from 'react-intl';
-import { Spinner, Paginator } from 'patternfly-react';
-import ContentTemplateListItem from 'ui/content-template/ContentTemplateListItem';
+import {
+  Spinner,
+  Paginator,
+  DropdownKebab,
+  MenuItem,
+} from 'patternfly-react';
+import { DataTable } from '@entando/datatable';
+import { LinkMenuItem } from '@entando/menu';
+import { routeConverter } from '@entando/utils';
+import { ROUTE_CMS_CONTENTTEMPLATE_EDIT } from 'app-init/routes';
+
 import DeleteContentTemplateModalContainer from 'ui/content-template/DeleteContentTemplateModalContainer';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
@@ -19,8 +28,41 @@ class ContentTemplateList extends Component {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { onDidMount, columnOrder, onSetColumnOrder } = this.props;
+    if (!columnOrder.length) {
+      onSetColumnOrder(['id', 'contentType', 'descr']);
+    }
     onDidMount();
+  }
+
+  getColumnDefs() {
+    const { columnOrder } = this.props;
+
+    const columnDefs = {
+      id: {
+        Header: <FormattedMessage id="cms.contenttemplate.list.contentTypeIdHeader" />,
+        attributes: {
+          style: { width: '10%' },
+        },
+      },
+      contentType: {
+        Header: <FormattedMessage id="cms.contenttemplate.list.contentTypeHeader" />,
+        attributes: {
+          style: { width: '20%' },
+        },
+      },
+      descr: {
+        Header: <FormattedMessage id="cms.contenttemplate.list.contentTemplateNameHeader" />,
+        attributes: {
+          style: { width: '60%' },
+        },
+      },
+    };
+
+    return columnOrder.map(column => ({
+      ...columnDefs[column],
+      accessor: column,
+    }));
   }
 
   changePage(page) {
@@ -39,6 +81,7 @@ class ContentTemplateList extends Component {
       contentTemplates,
       loading,
       onClickDelete,
+      onSetColumnOrder,
       page,
       pageSize,
       totalItems,
@@ -50,11 +93,27 @@ class ContentTemplateList extends Component {
       perPageOptions,
     };
 
-    const renderRow = contentTemplates
-      .map(item => (
-        <ContentTemplateListItem key={item.id} onDelete={onClickDelete} {...item} />
-      ));
+    const columns = this.getColumnDefs() || [];
 
+    const rowAction = {
+      Header: <FormattedMessage id="cms.contenttemplate.list.actionsHeader" />,
+      cellAttributes: {
+        className: 'text-center',
+      },
+      Cell: ({ values: { id } }) => (
+        <DropdownKebab pullRight id={`ContentTemplateList-dropdown-${id}`}>
+          <LinkMenuItem
+            id={`contmodel-id${id}`}
+            to={routeConverter(ROUTE_CMS_CONTENTTEMPLATE_EDIT, { id })}
+            label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
+            className="ContentTemplateList__menu-item-edit"
+          />
+          <MenuItem className="ContentTemplateList__menu-item-delete" onClick={onClickDelete}>
+            <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+          </MenuItem>
+        </DropdownKebab>
+      ),
+    };
 
     const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
       { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
@@ -63,25 +122,18 @@ class ContentTemplateList extends Component {
     return (
       <div className="ContentTemplateList__wrap">
         <Spinner loading={!!loading}>
-          <table className="table table-striped table-bordered table-hover ContentTemplateList__table">
-            <thead>
-              <tr>
-                <th width="10%">
-                  <FormattedMessage id="cms.contenttemplate.list.contentTypeIdHeader" />
-                </th>
-                <th width="20%">
-                  <FormattedMessage id="cms.contenttemplate.list.contentTypeHeader" />
-                </th>
-                <th width="60%">
-                  <FormattedMessage id="cms.contenttemplate.list.contentTemplateNameHeader" />
-                </th>
-                <th width="10%" className="text-center">
-                  <FormattedMessage id="cms.contenttemplate.list.actionsHeader" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>{renderRow}</tbody>
-          </table>
+          <DataTable
+            columns={columns}
+            data={contentTemplates}
+            rowAction={rowAction}
+            columnResizable
+            onColumnReorder={onSetColumnOrder}
+            classNames={{
+              table: 'table-striped table-hover ContentTemplateList__table',
+              row: 'ContentTemplateList',
+              cell: 'ContentTemplateList__td',
+            }}
+          />
           <Paginator
             pagination={pagination}
             viewType="table"
@@ -107,10 +159,14 @@ ContentTemplateList.propTypes = {
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
+  columnOrder: PropTypes.arrayOf(PropTypes.string),
+  onSetColumnOrder: PropTypes.func,
 };
 
 ContentTemplateList.defaultProps = {
   loading: false,
+  onSetColumnOrder: () => {},
+  columnOrder: [],
 };
 
 export default injectIntl(ContentTemplateList);
