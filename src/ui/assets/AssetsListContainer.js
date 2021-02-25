@@ -33,6 +33,8 @@ import { getPagination } from 'state/pagination/selectors';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
 import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetModal';
 
@@ -55,6 +57,7 @@ export const mapStateToProps = (state) => {
     page,
     categories: getCategoryTree(state),
     categoryTreeFetched: getCategoryTreeFetched(state),
+    showColumns: getColumnOrder(state, 'assetsList'),
   };
 };
 
@@ -72,6 +75,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
     }
   },
+  onSetColumnOrder: columnOrder => dispatch(setColumnOrder(columnOrder, 'assetsList')),
   onApplyFilteredSearch: (filters) => {
     const { ownerGroup, joinGroups } = ownProps;
     dispatch(setActiveFilters(filters));
