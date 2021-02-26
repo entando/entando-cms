@@ -27,6 +27,9 @@ const initState = {
       },
     },
   },
+  tableColumnOrder: {
+    contentTemplates: [],
+  },
   modal: { visibleModal: '', info: {} },
   pagination: {
     global: {

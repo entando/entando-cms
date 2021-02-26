@@ -26,13 +26,4 @@ describe('content-template/ContentTemplateList', () => {
   it('renders component without crashing', () => {
     expect(component.exists()).toBe(true);
   });
-
-  it('has class ContentTemplateList__table', () => {
-    expect(component.dive().find('.ContentTemplateList__table').exists()).toBe(true);
-  });
-
-  it('called onDidMount and load rows same length with contentTemplates', () => {
-    expect(props.onDidMount).toHaveBeenCalled();
-    expect(component.dive().find('ContentTemplateListItem')).toHaveLength(contentTemplates.length);
-  });
 });

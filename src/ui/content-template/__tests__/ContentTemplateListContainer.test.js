@@ -17,12 +17,16 @@ const state = {
       totalItems: 0,
     },
   },
+  tableColumnOrder: {
+    contentTemplates: [],
+  },
 };
 
 describe('content-template/ContentTemplateListContainer', () => {
   it('maps stateprops property', () => {
     const props = mapStateToProps(state);
     expect(props).toHaveProperty('contentTemplates');
+    expect(props).toHaveProperty('columnOrder');
   });
 
   it('maps dispatch property', () => {
