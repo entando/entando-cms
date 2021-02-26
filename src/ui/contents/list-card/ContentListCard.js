@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Paginator, DropdownButton, MenuItem } from 'patternfly-react';
 import { Clearfix } from 'react-bootstrap';
+import { DataTable } from '@entando/datatable';
 import { formatDate, hasAccess } from '@entando/utils';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
@@ -18,8 +19,68 @@ class ContentListCard extends Component {
   }
 
   componentDidMount() {
-    const { onDidMount } = this.props;
+    const { onDidMount, columnOrder, onSetColumnOrder } = this.props;
+    if (!columnOrder.length) {
+      onSetColumnOrder(['description', 'lastEditor', 'typeDescription', 'status', 'lastModified']);
+    }
     onDidMount();
+  }
+
+  getColumnDefs() {
+    const { columnOrder, intl } = this.props;
+
+    const columnDefs = {
+      description: {
+        Header: <FormattedMessage id="contentPicker.description" />,
+        attributes: {
+          style: { width: '35%' },
+        },
+        cellAttributes: {
+          className: 'SingleContentCurrentVersion__description',
+        },
+      },
+      lastEditor: {
+        Header: <FormattedMessage id="cms.contents.versioning.author" />,
+        attributes: {
+          style: { width: '13%' },
+        },
+      },
+      typeDescription: {
+        Header: <FormattedMessage id="contentPicker.type" />,
+        attributes: {
+          style: { width: '15%' },
+        },
+      },
+      status: {
+        Header: <FormattedMessage id="contentPicker.status" />,
+        attributes: {
+          className: 'text-center',
+          style: { width: '12%' },
+        },
+        Cell: (cellInfo) => {
+          const { row: { original: content } } = cellInfo;
+          const { color, title } = getContentStatusDetails(content.status, content.onLine, intl);
+          return (
+            <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
+          );
+        },
+        cellAttributes: {
+          className: 'text-center',
+        },
+      },
+      lastModified: {
+        Header: <FormattedMessage id="cms.versioning.list.lastModify" />,
+        attributes: {
+          style: { width: '25%' },
+        },
+        Cell: ({ value }) => formatDate(value),
+      },
+    };
+
+    return columnOrder.map(column => ({
+      ...columnDefs[column],
+      accessor: column,
+    }));
   }
 
   changePage(page) {
@@ -32,39 +93,10 @@ class ContentListCard extends Component {
     onDidMount(1, pageSize);
   }
 
-  renderRows() {
-    const { contents, intl } = this.props;
-    if (!contents) {
-      return null;
-    }
-    return (
-      contents.map(({
-        description, id, typeDescription, lastModified, lastEditor, status, onLine,
-      }) => {
-        const { color, title } = getContentStatusDetails(status, onLine, intl);
-        return (
-          <tr className="VersioningListRow" key={id}>
-            <td className="VersioningListRow__td SingleContentCurrentVersion__description">{description}</td>
-            <td className="VersioningListRow__td">
-              {lastEditor}
-            </td>
-            <td className="VersioningListRow__td">{typeDescription}</td>
-            <td className="VersioningListRow__td text-center">
-              <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
-            </td>
-            <td className="VersioningListRow__td">
-              {formatDate(lastModified)}
-            </td>
-          </tr>
-        );
-      })
-    );
-  }
-
   render() {
     const {
       intl, pagination: { page, totalItems, pageSize: perPage }, contentTypes,
-      onClickAddContent, userPermissions,
+      onClickAddContent, userPermissions, contents, onSetColumnOrder,
     } = this.props;
     const pagination = {
       page,
@@ -100,6 +132,8 @@ class ContentListCard extends Component {
       { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
     ), {});
 
+    const columns = this.getColumnDefs() || [];
+
     return (
       <div className="ContentListCard">
         <h2>
@@ -107,22 +141,17 @@ class ContentListCard extends Component {
           {renderAddContentButton}
         </h2>
         <div className="ContentListCardTable__wrapper">
-          <table className="ContentListCardTable__table table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th width="35%"><FormattedMessage id="contentPicker.description" /></th>
-                <th width="13%"><FormattedMessage id="cms.contents.versioning.author" /></th>
-                <th width="15%"><FormattedMessage id="contentPicker.type" /></th>
-                <th className="text-center" width="12%">
-                  <FormattedMessage id="contentPicker.status" />
-                </th>
-                <th width="25%"><FormattedMessage id="cms.versioning.list.lastModify" /></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.renderRows()}
-            </tbody>
-          </table>
+          <DataTable
+            columns={columns}
+            data={contents}
+            columnResizable
+            onColumnReorder={onSetColumnOrder}
+            classNames={{
+              table: 'table-striped ContentListCardTable__table',
+              row: 'VersioningListRow',
+              cell: 'VersioningListRow__td',
+            }}
+          />
         </div>
         <Paginator
           pagination={pagination}
@@ -150,6 +179,8 @@ ContentListCard.propTypes = {
     pageSize: PropTypes.number.isRequired,
   }),
   onClickAddContent: PropTypes.func.isRequired,
+  columnOrder: PropTypes.arrayOf(PropTypes.string),
+  onSetColumnOrder: PropTypes.func,
 };
 
 ContentListCard.defaultProps = {
@@ -160,6 +191,8 @@ ContentListCard.defaultProps = {
     page: 1,
     totalItems: 0,
   },
+  onSetColumnOrder: () => {},
+  columnOrder: ['description', 'lastEditor', 'typeDescription', 'status', 'lastModified'],
 };
 
 export default injectIntl(ContentListCard);
