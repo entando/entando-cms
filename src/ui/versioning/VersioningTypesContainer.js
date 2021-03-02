@@ -4,6 +4,7 @@ import {
   CRUD_CONTENTS_PERMISSION,
   SUPERUSER_PERMISSION,
   MANAGE_RESOURCES_PERMISSION,
+  VALIDATE_CONTENTS_PERMISSION,
 } from 'state/permissions/const';
 
 import VersioningTypes from 'ui/versioning/VersioningTypes';
@@ -23,4 +24,5 @@ export default withPermissions([
   CRUD_CONTENTS_PERMISSION,
   SUPERUSER_PERMISSION,
   MANAGE_RESOURCES_PERMISSION,
+  VALIDATE_CONTENTS_PERMISSION,
 ])(VersioningTypesContainer);

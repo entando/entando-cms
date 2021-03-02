@@ -6,7 +6,7 @@ import { formatDate, hasAccess } from '@entando/utils';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
-import { SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION } from 'state/permissions/const';
+import { SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION, VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
 import paginatorMessages from 'ui/common/paginatorMessages';
 
@@ -72,7 +72,8 @@ class ContentListCard extends Component {
       perPageOptions: [5, 10, 15],
     };
     const renderAddContentButton = hasAccess(
-      [SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION], userPermissions,
+      [SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION, VALIDATE_CONTENTS_PERMISSION],
+      userPermissions,
     ) && (
       <DropdownButton
         bsStyle="primary"
