@@ -85,9 +85,10 @@ describe('ContentTypeList', () => {
         component.setProps({ contentTypes });
       });
 
-      it('has ContentTypeListItem each row', () => {
+      it('has ContentTypeListItem with DropdownKebab each row', () => {
         component.find('tbody tr').forEach((tr) => {
           expect(tr.find('ContentTypeListItem')).toHaveLength(1);
+          expect(tr.find('DropdownKebab')).toHaveLength(1);
         });
       });
 
