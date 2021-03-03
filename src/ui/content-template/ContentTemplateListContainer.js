@@ -8,6 +8,8 @@ import {
 import { getLoading } from 'state/loading/selectors';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { getPagination } from 'state/pagination/selectors';
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 import { NAMESPACE_CONTENT_TEMPLATES } from 'state/pagination/const';
 
 import ContentTemplateList from 'ui/content-template/ContentTemplateList';
@@ -24,6 +26,7 @@ export const mapStateToProps = (state) => {
     totalItems,
     pageSize,
     filters: getContentTemplateFilters(state),
+    columnOrder: getColumnOrder(state, 'contentTemplates'),
   };
 };
 
@@ -32,6 +35,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(setListFilterProps({}));
     dispatch(fetchContentTemplateListPaged(pageDefault));
   },
+  onSetColumnOrder: columnOrder => dispatch(setColumnOrder(columnOrder, 'contentTemplates')),
   fetchList: (page = pageDefault) => (
     dispatch(fetchContentTemplateListPaged(page))
   ),

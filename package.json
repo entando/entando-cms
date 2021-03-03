@@ -100,6 +100,11 @@
       "!src/ui/**/*.js",
       "!src/index.js"
     ],
+    "moduleNameMapper": {
+      "^react-dnd$": "react-dnd/dist/cjs",
+      "^react-dnd-html5-backend$": "react-dnd-html5-backend/dist/cjs",
+      "^dnd-core$": "dnd-core/dist/cjs"
+    },
     "coverageThreshold": {
       "global": {
         "branches": 90,
@@ -253,6 +258,7 @@
     "@entando/messages": "^1.0.4",
     "@entando/pages": "^3.2.2",
     "@entando/utils": "^2.4.0",
+    "@entando/datatable": "^1.0.0",
     "flux-standard-action": "^2.0.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",

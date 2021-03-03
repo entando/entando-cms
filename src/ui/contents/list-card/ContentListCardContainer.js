@@ -7,6 +7,8 @@ import { getContentsWithNamespace } from 'state/contents/selectors';
 
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 import { getPagination } from 'state/pagination/selectors';
 
 import ContentListCard from 'ui/contents/list-card/ContentListCard';
@@ -22,6 +24,7 @@ const mapStateToProps = state => ({
   contents: getContentsWithNamespace(state, namespace),
   contentTypes: getContentTypeList(state),
   pagination: getPagination(state, namespace),
+  columnOrder: getColumnOrder(state, 'dashboardContentList'),
 });
 
 const mapDispatchToProps = (dispatch, { history }) => ({
@@ -29,6 +32,7 @@ const mapDispatchToProps = (dispatch, { history }) => ({
     dispatch(fetchContents({ page, pageSize }, '?sort=lastModified&direction=DESC', namespace));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }, '', 'contentTypesTile'));
   },
+  onSetColumnOrder: columnOrder => dispatch(setColumnOrder(columnOrder, 'dashboardContentList')),
   onClickAddContent: (contentType) => {
     dispatch(setWorkMode(WORK_MODE_ADD));
     dispatch(setNewContentsType(contentType));

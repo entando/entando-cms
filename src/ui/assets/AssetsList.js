@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import {
   FormattedMessage, defineMessages, injectIntl, intlShape,
 } from 'react-intl';
@@ -13,9 +14,13 @@ import {
   PAGINATION_VIEW_TYPES,
   Filter,
   Toolbar,
+  DropdownKebab,
+  MenuItem,
+  Button,
 } from 'patternfly-react';
+import { formatDate } from '@entando/utils';
+import { DataTable } from '@entando/datatable';
 import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
-import AssetsListItem from 'ui/assets/AssetsListItem';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
@@ -54,11 +59,9 @@ const headers = [
     width: '12%',
     id: 'categories',
   },
-  {
-    name: 'actions',
-    width: '7%',
-  },
 ];
+
+const defaultShownColumns = headers.map(({ name }) => name);
 
 const fileTypes = [
   {
@@ -176,6 +179,7 @@ class AssetsList extends Component {
       onDuplicateClicked,
       categories,
       categoryTreeFetched,
+      onSetColumnOrder,
     } = this.props;
     const pagination = {
       page,
@@ -189,25 +193,7 @@ class AssetsList extends Component {
     const notSortable = ['actions', 'preview', 'categories'];
     const headerSorter = item => (notSortable.indexOf(item.name) === -1
       ? onApplySort(item.id) : null);
-    const renderHeader = headers.filter(({ name }) => showColumns.includes(name)).map(item => (
-      <th
-        width={item.width}
-        key={item.name}
-        role="button"
-        onClick={() => headerSorter(item)}
-      >
-        <FormattedMessage id={`cms.assets.list.${item.name}`} />{' '}
-        {item.name !== 'actions' && item.name !== 'preview' ? (
-          <i
-            className={`fa ${
-              (sort && sort.attribute === item.id) && (sort.direction === 'ASC'
-                ? 'fa-angle-up'
-                : 'fa-angle-down')
-            } AssetsList__sort`}
-          />
-        ) : null}
-      </th>
-    ));
+
     const renderFileTypes = fileTypes.map((type, i) => (
       <div
         tabIndex={i}
@@ -263,28 +249,115 @@ class AssetsList extends Component {
         )}
       </Toolbar.Results>
     );
-    const assetsListItems = assets.map(asset => (
-      <AssetsListItem
-        key={asset.id}
-        language={language}
-        asset={asset}
-        onEditClicked={onAssetSelected}
-        onClickDelete={onClickDelete}
-        browseMode={browseMode}
-        onItemSelected={onUseAssetClicked}
-        showColumns={showColumns}
-        onSelect={this.handleAssetSelect}
-        selected={selectedAsset === asset.id}
-        onDuplicateClicked={onDuplicateClicked}
-      />
-    ));
+
+    const columnsDef = headers.filter(({ name }) => showColumns.includes(name))
+      .map(curr => ({
+        Header: (
+          <>
+            <FormattedMessage id={`cms.assets.list.${curr.name}`} />{' '}
+            {curr.name !== 'preview' && (
+              <i
+                className={`fa ${
+                  (sort && sort.attribute === curr.id) && (sort.direction === 'ASC'
+                    ? 'fa-angle-up'
+                    : 'fa-angle-down')
+                } AssetsList__sort`}
+              />
+            )}
+          </>
+        ),
+        accessor: curr.name,
+        attributes: {
+          style: { width: curr.width },
+          role: 'button',
+          onClick: () => headerSorter(curr),
+        },
+        Cell: ({ row: { original: asset }, column, value }) => {
+          switch (column.id) {
+            case 'preview': {
+              const assetFileType = asset.versions == null ? 'file' : 'image';
+              return assetFileType === 'image' ? (
+                <img src={`${asset.previewUrl}?updatedAt=${asset.updatedAt}`} alt="Preview" />
+              ) : (
+                <div className="fa fa-file-text AssetsList__item-file" />
+              );
+            }
+            case 'name': {
+              return asset.name;
+            }
+            case 'uploadedBy': {
+              return asset.owner || 'N/A';
+            }
+            case 'uploadedAt': {
+              return formatDate(asset.createdAt);
+            }
+            case 'group': {
+              return get(asset, 'group.name', asset.group);
+            }
+            case 'categories': {
+              return categories.map(cat => (
+                <span key={cat.code || cat}>
+                  {cat && cat.titles && cat.titles[language]}
+                  <br />
+                </span>
+              ));
+            }
+            default: return value;
+          }
+        },
+        cellAttributes: ({ row: { original: asset }, column }) => {
+          if (column.id === 'preview') {
+            return { className: asset.fileType === 'file' ? 'text-center' : '' };
+          }
+          return {};
+        },
+      }));
+
+    const rowAction = {
+      Header: <FormattedMessage id="cms.assets.list.actions" />,
+      attributes: {
+        className: 'text-center',
+        width: '7%',
+      },
+      Cell: ({ original: asset }) => (
+        browseMode ? (
+          <Button onClick={() => onUseAssetClicked(asset)}>
+            <FormattedMessage id="cms.label.use" defaultMessage="Use" />
+          </Button>
+        ) : (
+          <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
+            <MenuItem onClick={() => onAssetSelected(asset)}>
+              <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+            </MenuItem>
+            <MenuItem onClick={() => onDuplicateClicked(asset)}>
+              <FormattedMessage id="cms.label.duplicate" defaultMessage="Duplicate" />
+            </MenuItem>
+            <MenuItem onClick={() => window.open(asset.downloadUrl)}>
+              <FormattedMessage id="cms.label.download" defaultMessage="Download" />
+            </MenuItem>
+            <MenuItem onClick={() => onClickDelete(asset)}>
+              <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+            </MenuItem>
+          </DropdownKebab>
+        )
+      ),
+    };
+
     const tableContent = (
-      <table className="table table-bordered table-hover AssetsList__table">
-        <thead>
-          <tr>{renderHeader}</tr>
-        </thead>
-        <tbody>{assetsListItems}</tbody>
-      </table>
+      <DataTable
+        columns={columnsDef}
+        data={assets}
+        rowAction={rowAction}
+        columnResizable
+        onColumnReorder={onSetColumnOrder}
+        classNames={{
+          table: 'table-hover AssetsList__table',
+        }}
+        rowAttributes={row => ({
+          className: `AssetsList__item ${selectedAsset === row.id ? 'selected' : ''}`,
+          onClick: () => this.handleAssetSelect(row.id),
+        })}
+      />
     );
     const gridContent = (
       <AssetsListGridView
@@ -444,6 +517,7 @@ AssetsList.propTypes = {
   onSelect: PropTypes.func,
   categories: PropTypes.arrayOf(PropTypes.shape({})),
   categoryTreeFetched: PropTypes.bool,
+  onSetColumnOrder: PropTypes.func,
 };
 
 AssetsList.defaultProps = {
@@ -458,12 +532,13 @@ AssetsList.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
   browseMode: false,
   onUseAssetClicked: null,
-  showColumns: headers.map(({ name }) => name),
+  showColumns: defaultShownColumns,
   hideFooter: false,
   singleView: false,
   onSelect: () => {},
   categories: [],
   categoryTreeFetched: false,
+  onSetColumnOrder: () => {},
 };
 
 export default injectIntl(AssetsList);

@@ -21,6 +21,7 @@ import users from 'state/users/reducer';
 import permissions from 'state/permissions/reducer';
 import versioning from 'state/versioning/reducer';
 import tableColumns from 'state/table-columns/reducer';
+import tableColumnOrder from 'state/table-column-order/reducer';
 
 export const cms = combineReducers({
   contentTemplate,
@@ -50,4 +51,5 @@ export default combineReducers({
   permissions,
   categories,
   pagination,
+  tableColumnOrder,
 });

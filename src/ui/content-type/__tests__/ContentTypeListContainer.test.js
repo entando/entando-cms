@@ -20,6 +20,9 @@ const TEST_STATE = {
       },
     },
   },
+  tableColumnOrder: {
+    contentTypes: [],
+  },
   pagination: { global: CONTENT_TYPES_OK_PAGE.metaData },
 };
 
@@ -61,6 +64,7 @@ describe('ContentTypeListContainer', () => {
       page: TEST_STATE.pagination.global.page,
       totalItems: TEST_STATE.pagination.global.totalItems,
       pageSize: TEST_STATE.pagination.global.pageSize,
+      columnOrder: TEST_STATE.tableColumnOrder.contentTypes,
     });
   });
 
