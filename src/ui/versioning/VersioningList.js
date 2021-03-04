@@ -153,7 +153,10 @@ class VersioningList extends Component {
         <DropdownKebab pullRight id={`VersioningListRow-dropdown-${values.id}`}>
           <LinkMenuItem
             id={`versioning-id${values.id}`}
-            to={routeConverter(ROUTE_CMS_VERSIONING_CONTENT_HISTORY, { contentId: values.contentId })}
+            to={routeConverter(
+              ROUTE_CMS_VERSIONING_CONTENT_HISTORY,
+              { contentId: values.contentId },
+            )}
             label={<FormattedMessage id="cms.label.details" defaultMessage="Details" />}
             className="VersioningListRow__menu-item-edit"
           />
