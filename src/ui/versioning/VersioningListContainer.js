@@ -5,6 +5,8 @@ import { getPagination } from 'state/pagination/selectors';
 import { NAMESPACE_VERSIONING } from 'state/pagination/const';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 
 import VersioningList from 'ui/versioning/VersioningList';
 import { getVersioningList } from 'state/versioning/selectors';
@@ -23,6 +25,7 @@ export const mapStateToProps = (state) => {
     pageSize,
     contentTypes: getContentTypeList(state),
     versioningList: getVersioningList(state),
+    columnOrder: getColumnOrder(state, 'versioningList'),
   };
 };
 
@@ -32,6 +35,7 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(fetchVersionings(page));
     dispatch(fetchContentTypeListPaged(noPage));
   },
+  onSetColumnOrder: columnOrder => dispatch(setColumnOrder(columnOrder, 'versioningList')),
   fetchVersioningList: (page) => {
     dispatch(fetchVersionings(page));
   },
