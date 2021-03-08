@@ -2,14 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import GenericModalContainer from 'ui/common/modal/GenericModalContainer';
-import {
-  Col,
-  Button,
-  Modal,
-  ControlLabel,
-} from 'patternfly-react';
-import FormLabel from 'ui/common/form/FormLabel';
-// import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
+import { Button, Modal } from 'patternfly-react';
 import CategoryTypeaheadFilterContainer from 'ui/categories/filter/CategoryTypeaheadFilterContainer';
 
 export const JOIN_CATEGORIES_MODAL_ID = 'JoinCategoriesModal';

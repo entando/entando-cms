@@ -38,22 +38,12 @@ describe('state/assets/reducer', () => {
       let newState;
       it('should correctly update filtering category state field', () => {
         newState = reducer(state, setAssetCategoryFilter({ code: 'fifa_18' }));
-        expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
+        expect(newState.filteringCategories).toEqual({ code: 'fifa_18' });
 
         newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
-        expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }, { code: 'a' }]);
+        expect(newState.filteringCategories).toEqual({ code: 'a' });
 
-        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
-        expect(newState.filteringCategories).toEqual([{ code: 'fifa_18' }]);
-
-        newState = reducer(newState, setAssetCategoryFilter({ code: 'fifa_18' }));
-        expect(newState.filteringCategories).toEqual([]);
-
-        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
-        expect(newState.filteringCategories).toEqual([{ code: 'a' }]);
-
-        newState = reducer(newState, setAssetCategoryFilter({ code: 'a' }));
-        resetFilteringCategories();
+        newState = reducer(newState, resetFilteringCategories());
         expect(newState.filteringCategories).toEqual([]);
       });
 

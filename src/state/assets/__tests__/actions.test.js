@@ -77,7 +77,7 @@ describe('state/assets/actions', () => {
   it('setAssetCategoryFilter() should return a well formed action', () => {
     const action = setAssetCategoryFilter('fifa_18');
     expect(action).toHaveProperty('type', SET_ASSET_CATEGORY_FILTER);
-    expect(action.payload).toEqual('fifa_18');
+    expect(action.payload).toEqual({ categories: 'fifa_18' });
   });
 
   it('setAssetsCount() should return a well formed action', () => {
