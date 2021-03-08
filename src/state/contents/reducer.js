@@ -159,33 +159,17 @@ const reducer = (state = defaultState, action = {}) => {
       };
     }
     case SET_CONTENT_CATEGORY_FILTER: {
-      const { filteringCategories } = state;
-      let newFilters = filteringCategories.slice(0);
-      const category = action.payload;
-      const contains = newFilters.filter(cat => cat.code === category.code).length !== 0;
-      if (!contains) {
-        newFilters.push(category);
-      } else {
-        newFilters = newFilters.filter(c => c.code !== category.code);
-      }
+      const { categories } = action.payload;
       return {
         ...state,
-        filteringCategories: newFilters,
+        filteringCategories: categories,
       };
     }
     case SET_JOIN_CONTENT_CATEGORY: {
-      const { joiningCategories } = state;
-      let newFilters = joiningCategories.slice(0);
-      const category = action.payload;
-      const contains = newFilters.filter(cat => cat.code === category.code).length !== 0;
-      if (!contains) {
-        newFilters.push(category);
-      } else {
-        newFilters = newFilters.filter(c => c.code !== category.code);
-      }
+      const { categories } = action.payload;
       return {
         ...state,
-        joiningCategories: newFilters,
+        joiningCategories: categories,
       };
     }
     case RESET_JOIN_CONTENT_CATEGORIES: {

@@ -20,7 +20,7 @@ import {
 } from 'patternfly-react';
 import { formatDate } from '@entando/utils';
 import { DataTable } from '@entando/datatable';
-import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
+import CategoryTypeaheadFilterContainer from 'ui/categories/filter/CategoryTypeaheadFilterContainer';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
@@ -406,17 +406,16 @@ class AssetsList extends Component {
           {
             hideCategoryBox ? null : (
               <Col xs={mobile ? 12 : 2} className="no-padding">
-                <div className="AssetsList__tree-container">
-                  <CategoryTreeFilterContainer
-                    language={language}
-                    onApplyFilteredSearch={onApplyFilteredSearch}
-                    filteringCategories={filteringCategories}
-                    assetType={fileType}
-                    mobile={mobile}
-                    hideIfEmpty
-                    filterSubject="asset"
-                  />
-                </div>
+                <CategoryTypeaheadFilterContainer
+                  language={language}
+                  onApplyFilteredSearch={onApplyFilteredSearch}
+                  filteredCategories={filteringCategories}
+                  filterSubject="asset"
+                  noLabel
+                  applyFilterParams={(
+                    fileType === 'all' ? null : { type: fileType }
+                  )}
+                />
                 {mobile && !loading ? <div className="AssetsList__filter-info">{renderAppliedFilters}</div> : null}
               </Col>
             )

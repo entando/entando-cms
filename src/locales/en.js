@@ -422,6 +422,8 @@ export default {
     'cms.contents.categoriesUpdated': 'Categories updated',
     'cms.contents.selectContentType': 'Select a content type',
     'cms.contents.selectGroup': 'Select a group',
+    'cms.contents.selectCategory': 'Select a category',
+    'cms.contents.selectCategories': 'Select categories',
     'cms.contents.selectedContents': 'You have selected {number} content items, you can',
     'cms.contents.saved': 'Saved',
     'cms.contents.modal.filter.title': 'Select one content item',
