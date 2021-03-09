@@ -415,7 +415,7 @@ export default {
     'cms.contents.listitemlabel': 'Elenco {num}',
     'cms.contents.selectContentType': 'Seleziona un Tipo di Contenuto',
     'cms.contents.selectGroup': 'Seleziona un Gruppo',
-    'cms.contents.selectCategory': 'Seleziona un categoria',
+    'cms.contents.selectCategory': 'Seleziona una categoria',
     'cms.contents.selectCategories': 'Seleziona le categorie',
     'cms.contents.selectedContents': 'Hai selezionato {number} contenuti, puoi',
     'cms.contents.saved': 'Salvato',
