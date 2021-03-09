@@ -2,14 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import GenericModalContainer from 'ui/common/modal/GenericModalContainer';
-import {
-  Col,
-  Button,
-  Modal,
-  ControlLabel,
-} from 'patternfly-react';
-import FormLabel from 'ui/common/form/FormLabel';
-import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
+import { Button, Modal } from 'patternfly-react';
+import CategoryTypeaheadFilterContainer from 'ui/categories/filter/CategoryTypeaheadFilterContainer';
 
 export const JOIN_CATEGORIES_MODAL_ID = 'JoinCategoriesModal';
 
@@ -57,21 +51,11 @@ const JoinCategoriesModal = ({
           </div>
         </div>
         <div className="ContentsFilter__advanced-filter">
-          <Col xs={12} sm={2} className="text-right mobile-left">
-            <ControlLabel>
-              <FormLabel labelId="cms.contents.edit.categories" />
-            </ControlLabel>
-          </Col>
-          <Col xs={12} sm={10}>
-            <CategoryTreeFilterContainer
-              language={language}
-              filteringCategories={joiningCategories}
-              assetType="image"
-              mobile
-              minimal
-              filterSubject="joinContentCategory"
-            />
-          </Col>
+          <CategoryTypeaheadFilterContainer
+            language={language}
+            filteredCategories={joiningCategories}
+            filterSubject="joinContentCategory"
+          />
         </div>
       </div>
     </GenericModalContainer>

@@ -60,14 +60,14 @@ export const setSort = sort => ({
   payload: sort,
 });
 
-export const setContentCategoryFilter = category => ({
+export const setContentCategoryFilter = categories => ({
   type: SET_CONTENT_CATEGORY_FILTER,
-  payload: category,
+  payload: { categories },
 });
 
-export const setJoinContentCategory = category => ({
+export const setJoinContentCategory = categories => ({
   type: SET_JOIN_CONTENT_CATEGORY,
-  payload: category,
+  payload: { categories },
 });
 
 export const resetJoinContentCategories = () => ({

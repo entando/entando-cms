@@ -133,18 +133,14 @@ describe('state/contents/reducer', () => {
       let newState = reducer({ filteringCategories: [] });
       it('should correctly update filteringCategories state field', () => {
         newState = reducer(newState, setContentCategoryFilter({ code: 'cat1' }));
-        expect(newState.filteringCategories).toEqual([{ code: 'cat1' }]);
-        newState = reducer(newState, setContentCategoryFilter({ code: 'cat1' }));
-        expect(newState.filteringCategories).toEqual([]);
+        expect(newState.filteringCategories).toEqual({ code: 'cat1' });
       });
     });
     describe('after action setJoinContentCategory', () => {
       let newState = reducer({ joiningCategories: [] });
       it('should correctly update joiningCategories state field', () => {
         newState = reducer(newState, setJoinContentCategory({ code: 'cat1' }));
-        expect(newState.joiningCategories).toEqual([{ code: 'cat1' }]);
-        newState = reducer(newState, setJoinContentCategory({ code: 'cat1' }));
-        expect(newState.joiningCategories).toEqual([]);
+        expect(newState.joiningCategories).toEqual({ code: 'cat1' });
       });
     });
     describe('after action resetJoinContentCategories', () => {

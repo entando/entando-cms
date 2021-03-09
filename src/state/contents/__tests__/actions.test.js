@@ -98,15 +98,15 @@ describe('state/contents/actions', () => {
   });
 
   it('setContentCategoryFilter() should return a well formed action', () => {
-    const action = setContentCategoryFilter({ code: 'NEWS', name: 'News' });
+    const action = setContentCategoryFilter([{ code: 'NEWS', name: 'News' }]);
     expect(action).toHaveProperty('type', SET_CONTENT_CATEGORY_FILTER);
-    expect(action.payload).toEqual({ code: 'NEWS', name: 'News' });
+    expect(action.payload).toEqual({ categories: [{ code: 'NEWS', name: 'News' }] });
   });
 
   it('setJoinContentCategory() should return a well formed action', () => {
-    const action = setJoinContentCategory({ code: 'NEWS', name: 'News' });
+    const action = setJoinContentCategory([{ code: 'NEWS', name: 'News' }]);
     expect(action).toHaveProperty('type', SET_JOIN_CONTENT_CATEGORY);
-    expect(action.payload).toEqual({ code: 'NEWS', name: 'News' });
+    expect(action.payload).toEqual({ categories: [{ code: 'NEWS', name: 'News' }] });
   });
 
   it('resetJoinContentCategories() should return a well formed action', () => {

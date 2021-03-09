@@ -10,7 +10,7 @@ import {
 import { Checkbox } from 'react-bootstrap';
 import FormLabel from 'ui/common/form/FormLabel';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
-import CategoryTreeFilterContainer from 'ui/categories/filter/CategoryTreeFilterContainer';
+import CategoryTypeaheadFilterContainer from 'ui/categories/filter/CategoryTypeaheadFilterContainer';
 import RenderDropdownTypeaheadInput from 'ui/common/form/RenderDropdownTypeaheadInput';
 
 const messages = defineMessages({
@@ -246,21 +246,12 @@ class ContentsFilter extends Component {
               />
             </div>
             <div className="row form-group">
-              <Col xs={12} sm={2} className="text-right mobile-left">
-                <ControlLabel>
-                  <FormLabel labelId="cms.contents.edit.categories" />
-                </ControlLabel>
-              </Col>
-              <Col xs={12} sm={10}>
-                <CategoryTreeFilterContainer
-                  language={language}
-                  filteringCategories={filteringCategories}
-                  assetType="image"
-                  mobile
-                  minimal
-                  filterSubject="content"
-                />
-              </Col>
+              <CategoryTypeaheadFilterContainer
+                language={language}
+                filteredCategories={filteringCategories}
+                filterSubject="content"
+                minimal
+              />
             </div>
             { renderedContentsStatusFilter }
             <div className="row form-group">

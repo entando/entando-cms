@@ -44,9 +44,9 @@ export const resetFilteringCategories = () => ({
   type: RESET_FILTERING_CATEGORIES,
 });
 
-export const setAssetCategoryFilter = category => ({
+export const setAssetCategoryFilter = categories => ({
   type: SET_ASSET_CATEGORY_FILTER,
-  payload: category,
+  payload: { categories },
 });
 
 export const setAssetsCount = (type, count) => ({
