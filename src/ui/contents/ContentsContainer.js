@@ -6,11 +6,10 @@ import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
   setQuickFilter, checkStatus, checkAccess, checkAuthor, sendCloneContent,
   setCurrentAuthorShow, setCurrentStatusShow, fetchContentsPaged,
-  setContentType, setGroup, setSort, selectRow, selectAllRows, resetJoinContentCategories,
+  setContentType, setGroup, setSort, selectRows, selectAllRows, resetJoinContentCategories,
   setTabSearch,
   resetAuthorStatus, leaveContentsPage,
 } from 'state/contents/actions';
-import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
@@ -22,7 +21,8 @@ import {
   getCurrentStatusShow, getSortingColumns,
   getSelectedRows, getGroup,
 } from 'state/contents/selectors';
-import { getCurrentColumnsShow } from 'state/table-columns/selectors';
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
 import { getPagination } from 'state/pagination/selectors';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
@@ -79,7 +79,7 @@ export const mapStateToProps = (state) => {
     authorChecked: getAuthorChecked(state),
     currentAuthorShow: getCurrentAuthorShow(state),
     currentStatusShow: getCurrentStatusShow(state),
-    currentColumnsShow: getCurrentColumnsShow(state),
+    currentColumnsShow: getColumnOrder(state, 'contentListPage'),
     page,
     lastPage,
     totalItems,
@@ -127,11 +127,11 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(fetchContentsPaged());
     dispatch(resetAuthorStatus());
   },
-  onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
+  onSetCurrentColumnsShow: columnOrder => dispatch(setColumnOrder(columnOrder, 'contentListPage')),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetGroup: group => dispatch(setGroup(group)),
   onSetSort: sort => dispatch(setSort(sort)),
-  onSelectRow: contentId => dispatch(selectRow(contentId)),
+  onSelectRows: contentIds => dispatch(selectRows(contentIds)),
   onSelectAllRows: checked => dispatch(selectAllRows(checked)),
   onEditContent: (contentId) => {
     dispatch(setWorkMode(WORK_MODE_EDIT));

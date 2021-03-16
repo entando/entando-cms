@@ -106,7 +106,7 @@ class Contents extends Component {
       currentAuthorShow, currentStatusShow, currentColumnsShow,
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
-      onSelectRow, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
+      onSelectRows, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
       onAdvancedFilterSearch, users, userPermissions, groupFilter,
     } = this.props;
@@ -203,9 +203,10 @@ class Contents extends Component {
                 activeColumns={currentColumnsShow}
                 onSetSort={onSetSort}
                 selectedRows={selectedRows}
-                onSelectRow={onSelectRow}
+                onSelectRows={onSelectRows}
                 onSelectAllRows={onSelectAllRows}
                 onFilteredSearch={onFilteredSearch}
+                onSetColumnOrder={onSetCurrentColumnsShow}
                 availableColumns={availableColumns}
                 onEditContent={onEditContent}
                 onClickDelete={onClickDelete}
@@ -255,7 +256,7 @@ Contents.propTypes = {
   sortingColumns: PropTypes.shape({}).isRequired,
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSelectRow: PropTypes.func.isRequired,
+  onSelectRows: PropTypes.func.isRequired,
   onSelectAllRows: PropTypes.func.isRequired,
   onEditContent: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
@@ -274,7 +275,7 @@ Contents.defaultProps = {
   loading: false,
   users: [],
   userPermissions: [],
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction'],
   groupFilter: '',
 };
 
