@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import { intlShape, FormattedMessage } from 'react-intl';
 import {
-  customHeaderFormattersDefinition,
   PAGINATION_VIEW, PaginationRow,
   MenuItem, DropdownKebab,
 } from 'patternfly-react';
@@ -44,12 +44,15 @@ export const getContentStatusDetails = (status = '', hasPublicVersion, intl) => 
   return { color, title };
 };
 
+const sortAttributeReplaces = {
+  restriction: 'mainGroup',
+  onLine: 'status',
+  code: 'id',
+};
 class ContentsTable extends Component {
   constructor(props) {
     super(props);
 
-    // enables our custom header formatters extensions to reactabular
-    this.customHeaderFormatters = customHeaderFormattersDefinition;
     this.onSort = this.onSort.bind(this);
     this.onPerPageSelect = this.onPerPageSelect.bind(this);
     this.markSelectedContents = this.markSelectedContents.bind(this);
@@ -78,18 +81,13 @@ class ContentsTable extends Component {
 
   onSort(attribute, direction) {
     const { onFilteredSearch, onSetSort, pageSize } = this.props;
-    const updatedSortingColumns = {
-      attribute,
-      direction,
-    };
-    const newPagination = {
-      page: 1,
-      pageSize,
-    };
-    console.log('onSetSort', updatedSortingColumns);
+    const updatedSortingColumns = { attribute, direction };
+    const newPagination = { page: 1, pageSize };
     onSetSort(updatedSortingColumns);
-    onFilteredSearch(null, newPagination,
-      { attribute, direction: direction.toUpperCase() });
+    onFilteredSearch(null, newPagination, {
+      attribute: get(sortAttributeReplaces, attribute, attribute),
+      direction: direction.toUpperCase(),
+    });
   }
 
   showingColumns() {
@@ -104,7 +102,6 @@ class ContentsTable extends Component {
         let columnFormat = {
           Header: intl.formatMessage({ id: `cms.contents.${code}` }),
         };
-        let newCode = code;
         switch (code) {
           case 'description':
             columnFormat = {
@@ -167,8 +164,8 @@ class ContentsTable extends Component {
                 style: { textOverflow: 'nowrap', whiteSpace: 'nowrap' },
               },
               Cell: ({ value }) => {
-                const { name: groupName } = groups.find(g => g.code === value);
-                return groupName || '';
+                const { name } = groups.find(g => g.code === value);
+                return name || '';
               },
             };
             break;
@@ -182,7 +179,7 @@ class ContentsTable extends Component {
                 const groupNames = currentGroups && currentGroups.map(cg => (
                   groups.filter(g => g.code === cg)[0] || {}
                 ).name);
-                return groupNames && groupNames.join(', ');
+                return groupNames ? groupNames.join(', ') : '';
               },
             };
             break;
@@ -207,7 +204,6 @@ class ContentsTable extends Component {
             };
             break;
           case 'onLine':
-            newCode = 'status';
             columnFormat = {
               ...columnFormat,
               cellAttributes: {
@@ -224,7 +220,7 @@ class ContentsTable extends Component {
             break;
         }
         return {
-          accessor: newCode,
+          accessor: code,
           ...columnFormat,
         };
       });
@@ -241,7 +237,7 @@ class ContentsTable extends Component {
     const {
       intl, totalItems, page, pageSize, perPageOptions, lastPage,
       onEditContent, onClickDelete, onClickPublish, onClickClone, userPermissions,
-      onSelectRows, onSetColumnOrder, sortingColumns,
+      onSelectRows, onSetColumnOrder, sortingColumns, activeColumns,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -251,7 +247,7 @@ class ContentsTable extends Component {
       perPage: pageSize,
       perPageOptions,
     };
-    console.log('onRender', sortingColumns);
+
     const contents = this.markSelectedContents();
 
     const messages = Object.keys(paginatorMessages).reduce((acc, curr) => (
@@ -321,7 +317,7 @@ class ContentsTable extends Component {
             onColumnReorder={onSetColumnOrder}
             onRowSelect={onSelectRows}
             rowSelectAccessor="id"
-            useSorting
+            useSorting={activeColumns}
             onChangeSort={this.onSort}
             classNames={{
               table: 'table-hover table-striped',
