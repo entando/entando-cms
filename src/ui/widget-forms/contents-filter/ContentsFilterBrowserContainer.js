@@ -26,13 +26,14 @@ import {
 
 import { setAppTourLastStep } from 'state/app-tour/actions';
 
-import { getCurrentColumnsShow } from 'state/table-columns/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getGroups } from 'state/edit-content/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getUserList } from 'state/users/selectors';
 import { getUsername } from '@entando/apimanager';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups } from 'state/edit-content/actions';
@@ -82,7 +83,7 @@ export const mapStateToProps = (state) => {
     authorChecked: getAuthorChecked(state),
     currentAuthorShow: getCurrentAuthorShow(state),
     currentStatusShow: getCurrentStatusShow(state),
-    currentColumnsShow: getCurrentColumnsShow(state),
+    currentColumnsShow: getColumnOrder(state, 'contentFilterBrowser'),
     page,
     lastPage,
     totalItems,
@@ -151,7 +152,7 @@ export const mapDispatchToProps = (dispatch, {
     dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(resetAuthorStatus());
   },
-  onSetCurrentColumnsShow: column => dispatch(setCurrentColumnsShow(column)),
+  onSetCurrentColumnsShow: columnOrder => dispatch(setColumnOrder(columnOrder, 'contentFilterBrowser')),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetGroup: group => dispatch(setGroup(group)),
   onSetSort: sort => dispatch(setSort(sort)),

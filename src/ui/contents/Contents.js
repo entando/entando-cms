@@ -61,7 +61,7 @@ const messages = defineMessages({
 const AVAILABLE_COLUMN_CODES = [
   'description', 'firstEditor', 'lastModified',
   'typeCode', 'created', 'mainGroup', 'groups',
-  'onLine', 'restriction', 'code', 'actions',
+  'onLine', 'restriction', 'code',
 ];
 
 class Contents extends Component {

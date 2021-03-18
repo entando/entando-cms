@@ -5,7 +5,6 @@ import {
   setQuickFilter, fetchContentsPaged, setContentType, setSort, resetAuthorStatus,
   checkStatus,
 } from 'state/contents/actions';
-import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 import { fetchGroups } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
@@ -16,6 +15,8 @@ import {
   getSelectedRows,
 } from 'state/contents/selectors';
 import { getPagination } from 'state/pagination/selectors';
+import { setColumnOrder } from 'state/table-column-order/actions';
+import { getColumnOrder } from 'state/table-column-order/selectors';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
@@ -42,6 +43,7 @@ export const mapStateToProps = (state, ownProps) => {
     authorChecked: getAuthorChecked(state),
     currentAuthorShow: getCurrentAuthorShow(state),
     currentStatusShow: getCurrentStatusShow(state),
+    currentColumnsShow: getColumnOrder(state, 'contentListTable'),
     page,
     lastPage,
     totalItems,
@@ -71,7 +73,7 @@ export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
     dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(resetAuthorStatus());
   },
-  onSetCurrentColumnsShow: columns => dispatch(setCurrentColumnsShow(columns)),
+  onSetCurrentColumnsShow: columnOrder => dispatch(setColumnOrder(columnOrder, 'contentListTable')),
   onSetContentType: contentType => dispatch(setContentType(contentType)),
   onSetSort: sort => dispatch(setSort(sort)),
 });

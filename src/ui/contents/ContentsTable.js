@@ -14,6 +14,7 @@ import PublishContentModalContainer from 'ui/contents/PublishContentModalContain
 import JoinCategoriesModalContainer from 'ui/contents/JoinCategoriesModalContainer';
 import { withPermissionValues } from 'ui/common/auth/withPermissions';
 import { VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
+import { SORT_ATTRIBUTE_REPLACES } from 'state/contents/const';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
 export const getContentStatusDetails = (status = '', hasPublicVersion, intl) => {
@@ -44,11 +45,6 @@ export const getContentStatusDetails = (status = '', hasPublicVersion, intl) => 
   return { color, title };
 };
 
-const sortAttributeReplaces = {
-  restriction: 'mainGroup',
-  onLine: 'status',
-  code: 'id',
-};
 class ContentsTable extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +81,7 @@ class ContentsTable extends Component {
     const newPagination = { page: 1, pageSize };
     onSetSort(updatedSortingColumns);
     onFilteredSearch(null, newPagination, {
-      attribute: get(sortAttributeReplaces, attribute, attribute),
+      attribute: get(SORT_ATTRIBUTE_REPLACES, attribute, attribute),
       direction: direction.toUpperCase(),
     });
   }
@@ -198,9 +194,7 @@ class ContentsTable extends Component {
           case 'typeCode':
             columnFormat = {
               ...columnFormat,
-              Cell: ({ row: { original: content } }) => {
-                return content.typeDescription;
-              },
+              Cell: ({ row: { original: content } }) => content.typeDescription,
             };
             break;
           case 'onLine':
@@ -320,7 +314,7 @@ class ContentsTable extends Component {
             useSorting={activeColumns}
             onChangeSort={this.onSort}
             classNames={{
-              table: 'table-hover table-striped',
+              table: 'table-hover table-striped Contents__table-element',
             }}
             sortBy={{
               id: sortingColumns.attribute,
