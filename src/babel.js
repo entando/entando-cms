@@ -40,9 +40,7 @@ const cms = {
       body: MultipleContentsConfigBody,
     },
   },
-  persistData: {
-    tableColumns: ['currentColumnsShow'],
-  },
+  persistData: {},
 };
 
 export default cms;

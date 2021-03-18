@@ -12,7 +12,6 @@ import {
   setTabSearch,
   leaveContentsPage,
 } from 'state/contents/actions';
-import { setCurrentColumnsShow } from 'state/table-columns/actions';
 import { getPagination } from 'state/pagination/selectors';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getLoading } from 'state/loading/selectors';
