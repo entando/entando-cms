@@ -115,7 +115,13 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onApplySort: (attribute, direction) => {
     const { ownerGroup, joinGroups } = ownProps;
-    dispatch(sortAssetsList(get(ARRAY_SORT_COLUMN_REPLACES, attribute, attribute), direction, undefined, ownerGroup, joinGroups));
+    dispatch(sortAssetsList(
+      get(ARRAY_SORT_COLUMN_REPLACES, attribute, attribute),
+      direction,
+      undefined,
+      ownerGroup,
+      joinGroups,
+    ));
   },
   onRemoveAllActiveFilters: () => {
     const { ownerGroup, joinGroups } = ownProps;

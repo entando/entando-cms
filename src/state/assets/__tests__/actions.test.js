@@ -329,7 +329,7 @@ describe('state/assets/actions', () => {
           ...filterParams,
           sorting: {
             attribute,
-            direction: SORT_DIRECTIONS.DESCENDANT,
+            direction: SORT_DIRECTIONS.ASCENDANT,
           },
         });
         done();

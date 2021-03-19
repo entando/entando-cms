@@ -254,7 +254,7 @@
   },
   "peerDependencies": {
     "@entando/apimanager": "^6.5.2",
-    "@entando/datatable": "^1.0.0",
+    "@entando/datatable": "^2.0.0",
     "@entando/menu": "^2.0.0",
     "@entando/messages": "^1.0.4",
     "@entando/pages": "^3.2.2",
