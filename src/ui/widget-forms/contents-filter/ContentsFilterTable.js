@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, FormattedMessage } from 'react-intl';
-import { isNull } from 'lodash';
+import { get, isNull } from 'lodash';
 import {
-  Table, Col,
-  customHeaderFormattersDefinition,
-  PAGINATION_VIEW, PaginationRow, TABLE_SORT_DIRECTION,
-  selectionHeaderCellFormatter, selectionCellFormatter, sortableHeaderCellFormatter,
-  tableCellFormatter, actionHeaderCellFormatter,
+  Col, PAGINATION_VIEW, PaginationRow, Button,
 } from 'patternfly-react';
-import * as resolve from 'table-resolver';
+import { DataTable, TABLE_SORT_DIRECTION } from '@entando/datatable';
+import { SORT_ATTRIBUTE_REPLACES } from 'state/contents/const';
 import { formatDate } from '@entando/utils';
 import { getContentStatusDetails } from 'ui/contents/ContentsTable';
 import paginatorMessages from 'ui/common/paginatorMessages';
@@ -17,12 +14,9 @@ import paginatorMessages from 'ui/common/paginatorMessages';
 class ContentsFilterTable extends Component {
   constructor(props) {
     super(props);
-    // enables our custom header formatters extensions to reactabular
-    this.customHeaderFormatters = customHeaderFormattersDefinition;
     this.onSort = this.onSort.bind(this);
     this.onPerPageSelect = this.onPerPageSelect.bind(this);
     this.onTableRowSelect = this.onTableRowSelect.bind(this);
-    this.onSelectAllRows = this.onSelectAllRows.bind(this);
     this.markSelectedContents = this.markSelectedContents.bind(this);
   }
 
@@ -47,142 +41,124 @@ class ContentsFilterTable extends Component {
     return onFilteredSearch(null, newPagination);
   }
 
-  onSort(e, column, sortDirection) {
+  onSort(attribute, direction) {
     const { onFilteredSearch, onSetSort, pageSize } = this.props;
-    const newSortDirection = sortDirection === TABLE_SORT_DIRECTION.ASC ? TABLE_SORT_DIRECTION.DESC
-      : TABLE_SORT_DIRECTION.ASC;
-    const updatedSortingColumns = {
-      [column.property]: {
-        direction: newSortDirection,
-        position: 0,
-      },
-    };
-    const newPagination = {
-      page: 1,
-      pageSize,
-    };
+    const updatedSortingColumns = { attribute, direction };
+    const newPagination = { page: 1, pageSize };
     onSetSort(updatedSortingColumns);
-    onFilteredSearch(null, newPagination,
-      { attribute: column.property, direction: newSortDirection.toUpperCase() });
+    onFilteredSearch(null, newPagination, {
+      attribute: get(SORT_ATTRIBUTE_REPLACES, attribute, attribute),
+      direction: direction.toUpperCase(),
+    });
   }
 
-  onTableRowSelect(e, row) {
+  onTableRowSelect(rows) {
     const {
-      onSelectRow,
+      onSelectRow, contents,
     } = this.props;
-    onSelectRow(row);
-  }
-
-  onSelectAllRows(event) {
-    const { onSelectAllRows } = this.props;
-    const { checked } = event.target;
-    onSelectAllRows(checked);
+    const row = rows[rows.length - 1];
+    const selected = contents.find(content => content.id === row);
+    onSelectRow(selected);
   }
 
   showingColumns() {
     const {
-      activeColumns, availableColumns, intl, groups, onContentPicked, pickedContents,
+      activeColumns, availableColumns, intl, groups,
     } = this.props;
-    const pickMode = !isNull(pickedContents) && !Number.isNaN(pickedContents.length);
-    const currentActiveColumns = pickMode ? [...activeColumns, 'addToPool'] : ['selectAll', ...activeColumns];
-    const allColumns = pickMode
-      ? [...availableColumns, { code: 'addToPool' }]
-      : [{ code: 'selectAll' }, ...availableColumns];
-    return allColumns.filter(ac => currentActiveColumns.includes(ac.code))
-      .map((ac, i) => {
-        let rowCellFormatter = tableCellFormatter;
-        let headerCellFormatter = sortableHeaderCellFormatter;
-        const { code } = ac;
-        let newCode = code;
+    const currentActiveColumns = [...activeColumns];
+    const allColumns = availableColumns.map(column => column.code);
+    return currentActiveColumns
+      .filter(ac => allColumns.includes(ac))
+      .map((code) => {
+        let columnFormat = {
+          Header: intl.formatMessage({ id: `cms.contents.${code}` }),
+        };
         switch (code) {
           case 'description':
-            rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
-            );
+            columnFormat = {
+              ...columnFormat,
+              cellAttributes: {
+                className: 'Contents__name-td',
+                style: { textOverflow: 'ellipsis' },
+              },
+            };
             break;
           case 'code':
-            rowCellFormatter = (_, { rowData }) => <td>{rowData.id}</td>;
+            columnFormat = {
+              ...columnFormat,
+              Cell: ({ row: { original: content } }) => content.id,
+            };
             break;
           case 'created':
           case 'lastModified':
-            rowCellFormatter = date => <td>{formatDate(date)}</td>;
+            columnFormat = {
+              ...columnFormat,
+              Cell: ({ value }) => formatDate(value),
+            };
             break;
           case 'mainGroup':
-            rowCellFormatter = (mainGroup) => {
-              const groupName = (groups.filter(g => g.code === mainGroup)[0] || {}).name;
-              return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupName || ''}</td>;
+            columnFormat = {
+              ...columnFormat,
+              cellAttributes: {
+                style: { textOverflow: 'nowrap', whiteSpace: 'nowrap' },
+              },
+              Cell: ({ value }) => {
+                const { name } = groups.find(g => g.code === value);
+                return name || '';
+              },
             };
             break;
           case 'groups':
-            headerCellFormatter = actionHeaderCellFormatter;
-            rowCellFormatter = (currentGroups) => {
-              const groupNames = currentGroups
-              && currentGroups.map(cg => (groups.filter(g => g.code === cg)[0] || {}).name);
-              return <td style={{ textOverflow: 'nowrap', whiteSpace: 'nowrap' }}>{groupNames && groupNames.join(', ')}</td>;
+            columnFormat = {
+              ...columnFormat,
+              cellAttributes: {
+                style: { textOverflow: 'nowrap', whiteSpace: 'nowrap' },
+              },
+              Cell: ({ value: currentGroups }) => {
+                const groupNames = currentGroups && currentGroups.map(cg => (
+                  groups.filter(g => g.code === cg)[0] || {}
+                ).name);
+                return groupNames ? groupNames.join(', ') : '';
+              },
             };
             break;
           case 'restriction':
-            rowCellFormatter = (restr, { rowData: { mainGroup } }) => <td className="text-center"><span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} /></td>;
-            break;
-          case 'typeCode':
-            rowCellFormatter = (typeCode, { rowData: { typeDescription } }) => (
-              <td>
-                {typeDescription}
-              </td>
-            );
-            break;
-          case 'addToPool':
-            newCode = 'actions';
-            headerCellFormatter = actionHeaderCellFormatter;
-            rowCellFormatter = (_, { rowData }) => (
-              <Table.Actions>
-                <Table.Button
-                  onClick={() => onContentPicked(rowData)}
-                >
-                  <FormattedMessage id="cms.label.add" />
-                </Table.Button>
-              </Table.Actions>
-            );
-            break;
-          case 'onLine':
-            newCode = 'status';
-            rowCellFormatter = (onLine, { rowData }) => {
-              const { status, onLine: hasPublicVersion } = rowData;
-              const { color, title } = getContentStatusDetails(status, hasPublicVersion, intl);
-              return (
-                <td className="text-center">
-                  <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />
-                </td>
-              );
+            columnFormat = {
+              ...columnFormat,
+              cellAttributes: {
+                className: 'text-center',
+              },
+              Cell: ({ row: { original: content } }) => {
+                const { mainGroup } = content;
+                return <span className={`fa fa-${mainGroup === 'free' ? 'unlock' : 'lock'}`} />;
+              },
             };
             break;
-          case 'selectAll':
-            headerCellFormatter = selectionHeaderCellFormatter;
-            rowCellFormatter = (value, { rowData, rowIndex }) => selectionCellFormatter(
-              { rowData, rowIndex },
-              this.onTableRowSelect,
-            );
+          case 'typeCode':
+            columnFormat = {
+              ...columnFormat,
+              Cell: ({ row: { original: content } }) => content.typeDescription,
+            };
             break;
-
+          case 'onLine':
+            columnFormat = {
+              ...columnFormat,
+              cellAttributes: {
+                className: 'text-center',
+              },
+              Cell: ({ value, row: { original: content } }) => {
+                const { status } = content;
+                const { color, title } = getContentStatusDetails(status, value, intl);
+                return <span className={`ContentsFilter__status ContentsFilter__status--${color}`} title={title} />;
+              },
+            };
+            break;
           default:
             break;
         }
         return {
-          property: newCode,
-          header: {
-            label: intl.formatMessage({ id: `cms.contents.${code}` }),
-            props: {
-              index: i,
-              rowSpan: 1,
-              colSpan: 1,
-            },
-            [[code, newCode].includes('actions') || code === 'groups' ? 'formatters' : 'customFormatters']: [headerCellFormatter],
-          },
-          cell: {
-            props: {
-              index: i,
-            },
-            formatters: [rowCellFormatter],
-          },
+          accessor: code,
+          ...columnFormat,
         };
       });
   }
@@ -196,7 +172,8 @@ class ContentsFilterTable extends Component {
 
   render() {
     const {
-      intl, totalItems, page, pageSize, perPageOptions, sortingColumns, lastPage,
+      intl, totalItems, page, pageSize, perPageOptions, sortingColumns, selectedRows,
+      lastPage, onContentPicked, pickedContents, onSetColumnOrder, activeColumns,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -212,30 +189,49 @@ class ContentsFilterTable extends Component {
       { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
     ), {});
 
+    const pickMode = !isNull(pickedContents) && !Number.isNaN(pickedContents.length);
+
+    const rowAction = pickMode ? {
+      Header: intl.formatMessage({ id: 'cms.contents.actions' }),
+      cellAttributes: {
+        className: 'table-view-pf-actions text-center',
+        style: { width: 'inherit' },
+      },
+      Cell: ({ original: content }) => (
+        <div>
+          <Button
+            onClick={() => onContentPicked(content)}
+          >
+            <FormattedMessage id="cms.label.add" />
+          </Button>
+        </div>
+      ),
+    } : null;
+
     return (
       <Col>
         <div className="Contents__table">
-          <Table.PfProvider
-            striped
-            bordered
-            hover
-            dataTable
+          <DataTable
             columns={columns}
-            components={{
-              header: {
-                cell: cellProps => this.customHeaderFormatters({
-                  cellProps,
-                  columns,
-                  sortingColumns,
-                  rows: contents,
-                  onSort: this.onSort,
-                }),
-              },
+            data={contents}
+            rowAction={rowAction}
+            columnResizable
+            hideSelectAll
+            onColumnReorder={onSetColumnOrder}
+            onRowSelect={this.onTableRowSelect}
+            rowSelectAccessor="id"
+            useSorting={activeColumns}
+            onChangeSort={this.onSort}
+            selectedRows={selectedRows}
+            classNames={{
+              table: 'table-hover table-striped Contents__table-element',
+              tableBody: 'app-tour-step-19',
             }}
-          >
-            <Table.Header headerRows={resolve.headerRows({ columns })} />
-            <Table.Body rows={contents} rowKey="id" className="app-tour-step-19" />
-          </Table.PfProvider>
+            sortBy={{
+              id: sortingColumns.attribute,
+              desc: sortingColumns.direction === TABLE_SORT_DIRECTION.DESC,
+            }}
+          />
           <PaginationRow
             itemCount={totalItems}
             itemsStart={itemsStart}
@@ -271,20 +267,23 @@ ContentsFilterTable.propTypes = {
   onFilteredSearch: PropTypes.func.isRequired,
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
-  sortingColumns: PropTypes.shape({}).isRequired,
+  sortingColumns: PropTypes.shape({
+    attribute: PropTypes.string,
+    direction: PropTypes.oneOf([TABLE_SORT_DIRECTION.ASC, TABLE_SORT_DIRECTION.DESC]),
+  }).isRequired,
   pickedContents: PropTypes.arrayOf(PropTypes.string),
   onSetSort: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelectRow: PropTypes.func.isRequired,
-  onSelectAllRows: PropTypes.func,
   onContentPicked: PropTypes.func,
+  onSetColumnOrder: PropTypes.func,
 };
 
 ContentsFilterTable.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
-  onSelectAllRows: () => {},
   pickedContents: null,
   onContentPicked: () => {},
+  onSetColumnOrder: () => {},
 };
 
 export default ContentsFilterTable;

@@ -41,6 +41,10 @@
       overflow: visible;
     }
 
+    &-element.table { // sass-lint:disable-line force-element-nesting class-name-format
+      margin-bottom: 0;
+    }
+
     & .disabled { // sass-lint:disable-line class-name-format
       pointer-events: none;
     }

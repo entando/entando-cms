@@ -202,9 +202,7 @@ export const sortAssetsList = (
   const newSorting = { attribute, direction };
   const { sorting, ...others } = getListFilterParams(getState());
 
-  if (sorting && sorting.attribute === attribute) {
-    newSorting.direction = sorting.direction === 'ASC' ? 'DESC' : 'ASC';
-  } else {
+  if (!direction) {
     newSorting.direction = 'ASC';
   }
 

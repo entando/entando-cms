@@ -162,6 +162,7 @@ class ContentsFilterBrowser extends Component {
                 onSelectRow={onSelectRow}
                 onFilteredSearch={onFilteredSearch}
                 availableColumns={availableColumns}
+                onSetColumnOrder={onSetCurrentColumnsShow}
                 groups={groups}
                 pickedContents={pickedContents}
                 onContentPicked={onContentPicked}
@@ -226,7 +227,7 @@ ContentsFilterBrowser.defaultProps = {
   users: [],
   pickedContents: null,
   onContentPicked: () => {},
-  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction', 'actions'],
+  currentColumnsShow: ['description', 'firstEditor', 'lastModified', 'typeCode', 'created', 'onLine', 'restriction'],
   compatibility: {},
   groupFilter: '',
 };

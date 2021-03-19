@@ -54,8 +54,8 @@ class Contents extends Component {
 
   render() {
     const {
-      page, totalItems, pageSize, contents, lastPage,
-      currentQuickFilter, onSetQuickFilter, onFilteredSearch, intl,
+      page, totalItems, pageSize, contents, lastPage, currentQuickFilter,
+      onSetQuickFilter, onFilteredSearch, intl, onSetCurrentColumnsShow,
       contentTypes, currentColumnsShow, onSetContentType, sortingColumns,
       onSetSort, selectedRows, onAdvancedFilterSearch, onContentSelect,
     } = this.props;
@@ -86,6 +86,7 @@ class Contents extends Component {
             sortingColumns={sortingColumns}
             activeColumns={currentColumnsShow}
             onSetSort={onSetSort}
+            onSetCurrentColumnsShow={onSetCurrentColumnsShow}
             selectedRows={selectedRows}
             onFilteredSearch={onFilteredSearch}
             availableColumns={availableColumns}
@@ -111,6 +112,7 @@ Contents.propTypes = {
   contents: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   currentColumnsShow: PropTypes.arrayOf(PropTypes.string),
+  onSetCurrentColumnsShow: PropTypes.func,
   onSetContentType: PropTypes.func.isRequired,
   sortingColumns: PropTypes.shape({}).isRequired,
   onSetSort: PropTypes.func.isRequired,
@@ -121,6 +123,7 @@ Contents.propTypes = {
 
 Contents.defaultProps = {
   currentColumnsShow: ['description', 'typeCode', 'lastModified', 'created'],
+  onSetCurrentColumnsShow: () => {},
 };
 
 export default Contents;

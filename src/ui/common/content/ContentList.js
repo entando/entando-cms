@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'react-intl';
-import {
-  Table, customHeaderFormattersDefinition,
-  PAGINATION_VIEW, PaginationRow,
-  TABLE_SORT_DIRECTION, tableCellFormatter,
-  sortableHeaderCellFormatter,
-} from 'patternfly-react';
-import * as resolve from 'table-resolver';
+import { PAGINATION_VIEW, PaginationRow } from 'patternfly-react';
+import { DataTable, TABLE_SORT_DIRECTION, ROW_ACTION_ALIGN } from '@entando/datatable';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
 class ContentList extends Component {
   constructor(props) {
     super(props);
     // enables our custom header formatters extensions to reactabular
-    this.customHeaderFormatters = customHeaderFormattersDefinition;
     this.onSort = this.onSort.bind(this);
     this.onPerPageSelect = this.onPerPageSelect.bind(this);
     this.markSelectedContents = this.markSelectedContents.bind(this);
@@ -42,23 +36,13 @@ class ContentList extends Component {
     return onFilteredSearch(null, newPagination);
   }
 
-  onSort(e, column, sortDirection) {
+  onSort(attribute, direction) {
     const { onFilteredSearch, onSetSort, pageSize } = this.props;
-    const newSortDirection = sortDirection === TABLE_SORT_DIRECTION.ASC ? TABLE_SORT_DIRECTION.DESC
-      : TABLE_SORT_DIRECTION.ASC;
-    const updatedSortingColumns = {
-      [column.property]: {
-        direction: newSortDirection,
-        position: 0,
-      },
-    };
-    const newPagination = {
-      page: 1,
-      pageSize,
-    };
+    const updatedSortingColumns = { attribute, direction };
+    const newPagination = { page: 1, pageSize };
     onSetSort(updatedSortingColumns);
     onFilteredSearch(null, newPagination,
-      { attribute: column.property, direction: newSortDirection.toUpperCase() });
+      { attribute, direction: direction.toUpperCase() });
   }
 
   handleRowSelect(event) {
@@ -71,56 +55,43 @@ class ContentList extends Component {
       activeColumns, availableColumns, intl,
     } = this.props;
 
-    const currentActiveColumns = ['select', ...activeColumns];
-    const allColumns = [{ code: 'select' }, ...availableColumns];
-    return allColumns.filter(ac => currentActiveColumns.includes(ac.code))
-      .map((ac, i) => {
-        let rowCellFormatter = tableCellFormatter;
-        const headerCellFormatter = sortableHeaderCellFormatter;
-        const { code } = ac;
-        switch (ac.code) {
+    const currentActiveColumns = [...activeColumns];
+    const allColumns = availableColumns.map(column => column.code);
+    return currentActiveColumns
+      .filter(ac => allColumns.includes(ac))
+      .map((code) => {
+        let columnFormat = {
+          Header: intl.formatMessage({ id: `cms.contents.${code}` }),
+        };
+        switch (code) {
           case 'description':
-            rowCellFormatter = name => (<td className="Contents__name-td" style={{ textOverflow: 'ellipsis' }}>{name}</td>
-            );
+            columnFormat = {
+              ...columnFormat,
+              cellAttributes: {
+                className: 'Contents__name-td',
+                style: { textOverflow: 'ellipsis' },
+              },
+            };
             break;
           case 'created':
           case 'lastModified':
-            rowCellFormatter = date => <td>{new Date(date).toLocaleString()}</td>;
+            columnFormat = {
+              ...columnFormat,
+              Cell: ({ value }) => new Date(value).toLocaleString(),
+            };
             break;
           case 'typeCode':
-            rowCellFormatter = (typeCode, { rowData: { typeDescription } }) => (
-              <td>
-                {typeDescription}
-              </td>
-            );
-            break;
-          case 'select':
-            rowCellFormatter = (value, { rowData: { id } }) => (
-              <td className="text-center">
-                <input type="radio" name="selected-content" value={id} onChange={this.handleRowSelect} />
-              </td>
-            );
+            columnFormat = {
+              ...columnFormat,
+              Cell: ({ row: { original: content } }) => content.typeDescription,
+            };
             break;
           default:
             break;
         }
         return {
-          property: code,
-          header: {
-            label: intl.formatMessage({ id: `cms.contents.${code}` }),
-            props: {
-              index: i,
-              rowSpan: 1,
-              colSpan: 1,
-            },
-            customFormatters: [headerCellFormatter],
-          },
-          cell: {
-            props: {
-              index: i,
-            },
-            formatters: [rowCellFormatter],
-          },
+          accessor: code,
+          ...columnFormat,
         };
       });
   }
@@ -134,7 +105,8 @@ class ContentList extends Component {
 
   render() {
     const {
-      intl, totalItems, page, pageSize, perPageOptions, lastPage, sortingColumns,
+      intl, totalItems, page, pageSize, perPageOptions,
+      lastPage, sortingColumns, activeColumns, onSetCurrentColumnsShow,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -150,30 +122,36 @@ class ContentList extends Component {
       { ...acc, [curr]: intl.formatMessage(paginatorMessages[curr]) }
     ), {});
 
+    const rowAction = {
+      Header: intl.formatMessage({ id: 'cms.contents.select' }),
+      cellAttributes: {
+        className: 'text-center',
+      },
+      Cell: ({ original: content }) => (
+        <input type="radio" name="selected-content" value={content.id} onChange={this.handleRowSelect} />
+      ),
+    };
+
     return (
       <div>
         <div className="Contents__table">
-          <Table.PfProvider
-            striped
-            bordered
-            hover
-            dataTable
+          <DataTable
             columns={columns}
-            components={{
-              header: {
-                cell: cellProps => this.customHeaderFormatters({
-                  cellProps,
-                  columns,
-                  sortingColumns,
-                  rows: contents,
-                  onSort: this.onSort,
-                }),
-              },
+            data={contents}
+            rowAction={rowAction}
+            rowActionAlign={ROW_ACTION_ALIGN.ALIGN_LEFT}
+            columnResizable
+            onColumnReorder={onSetCurrentColumnsShow}
+            useSorting={activeColumns}
+            onChangeSort={this.onSort}
+            classNames={{
+              table: 'table-hover table-striped Contents__table-element',
             }}
-          >
-            <Table.Header headerRows={resolve.headerRows({ columns })} />
-            <Table.Body rows={contents} rowKey="id" />
-          </Table.PfProvider>
+            sortBy={{
+              id: sortingColumns.attribute,
+              desc: sortingColumns.direction === TABLE_SORT_DIRECTION.DESC,
+            }}
+          />
           <PaginationRow
             itemCount={totalItems}
             itemsStart={itemsStart}
@@ -208,14 +186,19 @@ ContentList.propTypes = {
   onFilteredSearch: PropTypes.func.isRequired,
   totalItems: PropTypes.number.isRequired,
   perPageOptions: PropTypes.arrayOf(PropTypes.number),
-  sortingColumns: PropTypes.shape({}).isRequired,
+  sortingColumns: PropTypes.shape({
+    attribute: PropTypes.string,
+    direction: PropTypes.oneOf([TABLE_SORT_DIRECTION.ASC, TABLE_SORT_DIRECTION.DESC]),
+  }).isRequired,
   onSetSort: PropTypes.func.isRequired,
+  onSetCurrentColumnsShow: PropTypes.func,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onContentSelect: PropTypes.func.isRequired,
 };
 
 ContentList.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
+  onSetCurrentColumnsShow: () => {},
 };
 
 export default ContentList;

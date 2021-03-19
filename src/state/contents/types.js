@@ -10,6 +10,7 @@ export const SET_SORT = 'cms/contents/set-sort';
 export const SET_CONTENT_TYPE = 'cms/contents/set-content-type';
 export const SET_GROUP = 'cms/contents/set-group';
 export const SELECT_ROW = 'cms/contents/select-row';
+export const SELECT_ROWS = 'cms/contents/select-rows';
 export const SELECT_SINGLE_ROW = 'cms/contents/select-single-row';
 export const SELECT_ALL_ROWS = 'cms/contents/select-all-rows';
 export const SET_JOIN_CONTENT_CATEGORY = 'cms/contents/set-join-content-category';

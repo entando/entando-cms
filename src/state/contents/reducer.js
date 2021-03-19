@@ -1,4 +1,4 @@
-import { TABLE_SORT_DIRECTION } from 'patternfly-react';
+import { TABLE_SORT_DIRECTION } from '@entando/datatable';
 import {
   SET_QUICK_FILTER, SET_CONTENTS, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
@@ -8,6 +8,7 @@ import {
   SET_GROUP,
   SELECT_SINGLE_ROW,
   SELECT_ROW,
+  SELECT_ROWS,
   SELECT_ALL_ROWS,
   SET_JOIN_CONTENT_CATEGORY,
   RESET_JOIN_CONTENT_CATEGORIES,
@@ -25,10 +26,8 @@ const defaultState = {
   filteringCategories: [],
   joiningCategories: [],
   sortingColumns: {
-    lastModified: {
-      direction: TABLE_SORT_DIRECTION.DESC,
-      position: 0,
-    },
+    attribute: 'lastModified',
+    direction: TABLE_SORT_DIRECTION.DESC,
   },
   contents: [],
   statusChecked: '',
@@ -144,6 +143,13 @@ const reducer = (state = defaultState, action = {}) => {
       return {
         ...state,
         selectedRows: selectedRows.slice(0),
+      };
+    }
+    case SELECT_ROWS: {
+      const rows = action.payload;
+      return {
+        ...state,
+        selectedRows: rows,
       };
     }
     case SELECT_ALL_ROWS: {

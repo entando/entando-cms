@@ -24,11 +24,11 @@ const ContentTabs = ({
   );
   const onClickColumnItem = (code) => {
     if (code === 'name') return;
-    let newColumns = currentColumnsShow.slice(0);
+    let newColumns = [...currentColumnsShow];
     if (newColumns.includes(code)) {
       newColumns = newColumns.filter(c => c !== code);
     } else {
-      newColumns.push(code);
+      newColumns = [...newColumns, code];
     }
     onSetCurrentColumnsShow(newColumns);
   };

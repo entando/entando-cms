@@ -18,7 +18,8 @@ import {
   SET_CONTENTS, SET_QUICK_FILTER, SET_CONTENT_CATEGORY_FILTER,
   CHECK_STATUS, CHECK_ACCESS, CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW,
   SET_CURRENT_STATUS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
-  SET_GROUP, SELECT_ROW, SELECT_ALL_ROWS, SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
+  SET_GROUP, SELECT_ROW, SELECT_ROWS, SELECT_ALL_ROWS,
+  SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
   RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
@@ -107,6 +108,10 @@ export const selectRow = row => ({
   type: SELECT_ROW,
   payload: row,
 });
+export const selectRows = rows => ({
+  type: SELECT_ROWS,
+  payload: rows,
+});
 
 export const selectAllRows = checked => ({
   type: SELECT_ALL_ROWS,
@@ -148,8 +153,8 @@ export const fetchContentsWithFilters = (
   const sortingColumns = getSortingColumns(state);
   const quickFilter = getCurrentQuickFilter(state);
   const { id, value: qfValue } = quickFilter;
-  const columnKey = Object.keys(sortingColumns)[0];
-  const sortDirection = sortingColumns[columnKey].direction;
+  const columnKey = sortingColumns.attribute;
+  const sortDirection = sortingColumns.direction;
   const sorting = newSort || { attribute: columnKey, direction: sortDirection.toUpperCase() };
   let query = '';
   const filters = [];
@@ -216,10 +221,8 @@ export const fetchContentsWithTabs = (
 ) => (dispatch, getState) => {
   const state = getState();
   const pagination = page || getPagination(state, NAMESPACE_CONTENTS);
-  const sortingColumns = getSortingColumns(state);
-  const columnKey = Object.keys(sortingColumns)[0];
-  const sortDirection = sortingColumns[columnKey].direction;
-  const sorting = newSort || { attribute: columnKey, direction: sortDirection.toUpperCase() };
+  const { attribute, direction } = getSortingColumns(state);
+  const sorting = newSort || { attribute, direction: direction.toUpperCase() };
   const author = getCurrentAuthorShow(state);
   const status = getCurrentStatusShow(state);
   const published = status === 'published';

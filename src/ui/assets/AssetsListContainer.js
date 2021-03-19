@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { get } from 'lodash';
 import {
   getAssetsList,
   getFilteringCategories,
@@ -30,6 +31,7 @@ import { getCategoryTree, getCategoryTreeFetched } from 'state/categories/select
 import AssetsList from 'ui/assets/AssetsList';
 import { NAMESPACE_ASSETS } from 'state/pagination/const';
 import { getPagination } from 'state/pagination/selectors';
+import { ARRAY_SORT_COLUMN_REPLACES } from 'state/assets/const';
 
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { MODAL_ID } from 'ui/assets/EditAssetFormModal';
@@ -111,9 +113,15 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     const { ownerGroup, joinGroups } = ownProps;
     dispatch(fetchAssetsPaged(page, undefined, ownerGroup, joinGroups));
   },
-  onApplySort: (sortName) => {
+  onApplySort: (attribute, direction) => {
     const { ownerGroup, joinGroups } = ownProps;
-    dispatch(sortAssetsList(sortName, undefined, undefined, ownerGroup, joinGroups));
+    dispatch(sortAssetsList(
+      get(ARRAY_SORT_COLUMN_REPLACES, attribute, attribute),
+      direction,
+      undefined,
+      ownerGroup,
+      joinGroups,
+    ));
   },
   onRemoveAllActiveFilters: () => {
     const { ownerGroup, joinGroups } = ownProps;
