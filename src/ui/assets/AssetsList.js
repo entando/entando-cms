@@ -19,64 +19,16 @@ import {
   Button,
 } from 'patternfly-react';
 import { formatDate } from '@entando/utils';
-import { DataTable } from '@entando/datatable';
+import { DataTable, TABLE_SORT_DIRECTION } from '@entando/datatable';
 import CategoryTypeaheadFilterContainer from 'ui/categories/filter/CategoryTypeaheadFilterContainer';
 import AssetsListGridView from 'ui/assets/AssetsListGridView';
 import paginatorMessages from 'ui/common/paginatorMessages';
-
-const headers = [
-  {
-    name: 'preview',
-    width: '10%',
-  },
-  {
-    name: 'name',
-    width: '18%',
-    id: 'description',
-  },
-  {
-    name: 'type',
-    width: '8%',
-    id: 'type',
-  },
-  {
-    name: 'uploadedBy',
-    width: '17%',
-    id: 'owner',
-  },
-  {
-    name: 'uploadedAt',
-    width: '18%',
-    id: 'createdAt',
-  },
-  {
-    name: 'group',
-    width: '10%',
-    id: 'group',
-  },
-  {
-    name: 'categories',
-    width: '12%',
-    id: 'categories',
-  },
-];
-
-const defaultShownColumns = headers.map(({ name }) => name);
-
-const fileTypes = [
-  {
-    name: 'All',
-    id: 'all',
-  },
-  {
-    name: 'Images',
-    id: 'image',
-  },
-  {
-    name: 'Documents',
-    id: 'file',
-  },
-];
+import {
+  ASSET_COLUMN_HEADERS,
+  DEFAULT_ASSET_COLUMNS,
+  SORTABLE_COLUMNS,
+  ASSET_FILETYPES,
+} from 'state/assets/const';
 
 class AssetsList extends Component {
   constructor(props) {
@@ -190,11 +142,8 @@ class AssetsList extends Component {
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
     const itemsEnd = Math.min(page * perPage, totalItems);
     const hideCategoryBox = categoryTreeFetched && categories.length === 0;
-    const notSortable = ['actions', 'preview', 'categories'];
-    const headerSorter = item => (notSortable.indexOf(item.name) === -1
-      ? onApplySort(item.id) : null);
 
-    const renderFileTypes = fileTypes.map((type, i) => (
+    const renderFileTypes = ASSET_FILETYPES.map((type, i) => (
       <div
         tabIndex={i}
         key={type.id}
@@ -249,28 +198,17 @@ class AssetsList extends Component {
         )}
       </Toolbar.Results>
     );
+    const mappedColumnHeaders = ASSET_COLUMN_HEADERS.reduce((acc, curr) => ({
+      ...acc,
+      [curr.name]: { ...curr },
+    }), {});
 
-    const columnsDef = headers.filter(({ name }) => showColumns.includes(name))
+    const columnsDef = showColumns.map(col => mappedColumnHeaders[col])
       .map(curr => ({
-        Header: (
-          <>
-            <FormattedMessage id={`cms.assets.list.${curr.name}`} />{' '}
-            {curr.name !== 'preview' && (
-              <i
-                className={`fa ${
-                  (sort && sort.attribute === curr.id) && (sort.direction === 'ASC'
-                    ? 'fa-angle-up'
-                    : 'fa-angle-down')
-                } AssetsList__sort`}
-              />
-            )}
-          </>
-        ),
+        Header: <FormattedMessage id={`cms.assets.list.${curr.name}`} />,
         accessor: curr.name,
         attributes: {
           style: { width: curr.width },
-          role: 'button',
-          onClick: () => headerSorter(curr),
         },
         Cell: ({ row: { original: asset }, column, value }) => {
           switch (column.id) {
@@ -325,7 +263,7 @@ class AssetsList extends Component {
             <FormattedMessage id="cms.label.use" defaultMessage="Use" />
           </Button>
         ) : (
-          <DropdownKebab className="AssetsList__item-actions" id={asset.id} pullRight={browseMode}>
+          <DropdownKebab className="AssetsList__item-actions" id={`AssetsList__item-action-${asset.id}`} pullRight={browseMode}>
             <MenuItem onClick={() => onAssetSelected(asset)}>
               <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
             </MenuItem>
@@ -343,6 +281,10 @@ class AssetsList extends Component {
       ),
     };
 
+    const hasSortIdAlt = sort.attribute
+      && ASSET_COLUMN_HEADERS.find(col => col.id && col.id === sort.attribute);
+    const sortAttribute = hasSortIdAlt ? hasSortIdAlt.name : sort.attribute;
+
     const tableContent = (
       <DataTable
         columns={columnsDef}
@@ -353,10 +295,16 @@ class AssetsList extends Component {
         classNames={{
           table: 'table-hover AssetsList__table',
         }}
+        useSorting={SORTABLE_COLUMNS}
+        onChangeSort={onApplySort}
         rowAttributes={row => ({
           className: `AssetsList__item ${selectedAsset === row.id ? 'selected' : ''}`,
-          onClick: () => this.handleAssetSelect(row.id),
+          onClick: () => browseMode && this.handleAssetSelect(row.id),
         })}
+        sortBy={{
+          id: sortAttribute,
+          desc: sort.direction === TABLE_SORT_DIRECTION.DESC,
+        }}
       />
     );
     const gridContent = (
@@ -531,7 +479,7 @@ AssetsList.defaultProps = {
   perPageOptions: [5, 10, 15, 25, 50],
   browseMode: false,
   onUseAssetClicked: null,
-  showColumns: defaultShownColumns,
+  showColumns: DEFAULT_ASSET_COLUMNS,
   hideFooter: false,
   singleView: false,
   onSelect: () => {},
