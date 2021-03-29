@@ -2,7 +2,9 @@ import { connect } from 'react-redux';
 import { clearErrors, addToast, TOAST_SUCCESS } from '@entando/messages';
 import { get, isUndefined, isNull } from 'lodash';
 import { injectIntl } from 'react-intl';
-import { change, formValueSelector, submit } from 'redux-form';
+import {
+  change, formValueSelector, submit, getFormValues,
+} from 'redux-form';
 import { routeConverter } from '@entando/utils';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 
@@ -42,6 +44,7 @@ export const mapStateToProps = (state, ownProps) => {
     selectedContentType: formValueSelector(formToUse)(state, putPrefixField('contentType')),
     selectedCategories: formValueSelector(formToUse)(state, putPrefixField('categories')),
     selectedInclusiveOr: formValueSelector(formToUse)(state, putPrefixField('orClauseCategoryFilter')),
+    widgetConfigFormData: getFormValues(formToUse)(state),
   };
 };
 

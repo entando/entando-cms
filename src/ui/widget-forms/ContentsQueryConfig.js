@@ -6,7 +6,7 @@ import { Collapse } from 'react-collapse';
 import {
   Button, Row, Col, FormGroup, Alert,
 } from 'patternfly-react';
-import { maxLength } from '@entando/utils';
+import { required, maxLength } from '@entando/utils';
 import { isUndefined } from 'lodash';
 
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -85,6 +85,7 @@ export class ContentsQueryFormBody extends Component {
       intl, onChangeFilterValue, onResetFilterOption, onChangeFilterAttribute,
       languages, onToggleInclusiveOr, selectedInclusiveOr, extFormName,
       invalid, submitting, dirty, onCancel, onDiscard, onSave, putPrefixField,
+      widgetConfigFormData,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -119,6 +120,12 @@ export class ContentsQueryFormBody extends Component {
           validate={[maxLength70]}
         />
       )) : null;
+
+    const pageIsRequired = !isUndefined(normalizedLanguages)
+      ? normalizedLanguages.some((langCode) => {
+        const descriptionValue = widgetConfigFormData[putPrefixField(`linkDescr_${langCode}`)];
+        return descriptionValue !== null && descriptionValue !== undefined && descriptionValue !== '';
+      }) : false;
 
     const inclusiveOrOptions = [{ id: 'true', label: intl.formatMessage({ id: 'widget.form.inclusiveOr' }) }];
 
@@ -358,10 +365,11 @@ export class ContentsQueryFormBody extends Component {
                       component={RenderSelectInput}
                       name={putPrefixField('pageLink')}
                       label={
-                        <FormLabel labelId="widget.form.page" />
+                        <FormLabel labelId="widget.form.page" required={!!pageIsRequired} />
                     }
                       options={normalizedPages}
                       optionValue="code"
+                      validate={pageIsRequired ? [required] : []}
                       optionDisplayName="name"
                       defaultOptionId="app.enumerator.none"
                     />
@@ -492,6 +500,7 @@ ContentsQueryFormBody.propTypes = {
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
   cloneMode: PropTypes.bool,
+  widgetConfigFormData: PropTypes.shape({}),
 };
 
 ContentsQueryFormBody.defaultProps = {
@@ -510,6 +519,7 @@ ContentsQueryFormBody.defaultProps = {
   extFormName: '',
   putPrefixField: name => name,
   cloneMode: false,
+  widgetConfigFormData: {},
 };
 
 const ContentsQueryConfig = reduxForm({
