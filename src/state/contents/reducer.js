@@ -111,7 +111,7 @@ const reducer = (state = defaultState, action = {}) => {
     case RESET_AUTHOR_STATUS: {
       return {
         ...state,
-        currentStatusShow: '',
+        currentStatusShow: 'all',
         tabSearchEnabled: false,
         currentAuthorShow: 'all',
       };
