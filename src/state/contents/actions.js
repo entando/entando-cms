@@ -231,13 +231,16 @@ export const fetchContentsWithTabs = (
   const eq = FILTER_OPERATORS.LIKE;
   const like = FILTER_OPERATORS.LIKE;
   const statusValue = status === 'draft' ? ['new', 'draft'] : status;
+  const { id, value: qfValue } = getCurrentQuickFilter(state);
   const formValues = {
     ...(!published && !statusAll && status && { status: statusValue }),
     ...(!all && author && { firstEditor: author }),
+    ...(qfValue && { [id]: qfValue }),
   };
   const operators = {
     ...(!published && !statusAll && status && { status: like }),
     ...(!all && author && { firstEditor: eq }),
+    ...(qfValue && { [id]: FILTER_OPERATORS.LIKE }),
   };
   const query = [convertToQueryString({
     formValues,
