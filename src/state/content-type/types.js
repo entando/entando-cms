@@ -14,3 +14,4 @@ export const SET_ACTION_MODE = 'content-type/set-action-mode';
 export const REMOVE_ATTRIBUTE_FROM_COMPOSITE = 'content-type/remove-attribute-from-composite';
 export const MOVE_ATTRIBUTE_FROM_COMPOSITE = 'content-type/move-attribute-from-composite';
 export const SET_NEW_ATTRIBUTE_COMPOSITE = 'content-type/set-new-attribute-composite';
+export const SET_SELECTED_NESTED_ATTRIBUTE = 'content-type/set-selected-nested-attribute';

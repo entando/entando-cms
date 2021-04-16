@@ -12,6 +12,7 @@ import {
   setActionMode,
   removeAttributeFromComposite,
   moveAttributeFromComposite,
+  fetchNestedAttribute,
 } from 'state/content-type/actions';
 import {
   getActionModeContentTypeSelectedAttribute,
@@ -19,6 +20,8 @@ import {
   getContentTypeSelectedAttribute,
   getAttributeSelectFromContentType,
   getSelectedCompositeAttributes,
+  getContentTypeSelectedNestedAttributeIndexable,
+  getContentTypeSelectedNestedAttributeSearchable,
 } from 'state/content-type/selectors';
 import {
   TYPE_COMPOSITE,
@@ -37,7 +40,8 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   mode: getActionModeContentTypeSelectedAttribute(state),
   attributeCode: params.attributeCode,
   contentTypeCode: params.entityCode,
-  isIndexable: formValueSelector('monoListAttribute')(state, 'nestedAttribute.indexable'),
+  isIndexable: getContentTypeSelectedNestedAttributeIndexable(state),
+  isSearchable: getContentTypeSelectedNestedAttributeSearchable(state),
   type: formValueSelector('monoListAttribute')(state, 'nestedAttribute.type'),
   selectedAttribute: getAttributeSelectFromContentType(state),
   selectedAttributeTypeForAddComposite: getContentTypeSelectedAttribute(state),
@@ -47,7 +51,9 @@ export const mapStateToProps = (state, { match: { params } }) => ({
 });
 
 export const mapDispatchToProps = (dispatch, { match: { params }, history }) => ({
-  onDidMount: ({ attributeCode, contentTypeCode, mode }) => {
+  onDidMount: ({
+    attributeCode, contentTypeCode, mode,
+  }) => {
     dispatch(clearErrors());
     if (mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
       dispatch(
@@ -66,6 +72,11 @@ export const mapDispatchToProps = (dispatch, { match: { params }, history }) => 
       );
     } else {
       dispatch(fetchAttributeFromContentType('monoListAttribute', contentTypeCode, attributeCode));
+    }
+  },
+  onFetchNestedAttribute: ({ contentTypeCode, type, mode }) => {
+    if (mode !== MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE) {
+      dispatch(fetchNestedAttribute(contentTypeCode, type));
     }
   },
   onSubmit: (values, mode, selectedAttribute) => {

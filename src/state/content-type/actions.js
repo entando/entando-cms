@@ -23,6 +23,7 @@ import {
   SET_NEW_ATTRIBUTE_COMPOSITE,
   REMOVE_ATTRIBUTE_FROM_COMPOSITE,
   MOVE_ATTRIBUTE_FROM_COMPOSITE,
+  SET_SELECTED_NESTED_ATTRIBUTE,
 } from 'state/content-type/types';
 import {
   ROUTE_CMS_CONTENTTYPE_EDIT,
@@ -129,6 +130,13 @@ export const removeAttribute = (contentTypeCode, attributeCode) => ({
 
 export const setSelectedAttributeRef = attribute => ({
   type: SET_SELECTED_ATTRIBUTE,
+  payload: {
+    attribute,
+  },
+});
+
+export const setSelectedNestedAttribute = attribute => ({
+  type: SET_SELECTED_NESTED_ATTRIBUTE,
   payload: {
     attribute,
   },
@@ -434,6 +442,20 @@ export const fetchContentTypeAttributeRef = (
       .catch(() => {});
   }
 });
+
+export const fetchNestedAttribute = (contentTypeCode, typeAttribute) => dispatch => new Promise(
+  (resolve) => {
+    getContentTypeAttribute(contentTypeCode, typeAttribute)
+      .then((response) => {
+        response.json().then((json) => {
+          if (response.ok) {
+            dispatch(setSelectedNestedAttribute(json.payload));
+            resolve();
+          }
+        });
+      }).catch(() => resolve());
+  },
+);
 
 const fmtDateDDMMYYY = (date) => {
   let d = new Date(date);
