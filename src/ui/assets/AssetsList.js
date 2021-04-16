@@ -233,7 +233,7 @@ class AssetsList extends Component {
               return get(asset, 'group.name', asset.group);
             }
             case 'categories': {
-              return categories.map(cat => (
+              return asset.categories.map(cat => (
                 <span key={cat.code || cat}>
                   {cat && cat.titles && cat.titles[language]}
                   <br />
