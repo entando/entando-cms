@@ -17,6 +17,7 @@ import {
   REMOVE_ATTRIBUTE_FROM_COMPOSITE,
   MOVE_ATTRIBUTE_FROM_COMPOSITE,
   SET_NEW_ATTRIBUTE_COMPOSITE,
+  SET_SELECTED_NESTED_ATTRIBUTE,
 } from 'state/content-type/types';
 
 import { swapItems } from 'helpers/arrayUtils';
@@ -153,6 +154,17 @@ export const selectedAttribute = (state = {}, action = {}) => {
       return state;
   }
 };
+
+export const selectedNestedAttribute = (state = {}, action = {}) => {
+  switch (action.type) {
+    case SET_SELECTED_NESTED_ATTRIBUTE: {
+      return action.payload.attribute;
+    }
+    default:
+      return state;
+  }
+};
+
 export const parentSelectedAttribute = (state = [], action = {}) => {
   switch (action.type) {
     case PUSH_PARENT_SELECTED_ATTRIBUTE: {
@@ -182,6 +194,7 @@ export default combineReducers({
   attributes: combineReducers({
     list: attributeList,
     selected: selectedAttribute,
+    selectedNested: selectedNestedAttribute,
     parentSelected: parentSelectedAttribute,
   }),
   references: combineReducers({

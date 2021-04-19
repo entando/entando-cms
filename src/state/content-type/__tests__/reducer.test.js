@@ -15,6 +15,7 @@ import {
   removeAttributeFromComposite,
   moveAttributeFromComposite,
   setNewAttributeComposite,
+  setSelectedNestedAttribute,
 } from 'state/content-type/actions';
 import {
   GET_CONTENT_TYPE_RESPONSE_OK,
@@ -249,6 +250,18 @@ describe('state/content-type/reducer', () => {
       expect(newState).toHaveProperty('attributes');
       expect(newState).toHaveProperty('attributes.selected');
       expect(newState.attributes.selected).toMatchObject(CONTENT_TYPE_ATTRIBUTE);
+    });
+  });
+
+  describe('after action SET_SELECTED_NESTED_ATTRIBUTE', () => {
+    beforeEach(() => {
+      newState = reducer(state, setSelectedNestedAttribute(CONTENT_TYPE_ATTRIBUTE));
+    });
+
+    it('should define the selected nested payload', () => {
+      expect(newState).toHaveProperty('attributes');
+      expect(newState).toHaveProperty('attributes.selectedNested');
+      expect(newState.attributes.selectedNested).toMatchObject(CONTENT_TYPE_ATTRIBUTE);
     });
   });
 

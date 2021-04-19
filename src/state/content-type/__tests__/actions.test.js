@@ -26,6 +26,7 @@ import {
   SET_ACTION_MODE,
   REMOVE_ATTRIBUTE_FROM_COMPOSITE,
   SET_NEW_ATTRIBUTE_COMPOSITE,
+  SET_SELECTED_NESTED_ATTRIBUTE,
 } from 'state/content-type/types';
 import {
   getContentTypeAttributesIdList,
@@ -64,6 +65,8 @@ import {
   setNewAttributeComposite,
   handlerAttributeFromContentType,
   sendPostRefreshContentType,
+  setSelectedNestedAttribute,
+  fetchNestedAttribute,
 } from 'state/content-type/actions';
 import {
   postContentType,
@@ -229,6 +232,17 @@ describe('state/content-type/actions ', () => {
     });
     it('test setSelectedAttributeRef action sets the correct type', () => {
       expect(action.type).toBe(SET_SELECTED_ATTRIBUTE);
+    });
+  });
+  describe('setSelectedNestedAttribute', () => {
+    beforeEach(() => {
+      action = setSelectedNestedAttribute(CONTENT_TYPE_ATTRIBUTE);
+    });
+    it('is FSA compliant', () => {
+      expect(isFSA(action)).toBe(true);
+    });
+    it('test setSelectedNestedAttribute action sets the correct type', () => {
+      expect(action.type).toBe(SET_SELECTED_NESTED_ATTRIBUTE);
     });
   });
   describe('setActionMode', () => {
@@ -490,6 +504,24 @@ describe('state/content-type/actions ', () => {
             expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
             done();
           });
+      });
+    });
+
+    describe('fetchNestedAttribute', () => {
+      it('fetchNestedAttribute calls setSelectedNestedAttribute', (done) => {
+        getContentTypeAttribute.mockImplementationOnce(
+          mockApi({ payload: GET_CONTENT_TYPES_RESPONSE_OK }),
+        );
+        store
+          .dispatch(fetchNestedAttribute('AAA', 'BBB'))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toHaveProperty('type', SET_SELECTED_NESTED_ATTRIBUTE);
+            expect(actions[0]).toHaveProperty('payload');
+            done();
+          })
+          .catch(done.fail);
       });
     });
 

@@ -104,6 +104,10 @@ export const getSelectedAttributeType = state => get(state.apps.cms.contentType.
 export const getSelectedAttributeNestedType = state => get(state.apps.cms.contentType.selected, 'attributeSelected.nestedAttribute.type');
 export const getSelectedValidationRules = state => get(state.apps.cms.contentType.selected, 'attributeSelected.validationRules');
 export const getContentTypeSelectedAttributeCode = state => get(state.apps.cms.contentType.attributes.selected, 'code');
+export const getContentTypeSelectedNestedAttributeIndexable = state => state.apps.cms
+  . contentType.attributes.selectedNested.indexableOptionSupported;
+export const getContentTypeSelectedNestedAttributeSearchable = state => state.apps.cms
+  . contentType.attributes.selectedNested.searchableOptionSupported;
 
 export const getParentSelectedAttribute = createSelector(
   [getContentTypeParentSelectedAttribute],

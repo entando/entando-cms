@@ -55,6 +55,8 @@ import {
   getContentTypeSelectedAttributeUnownedRoles,
   getContentTypeSelectedAttributeDeletedValues,
   getContentTypeSelectedAttributeRoleChoices,
+  getContentTypeSelectedNestedAttributeIndexable,
+  getContentTypeSelectedNestedAttributeSearchable,
 } from 'state/content-type/selectors';
 
 const TEST_STATE = {
@@ -76,6 +78,7 @@ const TEST_STATE = {
         },
         attributes: {
           selected: '',
+          selectedNested: '',
         },
         references: {
           status: CONTENT_TYPE_REFERENCES_STATUS,
@@ -119,6 +122,16 @@ const STATE_ATTRIBUTES = {
         attributes: {
           list: [],
           selected: {
+            code: 'lecode',
+            attributeSelected: {},
+            listAttribute: [1],
+            searchableOptionSupported: [2],
+            indexableOptionSupported: [3],
+            assignedRoles: { bbc: 'lecode' },
+            allowedRoles: [{ code: 'bbc' }, { code: 'dde' }],
+            allowedDisablingCodes: [5],
+          },
+          selectedNested: {
             code: 'lecode',
             attributeSelected: {},
             listAttribute: [1],
@@ -276,6 +289,14 @@ describe('state/content-type/selectors', () => {
 
   it('verify getContentTypeSelectedAttributeSearchable selector is defined', () => {
     expect(getContentTypeSelectedAttributeSearchable(STATE_ATTRIBUTES)).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedNestedAttributeSearchable selector is defined', () => {
+    expect(getContentTypeSelectedNestedAttributeSearchable(STATE_ATTRIBUTES)).toBeDefined();
+  });
+
+  it('verify getContentTypeSelectedNestedAttributeIndexable selector is defined', () => {
+    expect(getContentTypeSelectedNestedAttributeIndexable(STATE_ATTRIBUTES)).toBeDefined();
   });
 
   it('verify getContentTypeSelectedAttributeIndexable selector is defined', () => {

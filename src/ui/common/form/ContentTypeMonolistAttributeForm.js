@@ -40,6 +40,13 @@ export class MonolistAttributeFormBody extends Component {
     onDidMount(allprops);
   }
 
+  componentDidUpdate(prevProps) {
+    const { type, onFetchNestedAttribute } = this.props;
+    if (type && type !== prevProps.type) {
+      onFetchNestedAttribute(this.props);
+    }
+  }
+
   render() {
     const {
       attributeCode,
@@ -60,6 +67,7 @@ export class MonolistAttributeFormBody extends Component {
     } = this.props;
     const isMonoListComposite = mode === MODE_ADD_MONOLIST_ATTRIBUTE_COMPOSITE;
     const attributeType = isMonoListComposite ? TYPE_COMPOSITE : type;
+
     const renderIndexable = () => {
       if (isIndexable) {
         return (
@@ -218,6 +226,7 @@ MonolistAttributeFormBody.propTypes = {
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   compositeAttributes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onFetchNestedAttribute: PropTypes.func,
 };
 
 MonolistAttributeFormBody.defaultProps = {
@@ -233,6 +242,7 @@ MonolistAttributeFormBody.defaultProps = {
   selectedAttributeType: TYPE_MONOLIST,
   mode: '',
   attributesList: [],
+  onFetchNestedAttribute: () => {},
 };
 
 const MonolistAttributeForm = reduxForm({
