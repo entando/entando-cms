@@ -47,10 +47,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(fetchContentType(code));
   },
   onSubmit: values => (
-    dispatch(sendPostContentTemplate({
-      ...values,
-      contentType: values.contentType.code,
-    })).then((res) => {
+    dispatch(sendPostContentTemplate(values)).then((res) => {
       if (res) {
         dispatch(
           addToast(

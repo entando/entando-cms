@@ -5,7 +5,6 @@ import {
 import { initialize } from 'redux-form';
 import { setPage } from 'state/pagination/actions';
 import { NAMESPACE_CONTENT_TEMPLATES } from 'state/pagination/const';
-import { getContentTypeList } from 'state/content-type/selectors';
 import {
   SET_CONTENT_TEMPLATES,
   SET_CONTENT_TEMPLATE_OPENED,
@@ -141,16 +140,12 @@ export const sendPostContentTemplate = contModelObject => dispatch => new Promis
   }).catch(() => {})
 ));
 
-export const fetchContentTemplate = id => (dispatch, getState) => new Promise(resolve => (
+export const fetchContentTemplate = id => dispatch => new Promise(resolve => (
   getContentTemplate(id).then((response) => {
     response.json().then((json) => {
       if (response.ok) {
         dispatch(setContentTemplate(json.payload));
-        const contentTypes = getContentTypeList(getState());
-        dispatch(initialize('contenttemplateform', {
-          ...json.payload,
-          contentType: contentTypes.find(ctype => ctype.code === json.payload.contentType),
-        }));
+        dispatch(initialize('contenttemplateform', json.payload));
         resolve(json.payload);
       } else {
         dispatch(addErrors(json.errors.map(err => err.message)));
