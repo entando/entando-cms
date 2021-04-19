@@ -52,45 +52,47 @@ const AttributeListTableActions = ({
       </td>
 
       <td className="ContTypeAttributeListRow__td text-center">
-        <DropdownKebab pullRight id={`${attribute.code}-actions`}>
-          <LinkMenuItem
-            id={`edit-${attribute.code}`}
-            to={routeConverter(routeToEdit, { entityCode, attributeCode: attribute.code })}
-            label={<FormattedMessage id="cms.label.edit" />}
-            className="ContTypeAttributeListMenuAction__menu-item-edit"
-          />
-          {isMovableUp ? (
+        <div data-testid={`${attribute.code}-actions`}>
+          <DropdownKebab pullRight id={`${attribute.code}-actions`}>
+            <LinkMenuItem
+              id={`edit-${attribute.code}`}
+              to={routeConverter(routeToEdit, { entityCode, attributeCode: attribute.code })}
+              label={<FormattedMessage id="cms.label.edit" />}
+              className="ContTypeAttributeListMenuAction__menu-item-edit"
+            />
+            {isMovableUp ? (
+              <MenuItem
+                className="ContTypeAttributeListMenuAction__menu-item-move-up"
+                onClick={() => {
+                  onMoveUp(entityCode, attribute.code, index);
+                  fields.move(index, index - 1);
+                }}
+              >
+                <FormattedMessage id="cms.label.moveUp" />
+              </MenuItem>
+            ) : null}
+            {isMovableDown ? (
+              <MenuItem
+                className="ContTypeAttributeListMenuAction__menu-item-move-down"
+                onClick={() => {
+                  onMoveDown(entityCode, attribute.code, index);
+                  fields.move(index, index + 1);
+                }}
+              >
+                <FormattedMessage id="cms.label.moveDown" />
+              </MenuItem>
+            ) : null}
             <MenuItem
-              className="ContTypeAttributeListMenuAction__menu-item-move-up"
+              className="ContTypeAttributeListMenuAction__menu-item-delete"
               onClick={() => {
-                onMoveUp(entityCode, attribute.code, index);
-                fields.move(index, index - 1);
+                fields.remove(index);
+                onClickDelete(attribute.code);
               }}
             >
-              <FormattedMessage id="cms.label.moveUp" />
+              <FormattedMessage id="cms.label.delete" />
             </MenuItem>
-          ) : null}
-          {isMovableDown ? (
-            <MenuItem
-              className="ContTypeAttributeListMenuAction__menu-item-move-down"
-              onClick={() => {
-                onMoveDown(entityCode, attribute.code, index);
-                fields.move(index, index + 1);
-              }}
-            >
-              <FormattedMessage id="cms.label.moveDown" />
-            </MenuItem>
-          ) : null}
-          <MenuItem
-            className="ContTypeAttributeListMenuAction__menu-item-delete"
-            onClick={() => {
-              fields.remove(index);
-              onClickDelete(attribute.code);
-            }}
-          >
-            <FormattedMessage id="cms.label.delete" />
-          </MenuItem>
-        </DropdownKebab>
+          </DropdownKebab>
+        </div>
       </td>
     </tr>
   );

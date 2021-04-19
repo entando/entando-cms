@@ -71,39 +71,41 @@ const AttributeListTableComposite = (props) => {
           <AttributeCheckIcon isChecked={attribute.mandatory || false} />
         </td>
         <td className="ContTypeAttributeListRow__td text-center">
-          <DropdownKebab pullRight id={`${attribute.code}-actions`}>
-            {isMovableUp ? (
+          <div data-testid={`${attribute.code}-actions`}>
+            <DropdownKebab pullRight id={`${attribute.code}-actions`}>
+              {isMovableUp ? (
+                <MenuItem
+                  className="ContTypeAttributeListMenuAction__menu-item-move-up"
+                  onClick={() => {
+                    fields.move(index - 1, index);
+                    onMove(index, index - 1, isMonolistCompositeType);
+                  }}
+                >
+                  <FormattedMessage id="cms.label.moveUp" />
+                </MenuItem>
+              ) : null}
+              {isMovableDown ? (
+                <MenuItem
+                  className="ContTypeAttributeListMenuAction__menu-item-move-down"
+                  onClick={() => {
+                    fields.move(index, index + 1);
+                    onMove(index, index + 1, isMonolistCompositeType);
+                  }}
+                >
+                  <FormattedMessage id="cms.label.moveDown" />
+                </MenuItem>
+              ) : null}
               <MenuItem
-                className="ContTypeAttributeListMenuAction__menu-item-move-up"
+                className="ContTypeAttributeListMenuAction__menu-item-delete"
                 onClick={() => {
-                  fields.move(index - 1, index);
-                  onMove(index, index - 1, isMonolistCompositeType);
+                  fields.remove(index);
+                  onClickDelete(attribute.code, isMonolistCompositeType);
                 }}
               >
-                <FormattedMessage id="cms.label.moveUp" />
+                <FormattedMessage id="cms.label.delete" />
               </MenuItem>
-            ) : null}
-            {isMovableDown ? (
-              <MenuItem
-                className="ContTypeAttributeListMenuAction__menu-item-move-down"
-                onClick={() => {
-                  fields.move(index, index + 1);
-                  onMove(index, index + 1, isMonolistCompositeType);
-                }}
-              >
-                <FormattedMessage id="cms.label.moveDown" />
-              </MenuItem>
-            ) : null}
-            <MenuItem
-              className="ContTypeAttributeListMenuAction__menu-item-delete"
-              onClick={() => {
-                fields.remove(index);
-                onClickDelete(attribute.code, isMonolistCompositeType);
-              }}
-            >
-              <FormattedMessage id="cms.label.delete" />
-            </MenuItem>
-          </DropdownKebab>
+            </DropdownKebab>
+          </div>
         </td>
       </tr>
     );
