@@ -109,20 +109,22 @@ class ContentTypeList extends Component {
         const onDelete = () => onClickDelete({ name, code });
         const onReload = () => onClickReload(code);
         return (
-          <DropdownKebab pullRight id={`ContentTypeList-dropdown-${code}`}>
-            <LinkMenuItem
-              id={`conttype-id${code}`}
-              to={routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code })}
-              label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
-              className="ContentTypeList__menu-item-edit"
-            />
-            <MenuItem className="ContentTypeList__menu-item-reload" onClick={onReload}>
-              <FormattedMessage id="cms.label.reload" defaultMessage="Refresh" />
-            </MenuItem>
-            <MenuItem className="ContentTypeList__menu-item-delete" onClick={onDelete}>
-              <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
-            </MenuItem>
-          </DropdownKebab>
+          <div data-testid={`${code}-actions`}>
+            <DropdownKebab pullRight id={`ContentTypeList-dropdown-${code}`}>
+              <LinkMenuItem
+                id={`conttype-id${code}`}
+                to={routeConverter(ROUTE_CMS_CONTENTTYPE_EDIT, { code })}
+                label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
+                className="ContentTypeList__menu-item-edit"
+              />
+              <MenuItem className="ContentTypeList__menu-item-reload" onClick={onReload}>
+                <FormattedMessage id="cms.label.reload" defaultMessage="Refresh" />
+              </MenuItem>
+              <MenuItem className="ContentTypeList__menu-item-delete" onClick={onDelete}>
+                <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
+              </MenuItem>
+            </DropdownKebab>
+          </div>
         );
       },
     };
