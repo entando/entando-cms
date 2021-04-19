@@ -17,7 +17,7 @@ import {
   clearContentTemplateDictionary,
 } from 'state/content-template/actions';
 import { getContentTypeList } from 'state/content-type/selectors';
-import { getContentTemplateOpened, getContentTemplateDictionaryList } from 'state/content-template/selectors';
+import { getContentTemplateDictionaryList } from 'state/content-template/selectors';
 import { ROUTE_CMS_CONTENTTEMPLATE_LIST } from 'app-init/routes';
 
 import AddContentTemplateForm from 'ui/content-template/AddContentTemplateForm';
@@ -31,15 +31,10 @@ const contentTemplateMsgs = defineMessages({
 
 export const mapStateToProps = (state) => {
   const contentTypes = getContentTypeList(state);
-  const formvals = getContentTemplateOpened(state);
   return {
     contentTypes,
     mode: 'edit',
     dictionary: getContentTemplateDictionaryList(state),
-    initialValues: {
-      ...formvals,
-      contentType: contentTypes.find(ctype => ctype.code === formvals.contentType),
-    },
   };
 };
 
@@ -58,12 +53,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
   onChangeContentType: (code) => {
     dispatch(fetchContentType(code));
   },
-  onSubmit: values => dispatch(
-    sendPutContentTemplate({
-      ...values,
-      contentType: values.contentType.code,
-    }),
-  ).then((res) => {
+  onSubmit: values => dispatch(sendPutContentTemplate(values)).then((res) => {
     if (res) {
       dispatch(
         addToast(

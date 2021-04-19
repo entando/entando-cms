@@ -51,12 +51,6 @@ describe('content-template/EditContentTemplateFormContainer', () => {
     expect(props).toHaveProperty('contentTypes');
     expect(props).toHaveProperty('mode');
     expect(props.mode).toBe('edit');
-    expect(props).toHaveProperty('initialValues');
-    expect(props.initialValues).toEqual({
-      id: 1,
-      contentType: { code: 'WEh', name: 'yo' },
-      descr: 'b',
-    });
   });
 
   it('maps dispatch property', () => {
