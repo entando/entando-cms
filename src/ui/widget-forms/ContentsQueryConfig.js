@@ -75,7 +75,7 @@ export class ContentsQueryFormBody extends Component {
       const title = c.titles[language];
       const countSlashes = (fullTitle.match(/\//g) || []).length;
       return Object.assign(c, { name: `${'.. / '.repeat(countSlashes)}${title}`, level: countSlashes });
-    }).sort((a, b) => (a.level > b.level ? 1 : -1));
+    });
   }
 
   renderFormFields() {

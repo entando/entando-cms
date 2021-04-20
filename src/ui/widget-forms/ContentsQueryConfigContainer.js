@@ -11,7 +11,7 @@ import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { fetchSearchPages } from 'state/pages/actions';
 import { fetchLanguages } from 'state/languages/actions';
-import { fetchCategoryTree } from 'state/categories/actions';
+import { fetchCategoryTreeAll } from 'state/categories/actions';
 import { fetchContentTypeListPaged, fetchContentType } from 'state/content-type/actions';
 import { fetchContentTemplatesByContentType } from 'state/content-template/actions';
 
@@ -56,7 +56,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     onDidMount: () => {
       dispatch(fetchLanguages(nopage));
       dispatch(fetchContentTypeListPaged(nopage));
-      dispatch(fetchCategoryTree());
+      dispatch(fetchCategoryTreeAll());
       dispatch(fetchSearchPages(nopage));
     },
     putPrefixField,
