@@ -55,17 +55,18 @@ const StickySave = ({
             <MenuItem
               eventKey={REGULAR_SAVE_TYPE}
               disabled={disabled}
-              onClick={handleSubmit(values => onSubmit({
+              onClick={handleSubmit(values => !disabled && onSubmit({
                 ...values,
                 saveType: REGULAR_SAVE_TYPE,
-              }, undefined, !enableTranslationWarning, content.attributes))}
+              }, undefined, !enableTranslationWarning, content.attributes))
+              }
             >
               <FormattedMessage id="cms.save" />
             </MenuItem>
             <MenuItem
               eventKey={CONTINUE_SAVE_TYPE}
               disabled={disabled}
-              onClick={handleSubmit(values => onSubmit({
+              onClick={handleSubmit(values => !disabled && onSubmit({
                 ...values,
                 saveType: CONTINUE_SAVE_TYPE,
               }, undefined, !enableTranslationWarning, content.attributes))}
@@ -79,10 +80,13 @@ const StickySave = ({
               <MenuItem
                 eventKey={APPROVE_SAVE_TYPE}
                 disabled={disabled}
-                onClick={handleSubmit(values => onSubmit({
-                  ...values,
-                  saveType: APPROVE_SAVE_TYPE,
-                }, undefined, !enableTranslationWarning, content.attributes))}
+
+                onClick={
+                  handleSubmit(values => !disabled && onSubmit({
+                    ...values,
+                    saveType: APPROVE_SAVE_TYPE,
+                  }, undefined, !enableTranslationWarning, content.attributes))
+                }
               >
                 <FormattedMessage id="cms.saveAndApprove" />
               </MenuItem>
