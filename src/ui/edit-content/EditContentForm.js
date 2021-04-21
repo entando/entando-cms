@@ -63,7 +63,7 @@ export class EditContentFormBody extends React.Component {
     this.ownerGroupInput = React.createRef();
     this.descriptionInput = React.createRef();
     this.state = {
-      infoOpen: workMode === WORK_MODE_EDIT,
+      infoOpen: true,
       groupsOpen: workMode === WORK_MODE_ADD,
       categoriesOpen: false,
       attributesOpen: false,
