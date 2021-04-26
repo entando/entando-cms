@@ -184,22 +184,14 @@ export const getAttrValidators = (validationRules) => {
   return validators;
 };
 
-export const linkValidate = memoize((langCode, required = false) => input =>
-{
-  if (!required && !input) {
-    return undefined;
-  }
-  else {
-    return(
-    input && input.value && (
-      (required && !input.value.symbolicDestination)
-      || (input.value.symbolicDestination && !input.values[langCode])
-    ) ? (
-      <FormattedMessage
-        id="validateForm.required"
-      />
-      ) : undefined)};
-});
+export const linkValidate = memoize((langCode, required = false) => input => (
+  ((!required && !input) || (!(input && input.value && (
+    (required && !input.value.symbolicDestination)
+      || (input.value.symbolicDestination && !input.values[langCode])))
+  ))
+    ? undefined
+    : (<FormattedMessage id="validateForm.required" />)
+));
 
 export const listRequired = value => (
   !value || !value.length ? <FormattedMessage id="validateForm.required" /> : undefined

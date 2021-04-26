@@ -208,12 +208,16 @@ describe('helpers/attrValidation', () => {
   });
 
   describe('linkValidate', () => {
-    it('should return a message if link value is empty', () => {
+    it('should return a message if link value is empty and mandatory', () => {
       const result = linkValidate('en', true)({
         value: {},
         values: { en: 'test' },
       });
       expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should not return a message if link value is empty and not mandatory', () => {
+      const result = linkValidate('en', false)(null);
+      expect(result).toBeUndefined();
     });
     it('should return a message if link values is empty', () => {
       const result = linkValidate('en')({
