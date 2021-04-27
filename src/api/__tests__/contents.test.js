@@ -19,7 +19,7 @@ describe('api/contents', () => {
     it('returns a promise', () => {
       const response = getContents({ page: 1, pageSize: 10 });
       expect(makeRequest).toHaveBeenCalledWith({
-        uri: '/api/plugins/cms/contents',
+        uri: '/api/plugins/cms/contents?mode=list',
         method: 'GET',
         mockResponse: RESPONSE_CONTENTS_OK,
         contentType: 'application/json',
