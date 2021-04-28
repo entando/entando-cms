@@ -55,6 +55,16 @@ class AssetsList extends Component {
     window.addEventListener('resize', this.updateWindowDimensions);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // redux-form is making this component to rerender many times unnecessarely
+    // this will ensure the component render will only be triggered when really necessary
+    if (JSON.stringify(nextProps) === JSON.stringify(this.props)
+    && JSON.stringify(nextState) === JSON.stringify(this.state)) {
+      return false;
+    }
+    return true;
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
   }
