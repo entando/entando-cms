@@ -40,6 +40,13 @@ import { getColumnOrder } from 'state/table-column-order/selectors';
 import { DELETE_ASSET_MODAL_ID } from 'ui/assets/DeleteAssetModal';
 import { CLONE_ASSET_MODAL_ID } from 'ui/assets/modals/clone-asset/CloneAssetModal';
 
+const toggleCategoryInArray = (category, categories) => {
+  if (categories.filter(cat => cat.code === category.code).length === 0) {
+    return [...categories, category];
+  }
+  return categories.filter(c => c.code !== category.code);
+};
+
 export const mapStateToProps = (state) => {
   const {
     page, lastPage, totalItems, pageSize,
@@ -92,7 +99,9 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   onRemoveActiveFilter: (category, filteringCategories) => {
     const { ownerGroup, joinGroups } = ownProps;
     dispatch(removeActiveFilter(category));
-    dispatch(setAssetCategoryFilter(category));
+    dispatch(setAssetCategoryFilter(
+      toggleCategoryInArray(category, filteringCategories),
+    ));
     const newFilters = filteringCategories.filter(c => c.code !== category.code).map(c => c.code);
     const filtSend = newFilters.length ? {
       categories: makeFilter(
