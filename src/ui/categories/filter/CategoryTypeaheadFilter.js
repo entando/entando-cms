@@ -40,8 +40,6 @@ const CategoryTypeaheadFilter = ({
       });
       filterParams.push(extraParams.toString());
 
-      // const typeParams = assetType === 'all' ? '' : `type=${assetType}`;
-
       onApplyFilteredSearch(selected, `?${filterParams.join('&')}`);
     }
   };
