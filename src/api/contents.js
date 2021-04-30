@@ -5,8 +5,8 @@ import {
 
 const contentsPath = '/api/plugins/cms/contents';
 
-export const getContents = (page, params = '') => makeRequest({
-  uri: `${contentsPath}${params}`,
+export const getContents = (page, params = '', mode = 'list') => makeRequest({
+  uri: `${contentsPath}${params}${params ? '&' : '?'}mode=${mode}`,
   method: METHODS.GET,
   contentType: 'application/json',
   mockResponse: RESPONSE_CONTENTS_OK,
