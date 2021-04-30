@@ -233,20 +233,20 @@ export const fetchContentsWithTabs = (
   const statusValue = status === 'draft' ? ['new', 'draft'] : status;
   const { id, value: qfValue } = getCurrentQuickFilter(state);
   const formValues = {
-    ...(!published && !statusAll && status && { status: statusValue }),
+    ...(!statusAll && status && { status: published ? 'public' : statusValue }),
     ...(!all && author && { firstEditor: author }),
     ...(qfValue && { [id]: qfValue }),
   };
   const operators = {
-    ...(!published && !statusAll && status && { status: like }),
+    ...(!statusAll && status && { status: like }),
     ...(!all && author && { firstEditor: eq }),
     ...(qfValue && { [id]: FILTER_OPERATORS.LIKE }),
   };
-  const query = [convertToQueryString({
+  const query = convertToQueryString({
     formValues,
     operators,
     sorting,
-  }), published ? '&status=published' : ''].join('');
+  });
   const ownerGroupQuery = ownerGroup ? `&forLinkingWithOwnerGroup=${ownerGroup}` : '';
   const joinGroups = parseJoinGroups(joinGroupsToParse);
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
