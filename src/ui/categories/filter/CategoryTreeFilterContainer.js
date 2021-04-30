@@ -12,7 +12,7 @@ import {
 import { getCategoryTree } from 'state/categories/selectors';
 
 const toggleCategoryInArray = (category, categories) => {
-  if (!categories.filter(cat => cat.code === category.code).length !== 0) {
+  if (categories.filter(cat => cat.code === category.code).length === 0) {
     return [...categories, category];
   }
   return categories.filter(c => c.code !== category.code);

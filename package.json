@@ -1,6 +1,6 @@
 {
   "name": "@entando/cms",
-  "version": "0.2.244",
+  "version": "0.2.246",
   "license": "LGPL-3.0",
   "description": "Entando CMS app",
   "keywords": [
@@ -108,10 +108,10 @@
     },
     "coverageThreshold": {
       "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
       }
     }
   },
@@ -272,6 +272,6 @@
     "url": "https://github.com/entando/entando-cms/issues"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "@entando/cms@0.2.243",
+  "_id": "@entando/cms@0.2.245",
   "homepage": "https://github.com/entando/entando-cms#readme"
 }
