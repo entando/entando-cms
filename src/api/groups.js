@@ -35,6 +35,16 @@ export const getGroups = (page = { page: 1, pageSize: 10 }, params = '') => (
   )
 );
 
+export const getMyGroups = () => (
+  makeRequest({
+    uri: '/api/users/myGroups',
+    method: METHODS.GET,
+    mockResponse: LIST_GROUPS_OK,
+    useAuthentication: true,
+    errors: () => getGenericError(),
+  })
+);
+
 export const getGroup = groupCode => (
   makeRequest({
     uri: `/api/groups/${groupCode}`,

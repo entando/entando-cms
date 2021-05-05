@@ -1,6 +1,8 @@
-import { addErrors } from '@entando/messages';
+import { addToast, addErrors, TOAST_ERROR } from '@entando/messages';
+
 import {
   getGroups,
+  getMyGroups,
   getGroup,
 } from 'api/groups';
 import { setPage } from 'state/pagination/actions';
@@ -10,8 +12,8 @@ import {
   SET_GROUPS,
   SET_SELECTED_GROUP,
   SET_GROUPS_TOTAL,
+  SET_GROUP_ENTRIES,
 } from 'state/groups/types';
-
 
 export const setGroups = groups => ({
   type: SET_GROUPS,
@@ -34,11 +36,18 @@ export const setSelectedGroup = group => ({
   },
 });
 
+export const setGroupEntries = groups => ({
+  type: SET_GROUP_ENTRIES,
+  payload: {
+    groups,
+  },
+});
+
 // thunk
 
-export const fetchGroups = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+export const fetchGroups = () => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('groups'));
-  getGroups(page, params).then((response) => {
+  getMyGroups().then((response) => {
     response.json().then((data) => {
       if (response.ok) {
         dispatch(setGroups(data.payload));
@@ -84,3 +93,22 @@ export const fetchGroup = groupCode => dispatch => (
     }).catch(() => {});
   })
 );
+
+export const fetchEntireGroupEntries = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+  dispatch(toggleLoading('groups'));
+  getGroups(page, params).then((response) => {
+    response.json().then((data) => {
+      if (response.ok) {
+        dispatch(setGroupEntries(data.payload));
+        dispatch(toggleLoading('groups'));
+        dispatch(setPage(data.metaData));
+        resolve();
+      } else {
+        dispatch(addErrors(data.errors.map(err => err.message)));
+        data.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+        dispatch(toggleLoading('groups'));
+        resolve();
+      }
+    });
+  }).catch(() => {});
+});

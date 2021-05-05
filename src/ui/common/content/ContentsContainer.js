@@ -6,7 +6,6 @@ import {
   checkStatus,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
-import { fetchGroups } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import {
   getContents, getCurrentQuickFilter, getFilteringCategories,
@@ -20,7 +19,7 @@ import { getColumnOrder } from 'state/table-column-order/selectors';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
-import { getGroups } from 'state/edit-content/selectors';
+import { getGroupsList } from 'state/groups/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getUsername } from '@entando/apimanager';
 import Contents from 'ui/common/content/Contents';
@@ -35,7 +34,7 @@ export const mapStateToProps = (state, ownProps) => {
     language: getLocale(state),
     contents: getContents(state),
     currentQuickFilter: getCurrentQuickFilter(state),
-    groups: getGroups(state),
+    groups: getGroupsList(state),
     contentTypes: getContentTypeList(state),
     filteringCategories: getFilteringCategories(state),
     statusChecked: getStatusChecked(state),
@@ -60,7 +59,6 @@ export const mapDispatchToProps = (dispatch, { ownerGroup, joinGroups }) => ({
     dispatch(checkStatus('published'));
     dispatch(fetchContentsPaged({ status: '&status=published', ownerGroup, joinGroups }));
     dispatch(fetchCategoryTree());
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchContentTypeListPaged({ page: 1, pageSize: 0 }));
   },
   onSetQuickFilter: filter => dispatch(setQuickFilter(filter)),
