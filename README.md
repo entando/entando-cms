@@ -8,7 +8,7 @@ Information below is for building and running locally directly from source.
 
 ---
 
-# Developer Prerequesites
+# Developer Prerequesites (only Standalone mode)
 
 It is recommended to install `npm-install-peers` (`npm i -g npm-install-peers`) to install peer dependencies. So when you install npm dependencies, you can only install at one command: `npm i && npm-install-peers` - this will download all your dependencies specified in `package.json` including the `peerDependencies`. This is to enable standalone mode during development phases. Take note that whenever you install a new npm module, this will erase all the peer dependencies, so you have to re-run `npm-install-peers` after installing.
 
