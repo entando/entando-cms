@@ -123,9 +123,9 @@ export const resetAuthorStatus = () => ({
 });
 
 export const fetchContents = (page = pageDefault,
-  params, namespace = NAMESPACE_CONTENTS) => dispatch => new Promise((resolve) => {
+  params, namespace = NAMESPACE_CONTENTS, mode) => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('contents'));
-  getContents(page, params)
+  getContents(page, params, mode)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {
