@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import {
@@ -30,7 +30,7 @@ import {
   ASSET_FILETYPES,
 } from 'state/assets/const';
 
-class AssetsList extends PureComponent {
+class AssetsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
