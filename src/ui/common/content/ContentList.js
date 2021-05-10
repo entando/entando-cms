@@ -118,7 +118,7 @@ class ContentList extends Component {
 
   render() {
     const {
-      intl, totalItems, page, pageSize, perPageOptions,
+      intl, totalItems, page, pageSize, perPageOptions, selectedContent,
       lastPage, sortingColumns, activeColumns, onSetCurrentColumnsShow,
     } = this.props;
     const columns = this.showingColumns();
@@ -141,7 +141,7 @@ class ContentList extends Component {
         className: 'text-center',
       },
       Cell: ({ original: content }) => (
-        <RadioButtonTableSelect name="selected-content" id={`content${content.id}`} value={content.id} onChange={this.handleRowSelect} />
+        <RadioButtonTableSelect name="selected-content" checked={selectedContent === content.id} id={`content${content.id}`} value={content.id} onChange={this.handleRowSelect} />
       ),
     };
 
@@ -207,6 +207,7 @@ ContentList.propTypes = {
   onSetCurrentColumnsShow: PropTypes.func,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onContentSelect: PropTypes.func.isRequired,
+  selectedContent: PropTypes.string.isRequired,
 };
 
 ContentList.defaultProps = {
