@@ -288,8 +288,6 @@ class AssetsList extends Component {
       && ASSET_COLUMN_HEADERS.find(col => col.id && col.id === sort.attribute);
     const sortAttribute = hasSortIdAlt ? hasSortIdAlt.name : sort.attribute;
 
-    console.log('assetlist re-render');
-
     const tableContent = (
       <DataTable
         columns={columnsDef}
