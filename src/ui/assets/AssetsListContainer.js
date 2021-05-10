@@ -84,7 +84,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
     }
   },
-  onSetColumnOrder: columnOrder => ownProps.showColumns && dispatch(setColumnOrder(columnOrder, 'assetsList')),
+  onSetColumnOrder: columnOrder => !ownProps.showColumns && dispatch(setColumnOrder(columnOrder, 'assetsList')),
   onApplyFilteredSearch: (filters) => {
     const { ownerGroup, joinGroups } = ownProps;
     dispatch(setActiveFilters(filters));
