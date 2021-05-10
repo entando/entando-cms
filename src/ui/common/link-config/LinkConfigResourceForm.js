@@ -17,6 +17,7 @@ const AssetsField = ({ input, mainGroup }) => (
     showColumns={['preview', 'name', 'type']}
     hideFooter
     singleView
+    browseMode
     ownerGroup={mainGroup}
     onSelect={input.onChange}
   />
