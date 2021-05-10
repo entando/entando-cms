@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import {
@@ -30,7 +30,7 @@ import {
   ASSET_FILETYPES,
 } from 'state/assets/const';
 
-class AssetsList extends Component {
+class AssetsList extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +93,9 @@ class AssetsList extends Component {
       selectedAsset: code,
     });
     const { onSelect } = this.props;
-    onSelect(code);
+    if (onSelect) {
+      onSelect(code);
+    }
   }
 
   removeAllActiveFilters() {
@@ -130,6 +132,7 @@ class AssetsList extends Component {
       singleView,
       onDuplicateClicked,
       categories,
+      onSelect,
       categoryTreeFetched,
       onSetColumnOrder,
     } = this.props;
@@ -285,17 +288,19 @@ class AssetsList extends Component {
       && ASSET_COLUMN_HEADERS.find(col => col.id && col.id === sort.attribute);
     const sortAttribute = hasSortIdAlt ? hasSortIdAlt.name : sort.attribute;
 
+    console.log('assetlist re-render');
+
     const tableContent = (
       <DataTable
         columns={columnsDef}
         data={assets}
-        rowAction={rowAction}
-        columnResizable
-        onColumnReorder={onSetColumnOrder}
+        rowAction={browseMode && onSelect ? null : rowAction}
+        columnResizable={!browseMode || !onSelect}
+        onColumnReorder={browseMode && onSelect ? null : onSetColumnOrder}
         classNames={{
           table: 'table-hover AssetsList__table',
         }}
-        useSorting={SORTABLE_COLUMNS}
+        useSorting={showColumns.filter(col => SORTABLE_COLUMNS.includes(col))}
         onChangeSort={onApplySort}
         rowAttributes={row => ({
           className: `AssetsList__item ${selectedAsset === row.id ? 'selected' : ''}`,
@@ -482,7 +487,7 @@ AssetsList.defaultProps = {
   showColumns: DEFAULT_ASSET_COLUMNS,
   hideFooter: false,
   singleView: false,
-  onSelect: () => {},
+  onSelect: null,
   categories: [],
   categoryTreeFetched: false,
   onSetColumnOrder: () => {},
