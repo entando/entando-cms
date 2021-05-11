@@ -13,6 +13,7 @@ const ContentsField = ({ input, mainGroup, joinGroups }) => (
   <ContentsContainer
     status="published"
     author="all"
+    selectedContent={input.value}
     onContentSelect={input.onChange}
     ownerGroup={mainGroup}
     joinGroups={joinGroups}

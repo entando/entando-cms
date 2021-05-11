@@ -93,7 +93,9 @@ class AssetsList extends Component {
       selectedAsset: code,
     });
     const { onSelect } = this.props;
-    onSelect(code);
+    if (onSelect) {
+      onSelect(code);
+    }
   }
 
   removeAllActiveFilters() {
@@ -130,6 +132,7 @@ class AssetsList extends Component {
       singleView,
       onDuplicateClicked,
       categories,
+      onSelect,
       categoryTreeFetched,
       onSetColumnOrder,
     } = this.props;
@@ -289,13 +292,13 @@ class AssetsList extends Component {
       <DataTable
         columns={columnsDef}
         data={assets}
-        rowAction={rowAction}
-        columnResizable
-        onColumnReorder={onSetColumnOrder}
+        rowAction={browseMode && onSelect ? null : rowAction}
+        columnResizable={!browseMode || !onSelect}
+        onColumnReorder={browseMode && onSelect ? null : onSetColumnOrder}
         classNames={{
           table: 'table-hover AssetsList__table',
         }}
-        useSorting={SORTABLE_COLUMNS}
+        useSorting={showColumns.filter(col => SORTABLE_COLUMNS.includes(col))}
         onChangeSort={onApplySort}
         rowAttributes={row => ({
           className: `AssetsList__item ${selectedAsset === row.id ? 'selected' : ''}`,
@@ -482,7 +485,7 @@ AssetsList.defaultProps = {
   showColumns: DEFAULT_ASSET_COLUMNS,
   hideFooter: false,
   singleView: false,
-  onSelect: () => {},
+  onSelect: null,
   categories: [],
   categoryTreeFetched: false,
   onSetColumnOrder: () => {},

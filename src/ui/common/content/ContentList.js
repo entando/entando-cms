@@ -5,6 +5,19 @@ import { PAGINATION_VIEW, PaginationRow } from 'patternfly-react';
 import { DataTable, TABLE_SORT_DIRECTION, ROW_ACTION_ALIGN } from '@entando/datatable';
 import paginatorMessages from 'ui/common/paginatorMessages';
 
+const RadioButtonTableSelect = React.forwardRef(
+  (props, ref) => {
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
+
+    return (
+      <>
+        <input type="radio" ref={resolvedRef} {...props} />
+      </>
+    );
+  },
+);
+
 class ContentList extends Component {
   constructor(props) {
     super(props);
@@ -105,7 +118,7 @@ class ContentList extends Component {
 
   render() {
     const {
-      intl, totalItems, page, pageSize, perPageOptions,
+      intl, totalItems, page, pageSize, perPageOptions, selectedContent,
       lastPage, sortingColumns, activeColumns, onSetCurrentColumnsShow,
     } = this.props;
     const columns = this.showingColumns();
@@ -128,7 +141,7 @@ class ContentList extends Component {
         className: 'text-center',
       },
       Cell: ({ original: content }) => (
-        <input type="radio" name="selected-content" value={content.id} onChange={this.handleRowSelect} />
+        <RadioButtonTableSelect name="selected-content" checked={selectedContent === content.id} id={`content${content.id}`} value={content.id} onChange={this.handleRowSelect} />
       ),
     };
 
@@ -194,6 +207,7 @@ ContentList.propTypes = {
   onSetCurrentColumnsShow: PropTypes.func,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onContentSelect: PropTypes.func.isRequired,
+  selectedContent: PropTypes.string.isRequired,
 };
 
 ContentList.defaultProps = {

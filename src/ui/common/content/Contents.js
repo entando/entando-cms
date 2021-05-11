@@ -58,6 +58,7 @@ class Contents extends Component {
       onSetQuickFilter, onFilteredSearch, intl, onSetCurrentColumnsShow,
       contentTypes, currentColumnsShow, onSetContentType, sortingColumns,
       onSetSort, selectedRows, onAdvancedFilterSearch, onContentSelect,
+      selectedContent,
     } = this.props;
 
     const availableColumns = AVAILABLE_COLUMN_CODES.map(code => ({
@@ -92,6 +93,7 @@ class Contents extends Component {
             availableColumns={availableColumns}
             onContentSelect={onContentSelect}
             onAdvancedFilterSearch={onAdvancedFilterSearch}
+            selectedContent={selectedContent}
           />
         </div>
       </div>
@@ -119,11 +121,13 @@ Contents.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   onAdvancedFilterSearch: PropTypes.func.isRequired,
   onContentSelect: PropTypes.func.isRequired,
+  selectedContent: PropTypes.string,
 };
 
 Contents.defaultProps = {
   currentColumnsShow: ['description', 'typeCode', 'lastModified', 'created'],
   onSetCurrentColumnsShow: () => {},
+  selectedContent: '',
 };
 
 export default Contents;

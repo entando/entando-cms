@@ -47,7 +47,7 @@ const toggleCategoryInArray = (category, categories) => {
   return categories.filter(c => c.code !== category.code);
 };
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (state, ownProps) => {
   const {
     page, lastPage, totalItems, pageSize,
   } = getPagination(state, NAMESPACE_ASSETS);
@@ -66,7 +66,7 @@ export const mapStateToProps = (state) => {
     page,
     categories: getCategoryTree(state),
     categoryTreeFetched: getCategoryTreeFetched(state),
-    showColumns: getColumnOrder(state, 'assetsList'),
+    showColumns: ownProps.showColumns || getColumnOrder(state, 'assetsList'),
   };
 };
 
@@ -84,7 +84,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
     }
   },
-  onSetColumnOrder: columnOrder => dispatch(setColumnOrder(columnOrder, 'assetsList')),
+  onSetColumnOrder: columnOrder => !ownProps.showColumns && dispatch(setColumnOrder(columnOrder, 'assetsList')),
   onApplyFilteredSearch: (filters) => {
     const { ownerGroup, joinGroups } = ownProps;
     dispatch(setActiveFilters(filters));

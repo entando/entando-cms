@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onDidMount: () => {
-    dispatch(fetchContents({ page: 1, pageSize: 0 }, '', namespace));
+    dispatch(fetchContents({ page: 1, pageSize: 0 }, '', namespace, 'list'));
   },
 });
 

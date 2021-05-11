@@ -5,7 +5,7 @@ import {
 
 const contentsPath = '/api/plugins/cms/contents';
 
-export const getContents = (page, params = '', mode = 'list') => makeRequest({
+export const getContents = (page, params = '', mode = 'full') => makeRequest({
   uri: `${contentsPath}${params}${params ? '&' : '?'}mode=${mode}`,
   method: METHODS.GET,
   contentType: 'application/json',
