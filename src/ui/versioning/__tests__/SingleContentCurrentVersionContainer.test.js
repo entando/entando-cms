@@ -5,7 +5,8 @@ import { formatDate } from '@entando/utils';
 import { screen, within } from '@testing-library/react';
 import { renderWithRedux, renderWithRouter } from 'testutils/testUtils';
 import SingleContentCurrentVersionContainer from 'ui/versioning/SingleContentCurrentVersionContainer';
-import { getContent, getGroups } from 'api/editContent';
+import { getContent } from 'api/editContent';
+import { getMyGroups } from 'api/groups';
 import { GET_CONTENT_RESPONSE_OK } from 'testutils/mocks/editContent';
 
 jest.mock('api/editContent');
@@ -22,7 +23,7 @@ describe('Single Content Current Version Container Test', () => {
     );
 
     expect(getContent).toHaveBeenCalledTimes(1);
-    expect(getGroups).toHaveBeenCalledTimes(1);
+    expect(getMyGroups).toHaveBeenCalledTimes(1);
 
     // header
     expect(await screen.findByText(/name/i)).toBeInTheDocument();

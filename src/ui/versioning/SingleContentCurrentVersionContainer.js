@@ -5,6 +5,7 @@ import { getLoading } from 'state/loading/selectors';
 import { fetchContent, clearEditContentForm } from 'state/edit-content/actions';
 import { getContent } from 'state/edit-content/selectors';
 import { getGroupsList } from 'state/groups/selectors';
+import { fetchGroups } from 'state/groups/actions';
 
 import SingleContentCurrentVersion from 'ui/versioning/SingleContentCurrentVersion';
 
@@ -17,6 +18,7 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = (dispatch, { match: { params } }) => ({
   onDidMount: () => {
     dispatch(fetchContent(`/${params.contentId}`));
+    dispatch(fetchGroups());
   },
   onWillUnmount: () => { dispatch(clearEditContentForm()); },
 });
