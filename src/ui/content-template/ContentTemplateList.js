@@ -100,15 +100,15 @@ class ContentTemplateList extends Component {
       cellAttributes: {
         className: 'text-center',
       },
-      Cell: ({ values: { id } }) => (
-        <DropdownKebab pullRight id={`ContentTemplateList-dropdown-${id}`}>
+      Cell: ({ values: item }) => (
+        <DropdownKebab pullRight id={`ContentTemplateList-dropdown-${item.id}`}>
           <LinkMenuItem
-            id={`contmodel-id${id}`}
-            to={routeConverter(ROUTE_CMS_CONTENTTEMPLATE_EDIT, { id })}
+            id={`contmodel-id${item.id}`}
+            to={routeConverter(ROUTE_CMS_CONTENTTEMPLATE_EDIT, { id: item.id })}
             label={<FormattedMessage id="cms.label.edit" defaultMessage="Edit" />}
             className="ContentTemplateList__menu-item-edit"
           />
-          <MenuItem className="ContentTemplateList__menu-item-delete" onClick={onClickDelete}>
+          <MenuItem className="ContentTemplateList__menu-item-delete" onClick={() => onClickDelete(item)}>
             <FormattedMessage id="cms.label.delete" defaultMessage="Delete" />
           </MenuItem>
         </DropdownKebab>
