@@ -141,7 +141,7 @@ const AttributeFields = ({
 }) => {
   if (fields.length < attributes.length) {
     const atts = [];
-    attributes.forEach((attr) => {
+    attributes.filter(f=>f!==null).forEach((attr) => {
       const {
         type, code, value, values, elements, compositeelements,
         listelements, names, compositeAttributes, nestedAttribute,

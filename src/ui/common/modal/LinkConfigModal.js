@@ -1,73 +1,73 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   Modal,
   Tabs,
   Tab,
   Icon,
-} from 'patternfly-react';
-import { FormattedMessage } from 'react-intl';
+} from "patternfly-react";
+import { FormattedMessage } from "react-intl";
 
-import GenericModal from 'ui/common/modal/GenericModal';
-import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
-import LinkConfigPageForm from 'ui/common/link-config/LinkConfigPageForm';
-import LinkConfigContentFormContainer from 'ui/common/link-config/LinkConfigContentFormContainer';
-import LinkConfigResourceForm from 'ui/common/link-config/LinkConfigResourceForm';
+import GenericModal from "ui/common/modal/GenericModal";
+import LinkConfigPageForm from "ui/common/link-config/LinkConfigPageForm";
+import LinkConfigContentFormContainer from "ui/common/link-config/LinkConfigContentFormContainer";
+import LinkConfigResourceForm from "ui/common/link-config/LinkConfigResourceForm";
+import LinkConfigUrlFormContainer from "../link-config/LinkConfigUrlFormContainer";
 
 const getLinkUrl = (type, value) => `#!${type};${value}!#`;
 
-const ID = 'LinkConfigModal';
+const ID = "LinkConfigModal";
 
 const LinkConfigModal = ({
-  isVisible, hasResourceTab, onClose, onSave, mainGroup, joinGroups,
+  isVisible, hasResourceTab, onClose, onSave, mainGroup, joinGroups, parameters,
 }) => {
   const handleSubmit = (values) => {
+    console.log('LinkConfigModal - handleSubmit ', values);
     const linkObj = { ...values.attributes };
     if (values.url) {
-      linkObj.url = getLinkUrl('U', values.url);
+      linkObj.url = getLinkUrl("U", values.url);
     } else if (values.page) {
-      linkObj.url = getLinkUrl('P', values.page);
+      linkObj.url = getLinkUrl("P", values.page);
     } else if (values.content) {
-      linkObj.url = getLinkUrl('C', values.content);
+      linkObj.url = getLinkUrl("C", values.content);
     } else if (values.resource) {
-      linkObj.url = getLinkUrl('R', values.resource);
+      linkObj.url = getLinkUrl("R", values.resource);
     } else {
       return;
     }
-
     onSave(linkObj);
   };
 
   const renderedModalTitle = (
     <Modal.Title>
-      <FormattedMessage id="cms.linkconfig.title" />
+      <FormattedMessage id="cms.linkconfig.title"/>
     </Modal.Title>
   );
 
   const renderedUrlTabTitle = (
     <>
-      <Icon name="globe" />&nbsp;
+      <Icon name="globe"/>&nbsp;
       <span>Link to an URL</span>
     </>
   );
 
   const renderedPageTabTitle = (
     <>
-      <Icon name="folder" />&nbsp;
+      <Icon name="folder"/>&nbsp;
       <span>Link to a page</span>
     </>
   );
 
   const renderedContentTabTitle = (
     <>
-      <Icon name="file-text-o" />&nbsp;
+      <Icon name="file-text-o"/>&nbsp;
       <span>Link to a content</span>
     </>
   );
 
   const renderedResourceTabTitle = (
     <>
-      <Icon name="book" />&nbsp;
+      <Icon name="book"/>&nbsp;
       <span>Link to a resource</span>
     </>
   );
@@ -88,7 +88,11 @@ const LinkConfigModal = ({
         mountOnEnter
       >
         <Tab eventKey="url" title={renderedUrlTabTitle}>
-          <LinkConfigUrlForm onSubmit={handleSubmit} onCancel={onClose} />
+          <LinkConfigUrlFormContainer
+            onSubmit={handleSubmit}
+            onCancel={onClose}
+            parameters={parameters}
+          />
         </Tab>
         <Tab eventKey="page" title={renderedPageTabTitle}>
           <LinkConfigPageForm
@@ -128,11 +132,18 @@ LinkConfigModal.propTypes = {
   onSave: PropTypes.func.isRequired,
   mainGroup: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
+  parameters: PropTypes.shape({
+    dest: PropTypes.string,
+    rel: PropTypes.string,
+    target: PropTypes.string,
+    hreflang: PropTypes.string,
+  }),
 };
 
 LinkConfigModal.defaultProps = {
   hasResourceTab: false,
   joinGroups: [],
+  parameters: {},
 };
 
 export default LinkConfigModal;

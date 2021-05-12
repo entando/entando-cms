@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   fieldInputPropTypes,
   fieldMetaPropTypes,
-} from 'redux-form';
-import { get } from 'lodash';
-import { FormattedMessage } from 'react-intl';
-import { Col, Row, Button } from 'patternfly-react';
-import { Panel } from 'react-bootstrap';
+} from "redux-form";
+import { get } from "lodash";
+import { FormattedMessage } from "react-intl";
+import { Col, Row, Button } from "patternfly-react";
+import { Panel } from "react-bootstrap";
 
-import RenderButton from 'ui/common/form/RenderButton';
-import attributeShape from 'ui/edit-content/content-attributes/attributeShape';
-import LinkConfigModal from 'ui/common/modal/LinkConfigModal';
-import RenderTextInput from 'ui/common/form/RenderTextInput';
-import FormLabel from 'ui/common/form/FormLabel';
+import RenderButton from "ui/common/form/RenderButton";
+import attributeShape from "ui/edit-content/content-attributes/attributeShape";
+import LinkConfigModal from "ui/common/modal/LinkConfigModal";
+import RenderTextInput from "ui/common/form/RenderTextInput";
+import FormLabel from "ui/common/form/FormLabel";
+import { omit } from "lodash";
 
 class LinkAttributeField extends Component {
-  constructor() {
+  constructor () {
     super();
-
     this.state = {
       modalVisible: false,
     };
@@ -29,26 +29,26 @@ class LinkAttributeField extends Component {
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
 
-  handleAddClick() {
+  handleAddClick () {
     this.setState({
       modalVisible: true,
     });
   }
 
-  handleModalClose() {
+  handleModalClose () {
     this.setState({
       modalVisible: false,
     });
   }
 
-  handleSave(values) {
+  handleSave (values) {
     const { url } = values;
     const destType = {
       U: 1,
       P: 2,
       C: 3,
     }[url[2]];
-    const destKey = ['urlDest', 'pageDest', 'contentDest'][destType - 1];
+    const destKey = ["urlDest", "pageDest", "contentDest"][destType - 1];
     const dest = url.slice(4, -2);
 
     const { input } = this.props;
@@ -58,24 +58,25 @@ class LinkAttributeField extends Component {
         symbolicDestination: url,
         destType,
         [destKey]: dest,
+        ...omit(values, "url"),
       },
     });
 
     this.handleModalClose();
   }
 
-  handleDeleteClick() {
+  handleDeleteClick () {
     const { input, langCode } = this.props;
     input.onChange({
       ...input.value,
       value: {},
       values: {
-        [langCode]: '',
+        [langCode]: "",
       },
     });
   }
 
-  render() {
+  render () {
     const {
       input,
       label,
@@ -88,12 +89,12 @@ class LinkAttributeField extends Component {
     } = this.props;
 
     const { value, values } = input.value;
-    const { urlDest, pageDest, contentDest } = value || {};
+    const { urlDest, pageDest, contentDest, rel, hreflang, target } = value || {};
     const dest = urlDest || pageDest || contentDest;
 
     const textInput = {
       name: `${input.name}.values.${langCode}`,
-      value: get(values, langCode, ''),
+      value: get(values, langCode, ""),
       onChange: (event) => {
         input.onChange({
           ...input.value,
@@ -119,29 +120,53 @@ class LinkAttributeField extends Component {
                 <Panel.Body>
                   <div className="form-group">
                     <Col xs={2} className="text-right">
-                      <span style={{ fontWeight: '600' }}>URL</span>
+                      <span style={{ fontWeight: "600" }}>URL</span>
                     </Col>
                     <Col xs={10}>
                       <span>{dest}</span>
                     </Col>
                   </div>
+                  <div className="form-group">
+                    <Col xs={2} className="text-right">
+                      <span style={{ fontWeight: "600" }}>rel</span>
+                    </Col>
+                    <Col xs={10}>
+                      <span>{rel}</span>
+                    </Col>
+                  </div>
+                  <div className="form-group">
+                    <Col xs={2} className="text-right">
+                      <span style={{ fontWeight: "600" }}>target</span>
+                    </Col>
+                    <Col xs={10}>
+                      <span>{target}</span>
+                    </Col>
+                  </div>
+                  <div className="form-group">
+                    <Col xs={2} className="text-right">
+                      <span style={{ fontWeight: "600" }}>hreflang</span>
+                    </Col>
+                    <Col xs={10}>
+                      <span>{hreflang}</span>
+                    </Col>
+                  </div>
                   <RenderTextInput
                     input={textInput}
-                    label={<FormLabel labelText="Text" required />}
+                    label={<FormLabel labelText="Text" required/>}
                   />
                   <div className="text-right">
                     <Button
                       bsStyle="default"
-                      style={{ marginRight: '10px' }}
+                      style={{ marginRight: "10px" }}
                       onClick={this.handleAddClick}
                     >
-                      <FormattedMessage id="cms.label.edit" />
+                      <FormattedMessage id="cms.label.edit"/>
                     </Button>
                     <Button
                       bsStyle="danger"
                       onClick={this.handleDeleteClick}
                     >
-                      <FormattedMessage id="cms.label.delete" />
+                      <FormattedMessage id="cms.label.delete"/>
                     </Button>
                   </div>
                 </Panel.Body>
@@ -151,7 +176,7 @@ class LinkAttributeField extends Component {
         ) : (
           <RenderButton
             bsStyle="primary"
-            buttonContent={<FormattedMessage id="cms.label.add" defaultMessage="Add" />}
+            buttonContent={<FormattedMessage id="cms.label.add" defaultMessage="Add"/>}
             label={label}
             meta={meta}
             onClick={this.handleAddClick}
@@ -164,6 +189,7 @@ class LinkAttributeField extends Component {
           joinGroups={joinGroups}
           onClose={this.handleModalClose}
           onSave={this.handleSave}
+          parameters={{ dest, rel, target, hreflang }}
         />
       </>
     );
