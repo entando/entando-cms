@@ -34,20 +34,6 @@ const getCategoriesOrder = (categoriesChildren) => {
   return sorted;
 };
 
-const isVisible = (categoryCode, categories, categoriesStatus) => {
-  let curCategoryCode = categoryCode;
-  if (categories[curCategoryCode]) {
-    while (curCategoryCode !== 'home') {
-      curCategoryCode = categories[curCategoryCode].parentCode;
-      if (categoriesStatus[curCategoryCode] && !categoriesStatus[curCategoryCode].expanded) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return false;
-};
-
 const getDepth = (categories, categoryCode) => {
   let curCategoryCode = categoryCode;
   let depth = 0;
@@ -65,7 +51,6 @@ export const getCategoryTree = createSelector(
   (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(
     categoryChildren,
   )
-    .filter(categoryCode => isVisible(categoryCode, categories, categoriesStatus))
     .map(categoryCode => ({
       ...categories[categoryCode],
       ...CATEGORY_STATUS_DEFAULTS,

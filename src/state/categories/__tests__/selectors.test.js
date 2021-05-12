@@ -3,6 +3,7 @@ import {
   MYCATEGORY1_PAYLOAD,
   MYCATEGORY2_PAYLOAD,
   MYCATEGORY3_PAYLOAD,
+  SUBCATEGORY_PAYLOAD,
   DATA_OBJECT_REFERENCES,
   CONTENT_REFERENCES,
   RESOURCE_REFERENCES,
@@ -34,24 +35,28 @@ const MOCK_STATE = {
           mycategory1: MYCATEGORY1_PAYLOAD,
           mycategory2: MYCATEGORY2_PAYLOAD,
           mycategory3: MYCATEGORY3_PAYLOAD,
+          subcategory: SUBCATEGORY_PAYLOAD,
         },
         childrenMap: {
           home: HOME_PAYLOAD.children,
           mycategory1: MYCATEGORY1_PAYLOAD.children,
           mycategory2: MYCATEGORY2_PAYLOAD.children,
           mycategory3: MYCATEGORY3_PAYLOAD.children,
+          subcategory: SUBCATEGORY_PAYLOAD.children,
         },
         titlesMap: {
           home: HOME_PAYLOAD.titles,
           mycategory1: MYCATEGORY1_PAYLOAD.titles,
           mycategory2: MYCATEGORY2_PAYLOAD.titles,
           mycategory3: MYCATEGORY3_PAYLOAD.titles,
+          subcategory: SUBCATEGORY_PAYLOAD.titles,
         },
         statusMap: {
           home: { expanded: true, loading: false, loaded: true },
           mycategory1: {},
           mycategory2: {},
           mycategory3: {},
+          subcategory: {},
         },
         selected: {
           ...MYCATEGORY1_PAYLOAD,
@@ -80,61 +85,6 @@ const MOCK_STATE = {
 };
 
 const MOCK_STATE_2 = {
-  apps: {
-    cms: {
-      categories: {
-        list: ['home', 'mycategory1', 'mycategory2', 'mycategory3'],
-        map: {
-          home: HOME_PAYLOAD,
-          mycategory1: MYCATEGORY1_PAYLOAD,
-          mycategory2: MYCATEGORY2_PAYLOAD,
-          mycategory3: MYCATEGORY3_PAYLOAD,
-        },
-        childrenMap: {
-          home: HOME_PAYLOAD.children,
-          mycategory1: MYCATEGORY1_PAYLOAD.children,
-          mycategory2: MYCATEGORY2_PAYLOAD.children,
-          mycategory3: MYCATEGORY3_PAYLOAD.children,
-        },
-        titlesMap: {
-          home: HOME_PAYLOAD.titles,
-          mycategory1: MYCATEGORY1_PAYLOAD.titles,
-          mycategory2: MYCATEGORY2_PAYLOAD.titles,
-          mycategory3: MYCATEGORY3_PAYLOAD.titles,
-        },
-        statusMap: {
-          home: { expanded: false, loading: false, loaded: true },
-          mycategory1: {},
-          mycategory2: {},
-          mycategory3: {},
-        },
-        selected: {
-          ...MYCATEGORY1_PAYLOAD,
-          references: {
-            jpcollaborationIdeaManager: false,
-            DataObjectManager: false,
-            jacmsResourceManager: false,
-            jacmsContentManager: false,
-          },
-          referenceKeyList: [
-            'jpcollaborationIdeaManager',
-            'DataObjectManager',
-            'jacmsResourceManager',
-            'jacmsContentManager',
-          ],
-          referenceMap: {
-            jpcollaborationIdeaManager: [],
-            DataObjectManager: DATA_OBJECT_REFERENCES,
-            jacmsResourceManager: RESOURCE_REFERENCES,
-            jacmsContentManager: CONTENT_REFERENCES,
-          },
-        },
-      },
-    },
-  },
-};
-
-const MOCK_STATE_3 = {
   apps: {
     cms: {
       categories: {
@@ -225,21 +175,23 @@ describe('state/categories/selectors', () => {
     });
 
     it('only returns expanded rows and their children', () => {
-      expect(categoryTree.length).toBe(4);
+      expect(categoryTree.length).toBe(5);
     });
 
     it('returns an array sorted by position', () => {
       expect(categoryTree[0].code).toBe('home');
       expect(categoryTree[1].code).toBe('mycategory1');
-      expect(categoryTree[2].code).toBe('mycategory2');
-      expect(categoryTree[3].code).toBe('mycategory3');
+      expect(categoryTree[2].code).toBe('subcategory');
+      expect(categoryTree[3].code).toBe('mycategory2');
+      expect(categoryTree[4].code).toBe('mycategory3');
     });
 
     it('defines the depth property for each category', () => {
       expect(categoryTree[0].depth).toBe(0);
       expect(categoryTree[1].depth).toBe(1);
-      expect(categoryTree[2].depth).toBe(1);
+      expect(categoryTree[2].depth).toBe(2);
       expect(categoryTree[3].depth).toBe(1);
+      expect(categoryTree[4].depth).toBe(1);
     });
 
     it('defines the isEmpty property for each category', () => {
@@ -278,21 +230,10 @@ describe('state/categories/selectors', () => {
     });
   });
 
-  describe('Get category tree when root home is not expanded', () => {
-    let categoryTree;
-    beforeEach(() => {
-      categoryTree = getCategoryTree(MOCK_STATE_2);
-    });
-
-    it('only returns expanded rows and their children, so as root is not expanded its just one', () => {
-      expect(categoryTree.length).toBe(1);
-    });
-  });
-
   describe('Get all categories when one category is defined in children but not in map', () => {
     let allCategories;
     beforeEach(() => {
-      allCategories = getAllCategories(MOCK_STATE_3);
+      allCategories = getAllCategories(MOCK_STATE_2);
     });
 
     it('return all available categories', () => {
