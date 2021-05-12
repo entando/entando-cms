@@ -80,6 +80,7 @@ export const getAssetsList = createSelector(
     const asset = condenseAssetInfo(assetsMap[id], domain);
     const { categories = [] } = asset;
     const namedCategories = categories.map(c => categoriesMap[c] || c);
+
     return {
       ...asset,
       group: groups[asset.group] || asset.group,
