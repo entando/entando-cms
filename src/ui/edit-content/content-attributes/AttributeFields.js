@@ -141,7 +141,7 @@ const AttributeFields = ({
 }) => {
   if (fields.length < attributes.length) {
     const atts = [];
-    attributes.forEach((attr) => {
+    attributes.filter(f => f !== null).forEach((attr) => {
       const {
         type, code, value, values, elements, compositeelements,
         listelements, names, compositeAttributes, nestedAttribute,
@@ -152,7 +152,7 @@ const AttributeFields = ({
         values,
         elements: elements && elements.map(el => ({
           ...el,
-          value: toFieldValue(el.value, nestedAttribute.type),
+          value: toFieldValue(el.value, nestedAttribute && nestedAttribute.type),
         })),
         compositeelements: compositeelements && compositeelements.map((el, idx) => ({
           ...el,
@@ -163,7 +163,7 @@ const AttributeFields = ({
           ...(listelements && listelements[locale] ? {
             [locale]: listelements[locale].map(el => ({
               ...el,
-              value: toFieldValue(el.value, nestedAttribute.type),
+              value: toFieldValue(el.value, nestedAttribute && nestedAttribute.type),
             })),
           } : {}),
         },
