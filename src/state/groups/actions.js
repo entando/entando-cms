@@ -94,7 +94,7 @@ export const fetchGroup = groupCode => dispatch => (
   })
 );
 
-export const fetchEntireGroupEntries = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
+export const fetchAllGroupEntries = (page = { page: 1, pageSize: 10 }, params = '') => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('groups'));
   getGroups(page, params).then((response) => {
     response.json().then((data) => {
