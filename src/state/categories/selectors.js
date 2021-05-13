@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { get } from 'lodash';
 import { getLocale } from 'state/locale/selectors';
 
 export const getCategories = state => state.apps.cms.categories;
@@ -34,6 +35,8 @@ const getCategoriesOrder = (categoriesChildren) => {
   return sorted;
 };
 
+const doesCategoryExists = (categoryCode, categories) => categoryCode in categories;
+
 const getDepth = (categories, categoryCode) => {
   let curCategoryCode = categoryCode;
   let depth = 0;
@@ -51,6 +54,7 @@ export const getCategoryTree = createSelector(
   (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(
     categoryChildren,
   )
+    .filter(categoryCode => doesCategoryExists(categoryCode, categories))
     .map(categoryCode => ({
       ...categories[categoryCode],
       ...CATEGORY_STATUS_DEFAULTS,
@@ -58,7 +62,7 @@ export const getCategoryTree = createSelector(
       depth: getDepth(categories, categoryCode),
       children: categoryChildren[categoryCode],
       isEmpty: !(categoryChildren[categoryCode] && categoryChildren[categoryCode].length),
-      title: categoriesTitles[categoryCode][locale],
+      title: get(categoriesTitles, `${categoryCode}.${locale}`, ''),
     })),
 );
 

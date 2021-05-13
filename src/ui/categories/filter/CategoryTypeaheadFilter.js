@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from 'react-intl';
 
@@ -16,7 +16,11 @@ const CategoryTypeaheadFilter = ({
   filterSubject,
   applyFilterParams,
   noLabel,
+  onDidMount,
 }) => {
+  useEffect(() => {
+    onDidMount();
+  }, []);
   const onChange = (category) => {
     const selected = category.map(catId => (
       categories.find(cat => cat.code === catId)
@@ -75,6 +79,7 @@ CategoryTypeaheadFilter.propTypes = {
   onApplyFilteredSearch: PropTypes.func,
   applyFilterParams: PropTypes.shape({}),
   noLabel: PropTypes.bool,
+  onDidMount: PropTypes.func.isRequired,
 };
 
 CategoryTypeaheadFilter.defaultProps = {
