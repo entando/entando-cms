@@ -42,7 +42,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
   onDidMount: () => {
     dispatch(fetchContentTypeListPaged({ pageSize: 0 }))
       .then(() => dispatch(fetchContentTemplate(params.id)))
-      .then(({ contentType }) => dispatch(fetchContentType(contentType)))
+      .then(({ contentType }) => dispatch(fetchContentType(contentType, false)))
       .then(() => dispatch(fetchContentTemplateDictionary()));
   },
   onDidUnmount: () => {
