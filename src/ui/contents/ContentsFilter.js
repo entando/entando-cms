@@ -89,6 +89,7 @@ class ContentsFilter extends Component {
 
   clearSearch() {
     const { onAdvancedFilterSearch, currentQuickFilter, onSetQuickFilter } = this.props;
+
     onSetQuickFilter({
       ...currentQuickFilter,
       value: '',
