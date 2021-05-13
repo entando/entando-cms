@@ -5,7 +5,7 @@ import {
   FormattedMessage, intlShape, defineMessages,
 } from 'react-intl';
 import {
-  Filter, FormControl, Col, ControlLabel, Button,
+  Filter, FormControl, Col, ControlLabel, Button, Icon,
 } from 'patternfly-react';
 import { Checkbox } from 'react-bootstrap';
 import FormLabel from 'ui/common/form/FormLabel';
@@ -41,6 +41,7 @@ class ContentsFilter extends Component {
     this.state = {
       showAdvancedFilters: false,
     };
+    this.clearSearch = this.clearSearch.bind(this);
   }
 
   onChangeQuickFilter(e) {
@@ -84,6 +85,15 @@ class ContentsFilter extends Component {
     this.setState({
       showAdvancedFilters: !showAdvancedFilters,
     });
+  }
+
+  clearSearch() {
+    const { onAdvancedFilterSearch, currentQuickFilter, onSetQuickFilter } = this.props;
+    onSetQuickFilter({
+      ...currentQuickFilter,
+      value: '',
+    });
+    setTimeout(onAdvancedFilterSearch, 10);
   }
 
 
@@ -195,15 +205,21 @@ class ContentsFilter extends Component {
               onFilterTypeSelected={e => this.onChangeQuickFilter(e)}
             />
           </Col>
-          <Col xs={10} sm={9} className="no-padding ContentsFilter__right-column">
+          <Col xs={10} sm={9} className="no-padding ContentsFilter__right-column" style={{ display: 'flex' }}>
             <FormControl
               style={{ zIndex: '1' }}
               type={localizedCurrentQuickFilter.filterType}
-              value={localizedCurrentQuickFilter.value}
+              value={currentQuickFilter.value}
               placeholder={intl.formatMessage(messages.searchContent)}
               onChange={e => this.onChangeQuickFilterSearchText(e)}
               onKeyPress={e => this.onValueKeyPress(e)}
             />
+            <Button
+              className="btn-transparent SearchForm__button-close"
+              onClick={this.clearSearch}
+            >
+              <Icon name="close" />
+            </Button>
           </Col>
         </Filter>
         <Col xs={12} xsOffset={0} sm={10} smOffset={2} className="ContentsFilter__right-column">
