@@ -1,25 +1,25 @@
-import { omit } from "lodash";
-import React from "react";
-import { connect } from "react-redux";
-import { formValueSelector, submit } from "redux-form";
-import LinkConfigResourceForm from "./LinkConfigResourceForm";
+import { omit } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector, submit } from 'redux-form';
+import LinkConfigResourceForm from './LinkConfigResourceForm';
 
-const selector = formValueSelector("LinkConfigResource");
+const selector = formValueSelector('LinkConfigResource');
 
 export const mapStateToProps = (state, { joinGroups, mainGroup, parameters }) => ({
   initialValues: {
     resource: parameters.contentDest,
-    attributes: { ...omit(parameters, "dest") },
+    attributes: { ...omit(parameters, 'dest') },
   },
   resource: selector(state, 'resource'),
   attributes: selector(state, 'attributes'),
   joinGroups,
-  mainGroup
+  mainGroup,
 });
 
 export const mapDispatchToProps = (dispatch, { onSubmit, onCancel }) => ({
-  handleClick: (content) => {
-    submit("LinkConfigResource");
+  handleSubmit: (content) => {
+    submit('LinkConfigResource');
     onSubmit(content);
   },
   onCancel,

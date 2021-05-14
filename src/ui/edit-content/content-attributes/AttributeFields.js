@@ -152,7 +152,7 @@ const AttributeFields = ({
         values,
         elements: elements && elements.map(el => ({
           ...el,
-          value: toFieldValue(el.value, nestedAttribute.type),
+          value: toFieldValue(el.value, nestedAttribute?.type),
         })),
         compositeelements: compositeelements && compositeelements.map((el, idx) => ({
           ...el,
@@ -163,7 +163,7 @@ const AttributeFields = ({
           ...(listelements && listelements[locale] ? {
             [locale]: listelements[locale].map(el => ({
               ...el,
-              value: toFieldValue(el.value, nestedAttribute.type),
+              value: toFieldValue(el.value, nestedAttribute?.type),
             })),
           } : {}),
         },

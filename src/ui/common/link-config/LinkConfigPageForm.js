@@ -13,10 +13,10 @@ import PageTreeContainer from "ui/common/page/PageTreeSelectContainer";
 import FormLabel from "ui/common/form/FormLabel";
 import LinkConfigAttributes from "ui/common/link-config/LinkConfigAttributes";
 
-const PageTreeField = ({ input, mainGroup, joinGroups }) => (
+const PageTreeField = ({ input, mainGroup, joinGroups, pageCode }) => (
   <PageTreeContainer
-    onPageSelect={input.onChange}
     ownerGroup={mainGroup}
+    input={{value: pageCode, onChange: input.onChange}}
     joinGroups={joinGroups}
     status="published"
   />);
