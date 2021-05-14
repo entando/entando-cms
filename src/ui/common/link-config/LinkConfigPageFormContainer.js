@@ -8,10 +8,10 @@ const selector = formValueSelector("LinkConfigPage");
 
 export const mapStateToProps = (state, { parameters, joinGroups, mainGroup }) => ({
   initialValues: {
-    page: parameters.pageDest,
+    page: parameters.pageDest || '',
     attributes: { ...omit(parameters, "pageDest") },
   },
-  page: selector(state, 'page'),
+  page: selector(state, 'page') || '',
   attributes: selector(state, "attributes"),
   joinGroups,
   mainGroup,
