@@ -99,7 +99,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     onChangeContentType: (contentType) => {
       if (contentType) {
         dispatch(fetchContentTemplatesByContentType(contentType));
-        dispatch(fetchContentType(contentType))
+        dispatch(fetchContentType(contentType, false))
           .then(ctype => dispatch(change(formToUse, putPrefixField('contentTypeDetails'), ctype)));
       }
     },
