@@ -89,7 +89,7 @@ class LinkAttributeField extends Component {
     } = this.props;
 
     const { value, values } = input.value;
-    const { urlDest, pageDest, contentDest, rel, hreflang, target } = value || {};
+    const { urlDest, pageDest, contentDest, rel, hreflang, target, destType } = value || {};
     const dest = urlDest || pageDest || contentDest;
 
     const textInput = {
@@ -183,27 +183,56 @@ class LinkAttributeField extends Component {
             {...rest}
           />
         )}
-        <LinkConfigModal
-          isVisible={modalVisible}
-          mainGroup={mainGroup}
-          joinGroups={joinGroups}
-          onClose={this.handleModalClose}
-          onSave={this.handleSave}
-          parameters={{ dest, rel, target, hreflang }}
-        />
+        {modalVisible ?
+          <LinkConfigModal
+            isVisible={modalVisible}
+            mainGroup={mainGroup}
+            joinGroups={joinGroups}
+            onClose={this.handleModalClose}
+            onSave={this.handleSave}
+            parameters={{ dest, pageDest, contentDest, rel, target, hreflang, destType }}
+          /> : null}
       </>
     );
   }
+
 }
 
 LinkAttributeField.propTypes = {
-  input: PropTypes.shape(fieldInputPropTypes).isRequired,
-  label: PropTypes.node.isRequired,
-  meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
-  attribute: PropTypes.shape(attributeShape).isRequired,
-  langCode: PropTypes.string.isRequired,
-  mainGroup: PropTypes.string.isRequired,
-  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+  input: PropTypes.shape
+(
+  fieldInputPropTypes,
+).
+  isRequired
+,
+  label: PropTypes.node.isRequired
+,
+  meta: PropTypes.shape
+(
+  fieldMetaPropTypes,
+).
+  isRequired
+,
+  attribute: PropTypes.shape
+(
+  attributeShape,
+).
+  isRequired
+,
+  langCode: PropTypes.string.isRequired
+,
+  mainGroup: PropTypes.string.isRequired
+,
+  joinGroups: PropTypes.arrayOf
+(
+  PropTypes
+.
+  string,
+).
+  isRequired
+,
+}
+
+;
 
 export default LinkAttributeField;

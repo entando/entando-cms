@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import {
   reduxForm,
   Field,
   FormSection,
   fieldInputPropTypes,
-} from 'redux-form';
-import { Col, Button } from 'patternfly-react';
-import { FormattedMessage } from 'react-intl';
+} from "redux-form";
+import { Col, Button } from "patternfly-react";
+import { FormattedMessage } from "react-intl";
 
-import PageTreeContainer from 'ui/common/page/PageTreeSelectContainer';
-import FormLabel from 'ui/common/form/FormLabel';
-import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
+import PageTreeContainer from "ui/common/page/PageTreeSelectContainer";
+import FormLabel from "ui/common/form/FormLabel";
+import LinkConfigAttributes from "ui/common/link-config/LinkConfigAttributes";
 
 const PageTreeField = ({ input, mainGroup, joinGroups }) => (
   <PageTreeContainer
@@ -19,8 +19,7 @@ const PageTreeField = ({ input, mainGroup, joinGroups }) => (
     ownerGroup={mainGroup}
     joinGroups={joinGroups}
     status="published"
-  />
-);
+  />);
 
 PageTreeField.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
@@ -28,10 +27,10 @@ PageTreeField.propTypes = {
   joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const label = <FormLabel labelId="cms.linkconfig.pageSelect" />;
+const label = <FormLabel labelId="cms.linkconfig.pageSelect"/>;
 
 const LinkConfigPageForm = ({
-  onCancel, handleSubmit, mainGroup, joinGroups,
+  onCancel, handleSubmit, mainGroup, joinGroups, page, attributes,
 }) => (
   <form className="form-horizontal" onSubmit={handleSubmit}>
     <Col xs={2} className="text-right">
@@ -42,22 +41,23 @@ const LinkConfigPageForm = ({
         component={PageTreeField}
         mainGroup={mainGroup}
         joinGroups={joinGroups}
+        pageCode={page}
         name="page"
       />
     </Col>
     <FormSection name="attributes">
-      <LinkConfigAttributes />
+      <LinkConfigAttributes/>
     </FormSection>
     <div className="text-right">
       <Button
         bsStyle="default"
-        style={{ marginRight: '10px' }}
+        style={{ marginRight: "10px" }}
         onClick={onCancel}
       >
-        <FormattedMessage id="cms.label.cancel" />
+        <FormattedMessage id="cms.label.cancel"/>
       </Button>
-      <Button bsStyle="primary" type="submit">
-        <FormattedMessage id="cms.label.save" />
+      <Button bsStyle="primary" onClick={() => handleSubmit({ page, attributes })}>
+        <FormattedMessage id="cms.label.save"/>
       </Button>
     </div>
   </form>
@@ -71,5 +71,5 @@ LinkConfigPageForm.propTypes = {
 };
 
 export default reduxForm({
-  form: 'LinkConfigPage',
+  form: "LinkConfigPage",
 })(LinkConfigPageForm);

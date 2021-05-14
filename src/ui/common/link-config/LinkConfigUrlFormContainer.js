@@ -4,7 +4,7 @@ import { formValueSelector, submit } from "redux-form";
 import LinkConfigUrlForm from "ui/common/link-config/LinkConfigUrlForm";
 import { omit } from "lodash";
 
-const selector = formValueSelector('LinkConfigUrl')
+const selector = formValueSelector('LinkConfigUrl');
 
 export const mapStateToProps = (state, { parameters }) => ({
   initialValues: {
@@ -15,9 +15,8 @@ export const mapStateToProps = (state, { parameters }) => ({
   attributes: selector(state, 'attributes')
 });
 
-export const mapDispatchToProps = (state, { onSubmit, onCancel }) => ({
+export const mapDispatchToProps = (dispatch, { onSubmit, onCancel }) => ({
   handleSubmit: (data) => {
-    console.log('mapDispatchToProps - handleSubmit - data', data)
     submit("LinkConfigUrl");
     onSubmit( data );
   },

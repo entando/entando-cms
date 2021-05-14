@@ -26,7 +26,7 @@ ContentsField.propTypes = {
 };
 
 const LinkConfigContentForm = ({
-  onCancel, handleClick, selectedContent, mainGroup, joinGroups,
+  onCancel, handleClick, content, mainGroup, joinGroups, attributes
 }) => (
   <div className="form-horizontal">
     <Field
@@ -46,7 +46,7 @@ const LinkConfigContentForm = ({
       >
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      <Button bsStyle="primary" onClick={() => handleClick(selectedContent)}>
+      <Button bsStyle="primary" onClick={() => handleClick({content,attributes})}>
         <FormattedMessage id="cms.label.save" />
       </Button>
     </div>

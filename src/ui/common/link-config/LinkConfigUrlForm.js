@@ -14,12 +14,8 @@ import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 
 const label = <FormLabel labelText="URL" />;
 
-const LinkConfigUrlForm = ({ onCancel, handleSubmit, url, attributes }) => {
-  console.log('LinkConfigUrlForm url', url);
-  console.log('LinkConfigUrlForm attributes', attributes);
-
-  return (
-    <form className="form-horizontal" onSubmit={handleSubmit}>
+const LinkConfigUrlForm = ({ onCancel, handleSubmit, url, attributes }) => (
+    <form className="form-horizontal" >
       <Field
         component={RenderTextInput}
         name="url"
@@ -40,10 +36,7 @@ const LinkConfigUrlForm = ({ onCancel, handleSubmit, url, attributes }) => {
           <FormattedMessage id="cms.label.save"/>
         </Button>
       </div>
-    </form>
-  )
-
-};
+    </form>)
 
 LinkConfigUrlForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
