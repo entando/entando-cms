@@ -28,7 +28,9 @@ AssetsField.propTypes = {
   mainGroup: PropTypes.string.isRequired,
 };
 
-const LinkConfigResourceForm = ({ onCancel, handleSubmit, mainGroup, resource, attributes }) => (
+const LinkConfigResourceForm = ({
+  onCancel, handleSubmit, mainGroup, resource, attributes,
+}) => (
   <form className="form-horizontal">
     <Field
       component={AssetsField}
@@ -46,7 +48,7 @@ const LinkConfigResourceForm = ({ onCancel, handleSubmit, mainGroup, resource, a
       >
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      <Button bsStyle="primary" onClick={() => handleSubmit({resource, attributes})}>
+      <Button bsStyle="primary" onClick={() => handleSubmit({ resource, attributes })}>
         <FormattedMessage id="cms.label.save" />
       </Button>
     </div>
@@ -57,7 +59,15 @@ LinkConfigResourceForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   mainGroup: PropTypes.string.isRequired,
+  resource: PropTypes.string,
+  attributes: PropTypes.shape({}),
 };
+
+LinkConfigResourceForm.defaultProps = {
+  resource: '',
+  attributes: {},
+};
+
 
 export default reduxForm({
   form: 'LinkConfigResource',

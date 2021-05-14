@@ -9,7 +9,7 @@ import { getPageTreePages } from 'state/pages/selectors';
 import { getLoading } from 'state/loading/selectors';
 
 
-export const mapStateToProps = (state, {input}) => ({
+export const mapStateToProps = (state, { input }) => ({
   pages: getPageTreePages(state),
   loading: getLoading(state).pageTree,
   input,

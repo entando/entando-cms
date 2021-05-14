@@ -174,6 +174,7 @@ LinkConfigModal.propTypes = {
   mainGroup: PropTypes.string.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string),
   parameters: PropTypes.shape({
+    destType: PropTypes.number,
     dest: PropTypes.string,
     rel: PropTypes.string,
     target: PropTypes.string,

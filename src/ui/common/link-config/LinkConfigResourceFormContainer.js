@@ -1,5 +1,4 @@
 import { omit } from 'lodash';
-import React from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, submit } from 'redux-form';
 import LinkConfigResourceForm from './LinkConfigResourceForm';
@@ -24,6 +23,10 @@ export const mapDispatchToProps = (dispatch, { onSubmit, onCancel }) => ({
   },
   onCancel,
 });
-const LinkConfigResourceFormContainer = connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(LinkConfigResourceForm);
+const LinkConfigResourceFormContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null, { pure: false },
+)(LinkConfigResourceForm);
 
 export default LinkConfigResourceFormContainer;

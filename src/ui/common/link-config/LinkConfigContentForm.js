@@ -27,7 +27,7 @@ ContentsField.propTypes = {
 };
 
 const LinkConfigContentForm = ({
-  onCancel, handleClick, content, mainGroup, joinGroups, attributes
+  onCancel, handleClick, content, mainGroup, joinGroups, attributes,
 }) => (
   <div className="form-horizontal">
     <Field
@@ -47,7 +47,7 @@ const LinkConfigContentForm = ({
       >
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      <Button bsStyle="primary" onClick={() => handleClick({content,attributes})}>
+      <Button bsStyle="primary" onClick={() => handleClick({ content, attributes })}>
         <FormattedMessage id="cms.label.save" />
       </Button>
     </div>
@@ -56,14 +56,16 @@ const LinkConfigContentForm = ({
 
 LinkConfigContentForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
-  selectedContent: PropTypes.string,
+  content: PropTypes.string,
   mainGroup: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
   joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
+  attributes: PropTypes.shape({}),
 };
 
 LinkConfigContentForm.defaultProps = {
-  selectedContent: '',
+  content: '',
+  attributes: {},
 };
 
 export default reduxForm({

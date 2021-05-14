@@ -1,24 +1,23 @@
-import React from "react";
-import { connect } from "react-redux";
-import { formValueSelector, submit } from "redux-form";
-import LinkConfigUrlForm from "ui/common/link-config/LinkConfigUrlForm";
-import { omit } from "lodash";
+import { connect } from 'react-redux';
+import { formValueSelector, submit } from 'redux-form';
+import LinkConfigUrlForm from 'ui/common/link-config/LinkConfigUrlForm';
+import { omit } from 'lodash';
 
 const selector = formValueSelector('LinkConfigUrl');
 
 export const mapStateToProps = (state, { parameters }) => ({
   initialValues: {
     url: parameters.dest,
-    attributes: { ...omit(parameters, "dest") },
+    attributes: { ...omit(parameters, 'dest') },
   },
   url: selector(state, 'url'),
-  attributes: selector(state, 'attributes')
+  attributes: selector(state, 'attributes'),
 });
 
 export const mapDispatchToProps = (dispatch, { onSubmit, onCancel }) => ({
   handleSubmit: (data) => {
-    submit("LinkConfigUrl");
-    onSubmit( data );
+    submit('LinkConfigUrl');
+    onSubmit(data);
   },
   onCancel,
 });
@@ -29,6 +28,7 @@ const LinkConfigUrlFormContainer = connect(
   null,
   {
     pure: false,
-  })(LinkConfigUrlForm);
+  },
+)(LinkConfigUrlForm);
 
 export default LinkConfigUrlFormContainer;
