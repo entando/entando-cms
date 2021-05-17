@@ -367,9 +367,9 @@ export class ContentsQueryFormBody extends Component {
                       label={
                         <FormLabel labelId="widget.form.page" required={!!pageIsRequired} />
                     }
+                      validate={pageIsRequired ? [required] : []}
                       options={normalizedPages}
                       optionValue="code"
-                      validate={pageIsRequired ? [required] : []}
                       optionDisplayName="name"
                       defaultOptionId="app.enumerator.none"
                     />

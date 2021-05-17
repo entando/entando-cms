@@ -16,7 +16,7 @@ import { getActiveLanguages } from 'state/languages/selectors';
 import { sendPutWidgetConfig } from 'state/page-config/actions';
 import { ROUTE_APP_BUILDER_PAGE_CONFIG } from 'app-init/routes';
 import {
-  formValueSelector, submit, change, arrayPush,
+  formValueSelector, submit, change, arrayPush, getFormValues,
 } from 'redux-form';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
@@ -37,6 +37,7 @@ export const mapStateToProps = (state, ownProps) => {
     chosenContentTypes: formValueSelector(formToUse)(state, putPrefixField('chosenContentTypes')),
     ownerGroup: formValueSelector(formToUse)(state, putPrefixField('ownerGroup')),
     joinGroups: formValueSelector(formToUse)(state, putPrefixField('joinGroups')),
+    widgetConfigFormData: getFormValues(formToUse)(state),
   };
 };
 
