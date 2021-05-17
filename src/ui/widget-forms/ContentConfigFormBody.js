@@ -7,7 +7,7 @@ import {
 } from 'patternfly-react';
 import { Collapse } from 'react-collapse';
 import { isUndefined, get, uniq } from 'lodash';
-import { maxLength } from '@entando/utils';
+import { maxLength, required } from '@entando/utils';
 import ContentTableRenderer from 'ui/widget-forms/ContentTableRenderer';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -92,6 +92,7 @@ export class ContentConfigFormBody extends PureComponent {
       onSave,
       ownerGroup,
       joinGroups,
+      widgetConfigFormData,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
@@ -135,6 +136,12 @@ export class ContentConfigFormBody extends PureComponent {
       }
     };
 
+    const pageIsRequired = !isUndefined(normalizedLanguages)
+      ? normalizedLanguages.some((langCode) => {
+        const descriptionValue = widgetConfigFormData[putPrefixField(`linkDescr_${langCode}`)];
+        return descriptionValue !== null && descriptionValue !== undefined && descriptionValue !== '';
+      }) : false;
+
     const renderExtraOptions = multipleContentsMode ? (
       <Row>
         <Col xs={12}>
@@ -155,8 +162,9 @@ export class ContentConfigFormBody extends PureComponent {
                   component={RenderSelectInput}
                   name={putPrefixField('pageLink')}
                   label={
-                    <FormLabel labelId="widget.form.page" />
-              }
+                    <FormLabel labelId="widget.form.page" required={!!pageIsRequired} />
+            }
+                  validate={pageIsRequired ? [required] : []}
                   options={normalizedPages}
                   optionValue="code"
                   optionDisplayName="name"
@@ -302,6 +310,7 @@ ContentConfigFormBody.propTypes = {
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
   cloneMode: PropTypes.bool,
+  widgetConfigFormData: PropTypes.shape({}),
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -318,6 +327,7 @@ ContentConfigFormBody.defaultProps = {
   handleSubmit: () => {},
   putPrefixField: name => name,
   cloneMode: false,
+  widgetConfigFormData: {},
 };
 
 export default reduxForm({
