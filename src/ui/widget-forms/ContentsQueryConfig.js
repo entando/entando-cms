@@ -531,7 +531,7 @@ ContentsQueryFormBody.defaultProps = {
   putPrefixField: name => name,
   cloneMode: false,
   widgetConfigFormData: {},
-  defaultLanguageCode: '',
+  defaultLanguageCode: 'en',
 };
 
 const ContentsQueryConfig = reduxForm({

@@ -340,7 +340,7 @@ ContentConfigFormBody.defaultProps = {
   putPrefixField: name => name,
   cloneMode: false,
   widgetConfigFormData: {},
-  defaultLanguageCode: '',
+  defaultLanguageCode: 'en',
 };
 
 export default reduxForm({
