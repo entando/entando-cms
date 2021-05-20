@@ -14,8 +14,10 @@ import LinkConfigAttributes from 'ui/common/link-config/LinkConfigAttributes';
 
 const label = <FormLabel labelText="URL" />;
 
-const LinkConfigUrlForm = ({ onCancel, handleSubmit }) => (
-  <form className="form-horizontal" onSubmit={handleSubmit}>
+const LinkConfigUrlForm = ({
+  onCancel, handleSubmit, url, attributes,
+}) => (
+  <form className="form-horizontal">
     <Field
       component={RenderTextInput}
       name="url"
@@ -32,7 +34,7 @@ const LinkConfigUrlForm = ({ onCancel, handleSubmit }) => (
       >
         <FormattedMessage id="cms.label.cancel" />
       </Button>
-      <Button bsStyle="primary" type="submit">
+      <Button bsStyle="primary" onClick={() => handleSubmit({ url, attributes })}>
         <FormattedMessage id="cms.label.save" />
       </Button>
     </div>
@@ -42,6 +44,13 @@ const LinkConfigUrlForm = ({ onCancel, handleSubmit }) => (
 LinkConfigUrlForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  url: PropTypes.string,
+  attributes: PropTypes.shape({}),
+};
+
+LinkConfigUrlForm.defaultProps = {
+  url: '',
+  attributes: {},
 };
 
 export default reduxForm({

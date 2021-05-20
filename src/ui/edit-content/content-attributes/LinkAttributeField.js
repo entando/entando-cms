@@ -4,7 +4,7 @@ import {
   fieldInputPropTypes,
   fieldMetaPropTypes,
 } from 'redux-form';
-import { get } from 'lodash';
+import { get, omit } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import { Col, Row, Button } from 'patternfly-react';
 import { Panel } from 'react-bootstrap';
@@ -15,10 +15,10 @@ import LinkConfigModal from 'ui/common/modal/LinkConfigModal';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import FormLabel from 'ui/common/form/FormLabel';
 
+
 class LinkAttributeField extends Component {
   constructor() {
     super();
-
     this.state = {
       modalVisible: false,
     };
@@ -58,6 +58,7 @@ class LinkAttributeField extends Component {
         symbolicDestination: url,
         destType,
         [destKey]: dest,
+        ...omit(values, 'url'),
       },
     });
 
@@ -88,7 +89,9 @@ class LinkAttributeField extends Component {
     } = this.props;
 
     const { value, values } = input.value;
-    const { urlDest, pageDest, contentDest } = value || {};
+    const {
+      urlDest, pageDest, contentDest, rel, hreflang, target, destType,
+    } = value || {};
     const dest = urlDest || pageDest || contentDest;
 
     const textInput = {
@@ -125,6 +128,30 @@ class LinkAttributeField extends Component {
                       <span>{dest}</span>
                     </Col>
                   </div>
+                  <div className="form-group">
+                    <Col xs={2} className="text-right">
+                      <span style={{ fontWeight: '600' }}>rel</span>
+                    </Col>
+                    <Col xs={10}>
+                      <span>{rel}</span>
+                    </Col>
+                  </div>
+                  <div className="form-group">
+                    <Col xs={2} className="text-right">
+                      <span style={{ fontWeight: '600' }}>target</span>
+                    </Col>
+                    <Col xs={10}>
+                      <span>{target}</span>
+                    </Col>
+                  </div>
+                  <div className="form-group">
+                    <Col xs={2} className="text-right">
+                      <span style={{ fontWeight: '600' }}>hreflang</span>
+                    </Col>
+                    <Col xs={10}>
+                      <span>{hreflang}</span>
+                    </Col>
+                  </div>
                   <RenderTextInput
                     input={textInput}
                     label={<FormLabel labelText="Text" required />}
@@ -158,26 +185,46 @@ class LinkAttributeField extends Component {
             {...rest}
           />
         )}
-        <LinkConfigModal
-          isVisible={modalVisible}
-          mainGroup={mainGroup}
-          joinGroups={joinGroups}
-          onClose={this.handleModalClose}
-          onSave={this.handleSave}
-        />
+        {modalVisible
+          ? (
+            <LinkConfigModal
+              isVisible={modalVisible}
+              mainGroup={mainGroup}
+              joinGroups={joinGroups}
+              onClose={this.handleModalClose}
+              onSave={this.handleSave}
+              parameters={{
+                dest, pageDest, contentDest, rel, target, hreflang, destType,
+              }}
+            />
+          ) : null}
       </>
     );
   }
 }
 
 LinkAttributeField.propTypes = {
-  input: PropTypes.shape(fieldInputPropTypes).isRequired,
+  input: PropTypes.shape(
+    fieldInputPropTypes,
+  )
+    .isRequired,
   label: PropTypes.node.isRequired,
-  meta: PropTypes.shape(fieldMetaPropTypes).isRequired,
-  attribute: PropTypes.shape(attributeShape).isRequired,
+  meta: PropTypes.shape(
+    fieldMetaPropTypes,
+  )
+    .isRequired,
+  attribute: PropTypes.shape(
+    attributeShape,
+  )
+    .isRequired,
   langCode: PropTypes.string.isRequired,
   mainGroup: PropTypes.string.isRequired,
-  joinGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+  joinGroups: PropTypes.arrayOf(
+    PropTypes
 
+      .string,
+  )
+    .isRequired
+  ,
+};
 export default LinkAttributeField;
