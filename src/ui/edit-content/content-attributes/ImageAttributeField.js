@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
@@ -81,17 +81,15 @@ const ImageAttributeField = ({
 
   const hasValue = get(input, `value.${langCode}`, false);
 
-  useEffect(() => {
-    if (!hasValue && defaultLang !== langCode) {
-      const hasDefLangValue = get(input, `value.${defaultLang}`, false);
-      if (hasDefLangValue) {
-        handleAssetSelected({
-          ...hasDefLangValue,
-          metadata: {},
-        });
-      }
+  if (!hasValue && defaultLang !== langCode) {
+    const hasDefLangValue = get(input, `value.${defaultLang}`, false);
+    if (hasDefLangValue) {
+      handleAssetSelected({
+        ...hasDefLangValue,
+        metadata: {},
+      });
     }
-  }, [hasValue, defaultLang, input]);
+  }
 
   return (
     <div className={containerClasses}>

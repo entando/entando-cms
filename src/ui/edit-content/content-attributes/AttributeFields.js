@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Field,
@@ -139,48 +139,46 @@ const AttributeFields = ({
   attributes, fields, reInitializeForm, content, typeCode, mainGroup, langCode, joinGroups,
   isDefaultLang, defaultLang, selectedLangTab, locale, expanded,
 }) => {
-  useEffect(() => {
-    if (fields.length < attributes.length) {
-      const atts = [];
-      attributes.forEach((attr) => {
-        const {
-          type, code, value, values, elements, compositeelements,
-          listelements, names, compositeAttributes, nestedAttribute,
-        } = attr;
-        atts.push({
-          code,
-          value: toFieldValue(value, type),
-          values,
-          elements: elements && elements.map(el => ({
-            ...el,
-            value: toFieldValue(el.value, nestedAttribute.type),
-          })),
-          compositeelements: compositeelements && compositeelements.map((el, idx) => ({
-            ...el,
-            value: toFieldValue(el.value, compositeAttributes[idx].type),
-          })),
-          listelements: {
-            ...listelements,
-            ...(listelements && listelements[locale] ? {
-              [locale]: listelements[locale].map(el => ({
-                ...el,
-                value: toFieldValue(el.value, nestedAttribute.type),
-              })),
-            } : {}),
-          },
-          names,
-        });
+  if (fields.length < attributes.length) {
+    const atts = [];
+    attributes.filter(f => f !== null).forEach((attr) => {
+      const {
+        type, code, value, values, elements, compositeelements,
+        listelements, names, compositeAttributes, nestedAttribute,
+      } = attr;
+      atts.push({
+        code,
+        value: toFieldValue(value, type),
+        values,
+        elements: elements && elements.map(el => ({
+          ...el,
+          value: toFieldValue(el.value, nestedAttribute && nestedAttribute.type),
+        })),
+        compositeelements: compositeelements && compositeelements.map((el, idx) => ({
+          ...el,
+          value: toFieldValue(el.value, compositeAttributes[idx].type),
+        })),
+        listelements: {
+          ...listelements,
+          ...(listelements && listelements[locale] ? {
+            [locale]: listelements[locale].map(el => ({
+              ...el,
+              value: toFieldValue(el.value, nestedAttribute && nestedAttribute.type),
+            })),
+          } : {}),
+        },
+        names,
       });
-      reInitializeForm('editcontentform', {
-        ...content,
-        attributes: atts,
-        contentType: typeCode,
-        mainGroup,
-        joinGroups,
-        groups: joinGroups,
-      });
-    }
-  }, [fields, attributes, typeCode, mainGroup, joinGroups, content]);
+    });
+    reInitializeForm('editcontentform', {
+      ...content,
+      attributes: atts,
+      contentType: typeCode,
+      mainGroup,
+      joinGroups,
+      groups: joinGroups,
+    });
+  }
 
   return fields.map((name, idx) => renderField(name, attributes[idx], langCode, mainGroup,
     joinGroups, isDefaultLang, defaultLang, locale, selectedLangTab, expanded));
