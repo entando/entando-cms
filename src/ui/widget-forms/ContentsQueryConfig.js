@@ -85,7 +85,7 @@ export class ContentsQueryFormBody extends Component {
       intl, onChangeFilterValue, onResetFilterOption, onChangeFilterAttribute,
       languages, onToggleInclusiveOr, selectedInclusiveOr, extFormName,
       invalid, submitting, dirty, onCancel, onDiscard, onSave, putPrefixField,
-      widgetConfigFormData,
+      widgetConfigFormData, defaultLanguageCode,
     } = this.props;
     const {
       publishingSettings, filters: filtersPanel,
@@ -98,6 +98,9 @@ export class ContentsQueryFormBody extends Component {
     const normalizedPages = this.normalizeTitles(pages || []);
 
     const normalizedLanguages = languages.map(lang => lang.code);
+
+    const defaultPageValue = widgetConfigFormData[putPrefixField('pageLink')];
+    const defaultLangLinkTextRequired = defaultPageValue !== null && defaultPageValue !== undefined && defaultPageValue !== '';
 
     const renderTitleFields = !isUndefined(normalizedLanguages) ? normalizedLanguages
       .map(langCode => (
@@ -116,8 +119,15 @@ export class ContentsQueryFormBody extends Component {
           key={langCode}
           component={RenderTextInput}
           name={putPrefixField(`linkDescr_${langCode}`)}
-          label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
-          validate={[maxLength70]}
+          label={(
+            <FormLabel
+              langLabelText={langCode}
+              labelId="widget.form.linkText"
+              required={langCode === defaultLanguageCode && defaultLangLinkTextRequired}
+            />
+)}
+          validate={langCode === defaultLanguageCode && defaultLangLinkTextRequired
+            ? [required, maxLength70] : [maxLength70]}
         />
       )) : null;
 
@@ -501,6 +511,7 @@ ContentsQueryFormBody.propTypes = {
   putPrefixField: PropTypes.func,
   cloneMode: PropTypes.bool,
   widgetConfigFormData: PropTypes.shape({}),
+  defaultLanguageCode: PropTypes.string,
 };
 
 ContentsQueryFormBody.defaultProps = {
@@ -520,6 +531,7 @@ ContentsQueryFormBody.defaultProps = {
   putPrefixField: name => name,
   cloneMode: false,
   widgetConfigFormData: {},
+  defaultLanguageCode: '',
 };
 
 const ContentsQueryConfig = reduxForm({

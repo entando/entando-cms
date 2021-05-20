@@ -93,12 +93,16 @@ export class ContentConfigFormBody extends PureComponent {
       ownerGroup,
       joinGroups,
       widgetConfigFormData,
+      defaultLanguageCode,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
     const noContents = chosenContents.length === 0;
+
+    const defaultPageValue = widgetConfigFormData[putPrefixField('pageLink')];
+    const defaultLangLinkTextRequired = defaultPageValue !== null && defaultPageValue !== undefined && defaultPageValue !== '';
 
     const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 50, 100, 500]
       .map(i => Object.assign({}, { code: i, name: i }));
@@ -120,8 +124,15 @@ export class ContentConfigFormBody extends PureComponent {
           key={langCode}
           component={RenderTextInput}
           name={putPrefixField(`linkDescr_${langCode}`)}
-          label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
-          validate={[maxLength70]}
+          label={(
+            <FormLabel
+              langLabelText={langCode}
+              labelId="widget.form.linkText"
+              required={langCode === defaultLanguageCode && defaultLangLinkTextRequired}
+            />
+)}
+          validate={langCode === defaultLanguageCode && defaultLangLinkTextRequired
+            ? [required, maxLength70] : [maxLength70]}
         />
       )) : null;
 
@@ -311,6 +322,7 @@ ContentConfigFormBody.propTypes = {
   putPrefixField: PropTypes.func,
   cloneMode: PropTypes.bool,
   widgetConfigFormData: PropTypes.shape({}),
+  defaultLanguageCode: PropTypes.string,
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -328,6 +340,7 @@ ContentConfigFormBody.defaultProps = {
   putPrefixField: name => name,
   cloneMode: false,
   widgetConfigFormData: {},
+  defaultLanguageCode: '',
 };
 
 export default reduxForm({
