@@ -3,9 +3,10 @@ import {
   setPermissions,
   setLoggedUserPermissions,
   clearLoggedUserPermissions,
+  setMyGroupPermissions,
 } from 'state/permissions/actions';
 import { getPermissionsList } from 'state/permissions/selectors';
-import { LIST_PERMISSIONS_OK } from 'testutils/mocks/permissions';
+import { LIST_PERMISSIONS_OK, MY_PERMISSIONS_PAYLOAD_OK } from 'testutils/mocks/permissions';
 import { AUTHORITIES, EDIT_USER_PROFILE_AUTHORITIES } from 'testutils/mocks/users';
 
 describe('state/permssions/reducer', () => {
@@ -18,6 +19,7 @@ describe('state/permssions/reducer', () => {
       expect(state).toHaveProperty('map');
       expect(state).toHaveProperty('loggedUser');
       expect(state.loggedUser).toBe(null);
+      expect(state).toHaveProperty('myGroupPermissions', []);
     });
   });
 
@@ -63,6 +65,13 @@ describe('state/permssions/reducer', () => {
 
       state = reducer(state, setLoggedUserPermissions(payloadUserAuthorityForEditUsers));
       expect(state.loggedUser).toEqual([...EDIT_USER_PROFILE_AUTHORITIES.map(auth => auth.permissions[0]), 'viewUsers']);
+    });
+  });
+
+  describe('when action is SET_MY_GROUP_PERMISSIONS', () => {
+    it('should update myGroupPermissions with action payload', () => {
+      state = reducer(state, setMyGroupPermissions(MY_PERMISSIONS_PAYLOAD_OK));
+      expect(state.myGroupPermissions).toEqual(MY_PERMISSIONS_PAYLOAD_OK);
     });
   });
 });

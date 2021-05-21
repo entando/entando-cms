@@ -99,8 +99,8 @@ export const MYPERMISSIONS_STATE = {
 
 export const MY_PERMISSIONS_PAYLOAD_OK = [{
   group: 'administrators',
-  role: ['superuser', 'managePages', 'editUser'],
+  permissions: ['superuser', 'managePages', 'editUser'],
 }, {
   group: 'master',
-  role: ['editUserProfile', 'managePages'],
+  permissions: ['editUserProfile', 'managePages'],
 }];

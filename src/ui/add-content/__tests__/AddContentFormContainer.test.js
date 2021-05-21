@@ -8,10 +8,6 @@ jest.mock('state/user-preferences/selectors', () => ({
   getTranslationWarning: jest.fn(() => true),
 }));
 
-jest.mock('state/users/selectors', () => ({
-  getSelectedUserAuthorities: jest.fn(),
-}));
-
 const TEST_STATE = {
   apps: {
     cms: {

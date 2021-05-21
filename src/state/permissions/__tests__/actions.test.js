@@ -4,6 +4,8 @@ import {
   setLoggedUserPermissions,
   clearLoggedUserPermissions,
   fetchLoggedUserPermissions,
+  setMyGroupPermissions,
+  fetchMyGroupPermissions,
 } from 'state/permissions/actions';
 
 import { getPermissionsIdList } from 'state/permissions/selectors';
@@ -14,6 +16,7 @@ import {
   SET_PERMISSIONS,
   SET_LOGGED_USER_PERMISSIONS,
   CLEAR_LOGGED_USER_PERMISSIONS,
+  SET_MY_GROUP_PERMISSIONS,
 } from 'state/permissions/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { SET_PAGE } from 'state/pagination/types';
@@ -67,6 +70,17 @@ describe('state/permissions/actions', () => {
       const action = clearLoggedUserPermissions();
       expect(action).toHaveProperty('type', CLEAR_LOGGED_USER_PERMISSIONS);
       expect(action).not.toHaveProperty('payload');
+    });
+  });
+
+  describe('setMyGroupPermissions', () => {
+    it('should create the correct action object', () => {
+      const payload = [
+        { group: 'test', permissions: ['superuser'] },
+        { group: 'free', permissions: [] },
+      ];
+      const action = setMyGroupPermissions(payload);
+      expect(action).toEqual({ type: SET_MY_GROUP_PERMISSIONS, payload });
     });
   });
 
@@ -132,11 +146,34 @@ describe('state/permissions/actions', () => {
     });
 
     it('when getPermissions get error, should dispatch addErrors', (done) => {
-      getMyGroupPermissions.mockImplementation(mockApi({ errors: true }));
+      getMyGroupPermissions.mockImplementationOnce(mockApi({ errors: true }));
       store.dispatch(fetchLoggedUserPermissions()).then(() => {
         expect(getMyGroupPermissions).toHaveBeenCalled();
         const actions = store.getActions();
         expect(actions).toHaveLength(4);
+        done();
+      }).catch(done.fail);
+    });
+  });
+
+  describe('fetchMyGroupPermissions', () => {
+    it('should call the correct actions after fetching', (done) => {
+      const payload = MY_PERMISSIONS_PAYLOAD_OK;
+      getMyGroupPermissions.mockImplementationOnce(mockApi({ payload }));
+      store.dispatch(fetchMyGroupPermissions()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toEqual([{ type: SET_MY_GROUP_PERMISSIONS, payload }]);
+        done();
+      }).catch(done.fail);
+    });
+
+    it('should call the correct actions on error', (done) => {
+      getMyGroupPermissions.mockImplementationOnce(mockApi({ errors: true }));
+      store.dispatch(fetchMyGroupPermissions()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(2);
+        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
+        expect(actions[1]).toHaveProperty('type', 'toasts/add-toast');
         done();
       }).catch(done.fail);
     });
