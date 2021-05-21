@@ -215,7 +215,6 @@ export class ContentsQueryFormBody extends Component {
     const handleCollapseFilters = () => this.collapseSection('filters');
     const handleCollapseExtraOptions = () => this.collapseSection('extraOptions');
     const handleCollapseFrontendFilters = () => this.collapseSection('frontendFilters');
-
     const handleCancelClick = () => {
       if (dirty) {
         onCancel();
