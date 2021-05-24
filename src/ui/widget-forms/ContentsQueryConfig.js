@@ -327,10 +327,11 @@ export class ContentsQueryFormBody extends Component {
                           toggleElement={inclusiveOrOptions}
                           name="orClauseCategoryFilter"
                         />
+                        <span className="help-block">
+                          <FormattedMessage id="widget.form.inclusiveOrTip" />
+                        </span>
                       </div>
-                      <span className="help-block">
-                        <FormattedMessage id="widget.form.inclusiveOrTip" />
-                      </span>
+
                     </Col>
                   </FormGroup>
                   <FormGroup>
