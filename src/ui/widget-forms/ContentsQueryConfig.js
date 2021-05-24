@@ -328,8 +328,8 @@ export class ContentsQueryFormBody extends Component {
                           name="orClauseCategoryFilter"
                         />
                         <span className="help-block">
-                        <FormattedMessage id="widget.form.inclusiveOrTip" />
-                      </span>
+                          <FormattedMessage id="widget.form.inclusiveOrTip" />
+                        </span>
                       </div>
 
                     </Col>
