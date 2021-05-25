@@ -7,7 +7,7 @@ import {
 } from 'patternfly-react';
 import { Collapse } from 'react-collapse';
 import { isUndefined, get, uniq } from 'lodash';
-import { maxLength } from '@entando/utils';
+import { maxLength, required } from '@entando/utils';
 import ContentTableRenderer from 'ui/widget-forms/ContentTableRenderer';
 import FormSectionTitle from 'ui/common/form/FormSectionTitle';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
@@ -92,12 +92,17 @@ export class ContentConfigFormBody extends PureComponent {
       onSave,
       ownerGroup,
       joinGroups,
+      widgetConfigFormData,
+      defaultLanguageCode,
     } = this.props;
     const { extraOptionsOpen, publishingSettingsOpen } = this.state;
     const multipleContentsMode = widgetCode === MULTIPLE_CONTENTS_CONFIG;
     const normalizedLanguages = languages.map(lang => lang.code);
     const normalizedPages = this.normalizeTitles(pages || []);
     const noContents = chosenContents.length === 0;
+
+    const defaultPageValue = widgetConfigFormData[putPrefixField('pageLink')];
+    const defaultLangLinkTextRequired = defaultPageValue !== null && defaultPageValue !== undefined && defaultPageValue !== '';
 
     const elementNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 50, 100, 500]
       .map(i => Object.assign({}, { code: i, name: i }));
@@ -119,8 +124,15 @@ export class ContentConfigFormBody extends PureComponent {
           key={langCode}
           component={RenderTextInput}
           name={putPrefixField(`linkDescr_${langCode}`)}
-          label={<FormLabel langLabelText={langCode} labelId="widget.form.linkText" />}
-          validate={[maxLength70]}
+          label={(
+            <FormLabel
+              langLabelText={langCode}
+              labelId="widget.form.linkText"
+              required={langCode === defaultLanguageCode && defaultLangLinkTextRequired}
+            />
+)}
+          validate={langCode === defaultLanguageCode && defaultLangLinkTextRequired
+            ? [required, maxLength70] : [maxLength70]}
         />
       )) : null;
 
@@ -134,6 +146,12 @@ export class ContentConfigFormBody extends PureComponent {
         onDiscard();
       }
     };
+
+    const pageIsRequired = !isUndefined(normalizedLanguages)
+      ? normalizedLanguages.some((langCode) => {
+        const descriptionValue = widgetConfigFormData[putPrefixField(`linkDescr_${langCode}`)];
+        return descriptionValue !== null && descriptionValue !== undefined && descriptionValue !== '';
+      }) : false;
 
     const renderExtraOptions = multipleContentsMode ? (
       <Row>
@@ -155,8 +173,9 @@ export class ContentConfigFormBody extends PureComponent {
                   component={RenderSelectInput}
                   name={putPrefixField('pageLink')}
                   label={
-                    <FormLabel labelId="widget.form.page" />
-              }
+                    <FormLabel labelId="widget.form.page" required={!!pageIsRequired} />
+            }
+                  validate={pageIsRequired ? [required] : []}
                   options={normalizedPages}
                   optionValue="code"
                   optionDisplayName="name"
@@ -302,6 +321,8 @@ ContentConfigFormBody.propTypes = {
   extFormName: PropTypes.string,
   putPrefixField: PropTypes.func,
   cloneMode: PropTypes.bool,
+  widgetConfigFormData: PropTypes.shape({}),
+  defaultLanguageCode: PropTypes.string,
 };
 
 ContentConfigFormBody.defaultProps = {
@@ -318,6 +339,8 @@ ContentConfigFormBody.defaultProps = {
   handleSubmit: () => {},
   putPrefixField: name => name,
   cloneMode: false,
+  widgetConfigFormData: {},
+  defaultLanguageCode: 'en',
 };
 
 export default reduxForm({

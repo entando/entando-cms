@@ -44,7 +44,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(clearSelectedContentType());
   },
   onChangeContentType: (code) => {
-    dispatch(fetchContentType(code));
+    dispatch(fetchContentType(code, false));
   },
   onSubmit: values => (
     dispatch(sendPostContentTemplate(values)).then((res) => {

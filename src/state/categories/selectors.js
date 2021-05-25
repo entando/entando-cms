@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { get } from 'lodash';
 import { getLocale } from 'state/locale/selectors';
 
 export const getCategories = state => state.apps.cms.categories;
@@ -34,19 +35,7 @@ const getCategoriesOrder = (categoriesChildren) => {
   return sorted;
 };
 
-const isVisible = (categoryCode, categories, categoriesStatus) => {
-  let curCategoryCode = categoryCode;
-  if (categories[curCategoryCode]) {
-    while (curCategoryCode !== 'home') {
-      curCategoryCode = categories[curCategoryCode].parentCode;
-      if (categoriesStatus[curCategoryCode] && !categoriesStatus[curCategoryCode].expanded) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return false;
-};
+const doesCategoryExists = (categoryCode, categories) => categoryCode in categories;
 
 const getDepth = (categories, categoryCode) => {
   let curCategoryCode = categoryCode;
@@ -65,7 +54,7 @@ export const getCategoryTree = createSelector(
   (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(
     categoryChildren,
   )
-    .filter(categoryCode => isVisible(categoryCode, categories, categoriesStatus))
+    .filter(categoryCode => doesCategoryExists(categoryCode, categories))
     .map(categoryCode => ({
       ...categories[categoryCode],
       ...CATEGORY_STATUS_DEFAULTS,
@@ -73,7 +62,7 @@ export const getCategoryTree = createSelector(
       depth: getDepth(categories, categoryCode),
       children: categoryChildren[categoryCode],
       isEmpty: !(categoryChildren[categoryCode] && categoryChildren[categoryCode].length),
-      title: categoriesTitles[categoryCode][locale],
+      title: get(categoriesTitles, `${categoryCode}.${locale}`, ''),
     })),
 );
 
