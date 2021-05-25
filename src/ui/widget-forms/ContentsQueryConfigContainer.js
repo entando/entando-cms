@@ -21,7 +21,7 @@ import ContentsQueryConfig, { ContentsQueryContainerId, ContentsQueryFormBody } 
 import { getContentTemplateList } from 'state/content-template/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getSearchPagesRaw } from 'state/pages/selectors';
-import { getActiveLanguages } from 'state/languages/selectors';
+import { getActiveLanguages, getDefaultLanguage } from 'state/languages/selectors';
 import { setVisibleModal } from 'state/modal/actions';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 import { NoDefaultWarningModalId } from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
@@ -45,6 +45,7 @@ export const mapStateToProps = (state, ownProps) => {
     selectedCategories: formValueSelector(formToUse)(state, putPrefixField('categories')),
     selectedInclusiveOr: formValueSelector(formToUse)(state, putPrefixField('orClauseCategoryFilter')),
     widgetConfigFormData: getFormValues(formToUse)(state),
+    defaultLanguageCode: getDefaultLanguage(state),
   };
 };
 
