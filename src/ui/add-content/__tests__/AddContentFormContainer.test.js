@@ -8,6 +8,10 @@ jest.mock('state/user-preferences/selectors', () => ({
   getTranslationWarning: jest.fn(() => true),
 }));
 
+jest.mock('state/permissions/selectors', () => ({
+  getMyGroupPermissions: jest.fn(() => ([{ group: 'free', permissions: [] }])),
+}));
+
 const TEST_STATE = {
   apps: {
     cms: {

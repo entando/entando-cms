@@ -43,7 +43,7 @@ import {
 } from 'state/edit-content/types';
 import { fetchMyGroupPermissions } from 'state/permissions/actions';
 import { getMyGroupPermissions } from 'state/permissions/selectors';
-import { CRUD_CONTENTS_PERMISSION } from 'state/permissions/const';
+import { CRUD_CONTENTS_PERMISSION, SUPERUSER_PERMISSION } from 'state/permissions/const';
 
 export const TranslationWarningModalID = 'TranslationWarningModal';
 
@@ -66,11 +66,11 @@ export const mapStateToProps = (state, ownProps) => {
   const { match: { params = {} } } = ownProps;
   const userPreferences = getUserPreferences(state);
   const groupWithContentPermission = getMyGroupPermissions(state)
-    .find(groupPermission => groupPermission.permissions.includes(CRUD_CONTENTS_PERMISSION));
-
+    .find(({ permissions }) => (
+      permissions.includes(SUPERUSER_PERMISSION) || permissions.includes(CRUD_CONTENTS_PERMISSION)
+    ));
   const defaultOwnerGroup = userPreferences.defaultContentOwnerGroup
     || (groupWithContentPermission && groupWithContentPermission.group);
-
   const defaultJoinGroups = userPreferences.defaultContentJoinGroups;
   const { id: contentId, contentType } = params;
 
