@@ -1,6 +1,5 @@
 import reducer from 'state/edit-content/reducer';
 import {
-  setGroups,
   setWorkMode,
   setOwnerGroupDisable,
   setContentEntry,
@@ -49,19 +48,6 @@ describe('state/edit-content/reducer', () => {
     });
     it('clearEditContentForm should reset editcontent state', () => {
       expect(state).toEqual(defaultState);
-    });
-  });
-  describe('after action setGroups', () => {
-    let state;
-    state = reducer({ groups: [] }, setGroups(['a', 'b']));
-    it('groups list should not be empty', () => {
-      expect(state).toHaveProperty('groups');
-      expect(state.groups).toHaveLength(2);
-    });
-    it('groups list should be empty despite sending null as a parameter', () => {
-      state = reducer({ groups: [] }, setGroups(null));
-      expect(state).toHaveProperty('groups');
-      expect(state.groups).toHaveLength(0);
     });
   });
   describe('after action setJoinedCategories', () => {

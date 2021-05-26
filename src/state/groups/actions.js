@@ -45,14 +45,13 @@ export const setGroupEntries = groups => ({
 
 // thunk
 
-export const fetchGroups = () => dispatch => new Promise((resolve) => {
+export const fetchMyGroups = () => dispatch => new Promise((resolve) => {
   dispatch(toggleLoading('groups'));
   getMyGroups().then((response) => {
     response.json().then((data) => {
       if (response.ok) {
         dispatch(setGroups(data.payload));
         dispatch(toggleLoading('groups'));
-        dispatch(setPage(data.metaData, NAMESPACE_GROUPS));
         resolve();
       } else {
         dispatch(addErrors(data.errors.map(err => err.message)));

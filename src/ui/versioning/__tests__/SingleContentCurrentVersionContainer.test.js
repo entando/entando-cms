@@ -1,5 +1,9 @@
 import React from 'react';
 import { IntlProvider } from 'react-intl';
+import {
+  configEnzymeAdapter,
+  mockApi,
+} from 'testutils/helpers';
 import '@testing-library/jest-dom/extend-expect';
 import { formatDate } from '@entando/utils';
 import { screen, within } from '@testing-library/react';
@@ -10,7 +14,11 @@ import { getMyGroups } from 'api/groups';
 import { GET_CONTENT_RESPONSE_OK } from 'testutils/mocks/editContent';
 
 jest.mock('api/editContent');
-jest.mock('api/groups');
+jest.mock('api/groups', () => ({
+  getMyGroups: jest.fn(mockApi({ payload: [] })),
+}));
+
+configEnzymeAdapter();
 
 describe('Single Content Current Version Container Test', () => {
   it('renders table header and data', async () => {

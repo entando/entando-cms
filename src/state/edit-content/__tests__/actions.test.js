@@ -3,8 +3,6 @@ import {
   setContentEntry,
   fetchContent,
   setOwnerGroupDisable,
-  setGroups,
-  fetchGroups,
   sendPostAddContent,
   sendPutEditContent,
   saveContent,
@@ -14,12 +12,13 @@ import {
   setSaveType,
   duplicateEngFieldValues,
 } from 'state/edit-content/actions';
+
 import {
   NEWS_CTYPE,
 } from 'testutils/mocks/contentType';
 import { GET_CONTENT_RESPONSE_OK, CONTENT_FORM_ATTRIBUTE_VALUES } from 'testutils/mocks/editContent';
 import {
-  SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, SET_GROUPS, WORK_MODE_ADD, WORK_MODE_EDIT,
+  SET_CONTENT_ENTRY, SET_OWNER_GROUP_DISABLE, WORK_MODE_ADD, WORK_MODE_EDIT,
   CLEAR_EDIT_CONTENT_FORM,
   SET_NEW_CONTENTS_TYPE,
   SET_MISSING_TRANSLATIONS,
@@ -27,7 +26,7 @@ import {
 } from 'state/edit-content/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import {
-  getContent, getGroups, postAddContent, putUpdateContent,
+  getContent, postAddContent, putUpdateContent,
 } from 'api/editContent';
 import { getSelectedContentTypeAttributes } from 'state/content-type/selectors';
 
@@ -42,13 +41,6 @@ const SET_GROUP_DISABLED = {
   type: SET_OWNER_GROUP_DISABLE,
   payload: {
     disabled: true,
-  },
-};
-
-const SET_GROUPS_PARAMS = {
-  type: SET_GROUPS,
-  payload: {
-    groups: ['a', 'b'],
   },
 };
 
@@ -84,7 +76,6 @@ const languages = {
 
 jest.mock('api/editContent', () => ({
   getContent: jest.fn(mockApi({ payload: { content: { categories: ['home'] } } })),
-  getGroups: jest.fn(mockApi({ payload: ['a', 'b'] })),
   postAddContent: jest.fn(mockApi({ payload: { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } })),
   putUpdateContent: jest.fn(mockApi({ payload: { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } } })),
 }));
@@ -109,10 +100,6 @@ it('test setNewContentsType action', () => {
   expect(setNewContentsType({ typeCode: 'NEWS', typeDescription: 'News' })).toEqual(
     { type: SET_NEW_CONTENTS_TYPE, payload: { typeCode: 'NEWS', typeDescription: 'News' } },
   );
-});
-
-it('test setGroups action', () => {
-  expect(setGroups(['a', 'b'])).toEqual(SET_GROUPS_PARAMS);
 });
 
 it('test setMissingTranslations action', () => {
@@ -153,29 +140,6 @@ describe('editContent thunks', () => {
         expect(actions[2]).toHaveProperty('type', 'errors/add-errors');
         done();
       });
-  });
-  it('fetchGroups', (done) => {
-    store
-      .dispatch(fetchGroups())
-      .then(() => {
-        const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', SET_GROUPS);
-        expect(actions[0].payload.groups).toEqual(['a', 'b']);
-        done();
-      })
-      .catch(done.fail);
-  });
-  it('fetchGroups error', (done) => {
-    getGroups.mockImplementationOnce(mockApi({ errors: true }));
-    store
-      .dispatch(fetchGroups())
-      .then(() => {
-        expect(getGroups).toHaveBeenCalled();
-        const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', 'errors/add-errors');
-        done();
-      })
-      .catch(done.fail);
   });
   it('sendPostAddContent', (done) => {
     const tosend = { a: 1, contentType: { typeCode: 'NEWS', typeDescription: 'News' } };
