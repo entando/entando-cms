@@ -40,11 +40,7 @@ describe('state/groups/reducer', () => {
 
     it('should define the groups payload', () => {
       const STATE_HERE = {
-        apps: {
-          cms: {
-            groups: newState,
-          },
-        },
+        groups: newState,
       };
       expect(getGroupsList(STATE_HERE)).toMatchObject(LIST_GROUPS_OK);
     });
@@ -65,11 +61,7 @@ describe('state/groups/reducer', () => {
 
     it('should define the selected group payload', () => {
       const STATE_HERE = {
-        apps: {
-          cms: {
-            groups: newState,
-          },
-        },
+        groups: newState,
       };
       expect(getSelectedGroup(STATE_HERE)).toMatchObject(BODY_OK);
     });

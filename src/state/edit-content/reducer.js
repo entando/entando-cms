@@ -3,7 +3,6 @@ import {
   WORK_MODE_EDIT,
   SET_WORK_MODE,
   SET_CONTENT_ENTRY,
-  SET_GROUPS,
   JOIN_CATEGORY,
   UNJOIN_CATEGORY,
   SET_JOINED_CATEGORIES,
@@ -47,11 +46,6 @@ const reducer = (state = defaultState, action = {}) => {
         },
       };
     }
-    case SET_GROUPS:
-      return {
-        ...state,
-        groups: action.payload.groups || [],
-      };
     case SET_JOINED_CATEGORIES: {
       return {
         ...state,

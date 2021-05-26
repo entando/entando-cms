@@ -2,6 +2,7 @@ import { configEnzymeAdapter } from 'testutils/helpers';
 import {
   getGroups,
   getGroup,
+  getMyGroups,
 } from 'api/groups';
 import { makeRequest, METHODS } from '@entando/apimanager';
 import {
@@ -111,6 +112,12 @@ describe('api/groups', () => {
           pageSize: 10,
         },
       );
+    });
+  });
+
+  describe('getMyGroups', () => {
+    it('returns a promise', () => {
+      expect(getMyGroups()).toBeInstanceOf(Promise);
     });
   });
 

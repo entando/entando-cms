@@ -11,7 +11,7 @@ import {
   resetAuthorStatus, leaveContentsPage,
 } from 'state/contents/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
-import { fetchGroups, setNewContentsType, setWorkMode } from 'state/edit-content/actions';
+import { setNewContentsType, setWorkMode } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { setVisibleModal, setInfo } from 'state/modal/actions';
 import { fetchUsers } from 'state/users/actions';
@@ -28,7 +28,7 @@ import { getPagination } from 'state/pagination/selectors';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getLoading } from 'state/loading/selectors';
-import { getGroups } from 'state/edit-content/selectors';
+import { getGroupsList } from 'state/groups/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getUsername } from '@entando/apimanager';
 import { DELETE_CONTENT_MODAL_ID } from 'ui/contents/DeleteContentModal';
@@ -70,7 +70,7 @@ export const mapStateToProps = (state) => {
     language: getLocale(state),
     contents: getContents(state),
     currentQuickFilter: getCurrentQuickFilter(state),
-    groups: getGroups(state),
+    groups: getGroupsList(state),
     groupFilter: getGroup(state),
     contentTypes: getContentTypeList(state),
     filteringCategories: getFilteringCategories(state),
@@ -95,7 +95,6 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
   onDidMount: () => {
     dispatch(fetchContentsPaged());
     dispatch(fetchCategoryTree());
-    dispatch(fetchGroups(noPage));
     dispatch(fetchContentTypeListPaged(noPage));
     dispatch(fetchUsers(noPage));
   },

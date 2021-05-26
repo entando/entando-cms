@@ -6,7 +6,7 @@ import moment from 'moment';
 import { pickBy, isObject, cloneDeep } from 'lodash';
 
 import {
-  getContent, getGroups, postAddContent, putUpdateContent,
+  getContent, postAddContent, putUpdateContent,
 } from 'api/editContent';
 
 import {
@@ -25,7 +25,6 @@ import {
 import {
   SET_CONTENT_ENTRY,
   SET_OWNER_GROUP_DISABLE,
-  SET_GROUPS,
   SET_WORK_MODE,
   SET_JOINED_CATEGORIES,
   SET_NEW_CONTENTS_TYPE,
@@ -172,11 +171,6 @@ export const setWorkMode = mode => ({
   payload: mode,
 });
 
-export const setGroups = groups => ({
-  type: SET_GROUPS,
-  payload: { groups },
-});
-
 export const setMissingTranslations = missingTranslations => ({
   type: SET_MISSING_TRANSLATIONS,
   payload: { missingTranslations },
@@ -185,21 +179,6 @@ export const setMissingTranslations = missingTranslations => ({
 export const setSaveType = saveType => ({
   type: SET_SAVE_TYPE,
   payload: { saveType },
-});
-
-export const fetchGroups = (page, params) => dispatch => new Promise((resolve) => {
-  getGroups(params, page)
-    .then((response) => {
-      response.json().then((json) => {
-        if (response.ok) {
-          dispatch(setGroups(json.payload));
-        } else {
-          dispatch(addErrors(json.errors.map(err => err.message)));
-        }
-        resolve();
-      });
-    })
-    .catch(() => {});
 });
 
 export const sendPostAddContent = newContentObject => dispatch => new Promise(

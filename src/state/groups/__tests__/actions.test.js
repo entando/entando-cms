@@ -2,7 +2,7 @@ import { createMockStore } from 'testutils/helpers';
 
 import {
   setGroups,
-  fetchGroups,
+  fetchMyGroups,
   setGroupsTotal,
   setSelectedGroup,
   fetchGroupsTotal,
@@ -11,6 +11,7 @@ import {
 import {
   getGroup,
   getGroups,
+  getMyGroups,
 } from 'api/groups';
 
 import { LIST_GROUPS_OK } from 'testutils/mocks/groups';
@@ -21,12 +22,12 @@ import {
   SET_SELECTED_GROUP,
 } from 'state/groups/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
-import { SET_PAGE } from 'state/pagination/types';
 
 const GROUP_CODE = LIST_GROUPS_OK[0].code;
 
 jest.mock('api/groups', () => ({
   getGroups: jest.fn(),
+  getMyGroups: jest.fn(),
   getGroup: jest.fn(),
 }));
 
@@ -49,20 +50,17 @@ const MOCK_RETURN_PROMISE_ERROR = {
   })),
 };
 
+getMyGroups.mockReturnValue(new Promise(resolve => resolve(GET_GROUPS_PROMISE)));
 getGroups.mockReturnValue(new Promise(resolve => resolve(GET_GROUPS_PROMISE)));
 getGroup.mockReturnValue(new Promise(resolve => resolve(GET_GROUP_PROMISE)));
 
 const INITIAL_STATE = {
   form: {},
-  apps: {
-    cms: {
-      groups: {
-        list: [],
-        map: {},
-        selected: {},
-        total: 0,
-      },
-    },
+  groups: {
+    list: [],
+    map: {},
+    selected: {},
+    total: 0,
   },
 };
 
@@ -95,21 +93,20 @@ describe('state/groups/actions', () => {
     });
   });
 
-  describe('fetchGroups', () => {
-    it('fetchGroups calls setGroups and setPage actions', (done) => {
-      store.dispatch(fetchGroups()).then(() => {
+  describe('fetchMyGroups', () => {
+    it('fetchMyGroups calls setGroups and setPage actions', (done) => {
+      store.dispatch(fetchMyGroups()).then(() => {
         const actions = store.getActions();
-        expect(actions).toHaveLength(4);
+        expect(actions).toHaveLength(3);
         expect(actions[0].type).toEqual(TOGGLE_LOADING);
         expect(actions[1].type).toEqual(SET_GROUPS);
         expect(actions[2].type).toEqual(TOGGLE_LOADING);
-        expect(actions[3].type).toEqual(SET_PAGE);
         done();
       }).catch(done.fail);
     });
 
     it('group is defined and properly valued', (done) => {
-      store.dispatch(fetchGroups()).then(() => {
+      store.dispatch(fetchMyGroups()).then(() => {
         const actionPayload = store.getActions()[1].payload;
         expect(actionPayload.groups).toHaveLength(10);
         const group = actionPayload.groups[0];
@@ -120,9 +117,9 @@ describe('state/groups/actions', () => {
     });
 
     it('when getGroups get error, should dispatch addErrors', (done) => {
-      getGroups.mockReturnValueOnce(new Promise(resolve => resolve(MOCK_RETURN_PROMISE_ERROR)));
-      store.dispatch(fetchGroups()).then(() => {
-        expect(getGroups).toHaveBeenCalled();
+      getMyGroups.mockReturnValueOnce(new Promise(resolve => resolve(MOCK_RETURN_PROMISE_ERROR)));
+      store.dispatch(fetchMyGroups()).then(() => {
+        expect(getMyGroups).toHaveBeenCalled();
         const actions = store.getActions();
         expect(actions).toHaveLength(3);
         expect(actions[0].type).toEqual(TOGGLE_LOADING);
@@ -134,7 +131,7 @@ describe('state/groups/actions', () => {
   });
 
   describe('fetchGroupsTotal', () => {
-    it('fetchGroups calls setGroupsTotal', (done) => {
+    it('fetchGroupsTotal calls setGroupsTotal', (done) => {
       store.dispatch(fetchGroupsTotal()).then(() => {
         const actions = store.getActions();
         expect(actions).toHaveLength(1);

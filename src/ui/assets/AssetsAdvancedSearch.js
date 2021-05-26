@@ -25,11 +25,6 @@ class AssetsAdvancedSearchForm extends Component {
     this.onToggleAdvancedFilters = this.onToggleAdvancedFilters.bind(this);
   }
 
-  componentDidMount() {
-    const { onDidMount } = this.props;
-    onDidMount();
-  }
-
   onToggleAdvancedFilters(e) {
     const {
       clickConfirmed,
@@ -158,7 +153,6 @@ class AssetsAdvancedSearchForm extends Component {
 
 AssetsAdvancedSearchForm.propTypes = {
   intl: intlShape.isRequired,
-  onDidMount: PropTypes.func.isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})),
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,

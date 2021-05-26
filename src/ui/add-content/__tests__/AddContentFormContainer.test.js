@@ -24,16 +24,19 @@ const TEST_STATE = {
           contentType: 'NEWS',
           version: '0.0',
         },
-        groups: [
-          { code: 'adminstrators', name: 'Administrators' },
-          { code: 'freeAccess', name: 'Free Access' },
-        ],
         selectedCategories: undefined,
         selectedJoinGroups: undefined,
       },
       contentType: {
         selected: 'ART',
       },
+    },
+  },
+  groups: {
+    list: ['adminstrators', 'freeAccess'],
+    map: {
+      adminstrators: { code: 'adminstrators', name: 'Administrators' },
+      freeAccess: { code: 'freeAccess', name: 'Free Access' },
     },
   },
   currentUser: { username: 'admin' },
