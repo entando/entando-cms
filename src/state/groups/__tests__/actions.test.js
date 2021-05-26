@@ -22,7 +22,6 @@ import {
   SET_SELECTED_GROUP,
 } from 'state/groups/types';
 import { TOGGLE_LOADING } from 'state/loading/types';
-import { SET_PAGE } from 'state/pagination/types';
 
 const GROUP_CODE = LIST_GROUPS_OK[0].code;
 

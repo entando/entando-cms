@@ -6,7 +6,6 @@ import {
   getGroup,
 } from 'api/groups';
 import { setPage } from 'state/pagination/actions';
-import { NAMESPACE_GROUPS } from 'state/pagination/const';
 import { toggleLoading } from 'state/loading/actions';
 import {
   SET_GROUPS,
