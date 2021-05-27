@@ -208,6 +208,12 @@ class ContentsFilterTable extends Component {
       ),
     } : null;
 
+    const pickModeParams = pickMode ? {} : {
+      rowSelectAccessor: 'id',
+      onRowSelect: this.onTableRowSelect,
+      selectedRows,
+    };
+
     return (
       <Col>
         <div className="Contents__table">
@@ -218,11 +224,8 @@ class ContentsFilterTable extends Component {
             columnResizable
             hideSelectAll
             onColumnReorder={onSetColumnOrder}
-            onRowSelect={this.onTableRowSelect}
-            rowSelectAccessor="id"
             useSorting={activeColumns}
             onChangeSort={this.onSort}
-            selectedRows={selectedRows}
             classNames={{
               table: 'table-hover table-striped Contents__table-element',
               tableBody: 'app-tour-step-19',
@@ -231,6 +234,7 @@ class ContentsFilterTable extends Component {
               id: sortingColumns.attribute,
               desc: sortingColumns.direction === TABLE_SORT_DIRECTION.DESC,
             }}
+            {...pickModeParams}
           />
           <PaginationRow
             itemCount={totalItems}
