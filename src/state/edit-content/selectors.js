@@ -22,11 +22,6 @@ export const getWorkMode = createSelector(
   editContent => editContent.workMode,
 );
 
-export const getGroups = createSelector(
-  getEditContentState,
-  editContent => editContent.groups,
-);
-
 export const getJoinedCategories = createSelector(
   getEditContentState,
   editContent => editContent.joinedCategories,

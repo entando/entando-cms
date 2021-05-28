@@ -7,7 +7,6 @@ import {
 import { routeConverter } from '@entando/utils';
 import { addToast, TOAST_SUCCESS } from '@entando/messages';
 import {
-  fetchGroups,
   fetchContent,
   clearEditContentForm,
   setOwnerGroupDisable,
@@ -25,11 +24,11 @@ import { getLocale } from 'state/locale/selectors';
 import {
   getOwnerGroupDisabled,
   getContent,
-  getGroups,
   getJoinedCategories,
   getSaveType,
   getMissingTranslations,
 } from 'state/edit-content/selectors';
+import { getGroupsList } from 'state/groups/selectors';
 import { getLoading } from 'state/loading/selectors';
 import {
   ROUTE_CMS_CONTENTS,
@@ -59,7 +58,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   workMode: WORK_MODE_EDIT,
   language: getLocale(state),
   content: getContent(state),
-  groups: getGroups(state),
+  groups: getGroupsList(state),
   currentUser: getUsername(state),
   contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
@@ -78,7 +77,6 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
     dispatch(setWorkMode(WORK_MODE_EDIT));
     dispatch(fetchContent(fetchContentParams))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTreeAll());
   },
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },

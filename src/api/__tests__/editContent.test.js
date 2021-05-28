@@ -1,10 +1,10 @@
 import { configEnzymeAdapter } from 'testutils/helpers';
 
 import {
-  getGroups, getContent, getCategories, postAddContent,
+  getContent, getCategories, postAddContent,
 } from 'api/editContent';
 import { makeRequest } from '@entando/apimanager';
-import { GET_GROUPS_RESPONSE_OK, GET_CATEGORIES_RESPONSE_OK } from 'testutils/mocks/contentType';
+import { GET_CATEGORIES_RESPONSE_OK } from 'testutils/mocks/contentType';
 import { GET_CONTENT_RESPONSE_OK, POST_CONTENT_ADD_RESPONSE_OK } from 'testutils/mocks/editContent';
 
 configEnzymeAdapter();
@@ -16,19 +16,6 @@ jest.mock('@entando/apimanager', () => ({
 }));
 
 describe('api/editContent', () => {
-  describe('groups', () => {
-    it('returns a promise', () => {
-      const response = getGroups('', { page: 1, pageSize: 10 });
-      expect(makeRequest).toHaveBeenCalledWith({
-        uri: '/api/groups',
-        method: 'GET',
-        mockResponse: GET_GROUPS_RESPONSE_OK,
-        contentType: 'application/json',
-        useAuthentication: true,
-      }, { page: 1, pageSize: 10 });
-      expect(response).toBeInstanceOf(Promise);
-    });
-  });
   describe('categories', () => {
     it('returns a promise', () => {
       const response = getCategories();

@@ -14,7 +14,7 @@ const filterMockList = (groupCode) => {
 };
 
 const getGroupErrors = groupname => (
-  GROUPS_NORMALIZED.apps.cms.groups.map[groupname] ? []
+  GROUPS_NORMALIZED.groups.map[groupname] ? []
     : [{ code: 1, message: 'invalid group name' }]
 );
 
@@ -33,6 +33,16 @@ export const getGroups = (page = { page: 1, pageSize: 10 }, params = '') => (
     },
     page,
   )
+);
+
+export const getMyGroups = () => (
+  makeRequest({
+    uri: '/api/users/myGroups',
+    method: METHODS.GET,
+    mockResponse: LIST_GROUPS_OK,
+    useAuthentication: true,
+    errors: () => getGenericError(),
+  })
 );
 
 export const getGroup = groupCode => (

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const getGroups = state => state.apps.cms.groups;
+export const getGroups = state => state.groups;
 
 export const getGroupsIdList = createSelector(
   getGroups,
@@ -25,4 +25,9 @@ export const getSelectedGroup = createSelector(
 export const getGroupsList = createSelector(
   [getGroupsMap, getGroupsIdList],
   (groupsMap, idList) => idList.map(id => (groupsMap[id])),
+);
+
+export const getGroupEntries = createSelector(
+  getGroups,
+  groups => groups.groupEntries,
 );

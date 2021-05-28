@@ -26,7 +26,7 @@ import {
 import { setAppTourLastStep } from 'state/app-tour/actions';
 
 import { getLocale } from 'state/locale/selectors';
-import { getGroups } from 'state/edit-content/selectors';
+import { getGroupsList } from 'state/groups/selectors';
 import { getContentTypeList } from 'state/content-type/selectors';
 import { getUserList } from 'state/users/selectors';
 import { getUsername } from '@entando/apimanager';
@@ -35,7 +35,6 @@ import { setColumnOrder } from 'state/table-column-order/actions';
 import { getColumnOrder } from 'state/table-column-order/selectors';
 
 import { fetchCategoryTree } from 'state/categories/actions';
-import { fetchGroups } from 'state/edit-content/actions';
 import { fetchContentTypeListPaged } from 'state/content-type/actions';
 import { fetchUsers } from 'state/users/actions';
 
@@ -63,7 +62,6 @@ const paramsForStatusAndAuthor = (status, author) => {
   return query.slice(1);
 };
 
-
 export const mapStateToProps = (state) => {
   const {
     page, lastPage, totalItems, pageSize,
@@ -73,7 +71,7 @@ export const mapStateToProps = (state) => {
     language: getLocale(state),
     contents: getContents(state),
     currentQuickFilter: getCurrentQuickFilter(state),
-    groups: getGroups(state),
+    groups: getGroupsList(state),
     groupFilter: getGroup(state),
     contentTypes: getContentTypeList(state),
     filteringCategories: getFilteringCategories(state),
@@ -106,7 +104,6 @@ export const mapDispatchToProps = (dispatch, {
       ));
     }
     dispatch(fetchCategoryTree());
-    dispatch(fetchGroups(noPage));
     dispatch(fetchContentTypeListPaged(noPage));
     dispatch(fetchUsers(noPage));
   },

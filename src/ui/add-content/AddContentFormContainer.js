@@ -7,7 +7,6 @@ import {
 import { routeConverter } from '@entando/utils';
 
 import {
-  fetchGroups,
   clearEditContentForm,
   setOwnerGroupDisable,
   setWorkMode,
@@ -32,12 +31,12 @@ import { getLocale } from 'state/locale/selectors';
 import { ConfirmCancelModalID } from 'ui/common/cancel-modal/ConfirmCancelModal';
 
 import {
-  getGroups,
   getOwnerGroupDisabled,
   getSaveType,
   getContent,
   getMissingTranslations,
 } from 'state/edit-content/selectors';
+import { getGroupsList } from 'state/groups/selectors';
 import {
   CONTINUE_SAVE_TYPE, WORK_MODE_ADD, WORK_MODE_EDIT, APPROVE_SAVE_TYPE,
 } from 'state/edit-content/types';
@@ -77,7 +76,7 @@ export const mapStateToProps = (state, ownProps) => {
   return ({
     workMode: WORK_MODE_ADD,
     language: getLocale(state),
-    groups: getGroups(state),
+    groups: getGroupsList(state),
     currentUser: getUsername(state),
     ownerGroupDisabled: getOwnerGroupDisabled(state),
     selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
@@ -102,7 +101,6 @@ export const mapStateToProps = (state, ownProps) => {
 export const mapDispatchToProps = (dispatch, { intl, history, match: { params } }) => ({
   onDidMount: () => {
     dispatch(setWorkMode(WORK_MODE_ADD));
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
     dispatch(fetchCategoryTree());
     dispatch(fetchContentType(params.contentType))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));

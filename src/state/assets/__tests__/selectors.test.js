@@ -56,12 +56,6 @@ const TEST_STATE = {
         },
         keyword: 'kolokoks',
       },
-      groups: {
-        map: {
-          groupdo,
-          groupre,
-        },
-      },
       categories: {
         map: {},
       },
@@ -69,6 +63,12 @@ const TEST_STATE = {
   },
   api: {
     domain: 'https://localhost:8080/',
+  },
+  groups: {
+    map: {
+      groupdo,
+      groupre,
+    },
   },
 };
 

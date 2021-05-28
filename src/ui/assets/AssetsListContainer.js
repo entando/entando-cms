@@ -24,7 +24,7 @@ import {
   resetFilteringCategories,
   setAssetCategoryFilter,
 } from 'state/assets/actions';
-import { fetchGroups, setSelectedGroup } from 'state/groups/actions';
+import { fetchMyGroups, setSelectedGroup } from 'state/groups/actions';
 import { getLoading } from 'state/loading/selectors';
 import { getLocale } from 'state/locale/selectors';
 import { getCategoryTree, getCategoryTreeFetched } from 'state/categories/selectors';
@@ -80,7 +80,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
     } else {
       const filters = {};
       dispatch(setListFilterParams(filters));
-      dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+      dispatch(fetchMyGroups());
       dispatch(fetchAssetsPaged(undefined, undefined, ownerGroup, joinGroups));
     }
   },

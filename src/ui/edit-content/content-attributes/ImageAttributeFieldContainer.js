@@ -6,7 +6,7 @@ import {
   fetchAssetsPaged,
   changeFileType,
 } from 'state/assets/actions';
-import { fetchGroups } from 'state/groups/actions';
+import { fetchMyGroups } from 'state/groups/actions';
 import { fetchCategoryTree } from 'state/categories/actions';
 
 import { IMAGE_MODAL_ID } from 'ui/edit-content/content-attributes/assets/AssetBrowserModal';
@@ -22,7 +22,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   assetListBegin: () => {
     const { mainGroup, joinGroups } = ownProps;
-    dispatch(fetchGroups({ page: 1, pageSize: 0 }));
+    dispatch(fetchMyGroups());
     dispatch(changeFileType('image'));
     dispatch(fetchAssetsPaged(undefined, undefined, mainGroup, joinGroups));
     dispatch(fetchCategoryTree());
