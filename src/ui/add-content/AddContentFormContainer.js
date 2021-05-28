@@ -40,8 +40,9 @@ import { getGroupsList } from 'state/groups/selectors';
 import {
   CONTINUE_SAVE_TYPE, WORK_MODE_ADD, WORK_MODE_EDIT, APPROVE_SAVE_TYPE,
 } from 'state/edit-content/types';
-import { fetchCurrentUserAuthorities } from 'state/users/actions';
-import { getSelectedUserAuthorities } from 'state/users/selectors';
+import { fetchMyGroupPermissions } from 'state/permissions/actions';
+import { getMyGroupPermissions } from 'state/permissions/selectors';
+import { CRUD_CONTENTS_PERMISSION, SUPERUSER_PERMISSION } from 'state/permissions/const';
 
 export const TranslationWarningModalID = 'TranslationWarningModal';
 
@@ -63,9 +64,12 @@ const publishContentMsgs = defineMessages({
 export const mapStateToProps = (state, ownProps) => {
   const { match: { params = {} } } = ownProps;
   const userPreferences = getUserPreferences(state);
-  const userAuthorities = getSelectedUserAuthorities(state) || [];
-  const authorityWithAdmin = userAuthorities.find(ua => ua.role === 'admin') || {};
-  const defaultOwnerGroup = userPreferences.defaultContentOwnerGroup || authorityWithAdmin.group;
+  const groupWithContentPermission = getMyGroupPermissions(state)
+    .find(({ permissions }) => (
+      permissions.includes(SUPERUSER_PERMISSION) || permissions.includes(CRUD_CONTENTS_PERMISSION)
+    ));
+  const defaultOwnerGroup = userPreferences.defaultContentOwnerGroup
+    || (groupWithContentPermission && groupWithContentPermission.group);
   const defaultJoinGroups = userPreferences.defaultContentJoinGroups;
   const { id: contentId, contentType } = params;
 
@@ -100,7 +104,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(fetchCategoryTree());
     dispatch(fetchContentType(params.contentType))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
-    dispatch(fetchCurrentUserAuthorities());
+    dispatch(fetchMyGroupPermissions());
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },

@@ -31,7 +31,7 @@ describe('api/permissions', () => {
   it('getMyGroupPermissions returns a promise', () => {
     const response = getMyGroupPermissions();
     expect(makeRequest).toHaveBeenCalledWith({
-      uri: '/api/users/userProfiles/myGroupPermissions',
+      uri: '/api/users/myGroupPermissions',
       method: METHODS.GET,
       mockResponse: MY_PERMISSIONS_PAYLOAD_OK,
       useAuthentication: true,
