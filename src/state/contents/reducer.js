@@ -15,6 +15,7 @@ import {
   SET_TAB_SEARCH,
   RESET_AUTHOR_STATUS,
   CLEAR_CONTENTS_STATE,
+  SET_CONTENTS_STATUS,
 } from 'state/contents/types';
 
 const defaultState = {
@@ -37,6 +38,8 @@ const defaultState = {
   currentAuthorShow: 'all',
   currentStatusShow: 'all',
   tabSearchEnabled: false,
+  status: {},
+  contentsStatus: {},
 };
 
 const reducer = (state = defaultState, action = {}) => {
@@ -187,7 +190,13 @@ const reducer = (state = defaultState, action = {}) => {
     case CLEAR_CONTENTS_STATE: {
       return defaultState;
     }
+    case SET_CONTENTS_STATUS:
+      return {
+        ...state,
+        status: action.payload,
+      };
     default:
+      console.log(state);
       return state;
   }
 };

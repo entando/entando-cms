@@ -12,6 +12,7 @@ import {
   getJoiningCategories,
   getTabSearchEnabled,
   getLastSelectedRow,
+  getContentsStatus,
 } from 'state/contents/selectors';
 
 const TEST_STATE = {
@@ -34,6 +35,7 @@ const TEST_STATE = {
         currentColumnsShow: ['col1', 'col2'],
         tabSearchEnabled: true,
         lastSelectedRow: { a: 1 },
+        status: { published: 0 },
       },
     },
   },
@@ -107,4 +109,9 @@ it('verify getSortingColumns selector', () => {
 it('verify getSelectedRows selector', () => {
   const selectedRows = getSelectedRows(TEST_STATE);
   expect(selectedRows).toEqual(['row1', 'row2']);
+});
+
+it('verify getContentsStatus selector', () => {
+  const contentsStatus = getContentsStatus(TEST_STATE);
+  expect(contentsStatus).toEqual({ published: 0 });
 });

@@ -7,6 +7,7 @@ import {
   resetJoinContentCategories,
   setTabSearch,
   resetAuthorStatus,
+  setContentsStatus,
 } from 'state/contents/actions';
 
 const CONTENTS = [{ id: 1 }, { id: 2 }];
@@ -158,6 +159,13 @@ describe('state/contents/reducer', () => {
       expect(newState.currentStatusShow).toEqual('all');
       expect(newState.tabSearchEnabled).toEqual(false);
       expect(newState.currentAuthorShow).toEqual('all');
+    });
+  });
+
+  describe('after action setContentsStatus', () => {
+    it('should update the state with the correct contentsStatus field', () => {
+      const newState = reducer(state, setContentsStatus({ published: 0 }));
+      expect(newState.status).toEqual({ published: 0 });
     });
   });
 });

@@ -1,7 +1,8 @@
 import { toggleLoading } from 'state/loading/actions';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
-  getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
+  getContents, deleteContent, publishContent,
+  updateContents, publishMultipleContents, getContentsStatus,
 } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
@@ -20,7 +21,7 @@ import {
   SET_CURRENT_STATUS_SHOW, SET_SORT, SET_CONTENT_TYPE, SET_TAB_SEARCH,
   SET_GROUP, SELECT_ROW, SELECT_ROWS, SELECT_ALL_ROWS,
   SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
-  RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE,
+  RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE, SET_CONTENTS_STATUS,
 } from 'state/contents/types';
 import { postAddContent } from 'api/editContent';
 import { parseJoinGroups } from 'helpers/joinGroups';
@@ -120,6 +121,11 @@ export const selectAllRows = checked => ({
 
 export const resetAuthorStatus = () => ({
   type: RESET_AUTHOR_STATUS,
+});
+
+export const setContentsStatus = payload => ({
+  type: SET_CONTENTS_STATUS,
+  payload,
 });
 
 export const fetchContents = (page = pageDefault,
@@ -355,4 +361,18 @@ export const sendCloneContent = content => dispatch => new Promise((resolve) => 
       });
     })
     .catch(() => {});
+});
+
+export const fetchContentsStatus = () => dispatch => new Promise((resolve) => {
+  getContentsStatus().then((response) => {
+    response.json().then((json) => {
+      if (response.ok) {
+        dispatch(setContentsStatus(json.payload));
+      } else {
+        dispatch(addErrors(json.errors.map(err => err.message)));
+        json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+      }
+      resolve();
+    }).catch(() => {});
+  });
 });

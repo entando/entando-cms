@@ -1,5 +1,6 @@
 import { makeRequest, METHODS } from '@entando/apimanager';
 import {
+  MOCK_CONTENTS_STATUS,
   RESPONSE_CONTENTS_OK, RESPONSE_DELETE_OK, RESPONSE_PUBLISH_OK, RESPONSE_SINGLE_CONTENT,
 } from 'testutils/mocks/contents';
 
@@ -54,4 +55,12 @@ export const updateContents = contents => makeRequest({
   mockResponse: RESPONSE_PUBLISH_OK,
   useAuthentication: true,
   body: contents,
+});
+
+export const getContentsStatus = () => makeRequest({
+  uri: `${contentsPath}/status`,
+  method: METHODS.GET,
+  contentType: 'application/json',
+  mockResponse: MOCK_CONTENTS_STATUS,
+  useAuthentication: true,
 });

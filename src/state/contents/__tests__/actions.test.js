@@ -4,7 +4,8 @@ import thunk from 'redux-thunk';
 import { TOGGLE_LOADING } from 'state/loading/types';
 import { SET_PAGE } from 'state/pagination/types';
 import {
-  getContents, deleteContent, publishContent, updateContents, publishMultipleContents,
+  getContents, deleteContent, publishContent, updateContents,
+  publishMultipleContents, getContentsStatus,
 } from 'api/contents';
 import {
   setQuickFilter, setContentType, setGroup, setSort,
@@ -18,15 +19,17 @@ import {
   resetAuthorStatus,
   leaveContentsPage,
   selectSingleRow,
+  fetchContentsStatus,
 } from 'state/contents/actions';
 import { postAddContent } from 'api/editContent';
+import { MOCK_CONTENTS_STATUS } from 'testutils/mocks/contents';
 import {
   SET_QUICK_FILTER, SET_CONTENT_TYPE, SET_GROUP,
   SET_SORT, SET_CONTENT_CATEGORY_FILTER, CHECK_STATUS, CHECK_ACCESS,
   CHECK_AUTHOR, SET_CURRENT_AUTHOR_SHOW, SET_CURRENT_STATUS_SHOW,
   SELECT_ROW, SELECT_ALL_ROWS, SET_CONTENTS,
   SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES, SET_TAB_SEARCH, RESET_AUTHOR_STATUS,
-  CLEAR_CONTENTS_STATE, SELECT_SINGLE_ROW,
+  CLEAR_CONTENTS_STATE, SELECT_SINGLE_ROW, SET_CONTENTS_STATUS,
 } from '../types';
 
 const middlewares = [thunk];
@@ -42,6 +45,7 @@ jest.mock('api/contents', () => ({
   publishContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
   updateContents: jest.fn(mockApi({ payload: { result: 'ok' } })),
   publishMultipleContents: jest.fn(mockApi({ payload: { result: 'ok' } })),
+  getContentsStatus: jest.fn(mockApi({ payload: {} })),
 }));
 
 jest.mock('api/editContent', () => ({
@@ -748,6 +752,27 @@ describe('state/contents/actions', () => {
           done();
         })
         .catch(done.fail);
+    });
+  });
+
+  describe('fetchContentsStatus', () => {
+    it('should call the correct actions on success', (done) => {
+      getContentsStatus.mockImplementation(mockApi({ payload: MOCK_CONTENTS_STATUS }));
+      store.dispatch(fetchContentsStatus()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toEqual([{ type: SET_CONTENTS_STATUS, payload: MOCK_CONTENTS_STATUS }]);
+        done();
+      }).catch(done.fail);
+    });
+    it('should call the correction actions on error', (done) => {
+      getContentsStatus.mockImplementation(mockApi({ errors: true }));
+      store.dispatch(fetchContentsStatus()).then(() => {
+        const actions = store.getActions();
+        expect(actions).toHaveLength(2);
+        expect(actions[0]).toHaveProperty('type', ADD_ERRORS);
+        expect(actions[1]).toHaveProperty('type', ADD_TOAST);
+        done();
+      }).catch(done.fail);
     });
   });
 });
