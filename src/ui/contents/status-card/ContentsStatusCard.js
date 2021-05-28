@@ -10,23 +10,6 @@ import {
 import { ROUTE_CMS_CONTENTS } from 'app-init/routes';
 import { SUPERUSER_PERMISSION, CRUD_CONTENTS_PERMISSION, VALIDATE_CONTENTS_PERMISSION } from 'state/permissions/const';
 
-const generateContentsStatusReport = contents => contents.reduce((acc, curr) => {
-  const { onLine, status, lastModified } = curr;
-  const lastModifiedDate = new Date(lastModified);
-  const currLastModifiedDate = new Date(acc.latestModificationDate);
-  const latestModificationDate = lastModifiedDate >= currLastModifiedDate
-    ? lastModified : acc.latestModificationDate;
-  if (onLine) {
-    if (status.toLowerCase() === 'public') {
-      return { ...acc, published: acc.published + 1, latestModificationDate };
-    }
-    return { ...acc, ready: acc.ready + 1, latestModificationDate };
-  }
-  return { ...acc, unpublished: acc.unpublished + 1, latestModificationDate };
-}, {
-  unpublished: 0, ready: 0, published: 0, latestModificationDate: 0,
-});
-
 const contentStatusMsgs = defineMessages({
   contents: {
     id: 'cms.contents.title',
@@ -54,11 +37,11 @@ class ContentsStatusCard extends Component {
 
   render() {
     const {
-      intl, contents, userPermissions, language,
+      intl, userPermissions, language, contentsStatus,
     } = this.props;
     const {
-      unpublished, ready, published, latestModificationDate,
-    } = generateContentsStatusReport(contents);
+      unpublished, ready, published, total, latestModificationDate,
+    } = contentsStatus;
 
     const msgs = {
       contents: intl.formatMessage(contentStatusMsgs.contents),
@@ -73,7 +56,7 @@ class ContentsStatusCard extends Component {
       [msgs.unpublished, unpublished],
     ];
 
-    const contentsAvailable = contents && contents.length > 0;
+    const contentsAvailable = total > 0;
 
     const renderBody = !contentsAvailable ? (
       <div>
@@ -133,13 +116,18 @@ ContentsStatusCard.propTypes = {
   intl: intlShape.isRequired,
   language: PropTypes.string.isRequired,
   onDidMount: PropTypes.func,
-  contents: PropTypes.arrayOf(PropTypes.shape({})),
   userPermissions: PropTypes.arrayOf(PropTypes.string),
+  contentsStatus: PropTypes.shape({
+    published: PropTypes.number,
+    unpublished: PropTypes.number,
+    ready: PropTypes.number,
+    total: PropTypes.number,
+    latestModificationDate: PropTypes.string,
+  }).isRequired,
 };
 
 ContentsStatusCard.defaultProps = {
   onDidMount: () => {},
-  contents: [],
   userPermissions: [],
 };
 

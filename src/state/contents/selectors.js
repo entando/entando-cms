@@ -81,3 +81,8 @@ export const getTabSearchEnabled = createSelector(
   getContentsState,
   contents => contents.tabSearchEnabled,
 );
+
+export const getContentsStatus = createSelector(
+  getContentsState,
+  contents => contents.status,
+);
