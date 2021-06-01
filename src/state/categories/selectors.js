@@ -35,6 +35,20 @@ const getCategoriesOrder = (categoriesChildren) => {
   return sorted;
 };
 
+const isVisible = (categoryCode, categories, categoriesStatus) => {
+  let curCategoryCode = categoryCode;
+  if (categories[curCategoryCode]) {
+    while (curCategoryCode !== 'home') {
+      curCategoryCode = categories[curCategoryCode].parentCode;
+      if (categoriesStatus[curCategoryCode] && !categoriesStatus[curCategoryCode].expanded) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+};
+
 const doesCategoryExists = (categoryCode, categories) => categoryCode in categories;
 
 const getDepth = (categories, categoryCode) => {
@@ -55,6 +69,23 @@ export const getCategoryTree = createSelector(
     categoryChildren,
   )
     .filter(categoryCode => doesCategoryExists(categoryCode, categories))
+    .map(categoryCode => ({
+      ...categories[categoryCode],
+      ...CATEGORY_STATUS_DEFAULTS,
+      ...categoriesStatus[categoryCode],
+      depth: getDepth(categories, categoryCode),
+      children: categoryChildren[categoryCode],
+      isEmpty: !(categoryChildren[categoryCode] && categoryChildren[categoryCode].length),
+      title: get(categoriesTitles, `${categoryCode}.${locale}`, ''),
+    })),
+);
+
+export const getCategoryTreeVisibleNodes = createSelector(
+  [getCategoriesMap, getChildrenMap, getStatusMap, getTitlesMap, getLocale],
+  (categories, categoryChildren, categoriesStatus, categoriesTitles, locale) => getCategoriesOrder(
+    categoryChildren,
+  )
+    .filter(categoryCode => isVisible(categoryCode, categories, categoriesStatus))
     .map(categoryCode => ({
       ...categories[categoryCode],
       ...CATEGORY_STATUS_DEFAULTS,

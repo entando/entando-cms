@@ -196,7 +196,6 @@ const reducer = (state = defaultState, action = {}) => {
         status: action.payload,
       };
     default:
-      console.log(state);
       return state;
   }
 };
