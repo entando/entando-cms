@@ -8,7 +8,7 @@ import { get, isEmpty } from 'lodash';
 import {
   Button, Row, Col, DropdownButton, MenuItem,
 } from 'patternfly-react';
-import FormSectionTitle from 'ui/common/form/FormSectionTitle';
+import SectionTitle from 'ui/common/SectionTitle';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
 import ContentsFilterModalContainer from 'ui/widget-forms/contents-filter/ContentsFilterModalContainer';
 import NoDefaultWarningModal from 'ui/widget-forms/publish-single-content-config/NoDefaultWarningModal';
@@ -173,9 +173,9 @@ export class SingleContentConfigFormBody extends PureComponent {
       <div>
         <span className="icon fa fa-puzzle-piece" title="Widget" />
         <h5 className="SingleContentConfigFormBody__widgetTitle"><FormattedMessage id="widget.singleContent.config.title" /> </h5>
-        <FormSectionTitle
-          titleId="app.info"
-          requireFields={false}
+        <SectionTitle
+          nameId="app.info"
+          noRequired
         />
         <Row>
           <Col xs={6}>
@@ -241,9 +241,9 @@ export class SingleContentConfigFormBody extends PureComponent {
         </div>
 
         <div className="SingleContentConfigFormBody__templateTitle">
-          <FormSectionTitle
-            titleId="widget.form.publishingSettings"
-            requireFields={false}
+          <SectionTitle
+            nameId="widget.form.publishingSettings"
+            noRequired
           />
           <span><FormattedMessage id="widget.form.contentTemplate" /></span>
           <Field

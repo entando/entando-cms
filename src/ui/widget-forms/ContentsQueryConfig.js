@@ -12,7 +12,7 @@ import { isUndefined } from 'lodash';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
-import FormSectionTitle from 'ui/common/form/FormSectionTitle';
+import SectionTitle from 'ui/common/SectionTitle';
 import MultiFilterSelectRenderer from 'ui/common/form/MultiFilterSelectRenderer';
 import FiltersSelectRenderer from 'ui/common/form/FiltersSelectRenderer';
 import ConfirmCancelModalContainer from 'ui/common/cancel-modal/ConfirmCancelModalContainer';
@@ -228,9 +228,9 @@ export class ContentsQueryFormBody extends Component {
         <Row>
           <Col xs={12}>
             <fieldset className="no-padding">
-              <FormSectionTitle
-                titleId="app.info"
-                requireFields={false}
+              <SectionTitle
+                nameId="app.info"
+                noRequired
               />
               <Field
                 component={RenderSelectInput}
@@ -248,14 +248,17 @@ export class ContentsQueryFormBody extends Component {
           </Col>
         </Row>
         <div className={selectedContentType ? 'visible' : 'hidden'}>
-          <Row>
+          <Row className="InfoFormBody">
             <Col xs={12}>
               <fieldset className="no-padding">
-                <FormSectionTitle
-                  titleId="widget.form.publishingSettings"
-                  requireFields={false}
-                  collapsable
+                <SectionTitle
+                  nameId="widget.form.publishingSettings"
                   onClick={handleCollapsePublishingSettings}
+                  collapsable
+                  noRequired
+                  collapseButtonEnd
+                  className="SectionTitle__emphasize-caption"
+                  isOpened={publishingSettings}
                 />
                 <Collapse isOpened={publishingSettings}>
                   <div>
@@ -300,11 +303,14 @@ export class ContentsQueryFormBody extends Component {
           <Row>
             <Col xs={12}>
               <fieldset className="no-padding">
-                <FormSectionTitle
-                  titleId="widget.form.filters"
-                  requireFields={false}
-                  collapsable
+                <SectionTitle
+                  nameId="widget.form.filters"
                   onClick={handleCollapseFilters}
+                  collapsable
+                  collapseButtonEnd
+                  noRequired
+                  className="SectionTitle__emphasize-caption"
+                  isOpened={filtersPanel}
                 />
                 <Collapse isOpened={filtersPanel}>
                   <FormGroup>
@@ -359,11 +365,14 @@ export class ContentsQueryFormBody extends Component {
           <Row>
             <Col xs={12}>
               <fieldset className="no-padding">
-                <FormSectionTitle
-                  titleId="widget.form.extraOptions"
-                  requireFields={false}
-                  collapsable
+                <SectionTitle
+                  nameId="widget.form.extraOptions"
                   onClick={handleCollapseExtraOptions}
+                  collapsable
+                  collapseButtonEnd
+                  noRequired
+                  className="SectionTitle__emphasize-caption"
+                  isOpened={extraOptions}
                 />
                 <Collapse isOpened={extraOptions}>
                   <Alert type="info" onDismiss={null}>
@@ -392,11 +401,14 @@ export class ContentsQueryFormBody extends Component {
           <Row>
             <Col xs={12}>
               <fieldset className="no-padding">
-                <FormSectionTitle
-                  titleId="widget.form.frontendFilters"
-                  requireFields={false}
-                  collapsable
+                <SectionTitle
+                  nameId="widget.form.frontendFilters"
                   onClick={handleCollapseFrontendFilters}
+                  collapsable
+                  collapseButtonEnd
+                  noRequired
+                  className="SectionTitle__emphasize-caption"
+                  isOpened={frontendFiltersPanel}
                 />
                 <Collapse isOpened={frontendFiltersPanel}>
                   <FormGroup className="clearfix">
