@@ -9,7 +9,7 @@ import { Collapse } from 'react-collapse';
 import { isUndefined, get, uniq } from 'lodash';
 import { maxLength, required } from '@entando/utils';
 import ContentTableRenderer from 'ui/widget-forms/ContentTableRenderer';
-import FormSectionTitle from 'ui/common/form/FormSectionTitle';
+import SectionTitle from 'ui/common/SectionTitle';
 import RenderTextInput from 'ui/common/form/RenderTextInput';
 import RenderSelectInput from 'ui/common/form/RenderSelectInput';
 import FormLabel from 'ui/common/form/FormLabel';
@@ -157,11 +157,14 @@ export class ContentConfigFormBody extends PureComponent {
       <Row>
         <Col xs={12}>
           <fieldset className="no-padding">
-            <FormSectionTitle
-              titleId="widget.form.extraOptions"
-              requireFields={false}
-              collapsable
+            <SectionTitle
+              nameId="widget.form.extraOptions"
               onClick={handleCollapseExtraOptions}
+              collapsable
+              noRequired
+              collapseButtonEnd
+              className="SectionTitle__emphasize-caption"
+              isOpened={extraOptionsOpen}
             />
             <Collapse isOpened={extraOptionsOpen}>
               <Alert type="info" onDismiss={null}>
@@ -193,11 +196,14 @@ export class ContentConfigFormBody extends PureComponent {
       <Row>
         <Col xs={12}>
           <fieldset className="no-padding">
-            <FormSectionTitle
-              titleId="widget.form.publishingSettings"
-              requireFields={false}
-              collapsable
+            <SectionTitle
+              nameId="widget.form.publishingSettings"
               onClick={handleCollapsePublishingSettings}
+              collapsable
+              noRequired
+              collapseButtonEnd
+              className="SectionTitle__emphasize-caption"
+              isOpened={publishingSettingsOpen}
             />
             <Collapse isOpened={publishingSettingsOpen}>
               <div>
