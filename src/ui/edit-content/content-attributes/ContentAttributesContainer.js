@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { addToast, TOAST_SUCCESS } from '@entando/messages';
+import { injectIntl, defineMessages } from 'react-intl';
 
 import { duplicateEngFieldValues } from 'state/edit-content/actions';
 import ContentAttributes from 'ui/edit-content/content-attributes/ContentAttributes';
@@ -10,6 +12,13 @@ import { getAttrInitialValue } from 'helpers/attrUtils';
 import { getActiveLanguages, getLanguages, getDefaultLanguage } from 'state/languages/selectors';
 import { initialize } from 'redux-form';
 import { getLocale } from 'state/locale/selectors';
+
+const contentMsgs = defineMessages({
+  copiedSuccessfully: {
+    id: 'cms.contents.edit.copiedSuccessfully',
+    defaultMessage: 'Published.',
+  },
+});
 
 export const mapStateToProps = (state, { attributes: contentAttributes = [] }) => {
   const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
@@ -26,7 +35,7 @@ export const mapStateToProps = (state, { attributes: contentAttributes = [] }) =
   };
 };
 
-export const mapDispatchToProps = (dispatch, { typeCode }) => ({
+export const mapDispatchToProps = (dispatch, { typeCode, intl }) => ({
   onDidMount: () => {
     dispatch(fetchContentType(typeCode));
     dispatch(fetchLanguages({ page: 1, pageSize: 0 }));
@@ -38,11 +47,14 @@ export const mapDispatchToProps = (dispatch, { typeCode }) => ({
   },
   onDuplicateContent: () => {
     dispatch(duplicateEngFieldValues());
+    dispatch(addToast(intl.formatMessage(contentMsgs.copiedSuccessfully), TOAST_SUCCESS));
   },
   reInitializeForm: (formName, data) => dispatch(initialize(formName, data)),
 });
 
-export default connect(
+const ContentAttributeContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(ContentAttributes);
+
+export default injectIntl(ContentAttributeContainer);
