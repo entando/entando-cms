@@ -1,7 +1,13 @@
 import { connect } from 'react-redux';
 import CategoryTreeSelector from 'ui/categories/common/CategoryTreeSelector';
 
-import { handleExpandCategory, onUnjoinCategory, onJoinCategory } from 'state/categories/actions';
+import {
+  handleExpandCategory,
+  onUnjoinCategory,
+  onJoinCategory,
+  handleExpandAll,
+  handleCollapseAll,
+} from 'state/categories/actions';
 import { getCategoryTreeVisibleNodes, getJoinedCategoriesByCodes } from 'state/categories/selectors';
 
 export const mapStateToProps = state => ({
@@ -16,6 +22,8 @@ export const mapDispatchToProps = dispatch => ({
   ),
   onJoinCategory: categoryCode => dispatch(onJoinCategory(categoryCode)),
   onUnjoinCategory: categoryCode => dispatch(onUnjoinCategory(categoryCode)),
+  onExpandAll: () => dispatch(handleExpandAll()),
+  onCollapseAll: () => dispatch(handleCollapseAll()),
 });
 
 const CategoryTreeSelectorContainer = connect(

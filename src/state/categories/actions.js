@@ -1,9 +1,15 @@
 import { addErrors } from '@entando/messages';
+import { batch } from 'react-redux';
 import { flattenDeep } from 'lodash';
 
 import { getCategoryTree, getCategory } from 'api/categories';
 import { toggleLoading } from 'state/loading/actions';
-import { getStatusMap, getAllCategories } from 'state/categories/selectors';
+import {
+  getStatusMap,
+  getAllCategories,
+  getChildrenMap,
+  getCategoriesLoadedStatus,
+} from 'state/categories/selectors';
 
 import {
   SET_CATEGORIES,
@@ -149,6 +155,27 @@ export const handleExpandCategory = (categoryCode = ROOT_CODE, expanded = '') =>
     resolve();
   },
 );
+
+export const handleExpandAll = () => (dispatch, getState) => {
+  const categories = Object.keys(getChildrenMap(getState()));
+  Promise.all(categories.map(category => dispatch(handleExpandCategory(category, true))))
+    .then(() => {
+      const categoriesToLoad = getCategoriesLoadedStatus(getState());
+      if (categoriesToLoad.length) {
+        dispatch(handleExpandAll());
+      }
+    });
+};
+
+export const handleCollapseAll = () => (dispatch, getState) => {
+  const categories = getStatusMap(getState());
+  const categoriesToCollapse = Object.keys(categories);
+
+  batch(() => {
+    categoriesToCollapse
+      .forEach(categoryCode => dispatch(toggleCategoryExpanded(categoryCode, false)));
+  });
+};
 
 export const onJoinCategory = category => ({
   type: JOIN_CATEGORY,

@@ -15,6 +15,8 @@ const CategoryTreeSelector = ({
   onExpandCategory,
   getJoinedCategoriesByCodes: joinedCategories,
   onUnjoinCategory,
+  onExpandAll,
+  onCollapseAll,
 }) => {
   const contentCategoriesText = joinedCategories && joinedCategories.length > 0 ? (
     <h4>
@@ -67,6 +69,26 @@ const CategoryTreeSelector = ({
           <tr>
             <th>
               <FormattedMessage id="category.tree" />
+              <div
+                onClick={onExpandAll}
+                onKeyDown={onExpandAll}
+                role="button"
+                tabIndex={-1}
+                className="CategoryTree CategoryTree__toggler CategoryTree__toggler--expand"
+              >
+                <span className="icon fa fa-plus-square" />
+                <FormattedMessage id="pageTree.expand" />
+              </div>
+              <div
+                onClick={onCollapseAll}
+                onKeyDown={onCollapseAll}
+                role="button"
+                tabIndex={-2}
+                className="CategoryTree CategoryTree__toggler"
+              >
+                <span className="icon fa fa-minus-square" />
+                <FormattedMessage id="pageTree.collapse" />
+              </div>
             </th>
             <th className="text-center" style={{ width: '4%' }}>
               <FormattedMessage id="cms.join" />
@@ -103,6 +125,8 @@ CategoryTreeSelector.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     onChange: PropTypes.func.isRequired,
   }).isRequired,
+  onExpandAll: PropTypes.func.isRequired,
+  onCollapseAll: PropTypes.func.isRequired,
 };
 
 CategoryTreeSelector.defaultProps = {
