@@ -340,7 +340,7 @@ export default {
     'cms.contents.edit.version.label': 'Versione',
     'cms.contents.edit.version.creator': 'creato da',
     'cms.contents.edit.version.modifier': 'modificato da',
-    'cms.contents.edit.duplicate': 'Duplicare',
+    'cms.contents.edit.duplicate': 'Copia in tutte le lingue',
     'cms.contents.edit.label.duplicate': 'Contenuti duplicati',
     'cms.contents.edit.label.duplicateHelp': 'Copia e incolla il contenuto da questa scheda della lingua ad altri',
     'cms.contents.edit.copytext': 'Copia Testo',
