@@ -9,7 +9,7 @@ import {
 
 import {
   setCategories,
-  toggleCategoryExpanded,
+  setCategoryExpanded,
   setCategoryLoading,
   setCategoryLoaded,
   setCategoryTreeFetched,
@@ -50,19 +50,15 @@ describe('state/categories/reducer', () => {
       });
     });
 
-    describe('action TOGGLE_CATEGORY_EXPANDED', () => {
+    describe('action SET_CATEGORY_EXPANDED', () => {
       let newState;
       const CATEGORY_CODE = 'home';
       it('should toggle the category expanded flag', () => {
-        newState = reducer(state, toggleCategoryExpanded(CATEGORY_CODE));
+        newState = reducer(state, setCategoryExpanded(CATEGORY_CODE));
         expect(newState.statusMap[CATEGORY_CODE].expanded).toBe(true);
 
-        newState = reducer(newState, toggleCategoryExpanded(CATEGORY_CODE));
+        newState = reducer(newState, setCategoryExpanded(CATEGORY_CODE, false));
         expect(newState.statusMap[CATEGORY_CODE].expanded).toBe(false);
-      });
-      it('should verify true expansion works good', () => {
-        newState = reducer(newState, toggleCategoryExpanded(CATEGORY_CODE, true));
-        expect(newState.statusMap[CATEGORY_CODE].expanded).toBe(true);
       });
     });
 
