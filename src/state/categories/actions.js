@@ -13,7 +13,7 @@ import {
 
 import {
   SET_CATEGORIES,
-  TOGGLE_CATEGORY_EXPANDED,
+  SET_CATEGORY_EXPANDED,
   SET_CATEGORY_LOADING,
   SET_CATEGORY_LOADED,
   SET_CATEGORY_TREE_FETCHED,
@@ -30,8 +30,8 @@ export const setCategories = categories => ({
   },
 });
 
-export const toggleCategoryExpanded = (categoryCode, expanded) => ({
-  type: TOGGLE_CATEGORY_EXPANDED,
+export const setCategoryExpanded = (categoryCode, expanded) => ({
+  type: SET_CATEGORY_EXPANDED,
   payload: {
     categoryCode,
     expanded,
@@ -92,7 +92,7 @@ export const fetchCategoryTree = (
       const categoryStatus = getStatusMap(getState())[categoryCode];
       const toExpand = !categoryStatus || !categoryStatus.expanded;
       if (toExpand) {
-        dispatch(toggleCategoryExpanded(categoryCode, true));
+        dispatch(setCategoryExpanded(categoryCode, true));
       }
       dispatch(toggleLoading('categories'));
       dispatch(setCategories([responses[0].payload].concat(responses[1].payload)));
@@ -136,25 +136,25 @@ export const fetchCategoryTreeAll = () => dispatch => new Promise((resolve) => {
   }).catch(() => {});
 });
 
-export const handleExpandCategory = (categoryCode = ROOT_CODE, expanded = '') => (
+export const handleExpandCategory = (categoryCode = ROOT_CODE, alwaysExpand) => (
   dispatch, getState,
-) => new Promise(
-  (resolve) => {
-    const categoryStatus = getStatusMap(getState())[categoryCode];
-    const toExpand = expanded !== '' ? expanded : (!categoryStatus || !categoryStatus.expanded);
-    const toLoad = toExpand && (!categoryStatus || !categoryStatus.loaded);
-    if (toLoad) {
-      dispatch(setCategoryLoading(categoryCode));
-      dispatch(fetchCategoryTree(categoryCode)).then(() => {
-        dispatch(toggleCategoryExpanded(categoryCode, true));
-        dispatch(setCategoryLoaded(categoryCode));
-      });
-    } else {
-      dispatch(toggleCategoryExpanded(categoryCode, toExpand));
-    }
-    resolve();
-  },
-);
+) => {
+  const categoryStatus = getStatusMap(getState())[categoryCode];
+  const toExpand = (!categoryStatus || !categoryStatus.expanded);
+  const toLoad = toExpand && (!categoryStatus || !categoryStatus.loaded);
+  if (toLoad) {
+    dispatch(setCategoryLoading(categoryCode));
+    return dispatch(fetchCategoryTree(categoryCode)).then(() => {
+      dispatch(setCategoryExpanded(categoryCode, true));
+      dispatch(setCategoryLoaded(categoryCode));
+    });
+  }
+  dispatch(setCategoryExpanded(
+    categoryCode,
+    alwaysExpand !== undefined ? alwaysExpand : toExpand,
+  ));
+  return Promise.resolve();
+};
 
 export const handleExpandAll = () => (dispatch, getState) => {
   const categories = Object.keys(getChildrenMap(getState()));
@@ -173,7 +173,7 @@ export const handleCollapseAll = () => (dispatch, getState) => {
 
   batch(() => {
     categoriesToCollapse
-      .forEach(categoryCode => dispatch(toggleCategoryExpanded(categoryCode, false)));
+      .forEach(categoryCode => dispatch(setCategoryExpanded(categoryCode, false)));
   });
 };
 

@@ -3,7 +3,7 @@ import {
   SET_CATEGORIES,
   SET_CATEGORY_LOADED,
   SET_CATEGORY_LOADING,
-  TOGGLE_CATEGORY_EXPANDED,
+  SET_CATEGORY_EXPANDED,
   SET_CATEGORY_TREE_FETCHED,
 } from 'state/categories/types';
 
@@ -82,14 +82,14 @@ const titlesMap = (state = {}, action = {}) => {
 
 const statusMap = (state = {}, action = {}) => {
   switch (action.type) {
-    case TOGGLE_CATEGORY_EXPANDED: {
-      const { categoryCode, expanded: toExpand } = action.payload;
-      const expanded = toExpand !== null && toExpand !== undefined
-        ? toExpand
-        : !(state[categoryCode] && state[categoryCode].expanded);
+    case SET_CATEGORY_EXPANDED: {
+      const { categoryCode, expanded } = action.payload;
       return {
         ...state,
-        [categoryCode]: { ...state[categoryCode], expanded },
+        [categoryCode]: {
+          ...state[categoryCode],
+          expanded: expanded !== undefined ? expanded : true,
+        },
       };
     }
     case SET_CATEGORY_LOADING: {

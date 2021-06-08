@@ -8,7 +8,7 @@ import {
   setCategoryLoading,
   handleJoinCategory,
   handleExpandCategory,
-  toggleCategoryExpanded,
+  setCategoryExpanded,
   fetchCategoryTreeAll,
   setCategoryTreeFetched,
 } from 'state/categories/actions';
@@ -17,7 +17,7 @@ import { getCategoryTree, getCategory } from 'api/categories';
 
 import {
   SET_CATEGORIES,
-  TOGGLE_CATEGORY_EXPANDED,
+  SET_CATEGORY_EXPANDED,
   SET_CATEGORY_LOADING,
   SET_CATEGORY_LOADED,
   SET_CATEGORY_TREE_FETCHED,
@@ -84,9 +84,9 @@ describe('state/categories/actions', () => {
     expect(action.payload).toHaveProperty('categories', []);
   });
 
-  it('toggleCategoryExpanded() should return a well formed action', () => {
-    const action = toggleCategoryExpanded(CATEGORY_CODE, true);
-    expect(action).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
+  it('setCategoryExpanded() should return a well formed action', () => {
+    const action = setCategoryExpanded(CATEGORY_CODE, true);
+    expect(action).toHaveProperty('type', SET_CATEGORY_EXPANDED);
     expect(action.payload).toHaveProperty('categoryCode', CATEGORY_CODE);
     expect(action.payload).toHaveProperty('expanded', true);
   });
@@ -120,7 +120,7 @@ describe('state/categories/actions', () => {
         .then(() => {
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
+          expect(actions[0]).toHaveProperty('type', SET_CATEGORY_EXPANDED);
           expect(actions[0].payload).toHaveProperty('expanded', false);
           done();
         })
@@ -134,7 +134,7 @@ describe('state/categories/actions', () => {
         .then(() => {
           const actions = store.getActions();
           expect(actions).toHaveLength(1);
-          expect(actions[0]).toHaveProperty('type', TOGGLE_CATEGORY_EXPANDED);
+          expect(actions[0]).toHaveProperty('type', SET_CATEGORY_EXPANDED);
           expect(actions[0].payload).toHaveProperty('expanded', true);
           done();
         })
@@ -153,7 +153,7 @@ describe('state/categories/actions', () => {
         .dispatch(handleExpandCategory('home'))
         .then(() => {
           const actionTypes = store.getActions().map(action => action.type);
-          expect(actionTypes).toHaveLength(2);
+          expect(actionTypes).toHaveLength(8);
           expect(actionTypes.includes(TOGGLE_LOADING)).toBe(true);
           expect(actionTypes.includes(SET_CATEGORY_LOADING)).toBe(true);
           done();
