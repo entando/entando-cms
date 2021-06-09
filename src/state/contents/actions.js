@@ -2,7 +2,7 @@ import { toggleLoading } from 'state/loading/actions';
 import { convertToQueryString, FILTER_OPERATORS } from '@entando/utils';
 import {
   getContents, deleteContent, publishContent,
-  updateContents, publishMultipleContents, getContentsStatus,
+  updateContents, publishMultipleContents, getContentsStatus, cloneContent,
 } from 'api/contents';
 import { setPage } from 'state/pagination/actions';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
@@ -23,7 +23,6 @@ import {
   SET_JOIN_CONTENT_CATEGORY, RESET_JOIN_CONTENT_CATEGORIES,
   RESET_AUTHOR_STATUS, SELECT_SINGLE_ROW, CLEAR_CONTENTS_STATE, SET_CONTENTS_STATUS,
 } from 'state/contents/types';
-import { postAddContent } from 'api/editContent';
 import { parseJoinGroups } from 'helpers/joinGroups';
 
 const pageDefault = { page: 1, pageSize: 10 };
@@ -178,7 +177,7 @@ export const fetchContentsWithFilters = (
       ...(qfValue && { [id]: FILTER_OPERATORS.LIKE }),
     };
     query = `${convertToQueryString({ formValues, operators, sorting })}&${params}${quickFilterStatusParam}${ownerGroupQuery}${joinGroupsQuery}`;
-    return dispatch(fetchContents(pagination, query));
+    return dispatch(fetchContents(pagination, query, NAMESPACE_CONTENTS, 'full'));
   }
   if (qfValue) {
     filters.push({ att: id, value: qfValue, operator: FILTER_OPERATORS.LIKE });
@@ -219,7 +218,7 @@ export const fetchContentsWithFilters = (
     return null;
   });
   query = `${convertToQueryString({ formValues, operators, sorting })}${categories}${quickFilterStatusParam || published}${ownerGroupQuery}${joinGroupsQuery}`;
-  return dispatch(fetchContents(pagination, query));
+  return dispatch(fetchContents(pagination, query, NAMESPACE_CONTENTS, 'full'));
 };
 
 export const fetchContentsWithTabs = (
@@ -258,7 +257,7 @@ export const fetchContentsWithTabs = (
   const joinGroupsQuery = (joinGroups && joinGroups.length > 0)
     ? joinGroups.reduce((acc, curr, index) => `${acc}&forLinkingWithExtraGroups[${index}]=${curr}`, '') : '';
   const params = `${query}${ownerGroupQuery}${joinGroupsQuery}`;
-  return dispatch(fetchContents(pagination, params));
+  return dispatch(fetchContents(pagination, params, NAMESPACE_CONTENTS, 'full'));
 };
 
 export const fetchContentsPaged = ({
@@ -346,8 +345,8 @@ export const sendUpdateContents = contents => dispatch => new Promise((resolve) 
     .catch(() => {});
 });
 
-export const sendCloneContent = content => dispatch => new Promise((resolve) => {
-  postAddContent(content)
+export const sendCloneContent = contentId => dispatch => new Promise((resolve) => {
+  cloneContent(contentId)
     .then((response) => {
       response.json().then((json) => {
         if (response.ok) {

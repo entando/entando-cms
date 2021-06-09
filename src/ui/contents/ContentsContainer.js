@@ -161,10 +161,8 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(setInfo({ contents }));
   },
   onClickClone: (content) => {
-    const cloneContent = content;
-    delete cloneContent.id;
     dispatch(setWorkMode(WORK_MODE_EDIT));
-    dispatch(sendCloneContent(cloneContent)).then((res) => {
+    dispatch(sendCloneContent(content.id)).then((res) => {
       if (res) {
         dispatch(
           addToast(
@@ -173,7 +171,7 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
           ),
         );
         history.push(
-          routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: res[0].id }),
+          routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: res.id }),
         );
       }
     });

@@ -5,7 +5,7 @@ import { TOGGLE_LOADING } from 'state/loading/types';
 import { SET_PAGE } from 'state/pagination/types';
 import {
   getContents, deleteContent, publishContent, updateContents,
-  publishMultipleContents, getContentsStatus,
+  publishMultipleContents, getContentsStatus, cloneContent,
 } from 'api/contents';
 import {
   setQuickFilter, setContentType, setGroup, setSort,
@@ -21,7 +21,6 @@ import {
   selectSingleRow,
   fetchContentsStatus,
 } from 'state/contents/actions';
-import { postAddContent } from 'api/editContent';
 import { MOCK_CONTENTS_STATUS } from 'testutils/mocks/contents';
 import {
   SET_QUICK_FILTER, SET_CONTENT_TYPE, SET_GROUP,
@@ -42,6 +41,7 @@ const ADD_TOAST = 'toasts/add-toast';
 jest.mock('api/contents', () => ({
   getContents: jest.fn(mockApi({ payload: ['a', 'b'], ok: true })),
   deleteContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
+  cloneContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
   publishContent: jest.fn(mockApi({ payload: { result: 'ok' } })),
   updateContents: jest.fn(mockApi({ payload: { result: 'ok' } })),
   publishMultipleContents: jest.fn(mockApi({ payload: { result: 'ok' } })),
@@ -302,7 +302,7 @@ describe('state/contents/actions', () => {
   });
   describe('Test cloning a content', () => {
     it('when publishing multiple contents it fires all the appropriate actions', (done) => {
-      postAddContent.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
+      cloneContent.mockImplementationOnce(mockApi({ payload: { result: 'ok' } }));
       store = mockStore({
         apps: {
           cms: {
@@ -327,7 +327,7 @@ describe('state/contents/actions', () => {
         .catch(done.fail);
     });
     it('when publishing multiple contents it reports errors succesfully', (done) => {
-      postAddContent.mockImplementationOnce(mockApi({ errors: true }));
+      cloneContent.mockImplementationOnce(mockApi({ errors: true }));
       store = mockStore({
         contents: {
           contents: [],
