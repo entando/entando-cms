@@ -22,7 +22,7 @@ describe('api/contents', () => {
     it('returns a promise', () => {
       const response = getContents({ page: 1, pageSize: 10 });
       expect(makeRequest).toHaveBeenCalledWith({
-        uri: '/api/plugins/cms/contents?mode=full',
+        uri: '/api/plugins/cms/contents?mode=list', // now the default is list ENG-2381
         method: 'GET',
         mockResponse: RESPONSE_CONTENTS_OK,
         contentType: 'application/json',

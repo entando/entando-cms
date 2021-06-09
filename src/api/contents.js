@@ -6,7 +6,7 @@ import {
 
 const contentsPath = '/api/plugins/cms/contents';
 
-export const getContents = (page, params = '', mode = 'full') => makeRequest({
+export const getContents = (page, params = '', mode = 'list') => makeRequest({
   uri: `${contentsPath}${params}${params ? '&' : '?'}mode=${mode}`,
   method: METHODS.GET,
   contentType: 'application/json',
@@ -63,4 +63,13 @@ export const getContentsStatus = () => makeRequest({
   contentType: 'application/json',
   mockResponse: MOCK_CONTENTS_STATUS,
   useAuthentication: true,
+});
+
+export const cloneContent = content => makeRequest({
+  uri: `${contentsPath}/${content}/clone`,
+  method: METHODS.POST,
+  contentType: 'application/json',
+  mockResponse: RESPONSE_PUBLISH_OK,
+  useAuthentication: true,
+  body: {},
 });
