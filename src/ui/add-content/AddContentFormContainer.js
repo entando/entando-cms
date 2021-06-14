@@ -104,7 +104,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(fetchCategoryTree());
     dispatch(fetchContentType(params.contentType))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
-    dispatch(fetchMyGroupPermissions());
+    dispatch(fetchMyGroupPermissions({ sort: 'group' }));
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
