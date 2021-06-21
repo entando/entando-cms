@@ -18,9 +18,15 @@ class RenderDatePickerInput extends Component {
   }
 
   handleChange(date) {
-    const { dateFormat, input } = this.props;
+    const {
+      dateFormat, input, onPickDate, maxDate, minDate,
+    } = this.props;
     const value = !isNull(date) ? date.format(dateFormat) : '';
+    const dateValue = moment(value, dateFormat);
+    if (maxDate && dateValue > maxDate) return;
+    if (minDate && dateValue < minDate) return;
     input.onChange(value);
+    onPickDate(value);
   }
 
   render() {
@@ -40,6 +46,8 @@ class RenderDatePickerInput extends Component {
       labelSize,
       inputSize,
       xsClass,
+      maxDate,
+      minDate,
     } = this.props;
 
     const errorblock = touched ? error : '';
@@ -48,6 +56,7 @@ class RenderDatePickerInput extends Component {
         <Icon name="calendar" />
       </span>
     ) : null;
+    const dateLimitProps = { ...(maxDate && { maxDate }), ...(minDate && { minDate }) };
     return (
       <div className={`RenderDatePickerInput ${(touched && error) ? 'form-group has-error' : 'form-group'}`}>
         {hasLabel && (
@@ -60,11 +69,13 @@ class RenderDatePickerInput extends Component {
         <Col xs={12} sm={inputSize || 12 - labelSize} className="RenderDatePickerInput__container">
           <DatePicker
             {...input}
+            {...dateLimitProps}
             placeholder={placeholder}
             selected={input.value ? moment(input.value, dateFormat) : null}
             onChange={this.handleChange}
             disabledKeyboardNavigation
             locale={locale}
+            autoComplete="off"
             dateFormat={dateFormat}
             isClearable={isClearable}
             calendarClassName="RenderDatePickerInput__calendar"
@@ -102,6 +113,9 @@ RenderDatePickerInput.propTypes = {
   hasCalendarIcon: PropTypes.bool,
   labelSize: PropTypes.number,
   inputSize: PropTypes.number,
+  onPickDate: PropTypes.func,
+  maxDate: PropTypes.objectOf({}),
+  minDate: PropTypes.objectOf({}),
 };
 
 RenderDatePickerInput.defaultProps = {
@@ -121,5 +135,8 @@ RenderDatePickerInput.defaultProps = {
   labelSize: 2,
   inputSize: null,
   xsClass: 'mobile-left',
+  onPickDate: () => {},
+  maxDate: null,
+  minDate: null,
 };
 export default RenderDatePickerInput;
