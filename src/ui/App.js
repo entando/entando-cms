@@ -21,6 +21,8 @@ import {
   ROUTE_CMS_VERSIONING,
   ROUTE_CMS_VERSIONING_CONTENT_DETAIL,
   ROUTE_CMS_VERSIONING_CONTENT_HISTORY,
+  ROUTE_CMS_OPEN_CONTENT_DRAFT,
+  ROUTE_CMS_OPEN_CONTENT_PUBLISHED,
 } from 'app-init/routes';
 
 import IntlProviderContainer from 'ui/locale/IntlProviderContainer';
@@ -41,6 +43,7 @@ import ContentsPage from 'ui/contents/ContentsPage';
 import VersioningListPage from 'ui/versioning/VersioningListPage';
 import ContentVersionDetailsPage from 'ui/versioning/details/ContentVersionDetailsPage';
 import SingleContentVersioningHistoryPage from 'ui/versioning/SingleContentVersioningHistoryPage';
+import ContentsDraftDetailsPage from 'ui/contents/ContentDraftDetailsPage';
 
 import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
@@ -119,6 +122,10 @@ export const routesDir = [
   {
     path: ROUTE_CMS_VERSIONING_CONTENT_HISTORY,
     component: SingleContentVersioningHistoryPage,
+  },
+  {
+    path: ROUTE_CMS_OPEN_CONTENT_DRAFT,
+    component: ContentsDraftDetailsPage,
   },
 ];
 

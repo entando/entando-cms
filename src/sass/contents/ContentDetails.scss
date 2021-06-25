@@ -1,0 +1,23 @@
+.ContentDetails {
+  &__panel-control-row {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+
+  &__btn-icon--svg {
+    padding-right: 8px;
+  }
+
+  &__info-panel {
+    &.panel.panel-default {
+      border-top-color: transparent;
+    }
+  }
+
+  &__table-info-panel {
+    th {
+      width: 250px;
+      border-right: 1px solid $color-vertical-grey;
+    }
+  }
+}
