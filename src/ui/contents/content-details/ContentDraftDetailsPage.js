@@ -5,7 +5,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentDraftDetailsContainer from 'ui/contents/ContentDraftDetailsContainer';
+import ContentDraftDetailsContainer from 'ui/contents/content-details/ContentDraftDetailsContainer';
 
 const ContentsDraftDetailsPage = () => (
   <Grid fluid>

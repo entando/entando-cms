@@ -5,7 +5,7 @@ import { Row, Col, Icon } from 'patternfly-react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 
-const ContentDraftDetailsInfoCollapse = ({ content }) => {
+const ContentDetailsInfoCollapse = ({ content }) => {
   const [infoOpened, setInfoOpened] = useState(false);
   const { description, id, lastModified, created, version, mainGroup } = content;
   return (
@@ -74,7 +74,7 @@ const ContentDraftDetailsInfoCollapse = ({ content }) => {
   );
 };
 
-ContentDraftDetailsInfoCollapse.propTypes = {
+ContentDetailsInfoCollapse.propTypes = {
   content: PropTypes.shape({
     description: PropTypes.string,
     id: PropTypes.string,
@@ -85,4 +85,4 @@ ContentDraftDetailsInfoCollapse.propTypes = {
   }).isRequired,
 };
 
-export default ContentDraftDetailsInfoCollapse;
+export default ContentDetailsInfoCollapse;

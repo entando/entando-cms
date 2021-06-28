@@ -20,4 +20,26 @@
       border-right: 1px solid $color-vertical-grey;
     }
   }
+
+  &__attributes {
+    padding: 15px 0;
+  }
+
+  &__attribute-row {
+    margin-bottom: 15px;
+    padding: 0 15px;
+  }
+
+  &__label-attribute {
+    font-weight: bold;
+  }
+
+  &__asset-img-preview {
+    width: 130px;
+    margin-right: 15px;
+  }
+
+  &__link-button {
+    margin-right: 15px;
+  }
 }

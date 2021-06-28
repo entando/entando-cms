@@ -12,7 +12,7 @@ import { fetchLanguages } from 'state/languages/actions';
 import { getLocale } from 'state/locale/selectors';
 import { getActiveLanguages, getLanguages, getDefaultLanguage } from 'state/languages/selectors';
 
-import ContentDraftDetails from 'ui/contents/ContentDraftDetails';
+import ContentDraftDetails from 'ui/contents/content-details/ContentDraftDetails';
 
 export const mapStateToProps = (state, { match: { params } }) => {
   const languages = (getLanguages(state) && getActiveLanguages(state)) || [];
