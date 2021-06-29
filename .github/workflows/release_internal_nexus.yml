@@ -1,0 +1,87 @@
+name: Release on internal Nexus
+
+on:
+  push:
+    branches:
+      - XXXXdevelop
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Dump GitHub context"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Cache Maven packages"
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: "Set up Entando Nexus Repository"
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+          server-id: ng-pipelines
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - name: "Publish package"
+        run: |
+          mvn --batch-mode deploy -DskipTests=true -DuseInternalRepo=true
+        env:
+          MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+#      - name: "Update entando-core-bom"
+#        env:
+#          ENTANDO_CORE_BOM_FOLDER: "entando-core-bom"
+#          ENTANDO_CORE_BOM_REPO_URL: "https://github.com/entando-ngpl/entando-core-bom.git"
+#          TOKEN_SECRET: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          tagValue=$(echo "${{ github.ref }}" | sed 's/.*\///' | sed 's/^v\(.*\)/\1/')
+#          echo "TAG VALUE $tagValue"
+#
+#          # install xmlstarlet
+#          sudo apt-get install xmlstarlet &> /dev/null
+#          echo "xmlstarlet installed"
+#
+#          # get the current artifact version in the entando-core-bom pom.xml file
+#          artifactId=$(xmlstarlet sel -N pom="http://maven.apache.org/POM/4.0.0" -t \
+#            -m "/pom:project" \
+#            -v "./pom:artifactId" pom.xml)
+#
+#          echo "##### ARTIFACT ID $artifactId"
+#
+#          # clone entando-core-bom
+#          mkdir "$ENTANDO_CORE_BOM_FOLDER" && cd "$ENTANDO_CORE_BOM_FOLDER"
+#          authUrl=$(echo "$ENTANDO_CORE_BOM_REPO_URL" | sed "s|://|://$TOKEN_SECRET@|")
+#          git clone "$authUrl" .
+#
+#          # get the current artifact version in the entando-core-bom pom.xml file
+#          artifactVersionInBom=$(xmlstarlet sel -N pom="http://maven.apache.org/POM/4.0.0" -t \
+#            -m "/pom:project/pom:properties" \
+#            -v "./pom:$artifactId.version" pom.xml) || true
+#
+#          echo "ARTIFACT VERSION $artifactVersionInBom"
+#
+#          # if the current project is a dependendcy of entando-core-bom => exit OK
+#          [ -z "$artifactVersionInBom" ] && echo "Dependency into the entando-core-bom not found" && exit 0
+#
+#          echo "UPDATING entando-core-bom pom.xml file..."
+#
+#          # TODO check if new version is newer?
+#
+#          # update the version of the current project in the entando-core-bom pom.xml file
+#          xmlstarlet ed --inplace -P -N pom=http://maven.apache.org/POM/4.0.0 \
+#              --update "/pom:project/pom:properties/pom:$artifactId.version" \
+#              -v "$tagValue" pom.xml
+#
+#          git config --global user.email ${{ secrets.GIT_USER_EMAIL }}
+#          git config --global user.name ${{ secrets.GIT_USER_NAME }}
+#
+#          # commit
+#          git add pom.xml
+#          git commit -m "Bumped $artifactId to $tagValue"
+#          git push

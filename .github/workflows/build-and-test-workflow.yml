@@ -1,0 +1,195 @@
+# This workflow will prepare every thing required to proceed with a PR
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Build and Test
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - develop
+
+jobs:
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # PREPARE
+  prepare:
+    env:
+      PPL_CONTEXT: ${{ toJson(github) }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+      REPO_FOLDER: "repo_folder"
+      ENTANDO_OPT_LOG_LEVEL: INFO
+    runs-on: ubuntu-latest
+    steps:
+      - name: "PR PIPELINE START"
+        run: |
+          source <(curl -qsL "https://raw.githubusercontent.com/entando/entando-pipelines/engine-exp/macro/install.sh")
+          ~/ppl-run \
+            pr-status-report --AND \
+            @pr-labels "REMOVE-LABEL-PREPARED" remove "prepared"  # in order to trigger the related label event
+      - name: "Checkout"
+        run: |
+          ~/ppl-run checkout-pr-branch "$REPO_FOLDER"
+      # PR FORMAT CHECK
+      - name: "PR format check"
+        id: pr-format-check
+        run: |
+          ~/ppl-run check-pr-format "$REPO_FOLDER"
+      # BOM
+      - name: "entando-core-bom check"
+        id: pr-bom-check
+        run: |
+          . ~/ppl-run --init
+          #ppl--check-pr-bom-state "$REPO_FOLDER"   # no bom on entando-engine
+          ppl--pr-labels "ADD-LABEL-PREPARED" add "prepared" || true
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # SONAR
+  sonar:
+    needs: [ 'prepare' ]
+    env:
+      PPL_CONTEXT: ${{ toJson(github) }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "SONAR GATE CHECK"
+        id: GATE
+        run: |
+          source <(curl -qsL "https://raw.githubusercontent.com/entando/entando-pipelines/engine-exp/macro/install.sh")
+          ppl--gate-check SONAR
+      - name: "Checkout"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: "Set up JDK 11"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: "Cache Maven packages"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: "Cache SonarCloud packages"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: "Build and analyze"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        run: |
+          ~/ppl-run mvn SONAR
+      - name: "Clean SKIP-SONAR"
+        if: steps.GATE.outputs.ENABLED != 'true'
+        run: |
+          ~/ppl-run @pr-labels "CLEAN-SKIP-SONAR" remove "skip-sonar"
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # BUILD AND TEST
+  tests:
+    needs: [ 'prepare' ]
+    env:
+      PPL_CONTEXT: ${{ toJson(github) }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1 # ensure the sequential running of the spawned jobs
+      matrix:
+        # order matters: spawned jobs are execute as received in the array
+        test-type: [ 'fast-test', 'slow-and-fast-test' ]
+        include:
+          # includes the value of the rebase variable depending on the test type of the matrix
+          # includes the dependency between the 2 generated jobs to ensure sequential runs
+          - test-type: 'fast-test'
+            mvn-test-group: 'fast-test'
+            remove-label: false
+          - test-type: 'slow-and-fast-test'
+            mvn-test-group: 'fast-test,slow-test'
+            remove-label: true
+    steps:
+      - name: "TESTS GATE CHECK"
+        id: GATE
+        run: |
+          source <(curl -qsL "https://raw.githubusercontent.com/entando/entando-pipelines/engine-exp/macro/install.sh")
+          ppl--gate-check TESTS
+      - name: "Checkout"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/checkout@v2
+      - name: "Cache Maven packages"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: "Set up JDK 11"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: "Build and run tests"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        run: |
+          ~/ppl-run mvn BUILD-AND-TEST "${{ matrix.mvn-test-group }}"
+      - name: "Clean SKIP-TESTS"
+        if: steps.GATE.outputs.ENABLED != 'true' && matrix.remove-label
+        run: |
+          ~/ppl-run @pr-labels "CLEAN-SKIP-TEST" remove "skip-tests"
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # OWASP
+  owasp:
+    needs: [ 'prepare' ]
+    env:
+      PPL_CONTEXT: ${{ toJson(github) }}
+      GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "OWASP GATE CHECK"
+        id: GATE
+        run: |
+          source <(curl -qsL "https://raw.githubusercontent.com/entando/entando-pipelines/engine-exp/macro/install.sh")
+          ppl--gate-check OWASP
+      - name: "Checkout"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/checkout@v2
+      - name: "Cache Maven packages"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: "Set up JDK 11"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: "Build and run tests"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        run: |
+          ~/ppl-run mvn BUILD-AND-TEST "${{ matrix.mvn-test-group }}"
+      - name: "Cache Maven packages"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: "OWASP checks"
+        if: steps.GATE.outputs.ENABLED == 'true'
+        run: |
+          ~/ppl-run mvn OWASP
+      - name: "Clean SKIP-OWASP"
+        if: steps.GATE.outputs.ENABLED != 'true'
+        run: |
+          ~/ppl-run @pr-labels "CLEAN-SKIP-OWASP" remove "skip-owasp"
