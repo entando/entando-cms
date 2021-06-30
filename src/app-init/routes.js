@@ -26,3 +26,4 @@ export const ROUTE_CMS_VERSIONING_CONTENT_DETAIL = '/cms/versioning/contents/:co
 export const WIDGET_CONFIG_ROUTE = '/widget/config/:widget/page/:page/frame/:frame';
 
 export const ROUTE_CATEGORIES = '/category';
+export const ROUTE_PAGE_DETAIL = '/page/detail/:pageCode';

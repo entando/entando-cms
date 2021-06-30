@@ -7,7 +7,7 @@ export const mapStateToProps = (state, { attributeValue, attributeType }) => {
   const domain = getDomain(state);
 
   return {
-    assetInfo: condenseAssetInfo(attributeValue, domain),
+    assetInfo: attributeValue ? condenseAssetInfo(attributeValue, domain) : {},
     attributeType,
   };
 };
