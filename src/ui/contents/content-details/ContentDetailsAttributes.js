@@ -43,7 +43,7 @@ const ContentDetailsAttributes = ({
         return (
           <ContentMonolistAttributeDisplay
             attribute={attribute}
-            attributeType={attDef.nestedAttribute.type}
+            nestedAttribute={attDef.nestedAttribute}
             languageSelected={languageSelected}
             isLangDefault={isLangDefault}
           />

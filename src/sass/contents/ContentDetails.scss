@@ -45,5 +45,15 @@
 
   &__list-item {
     margin-bottom: 5px;
+
+    &.composite {
+      & > .label.label-default {
+        line-height: 30px;
+      }
+
+      & > .media-body {
+        padding: 10px 0 0 15px;
+      }
+    }
   }
 }
