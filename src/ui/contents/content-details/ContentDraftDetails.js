@@ -35,7 +35,7 @@ const ContentDraftDetails = ({
             {languages.map(({ code, isDefault }) => (
               <Tab key={code} eventKey={code} title={<FormattedMessage id={`cms.language.${code}`} />}>
                 <ContentDetailsAttributes
-                  contentAttributes={content.attributes}
+                  contentAttributes={content.attributes || []}
                   attributes={attributes}
                   languageSelected={selectedLang}
                   isDefaultLang={isDefault}
