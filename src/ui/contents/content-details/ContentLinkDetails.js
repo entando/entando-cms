@@ -10,6 +10,9 @@ import { hasURLProtocol } from 'helpers/urlUtils';
 const ContentLinkDetails = ({ linkDetails, linkLabel }) => {
   const renderURLString = url => (hasURLProtocol(url) ? url : `//${url}`);
   const renderButton = () => {
+    if (!linkDetails) {
+      return null;
+    }
     switch (linkDetails.destType) {
       case 1:
         return (
@@ -50,6 +53,7 @@ ContentLinkDetails.propTypes = {
     destType: PropTypes.number,
     urlDest: PropTypes.string,
     pageDest: PropTypes.string,
+    contentDest: PropTypes.string,
   }).isRequired,
   linkLabel: PropTypes.string.isRequired,
 };

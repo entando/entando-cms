@@ -230,8 +230,8 @@ class ContentsTable extends Component {
   render() {
     const {
       intl, totalItems, page, pageSize, perPageOptions, lastPage,
-      onEditContent, onClickDelete, onClickPublish, onClickClone, userPermissions,
-      onSelectRows, onSetColumnOrder, sortingColumns, activeColumns,
+      onEditContent, onOpenDetails, onClickDelete, onClickPublish, onClickClone,
+      userPermissions, onSelectRows, onSetColumnOrder, sortingColumns, activeColumns,
     } = this.props;
     const columns = this.showingColumns();
     const itemsStart = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -262,6 +262,12 @@ class ContentsTable extends Component {
             <DropdownKebab id={`actionsKebab_${content.id}`} pullRight>
               <MenuItem onClick={() => onEditContent(content.id)}>
                 <FormattedMessage id="cms.label.edit" defaultMessage="Edit" />
+              </MenuItem>
+              <MenuItem onClick={() => onOpenDetails(content.id, 'draft')}>
+                <FormattedMessage id="cms.contents.label.draftver" defaultMessage="Open Draft" />
+              </MenuItem>
+              <MenuItem onClick={() => onOpenDetails(content.id, 'published')}>
+                <FormattedMessage id="cms.contents.label.publishedver" defaultMessage="Open Published" />
               </MenuItem>
               <MenuItem
                 onClick={() => !content.onLine && onClickDelete(content)}
@@ -369,6 +375,7 @@ ContentsTable.propTypes = {
   onSelectRows: PropTypes.func.isRequired,
   onSetColumnOrder: PropTypes.func,
   onEditContent: PropTypes.func.isRequired,
+  onOpenDetails: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
   onClickClone: PropTypes.func.isRequired,

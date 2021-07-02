@@ -43,7 +43,8 @@ import ContentsPage from 'ui/contents/ContentsPage';
 import VersioningListPage from 'ui/versioning/VersioningListPage';
 import ContentVersionDetailsPage from 'ui/versioning/details/ContentVersionDetailsPage';
 import SingleContentVersioningHistoryPage from 'ui/versioning/SingleContentVersioningHistoryPage';
-import ContentsDraftDetailsPage from 'ui/contents/content-details/ContentDraftDetailsPage';
+import ContentDraftDetailsPage from 'ui/contents/content-details/ContentDraftDetailsPage';
+import ContentPublishDetailsPage from 'ui/contents/content-details/ContentPublishDetailsPage';
 
 import CMSShell from 'ui/common/CMSShell';
 import ToastsContainer from 'ui/toast/ToastsContainer';
@@ -125,7 +126,11 @@ export const routesDir = [
   },
   {
     path: ROUTE_CMS_OPEN_CONTENT_DRAFT,
-    component: ContentsDraftDetailsPage,
+    component: ContentDraftDetailsPage,
+  },
+  {
+    path: ROUTE_CMS_OPEN_CONTENT_PUBLISHED,
+    component: ContentPublishDetailsPage,
   },
 ];
 

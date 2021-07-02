@@ -4,9 +4,10 @@ import { Row, Col, Tabs, Tab } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
 
 import ContentDraftDetailsInfoCollapse from 'ui/contents/content-details/ContentDetailsInfoCollapse';
+import ContentReferenceDisplay from 'ui/contents/content-details/ContentReferenceDisplay';
 import ContentDetailsAttributes from 'ui/contents/content-details/ContentDetailsAttributes';
 
-const ContentDraftDetails = ({
+const ContentDetails = ({
   content,
   contentId,
   attributes,
@@ -24,6 +25,7 @@ const ContentDraftDetails = ({
   return (
     <div>
       <ContentDraftDetailsInfoCollapse content={content} />
+      <ContentReferenceDisplay />
       <Row>
         <Col xs={12}>
           <Tabs
@@ -49,7 +51,7 @@ const ContentDraftDetails = ({
   );
 };
 
-ContentDraftDetails.propTypes = {
+ContentDetails.propTypes = {
   content: PropTypes.shape({
     attributes: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
@@ -60,4 +62,4 @@ ContentDraftDetails.propTypes = {
   defaultLang: PropTypes.string.isRequired,
 };
 
-export default ContentDraftDetails;
+export default ContentDetails;

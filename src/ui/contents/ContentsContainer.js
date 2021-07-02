@@ -23,7 +23,12 @@ import {
 } from 'state/contents/selectors';
 import { setColumnOrder } from 'state/table-column-order/actions';
 import { getColumnOrder } from 'state/table-column-order/selectors';
-import { ROUTE_CMS_EDIT_CONTENT, ROUTE_CMS_ADD_CONTENT } from 'app-init/routes';
+import {
+  ROUTE_CMS_EDIT_CONTENT,
+  ROUTE_CMS_ADD_CONTENT,
+  ROUTE_CMS_OPEN_CONTENT_PUBLISHED,
+  ROUTE_CMS_OPEN_CONTENT_DRAFT,
+} from 'app-init/routes';
 import { getPagination } from 'state/pagination/selectors';
 import { NAMESPACE_CONTENTS } from 'state/pagination/const';
 import { getContentTypeList } from 'state/content-type/selectors';
@@ -137,6 +142,12 @@ export const mapDispatchToProps = (dispatch, { intl, history }) => ({
     dispatch(setCurrentStatusShow('all'));
     history.push(
       routeConverter(ROUTE_CMS_EDIT_CONTENT, { id: contentId }),
+    );
+  },
+  onOpenDetails: (contentId, version) => {
+    const routeOpen = version === 'draft' ? ROUTE_CMS_OPEN_CONTENT_DRAFT : ROUTE_CMS_OPEN_CONTENT_PUBLISHED;
+    history.push(
+      routeConverter(routeOpen, { id: contentId }),
     );
   },
   onClickDelete: (item) => {

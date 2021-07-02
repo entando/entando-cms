@@ -9,7 +9,7 @@
   }
 
   &__info-panel {
-    &.panel.panel-default {
+    &.panel.panel-default { // sass-lint:disable-line force-element-nesting class-name-format
       border-top-color: transparent;
     }
   }
@@ -46,12 +46,12 @@
   &__list-item {
     margin-bottom: 5px;
 
-    &.composite {
-      & > .label.label-default {
+    &.composite { // sass-lint:disable-line class-name-format
+      & > .label.label-default { // sass-lint:disable-line force-element-nesting class-name-format
         line-height: 30px;
       }
 
-      & > .media-body {
+      & > .media-body { // sass-lint:disable-line class-name-format
         padding: 10px 0 0 15px;
       }
     }

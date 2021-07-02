@@ -5,7 +5,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
-import ContentDraftDetailsContainer from 'ui/contents/content-details/ContentDraftDetailsContainer';
+import ContentPublishDetailsContainer from 'ui/contents/content-details/ContentPublishDetailsContainer';
 
 const ContentsDraftDetailsPage = () => (
   <Grid fluid>
@@ -22,7 +22,7 @@ const ContentsDraftDetailsPage = () => (
             <FormattedMessage id="cms.contents.label.inspect" defaultMessage="Inspect" />
           </BreadcrumbItem>
           <BreadcrumbItem active>
-            <FormattedMessage id="cms.contents.label.draftver" defaultMessage="Draft" />
+            <FormattedMessage id="cms.contents.label.publishedver" defaultMessage="Draft" />
           </BreadcrumbItem>
         </Breadcrumb>
       </Col>
@@ -30,7 +30,7 @@ const ContentsDraftDetailsPage = () => (
     <Row>
       <Col xs={12}>
         <CMSPageTitle
-          titleId="cms.contents.label.draftver"
+          titleId="cms.contents.label.publishedver"
           helpId="cms.contents.tip"
           position="pull-right"
           largeTitle
@@ -39,7 +39,7 @@ const ContentsDraftDetailsPage = () => (
     </Row>
     <Row>
       <Col xs={12}>
-        <ContentDraftDetailsContainer />
+        <ContentPublishDetailsContainer />
       </Col>
     </Row>
   </Grid>

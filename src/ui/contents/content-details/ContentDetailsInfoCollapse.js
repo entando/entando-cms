@@ -49,20 +49,32 @@ const ContentDetailsInfoCollapse = ({ content }) => {
                     <td>{id}</td>
                   </tr>
                   <tr>
-                    <th><FormattedMessage id="cms.contentLabel.lastModified" /></th>
+                    <th><FormattedMessage id="cms.contentdetails.label.lastModified" /></th>
                     <td>{moment(lastModified, 'YYYY-MM-DD').fromNow()}</td>
                   </tr>
                   <tr>
-                    <th><FormattedMessage id="cms.contentLabel.dateCreated" /></th>
+                    <th><FormattedMessage id="cms.contentdetails.label.dateCreated" /></th>
                     <td>{created}</td>
                   </tr>
                   <tr>
-                    <th><FormattedMessage id="cms.contentLabel.version" /></th>
+                    <th><FormattedMessage id="cms.contentdetails.label.editor" /></th>
+                    <td>admin</td>
+                  </tr>
+                  <tr>
+                    <th><FormattedMessage id="cms.contentdetails.label.version" /></th>
                     <td>{version}</td>
                   </tr>
                   <tr>
-                    <th><FormattedMessage id="cms.contentLabel.mainGroup" /></th>
+                    <th><FormattedMessage id="cms.contentdetails.label.mainGroup" /></th>
                     <td>{mainGroup}</td>
+                  </tr>
+                  <tr>
+                    <th><FormattedMessage id="cms.contentdetails.label.viewGroups" /></th>
+                    <td><FormattedMessage id="cms.contentdetails.label.noViewGroups" /></td>
+                  </tr>
+                  <tr>
+                    <th><FormattedMessage id="cms.contentdetails.label.categories" /></th>
+                    <td><FormattedMessage id="cms.contentdetails.label.none" /></td>
                   </tr>
                 </tbody>
               </table>

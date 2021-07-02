@@ -106,7 +106,7 @@ class Contents extends Component {
       currentAuthorShow, currentStatusShow, currentColumnsShow,
       onSetCurrentAuthorShow, onSetCurrentStatusShow, onSetCurrentColumnsShow,
       onSetContentType, onSetGroup, sortingColumns, onSetSort, selectedRows,
-      onSelectRows, onSelectAllRows, onEditContent, onClickDelete, onClickPublish,
+      onSelectRows, onSelectAllRows, onEditContent, onOpenDetails, onClickDelete, onClickPublish,
       onClickAddContent, onClickJoinCategories, currentUsername, onClickClone,
       onAdvancedFilterSearch, users, userPermissions, groupFilter,
     } = this.props;
@@ -209,6 +209,7 @@ class Contents extends Component {
                 onSetColumnOrder={onSetCurrentColumnsShow}
                 availableColumns={availableColumns}
                 onEditContent={onEditContent}
+                onOpenDetails={onOpenDetails}
                 onClickDelete={onClickDelete}
                 onClickPublish={onClickPublish}
                 onClickClone={onClickClone}
@@ -259,6 +260,7 @@ Contents.propTypes = {
   onSelectRows: PropTypes.func.isRequired,
   onSelectAllRows: PropTypes.func.isRequired,
   onEditContent: PropTypes.func.isRequired,
+  onOpenDetails: PropTypes.func.isRequired,
   onClickDelete: PropTypes.func.isRequired,
   onClickPublish: PropTypes.func.isRequired,
   onClickAddContent: PropTypes.func.isRequired,

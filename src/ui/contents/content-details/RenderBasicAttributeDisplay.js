@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get, isNull } from 'lodash';
 import moment from 'moment';
+import { injectIntl, intlShape } from 'react-intl';
 
 import {
   TYPE_BOOLEAN,
@@ -32,6 +33,7 @@ const RenderBasicAttributeDisplay = ({
   attributeType,
   languageSelected,
   isLangDefault,
+  intl,
 }) => {
   switch (attributeType) {
     case TYPE_NUMBER:
@@ -61,29 +63,30 @@ const RenderBasicAttributeDisplay = ({
       );
     case TYPE_BOOLEAN:
     case TYPE_CHECKBOX:
-      return attribute.value === true ? 'Yes' : 'No';
+      return intl.formatMessage(`cms.label.${attribute.value === true ? 'yes' : 'no'}`);
     case TYPE_THREESTATE:
       if (isNull(attribute.value)) {
-        return 'Both';
+        return intl.formatMessage('cms.label.both');
       }
-      return attribute.value === true ? 'Yes' : 'No';
+      return intl.formatMessage(`cms.label.${attribute.value === true ? 'yes' : 'no'}`);
     case TYPE_DATE:
-      return moment(attribute.value, 'YYYY-MM-DD').format('DD/MM/YYYY');
+      return attribute.value ? moment(attribute.value, 'YYYY-MM-DD').format('DD/MM/YYYY') : CHAR_SPACE;
     case TYPE_TIMESTAMP:
-      return moment(attribute.value, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY - HH:mm');
+      return attribute.value ? moment(attribute.value, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY - HH:mm') : CHAR_SPACE;
     case TYPE_LINK:
-      return (
+      return attribute.value ? (
         <ContentLinkDetails
           linkDetails={attribute.value}
           linkLabel={attribute.values[languageSelected]}
         />
-      );
+      ) : CHAR_SPACE;
     default:
       return CHAR_SPACE;
   }
 };
 
 RenderBasicAttributeDisplay.propTypes = {
+  intl: intlShape.isRequired,
   attribute: PropTypes.shape({
     value: PropTypes.any,
     values: PropTypes.shape({}),
@@ -92,4 +95,4 @@ RenderBasicAttributeDisplay.propTypes = {
   isLangDefault: PropTypes.bool.isRequired,
 };
 
-export default RenderBasicAttributeDisplay;
+export default injectIntl(RenderBasicAttributeDisplay);

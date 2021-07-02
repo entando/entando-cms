@@ -37,9 +37,9 @@ export const mapDispatchToProps = (dispatch, { history }) => ({
   },
 });
 
-const ContentDraftDetailsContainer = connect(
+const ContentPublishDetailsContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(ContentDetails);
 
-export default withRouter(ContentDraftDetailsContainer);
+export default withRouter(ContentPublishDetailsContainer);

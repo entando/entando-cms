@@ -27,7 +27,9 @@ const ContentCompositeAttributeDisplay = ({
     <ul className="media-list">
       {compositeValues.map((item, idx) => (
         <li className="ContentDetails__list-item">
-          <span className="label label-default">{compositeProps[idx].name}</span>
+          <span className="label label-default">
+            {get(compositeProps[idx], `names.${languageSelected}`, compositeProps[idx].name)}
+          </span>
           <span className="media-body">
             <RenderBasicAttributeDisplay
               attribute={item}

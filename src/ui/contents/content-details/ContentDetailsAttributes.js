@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Col } from 'patternfly-react';
+import { get } from 'lodash';
 
 import RenderBasicAttributeDisplay from 'ui/contents/content-details/RenderBasicAttributeDisplay';
 import ContentListAttributeDisplay from 'ui/contents/content-details/ContentListAttributeDisplay';
@@ -78,7 +79,7 @@ const ContentDetailsAttributes = ({
       {attributes.map((attribute, idx) => (
         <div className="ContentDetails__attribute-row">
           <Col xs={12} sm={2} className="ContentDetails__label-attribute">
-            {attribute.name}
+            {get(attribute, `names.${languageSelected}`, attribute.name)}
           </Col>
           <div className="input-group ContentDetails__label-attribute-value">
             {renderAttribute(attributeValues[idx], attribute)}
