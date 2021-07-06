@@ -111,11 +111,13 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       }
       dispatch(setVisibleModal(ContentsFilterModalID));
     },
-    onSelectContent: (selectContent) => {
+    onSelectContent: (selectContent, andCloseModal = true) => {
       dispatch(change(formToUse, putPrefixField('contentId'), selectContent.id));
       dispatch(change(formToUse, putPrefixField('contentDescription'), selectContent.description));
-      dispatch(setVisibleModal(''));
-      dispatch(setAppTourLastStep(21));
+      if (andCloseModal) {
+        dispatch(setVisibleModal(''));
+        dispatch(setAppTourLastStep(21));
+      }
     },
     onClickAddContent: (contentType) => {
       const {

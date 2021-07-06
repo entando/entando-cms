@@ -66,18 +66,18 @@ export class SingleContentConfigFormBody extends PureComponent {
     const json = await response.json();
     if (response.ok) {
       const selectedContent = json.payload;
-      this.handleContentSelect(selectedContent);
+      this.handleContentSelect(selectedContent, false);
     }
   }
 
-  handleContentSelect(selectedContent) {
+  handleContentSelect(selectedContent, closeModal = true) {
     const { onSelectContent, loadContentTypeDetails } = this.props;
     const contentId = get(selectedContent, 'contentId', get(selectedContent, 'id', ''));
     const typeCodeSub = contentId ? contentId.substr(0, 3) : '';
     const contentTypeCode = get(selectedContent, 'typeCode', typeCodeSub);
     loadContentTypeDetails(contentTypeCode);
     this.setState({ selectedContent });
-    onSelectContent(selectedContent);
+    onSelectContent(selectedContent, closeModal);
   }
 
   enclosedWithForm(fields) {
