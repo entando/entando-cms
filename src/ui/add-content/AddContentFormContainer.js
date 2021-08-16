@@ -36,7 +36,8 @@ import {
   getContent,
   getMissingTranslations,
 } from 'state/edit-content/selectors';
-import { getGroupsList } from 'state/groups/selectors';
+import { fetchAllGroupEntries } from 'state/groups/actions';
+import { getGroupsList, getGroupEntries } from 'state/groups/selectors';
 import {
   CONTINUE_SAVE_TYPE, WORK_MODE_ADD, WORK_MODE_EDIT, APPROVE_SAVE_TYPE,
 } from 'state/edit-content/types';
@@ -77,6 +78,7 @@ export const mapStateToProps = (state, ownProps) => {
     workMode: WORK_MODE_ADD,
     language: getLocale(state),
     groups: getGroupsList(state),
+    allGroups: getGroupEntries(state),
     currentUser: getUsername(state),
     ownerGroupDisabled: getOwnerGroupDisabled(state),
     selectedJoinGroups: formValueSelector('editcontentform')(state, 'groups'),
@@ -105,6 +107,7 @@ export const mapDispatchToProps = (dispatch, { intl, history, match: { params } 
     dispatch(fetchContentType(params.contentType))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
     dispatch(fetchMyGroupPermissions({ sort: 'group' }));
+    dispatch(fetchAllGroupEntries());
   },
   onSetOwnerGroupDisable: disabled => dispatch(setOwnerGroupDisable(disabled)),
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },

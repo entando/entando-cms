@@ -147,6 +147,7 @@ export class EditContentFormBody extends React.Component {
     const {
       intl,
       groups,
+      allGroups,
       content,
       language,
       workMode,
@@ -383,7 +384,7 @@ export class EditContentFormBody extends React.Component {
                           label={(
                             <FormLabel labelId="cms.contents.edit.groups.joinGroup.label" />
                           )}
-                          options={groups}
+                          options={allGroups}
                           labelSize={2}
                           labelKey="name"
                           valueKey="code"
@@ -473,6 +474,12 @@ EditContentFormBody.propTypes = {
   currentUser: PropTypes.string.isRequired,
   location: PropTypes.shape({}).isRequired,
   groups: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ),
+  allGroups: PropTypes.arrayOf(
     PropTypes.shape({
       code: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
