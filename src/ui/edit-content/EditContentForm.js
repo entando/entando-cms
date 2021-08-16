@@ -527,6 +527,7 @@ EditContentFormBody.defaultProps = {
   dirty: false,
   loading: false,
   groups: [],
+  allGroups: [],
   selectedOwnerGroup: '',
   status: '',
 };
