@@ -28,7 +28,8 @@ import {
   getSaveType,
   getMissingTranslations,
 } from 'state/edit-content/selectors';
-import { getGroupsList } from 'state/groups/selectors';
+import { fetchAllGroupEntries } from 'state/groups/actions';
+import { getGroupsList, getGroupEntries } from 'state/groups/selectors';
 import { getLoading } from 'state/loading/selectors';
 import {
   ROUTE_CMS_CONTENTS,
@@ -59,6 +60,7 @@ export const mapStateToProps = (state, { match: { params } }) => ({
   language: getLocale(state),
   content: getContent(state),
   groups: getGroupsList(state),
+  allGroups: getGroupEntries(state),
   currentUser: getUsername(state),
   contentId: params.id,
   ownerGroupDisabled: getOwnerGroupDisabled(state),
@@ -77,6 +79,7 @@ export const mapDispatchToProps = (dispatch, { history, intl }) => ({
     dispatch(setWorkMode(WORK_MODE_EDIT));
     dispatch(fetchContent(fetchContentParams))
       .catch(() => history.push(routeConverter(ROUTE_CMS_CONTENTS)));
+    dispatch(fetchAllGroupEntries());
     dispatch(fetchCategoryTreeAll());
   },
   onWillUnmount: () => { dispatch(clearEditContentForm()); dispatch(destroy('ContentType')); },
