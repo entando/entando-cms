@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { memoize, isNull, isBoolean } from 'lodash';
 import { maxLength, minLength } from '@entando/utils';
 
+export const EMPTY_SYMBOLIC_DEST = '#!!#';
+
 const number = value => !Number.isNaN(parseFloat(value));
 
 const revDateFormat = dateStr => dateStr.split('/').reverse().join('/');
@@ -187,7 +189,8 @@ export const getAttrValidators = (validationRules) => {
 export const linkValidate = memoize((langCode, required = false) => input => (
   ((!required && !input) || (!(input && input.value && (
     (required && !input.value.symbolicDestination)
-      || (input.value.symbolicDestination && !input.values[langCode])))
+      || (input.value.symbolicDestination && input.value.symbolicDestination !== EMPTY_SYMBOLIC_DEST
+        && !input.values[langCode])))
   ))
     ? undefined
     : (<FormattedMessage id="validateForm.required" />)
