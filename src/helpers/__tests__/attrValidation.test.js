@@ -3,7 +3,7 @@ import {
   rangeEndDate, rangeEndNumber, rangeEndString,
   rangeStartDate, rangeStartNumber, rangeStartString,
   regex, linkValidate, noTagsOnly, listRequired,
-  compositeOneOfExists,
+  compositeOneOfExists, EMPTY_SYMBOLIC_DEST,
 } from 'helpers/attrValidation';
 
 describe('helpers/attrValidation', () => {
@@ -225,6 +225,13 @@ describe('helpers/attrValidation', () => {
         values: {},
       });
       expect(result.type.displayName).toBe('FormattedMessage');
+    });
+    it('should not return a message if destination is empty and link not required', () => {
+      const result = linkValidate('en')({
+        value: { symbolicDestination: EMPTY_SYMBOLIC_DEST },
+        values: { en: 'here' },
+      });
+      expect(result).toBeUndefined();
     });
     it('should return undefined if link has both value and values', () => {
       const result = linkValidate('en', true)({
