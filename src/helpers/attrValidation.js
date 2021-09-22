@@ -187,14 +187,16 @@ export const getAttrValidators = (validationRules) => {
 };
 
 export const linkValidate = memoize((langCode, required = false) => input => (
-  ((!required && !input) || (!(input && input.value && (
-    (required && !input.value.symbolicDestination)
-      || (input.value.symbolicDestination && input.value.symbolicDestination !== EMPTY_SYMBOLIC_DEST
-        && !input.values[langCode])))
-  ))
+  (!required && (
+    !input || (!input.value || (!input.value.symbolicDestination || (
+      input.value.symbolicDestination && input.values[langCode]
+    ))))) || (
+    required && input && input.value && input.value.symbolicDestination
+    && input.values[langCode] && input.value.symbolicDestination !== EMPTY_SYMBOLIC_DEST
+  )
     ? undefined
     : (<FormattedMessage id="validateForm.required" />)
-));
+), (...args) => JSON.stringify(args));
 
 export const listRequired = value => (
   !value || !value.length ? <FormattedMessage id="validateForm.required" /> : undefined

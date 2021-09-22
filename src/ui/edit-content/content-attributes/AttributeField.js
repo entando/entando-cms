@@ -56,6 +56,7 @@ const AttributeField = ({
   locale,
   isSub,
   openedAtStart,
+  defaultLang,
 }) => {
   const {
     type,
@@ -147,7 +148,7 @@ const AttributeField = ({
     case TYPE_LINK:
       AttributeFieldComp = LinkAttributeField;
       actualName = name;
-      validate.push(linkValidate(langCode, mandatory));
+      validate.push(linkValidate(defaultLang, mandatory));
       break;
     case TYPE_MONOTEXT:
       AttributeFieldComp = MonotextAttributeField;
@@ -204,6 +205,7 @@ AttributeField.propTypes = {
   locale: PropTypes.string,
   isSub: PropTypes.bool,
   openedAtStart: PropTypes.bool,
+  defaultLang: PropTypes.string.isRequired,
 };
 
 AttributeField.defaultProps = {

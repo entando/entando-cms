@@ -20,6 +20,7 @@ import {
   TYPE_BOOLEAN,
   TYPE_CHECKBOX,
   TYPE_THREESTATE,
+  TYPE_LINK,
 } from 'state/content-type/const';
 import { getDateTimeObjFromStr } from 'helpers/attrUtils';
 import { listRequired, compositeOneOfExists } from 'helpers/attrValidation';
@@ -73,7 +74,7 @@ const renderField = (
   // the attribute should not be mandatory for non-default languages
   const newAttribute = {
     ...attribute,
-    mandatory: defaultAndMandatory,
+    mandatory: type === TYPE_LINK ? mandatory : defaultAndMandatory,
   };
 
   const validate = [];
@@ -107,6 +108,7 @@ const renderField = (
           locale={locale}
           attribute={newAttribute}
           langCode={langCode}
+          defaultLang={defaultLang}
           labelSize={0}
           hasLabel={false}
           mainGroup={mainGroup}
