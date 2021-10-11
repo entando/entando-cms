@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage, injectIntl, intlShape,
 } from 'react-intl';
-import { Spinner, Paginator, DropdownKebab } from 'patternfly-react';
+import { Spinner, PaginationRow, DropdownKebab } from 'patternfly-react';
 import { LinkMenuItem } from '@entando/menu';
 import { routeConverter, formatDate } from '@entando/utils';
 import { DataTable } from '@entando/datatable';
@@ -128,6 +128,7 @@ class VersioningList extends Component {
       page,
       pageSize,
       totalItems,
+      lastPage,
       contentTypes,
       onSubmit,
     } = this.props;
@@ -143,6 +144,9 @@ class VersioningList extends Component {
     ), {});
 
     const columns = this.getColumnDefs() || [];
+
+    const itemsStart = totalItems === 0 ? 0 : ((page - 1) * pageSize) + 1;
+    const itemsEnd = Math.min(page * pageSize, totalItems);
 
     const rowAction = {
       Header: <FormattedMessage id="cms.versioning.list.actions" defaultMessage="Actions" />,
@@ -180,12 +184,21 @@ class VersioningList extends Component {
               cell: 'VersioningListRow__td',
             }}
           />
-          <Paginator
-            pagination={pagination}
-            viewType="table"
+          <PaginationRow
             itemCount={totalItems}
+            itemsStart={itemsStart}
+            itemsEnd={itemsEnd}
+            viewType="table"
+            pagination={pagination}
+            amountOfPages={lastPage}
+            pageInputValue={page}
             onPageSet={this.changePage}
             onPerPageSelect={this.changePageSize}
+            onFirstPage={() => this.changePage(1)}
+            onPreviousPage={() => this.changePage(page - 1)}
+            onPageInput={this.onPageInput}
+            onNextPage={() => this.changePage(page + 1)}
+            onLastPage={() => this.changePage(lastPage)}
             messages={messages}
           />
         </Spinner>
@@ -204,6 +217,7 @@ VersioningList.propTypes = {
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
+  lastPage: PropTypes.number.isRequired,
   contentTypes: PropTypes.arrayOf(PropTypes.shape({})),
   columnOrder: PropTypes.arrayOf(PropTypes.string),
   onSetColumnOrder: PropTypes.func,
