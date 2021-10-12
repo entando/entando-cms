@@ -2,6 +2,8 @@
 
 This project contains the `App Builder` screens for the CMS app of Entando.
 
+**This package is currently deprecated since this project has already been merged to [App Builder](https://github.com/entando/app-builder/commit/b3fff5f9e5ce19e104e7c3aa2833c58c56dc893e)**
+
 For more information and documentation visit:  https://dev.entando.org, or https://forum.entando.org. Or for the latest news or product information please visit the main website: https://www.entando.com.
 
 Information below is for building and running locally directly from source.
