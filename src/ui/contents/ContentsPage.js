@@ -3,6 +3,7 @@ import {
   Row, Col, Grid, Breadcrumb,
 } from 'patternfly-react';
 import { FormattedMessage } from 'react-intl';
+
 import CMSPageTitle from 'ui/common/CMSPageTitle';
 import BreadcrumbItem from 'ui/common/BreadcrumbItem';
 import ContentsContainer from 'ui/contents/ContentsContainer';
